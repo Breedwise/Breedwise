@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breedwise Standard Review — Find Out Exactly How Much Your Breeding Program Is Leaving on the Table</title>
+  <meta name="description" content="One 60-minute, vet-backed review. Written scorecard, benchmark comparison against certified breeders, 90-day revenue impact calculation, and a 30-day action plan.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0a;
+      --surface:   #111111;
+      --card:      #161616;
+      --border:    #222222;
+      --gold:      #c9a84c;
+      --gold-03:   rgba(201,168,76,0.03);
+      --gold-04:   rgba(201,168,76,0.04);
+      --gold-10:   rgba(201,168,76,0.10);
+      --gold-15:   rgba(201,168,76,0.15);
+      --gold-20:   rgba(201,168,76,0.20);
+      --white:     #f0ece4;
+      --muted:     #666666;
+      --mid:       #888888;
+      --success:   #3d7a4a;
+      --heading:   'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+      --body:      'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --ease:      0.2s ease;
+      --nav-h:     68px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NAV ─────────────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      height: var(--nav-h);
+      background: var(--bg);
+      border-bottom: 1px solid var(--gold-20);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 52px;
+    }
+    .nav-wordmark {
+      font-family: var(--heading);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+    .nav-btn {
+      display: inline-block;
+      padding: 10px 22px;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      background: transparent;
+      font-family: var(--body);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background var(--ease), color var(--ease);
+      white-space: nowrap;
+    }
+    .nav-btn:hover { background: var(--gold); color: var(--bg); }
+
+    /* ─── LAYOUT ──────────────────────────────────────── */
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 52px;
+    }
+    .wrap-narrow {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 52px;
+    }
+
+    /* ─── SHARED ELEMENTS ─────────────────────────────── */
+    .section-label {
+      display: block;
+      font-family: var(--body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 44px;
+    }
+    .gold-rule {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-15), transparent);
+    }
+    .btn-gold {
+      display: inline-block;
+      padding: 17px 40px;
+      background: var(--gold);
+      color: var(--bg);
+      font-family: var(--body);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background var(--ease), transform var(--ease);
+    }
+    .btn-gold:hover { background: #d4b862; transform: translateY(-1px); }
+
+    /* ─── HERO ────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: var(--nav-h);
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 720px; height: 720px;
+      background: radial-gradient(circle, var(--gold-04) 0%, transparent 68%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1000px;
+      padding: 60px 52px;
+    }
+    .hero-eyebrow {
+      font-family: var(--body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 32px;
+    }
+    .hero-headline {
+      font-family: var(--heading);
+      font-size: 62px;
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--white);
+      letter-spacing: -0.025em;
+      margin-bottom: 28px;
+    }
+    .hero-sub {
+      font-family: var(--body);
+      font-size: 17px;
+      color: var(--mid);
+      line-height: 1.7;
+      max-width: 640px;
+      margin: 0 auto 44px;
+    }
+    .hero-meta {
+      margin-top: 18px;
+      font-family: var(--body);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .hero-math {
+      margin-top: 22px;
+      font-family: var(--body);
+      font-size: 14px;
+      color: var(--mid);
+      line-height: 1.65;
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+    }
+    .hero-emotional {
+      margin-top: 40px;
+      font-family: var(--heading);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--gold);
+      opacity: 0.7;
+      letter-spacing: 0.01em;
+    }
+
+    /* ─── WHO THIS IS FOR ─────────────────────────────── */
+    #for-whom {
+      padding: 100px 0;
+      background: var(--surface);
+    }
+    .for-grid {
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr;
+      gap: 0;
+      align-items: start;
+    }
+    .for-div {
+      background: var(--gold-20);
+      align-self: stretch;
+      margin: 0 64px;
+    }
+    .for-col-head {
+      font-family: var(--heading);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 28px;
+      line-height: 1.3;
+    }
+    .for-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .for-list li {
+      font-family: var(--body);
+      font-size: 15px;
+      color: var(--mid);
+      line-height: 1.65;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .for-list li:first-child { border-top: 1px solid var(--border); }
+    .for-marker {
+      flex-shrink: 0;
+      margin-top: 1px;
+      font-size: 13px;
+    }
+    .for-marker.yes { color: var(--gold); }
+    .for-marker.no  { color: var(--muted); }
+
+    /* ─── CREDIBILITY ─────────────────────────────────── */
+    #advisors {
+      padding: 76px 0;
+      background: var(--surface);
+    }
+    .credibility-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+    }
+    .credibility-label-col {
+      min-width: 210px;
+      padding-right: 52px;
+      padding-top: 6px;
+      border-right: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .advisors-cols {
+      display: flex;
+      flex: 1;
+    }
+    .advisor-block {
+      flex: 1;
+      padding: 0 44px;
+      border-right: 1px solid var(--border);
+    }
+    .advisor-block:last-child { border-right: none; }
+    .advisor-name {
+      font-family: var(--heading);
+      font-size: 19px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 7px;
+    }
+    .advisor-title {
+      font-family: var(--body);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .advisor-bio {
+      font-family: var(--body);
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ─── DELIVERABLES ────────────────────────────────── */
+    #deliverables {
+      padding: 120px 0;
+    }
+    .deliverable-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      padding: 52px 0;
+      border-bottom: 1px solid var(--border);
+      border-left: 3px solid transparent;
+      transition: border-left-color var(--ease);
+      padding-left: 2px;
+    }
+    .deliverable-item:first-of-type { border-top: 1px solid var(--border); }
+    .deliverable-item:hover { border-left-color: var(--gold); }
+    .deliverable-num {
+      font-family: var(--heading);
+      font-size: 116px;
+      font-weight: 400;
+      color: rgba(201,168,76,0.07);
+      line-height: 1;
+      min-width: 168px;
+      user-select: none;
+      letter-spacing: -0.02em;
+      position: relative;
+      top: -18px;
+    }
+    .deliverable-body {
+      flex: 1;
+      padding-left: 20px;
+      padding-top: 6px;
+    }
+    .deliverable-title {
+      font-family: var(--heading);
+      font-size: 26px;
+      font-weight: 500;
+      color: var(--white);
+      line-height: 1.3;
+      margin-bottom: 14px;
+    }
+    .deliverable-desc {
+      font-family: var(--body);
+      font-size: 15px;
+      color: var(--mid);
+      line-height: 1.8;
+      max-width: 700px;
+    }
+
+    /* ─── PROOF ───────────────────────────────────────── */
+    #proof {
+      padding: 120px 0;
+      background: var(--surface);
+    }
+    .pull-quote {
+      font-family: var(--heading);
+      font-size: 40px;
+      font-weight: 500;
+      color: var(--white);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 56px;
+      max-width: 820px;
+    }
+    .case-study {
+      font-family: var(--body);
+      font-size: 15px;
+      color: var(--mid);
+      line-height: 1.82;
+      max-width: 720px;
+      margin-bottom: 68px;
+    }
+    .case-study p + p { margin-top: 22px; }
+    .stat-blocks {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--border);
+    }
+    .stat-block {
+      flex: 1;
+      padding: 40px 44px;
+      border-right: 1px solid var(--border);
+      border-left: 3px solid transparent;
+      transition: border-left-color var(--ease), background var(--ease);
+    }
+    .stat-block:last-child { border-right: none; }
+    .stat-block:hover {
+      border-left-color: var(--gold);
+      background: rgba(201,168,76,0.02);
+    }
+    .stat-val {
+      font-family: var(--heading);
+      font-size: 42px;
+      font-weight: 600;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .stat-label {
+      font-family: var(--body);
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ─── INVESTMENT ──────────────────────────────────── */
+    #investment {
+      padding: 120px 0;
+    }
+    .investment-grid {
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr;
+      gap: 0;
+      align-items: start;
+    }
+    .invest-divider {
+      background: var(--gold-20);
+      align-self: stretch;
+      margin: 0 64px;
+    }
+    .invest-headline {
+      font-family: var(--heading);
+      font-size: 38px;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+    }
+    .invest-headline em {
+      font-style: normal;
+      color: var(--gold);
+    }
+    .invest-body {
+      font-family: var(--body);
+      font-size: 15px;
+      color: var(--mid);
+      line-height: 1.85;
+    }
+    .invest-body .hi { color: var(--gold); font-weight: 600; }
+
+    /* ─── FOUNDER ─────────────────────────────────────── */
+    #founder {
+      padding: 120px 0;
+      background: var(--surface);
+    }
+    .founder-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 76px;
+      align-items: start;
+    }
+    .founder-photo {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .founder-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    .founder-photo::after {
+      content: '';
+      position: absolute;
+      inset: 5px;
+      border: 1px solid rgba(201,168,76,0.12);
+      pointer-events: none;
+    }
+    .founder-name {
+      font-family: var(--heading);
+      font-size: 34px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .founder-title {
+      font-family: var(--body);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 36px;
+    }
+    .founder-text p {
+      font-family: var(--body);
+      font-size: 15px;
+      color: var(--mid);
+      line-height: 1.85;
+      margin-bottom: 22px;
+    }
+    .founder-text p:last-child { margin-bottom: 0; }
+
+    /* ─── FAQ ─────────────────────────────────────────── */
+    #faq {
+      padding: 120px 0;
+    }
+    .faq-list { max-width: 820px; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-item:first-child { border-top: 1px solid var(--border); }
+    .faq-btn {
+      width: 100%;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-family: var(--heading);
+      font-size: 21px;
+      font-weight: 400;
+      text-align: left;
+      padding: 30px 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 28px;
+      transition: color var(--ease);
+    }
+    .faq-btn:hover { color: var(--gold); }
+    .faq-icon {
+      flex-shrink: 0;
+      width: 18px; height: 18px;
+      position: relative;
+      color: var(--gold);
+    }
+    .faq-icon::before,
+    .faq-icon::after {
+      content: '';
+      position: absolute;
+      background: currentColor;
+      transition: transform var(--ease), opacity var(--ease);
+    }
+    .faq-icon::before { width: 14px; height: 1px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+    .faq-icon::after  { width: 1px; height: 14px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+    .faq-item.open .faq-icon::after { opacity: 0; transform: translate(-50%,-50%) rotate(90deg); }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.36s ease;
+    }
+    .faq-item.open .faq-answer { max-height: 600px; }
+    .faq-answer-inner {
+      padding-bottom: 32px;
+      font-family: var(--body);
+      font-size: 15px;
+      color: var(--mid);
+      line-height: 1.85;
+      max-width: 700px;
+    }
+
+    /* ─── FINAL CTA ───────────────────────────────────── */
+    #cta {
+      padding: 140px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #cta::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 900px; height: 900px;
+      background: radial-gradient(circle, var(--gold-03) 0%, transparent 68%);
+      pointer-events: none;
+    }
+    .cta-inner { position: relative; z-index: 1; }
+    .cta-headline {
+      font-family: var(--heading);
+      font-size: 54px;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      max-width: 820px;
+      margin: 0 auto 26px;
+    }
+    .cta-body {
+      font-family: var(--body);
+      font-size: 16px;
+      color: var(--mid);
+      line-height: 1.72;
+      max-width: 520px;
+      margin: 0 auto 44px;
+    }
+    .cta-meta {
+      margin-top: 18px;
+      font-family: var(--body);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .cta-math {
+      margin-top: 22px;
+      font-family: var(--body);
+      font-size: 14px;
+      color: var(--mid);
+      line-height: 1.65;
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ─── FOOTER ──────────────────────────────────────── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 64px 0 40px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1px 1fr 1px 1fr;
+      gap: 0;
+      align-items: start;
+      margin-bottom: 48px;
+    }
+    .footer-div {
+      background: var(--border);
+      align-self: stretch;
+    }
+    .footer-col {
+      padding: 0 44px;
+    }
+    .footer-col:first-child { padding-left: 0; }
+    .footer-col:last-child  { padding-right: 0; }
+    .footer-wordmark {
+      font-family: var(--heading);
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 12px;
+      text-decoration: none;
+    }
+    .footer-tagline {
+      font-family: var(--body);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+    .footer-col-label {
+      display: block;
+      font-family: var(--body);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .footer-col p {
+      font-family: var(--body);
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      text-align: center;
+    }
+    .footer-copyright {
+      font-family: var(--body);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 960px) {
+      .wrap, .wrap-narrow { padding: 0 28px; }
+      .nav { padding: 0 28px; }
+      .nav-btn { display: none; }
+      .hero-headline { font-size: 38px; }
+      .hero-inner { padding: 40px 28px; }
+      .hero-sub { font-size: 16px; }
+      .for-grid { grid-template-columns: 1fr; }
+      .for-div { display: none; }
+      .for-grid > div:last-child { margin-top: 52px; }
+      .credibility-row { flex-direction: column; }
+      .credibility-label-col { border-right: none; border-bottom: 1px solid var(--border); padding-right: 0; padding-bottom: 28px; margin-bottom: 36px; min-width: unset; }
+      .advisors-cols { flex-direction: column; }
+      .advisor-block { padding: 24px 0; border-right: none; border-bottom: 1px solid var(--border); }
+      .advisor-block:last-child { border-bottom: none; }
+      .deliverable-num { font-size: 80px; min-width: 110px; }
+      .pull-quote { font-size: 30px; }
+      .stat-blocks { flex-direction: column; }
+      .stat-block { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-block:last-child { border-bottom: none; }
+      .investment-grid { grid-template-columns: 1fr; }
+      .invest-divider { display: none; }
+      .invest-headline { font-size: 30px; margin-bottom: 32px; }
+      .founder-grid { grid-template-columns: 1fr; gap: 44px; }
+      .founder-photo { max-width: 260px; }
+      .cta-headline { font-size: 34px; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-div { display: none; }
+      .footer-col { padding: 24px 0; border-bottom: 1px solid var(--border); }
+      .footer-col:last-child { border-bottom: none; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-headline { font-size: 30px; }
+      .cta-headline { font-size: 28px; }
+      .pull-quote { font-size: 24px; }
+      .invest-headline { font-size: 24px; }
+      .deliverable-num { font-size: 60px; min-width: 80px; }
+      .deliverable-title { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAV ══════════════════════════════════════════ -->
+  <nav class="nav">
+    <a href="#" class="nav-wordmark">Breedwise</a>
+    <a href="https://buy.stripe.com/3cIeVf1mc7sbc6Ye9l4F205" class="nav-btn" target="_blank" rel="noopener">Reserve Your Review — $497</a>
+  </nav>
+
+  <!-- ═══ HERO ══════════════════════════════════════════ -->
+  <section id="hero">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">The Breedwise Standard Review</p>
+      <h1 class="hero-headline">Find Out Exactly How Much<br>You're Leaving on the Table.</h1>
+      <p class="hero-sub">One 60-minute, vet-backed review. The only professional assessment of your breeding program against a veterinary-backed industry standard — with a written scorecard, a benchmark comparison against certified breeders, a 90-day revenue impact calculation, and a 30-day action plan.</p>
+      <a href="https://buy.stripe.com/3cIeVf1mc7sbc6Ye9l4F205" class="btn-gold" target="_blank" rel="noopener">Reserve My Standard Review — $497</a>
+      <p class="hero-meta">60-minute session &nbsp;·&nbsp; Written scorecard within 24 hours &nbsp;·&nbsp; Limited weekly availability for serious breeders</p>
+      <p class="hero-math">Most breeders recover the full $497 in a single improved placement. The Review exists to calculate the much larger gap you've been leaving on the table.</p>
+      <p class="hero-emotional">You are doing everything right. Nobody can tell.</p>
+    </div>
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- ═══ WHO THIS IS FOR ════════════════════════════════ -->
+  <section id="for-whom">
+    <div class="wrap">
+      <span class="section-label">Who This Is For</span>
+      <div class="for-grid">
+        <div>
+          <p class="for-col-head">This Review is built for you if:</p>
+          <ul class="for-list">
+            <li><span class="for-marker yes">✦</span> You are already operating a breeding program with litters on the ground</li>
+            <li><span class="for-marker yes">✦</span> You health test, vet-check, and make intentional pairing decisions</li>
+            <li><span class="for-marker yes">✦</span> You suspect your pricing is below what your program actually justifies</li>
+            <li><span class="for-marker yes">✦</span> You want documented, scored proof of your standards — not general advice</li>
+            <li><span class="for-marker yes">✦</span> You are ready to act on specific findings, not just collect validation</li>
+          </ul>
+        </div>
+        <div class="for-div"></div>
+        <div>
+          <p class="for-col-head">This Review is not the right fit if:</p>
+          <ul class="for-list">
+            <li><span class="for-marker no">—</span> You are not yet placing puppies for sale — there is no revenue gap to calculate</li>
+            <li><span class="for-marker no">—</span> You are satisfied with your current pricing and have no interest in growing what your program earns</li>
+            <li><span class="for-marker no">—</span> You are not willing to act on pricing and positioning changes based on the findings</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- ═══ DELIVERABLES ══════════════════════════════════ -->
+  <section id="deliverables">
+    <div class="wrap">
+      <span class="section-label">What You Receive</span>
+      <div class="deliverable-item">
+        <div class="deliverable-num">01</div>
+        <div class="deliverable-body">
+          <h3 class="deliverable-title">The 60-Minute Structured Assessment</h3>
+          <p class="deliverable-desc">Not a conversation — a scored evaluation across eight defined categories. Every question is mapped to the Breedwise standard. Every answer is scored against the veterinary-backed benchmark. You walk away knowing exactly what is working, what is suppressing your value, and by how much.</p>
+        </div>
+      </div>
+      <div class="deliverable-item">
+        <div class="deliverable-num">02</div>
+        <div class="deliverable-body">
+          <h3 class="deliverable-title">The Written Scorecard</h3>
+          <p class="deliverable-desc">A formal scored document showing your result in each category against the Breedwise certified breeder average. Delivered within 24 hours. Not notes. Not a summary. A professional record of exactly where your program stands — something you can reference, share, and build from.</p>
+        </div>
+      </div>
+      <div class="deliverable-item">
+        <div class="deliverable-num">03</div>
+        <div class="deliverable-body">
+          <h3 class="deliverable-title">The Veterinary Benchmark Comparison</h3>
+          <p class="deliverable-desc">Your scores measured against the standards established by our advisory board and the aggregate of every certified Breedwise breeder. The only assessment of its kind in the industry. A reference point that did not exist until now.</p>
+        </div>
+      </div>
+      <div class="deliverable-item">
+        <div class="deliverable-num">04</div>
+        <div class="deliverable-body">
+          <h3 class="deliverable-title">The 90-Day Revenue Impact Calculation</h3>
+          <p class="deliverable-desc">We show you the exact dollar gap between your current program and the Breedwise standard using your litters, your pricing, and your timelines. Not a range — your number. The calculation that tells you the size of what you have been leaving behind.</p>
+        </div>
+      </div>
+      <div class="deliverable-item">
+        <div class="deliverable-num">05</div>
+        <div class="deliverable-body">
+          <h3 class="deliverable-title">The 30-Day Priority Action Plan</h3>
+          <p class="deliverable-desc">Three specific, implementable actions for your highest-gap category. Yours permanently, regardless of what you decide next. Many breeders choose to work with us further after the Review. Some don't. In both cases, the Review stands on its own as the most honest evaluation of your program you will ever receive.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- ═══ INVESTMENT CASE ════════════════════════════════ -->
+  <section id="investment">
+    <div class="wrap">
+      <span class="section-label">The Investment Case</span>
+      <div class="investment-grid">
+        <div>
+          <h2 class="invest-headline">The gap between breeders inside and outside Breedwise represents <em>$8,000 to $34,000</em> per litter.</h2>
+        </div>
+        <div class="invest-divider"></div>
+        <div>
+          <p class="invest-body">Breeders outside the Breedwise network average <span class="hi">$1,500 to $3,000</span> per puppy. Breedwise members average <span class="hi">$5,000 to $10,000+</span>. At a four-puppy litter, that gap is between $8,000 and $34,000 per placement cycle — not per year. Per litter.<br><br>The Standard Review costs <span class="hi">$497</span> and calculates your exact gap using your actual numbers. Most breeders recover the full cost in a single improved placement — often in the first week of implementing the action plan. The review is not an expense. It is the calculation that tells you the size of the opportunity you have been leaving behind.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- ═══ PROOF ══════════════════════════════════════════ -->
+  <section id="proof">
+    <div class="wrap">
+      <span class="section-label">The Standard in Practice</span>
+      <p class="pull-quote">"From two stuck puppies to $56,500 in 90 days."</p>
+      <div class="case-study">
+        <p>A breeder entered the program with a strong health protocol but no credential framework and a $2,800 per-puppy average. The Standard Review identified two specific gaps — positioning documentation and client qualification — that were directly suppressing perceived value. Neither gap required structural changes to the program. Both required visible proof of what was already there.</p>
+        <p>Ninety days after implementing the 30-day priority action plan, the program had reached $5,400 per puppy, a restructured waitlist of 22 qualified clients, and a pipeline representing $56,500 in placed and reserved puppies. The $497 review had identified $53,700 in unrealized value that had been there the entire time.</p>
+      </div>
+      <div class="stat-blocks">
+        <div class="stat-block">
+          <div class="stat-val">111K</div>
+          <div class="stat-label">social followers reached by<br>one certified Breedwise graduate</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-val">84 vs. &lt;40</div>
+          <div class="stat-label">certified breeder positioning score<br>versus the uncertified industry average</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- ═══ CREDIBILITY BAR ════════════════════════════════ -->
+  <section id="advisors">
+    <div class="wrap">
+      <div class="credibility-row">
+        <div class="credibility-label-col">
+          <span class="section-label" style="margin-bottom:0;">Veterinary<br>Advisory Board</span>
+        </div>
+        <div class="advisors-cols">
+          <div class="advisor-block">
+            <p class="advisor-name">Emmanuel Fontaine</p>
+            <p class="advisor-title">Chief of Education</p>
+            <p class="advisor-bio">Specializes in reproductive genetics and breeding program architecture, with a focus on translating genetic science into operational program standards.</p>
+          </div>
+          <div class="advisor-block">
+            <p class="advisor-name">Angela Hughes</p>
+            <p class="advisor-title">Genetics Advisor</p>
+            <p class="advisor-bio">Leads multi-generational genomics research and breed health optimization protocols used to establish the Breedwise certified benchmark.</p>
+          </div>
+          <div class="advisor-block">
+            <p class="advisor-name">David Mahoney</p>
+            <p class="advisor-title">Head of Veterinary Relations</p>
+            <p class="advisor-bio">Architect of the veterinary-breeder integration framework and the clinical breeding standards underlying every Breedwise assessment category.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- ═══ FOUNDER ════════════════════════════════════════ -->
+  <section id="founder">
+    <div class="wrap">
+      <span class="section-label">The Founder</span>
+      <div class="founder-grid">
+        <div>
+          <div class="founder-photo">
+            <img src="download.jpg" alt="Austin — Founder, Breedwise">
+          </div>
+        </div>
+        <div>
+          <p class="founder-name">Austin</p>
+          <p class="founder-title">Founder, Breedwise</p>
+          <div class="founder-text">
+            <p>Austin built a premium breeding program with NFL clients and a $15,000 average puppy price before founding Breedwise. His program was not exceptional because of circumstance. It was exceptional because of documented standards, veterinary relationships, and the kind of positioning most breeders never formalize.</p>
+            <p>He recognized that serious breeders — the ones doing everything right — had no credential that proved it. There was no standard, no benchmark, no recognized framework a buyer, a veterinarian, or an industry peer could point to. The gap was not in the breeding. It was in the proof.</p>
+            <p>He spent two years building the only veterinary-backed standard in the industry. Every assessment category, every benchmark figure, every scoring criterion was developed in partnership with the advisory board and validated against real breeder outcomes.</p>
+            <p>Breedwise has generated $220,000 in 15 months from breeders building professional programs. The Standard Review is where every certified breeder's journey begins — and it is the most honest evaluation most breeders will ever receive of the work they have already done.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- ═══ FAQ ════════════════════════════════════════════ -->
+  <section id="faq">
+    <div class="wrap">
+      <span class="section-label">Common Questions</span>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-btn">
+            <span>Who is the Standard Review designed for?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              For serious, established breeders who are already doing the work — health testing, careful pairing, intentional placements — but lack a credentialed framework that proves it or the data to price accordingly. This is for programs that deserve to be recognized for what they have built. If you are just beginning to breed, the Standard Review is not the right first step.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn">
+            <span>How is this different from a coaching call or general consultation?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              A consultation gives you opinions. The Standard Review gives you a score. Your program is evaluated across eight defined categories against a veterinary-backed benchmark — and you receive a written document that exists after the session ends. Not a recording, not a summary, not advice. A scored professional record of exactly where your program stands and what it costs you to stay there.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn">
+            <span>What happens after the review — is there pressure to buy something else?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              No. The Standard Review is a complete, standalone service. You receive your written scorecard and 30-day action plan within 24 hours, and they are yours permanently. Many breeders choose to work with us after the Review. Some don't. In both cases, the Review stands on its own as the most honest evaluation of your program you will ever receive. You will not be pressured toward anything.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn">
+            <span>How do you calculate the 90-day revenue impact number?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              During the assessment, you share your current pricing, average litter size, and placement timeline. We apply the certified breeder average price differential to your specific program numbers. The result is a documented dollar figure — specific to your program — showing the exact gap between your current positioning and the Breedwise certified standard. Not a hypothetical range. Your actual calculation.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn">
+            <span>How quickly can I schedule, and why is availability limited?</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Current scheduling is typically 7 to 14 days out. We complete a maximum of 5 Standard Reviews per week to protect depth and quality — each review requires individual preparation time from the advisory team before the session begins. These are not batched or templated. Reserving your session early secures your preferred timing.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- ═══ FINAL CTA ══════════════════════════════════════ -->
+  <section id="cta">
+    <div class="wrap">
+      <div class="cta-inner">
+        <span class="section-label" style="text-align:center; display:block;">Limited Availability</span>
+        <h2 class="cta-headline">Find Out Exactly How Much<br>You're Leaving on the Table.</h2>
+        <p class="cta-body">Reserve your session. We'll evaluate your program against the veterinary-backed Breedwise standard, score it against certified breeders, and calculate your exact revenue gap — in 60 minutes.</p>
+        <a href="https://buy.stripe.com/3cIeVf1mc7sbc6Ye9l4F205" class="btn-gold" target="_blank" rel="noopener">Reserve My Standard Review — $497</a>
+        <p class="cta-meta">60-minute session &nbsp;·&nbsp; Written scorecard within 24 hours &nbsp;·&nbsp; Limited weekly availability for serious breeders</p>
+        <p class="cta-math">Most breeders recover the full $497 in a single improved placement. The Review exists to calculate the much larger gap you've been leaving on the table.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════ -->
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="#" class="footer-wordmark">Breedwise</a>
+          <p class="footer-tagline">The Standard the Industry Has Been Missing</p>
+        </div>
+        <div class="footer-div"></div>
+        <div class="footer-col">
+          <span class="footer-col-label">The Standard Review</span>
+          <p>A veterinary-backed professional assessment for serious breeding programs. Written scorecard. Benchmark comparison. Revenue impact calculation. 30-day action plan.</p>
+        </div>
+        <div class="footer-div"></div>
+        <div class="footer-col">
+          <span class="footer-col-label">Advisory Board</span>
+          <p>Emmanuel Fontaine &nbsp;·&nbsp; Angela Hughes &nbsp;·&nbsp; David Mahoney<br><br>Veterinary and genetics expertise informing every assessment category and benchmark figure.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">&copy; 2026 Breedwise. All rights reserved. &nbsp;·&nbsp; The Standard the Industry Has Been Missing</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ─── FAQ ACCORDION ────────────────────────────────────
+    document.querySelectorAll('.faq-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+  </script>
+</body>
+</html>
