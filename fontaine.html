@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dr. Emmanuel Fontaine — Breedwise Advisory Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0a0a0a;
+      --card:     #141414;
+      --border:   #2a2a2a;
+      --gold:     #c9a84c;
+      --white:    #f0ece4;
+      --muted:    #888888;
+      --dark-txt: #0a0a0a;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── CARD ─────────────────────────────────────────── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      max-width: 960px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 0;
+    }
+
+    /* ── PHOTO COLUMN ─────────────────────────────────── */
+    .photo-col {
+      border-right: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 28px;
+    }
+
+    .photo-frame {
+      width: 200px;
+      height: 240px;
+      border: 1px solid var(--gold);
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+      background: #1a1a1a;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    /* Placeholder shown when no real photo is embedded */
+    .photo-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: #1a1a1a;
+    }
+    .photo-placeholder svg {
+      width: 56px;
+      height: 56px;
+      opacity: 0.25;
+    }
+    .photo-placeholder span {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.5;
+      padding: 0 12px;
+    }
+
+    /* ── CONTENT COLUMN ───────────────────────────────── */
+    .content-col {
+      padding: 44px 48px;
+    }
+
+    /* Header block */
+    .name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 8px;
+      letter-spacing: 0.01em;
+    }
+
+    .credentials {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .title {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 20px;
+    }
+
+    .rule {
+      width: 100%;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.25;
+      margin-bottom: 24px;
+    }
+
+    /* Bio */
+    .bio {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+
+    .bio p + p {
+      margin-top: 16px;
+    }
+
+    /* Credential badges */
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--dark-txt);
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 5px 14px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    /* CTA block */
+    .cta-rule {
+      width: 100%;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.2;
+      margin-bottom: 20px;
+    }
+
+    .cta-note {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--dark-txt);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 12px 24px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.15s ease;
+    }
+
+    .cta-btn:hover { opacity: 0.88; }
+
+    /* ── RESPONSIVE ───────────────────────────────────── */
+    @media (max-width: 680px) {
+      html, body { padding: 24px 16px; align-items: flex-start; }
+
+      .card {
+        grid-template-columns: 1fr;
+      }
+
+      .photo-col {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 32px 24px;
+        justify-content: flex-start;
+        gap: 0;
+      }
+
+      .photo-frame {
+        width: 140px;
+        height: 170px;
+      }
+
+      .content-col {
+        padding: 32px 24px;
+      }
+
+      .name { font-size: 24px; }
+
+      .badges {
+        gap: 6px;
+      }
+
+      .badge {
+        font-size: 10px;
+        padding: 4px 11px;
+      }
+
+      .cta-btn {
+        width: 100%;
+        text-align: center;
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+
+    <!-- ── PHOTO ── -->
+    <div class="photo-col">
+      <div class="photo-frame">
+        <!--
+          TO EMBED PHOTO:
+          1. Save Dr. Fontaine's photo as fontaine.jpg in the same folder
+          2. Run this in Terminal:
+             base64 -i /Users/JBK/Desktop/Claude/fontaine.jpg | pbcopy
+          3. Replace the placeholder div below with:
+             <img src="data:image/jpeg;base64,PASTE_HERE" alt="Dr. Emmanuel Fontaine">
+        -->
+        <div class="photo-placeholder">
+          <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="28" cy="20" r="12" stroke="#c9a84c" stroke-width="1.5"/>
+            <path d="M6 52c0-12.15 9.85-22 22-22s22 9.85 22 22" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <span>Photo pending</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CONTENT ── -->
+    <div class="content-col">
+
+      <p class="name">Dr. Emmanuel Fontaine</p>
+      <p class="credentials">DVM, MSc, PhD, DECAR</p>
+      <p class="title">Chief of Education — Breedwise</p>
+
+      <div class="rule"></div>
+
+      <div class="bio">
+        <p>Dr. Emmanuel Fontaine holds a Doctor of Veterinary Medicine, a Master of Science in Reproductive Biology, a PhD in Veterinary Genetics, and the Diploma of the European College of Animal Reproduction — designating him among the continent's most rigorously credentialed specialists in canine reproductive medicine. His clinical and academic career has centered on reproductive genetics, breeding program architecture, and the formal translation of veterinary science into applied breeding standards. He is recognized as one of the leading specialists in his field across North America and Europe.</p>
+        <p>At Breedwise, Dr. Fontaine serves as Chief of Education and the veterinary architect of the Breedwise professional standard. He co-designed the multi-category certification framework that defines professional breeding at a clinical level — specifying the fertility protocols, genetic screening requirements, whelping standards, and neonatal care benchmarks that constitute a Breedwise-compliant program. Every Breedwise Standard Review is assessed against the criteria he established. His benchmark is the standard.</p>
+        <p>Dr. Fontaine's work bridges the gap between academic veterinary science and the reality of professional breeding practice. He has trained and influenced breeders, veterinary educators, and reproductive specialists across multiple countries. His involvement in Breedwise represents the first time a credential of this clinical caliber has been made systematically available to serious dog breeders outside of accredited veterinary institutions — bringing the rigor of European reproductive medicine directly to the programs that warrant it.</p>
+      </div>
+
+      <div class="badges">
+        <span class="badge">Reproductive Genetics Specialist</span>
+        <span class="badge">Veterinary Curriculum Architect</span>
+        <span class="badge">Breedwise Certified Standard</span>
+      </div>
+
+      <div class="cta-rule"></div>
+
+      <p class="cta-note">The Breedwise Standard Review is assessed against the veterinary standard Dr. Fontaine helped design.</p>
+
+      <a class="cta-btn" href="https://breedwise.io/standard-review" target="_blank" rel="noopener">
+        Book Your Standard Review — $497
+      </a>
+
+    </div>
+  </div>
+
+</body>
+</html>
