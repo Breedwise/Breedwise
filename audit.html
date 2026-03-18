@@ -12,22 +12,22 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:       #0a0a0a;
-      --surface:  #111111;
-      --card:     #161616;
-      --border:   #222222;
-      --gold:     #c9a84c;
-      --gold-03:  rgba(201,168,76,0.03);
-      --gold-08:  rgba(201,168,76,0.08);
-      --gold-10:  rgba(201,168,76,0.10);
-      --gold-15:  rgba(201,168,76,0.15);
-      --gold-20:  rgba(201,168,76,0.20);
-      --white:    #f0ece4;
-      --muted:    #666666;
-      --mid:      #888888;
-      --success:  #3d7a4a;
+      --bg:       #ffffff;
+      --surface:  #f6f6f4;
+      --card:     #f0eeea;
+      --border:   #dedbd4;
+      --gold:     #b8922e;
+      --gold-03:  rgba(184,146,46,0.06);
+      --gold-08:  rgba(184,146,46,0.12);
+      --gold-10:  rgba(184,146,46,0.15);
+      --gold-15:  rgba(184,146,46,0.22);
+      --gold-20:  rgba(184,146,46,0.28);
+      --white:    #0f0e0c;
+      --muted:    #888880;
+      --mid:      #444440;
+      --success:  #2d6b3a;
       --danger:   #8b3a3a;
-      --warning:  #7a6030;
+      --warning:  #7a5a10;
       --heading:  'Playfair Display', Georgia, serif;
       --body:     'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --ease:     0.2s ease;
@@ -118,7 +118,7 @@
       cursor: pointer;
       transition: background var(--ease);
     }
-    .gate-btn:hover { background: #d4b862; }
+    .gate-btn:hover { background: #a07a20; }
     .gate-error {
       margin-top: 16px;
       font-family: var(--body);
@@ -151,11 +151,15 @@
       padding: 0 52px;
     }
     .nav-wordmark {
-      font-family: var(--heading);
-      font-size: 22px;
-      font-weight: 600;
-      color: var(--gold);
+      display: flex;
+      align-items: center;
       text-decoration: none;
+      flex-shrink: 0;
+    }
+    .nav-logo {
+      height: 36px;
+      width: auto;
+      display: block;
     }
     .nav-portal-tag {
       font-family: var(--body);
@@ -332,7 +336,7 @@
       cursor: pointer;
       user-select: none;
     }
-    .category-header:hover { background: rgba(201,168,76,0.02); }
+    .category-header:hover { background: rgba(184,146,46,0.07); }
     .category-header-left { flex: 1; }
     .category-num {
       font-family: var(--heading);
@@ -479,8 +483,8 @@
     .advisor-note {
       margin: 10px 0 0 52px;
       padding: 11px 16px;
-      background: rgba(201,168,76,0.03);
-      border-left: 2px solid rgba(201,168,76,0.2);
+      background: rgba(184,146,46,0.08);
+      border-left: 2px solid rgba(184,146,46,0.28);
     }
     .advisor-note-tag {
       font-family: var(--body);
@@ -488,7 +492,7 @@
       font-weight: 600;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: rgba(201,168,76,0.4);
+      color: rgba(184,146,46,0.5);
       display: block;
       margin-bottom: 5px;
     }
@@ -547,7 +551,7 @@
     /* ─── CATEGORY NOTES ──────────────────────────────── */
     .category-notes-section {
       padding: 28px 36px 36px;
-      background: rgba(201,168,76,0.02);
+      background: rgba(184,146,46,0.07);
       border-top: 1px solid var(--border);
     }
     .category-notes-label {
@@ -639,7 +643,7 @@
       font-family: var(--heading);
       font-size: 22px;
       font-weight: 400;
-      color: rgba(201,168,76,0.2);
+      color: rgba(184,146,46,0.28);
       line-height: 1;
     }
     .action-item-sublabel {
@@ -725,7 +729,7 @@
       color: var(--muted);
       margin-left: 4px;
     }
-    .portal-tab.active .tab-cats { color: rgba(201,168,76,0.6); }
+    .portal-tab.active .tab-cats { color: rgba(184,146,46,0.7); }
 
     /* ─── UNANSWERED WARNING ──────────────────────────── */
     .unanswered-badge {
@@ -776,7 +780,7 @@
       position: fixed;
       inset: 0;
       z-index: 500;
-      background: rgba(10,10,10,0.94);
+      background: rgba(15,14,12,0.55);
       overflow-y: auto;
       padding: 40px 24px;
     }
@@ -1238,7 +1242,7 @@
       text-align: center;
     }
     .rev-traj-col.highlight {
-      background: rgba(201,168,76,0.04);
+      background: rgba(184,146,46,0.08);
       border: 1px solid var(--gold-20);
       padding: 20px;
     }
@@ -1287,7 +1291,7 @@
       margin: 10px 0 0 52px;
       padding: 10px 14px;
       background: rgba(122,96,48,0.08);
-      border-left: 2px solid rgba(201,168,76,0.35);
+      border-left: 2px solid rgba(184,146,46,0.45);
       display: flex;
       align-items: flex-start;
       gap: 10px;
@@ -1298,7 +1302,7 @@
       font-weight: 700;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(201,168,76,0.6);
+      color: rgba(184,146,46,0.7);
       white-space: nowrap;
       padding-top: 1px;
       flex-shrink: 0;
@@ -1313,7 +1317,7 @@
     /* ─── CERTIFICATION UNLOCK BLOCK ──────────────────────────────────── */
     .sc-unlock-block {
       border: 1px solid var(--gold-20);
-      background: rgba(201,168,76,0.03);
+      background: rgba(184,146,46,0.08);
       padding: 32px 36px;
     }
     .sc-unlock-grid {
@@ -1404,7 +1408,9 @@
   <div id="audit-tool">
 
     <nav class="nav">
-      <a href="index.html" class="nav-wordmark">Breedwise</a>
+      <a href="index.html" class="nav-wordmark">
+        <img src="breedwise-logo.png" alt="Breedwise" class="nav-logo">
+      </a>
       <span class="nav-portal-tag">Advisor Portal</span>
     </nav>
 
@@ -2644,7 +2650,7 @@
               <span class="rev-traj-unit">per year</span>
             </div>
             <div style="font-size:24px;color:var(--gold);opacity:0.4;flex-shrink:0;">→</div>
-            <div class="rev-traj-col" style="text-align:center;background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.2);padding:16px;">
+            <div class="rev-traj-col" style="text-align:center;background:rgba(184,146,46,0.08);border:1px solid rgba(184,146,46,0.28);padding:16px;">
               <span class="rev-traj-label">Certified Path</span>
               <span class="rev-traj-sub">Breedwise target — ${fmt(certifiedTarget)}/puppy</span>
               <div class="rev-traj-number" style="color:var(--gold);font-family:var(--heading);font-size:32px;font-weight:600;">${fmt(targetAnnual)}</div>
