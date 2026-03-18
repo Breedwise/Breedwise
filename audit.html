@@ -2140,6 +2140,7 @@
           gate.style.display = 'none';
           document.getElementById('audit-tool').style.display = 'block';
           renderAuditTool();
+          loadConfig();
         }, 500);
       } else {
         input.value = '';
@@ -3011,16 +3012,6 @@
       if (!r) return;
       dlTxt(buildClaudeExport(r), `BW_Review_${r.breederName.replace(/\s+/g,'_')}_${r.sessionDate||'undated'}.txt`);
       showToast('Claude analysis file downloaded', 'success');
-    }
-
-    // Load config after unlock
-    const _origCheckPw = checkPassword;
-    function checkPassword() {
-      const input = document.getElementById('password-input');
-      if (input.value === 'breedwise2026') {
-        setTimeout(() => loadConfig(), 600);
-      }
-      _origCheckPw();
     }
 
     // ─── TOAST ──────────────────────────────────────────────────────────────────
