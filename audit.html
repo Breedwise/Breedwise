@@ -32,6 +32,7 @@
       --body:     'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --ease:     0.2s ease;
       --nav-h:    68px;
+      --session-h: 40px;
     }
 
     html { scroll-behavior: smooth; }
@@ -168,7 +169,7 @@
 
     /* ─── PORTAL HEADER ───────────────────────────────── */
     .portal-header {
-      padding-top: var(--nav-h);
+      padding-top: calc(var(--nav-h) + var(--session-h));
       background: var(--surface);
       border-bottom: 1px solid var(--border);
       padding-bottom: 0;
@@ -657,6 +658,91 @@
       margin-bottom: 32px;
     }
 
+    /* ─── CORE / DEPTH TOGGLE ─────────────────────────── */
+    .toggle-wrap {
+      width: 34px;
+      height: 18px;
+      background: var(--border);
+      border-radius: 9px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      flex-shrink: 0;
+    }
+    .toggle-wrap.on { background: var(--gold); }
+    .toggle-knob {
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--white);
+      transition: transform 0.2s ease;
+    }
+    .toggle-wrap.on .toggle-knob { transform: translateX(16px); }
+
+    .depth-tag {
+      display: inline-block;
+      font-family: var(--body);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      margin-left: 10px;
+      vertical-align: middle;
+      opacity: 0.6;
+    }
+    .question-item.depth-hidden {
+      display: none;
+    }
+    .question-item.depth-dimmed {
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .skipped-core-badge {
+      display: inline-block;
+      background: rgba(122,96,48,0.15);
+      border: 1px solid rgba(122,96,48,0.35);
+      color: #a08040;
+      font-family: var(--body);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+
+    /* ─── TAB CATS BADGE ──────────────────────────────── */
+    .tab-cats {
+      font-family: var(--body);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-left: 4px;
+    }
+    .portal-tab.active .tab-cats { color: rgba(201,168,76,0.6); }
+
+    /* ─── UNANSWERED WARNING ──────────────────────────── */
+    .unanswered-badge {
+      display: inline-block;
+      background: rgba(139,58,58,0.15);
+      border: 1px solid rgba(139,58,58,0.35);
+      color: #a05050;
+      font-family: var(--body);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      margin-left: 12px;
+      vertical-align: middle;
+    }
+
     /* ─── GENERATE BUTTON ─────────────────────────────── */
     .generate-wrap {
       text-align: center;
@@ -897,24 +983,136 @@
     .sc-btn-secondary { background: var(--card); color: var(--mid); border: 1px solid var(--border); }
     .sc-btn-secondary:hover { color: var(--white); border-color: var(--mid); }
 
-    /* ─── TOAST NOTIFICATION ──────────────────────────── */
-    .toast {
+    /* ─── SESSION SAVE ────────────────────────────────── */
+    .session-bar {
       position: fixed;
-      bottom: 32px;
-      right: 32px;
-      background: var(--card);
+      top: var(--nav-h);
+      left: 0; right: 0;
+      z-index: 199;
+      background: rgba(10,10,10,0.95);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 52px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--body);
+      font-size: 11px;
+      color: var(--muted);
+      backdrop-filter: blur(4px);
+    }
+    .session-bar-label { letter-spacing: 0.08em; }
+    .session-btn {
+      background: none;
       border: 1px solid var(--border);
-      border-left: 3px solid var(--gold);
-      color: var(--white);
+      color: var(--mid);
+      font-family: var(--body);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      padding: 5px 14px;
+      cursor: pointer;
+      transition: border-color var(--ease), color var(--ease);
+    }
+    .session-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .session-status {
+      margin-left: auto;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .session-status.visible { opacity: 1; }
+
+    /* ─── BLINDSPOTS ──────────────────────────────────── */
+    .blindspot-item {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .blindspot-item:last-child { border-bottom: none; }
+    .blindspot-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 8px;
+    }
+    .blindspot-score {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      background: rgba(139,58,58,0.15);
+      border: 1px solid rgba(139,58,58,0.4);
+      color: #a05050;
+      font-family: var(--heading);
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .blindspot-meta {
+      flex: 1;
+    }
+    .blindspot-category {
+      font-family: var(--body);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 3px;
+    }
+    .blindspot-question {
       font-family: var(--body);
       font-size: 13px;
-      padding: 14px 20px;
-      z-index: 9999;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      max-width: 320px;
-      pointer-events: none;
+      color: var(--white);
+      line-height: 1.5;
+    }
+    .blindspot-consequence {
+      margin-top: 8px;
+      padding: 10px 14px;
+      background: rgba(139,58,58,0.06);
+      border-left: 2px solid rgba(139,58,58,0.35);
+      font-family: var(--body);
+      font-size: 12px;
+      color: #7a4040;
+      line-height: 1.6;
+    }
+    .blindspot-consequence-tag {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(139,58,58,0.5);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .blindspot-none {
+      font-family: var(--body);
+      font-size: 13px;
+      color: var(--muted);
+      padding: 12px 0;
+    }
+
+    /* ─── SCORECARD NOTES ────────────────────────────── */
+    .sc-cat-notes {
+      font-family: var(--body);
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.5;
+      padding-left: 4px;
+      border-left: 2px solid var(--border);
+    }
+
+    /* ─── TOAST ───────────────────────────────────────── */
+    .toast {
+      position: fixed; bottom: 32px; right: 32px;
+      background: var(--card); border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      color: var(--white); font-family: var(--body); font-size: 13px;
+      padding: 14px 20px; z-index: 9999;
+      opacity: 0; transform: translateY(10px); pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease; max-width: 320px;
     }
     .toast.visible { opacity: 1; transform: translateY(0); }
     .toast.success { border-left-color: #3d7a4a; }
@@ -923,107 +1121,50 @@
     .generate-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
     .generate-btn-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
     .export-btn {
-      display: inline-block;
-      padding: 14px 32px;
-      font-family: var(--body);
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--mid);
-      transition: background var(--ease), color var(--ease), border-color var(--ease);
+      padding: 14px 28px; font-family: var(--body); font-size: 13px;
+      font-weight: 500; letter-spacing: 0.04em; cursor: pointer;
+      border: 1px solid var(--border); background: var(--card); color: var(--mid);
+      transition: border-color var(--ease), color var(--ease);
     }
     .export-btn:hover { border-color: var(--gold); color: var(--gold); }
 
     /* ─── AIRTABLE CONFIG ─────────────────────────────── */
     .config-panel {
-      border: 1px solid var(--border);
-      background: var(--card);
-      padding: 22px 36px;
-      margin-bottom: 32px;
+      border: 1px solid var(--border); background: var(--card);
+      padding: 22px 36px; margin-bottom: 32px;
     }
     .config-toggle {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      user-select: none;
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; user-select: none;
     }
-    .config-body {
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height 0.35s ease;
-    }
+    .config-body { overflow: hidden; max-height: 0; transition: max-height 0.35s ease; }
     .config-body.open { max-height: 500px; }
     .config-note {
-      font-family: var(--body);
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.65;
-      margin: 16px 0 0;
-      padding: 12px 16px;
+      font-family: var(--body); font-size: 12px; color: var(--muted);
+      line-height: 1.65; margin: 16px 0 0; padding: 12px 16px;
       border-left: 2px solid var(--border);
     }
 
     /* ─── HISTORY PANEL ───────────────────────────────── */
-    #history-panel {
-      display: none;
-      max-width: 1220px;
-      margin: 0 auto;
-      padding: 52px 52px 100px;
-    }
+    #history-panel { display: none; max-width: 1220px; margin: 0 auto; padding: 52px 52px 100px; }
     #history-panel.active { display: block; }
-    .history-empty {
-      text-align: center;
-      padding: 80px 0;
-      color: var(--muted);
-      font-family: var(--body);
-      font-size: 14px;
-    }
+    .history-empty { text-align: center; padding: 80px 0; color: var(--muted); font-family: var(--body); font-size: 14px; }
     .history-item {
-      border: 1px solid var(--border);
-      background: var(--card);
-      padding: 24px 28px;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 24px;
+      border: 1px solid var(--border); background: var(--card);
+      padding: 24px 28px; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 24px;
       transition: border-color var(--ease);
     }
     .history-item:hover { border-color: var(--gold-20); }
     .history-item-info { flex: 1; }
-    .history-item-name {
-      font-family: var(--heading);
-      font-size: 18px;
-      color: var(--white);
-      margin-bottom: 4px;
-    }
-    .history-item-meta {
-      font-family: var(--body);
-      font-size: 12px;
-      color: var(--muted);
-      letter-spacing: 0.03em;
-    }
-    .history-item-score {
-      font-family: var(--heading);
-      font-size: 36px;
-      font-weight: 600;
-      min-width: 60px;
-      text-align: right;
-    }
+    .history-item-name { font-family: var(--heading); font-size: 18px; color: var(--white); margin-bottom: 4px; }
+    .history-item-meta { font-family: var(--body); font-size: 12px; color: var(--muted); }
+    .history-item-score { font-family: var(--heading); font-size: 36px; font-weight: 600; min-width: 60px; text-align: right; }
     .history-item-actions { display: flex; gap: 8px; }
     .history-action-btn {
-      padding: 8px 16px;
-      font-family: var(--body);
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--muted);
+      padding: 8px 16px; font-family: var(--body); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.08em; cursor: pointer; border: 1px solid var(--border);
+      background: transparent; color: var(--muted);
       transition: color var(--ease), border-color var(--ease);
     }
     .history-action-btn:hover { color: var(--gold); border-color: var(--gold); }
@@ -1031,29 +1172,197 @@
 
     /* ─── PRINT STYLES ────────────────────────────────── */
     @media print {
-      #gate, .nav, .portal-header, .portal-tabs { display: none !important; }
+      @page { margin: 18mm 18mm 22mm 18mm; size: A4; }
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      #gate, .nav, .session-bar, .portal-header, .audit-main,
+      .scorecard-close, .scorecard-actions { display: none !important; }
       #scorecard-modal {
         position: static !important;
         background: white !important;
         display: block !important;
         padding: 0 !important;
+        overflow: visible !important;
       }
       .scorecard-wrap {
         background: white !important;
         border: none !important;
-        color: black !important;
+        color: #111 !important;
         max-width: 100% !important;
-        padding: 24px !important;
+        padding: 0 !important;
+        box-shadow: none !important;
       }
-      .scorecard-close, .scorecard-actions { display: none !important; }
-      * { color: black !important; }
-      .sc-cat-bar, .category-score-bar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .scorecard-wordmark { font-size: 34px !important; color: #b89030 !important; }
+      .scorecard-doc-title { font-size: 10px !important; letter-spacing: 0.22em !important; color: #888 !important; margin-bottom: 28px !important; }
+      * { color: #111 !important; }
+      .sc-info-label, .sc-overall-label, .sc-cat-num, .revenue-row-label,
+      .sc-unlock-stat-label, .sc-unlock-stat-sub, .sc-unlock-narrative,
+      .sc-action-text, .sc-exec-summary, .section-label { color: #555 !important; }
+      .sc-overall-score, .sc-this-score, .sc-unlock-stat-val,
+      .revenue-row-val.gold, .rev-traj-number { color: #b89030 !important; }
+      .revenue-row-val.success, .sc-benchmark-row span:last-child { color: #2a6a3a !important; }
+      .revenue-row-val.danger { color: #8b2020 !important; }
+      .sc-overall-block { background: #f7f4ed !important; border: 1px solid #ddd !important; }
+      .sc-unlock-block { background: #faf8f2 !important; border: 1px solid #ddd !important; }
+      .rev-traj-col.highlight { background: #faf8f2 !important; border: 1px solid #ddd !important; }
+      .sc-cat-bar { background: #b89030 !important; }
+      .sc-divider { border-top: 1px solid #ddd !important; background: none !important; }
+      .sc-cat-row, .blindspot-item { page-break-inside: avoid; }
+      #sc-blindspots-section { page-break-before: auto; }
+      #sc-unlock-section { page-break-before: auto; }
+      .scorecard-wrap::after {
+        content: attr(data-program) " — Breedwise Advisor Report — " attr(data-date);
+        display: block;
+        margin-top: 40px;
+        padding-top: 14px;
+        border-top: 1px solid #ddd;
+        font-family: 'Inter', sans-serif;
+        font-size: 9px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #aaa !important;
+        text-align: center;
+      }
     }
 
-    /* ─── RESPONSIVE ──────────────────────────────────── */
+    /* ─── REVENUE TRAJECTORY ──────────────────────────────────────────── */
+    .rev-trajectory-grid {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 28px;
+      padding: 28px 0 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .rev-traj-col {
+      flex: 1;
+      text-align: center;
+    }
+    .rev-traj-col.highlight {
+      background: rgba(201,168,76,0.04);
+      border: 1px solid var(--gold-20);
+      padding: 20px;
+    }
+    .rev-traj-label {
+      display: block;
+      font-family: var(--body);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .rev-traj-sub {
+      display: block;
+      font-family: var(--body);
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .rev-traj-number {
+      font-family: var(--heading);
+      font-size: 36px;
+      font-weight: 600;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .rev-traj-unit {
+      font-family: var(--body);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .rev-traj-arrow {
+      font-size: 28px;
+      color: var(--gold);
+      opacity: 0.4;
+      flex-shrink: 0;
+    }
+    .rev-detail-rows { margin-top: 4px; }
+    .revenue-row-val.danger { color: #c05050; font-size: 18px; font-family: var(--heading); font-weight: 500; }
+
+    /* ─── PROBE DEEPER CUE ────────────────────────────────────────────── */
+    .probe-deeper-cue {
+      margin: 10px 0 0 52px;
+      padding: 10px 14px;
+      background: rgba(122,96,48,0.08);
+      border-left: 2px solid rgba(201,168,76,0.35);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .probe-deeper-cue-tag {
+      font-family: var(--body);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.6);
+      white-space: nowrap;
+      padding-top: 1px;
+      flex-shrink: 0;
+    }
+    .probe-deeper-cue-text {
+      font-family: var(--body);
+      font-size: 12px;
+      color: #7a6030;
+      line-height: 1.6;
+    }
+
+    /* ─── CERTIFICATION UNLOCK BLOCK ──────────────────────────────────── */
+    .sc-unlock-block {
+      border: 1px solid var(--gold-20);
+      background: rgba(201,168,76,0.03);
+      padding: 32px 36px;
+    }
+    .sc-unlock-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px 48px;
+      margin-bottom: 28px;
+    }
+    .sc-unlock-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .sc-unlock-stat-label {
+      font-family: var(--body);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .sc-unlock-stat-val {
+      font-family: var(--heading);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--gold);
+    }
+    .sc-unlock-stat-sub {
+      font-family: var(--body);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .sc-unlock-narrative {
+      font-family: var(--body);
+      font-size: 14px;
+      color: var(--mid);
+      line-height: 1.85;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .sc-unlock-narrative strong {
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    /* ─── PRINT OVERHAUL ──────────────────────────────────────────────── */
     @media (max-width: 960px) {
       .audit-main { padding: 36px 24px 80px; }
       .nav { padding: 0 24px; }
+      .session-bar { padding: 8px 24px; }
       .portal-header-inner { padding: 32px 24px 0; }
       .info-grid { grid-template-columns: 1fr 1fr; }
       .revenue-grid { grid-template-columns: 1fr 1fr; }
@@ -1099,14 +1408,31 @@
       <span class="nav-portal-tag">Advisor Portal</span>
     </nav>
 
+    <div class="session-bar">
+      <span class="session-bar-label">Session</span>
+      <button class="session-btn" onclick="saveSession()">Save Progress</button>
+      <button class="session-btn" onclick="clearSession()">Clear Session</button>
+      <div style="width:1px;height:16px;background:var(--border);margin:0 4px;"></div>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;">
+        <div class="toggle-wrap" id="core-toggle-wrap" onclick="toggleCoreMode()">
+          <div class="toggle-knob" id="core-toggle-knob"></div>
+        </div>
+        <span style="font-size:11px;letter-spacing:0.08em;color:var(--mid);">Core Only</span>
+        <span id="core-time-est" style="font-size:10px;color:var(--muted);letter-spacing:0.06em;"></span>
+      </label>
+      <span class="session-status" id="session-status">Saved</span>
+    </div>
+
     <header class="portal-header">
       <div class="portal-header-inner">
         <h1 class="portal-title">Breedwise Standard Review — Advisor Portal</h1>
         <p class="portal-subtitle">Internal Use Only &nbsp;·&nbsp; Confidential Assessment Document</p>
-        <div class="portal-tabs">
-          <button class="portal-tab active" id="tab-audit" onclick="switchTab('audit')">Assessment</button>
-          <button class="portal-tab" id="tab-history" onclick="switchTab('history')">Saved Reviews</button>
-        </div>
+      </div>
+      <div class="portal-tabs">
+        <button class="portal-tab active" id="tab-science" onclick="switchSession('science')">Session 1 &nbsp;·&nbsp; Veterinary Science <span class="tab-cats">01–04</span></button>
+        <button class="portal-tab" id="tab-business" onclick="switchSession('business')">Session 2 &nbsp;·&nbsp; Business Strategy <span class="tab-cats">05–08</span></button>
+        <button class="portal-tab" id="tab-all" onclick="switchSession('all')">Full Review</button>
+        <button class="portal-tab" id="tab-history" onclick="switchToHistory()">Saved Reviews</button>
       </div>
     </header>
 
@@ -1119,7 +1445,7 @@
           <span style="font-family:var(--body);font-size:11px;color:var(--muted);letter-spacing:0.08em;" id="config-toggle-label">Configure ▾</span>
         </div>
         <div class="config-body" id="config-body">
-          <p class="config-note">Connect Airtable to automatically save every completed review to a permanent database — accessible across devices, exportable, filterable. Without Airtable, reviews save to this browser only (localStorage). Both options are available regardless.</p>
+          <p class="config-note">Connect Airtable to save every completed review to a permanent database — accessible across devices, exportable, filterable. Without Airtable, reviews save to this browser only.</p>
           <div class="info-grid" style="margin-top:16px;">
             <div class="field-group">
               <label class="field-label">Airtable Personal Access Token</label>
@@ -1134,7 +1460,7 @@
               <input type="text" id="cfg-airtable-table" class="field-input" placeholder="Standard Reviews" oninput="saveConfig()">
             </div>
           </div>
-          <p class="config-note" style="font-size:11px;">Create a Personal Access Token at airtable.com/account with write scope. Get your Base ID from the Airtable API docs page for your base. Credentials stored in this browser only.</p>
+          <p class="config-note" style="font-size:11px;">Create a Personal Access Token at airtable.com/account. Credentials stored in this browser only.</p>
         </div>
       </div>
 
@@ -1199,7 +1525,7 @@
 
       <!-- REVENUE IMPACT CALCULATOR -->
       <section class="revenue-section">
-        <span class="section-label">90-Day Revenue Impact Calculation</span>
+        <span class="section-label">Revenue Trajectory — What This Program Costs Every Year You Wait</span>
         <div class="revenue-grid">
           <div class="field-group">
             <label class="field-label">Current Price Per Puppy ($)</label>
@@ -1213,15 +1539,34 @@
             <label class="field-label">Annual Litters</label>
             <input type="number" id="rev-annual-litters" class="field-input" placeholder="e.g. 3" min="1" max="12">
           </div>
-          <button class="calc-btn" onclick="calculateRevenue()">Calculate Impact</button>
+          <div class="field-group" style="justify-content: flex-end;">
+            <button class="calc-btn" onclick="calculateRevenue()">Calculate Impact</button>
+            <span id="rev-error" style="font-size:11px;color:#a05050;letter-spacing:0.04em;min-height:16px;display:block;margin-top:6px;"></span>
+          </div>
         </div>
         <div id="revenue-output" class="revenue-output">
-          <div class="revenue-row"><span class="revenue-row-label">Current Annual Revenue (estimated)</span><span class="revenue-row-val" id="rv-current-annual">—</span></div>
-          <div class="revenue-row"><span class="revenue-row-label">Certified Standard — Conservative Target ($9,500/puppy)</span><span class="revenue-row-val gold" id="rv-target-annual">—</span></div>
-          <div class="revenue-row"><span class="revenue-row-label">Per-Litter Revenue Gap</span><span class="revenue-row-val" id="rv-litter-gap">—</span></div>
-          <div class="revenue-row"><span class="revenue-row-label">90-Day Revenue Opportunity</span><span class="revenue-row-val success" id="rv-90day">—</span></div>
-          <div class="revenue-row"><span class="revenue-row-label">Review Investment</span><span class="revenue-row-val">$497</span></div>
-          <div class="revenue-row"><span class="revenue-row-label">Return Multiple (90-day)</span><span class="revenue-row-val gold" id="rv-multiple">—</span></div>
+          <div class="rev-trajectory-grid">
+            <div class="rev-traj-col">
+              <span class="rev-traj-label">Current Path</span>
+              <span class="rev-traj-sub">No changes to program or pricing</span>
+              <div class="rev-traj-number" id="rv-current-annual" style="color:var(--mid);">—</div>
+              <span class="rev-traj-unit">per year</span>
+            </div>
+            <div class="rev-traj-arrow">→</div>
+            <div class="rev-traj-col highlight">
+              <span class="rev-traj-label">Certified Path</span>
+              <span class="rev-traj-sub" id="rv-target-label">Breedwise target price</span>
+              <div class="rev-traj-number" id="rv-target-annual" style="color:var(--gold);">—</div>
+              <span class="rev-traj-unit">per year</span>
+            </div>
+          </div>
+          <div class="rev-detail-rows">
+            <div class="revenue-row"><span class="revenue-row-label">Annual Gap — Left on the table every year you wait</span><span class="revenue-row-val danger" id="rv-annual-gap">—</span></div>
+            <div class="revenue-row"><span class="revenue-row-label">Per-Litter Revenue Gap</span><span class="revenue-row-val" id="rv-litter-gap">—</span></div>
+            <div class="revenue-row"><span class="revenue-row-label">90-Day Revenue Opportunity</span><span class="revenue-row-val gold" id="rv-90day">—</span></div>
+            <div class="revenue-row"><span class="revenue-row-label">Return on $497 Investment (90 days)</span><span class="revenue-row-val success" id="rv-multiple">—</span></div>
+            <div class="revenue-row" id="rv-breakeven-row" style="display:none;"><span class="revenue-row-label">Break-even on program investment</span><span class="revenue-row-val gold" id="rv-breakeven">—</span></div>
+          </div>
         </div>
       </section>
 
@@ -1271,7 +1616,7 @@
           <button class="export-btn" onclick="saveReview()">Save Review</button>
           <button class="export-btn" onclick="exportForClaude()">Export for Claude Analysis</button>
         </div>
-        <p class="generate-note">Save stores this review locally &nbsp;·&nbsp; Export downloads a structured file ready to upload to Claude for analysis</p>
+        <p class="generate-note">Save stores this review locally &nbsp;·&nbsp; Export downloads a file ready to upload to Claude for analysis</p>
       </div>
 
     </main>
@@ -1290,18 +1635,18 @@
       <button class="scorecard-close" onclick="closeScorecard()" aria-label="Close">&#x2715;</button>
 
       <span class="scorecard-wordmark">Breedwise</span>
-      <span class="scorecard-doc-title">Standard Review — Official Scorecard</span>
+      <span class="scorecard-doc-title">Program Strategy Assessment — Confidential Advisor Report</span>
 
       <div class="sc-info-grid" id="sc-info-grid"></div>
       <div class="sc-divider"></div>
 
-      <span class="section-label">Overall Score</span>
+      <span class="section-label">Program Readiness Score</span>
       <div class="sc-overall-block">
         <div class="sc-overall-score" id="sc-overall-score">—</div>
         <div class="sc-overall-detail">
           <span class="sc-overall-label">Score out of 100 &nbsp;·&nbsp; Eight-Category Assessment</span>
-          <div class="sc-benchmark-row"><span>Certified Breeder Average</span><span>84 / 100</span></div>
-          <div class="sc-benchmark-row"><span>Industry Uncertified Average</span><span>&lt; 40 / 100</span></div>
+          <div class="sc-benchmark-row"><span>Certified Standard (revenue-commanding programs)</span><span>84 / 100</span></div>
+          <div class="sc-benchmark-row"><span>Uncertified Average (industry baseline)</span><span>&lt; 40 / 100</span></div>
           <div class="sc-benchmark-row"><span>This Program</span><span id="sc-this-score" style="color:var(--gold)">—</span></div>
         </div>
       </div>
@@ -1316,9 +1661,21 @@
         <div class="sc-revenue-block" id="sc-revenue-block"></div>
       </div>
 
+      <div class="sc-divider" id="sc-blindspots-divider"></div>
+      <div id="sc-blindspots-section">
+        <span class="section-label">Highest-Leverage Gaps — Where Certification Unlocks the Most Value</span>
+        <div id="sc-blindspots-list"></div>
+      </div>
+
       <div class="sc-divider"></div>
       <span class="section-label">30-Day Priority Action Plan</span>
       <div class="sc-action-plan" id="sc-action-plan"></div>
+
+      <div class="sc-divider"></div>
+      <div id="sc-unlock-section">
+        <span class="section-label" id="sc-unlock-title">What Certification Unlocks</span>
+        <div class="sc-unlock-block" id="sc-unlock-block"></div>
+      </div>
 
       <div class="sc-divider"></div>
       <span class="section-label">Executive Summary</span>
@@ -1345,30 +1702,37 @@
         desc: 'How well you manage heat cycles, breeding timing, and conception — the foundation of every successful litter.',
         questions: [
           {
+            core: true,
             text: 'Do you run serial progesterone tests starting around Day 3–5 of heat, repeating every 48 hours, to identify the LH surge and pinpoint the actual ovulation day — or do you rely on a single test or behavioral signs alone?',
             advisorNote: 'Most breeders do one progesterone test or guess from behavior. A proper timing system requires serial testing to identify the LH surge and calculate the fertile window. This is Module 4 of Q2.'
           },
           {
+            core: true,
             text: 'Do you keep a structured cycle log for every female — tracking dates, interval between heats, behavioral changes, and cytology results — so you can spot abnormalities across cycles, not just within one?',
             advisorNote: 'Breeders who only track "when she was in heat" miss the patterns that signal fertility problems early. Module 3 teaches a complete estrus tracking system.'
           },
           {
+            core: false,
             text: 'Do you have a written reproductive career plan for each female that defines her first breeding age, maximum litters, spacing between litters, and retirement criteria based on health data — not just how she looks?',
             advisorNote: 'Most breeders wing it. A career plan prevents overbreeding, protects the female\'s health, and improves lifetime output. Module 3 covers this.'
           },
           {
+            core: true,
             text: 'When choosing between natural breeding, fresh AI, chilled AI, or frozen AI, do you have a decision framework based on semen quality, timing precision, and genetic goals — or do you default to whatever is easiest?',
             advisorNote: 'Choosing the wrong method at the wrong time is one of the top causes of missed breedings. Modules 6 and 7 build this decision system.'
           },
           {
+            core: true,
             text: 'Do you track your conception rate, average litter size, and breeding-to-whelping interval across litters — and use those numbers to diagnose problems when something goes wrong?',
             advisorNote: 'Without fertility KPIs, breeders can\'t tell if their program is improving or declining. Module 8 teaches how to define, track, and act on these metrics.'
           },
           {
+            core: false,
             text: 'When a breeding fails, do you follow a structured diagnostic protocol — reviewing progesterone timing, semen quality, uterine health, and male factors — before attempting the next breeding?',
             advisorNote: 'Most breeders retry without investigating. Module 8 teaches a systematic corrective action plan that identifies root causes.'
           },
           {
+            core: false,
             text: 'Do you adjust your female\'s body condition and nutrition specifically to support fertility before each breeding cycle — targeting an ideal body condition score rather than just feeding more?',
             advisorNote: 'Nutrition is a fertility tool, not an afterthought. Module 2 covers condition scoring, targeted nutrients, and feeding hygiene for breeding readiness.'
           },
@@ -1383,30 +1747,37 @@
         desc: 'How you use DNA data, health clearances, and pedigree knowledge to make pairing decisions that improve your bloodline.',
         questions: [
           {
+            core: true,
             text: 'Before every pairing, do you calculate the predicted COI of the offspring and compare it to the breed average — with a target threshold you won\'t cross?',
             advisorNote: 'Many breeders check COI after pairing or not at all. A real system sets a maximum COI before selecting mates. Module 5 teaches this.'
           },
           {
+            core: false,
             text: 'Has every breeding dog been tested through a certified DNA panel that covers breed-specific diseases — and do you know exactly which results are "clear," "carrier," or "at risk" for each gene?',
             advisorNote: 'Having "DNA tested" is not the same as understanding the results. Module 5 teaches how to interpret carrier status and avoid at-risk pairings.'
           },
           {
+            core: true,
             text: 'Before pairing two dogs, do you check whether they carry the same recessive mutations — and do you have a rule for what happens when both are carriers?',
             advisorNote: 'Carrier-to-carrier pairings produce affected puppies. Breeders need a documented protocol, not just a vague awareness. Module 5.'
           },
           {
+            core: true,
             text: 'Do you use a structured pairing matrix that scores and weighs structure, temperament, health clearances, and genetic diversity together — rather than prioritizing one trait and hoping the rest works out?',
             advisorNote: 'Most breeders over-index on one trait. A pairing matrix forces balanced decisions. Module 5 teaches how to build one.'
           },
           {
+            core: false,
             text: 'Do you use breed databases or genomic tools (MyDogDNA, Embark, breed registries) to research pedigree depth and diversity before committing to a pairing — not just after?',
             advisorNote: 'Using tools reactively means the decision is already made. Proactive research prevents problems. Module 5.'
           },
           {
+            core: false,
             text: 'Do you have a multi-generational diversity plan that maps out how you\'ll maintain or improve genetic variation over the next 3 to 5 generations — not just the next litter?',
             advisorNote: 'Without a long-term plan, programs drift toward inbreeding. Module 5 teaches generational diversity planning.'
           },
           {
+            core: false,
             text: 'Do you track the health, structure, and temperament outcomes of every pairing you\'ve made — and use that data to decide which crosses to repeat, adjust, or retire?',
             advisorNote: 'Breeding without outcome data means repeating the same mistakes. Module 5 teaches outcome tracking as a feedback loop.'
           },
@@ -1421,30 +1792,37 @@
         desc: 'How prepared you are from the moment a dog is confirmed pregnant through a safe, well-managed delivery.',
         questions: [
           {
+            core: true,
             text: 'Do you calculate your due date from the confirmed ovulation day (not the breeding date) — and do you know the typical whelping window for your breed based on that calculation?',
             advisorNote: 'Breeding date ≠ conception date. Off-by-days errors cause premature C-sections or missed emergencies. Q3 Module 1 teaches precision dating.'
           },
           {
+            core: true,
             text: 'Do you confirm pregnancy with ultrasound around Day 25–28 for viability, then follow up with X-rays around Day 55 for puppy count — so you know exactly what to expect at whelping?',
             advisorNote: 'Many breeders skip one or both. Not knowing the puppy count means you can\'t tell when delivery is complete. Q2 Module 9.'
           },
           {
+            core: false,
             text: 'Do you adjust the mother\'s diet in phases across gestation — maintaining condition in the first 5 weeks, then increasing caloric density in the final 3 weeks based on litter size?',
             advisorNote: 'Feeding "more food" isn\'t a nutrition plan. Gestational nutrition is phase-specific. Q2 Module 10 covers this system.'
           },
           {
+            core: false,
             text: 'Can you name the warning signs of at least 3 pregnancy complications (luteal failure, pregnancy toxemia, uterine infection, fetal resorption) — and do you know the first action for each?',
             advisorNote: 'If a breeder can\'t name specific complications and first responses, they aren\'t prepared. Q2 Module 11 teaches all four.'
           },
           {
+            core: true,
             text: 'During labor, do you track the time between each puppy and know exactly how long is too long before calling the vet — or do you rely on gut feeling?',
             advisorNote: 'Delayed intervention is the #1 cause of preventable puppy loss during whelping. Q3 Modules 2 and 3 teach structured labor monitoring.'
           },
           {
+            core: false,
             text: 'Is your whelping kit fully stocked, your emergency vet\'s after-hours number confirmed, and your transport plan ready at least 7 days before the due date — not the night before?',
             advisorNote: 'Last-minute preparation creates panic. Q3 Module 1 teaches a countdown system that starts well before whelping.'
           },
           {
+            core: true,
             text: 'Do you have a written decision tree for when to let the mother work, when to assist manually, and when the situation requires veterinary intervention — with clear criteria for each level?',
             advisorNote: 'Without a decision framework, breeders either intervene too early or wait too long. Q3 Module 3 teaches a tiered response system.'
           },
@@ -1459,30 +1837,37 @@
         desc: 'How you protect puppies in the critical first weeks — from the moment they are born through weaning.',
         questions: [
           {
+            core: true,
             text: 'Do you have a step-by-step neonatal resuscitation protocol that you\'ve practiced — covering airway clearing, stimulation, warming, and when to stop — or would you be improvising in the moment?',
             advisorNote: 'Resuscitation is a learned skill, not instinct. Q3 Module 6 teaches the full protocol including the "Golden 15 Minutes."'
           },
           {
+            core: true,
             text: 'Do you weigh every puppy at the same time daily for the first 14 days, plot the weights on a growth chart, and have a clear threshold for when a weight stall triggers intervention?',
             advisorNote: 'Weighing without a chart and threshold is just data collection. Q3 Module 7 teaches monitoring with action triggers.'
           },
           {
+            core: false,
             text: 'Do you actively control the whelping box temperature zone by zone (not just room temperature) and know the target ranges for Week 1, Week 2, and beyond?',
             advisorNote: 'Hypothermia is the #1 silent killer. Most breeders don\'t know temperatures change weekly. Q3 Module 7 covers the 3H Syndrome.'
           },
           {
+            core: true,
             text: 'Do you confirm that every puppy has nursed colostrum within the first 12 hours, and do you have a backup plan (frozen colostrum, plasma, or supplement) if a puppy can\'t latch?',
             advisorNote: 'No colostrum = no immune protection. Hoping every puppy latches isn\'t a system. Q3 Module 8 teaches colostrum management.'
           },
           {
+            core: false,
             text: 'Can you name the three biggest threats to puppies in the first 48 hours (hypothermia, hypoglycemia, dehydration) and describe your specific prevention protocol for each one?',
             advisorNote: 'If a breeder can\'t name all three and describe their protocol, they\'re relying on luck. Q3 Module 7 teaches the 3H prevention system.'
           },
           {
+            core: false,
             text: 'If the mother can\'t nurse (mastitis, rejection, C-section complications), do you have a tested backup feeding system ready to deploy immediately — tube feeding, bottle feeding, or a foster dam?',
             advisorNote: 'Backup feeding should be rehearsed, not figured out during a crisis. Q3 Module 8 teaches all three methods.'
           },
           {
+            core: false,
             text: 'Do you track your neonatal mortality rate per litter and across your program, identify the stage where losses occur most, and use that data to improve your protocols?',
             advisorNote: 'Puppy loss isn\'t random. Patterns reveal system failures. Q3 Module 7 treats neonatal mortality as the breeder\'s most important KPI.'
           },
@@ -1499,30 +1884,37 @@
         desc: 'How well the program is structured as a repeatable system — not a collection of personal decisions that only the breeder can execute.',
         questions: [
           {
+            core: true,
             text: 'Do you have a written document that defines exactly what your program selects for — with specific, measurable criteria for structure, temperament, and health — or does your selection process exist primarily in your head and vary based on who\'s asking?',
             advisorNote: 'An unwritten selection process can\'t be proven to buyers, taught to an assistant, or used to justify premium pricing. If the breeder hesitates or gives a vague answer, the system doesn\'t exist on paper. Module 1.'
           },
           {
+            core: false,
             text: 'When you evaluate temperament, do you use a repeatable scoring protocol applied to every dog at a consistent age and in consistent conditions — so that results from two years ago are directly comparable to results today?',
             advisorNote: 'Buyers pay for predictability. A breeder who can\'t describe their temperament evaluation process in writing can\'t prove consistency. Listen for whether they name a specific protocol or just describe "how I can tell." Module 2.'
           },
           {
+            core: false,
             text: 'For every planned pairing, do you produce a written rationale that explains why this specific male and female are being combined — referencing structure, genetics, temperament, and long-term program goals — or is the decision made internally and expected to be trusted on faith?',
             advisorNote: 'Documented pairing rationale is both an internal discipline tool and a buyer-facing proof point. A breeder who can\'t articulate it in writing is making intuitive decisions they can\'t scale or defend. Module 3.'
           },
           {
+            core: true,
             text: 'Is your waitlist a structured qualification process — with a written application, defined acceptance criteria, and a consistent screening step — or is it a list of names and deposits collected informally over time?',
             advisorNote: 'An informal waitlist creates pricing pressure, poor placement outcomes, and buyer management problems. Ask the breeder to describe exactly how someone gets on the list and what disqualifies them. Module 4.'
           },
           {
+            core: false,
             text: 'Do you execute a structured post-placement follow-up system with defined contact points — at 2 weeks, 8 weeks, 6 months, and 12 months — for every single puppy placed, regardless of whether the client reaches out first?',
             advisorNote: 'Proactive follow-up is a testimonial engine and a placement quality signal. Reactive follow-up is damage control. If the breeder only follows up when clients contact them, they don\'t have a system — they have a response habit. Module 5.'
           },
           {
+            core: false,
             text: 'Do you actively participate in breed clubs, performance events, or breed-relevant competitions — and are those credentials displayed in your marketing materials and communicated to prospective clients before they ask?',
             advisorNote: 'Credentials that aren\'t displayed don\'t function as credentials. The question is whether participation is being converted into visible proof of standard. A breeder who participates but doesn\'t mention it to buyers is leaving positioning value untouched. Module 6.'
           },
           {
+            core: true,
             text: 'Have you mapped out what your breeding program looks like in five years — how many breeding females, which bloodlines you\'re building toward, what price point you\'re targeting — or is your program growing reactively based on what demand happens to arrive?',
             advisorNote: 'Programs without a written growth plan plateau or dilute quality as they scale. Listen for whether the breeder can describe specific future targets or only describes what they\'re doing now. Module 7.'
           },
@@ -1537,30 +1929,37 @@
         desc: 'How intentional and documented the buyer journey is — from first contact through placement and the lifetime of the dog.',
         questions: [
           {
+            core: true,
             text: 'Do all prospective buyers complete a written application that includes questions about lifestyle, household, prior dog ownership, and intended use — and do you have documented criteria that determine when to decline an applicant?',
             advisorNote: 'An application without decline criteria is theater. Ask the breeder what would disqualify an applicant. If they hesitate or say "it depends," the criteria aren\'t written down — they\'re improvised per case. Module 8.'
           },
           {
+            core: true,
             text: 'Has your placement contract been reviewed by an attorney licensed in your state — and does it include provisions beyond the legal minimum, such as an extended health guarantee window, a return policy that protects the dog, and clarity on what happens if the buyer can no longer keep the dog?',
             advisorNote: 'A contract that has never been reviewed by a lawyer is a liability disguised as a document. Ask when it was last reviewed and by whom. The provisions beyond the minimum are what differentiate a premium program contract from a template downloaded from the internet. Module 9.'
           },
           {
+            core: false,
             text: 'Before a prospective buyer pays a deposit or joins your waitlist, do they receive a written document explaining your health clearances, your pairing philosophy, and your program standards — or do they learn about your credentials only if they think to ask?',
             advisorNote: 'Proactive credential disclosure before the transaction raises perceived value and reduces price resistance. If credentials are only disclosed when a buyer asks, they\'re being treated as a defense rather than as positioning. Module 10.'
           },
           {
+            core: true,
             text: 'Does every buyer receive a structured puppy preparation and onboarding package — a physical or digital document covering feeding protocols, first vet visit timing, socialization windows, and breed-specific developmental milestones — that reflects the standards of your program?',
             advisorNote: 'The onboarding package is the last brand touchpoint before the buyer forms their final impression of your program. Most breeders send a generic breeder\'s folder or a handwritten note. Ask the breeder to describe what\'s actually in their package. Module 11.'
           },
           {
+            core: false,
             text: 'Does your health guarantee offer meaningfully more coverage than the minimum required in your state — including a longer window, a broader list of covered conditions, and a resolution process that doesn\'t require the buyer to prove negligence?',
             advisorNote: 'A minimum-legal guarantee communicates minimum-legal standards. Buyers who know what to look for use the guarantee as a proxy for how much the breeder actually stands behind their program. Module 9.'
           },
           {
+            core: false,
             text: 'Do you have at least three documented, named client outcomes — video testimonials, written reviews, or detailed case studies — that prospective buyers can access before they decide to apply, without having to ask you for references?',
             advisorNote: 'Social proof at the pre-application stage is a conversion lever. If buyers have to request references, the proof is reactive. Three accessible, detailed testimonials publicly available is the Breedwise minimum. Module 12.'
           },
           {
+            core: false,
             text: 'Do you keep placed buyers engaged with the program after placement — through updates on their puppy\'s parents, new health test results, or program news — in a way that generates referrals and repeat placements without requiring the buyer to re-discover you?',
             advisorNote: 'Long-term buyer engagement is the cheapest source of qualified leads. Most breeders go silent after placement and then wonder why referrals are inconsistent. Ask what buyers receive from the program after their puppy goes home. Module 13.'
           },
@@ -1575,30 +1974,37 @@
         desc: 'Whether the program operates as a professional business with documented systems, financial clarity, and compliance — or as an expensive hobby with good intentions.',
         questions: [
           {
+            core: true,
             text: 'Is your breeding program registered as a business entity with a dedicated business bank account, separate from your personal finances — and do you produce annual financial records that let you see whether the program is profitable as a standalone operation?',
             advisorNote: 'Mixing personal and business finances is both a liability issue and a credibility signal. If the breeder can\'t separate program income from personal income, they don\'t know their actual margins. Ask what entity type they\'re registered under. Module 14.'
           },
           {
+            core: true,
             text: 'Do you track the exact net profit of each litter — including all veterinary costs, genetic testing, whelping supplies, feeding, and a fair estimate of your time — so you can immediately tell whether your current pricing is making or losing money per litter?',
             advisorNote: 'Most breeders dramatically underestimate their cost per litter because they don\'t account for their own time. If the breeder can\'t give a ballpark net profit number per litter without calculating it fresh, they don\'t track it. Module 15.'
           },
           {
+            core: false,
             text: 'Are your whelping and emergency protocols documented in a written checklist that someone else — a helper, a vet tech, a family member — could follow without your guidance if you were unavailable during delivery?',
             advisorNote: 'Protocols that live in the breeder\'s head are single points of failure. A written whelping checklist is both an operations tool and evidence of a professional system. Ask to see it or ask if it exists in written form. Module 16.'
           },
           {
+            core: true,
             text: 'Do you use a documented record-keeping system — software or structured physical records — that allows you to produce any individual dog\'s complete medical history, vaccination records, and breeding history in under two minutes?',
             advisorNote: 'The ability to produce documentation immediately is a trust signal during the review and an operational necessity during veterinary or regulatory situations. Ask the breeder how long it would take to pull a specific dog\'s full record. Module 17.'
           },
           {
+            core: false,
             text: 'Does your insurance coverage specifically include general liability for dog-related incidents, care-custody-and-control coverage for animals on your property, and — if you sell more than a threshold number of litters per year — a commercial breeding endorsement?',
             advisorNote: 'Standard homeowner\'s insurance typically excludes commercial breeding activity. A single incident without the right coverage can end a program financially. Most breeders discover this gap only after a claim is denied. Module 18.'
           },
           {
+            core: false,
             text: 'Is your per-puppy pricing derived from a documented model that starts with your program costs, adds a target margin, and accounts for the value of your credentials — rather than being set by looking at what other breeders in your area charge?',
             advisorNote: 'Market-average pricing anchors the breeder to the floor. Breeders who can\'t explain how they arrived at their price are anchored to comp pricing, which means they can never sustainably price above it. Module 15.'
           },
           {
+            core: false,
             text: 'Are you fully compliant with every applicable regulation in your state — including breeder licensing thresholds, mandatory veterinary records, health certificate requirements, and any sale restrictions — and can you produce documentation of that compliance within 24 hours of being asked?',
             advisorNote: 'Regulatory non-compliance is a silent liability. One buyer complaint can trigger a state inspection. Ask the breeder whether they know the specific licensing threshold in their state and whether they\'re above or below it. Module 19.'
           },
@@ -1613,30 +2019,37 @@
         desc: 'Whether the program\'s external presence commands the price it charges — and whether buyers find it, trust it, and refer it without being prompted.',
         questions: [
           {
+            core: true,
             text: 'Can a prospective buyer find clear, professional documentation of your program\'s credentials — health clearances, certifications, advisory relationships, and standards — on your website or social profile within 60 seconds of arriving, without sending you a message to ask?',
             advisorNote: 'Credential visibility is the first conversion lever. If a buyer has to ask for proof, doubt has already started. Ask the breeder to show you their website and time how long it takes to find specific credentials. Module 20.'
           },
           {
+            core: false,
             text: 'Is the quality of your brand consistent across every touchpoint — website, social content, photography, email communication, and puppy package — or does the standard drop significantly between your best channel and your worst?',
             advisorNote: 'Buyers unconsciously correlate brand consistency with breeding consistency. A polished website that leads to a disorganized email or a generic puppy folder creates doubt. The weakest touchpoint sets the perceived standard. Module 21.'
           },
           {
+            core: true,
             text: 'When a buyer compares your program directly to a competitor charging half your price, is there a visible, documented reason — on your website or in your materials — that explains the gap without requiring you to be in the room to justify it?',
             advisorNote: 'Premium pricing without visible premium justification creates friction at every inquiry. The goal is to make the price feel obvious before the first conversation. If the breeder has to explain why they\'re more expensive, they haven\'t built that into their brand yet. Module 22.'
           },
           {
+            core: false,
             text: 'Do you have a documented referral system — a specific process for asking placed buyers to refer others and a defined way of recognizing those referrals — or do referrals only happen when a happy buyer spontaneously mentions you without any prompt from you?',
             advisorNote: 'Referrals are the highest-quality leads in a breeding program. Leaving them entirely to chance means the breeder is only capturing the fraction of happy buyers who volunteer the behavior unprompted. Module 23.'
           },
           {
+            core: false,
             text: 'Do you produce original educational content — written posts, videos, or guides on topics relevant to your breed or to responsible ownership — on a consistent schedule, in a way that keeps your program visible to buyers who aren\'t yet ready to apply?',
             advisorNote: 'Content builds long-term trust capital that converts months or years after it\'s published. Breeders who post only to announce available puppies are invisible between litters. Ask how often they publish non-promotional content. Module 24.'
           },
           {
+            core: true,
             text: 'Is every inquiry for a puppy from your program coming to you inbound — without paid ads, Craigslist, puppy-finder sites, or active outreach on your part — as a result of your reputation and brand presence alone?',
             advisorNote: 'Inbound-only demand is the definitive indicator of a positioned program. If the breeder relies on any paid or external listing channels to fill their waitlist, they haven\'t yet reached positioning independence. Module 25.'
           },
           {
+            core: true,
             text: 'Is your placement waitlist currently longer than six months — measured in approved, screened buyers who have completed your application and been formally accepted, not in people who have simply "expressed interest" or paid a refundable deposit?',
             advisorNote: 'A waitlist of interested people is a mailing list. A waitlist of approved buyers is leverage for pricing and selectivity. Ask the breeder to distinguish between the two in their current list. Module 25.'
           },
@@ -1645,8 +2058,74 @@
     ];
 
     const scores = {};
+    let activeSession = 'science'; // 'science' | 'business' | 'all'
+    let coreMode = false;
 
-    // ─── PASSWORD GATE ─────────────────────────────────────────────────────────
+    // ─── SESSION SWITCHING ─────────────────────────────────────────────────────
+    function switchSession(session) {
+      activeSession = session;
+      ['science','business','all'].forEach(s => {
+        document.getElementById('tab-' + s)?.classList.toggle('active', s === session);
+      });
+      applySessionFilter();
+      updateAllUnansweredBadges();
+    }
+
+    function applySessionFilter() {
+      CATEGORIES.forEach(cat => {
+        const section = document.querySelector('[data-category-id="' + cat.id + '"]');
+        if (!section) return;
+        if (activeSession === 'all') {
+          section.style.display = '';
+        } else {
+          section.style.display = cat.type === activeSession ? '' : 'none';
+        }
+      });
+      // Update portal subtitle to reflect mode
+      const sub = document.querySelector('.portal-subtitle');
+      if (sub) {
+        if (activeSession === 'science')  sub.textContent = 'Session 1 — Veterinary Science · Categories 01–04 · ~45–60 min';
+        else if (activeSession === 'business') sub.textContent = 'Session 2 — Business Strategy · Categories 05–08 · ~45–60 min';
+        else sub.textContent = 'Full Review · All 8 Categories · ~90–120 min';
+      }
+    }
+
+    // ─── CORE MODE TOGGLE ──────────────────────────────────────────────────────
+    function toggleCoreMode() {
+      coreMode = !coreMode;
+      document.getElementById('core-toggle-wrap').classList.toggle('on', coreMode);
+      applyCoreModeFilter();
+      updateAllUnansweredBadges();
+      // Update time estimate
+      const est = document.getElementById('core-time-est');
+      if (coreMode) {
+        const visibleCats = CATEGORIES.filter(c => activeSession === 'all' || c.type === activeSession);
+        const coreCount = visibleCats.reduce((n, c) => n + c.questions.filter(q => q.core).length, 0);
+        est.textContent = '~' + Math.round(coreCount * 1.5) + '–' + (coreCount * 2) + ' min';
+      } else {
+        est.textContent = '';
+      }
+    }
+
+    function applyCoreModeFilter() {
+      CATEGORIES.forEach(cat => {
+        cat.questions.forEach((q, i) => {
+          const el = document.getElementById('q-' + cat.id + '_' + i);
+          if (!el) return;
+          if (coreMode && !q.core) {
+            el.classList.add('depth-hidden');
+          } else {
+            el.classList.remove('depth-hidden');
+          }
+        });
+      });
+    }
+
+    function updateAllUnansweredBadges() {
+      CATEGORIES.forEach(cat => updateUnansweredBadge(cat.id));
+    }
+
+
     document.getElementById('password-input').addEventListener('keydown', e => {
       if (e.key === 'Enter') checkPassword();
     });
@@ -1661,9 +2140,6 @@
           gate.style.display = 'none';
           document.getElementById('audit-tool').style.display = 'block';
           renderAuditTool();
-          loadConfig();
-          loadDraft();
-          attachAutoSave();
         }, 500);
       } else {
         input.value = '';
@@ -1710,9 +2186,10 @@
 
           let btnHTML = '';
           [0,1,2,3,4,5].forEach(v => {
-            btnHTML += `<button class="score-btn" data-qid="${qId}" data-val="${v}" onclick="setScore('${cat.id}','${qId}',${v},this)">${v}</button>`;
+            btnHTML += `<button class="score-btn" data-qid="${qId}" data-score="${v}" onclick="setScore('${cat.id}','${qId}',${v},this)">${v}</button>`;
           });
 
+          const depthTag = !q.core ? `<span class="depth-tag">Depth</span>` : '';
           const advisorNoteHTML = qNote
             ? `<div class="advisor-note">
                  <span class="advisor-note-tag">Advisor Only — What This Exposes</span>
@@ -1724,12 +2201,12 @@
             <div class="question-item" id="q-${qId}">
               <div class="question-row">
                 <span class="question-num">${String(qIndex+1).padStart(2,'0')}</span>
-                <span class="question-text">${qText}</span>
+                <span class="question-text">${qText}${depthTag}</span>
                 <div class="score-buttons">${btnHTML}</div>
               </div>
               ${advisorNoteHTML}
               <div class="question-notes" style="margin-top:10px;">
-                <textarea class="field-input" id="notes-${qId}" placeholder="Observation notes for this question..." style="min-height:48px;font-size:13px;"></textarea>
+                <textarea class="field-input" id="note-${qId}" placeholder="Observation notes for this question..." style="min-height:48px;font-size:13px;"></textarea>
               </div>
             </div>`;
         });
@@ -1743,7 +2220,7 @@
             <div class="category-header-left">
               ${typeTag}
               <span class="category-num">Category ${cat.num}</span>
-              <div class="category-name">${cat.name}</div>
+              <div class="category-name">${cat.name}<span class="unanswered-badge" id="unanswered-${cat.id}" style="display:none;"></span></div>
               <div class="category-desc">${cat.desc}</div>
             </div>
             <div class="category-score-block">
@@ -1759,7 +2236,7 @@
             ${questionsHTML}
             <div class="category-notes-section">
               <span class="category-notes-label">Category Summary — Advisor Notes</span>
-              <textarea class="field-input" id="cat-notes-${cat.id}" placeholder="Overall observations for this category — patterns, notable gaps, standout strengths..." style="min-height:80px;"></textarea>
+              <textarea class="field-input" id="cat-note-${cat.id}" placeholder="Overall observations for this category — patterns, notable gaps, standout strengths..." style="min-height:80px;"></textarea>
             </div>
           </div>`;
 
@@ -1774,6 +2251,12 @@
           container.appendChild(rule);
         }
       });
+
+      // Restore saved session if any, then init unanswered badges
+      restoreSession();
+      CATEGORIES.forEach(cat => updateUnansweredBadge(cat.id));
+      applySessionFilter();
+      applyCoreModeFilter();
     }
 
     function toggleCategory(catId) {
@@ -1790,7 +2273,33 @@
       btnGroup.querySelectorAll('.score-btn').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
 
+      // Probe-deeper cue: show on core questions scored 0 or 1, hide otherwise
+      const qItem = btn.closest('.question-item');
+      if (qItem) {
+        let cueEl = qItem.querySelector('.probe-deeper-cue');
+        // Find the question data
+        const cat   = CATEGORIES.find(c => c.id === catId);
+        const qIdx  = parseInt(qId.split('_').pop());
+        const q     = cat ? cat.questions[qIdx] : null;
+        if (q && q.core && value <= 1) {
+          const probeText = q.advisorNote ? q.advisorNote.split(/(?<=[.!?])\s+/)[0] : null;
+          if (probeText) {
+            if (!cueEl) {
+              cueEl = document.createElement('div');
+              cueEl.className = 'probe-deeper-cue';
+              cueEl.innerHTML = `<span class="probe-deeper-cue-tag">→ Probe Deeper</span><span class="probe-deeper-cue-text">${probeText}</span>`;
+              // Insert after score row, before advisor note
+              const questionRow = qItem.querySelector('.question-row');
+              questionRow.insertAdjacentElement('afterend', cueEl);
+            }
+          }
+        } else {
+          if (cueEl) cueEl.remove();
+        }
+      }
+
       updateCategoryScore(catId);
+      updateUnansweredBadge(catId);
     }
 
     function updateCategoryScore(catId) {
@@ -1842,29 +2351,145 @@
       return Math.round(catScores.reduce((a,b) => a+b, 0) / catScores.length);
     }
 
-    // ─── REVENUE CALCULATOR ────────────────────────────────────────────────────
+    // ─── SESSION PERSISTENCE ───────────────────────────────────────────────────
+    const SESSION_KEY = 'breedwise_advisor_session';
+
+    function saveSession() {
+      const data = {
+        scores: { ...scores },
+        fields: {},
+        notes: {},
+        rev: {
+          price:  document.getElementById('rev-current-price')?.value  || '',
+          litter: document.getElementById('rev-litter-size')?.value    || '',
+          annual: document.getElementById('rev-annual-litters')?.value || '',
+        }
+      };
+      // Save all text/textarea/date fields
+      const fieldIds = ['f-breeder-name','f-program-name','f-session-date','f-breed','f-years','f-advisor','f-pre-notes','action-category','action-1','action-2','action-3','exec-summary'];
+      fieldIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) data.fields[id] = el.value;
+      });
+      // Save question notes and category notes
+      CATEGORIES.forEach(cat => {
+        cat.questions.forEach((q, i) => {
+          const el = document.getElementById(`note-${cat.id}_${i}`);
+          if (el) data.notes[`note-${cat.id}_${i}`] = el.value;
+        });
+        const catNote = document.getElementById(`cat-note-${cat.id}`);
+        if (catNote) data.notes[`cat-note-${cat.id}`] = catNote.value;
+      });
+      localStorage.setItem(SESSION_KEY, JSON.stringify(data));
+      const status = document.getElementById('session-status');
+      const now = new Date();
+      status.textContent = `Saved ${now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}`;
+      status.classList.add('visible');
+      setTimeout(() => status.classList.remove('visible'), 2500);
+    }
+
+    function restoreSession() {
+      const raw = localStorage.getItem(SESSION_KEY);
+      if (!raw) return;
+      try {
+        const data = JSON.parse(raw);
+        if (data.scores) Object.assign(scores, data.scores);
+        if (data.fields) {
+          Object.entries(data.fields).forEach(([id, val]) => {
+            const el = document.getElementById(id);
+            if (el) el.value = val;
+          });
+        }
+        if (data.rev) {
+          if (data.rev.price)  document.getElementById('rev-current-price').value  = data.rev.price;
+          if (data.rev.litter) document.getElementById('rev-litter-size').value    = data.rev.litter;
+          if (data.rev.annual) document.getElementById('rev-annual-litters').value = data.rev.annual;
+        }
+        if (data.notes) {
+          Object.entries(data.notes).forEach(([id, val]) => {
+            const el = document.getElementById(id);
+            if (el) el.value = val;
+          });
+        }
+        // Re-apply score button highlights
+        Object.entries(scores).forEach(([qId, score]) => {
+          const btn = document.querySelector(`.score-btn[data-qid="${qId}"][data-score="${score}"]`);
+          if (btn) {
+            btn.closest('.score-buttons')?.querySelectorAll('.score-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+          }
+        });
+        // Re-render category scores
+        CATEGORIES.forEach(cat => updateCategoryScore(cat.id));
+      } catch(e) { console.error('Session restore failed', e); }
+    }
+
+    function clearSession() {
+      if (!confirm('Clear this session? All scores and notes will be removed.')) return;
+      localStorage.removeItem(SESSION_KEY);
+      location.reload();
+    }
+
+    // Auto-save every 60 seconds
+    setInterval(() => {
+      if (document.getElementById('audit-tool').style.display !== 'none') saveSession();
+    }, 60000);
+
+    // ─── UNANSWERED INDICATOR ──────────────────────────────────────────────────
+    function updateUnansweredBadge(catId) {
+      const cat = CATEGORIES.find(c => c.id === catId);
+      const unanswered = cat.questions.filter((q, i) => scores[`${catId}_${i}`] === undefined).length;
+      const badge = document.getElementById(`unanswered-${catId}`);
+      if (!badge) return;
+      if (unanswered > 0) {
+        badge.textContent = `${unanswered} unanswered`;
+        badge.style.display = 'inline-block';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
+
     function calculateRevenue() {
       const price  = parseFloat(document.getElementById('rev-current-price').value) || 0;
       const litter = parseFloat(document.getElementById('rev-litter-size').value)   || 0;
       const annual = parseFloat(document.getElementById('rev-annual-litters').value) || 0;
 
+      const revError = document.getElementById('rev-error');
       if (!price || !litter || !annual) {
-        alert('Please enter current price per puppy, average litter size, and annual number of litters.');
+        revError.textContent = 'Please enter current price per puppy, litter size, and annual litters.';
         return;
       }
+      revError.textContent = '';
 
-      const certifiedTarget = 9500;
+      // Target = double current price, floor of $6,000
+      const certifiedTarget = Math.max(price * 2, 6000);
       const currentAnnual   = price * litter * annual;
       const targetAnnual    = certifiedTarget * litter * annual;
+      const annualGap       = Math.max(0, targetAnnual - currentAnnual);
       const litterGap       = Math.max(0, (certifiedTarget - price) * litter);
-      const ninetyDay       = Math.max(0, (certifiedTarget - price) * litter * (annual / 4));
-      const multiple        = litterGap > 0 ? (ninetyDay / 497).toFixed(1) : '—';
+      const ninetyDay       = Math.max(0, litterGap * (annual / 4));
+      const multiple        = ninetyDay > 0 ? (ninetyDay / 497).toFixed(1) : null;
+      // Break-even: how many litters until $497 is recovered
+      const breakeven       = litterGap > 0 ? Math.ceil(497 / litterGap) : null;
 
+      // Trajectory numbers
       document.getElementById('rv-current-annual').textContent = fmt(currentAnnual);
       document.getElementById('rv-target-annual').textContent  = fmt(targetAnnual);
-      document.getElementById('rv-litter-gap').textContent     = litterGap > 0 ? fmt(litterGap) : '$0 (at or above target)';
-      document.getElementById('rv-90day').textContent          = ninetyDay > 0 ? fmt(ninetyDay) : '$0 (at or above target)';
-      document.getElementById('rv-multiple').textContent       = multiple !== '—' ? `${multiple}× return on $497` : 'At or above certified target';
+      document.getElementById('rv-target-label').textContent   = `Breedwise target — ${fmt(certifiedTarget)}/puppy`;
+
+      // Detail rows
+      document.getElementById('rv-annual-gap').textContent  = annualGap > 0 ? fmt(annualGap) + ' / year' : '$0 — at or above target';
+      document.getElementById('rv-litter-gap').textContent  = litterGap > 0 ? fmt(litterGap) + ' per litter' : '$0 — at or above target';
+      document.getElementById('rv-90day').textContent       = ninetyDay > 0 ? fmt(ninetyDay) : '$0 — at or above target';
+      document.getElementById('rv-multiple').textContent    = multiple ? `${multiple}× return on $497` : 'At or above certified target';
+
+      if (breakeven !== null && breakeven <= 3) {
+        document.getElementById('rv-breakeven').textContent = breakeven === 1 ? 'First litter after certification' : `Within ${breakeven} litters`;
+        document.getElementById('rv-breakeven-row').style.display = 'flex';
+      } else {
+        document.getElementById('rv-breakeven-row').style.display = 'none';
+      }
 
       document.getElementById('revenue-output').classList.add('visible');
     }
@@ -1875,6 +2500,15 @@
 
     // ─── GENERATE SCORECARD ────────────────────────────────────────────────────
     function generateScorecard() {
+      // Warn if any categories have unanswered questions
+      const incomplete = CATEGORIES.filter(cat =>
+        cat.questions.some((q, i) => scores[`${cat.id}_${i}`] === undefined)
+      );
+      if (incomplete.length > 0) {
+        const names = incomplete.map(c => `${c.num} – ${c.name}`).join('\n  • ');
+        if (!confirm(`${incomplete.length} categor${incomplete.length > 1 ? 'ies have' : 'y has'} unanswered questions:\n\n  • ${names}\n\nGenerate scorecard anyway?`)) return;
+      }
+
       // Breeder info
       const breederName  = document.getElementById('f-breeder-name').value  || '—';
       const programName  = document.getElementById('f-program-name').value  || '—';
@@ -1915,6 +2549,11 @@
       let catTableHTML = '';
       CATEGORIES.forEach(cat => {
         const s = getCategoryScore(cat.id);
+        const catNoteEl = document.getElementById(`cat-note-${cat.id}`);
+        const catNote = catNoteEl ? catNoteEl.value.trim() : '';
+        // Count skipped core questions
+        const skippedCore = cat.questions.filter((q, i) => q.core && scores[`${cat.id}_${i}`] === undefined).length;
+        const skippedBadge = skippedCore > 0 ? `<span class="skipped-core-badge">${skippedCore} core skipped</span>` : '';
         const display = s !== null ? s : '—';
         const barWidth = s !== null ? s : 0;
         let barColor = '#c9a84c';
@@ -1924,14 +2563,59 @@
         }
         const scoreColor = s !== null ? (s >= 84 ? '#5aad6c' : s >= 60 ? '#c9a84c' : '#a05050') : 'var(--mid)';
         catTableHTML += `
-          <div class="sc-cat-row">
+          <div class="sc-cat-row" style="flex-wrap:wrap;">
             <span class="sc-cat-num">${cat.num}</span>
-            <span class="sc-cat-name">${cat.name}</span>
+            <span class="sc-cat-name">${cat.name}${skippedBadge}</span>
             <div class="sc-cat-bar-wrap"><div class="sc-cat-bar" style="width:${barWidth}%;background:${barColor};"></div></div>
             <span class="sc-cat-score" style="color:${scoreColor}">${display}</span>
+            ${catNote ? `<div class="sc-cat-notes" style="width:100%;margin-top:6px;padding-left:60px;">${catNote}</div>` : ''}
           </div>`;
       });
       document.getElementById('sc-category-table').innerHTML = catTableHTML;
+
+      // Blindspots — questions scored 0 or 1
+      const blindspots = [];
+      CATEGORIES.forEach(cat => {
+        cat.questions.forEach((q, i) => {
+          const qId = `${cat.id}_${i}`;
+          const score = scores[qId];
+          if (score !== undefined && score <= 1) {
+            const qText = typeof q === 'string' ? q : q.text;
+            const note  = typeof q === 'object' && q.advisorNote ? q.advisorNote : null;
+            // Pull first sentence of advisorNote as the consequence
+            const consequence = note ? note.split(/(?<=[.!?])\s+/)[0] : null;
+            blindspots.push({ cat, qText, score, consequence });
+          }
+        });
+      });
+
+      const blindspotsSection = document.getElementById('sc-blindspots-section');
+      const blindspotsList    = document.getElementById('sc-blindspots-list');
+      const blindspotsDivider = document.getElementById('sc-blindspots-divider');
+
+      if (blindspots.length === 0) {
+        blindspotsList.innerHTML = `<p class="blindspot-none">No critical gaps identified — all questions scored 2 or above.</p>`;
+      } else {
+        blindspotsList.innerHTML = blindspots.map(({ cat, qText, score, consequence }) => `
+          <div class="blindspot-item">
+            <div class="blindspot-header">
+              <div class="blindspot-score">${score}</div>
+              <div class="blindspot-meta">
+                <span class="blindspot-category">${cat.num} — ${cat.name}</span>
+                <span class="blindspot-question">${qText}</span>
+              </div>
+            </div>
+            ${consequence ? `
+            <div class="blindspot-consequence">
+              <span class="blindspot-consequence-tag">Why This Matters</span>
+              ${consequence}
+            </div>` : ''}
+          </div>`).join('');
+      }
+
+      // Always show blindspots section
+      blindspotsSection.style.display = 'block';
+      blindspotsDivider.style.display = 'block';
 
       // Revenue section
       const revOutput = document.getElementById('revenue-output');
@@ -1942,20 +2626,34 @@
         const price   = parseFloat(document.getElementById('rev-current-price').value) || 0;
         const litter  = parseFloat(document.getElementById('rev-litter-size').value)   || 0;
         const annual  = parseFloat(document.getElementById('rev-annual-litters').value)|| 0;
-        const certifiedTarget = 9500;
+        // Target = double current price, floor of $6,000
+        const certifiedTarget = Math.max(price * 2, 6000);
         const currentAnnual = price * litter * annual;
         const targetAnnual  = certifiedTarget * litter * annual;
+        const annualGap     = Math.max(0, targetAnnual - currentAnnual);
         const litterGap     = Math.max(0, (certifiedTarget - price) * litter);
-        const ninetyDay     = Math.max(0, (certifiedTarget - price) * litter * (annual / 4));
+        const ninetyDay     = Math.max(0, litterGap * (annual / 4));
         const multiple      = litterGap > 0 ? (ninetyDay / 497).toFixed(1) : null;
         document.getElementById('sc-revenue-block').innerHTML = `
-          <div class="sc-revenue-row"><span class="label">Current Price Per Puppy</span><span class="value">${fmt(price)}</span></div>
-          <div class="sc-revenue-row"><span class="label">Current Annual Revenue (estimated)</span><span class="value">${fmt(currentAnnual)}</span></div>
-          <div class="sc-revenue-row"><span class="label">Certified Target Price (conservative)</span><span class="value gold">$9,500</span></div>
-          <div class="sc-revenue-row"><span class="label">Projected Annual Revenue at Standard</span><span class="value gold">${fmt(targetAnnual)}</span></div>
-          <div class="sc-revenue-row"><span class="label">Per-Litter Revenue Gap</span><span class="value">${litterGap > 0 ? fmt(litterGap) : '$0 — at or above target'}</span></div>
-          <div class="sc-revenue-row"><span class="label">90-Day Revenue Opportunity</span><span class="value success">${ninetyDay > 0 ? fmt(ninetyDay) : '$0 — at or above target'}</span></div>
-          ${multiple ? `<div class="sc-revenue-row"><span class="label">Return on $497 Review Investment</span><span class="value gold">${multiple}× in 90 days</span></div>` : ''}`;
+          <div class="rev-trajectory-grid" style="margin-bottom:20px;">
+            <div class="rev-traj-col" style="text-align:center;">
+              <span class="rev-traj-label">Current Path</span>
+              <span class="rev-traj-sub">No changes</span>
+              <div class="rev-traj-number" style="color:var(--mid);font-family:var(--heading);font-size:32px;font-weight:600;">${fmt(currentAnnual)}</div>
+              <span class="rev-traj-unit">per year</span>
+            </div>
+            <div style="font-size:24px;color:var(--gold);opacity:0.4;flex-shrink:0;">→</div>
+            <div class="rev-traj-col" style="text-align:center;background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.2);padding:16px;">
+              <span class="rev-traj-label">Certified Path</span>
+              <span class="rev-traj-sub">Breedwise target — ${fmt(certifiedTarget)}/puppy</span>
+              <div class="rev-traj-number" style="color:var(--gold);font-family:var(--heading);font-size:32px;font-weight:600;">${fmt(targetAnnual)}</div>
+              <span class="rev-traj-unit">per year</span>
+            </div>
+          </div>
+          <div class="sc-revenue-row"><span class="label">Annual Gap — Left on the table every year</span><span class="value danger" style="color:#c05050;font-size:17px;">${annualGap > 0 ? fmt(annualGap) : '$0 — at target'}</span></div>
+          <div class="sc-revenue-row"><span class="label">Per-Litter Revenue Gap</span><span class="value">${litterGap > 0 ? fmt(litterGap) : '$0 — at target'}</span></div>
+          <div class="sc-revenue-row"><span class="label">90-Day Revenue Opportunity</span><span class="value success">${ninetyDay > 0 ? fmt(ninetyDay) : '$0 — at target'}</span></div>
+          ${multiple ? `<div class="sc-revenue-row"><span class="label">Return on $497 Investment</span><span class="value gold">${multiple}× in 90 days</span></div>` : ''}`;
       } else {
         document.getElementById('sc-revenue-divider').style.display = 'none';
         document.getElementById('sc-revenue-section').style.display = 'none';
@@ -1973,6 +2671,69 @@
 
       // Executive summary
       document.getElementById('sc-exec-summary').textContent = execSummary;
+
+      // ── Certification Unlock Block ─────────────────────────────────────────
+      const scoredCats = CATEGORIES.filter(c => getCategoryScore(c.id) !== null);
+      if (scoredCats.length > 0) {
+        const highest = scoredCats.reduce((a,b) => getCategoryScore(a.id) >= getCategoryScore(b.id) ? a : b);
+        const lowest  = scoredCats.reduce((a,b) => getCategoryScore(a.id) <= getCategoryScore(b.id) ? a : b);
+        const highScore = getCategoryScore(highest.id);
+        const lowScore  = getCategoryScore(lowest.id);
+        const gapTo84   = overall !== null ? Math.max(0, 84 - overall) : null;
+
+        // Revenue for unlock narrative (if available)
+        const revPrice  = parseFloat(document.getElementById('rev-current-price').value)  || 0;
+        const revLitter = parseFloat(document.getElementById('rev-litter-size').value)    || 0;
+        const revAnnual = parseFloat(document.getElementById('rev-annual-litters').value) || 0;
+        const hasRev    = revPrice > 0 && revLitter > 0 && revAnnual > 0;
+        const unlockTarget = Math.max(revPrice * 2, 6000);
+        const annualGapVal = hasRev ? Math.max(0, (unlockTarget - revPrice) * revLitter * revAnnual) : 0;
+
+        // Narrative — tailored to score band
+        let narrative = '';
+        const name = breederName !== '—' ? breederName.split(' ')[0] : 'This program';
+        if (overall >= 84) {
+          narrative = `<strong>${name}</strong> is already operating at or above the Certified Breeder standard across most areas. The primary opportunity at this level is consolidating documentation and brand visibility so that existing strengths are fully legible to buyers — translating demonstrated quality into <strong>commanding prices without justification</strong>. The path forward is refinement, not rebuilding.`;
+        } else if (overall >= 60) {
+          narrative = `<strong>${name}</strong> has a genuine foundation — several areas already show documented, repeatable systems. The gap between a ${overall}/100 and the 84-point certified standard is not a gap in effort. It is a gap in <strong>structure and visibility</strong>: the work is happening but it is not yet systematized in ways that buyers can verify or that justify premium pricing on contact. Closing that gap is a documentation and positioning problem, not a breeding problem.${hasRev && annualGapVal > 0 ? ` At current pricing, that gap costs <strong>${fmt(annualGapVal)} per year</strong> in recoverable revenue.` : ''}`;
+        } else {
+          narrative = `A score of ${overall}/100 means the program's strongest asset is the breeder's personal knowledge and dedication — neither of which translates to buyer trust or premium pricing without systematic documentation. <strong>${name} is producing value that the market cannot yet verify</strong>. Certification addresses this directly: it builds the evidence layer that makes everything the breeder already does visible, provable, and worth paying for.${hasRev && annualGapVal > 0 ? ` The annual cost of remaining uncertified at current pricing is approximately <strong>${fmt(annualGapVal)}</strong>.` : ''}`;
+        }
+
+        document.getElementById('sc-unlock-title').textContent = `What Certification Unlocks for ${breederName !== '—' ? breederName : 'This Program'}`;
+        document.getElementById('sc-unlock-block').innerHTML = `
+          <div class="sc-unlock-grid">
+            <div class="sc-unlock-stat">
+              <span class="sc-unlock-stat-label">Strongest Category</span>
+              <span class="sc-unlock-stat-val">${highScore}/100</span>
+              <span class="sc-unlock-stat-sub">${highest.name}</span>
+            </div>
+            <div class="sc-unlock-stat">
+              <span class="sc-unlock-stat-label">Highest-Leverage Gap</span>
+              <span class="sc-unlock-stat-val" style="color:#a05050;">${lowScore}/100</span>
+              <span class="sc-unlock-stat-sub">${lowest.name}</span>
+            </div>
+            ${gapTo84 !== null ? `<div class="sc-unlock-stat">
+              <span class="sc-unlock-stat-label">Points to Certified Standard</span>
+              <span class="sc-unlock-stat-val" style="color:${gapTo84 === 0 ? '#5aad6c' : 'var(--gold)'};">${gapTo84 === 0 ? 'Achieved ✓' : '+' + gapTo84 + ' pts'}</span>
+              <span class="sc-unlock-stat-sub">Certified average is 84/100</span>
+            </div>` : ''}
+            ${hasRev && annualGapVal > 0 ? `<div class="sc-unlock-stat">
+              <span class="sc-unlock-stat-label">Annual Revenue Gap</span>
+              <span class="sc-unlock-stat-val" style="color:#c05050;">${fmt(annualGapVal)}</span>
+              <span class="sc-unlock-stat-sub">Recoverable at certified pricing</span>
+            </div>` : ''}
+          </div>
+          <div class="sc-unlock-narrative">${narrative}</div>`;
+        document.getElementById('sc-unlock-section').style.display = 'block';
+      } else {
+        document.getElementById('sc-unlock-section').style.display = 'none';
+      }
+
+      // Set print footer data attributes
+      const wrap = document.getElementById('scorecard-content');
+      wrap.setAttribute('data-program', programName !== '—' ? programName : 'Breedwise Review');
+      wrap.setAttribute('data-date', sessionDate !== '—' ? sessionDate : new Date().toLocaleDateString());
 
       // Show modal
       document.getElementById('scorecard-modal').classList.add('visible');
@@ -1992,21 +2753,17 @@
       if (e.target === this) closeScorecard();
     });
 
-    // ─── TAB SWITCHING ──────────────────────────────────────────────────────────
-    function switchTab(tab) {
-      const auditMain   = document.querySelector('.audit-main');
-      const historyPanel = document.getElementById('history-panel');
+    // ─── HISTORY TAB SWITCH ─────────────────────────────────────────────────────
+    function switchToHistory() {
+      document.querySelector('.audit-main').style.display = 'none';
+      document.getElementById('history-panel').classList.add('active');
       document.querySelectorAll('.portal-tab').forEach(t => t.classList.remove('active'));
-      if (tab === 'history') {
-        auditMain.style.display   = 'none';
-        historyPanel.classList.add('active');
-        document.getElementById('tab-history').classList.add('active');
-        renderHistory();
-      } else {
-        auditMain.style.display   = 'block';
-        historyPanel.classList.remove('active');
-        document.getElementById('tab-audit').classList.add('active');
-      }
+      document.getElementById('tab-history').classList.add('active');
+      renderHistory();
+    }
+    function switchFromHistory() {
+      document.querySelector('.audit-main').style.display = 'block';
+      document.getElementById('history-panel').classList.remove('active');
     }
 
     // ─── CONFIG ─────────────────────────────────────────────────────────────────
@@ -2016,88 +2773,21 @@
       body.classList.toggle('open');
       label.textContent = body.classList.contains('open') ? 'Collapse ▴' : 'Configure ▾';
     }
-
     function saveConfig() {
-      const config = {
+      localStorage.setItem('bw_config', JSON.stringify({
         airtableKey:   document.getElementById('cfg-airtable-key').value,
         airtableBase:  document.getElementById('cfg-airtable-base').value,
         airtableTable: document.getElementById('cfg-airtable-table').value
-      };
-      localStorage.setItem('bw_config', JSON.stringify(config));
+      }));
     }
-
     function loadConfig() {
-      const stored = localStorage.getItem('bw_config');
-      if (!stored) return;
-      const config = JSON.parse(stored);
-      if (config.airtableKey)   document.getElementById('cfg-airtable-key').value   = config.airtableKey;
-      if (config.airtableBase)  document.getElementById('cfg-airtable-base').value  = config.airtableBase;
-      if (config.airtableTable) document.getElementById('cfg-airtable-table').value = config.airtableTable;
+      const c = JSON.parse(localStorage.getItem('bw_config') || '{}');
+      if (c.airtableKey)   document.getElementById('cfg-airtable-key').value   = c.airtableKey;
+      if (c.airtableBase)  document.getElementById('cfg-airtable-base').value  = c.airtableBase;
+      if (c.airtableTable) document.getElementById('cfg-airtable-table').value = c.airtableTable;
     }
 
-    // ─── AUTO-SAVE TO LOCALSTORAGE ──────────────────────────────────────────────
-    const FORM_FIELDS = [
-      'f-breeder-name','f-program-name','f-session-date','f-breed','f-years','f-advisor','f-pre-notes',
-      'rev-current-price','rev-litter-size','rev-annual-litters',
-      'action-category','action-1','action-2','action-3','exec-summary'
-    ];
-
-    function autoSave() {
-      const draft = {};
-      FORM_FIELDS.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) draft[id] = el.value;
-      });
-      draft.scores = { ...scores };
-      const noteData = {};
-      CATEGORIES.forEach(cat => {
-        cat.questions.forEach((q, i) => {
-          const qId = `${cat.id}_${i}`;
-          const el = document.getElementById(`notes-${qId}`);
-          if (el) noteData[qId] = el.value;
-        });
-        const catNoteEl = document.getElementById(`cat-notes-${cat.id}`);
-        if (catNoteEl) noteData[`cat_${cat.id}`] = catNoteEl.value;
-      });
-      draft.notes = noteData;
-      localStorage.setItem('bw_draft', JSON.stringify(draft));
-    }
-
-    function loadDraft() {
-      const stored = localStorage.getItem('bw_draft');
-      if (!stored) return;
-      const draft = JSON.parse(stored);
-      FORM_FIELDS.forEach(id => {
-        const el = document.getElementById(id);
-        if (el && draft[id] !== undefined) el.value = draft[id];
-      });
-      if (draft.scores) {
-        Object.entries(draft.scores).forEach(([qId, val]) => {
-          scores[qId] = val;
-          const btn = document.querySelector(`.score-btn[data-qid="${qId}"][data-val="${val}"]`);
-          if (btn) btn.classList.add('selected');
-        });
-        CATEGORIES.forEach(cat => updateCategoryScore(cat.id));
-      }
-      if (draft.notes) {
-        Object.entries(draft.notes).forEach(([id, val]) => {
-          const el = id.startsWith('cat_')
-            ? document.getElementById(`cat-notes-${id.slice(4)}`)
-            : document.getElementById(`notes-${id}`);
-          if (el) el.value = val;
-        });
-      }
-    }
-
-    function attachAutoSave() {
-      FORM_FIELDS.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener('input', autoSave);
-      });
-      document.getElementById('categories-container').addEventListener('input', autoSave);
-    }
-
-    // ─── COLLECT ALL REVIEW DATA ────────────────────────────────────────────────
+    // ─── COLLECT ALL DATA ───────────────────────────────────────────────────────
     function collectReviewData() {
       const data = {
         timestamp:     new Date().toISOString(),
@@ -2109,10 +2799,7 @@
         advisor:       document.getElementById('f-advisor').value       || '—',
         preNotes:      document.getElementById('f-pre-notes').value     || '',
         overallScore:  getOverallScore(),
-        categoryScores: {},
-        categoryNotes:  {},
-        questionScores: {},
-        questionNotes:  {},
+        categoryScores: {}, categoryNotes: {}, questionScores: {}, questionNotes: {},
         revenue: {
           currentPrice:  document.getElementById('rev-current-price').value  || '',
           litterSize:    document.getElementById('rev-litter-size').value     || '',
@@ -2128,13 +2815,13 @@
       };
       CATEGORIES.forEach(cat => {
         data.categoryScores[cat.id] = getCategoryScore(cat.id);
-        const catNoteEl = document.getElementById(`cat-notes-${cat.id}`);
-        data.categoryNotes[cat.id] = catNoteEl ? catNoteEl.value : '';
+        const cn = document.getElementById(`cat-notes-${cat.id}`);
+        data.categoryNotes[cat.id] = cn ? cn.value : '';
         cat.questions.forEach((q, i) => {
           const qId = `${cat.id}_${i}`;
           data.questionScores[qId] = scores[qId] !== undefined ? scores[qId] : null;
-          const noteEl = document.getElementById(`notes-${qId}`);
-          data.questionNotes[qId] = noteEl ? noteEl.value : '';
+          const ne = document.getElementById(`notes-${qId}`);
+          data.questionNotes[qId] = ne ? ne.value : '';
         });
       });
       return data;
@@ -2144,295 +2831,209 @@
     function saveReview() {
       const data    = collectReviewData();
       const history = JSON.parse(localStorage.getItem('bw_reviews') || '[]');
-      const existing = history.findIndex(r => r.breederName === data.breederName && r.sessionDate === data.sessionDate);
-      if (existing >= 0) history[existing] = data;
-      else history.unshift(data);
+      const idx     = history.findIndex(r => r.breederName === data.breederName && r.sessionDate === data.sessionDate);
+      if (idx >= 0) history[idx] = data; else history.unshift(data);
       localStorage.setItem('bw_reviews', JSON.stringify(history));
-      localStorage.removeItem('bw_draft');
       showToast('Review saved', 'success');
       sendToAirtable(data);
     }
 
     // ─── AIRTABLE SYNC ──────────────────────────────────────────────────────────
     async function sendToAirtable(data) {
-      const config = JSON.parse(localStorage.getItem('bw_config') || '{}');
-      if (!config.airtableKey || !config.airtableBase || !config.airtableTable) return;
+      const c = JSON.parse(localStorage.getItem('bw_config') || '{}');
+      if (!c.airtableKey || !c.airtableBase || !c.airtableTable) return;
       const fields = {
-        'Breeder Name':         data.breederName,
-        'Program Name':         data.programName,
-        'Session Date':         data.sessionDate,
-        'Breed':                data.breed,
-        'Years Breeding':       data.years,
-        'Advisor':              data.advisor,
-        'Overall Score':        data.overallScore,
-        'Executive Summary':    data.execSummary,
-        'Pre-Session Notes':    data.preNotes,
-        'Priority Category':    data.actionCategory,
-        'Action 1':             data.actions[0],
-        'Action 2':             data.actions[1],
-        'Action 3':             data.actions[2],
-        'Review JSON':          JSON.stringify(data)
+        'Breeder Name': data.breederName, 'Program Name': data.programName,
+        'Session Date': data.sessionDate, 'Breed': data.breed,
+        'Years Breeding': data.years,     'Advisor': data.advisor,
+        'Overall Score': data.overallScore, 'Executive Summary': data.execSummary,
+        'Pre-Session Notes': data.preNotes, 'Priority Category': data.actionCategory,
+        'Action 1': data.actions[0], 'Action 2': data.actions[1], 'Action 3': data.actions[2],
+        'Review JSON': JSON.stringify(data)
       };
       if (data.revenue.currentPrice) {
         fields['Current Price Per Puppy'] = parseFloat(data.revenue.currentPrice);
         fields['Litter Size']             = parseFloat(data.revenue.litterSize);
         fields['Annual Litters']          = parseFloat(data.revenue.annualLitters);
       }
-      CATEGORIES.forEach(cat => {
-        fields[cat.name + ' Score'] = data.categoryScores[cat.id];
-      });
+      CATEGORIES.forEach(cat => { fields[cat.name + ' Score'] = data.categoryScores[cat.id]; });
       try {
-        const res = await fetch(`https://api.airtable.com/v0/${config.airtableBase}/${encodeURIComponent(config.airtableTable)}`, {
+        const res = await fetch(`https://api.airtable.com/v0/${c.airtableBase}/${encodeURIComponent(c.airtableTable)}`, {
           method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${config.airtableKey}`,
-            'Content-Type':  'application/json'
-          },
+          headers: { 'Authorization': `Bearer ${c.airtableKey}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({ fields })
         });
         if (res.ok) showToast('Synced to Airtable', 'success');
         else        showToast('Airtable sync failed — check config', '');
-      } catch(e) { /* silent fail if offline */ }
+      } catch(e) {}
     }
 
-    // ─── EXPORT FOR CLAUDE ANALYSIS ─────────────────────────────────────────────
+    // ─── EXPORT FOR CLAUDE ───────────────────────────────────────────────────────
     function buildClaudeExport(data) {
-      const certifiedAvg = 84;
-      let text = `BREEDWISE STANDARD REVIEW — CLAUDE ANALYSIS REQUEST
-Generated: ${new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}
-${'═'.repeat(63)}
+      const line = (label, val) => `${label.padEnd(28)}${val}\n`;
+      let txt = `BREEDWISE STANDARD REVIEW — CLAUDE ANALYSIS REQUEST\nGenerated: ${new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}\n${'═'.repeat(63)}\n\nSESSION INFORMATION\n${'─'.repeat(19)}\n`;
+      txt += line('Breeder Name:', data.breederName);
+      txt += line('Program Name:', data.programName);
+      txt += line('Session Date:', data.sessionDate);
+      txt += line('Breed:', data.breed);
+      txt += line('Years Breeding:', data.years);
+      txt += line('Reviewing Advisor:', data.advisor);
+      txt += `Pre-Session Notes:\n${data.preNotes || '(none)'}\n\n`;
 
-SESSION INFORMATION
-${'─'.repeat(19)}
-Breeder Name:       ${data.breederName}
-Program Name:       ${data.programName}
-Session Date:       ${data.sessionDate}
-Breed:              ${data.breed}
-Years Breeding:     ${data.years}
-Reviewing Advisor:  ${data.advisor}
-Pre-Session Notes:  ${data.preNotes || '(none)'}
+      const ca = 84;
+      txt += `OVERALL SCORE\n${'─'.repeat(13)}\n`;
+      txt += line('This Program:', data.overallScore !== null ? data.overallScore + '/100' : 'Not scored');
+      txt += line('Certified Breeder Average:', ca + '/100');
+      txt += line('Industry Uncertified Avg:', '<40/100');
+      txt += line('Gap to Certification:', data.overallScore !== null ? Math.max(0, ca - data.overallScore) + ' points' : '—');
 
-OVERALL SCORE
-${'─'.repeat(13)}
-This Program:               ${data.overallScore !== null ? data.overallScore + '/100' : 'Not scored'}
-Certified Breeder Average:  ${certifiedAvg}/100
-Industry Uncertified Avg:   <40/100
-Gap to Certification:       ${data.overallScore !== null ? Math.max(0, certifiedAvg - data.overallScore) + ' points' : '—'}
-
-CATEGORY SCORES — FULL DETAIL
-${'─'.repeat(30)}`;
-
+      txt += `\nCATEGORY SCORES — FULL DETAIL\n${'─'.repeat(30)}\n`;
       CATEGORIES.forEach(cat => {
-        const catScore = data.categoryScores ? data.categoryScores[cat.id] : null;
-        const catNotes = data.categoryNotes  ? data.categoryNotes[cat.id]  : '';
-        text += `\n\n[${cat.num}] ${cat.name}`;
-        text += `\n     Type:  ${cat.type === 'science' ? 'Veterinary Science' : 'Business'}`;
-        text += `\n     Score: ${catScore !== null && catScore !== undefined ? catScore + '/100' : 'Not scored'}\n`;
+        const cs = data.categoryScores ? data.categoryScores[cat.id] : null;
+        const cn = data.categoryNotes  ? data.categoryNotes[cat.id]  : '';
+        txt += `\n[${cat.num}] ${cat.name} (${cat.type === 'science' ? 'Veterinary Science' : 'Business'})\n`;
+        txt += `     Score: ${cs !== null && cs !== undefined ? cs + '/100' : 'Not scored'}\n`;
         cat.questions.forEach((q, i) => {
-          const qId    = `${cat.id}_${i}`;
-          const qText  = typeof q === 'string' ? q : q.text;
-          const qScore = data.questionScores ? data.questionScores[qId] : null;
-          const qNote  = data.questionNotes  ? data.questionNotes[qId]  : '';
-          text += `\n     Q${String(i+1).padStart(2,'0')} [${qScore !== null && qScore !== undefined ? qScore + '/5' : 'not scored'}]`;
-          text += `\n     ${qText}`;
-          if (qNote) text += `\n     >> Advisor note: ${qNote}`;
+          const qId   = `${cat.id}_${i}`;
+          const qText = typeof q === 'string' ? q : q.text;
+          const qs    = data.questionScores ? data.questionScores[qId] : null;
+          const qn    = data.questionNotes  ? data.questionNotes[qId]  : '';
+          txt += `\n     Q${String(i+1).padStart(2,'0')} [${qs !== null && qs !== undefined ? qs + '/5' : 'not scored'}]\n     ${qText}\n`;
+          if (qn) txt += `     >> Advisor note: ${qn}\n`;
         });
-        if (catNotes) text += `\n\n     Category summary: ${catNotes}`;
+        if (cn) txt += `\n     Category summary: ${cn}\n`;
       });
 
-      text += `\n\n${'─'.repeat(63)}\nREVENUE IMPACT CALCULATION\n${'─'.repeat(26)}\n`;
+      txt += `\n${'─'.repeat(63)}\nREVENUE IMPACT CALCULATION\n${'─'.repeat(26)}\n`;
       if (data.revenue && data.revenue.currentPrice) {
-        const price    = parseFloat(data.revenue.currentPrice);
-        const litter   = parseFloat(data.revenue.litterSize);
-        const annual   = parseFloat(data.revenue.annualLitters);
-        const target   = 9500;
-        const curAnn   = price * litter * annual;
-        const tgtAnn   = target * litter * annual;
-        const litGap   = Math.max(0, (target - price) * litter);
-        const ninety   = Math.max(0, (target - price) * litter * (annual / 4));
-        text += `Current Price Per Puppy:    $${price.toLocaleString()}\n`;
-        text += `Average Litter Size:        ${litter}\n`;
-        text += `Annual Litters:             ${annual}\n`;
-        text += `Current Annual Revenue:     $${Math.round(curAnn).toLocaleString()}\n`;
-        text += `Certified Target Revenue:   $${Math.round(tgtAnn).toLocaleString()}\n`;
-        text += `Per-Litter Revenue Gap:     $${Math.round(litGap).toLocaleString()}\n`;
-        text += `90-Day Revenue Opportunity: $${Math.round(ninety).toLocaleString()}\n`;
+        const p = parseFloat(data.revenue.currentPrice);
+        const l = parseFloat(data.revenue.litterSize);
+        const a = parseFloat(data.revenue.annualLitters);
+        const t = Math.max(p * 2, 6000);
+        txt += line('Current Price Per Puppy:', '$' + p.toLocaleString());
+        txt += line('Breedwise Target Price:', '$' + t.toLocaleString() + ' (2× rule, min $6,000)');
+        txt += line('Average Litter Size:', l.toString());
+        txt += line('Annual Litters:', a.toString());
+        txt += line('Current Annual Revenue:', '$' + Math.round(p*l*a).toLocaleString());
+        txt += line('Target Annual Revenue:', '$' + Math.round(t*l*a).toLocaleString());
+        txt += line('Per-Litter Gap:', '$' + Math.round(Math.max(0,(t-p)*l)).toLocaleString());
+        txt += line('90-Day Opportunity:', '$' + Math.round(Math.max(0,(t-p)*l*(a/4))).toLocaleString());
       } else {
-        text += `(Revenue calculation not completed for this review)\n`;
+        txt += '(Revenue calculation not completed)\n';
       }
 
-      text += `\n30-DAY ACTION PLAN\n${'─'.repeat(18)}\n`;
-      text += `Priority Category: ${data.actionCategory || '(not specified)'}\n`;
-      text += `Action 01: ${(data.actions && data.actions[0]) || '(not specified)'}\n`;
-      text += `Action 02: ${(data.actions && data.actions[1]) || '(not specified)'}\n`;
-      text += `Action 03: ${(data.actions && data.actions[2]) || '(not specified)'}\n`;
+      txt += `\n30-DAY ACTION PLAN\n${'─'.repeat(18)}\n`;
+      txt += `Priority Category: ${data.actionCategory || '(not specified)'}\n`;
+      txt += `Action 01: ${(data.actions && data.actions[0]) || '(not specified)'}\n`;
+      txt += `Action 02: ${(data.actions && data.actions[1]) || '(not specified)'}\n`;
+      txt += `Action 03: ${(data.actions && data.actions[2]) || '(not specified)'}\n`;
+      txt += `\nEXECUTIVE SUMMARY\n${'─'.repeat(17)}\n${data.execSummary || '(not completed)'}`;
 
-      text += `\nEXECUTIVE SUMMARY\n${'─'.repeat(17)}\n`;
-      text += (data.execSummary || '(not completed)');
-
-      text += `\n\n${'═'.repeat(63)}
-ANALYSIS REQUEST — INSTRUCTIONS FOR CLAUDE
-${'═'.repeat(63)}
-You are analyzing a completed Breedwise Standard Review scorecard.
-Breedwise is a veterinary-backed breeding program certification system.
-
-Scoring scale: 0–5 per question (0 = Not Implemented, 5 = Exemplary)
-Category scores = percentage of maximum possible points (0–100)
-Certified breeder standard: 84/100 overall
-Industry uncertified average: below 40/100
-
-Please provide the following analysis:
-
-1. SCORE INTERPRETATION
-   What does the overall score and category breakdown reveal about this program's current state? Where are they genuinely strong? What does the pattern of scores tell you about how this breeder operates?
-
-2. PRIORITY GAP ANALYSIS
-   For the lowest-scoring category (and second-lowest if close), what specific systems are missing? What does that gap cost this program — revenue, placement quality, health outcomes, or brand positioning?
-
-3. REVENUE OPPORTUNITY CONTEXTUALIZATION
-   Review the revenue impact numbers. Is the 90-day opportunity realistic? What changes would need to happen to capture it, and in what sequence?
-
-4. HIDDEN STRENGTHS
-   Identify 2–3 genuine strengths in the scores and notes that this breeder isn't actively leveraging. What would it look like to turn these into visible proof points?
-
-5. CERTIFICATION PATHWAY
-   What is the most efficient path to reaching 84/100? Which 2–3 categories would move the overall score most if improved? What is a realistic timeframe?
-
-6. FOLLOWING ACTIONS FOR THE ADVISOR
-   Beyond the 30-day plan already written, what should the reviewing advisor prioritize in the next conversation? What questions should be asked? What patterns in the notes suggest unresolved issues worth exploring?`;
-
-      return text;
+      txt += `\n\n${'═'.repeat(63)}\nANALYSIS REQUEST — INSTRUCTIONS FOR CLAUDE\n${'═'.repeat(63)}\nYou are analyzing a Breedwise Standard Review scorecard.\nBreedwise is a veterinary-backed breeding program certification system.\nScoring: 0–5 per question · Category scores = % of max · Certified standard = 84/100\nRevenue target logic: always 2× the breeder's current price (floor $6,000/puppy).\n\nPlease provide:\n\n1. SCORE INTERPRETATION — Overall and category pattern. Where are they strong? What does the score distribution reveal?\n\n2. PRIORITY GAP ANALYSIS — Lowest-scoring category: what specific systems are missing and what does that cost them?\n\n3. REVENUE OPPORTUNITY — Is the 90-day number realistic? What sequence of changes would unlock it?\n\n4. HIDDEN STRENGTHS — 2–3 genuine strengths not being leveraged for positioning or buyer conversion.\n\n5. CERTIFICATION PATHWAY — Most efficient path to 84/100. Which categories to prioritize? Realistic timeframe?\n\n6. ADVISOR FOLLOW-UP ACTIONS — What should the advisor do next with this breeder? What questions should be asked? What patterns in the notes suggest unresolved issues?`;
+      return txt;
     }
 
     function exportForClaude() {
       const data = collectReviewData();
-      const text = buildClaudeExport(data);
-      downloadTxt(text, `BW_Review_${data.breederName.replace(/\s+/g,'_')}_${data.sessionDate || 'undated'}.txt`);
+      const txt  = buildClaudeExport(data);
+      dlTxt(txt, `BW_Review_${data.breederName.replace(/\s+/g,'_')}_${data.sessionDate||'undated'}.txt`);
       showToast('Claude analysis file downloaded', 'success');
     }
-
-    function downloadTxt(text, filename) {
-      const blob = new Blob([text], { type: 'text/plain' });
-      const url  = URL.createObjectURL(blob);
-      const a    = document.createElement('a');
-      a.href     = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+    function dlTxt(txt, name) {
+      const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([txt],{type:'text/plain'})), download: name });
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
     }
 
     // ─── REVIEW HISTORY ─────────────────────────────────────────────────────────
     function renderHistory() {
       const list    = document.getElementById('history-list');
       const history = JSON.parse(localStorage.getItem('bw_reviews') || '[]');
-      if (history.length === 0) {
-        list.innerHTML = '<div class="history-empty">No saved reviews yet. Complete a review and click Save Review.</div>';
-        return;
-      }
-      list.innerHTML = history.map((review, idx) => {
-        const s     = review.overallScore;
-        const color = s !== null ? (s >= 84 ? '#5aad6c' : s >= 60 ? '#c9a84c' : '#a05050') : 'var(--muted)';
-        const saved = new Date(review.timestamp).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+      if (!history.length) { list.innerHTML = '<div class="history-empty">No saved reviews yet. Complete a review and click Save Review.</div>'; return; }
+      list.innerHTML = history.map((r, i) => {
+        const s = r.overallScore;
+        const col = s !== null ? (s >= 84 ? '#5aad6c' : s >= 60 ? '#c9a84c' : '#a05050') : 'var(--muted)';
+        const saved = new Date(r.timestamp).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
         return `<div class="history-item">
           <div class="history-item-info">
-            <div class="history-item-name">${review.breederName} — ${review.programName}</div>
-            <div class="history-item-meta">${review.breed} &nbsp;·&nbsp; ${review.sessionDate} &nbsp;·&nbsp; Advisor: ${review.advisor} &nbsp;·&nbsp; Saved ${saved}</div>
+            <div class="history-item-name">${r.breederName} — ${r.programName}</div>
+            <div class="history-item-meta">${r.breed} · ${r.sessionDate} · Advisor: ${r.advisor} · Saved ${saved}</div>
           </div>
-          <div class="history-item-score" style="color:${color}">${s !== null ? s : '—'}</div>
+          <div class="history-item-score" style="color:${col}">${s !== null ? s : '—'}</div>
           <div class="history-item-actions">
-            <button class="history-action-btn" onclick="loadReview(${idx})">Load</button>
-            <button class="history-action-btn" onclick="exportHistoryReview(${idx})">Export</button>
-            <button class="history-action-btn danger" onclick="deleteReview(${idx})">Delete</button>
+            <button class="history-action-btn" onclick="loadReview(${i})">Load</button>
+            <button class="history-action-btn" onclick="exportHistoryReview(${i})">Export</button>
+            <button class="history-action-btn danger" onclick="deleteReview(${i})">Delete</button>
           </div>
         </div>`;
       }).join('');
     }
 
     function loadReview(idx) {
-      const history = JSON.parse(localStorage.getItem('bw_reviews') || '[]');
-      const review  = history[idx];
-      if (!review) return;
-      switchTab('audit');
-      const fieldMap = {
-        'f-breeder-name':    review.breederName,
-        'f-program-name':    review.programName,
-        'f-session-date':    review.sessionDate,
-        'f-breed':           review.breed,
-        'f-years':           review.years,
-        'f-advisor':         review.advisor,
-        'f-pre-notes':       review.preNotes,
-        'rev-current-price': review.revenue.currentPrice,
-        'rev-litter-size':   review.revenue.litterSize,
-        'rev-annual-litters':review.revenue.annualLitters,
-        'action-category':   review.actionCategory,
-        'action-1':          review.actions[0],
-        'action-2':          review.actions[1],
-        'action-3':          review.actions[2],
-        'exec-summary':      review.execSummary
+      const r = JSON.parse(localStorage.getItem('bw_reviews') || '[]')[idx];
+      if (!r) return;
+      switchFromHistory();
+      switchSession('all');
+      const fm = {
+        'f-breeder-name': r.breederName, 'f-program-name': r.programName,
+        'f-session-date': r.sessionDate, 'f-breed': r.breed, 'f-years': r.years,
+        'f-advisor': r.advisor, 'f-pre-notes': r.preNotes,
+        'rev-current-price': r.revenue.currentPrice, 'rev-litter-size': r.revenue.litterSize,
+        'rev-annual-litters': r.revenue.annualLitters, 'action-category': r.actionCategory,
+        'action-1': r.actions[0], 'action-2': r.actions[1], 'action-3': r.actions[2],
+        'exec-summary': r.execSummary
       };
-      Object.entries(fieldMap).forEach(([id, val]) => {
-        const el = document.getElementById(id);
-        if (el && val !== undefined) el.value = val || '';
-      });
-      // Restore scores
-      Object.entries(review.questionScores || {}).forEach(([qId, val]) => {
+      Object.entries(fm).forEach(([id, val]) => { const el = document.getElementById(id); if (el) el.value = val || ''; });
+      Object.entries(r.questionScores || {}).forEach(([qId, val]) => {
         if (val !== null) {
           scores[qId] = val;
-          const btns = document.querySelectorAll(`.score-btn[data-qid="${qId}"]`);
-          btns.forEach(b => b.classList.remove('selected'));
-          const active = document.querySelector(`.score-btn[data-qid="${qId}"][data-val="${val}"]`);
-          if (active) active.classList.add('selected');
+          document.querySelectorAll(`.score-btn[data-qid="${qId}"]`).forEach(b => b.classList.remove('selected'));
+          const btn = document.querySelector(`.score-btn[data-qid="${qId}"][data-val="${val}"]`);
+          if (btn) btn.classList.add('selected');
         }
       });
       CATEGORIES.forEach(cat => updateCategoryScore(cat.id));
-      // Restore notes
-      Object.entries(review.questionNotes || {}).forEach(([qId, val]) => {
-        const el = document.getElementById(`notes-${qId}`);
-        if (el) el.value = val || '';
-      });
-      Object.entries(review.categoryNotes || {}).forEach(([catId, val]) => {
-        const el = document.getElementById(`cat-notes-${catId}`);
-        if (el) el.value = val || '';
-      });
-      showToast(`Loaded: ${review.breederName}`, 'success');
+      Object.entries(r.questionNotes || {}).forEach(([qId, v]) => { const el = document.getElementById(`notes-${qId}`); if (el) el.value = v || ''; });
+      Object.entries(r.categoryNotes || {}).forEach(([catId, v]) => { const el = document.getElementById(`cat-notes-${catId}`); if (el) el.value = v || ''; });
+      showToast(`Loaded: ${r.breederName}`, 'success');
     }
 
     function deleteReview(idx) {
       if (!confirm('Delete this review? This cannot be undone.')) return;
-      const history = JSON.parse(localStorage.getItem('bw_reviews') || '[]');
-      history.splice(idx, 1);
-      localStorage.setItem('bw_reviews', JSON.stringify(history));
+      const h = JSON.parse(localStorage.getItem('bw_reviews') || '[]');
+      h.splice(idx, 1);
+      localStorage.setItem('bw_reviews', JSON.stringify(h));
       renderHistory();
       showToast('Review deleted');
     }
 
     function exportHistoryReview(idx) {
-      const history = JSON.parse(localStorage.getItem('bw_reviews') || '[]');
-      const review  = history[idx];
-      if (!review) return;
-      const text = buildClaudeExport(review);
-      downloadTxt(text, `BW_Review_${review.breederName.replace(/\s+/g,'_')}_${review.sessionDate || 'undated'}.txt`);
+      const r = JSON.parse(localStorage.getItem('bw_reviews') || '[]')[idx];
+      if (!r) return;
+      dlTxt(buildClaudeExport(r), `BW_Review_${r.breederName.replace(/\s+/g,'_')}_${r.sessionDate||'undated'}.txt`);
       showToast('Claude analysis file downloaded', 'success');
     }
 
-    // ─── TOAST ──────────────────────────────────────────────────────────────────
-    let toastTimer = null;
-    function showToast(message, type) {
-      let toast = document.getElementById('bw-toast');
-      if (!toast) {
-        toast = document.createElement('div');
-        toast.id = 'bw-toast';
-        toast.className = 'toast';
-        document.body.appendChild(toast);
+    // Load config after unlock
+    const _origCheckPw = checkPassword;
+    function checkPassword() {
+      const input = document.getElementById('password-input');
+      if (input.value === 'breedwise2026') {
+        setTimeout(() => loadConfig(), 600);
       }
-      toast.textContent = message;
-      toast.className = `toast ${type || ''}`;
-      void toast.offsetWidth;
-      toast.classList.add('visible');
-      if (toastTimer) clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove('visible'), 3000);
+      _origCheckPw();
+    }
+
+    // ─── TOAST ──────────────────────────────────────────────────────────────────
+    let _toastTimer = null;
+    function showToast(msg, type) {
+      let t = document.getElementById('bw-toast');
+      if (!t) { t = document.createElement('div'); t.id = 'bw-toast'; t.className = 'toast'; document.body.appendChild(t); }
+      t.textContent = msg;
+      t.className = `toast ${type || ''}`;
+      void t.offsetWidth;
+      t.classList.add('visible');
+      if (_toastTimer) clearTimeout(_toastTimer);
+      _toastTimer = setTimeout(() => t.classList.remove('visible'), 3000);
     }
   </script>
 </body>
