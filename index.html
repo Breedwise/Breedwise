@@ -12,20 +12,20 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #0a0a0a;
-      --surface:   #111111;
-      --card:      #161616;
-      --border:    #222222;
-      --gold:      #c9a84c;
-      --gold-03:   rgba(201,168,76,0.03);
-      --gold-04:   rgba(201,168,76,0.04);
-      --gold-10:   rgba(201,168,76,0.10);
-      --gold-15:   rgba(201,168,76,0.15);
-      --gold-20:   rgba(201,168,76,0.20);
-      --white:     #f0ece4;
-      --muted:     #666666;
-      --mid:       #888888;
-      --success:   #3d7a4a;
+      --bg:        #ffffff;
+      --surface:   #f6f6f4;
+      --card:      #f0eeea;
+      --border:    #dedbd4;
+      --gold:      #b8922e;
+      --gold-03:   rgba(184,146,46,0.06);
+      --gold-04:   rgba(184,146,46,0.07);
+      --gold-10:   rgba(184,146,46,0.15);
+      --gold-15:   rgba(184,146,46,0.22);
+      --gold-20:   rgba(184,146,46,0.28);
+      --white:     #0f0e0c;
+      --muted:     #888880;
+      --mid:       #444440;
+      --success:   #2d6b3a;
       --heading:   'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
       --body:      'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --ease:      0.2s ease;
@@ -123,7 +123,7 @@
       cursor: pointer;
       transition: background var(--ease), transform var(--ease);
     }
-    .btn-gold:hover { background: #d4b862; transform: translateY(-1px); }
+    .btn-gold:hover { background: #a07a20; transform: translateY(-1px); }
 
     /* ─── HERO ────────────────────────────────────────── */
     #hero {
@@ -325,7 +325,7 @@
       font-family: var(--heading);
       font-size: 116px;
       font-weight: 400;
-      color: rgba(201,168,76,0.07);
+      color: rgba(184,146,46,0.18);
       line-height: 1;
       min-width: 168px;
       user-select: none;
@@ -393,7 +393,7 @@
     .stat-block:last-child { border-right: none; }
     .stat-block:hover {
       border-left-color: var(--gold);
-      background: rgba(201,168,76,0.02);
+      background: rgba(184,146,46,0.06);
     }
     .stat-val {
       font-family: var(--heading);
@@ -474,7 +474,7 @@
       content: '';
       position: absolute;
       inset: 5px;
-      border: 1px solid rgba(201,168,76,0.12);
+      border: 1px solid rgba(184,146,46,0.30);
       pointer-events: none;
     }
     .founder-name {
