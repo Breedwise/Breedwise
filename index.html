@@ -57,12 +57,15 @@
       padding: 0 52px;
     }
     .nav-wordmark {
-      font-family: var(--heading);
-      font-size: 22px;
-      font-weight: 600;
-      color: var(--gold);
+      display: flex;
+      align-items: center;
       text-decoration: none;
-      letter-spacing: 0.02em;
+      flex-shrink: 0;
+    }
+    .nav-logo {
+      height: 36px;
+      width: auto;
+      display: block;
     }
     .nav-btn {
       display: inline-block;
@@ -678,6 +681,126 @@
 
     .mobile-break { display: none; }
 
+    /* ─── EMMANUEL SECTION ────────────────────────────── */
+    #emmanuel {
+      padding: 120px 0;
+      background: var(--surface);
+    }
+    .emmanuel-grid {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 72px;
+      align-items: start;
+    }
+    .emmanuel-photo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .emmanuel-photo {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      border: 1px solid var(--gold);
+      overflow: hidden;
+      position: relative;
+      background: #e8e6e0;
+    }
+    .emmanuel-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    .emmanuel-photo-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      min-height: 340px;
+    }
+    .emmanuel-photo-placeholder svg {
+      width: 48px;
+      height: 48px;
+      opacity: 0.3;
+    }
+    .emmanuel-photo-placeholder span {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .emmanuel-badges {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      width: 100%;
+    }
+    .emmanuel-badge {
+      display: block;
+      font-family: var(--body);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--gold);
+      padding: 6px 12px;
+      text-align: center;
+    }
+    .emmanuel-content {}
+    .emmanuel-name {
+      font-family: var(--heading);
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .emmanuel-credentials {
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+    .emmanuel-title-line {
+      font-family: var(--body);
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 24px;
+    }
+    .emmanuel-rule {
+      width: 48px;
+      height: 2px;
+      background: var(--gold);
+      margin-bottom: 28px;
+    }
+    .emmanuel-bio {
+      font-family: var(--body);
+      font-size: 15px;
+      color: var(--mid);
+      line-height: 1.82;
+      max-width: 640px;
+    }
+    .emmanuel-bio p + p { margin-top: 18px; }
+    .emmanuel-cta-note {
+      margin-top: 32px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+      font-family: var(--body);
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
     /* ─── RESPONSIVE — TABLET ─────────────────────────── */
     @media (max-width: 960px) {
       .wrap, .wrap-narrow { padding: 0 28px; }
@@ -716,7 +839,7 @@
       /* Layout */
       .wrap, .wrap-narrow { padding: 0 20px; }
       .nav { padding: 0 20px; height: 56px; --nav-h: 56px; }
-      .nav-wordmark { font-size: 19px; }
+      .nav-logo { height: 28px; }
       .section-label { margin-bottom: 28px; }
 
       /* Hero */
@@ -810,6 +933,16 @@
       .cta-meta { font-size: 11px; line-height: 1.8; letter-spacing: 0.02em; }
       .cta-math { font-size: 13px; margin-top: 18px; padding-top: 18px; max-width: 100%; }
 
+      /* Emmanuel */
+      #emmanuel { padding: 64px 0; }
+      .emmanuel-grid { grid-template-columns: 1fr; gap: 32px; }
+      .emmanuel-photo-wrap { flex-direction: row; align-items: flex-start; gap: 20px; }
+      .emmanuel-photo { width: 120px; flex-shrink: 0; }
+      .emmanuel-photo-placeholder { min-height: 160px; }
+      .emmanuel-badges { flex-direction: row; flex-wrap: wrap; }
+      .emmanuel-badge { font-size: 9px; padding: 5px 10px; }
+      .emmanuel-name { font-size: 26px; }
+
       /* Footer */
       footer { padding: 48px 0 32px; }
       .footer-col { padding: 20px 0; }
@@ -823,7 +956,9 @@
 
   <!-- ═══ NAV ══════════════════════════════════════════ -->
   <nav class="nav">
-    <a href="#" class="nav-wordmark">Breedwise</a>
+    <a href="#" class="nav-wordmark">
+      <img src="breedwise-logo.png" alt="Breedwise" class="nav-logo">
+    </a>
     <a href="https://buy.stripe.com/3cIeVf1mc7sbc6Ye9l4F205" class="nav-btn" target="_blank" rel="noopener">Reserve Your Review — $497</a>
   </nav>
 
@@ -982,6 +1117,51 @@
             <p class="advisor-bio">Architect of the veterinary-breeder integration framework and the clinical breeding standards underlying every Breedwise assessment category.</p>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- ═══ EMMANUEL FONTAINE ══════════════════════════════ -->
+  <section id="emmanuel">
+    <div class="wrap">
+      <span class="section-label">Chief of Education</span>
+      <div class="emmanuel-grid">
+
+        <!-- Photo + badges -->
+        <div class="emmanuel-photo-wrap">
+          <div class="emmanuel-photo">
+            <!-- Drop fontaine.jpg into the project folder to activate -->
+            <div class="emmanuel-photo-placeholder">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="24" cy="17" r="10" stroke="#b8922e" stroke-width="1.5"/>
+                <path d="M4 44c0-11.046 8.954-20 20-20s20 8.954 20 20" stroke="#b8922e" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              <span>Photo pending</span>
+            </div>
+          </div>
+          <div class="emmanuel-badges">
+            <span class="emmanuel-badge">Reproductive Genetics</span>
+            <span class="emmanuel-badge">Curriculum Architect</span>
+            <span class="emmanuel-badge">Breedwise Standard</span>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="emmanuel-content">
+          <p class="emmanuel-name">Dr. Emmanuel Fontaine</p>
+          <p class="emmanuel-credentials">DVM · MSc · PhD · DECAR</p>
+          <p class="emmanuel-title-line">Chief of Education — Breedwise</p>
+          <div class="emmanuel-rule"></div>
+          <div class="emmanuel-bio">
+            <p>Dr. Emmanuel Fontaine holds a Doctor of Veterinary Medicine, a Master of Science in Reproductive Biology, a PhD in Veterinary Genetics, and the Diploma of the European College of Animal Reproduction — designating him among the continent's most rigorously credentialed specialists in canine reproductive medicine. His clinical and academic career has centered on reproductive genetics, breeding program architecture, and the formal translation of veterinary science into applied breeding standards.</p>
+            <p>At Breedwise, Dr. Fontaine serves as Chief of Education and the veterinary architect of the Breedwise professional standard. He co-designed the eight-category certification framework that defines professional breeding at a clinical level — specifying the fertility protocols, genetic screening requirements, whelping standards, and neonatal care benchmarks that constitute a Breedwise-compliant program. Every Breedwise Standard Review is assessed against the criteria he established.</p>
+            <p>His work bridges the gap between academic veterinary science and professional breeding practice. He has trained and influenced breeders, veterinary educators, and reproductive specialists across multiple countries. His involvement in Breedwise represents the first time a credential of this clinical caliber has been made systematically available to serious dog breeders outside of accredited veterinary institutions.</p>
+          </div>
+          <p class="emmanuel-cta-note">The Breedwise Standard Review is assessed against the veterinary standard Dr. Fontaine helped design. Every category, every benchmark, every scoring criterion carries his signature.</p>
+        </div>
+
       </div>
     </div>
   </section>
