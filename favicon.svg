@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" fill="#ffffff"/>
+  <!-- Left panel of open book -->
+  <path d="M4 28 L4 12 L14 8 L14 26 Z" fill="url(#gl)"/>
+  <!-- Right panel -->
+  <path d="M28 28 L28 12 L18 8 L18 26 Z" fill="url(#gr)"/>
+  <!-- Center spine gap -->
+  <rect x="14" y="8" width="4" height="18" fill="#ffffff"/>
+  <!-- Top chevron notch — left -->
+  <path d="M4 12 L14 8 L16 11 L4 15 Z" fill="url(#gt)"/>
+  <!-- Top chevron notch — right -->
+  <path d="M28 12 L18 8 L16 11 L28 15 Z" fill="url(#gtr)"/>
+  <!-- Center point -->
+  <polygon points="14,8 18,8 16,5" fill="#c9a84c"/>
+  <defs>
+    <linearGradient id="gl" x1="4" y1="8" x2="14" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#d4aa50"/>
+      <stop offset="100%" stop-color="#8a6420"/>
+    </linearGradient>
+    <linearGradient id="gr" x1="28" y1="8" x2="18" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#d4aa50"/>
+      <stop offset="100%" stop-color="#8a6420"/>
+    </linearGradient>
+    <linearGradient id="gt" x1="4" y1="8" x2="16" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#e0bc68"/>
+      <stop offset="100%" stop-color="#c9a84c"/>
+    </linearGradient>
+    <linearGradient id="gtr" x1="28" y1="8" x2="16" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#e0bc68"/>
+      <stop offset="100%" stop-color="#c9a84c"/>
+    </linearGradient>
+  </defs>
+</svg>
