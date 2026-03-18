@@ -2462,8 +2462,8 @@
       }
       revError.textContent = '';
 
-      // Target = double current price, floor of $6,000
-      const certifiedTarget = Math.max(price * 2, 6000);
+      // Target = double current price, floor $6,000, cap $12,000
+      const certifiedTarget = Math.min(Math.max(price * 2, 6000), 12000);
       const currentAnnual   = price * litter * annual;
       const targetAnnual    = certifiedTarget * litter * annual;
       const annualGap       = Math.max(0, targetAnnual - currentAnnual);
@@ -2626,8 +2626,8 @@
         const price   = parseFloat(document.getElementById('rev-current-price').value) || 0;
         const litter  = parseFloat(document.getElementById('rev-litter-size').value)   || 0;
         const annual  = parseFloat(document.getElementById('rev-annual-litters').value)|| 0;
-        // Target = double current price, floor of $6,000
-        const certifiedTarget = Math.max(price * 2, 6000);
+        // Target = double current price, floor $6,000, cap $12,000
+        const certifiedTarget = Math.min(Math.max(price * 2, 6000), 12000);
         const currentAnnual = price * litter * annual;
         const targetAnnual  = certifiedTarget * litter * annual;
         const annualGap     = Math.max(0, targetAnnual - currentAnnual);
@@ -2686,7 +2686,7 @@
         const revLitter = parseFloat(document.getElementById('rev-litter-size').value)    || 0;
         const revAnnual = parseFloat(document.getElementById('rev-annual-litters').value) || 0;
         const hasRev    = revPrice > 0 && revLitter > 0 && revAnnual > 0;
-        const unlockTarget = Math.max(revPrice * 2, 6000);
+        const unlockTarget = Math.min(Math.max(revPrice * 2, 6000), 12000);
         const annualGapVal = hasRev ? Math.max(0, (unlockTarget - revPrice) * revLitter * revAnnual) : 0;
 
         // Narrative — tailored to score band
@@ -2909,7 +2909,7 @@
         const p = parseFloat(data.revenue.currentPrice);
         const l = parseFloat(data.revenue.litterSize);
         const a = parseFloat(data.revenue.annualLitters);
-        const t = Math.max(p * 2, 6000);
+        const t = Math.min(Math.max(p * 2, 6000), 12000);
         txt += line('Current Price Per Puppy:', '$' + p.toLocaleString());
         txt += line('Breedwise Target Price:', '$' + t.toLocaleString() + ' (2× rule, min $6,000)');
         txt += line('Average Litter Size:', l.toString());
