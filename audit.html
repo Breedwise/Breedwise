@@ -897,6 +897,138 @@
     .sc-btn-secondary { background: var(--card); color: var(--mid); border: 1px solid var(--border); }
     .sc-btn-secondary:hover { color: var(--white); border-color: var(--mid); }
 
+    /* ─── TOAST NOTIFICATION ──────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      color: var(--white);
+      font-family: var(--body);
+      font-size: 13px;
+      padding: 14px 20px;
+      z-index: 9999;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      max-width: 320px;
+      pointer-events: none;
+    }
+    .toast.visible { opacity: 1; transform: translateY(0); }
+    .toast.success { border-left-color: #3d7a4a; }
+
+    /* ─── GENERATE BUTTONS ────────────────────────────── */
+    .generate-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .generate-btn-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .export-btn {
+      display: inline-block;
+      padding: 14px 32px;
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--mid);
+      transition: background var(--ease), color var(--ease), border-color var(--ease);
+    }
+    .export-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ─── AIRTABLE CONFIG ─────────────────────────────── */
+    .config-panel {
+      border: 1px solid var(--border);
+      background: var(--card);
+      padding: 22px 36px;
+      margin-bottom: 32px;
+    }
+    .config-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+    .config-body {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.35s ease;
+    }
+    .config-body.open { max-height: 500px; }
+    .config-note {
+      font-family: var(--body);
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin: 16px 0 0;
+      padding: 12px 16px;
+      border-left: 2px solid var(--border);
+    }
+
+    /* ─── HISTORY PANEL ───────────────────────────────── */
+    #history-panel {
+      display: none;
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 52px 52px 100px;
+    }
+    #history-panel.active { display: block; }
+    .history-empty {
+      text-align: center;
+      padding: 80px 0;
+      color: var(--muted);
+      font-family: var(--body);
+      font-size: 14px;
+    }
+    .history-item {
+      border: 1px solid var(--border);
+      background: var(--card);
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      transition: border-color var(--ease);
+    }
+    .history-item:hover { border-color: var(--gold-20); }
+    .history-item-info { flex: 1; }
+    .history-item-name {
+      font-family: var(--heading);
+      font-size: 18px;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .history-item-meta {
+      font-family: var(--body);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+    .history-item-score {
+      font-family: var(--heading);
+      font-size: 36px;
+      font-weight: 600;
+      min-width: 60px;
+      text-align: right;
+    }
+    .history-item-actions { display: flex; gap: 8px; }
+    .history-action-btn {
+      padding: 8px 16px;
+      font-family: var(--body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      transition: color var(--ease), border-color var(--ease);
+    }
+    .history-action-btn:hover { color: var(--gold); border-color: var(--gold); }
+    .history-action-btn.danger:hover { color: #a05050; border-color: #a05050; }
+
     /* ─── PRINT STYLES ────────────────────────────────── */
     @media print {
       #gate, .nav, .portal-header, .portal-tabs { display: none !important; }
@@ -971,10 +1103,40 @@
       <div class="portal-header-inner">
         <h1 class="portal-title">Breedwise Standard Review — Advisor Portal</h1>
         <p class="portal-subtitle">Internal Use Only &nbsp;·&nbsp; Confidential Assessment Document</p>
+        <div class="portal-tabs">
+          <button class="portal-tab active" id="tab-audit" onclick="switchTab('audit')">Assessment</button>
+          <button class="portal-tab" id="tab-history" onclick="switchTab('history')">Saved Reviews</button>
+        </div>
       </div>
     </header>
 
     <main class="audit-main">
+
+      <!-- AIRTABLE CONFIG -->
+      <div class="config-panel">
+        <div class="config-toggle" onclick="toggleConfig()">
+          <span class="section-label" style="margin-bottom:0;">Data Storage — Airtable Integration</span>
+          <span style="font-family:var(--body);font-size:11px;color:var(--muted);letter-spacing:0.08em;" id="config-toggle-label">Configure ▾</span>
+        </div>
+        <div class="config-body" id="config-body">
+          <p class="config-note">Connect Airtable to automatically save every completed review to a permanent database — accessible across devices, exportable, filterable. Without Airtable, reviews save to this browser only (localStorage). Both options are available regardless.</p>
+          <div class="info-grid" style="margin-top:16px;">
+            <div class="field-group">
+              <label class="field-label">Airtable Personal Access Token</label>
+              <input type="password" id="cfg-airtable-key" class="field-input" placeholder="pat..." oninput="saveConfig()">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Base ID</label>
+              <input type="text" id="cfg-airtable-base" class="field-input" placeholder="appXXXXXXXXXXXXXX" oninput="saveConfig()">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Table Name</label>
+              <input type="text" id="cfg-airtable-table" class="field-input" placeholder="Standard Reviews" oninput="saveConfig()">
+            </div>
+          </div>
+          <p class="config-note" style="font-size:11px;">Create a Personal Access Token at airtable.com/account with write scope. Get your Base ID from the Airtable API docs page for your base. Credentials stored in this browser only.</p>
+        </div>
+      </div>
 
       <!-- BREEDER INFORMATION -->
       <section>
@@ -1104,11 +1266,22 @@
 
       <!-- GENERATE SCORECARD -->
       <div class="generate-wrap">
-        <button class="generate-btn" onclick="generateScorecard()">Generate Official Scorecard</button>
-        <p class="generate-note">Review all scores, revenue data, and action plan before generating &nbsp;·&nbsp; Scorecard can be printed from the preview</p>
+        <div class="generate-btn-row">
+          <button class="generate-btn" onclick="generateScorecard()">Generate Official Scorecard</button>
+          <button class="export-btn" onclick="saveReview()">Save Review</button>
+          <button class="export-btn" onclick="exportForClaude()">Export for Claude Analysis</button>
+        </div>
+        <p class="generate-note">Save stores this review locally &nbsp;·&nbsp; Export downloads a structured file ready to upload to Claude for analysis</p>
       </div>
 
     </main>
+
+    <!-- HISTORY PANEL -->
+    <div id="history-panel">
+      <span class="section-label">Saved Reviews</span>
+      <div id="history-list"></div>
+    </div>
+
   </div>
 
   <!-- ═══ SCORECARD MODAL ═══════════════════════════════ -->
@@ -1126,7 +1299,7 @@
       <div class="sc-overall-block">
         <div class="sc-overall-score" id="sc-overall-score">—</div>
         <div class="sc-overall-detail">
-          <span class="sc-overall-label">Score out of 100 &nbsp;·&nbsp; Five-Category Assessment</span>
+          <span class="sc-overall-label">Score out of 100 &nbsp;·&nbsp; Eight-Category Assessment</span>
           <div class="sc-benchmark-row"><span>Certified Breeder Average</span><span>84 / 100</span></div>
           <div class="sc-benchmark-row"><span>Industry Uncertified Average</span><span>&lt; 40 / 100</span></div>
           <div class="sc-benchmark-row"><span>This Program</span><span id="sc-this-score" style="color:var(--gold)">—</span></div>
@@ -1488,6 +1661,9 @@
           gate.style.display = 'none';
           document.getElementById('audit-tool').style.display = 'block';
           renderAuditTool();
+          loadConfig();
+          loadDraft();
+          attachAutoSave();
         }, 500);
       } else {
         input.value = '';
@@ -1815,6 +1991,449 @@
     document.getElementById('scorecard-modal').addEventListener('click', function(e) {
       if (e.target === this) closeScorecard();
     });
+
+    // ─── TAB SWITCHING ──────────────────────────────────────────────────────────
+    function switchTab(tab) {
+      const auditMain   = document.querySelector('.audit-main');
+      const historyPanel = document.getElementById('history-panel');
+      document.querySelectorAll('.portal-tab').forEach(t => t.classList.remove('active'));
+      if (tab === 'history') {
+        auditMain.style.display   = 'none';
+        historyPanel.classList.add('active');
+        document.getElementById('tab-history').classList.add('active');
+        renderHistory();
+      } else {
+        auditMain.style.display   = 'block';
+        historyPanel.classList.remove('active');
+        document.getElementById('tab-audit').classList.add('active');
+      }
+    }
+
+    // ─── CONFIG ─────────────────────────────────────────────────────────────────
+    function toggleConfig() {
+      const body  = document.getElementById('config-body');
+      const label = document.getElementById('config-toggle-label');
+      body.classList.toggle('open');
+      label.textContent = body.classList.contains('open') ? 'Collapse ▴' : 'Configure ▾';
+    }
+
+    function saveConfig() {
+      const config = {
+        airtableKey:   document.getElementById('cfg-airtable-key').value,
+        airtableBase:  document.getElementById('cfg-airtable-base').value,
+        airtableTable: document.getElementById('cfg-airtable-table').value
+      };
+      localStorage.setItem('bw_config', JSON.stringify(config));
+    }
+
+    function loadConfig() {
+      const stored = localStorage.getItem('bw_config');
+      if (!stored) return;
+      const config = JSON.parse(stored);
+      if (config.airtableKey)   document.getElementById('cfg-airtable-key').value   = config.airtableKey;
+      if (config.airtableBase)  document.getElementById('cfg-airtable-base').value  = config.airtableBase;
+      if (config.airtableTable) document.getElementById('cfg-airtable-table').value = config.airtableTable;
+    }
+
+    // ─── AUTO-SAVE TO LOCALSTORAGE ──────────────────────────────────────────────
+    const FORM_FIELDS = [
+      'f-breeder-name','f-program-name','f-session-date','f-breed','f-years','f-advisor','f-pre-notes',
+      'rev-current-price','rev-litter-size','rev-annual-litters',
+      'action-category','action-1','action-2','action-3','exec-summary'
+    ];
+
+    function autoSave() {
+      const draft = {};
+      FORM_FIELDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) draft[id] = el.value;
+      });
+      draft.scores = { ...scores };
+      const noteData = {};
+      CATEGORIES.forEach(cat => {
+        cat.questions.forEach((q, i) => {
+          const qId = `${cat.id}_${i}`;
+          const el = document.getElementById(`notes-${qId}`);
+          if (el) noteData[qId] = el.value;
+        });
+        const catNoteEl = document.getElementById(`cat-notes-${cat.id}`);
+        if (catNoteEl) noteData[`cat_${cat.id}`] = catNoteEl.value;
+      });
+      draft.notes = noteData;
+      localStorage.setItem('bw_draft', JSON.stringify(draft));
+    }
+
+    function loadDraft() {
+      const stored = localStorage.getItem('bw_draft');
+      if (!stored) return;
+      const draft = JSON.parse(stored);
+      FORM_FIELDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && draft[id] !== undefined) el.value = draft[id];
+      });
+      if (draft.scores) {
+        Object.entries(draft.scores).forEach(([qId, val]) => {
+          scores[qId] = val;
+          const btn = document.querySelector(`.score-btn[data-qid="${qId}"][data-val="${val}"]`);
+          if (btn) btn.classList.add('selected');
+        });
+        CATEGORIES.forEach(cat => updateCategoryScore(cat.id));
+      }
+      if (draft.notes) {
+        Object.entries(draft.notes).forEach(([id, val]) => {
+          const el = id.startsWith('cat_')
+            ? document.getElementById(`cat-notes-${id.slice(4)}`)
+            : document.getElementById(`notes-${id}`);
+          if (el) el.value = val;
+        });
+      }
+    }
+
+    function attachAutoSave() {
+      FORM_FIELDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', autoSave);
+      });
+      document.getElementById('categories-container').addEventListener('input', autoSave);
+    }
+
+    // ─── COLLECT ALL REVIEW DATA ────────────────────────────────────────────────
+    function collectReviewData() {
+      const data = {
+        timestamp:     new Date().toISOString(),
+        breederName:   document.getElementById('f-breeder-name').value  || '—',
+        programName:   document.getElementById('f-program-name').value  || '—',
+        sessionDate:   document.getElementById('f-session-date').value  || '—',
+        breed:         document.getElementById('f-breed').value         || '—',
+        years:         document.getElementById('f-years').value         || '—',
+        advisor:       document.getElementById('f-advisor').value       || '—',
+        preNotes:      document.getElementById('f-pre-notes').value     || '',
+        overallScore:  getOverallScore(),
+        categoryScores: {},
+        categoryNotes:  {},
+        questionScores: {},
+        questionNotes:  {},
+        revenue: {
+          currentPrice:  document.getElementById('rev-current-price').value  || '',
+          litterSize:    document.getElementById('rev-litter-size').value     || '',
+          annualLitters: document.getElementById('rev-annual-litters').value  || ''
+        },
+        actionCategory: document.getElementById('action-category').value || '',
+        actions: [
+          document.getElementById('action-1').value || '',
+          document.getElementById('action-2').value || '',
+          document.getElementById('action-3').value || ''
+        ],
+        execSummary: document.getElementById('exec-summary').value || ''
+      };
+      CATEGORIES.forEach(cat => {
+        data.categoryScores[cat.id] = getCategoryScore(cat.id);
+        const catNoteEl = document.getElementById(`cat-notes-${cat.id}`);
+        data.categoryNotes[cat.id] = catNoteEl ? catNoteEl.value : '';
+        cat.questions.forEach((q, i) => {
+          const qId = `${cat.id}_${i}`;
+          data.questionScores[qId] = scores[qId] !== undefined ? scores[qId] : null;
+          const noteEl = document.getElementById(`notes-${qId}`);
+          data.questionNotes[qId] = noteEl ? noteEl.value : '';
+        });
+      });
+      return data;
+    }
+
+    // ─── SAVE REVIEW ────────────────────────────────────────────────────────────
+    function saveReview() {
+      const data    = collectReviewData();
+      const history = JSON.parse(localStorage.getItem('bw_reviews') || '[]');
+      const existing = history.findIndex(r => r.breederName === data.breederName && r.sessionDate === data.sessionDate);
+      if (existing >= 0) history[existing] = data;
+      else history.unshift(data);
+      localStorage.setItem('bw_reviews', JSON.stringify(history));
+      localStorage.removeItem('bw_draft');
+      showToast('Review saved', 'success');
+      sendToAirtable(data);
+    }
+
+    // ─── AIRTABLE SYNC ──────────────────────────────────────────────────────────
+    async function sendToAirtable(data) {
+      const config = JSON.parse(localStorage.getItem('bw_config') || '{}');
+      if (!config.airtableKey || !config.airtableBase || !config.airtableTable) return;
+      const fields = {
+        'Breeder Name':         data.breederName,
+        'Program Name':         data.programName,
+        'Session Date':         data.sessionDate,
+        'Breed':                data.breed,
+        'Years Breeding':       data.years,
+        'Advisor':              data.advisor,
+        'Overall Score':        data.overallScore,
+        'Executive Summary':    data.execSummary,
+        'Pre-Session Notes':    data.preNotes,
+        'Priority Category':    data.actionCategory,
+        'Action 1':             data.actions[0],
+        'Action 2':             data.actions[1],
+        'Action 3':             data.actions[2],
+        'Review JSON':          JSON.stringify(data)
+      };
+      if (data.revenue.currentPrice) {
+        fields['Current Price Per Puppy'] = parseFloat(data.revenue.currentPrice);
+        fields['Litter Size']             = parseFloat(data.revenue.litterSize);
+        fields['Annual Litters']          = parseFloat(data.revenue.annualLitters);
+      }
+      CATEGORIES.forEach(cat => {
+        fields[cat.name + ' Score'] = data.categoryScores[cat.id];
+      });
+      try {
+        const res = await fetch(`https://api.airtable.com/v0/${config.airtableBase}/${encodeURIComponent(config.airtableTable)}`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${config.airtableKey}`,
+            'Content-Type':  'application/json'
+          },
+          body: JSON.stringify({ fields })
+        });
+        if (res.ok) showToast('Synced to Airtable', 'success');
+        else        showToast('Airtable sync failed — check config', '');
+      } catch(e) { /* silent fail if offline */ }
+    }
+
+    // ─── EXPORT FOR CLAUDE ANALYSIS ─────────────────────────────────────────────
+    function buildClaudeExport(data) {
+      const certifiedAvg = 84;
+      let text = `BREEDWISE STANDARD REVIEW — CLAUDE ANALYSIS REQUEST
+Generated: ${new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}
+${'═'.repeat(63)}
+
+SESSION INFORMATION
+${'─'.repeat(19)}
+Breeder Name:       ${data.breederName}
+Program Name:       ${data.programName}
+Session Date:       ${data.sessionDate}
+Breed:              ${data.breed}
+Years Breeding:     ${data.years}
+Reviewing Advisor:  ${data.advisor}
+Pre-Session Notes:  ${data.preNotes || '(none)'}
+
+OVERALL SCORE
+${'─'.repeat(13)}
+This Program:               ${data.overallScore !== null ? data.overallScore + '/100' : 'Not scored'}
+Certified Breeder Average:  ${certifiedAvg}/100
+Industry Uncertified Avg:   <40/100
+Gap to Certification:       ${data.overallScore !== null ? Math.max(0, certifiedAvg - data.overallScore) + ' points' : '—'}
+
+CATEGORY SCORES — FULL DETAIL
+${'─'.repeat(30)}`;
+
+      CATEGORIES.forEach(cat => {
+        const catScore = data.categoryScores ? data.categoryScores[cat.id] : null;
+        const catNotes = data.categoryNotes  ? data.categoryNotes[cat.id]  : '';
+        text += `\n\n[${cat.num}] ${cat.name}`;
+        text += `\n     Type:  ${cat.type === 'science' ? 'Veterinary Science' : 'Business'}`;
+        text += `\n     Score: ${catScore !== null && catScore !== undefined ? catScore + '/100' : 'Not scored'}\n`;
+        cat.questions.forEach((q, i) => {
+          const qId    = `${cat.id}_${i}`;
+          const qText  = typeof q === 'string' ? q : q.text;
+          const qScore = data.questionScores ? data.questionScores[qId] : null;
+          const qNote  = data.questionNotes  ? data.questionNotes[qId]  : '';
+          text += `\n     Q${String(i+1).padStart(2,'0')} [${qScore !== null && qScore !== undefined ? qScore + '/5' : 'not scored'}]`;
+          text += `\n     ${qText}`;
+          if (qNote) text += `\n     >> Advisor note: ${qNote}`;
+        });
+        if (catNotes) text += `\n\n     Category summary: ${catNotes}`;
+      });
+
+      text += `\n\n${'─'.repeat(63)}\nREVENUE IMPACT CALCULATION\n${'─'.repeat(26)}\n`;
+      if (data.revenue && data.revenue.currentPrice) {
+        const price    = parseFloat(data.revenue.currentPrice);
+        const litter   = parseFloat(data.revenue.litterSize);
+        const annual   = parseFloat(data.revenue.annualLitters);
+        const target   = 9500;
+        const curAnn   = price * litter * annual;
+        const tgtAnn   = target * litter * annual;
+        const litGap   = Math.max(0, (target - price) * litter);
+        const ninety   = Math.max(0, (target - price) * litter * (annual / 4));
+        text += `Current Price Per Puppy:    $${price.toLocaleString()}\n`;
+        text += `Average Litter Size:        ${litter}\n`;
+        text += `Annual Litters:             ${annual}\n`;
+        text += `Current Annual Revenue:     $${Math.round(curAnn).toLocaleString()}\n`;
+        text += `Certified Target Revenue:   $${Math.round(tgtAnn).toLocaleString()}\n`;
+        text += `Per-Litter Revenue Gap:     $${Math.round(litGap).toLocaleString()}\n`;
+        text += `90-Day Revenue Opportunity: $${Math.round(ninety).toLocaleString()}\n`;
+      } else {
+        text += `(Revenue calculation not completed for this review)\n`;
+      }
+
+      text += `\n30-DAY ACTION PLAN\n${'─'.repeat(18)}\n`;
+      text += `Priority Category: ${data.actionCategory || '(not specified)'}\n`;
+      text += `Action 01: ${(data.actions && data.actions[0]) || '(not specified)'}\n`;
+      text += `Action 02: ${(data.actions && data.actions[1]) || '(not specified)'}\n`;
+      text += `Action 03: ${(data.actions && data.actions[2]) || '(not specified)'}\n`;
+
+      text += `\nEXECUTIVE SUMMARY\n${'─'.repeat(17)}\n`;
+      text += (data.execSummary || '(not completed)');
+
+      text += `\n\n${'═'.repeat(63)}
+ANALYSIS REQUEST — INSTRUCTIONS FOR CLAUDE
+${'═'.repeat(63)}
+You are analyzing a completed Breedwise Standard Review scorecard.
+Breedwise is a veterinary-backed breeding program certification system.
+
+Scoring scale: 0–5 per question (0 = Not Implemented, 5 = Exemplary)
+Category scores = percentage of maximum possible points (0–100)
+Certified breeder standard: 84/100 overall
+Industry uncertified average: below 40/100
+
+Please provide the following analysis:
+
+1. SCORE INTERPRETATION
+   What does the overall score and category breakdown reveal about this program's current state? Where are they genuinely strong? What does the pattern of scores tell you about how this breeder operates?
+
+2. PRIORITY GAP ANALYSIS
+   For the lowest-scoring category (and second-lowest if close), what specific systems are missing? What does that gap cost this program — revenue, placement quality, health outcomes, or brand positioning?
+
+3. REVENUE OPPORTUNITY CONTEXTUALIZATION
+   Review the revenue impact numbers. Is the 90-day opportunity realistic? What changes would need to happen to capture it, and in what sequence?
+
+4. HIDDEN STRENGTHS
+   Identify 2–3 genuine strengths in the scores and notes that this breeder isn't actively leveraging. What would it look like to turn these into visible proof points?
+
+5. CERTIFICATION PATHWAY
+   What is the most efficient path to reaching 84/100? Which 2–3 categories would move the overall score most if improved? What is a realistic timeframe?
+
+6. FOLLOWING ACTIONS FOR THE ADVISOR
+   Beyond the 30-day plan already written, what should the reviewing advisor prioritize in the next conversation? What questions should be asked? What patterns in the notes suggest unresolved issues worth exploring?`;
+
+      return text;
+    }
+
+    function exportForClaude() {
+      const data = collectReviewData();
+      const text = buildClaudeExport(data);
+      downloadTxt(text, `BW_Review_${data.breederName.replace(/\s+/g,'_')}_${data.sessionDate || 'undated'}.txt`);
+      showToast('Claude analysis file downloaded', 'success');
+    }
+
+    function downloadTxt(text, filename) {
+      const blob = new Blob([text], { type: 'text/plain' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // ─── REVIEW HISTORY ─────────────────────────────────────────────────────────
+    function renderHistory() {
+      const list    = document.getElementById('history-list');
+      const history = JSON.parse(localStorage.getItem('bw_reviews') || '[]');
+      if (history.length === 0) {
+        list.innerHTML = '<div class="history-empty">No saved reviews yet. Complete a review and click Save Review.</div>';
+        return;
+      }
+      list.innerHTML = history.map((review, idx) => {
+        const s     = review.overallScore;
+        const color = s !== null ? (s >= 84 ? '#5aad6c' : s >= 60 ? '#c9a84c' : '#a05050') : 'var(--muted)';
+        const saved = new Date(review.timestamp).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+        return `<div class="history-item">
+          <div class="history-item-info">
+            <div class="history-item-name">${review.breederName} — ${review.programName}</div>
+            <div class="history-item-meta">${review.breed} &nbsp;·&nbsp; ${review.sessionDate} &nbsp;·&nbsp; Advisor: ${review.advisor} &nbsp;·&nbsp; Saved ${saved}</div>
+          </div>
+          <div class="history-item-score" style="color:${color}">${s !== null ? s : '—'}</div>
+          <div class="history-item-actions">
+            <button class="history-action-btn" onclick="loadReview(${idx})">Load</button>
+            <button class="history-action-btn" onclick="exportHistoryReview(${idx})">Export</button>
+            <button class="history-action-btn danger" onclick="deleteReview(${idx})">Delete</button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function loadReview(idx) {
+      const history = JSON.parse(localStorage.getItem('bw_reviews') || '[]');
+      const review  = history[idx];
+      if (!review) return;
+      switchTab('audit');
+      const fieldMap = {
+        'f-breeder-name':    review.breederName,
+        'f-program-name':    review.programName,
+        'f-session-date':    review.sessionDate,
+        'f-breed':           review.breed,
+        'f-years':           review.years,
+        'f-advisor':         review.advisor,
+        'f-pre-notes':       review.preNotes,
+        'rev-current-price': review.revenue.currentPrice,
+        'rev-litter-size':   review.revenue.litterSize,
+        'rev-annual-litters':review.revenue.annualLitters,
+        'action-category':   review.actionCategory,
+        'action-1':          review.actions[0],
+        'action-2':          review.actions[1],
+        'action-3':          review.actions[2],
+        'exec-summary':      review.execSummary
+      };
+      Object.entries(fieldMap).forEach(([id, val]) => {
+        const el = document.getElementById(id);
+        if (el && val !== undefined) el.value = val || '';
+      });
+      // Restore scores
+      Object.entries(review.questionScores || {}).forEach(([qId, val]) => {
+        if (val !== null) {
+          scores[qId] = val;
+          const btns = document.querySelectorAll(`.score-btn[data-qid="${qId}"]`);
+          btns.forEach(b => b.classList.remove('selected'));
+          const active = document.querySelector(`.score-btn[data-qid="${qId}"][data-val="${val}"]`);
+          if (active) active.classList.add('selected');
+        }
+      });
+      CATEGORIES.forEach(cat => updateCategoryScore(cat.id));
+      // Restore notes
+      Object.entries(review.questionNotes || {}).forEach(([qId, val]) => {
+        const el = document.getElementById(`notes-${qId}`);
+        if (el) el.value = val || '';
+      });
+      Object.entries(review.categoryNotes || {}).forEach(([catId, val]) => {
+        const el = document.getElementById(`cat-notes-${catId}`);
+        if (el) el.value = val || '';
+      });
+      showToast(`Loaded: ${review.breederName}`, 'success');
+    }
+
+    function deleteReview(idx) {
+      if (!confirm('Delete this review? This cannot be undone.')) return;
+      const history = JSON.parse(localStorage.getItem('bw_reviews') || '[]');
+      history.splice(idx, 1);
+      localStorage.setItem('bw_reviews', JSON.stringify(history));
+      renderHistory();
+      showToast('Review deleted');
+    }
+
+    function exportHistoryReview(idx) {
+      const history = JSON.parse(localStorage.getItem('bw_reviews') || '[]');
+      const review  = history[idx];
+      if (!review) return;
+      const text = buildClaudeExport(review);
+      downloadTxt(text, `BW_Review_${review.breederName.replace(/\s+/g,'_')}_${review.sessionDate || 'undated'}.txt`);
+      showToast('Claude analysis file downloaded', 'success');
+    }
+
+    // ─── TOAST ──────────────────────────────────────────────────────────────────
+    let toastTimer = null;
+    function showToast(message, type) {
+      let toast = document.getElementById('bw-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'bw-toast';
+        toast.className = 'toast';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = message;
+      toast.className = `toast ${type || ''}`;
+      void toast.offsetWidth;
+      toast.classList.add('visible');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('visible'), 3000);
+    }
   </script>
 </body>
 </html>
