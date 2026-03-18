@@ -676,7 +676,9 @@
       letter-spacing: 0.03em;
     }
 
-    /* ─── RESPONSIVE ──────────────────────────────────── */
+    .mobile-break { display: none; }
+
+    /* ─── RESPONSIVE — TABLET ─────────────────────────── */
     @media (max-width: 960px) {
       .wrap, .wrap-narrow { padding: 0 28px; }
       .nav { padding: 0 28px; }
@@ -709,13 +711,111 @@
       .footer-col:last-child { border-bottom: none; }
     }
 
+    /* ─── RESPONSIVE — MOBILE ─────────────────────────── */
     @media (max-width: 480px) {
-      .hero-headline { font-size: 30px; }
-      .cta-headline { font-size: 28px; }
-      .pull-quote { font-size: 24px; }
-      .invest-headline { font-size: 24px; }
-      .deliverable-num { font-size: 60px; min-width: 80px; }
-      .deliverable-title { font-size: 22px; }
+      /* Layout */
+      .wrap, .wrap-narrow { padding: 0 20px; }
+      .nav { padding: 0 20px; height: 56px; --nav-h: 56px; }
+      .nav-wordmark { font-size: 19px; }
+      .section-label { margin-bottom: 28px; }
+
+      /* Hero */
+      #hero { min-height: 100svh; }
+      .hero-inner { padding: 28px 20px 48px; }
+      .hero-eyebrow { font-size: 10px; letter-spacing: 0.18em; margin-bottom: 22px; }
+      .hero-headline {
+        font-size: 30px;
+        letter-spacing: -0.015em;
+        line-height: 1.15;
+        margin-bottom: 20px;
+      }
+      .hero-sub { font-size: 15px; line-height: 1.65; margin-bottom: 32px; }
+      .btn-gold { padding: 15px 28px; font-size: 13px; width: 100%; text-align: center; display: block; }
+      .hero-meta {
+        font-size: 11px;
+        letter-spacing: 0.02em;
+        line-height: 1.8;
+        color: var(--muted);
+      }
+      /* Stack the · separators vertically on small screens */
+      .hero-meta br-mobile { display: block; }
+      .hero-math {
+        font-size: 13px;
+        margin-top: 18px;
+        padding-top: 18px;
+        max-width: 100%;
+      }
+      .hero-emotional { font-size: 16px; margin-top: 28px; }
+      .mobile-break { display: block; }
+
+      /* Who This Is For */
+      #for-whom { padding: 64px 0; }
+      .for-col-head { font-size: 18px; margin-bottom: 20px; }
+      .for-list li { font-size: 14px; padding: 12px 0; gap: 12px; }
+      .for-grid > div:last-child { margin-top: 40px; }
+
+      /* Advisors */
+      #advisors { padding: 56px 0; }
+      .advisor-name { font-size: 17px; }
+      .advisor-block { padding: 20px 0; }
+
+      /* Deliverables */
+      #deliverables { padding: 64px 0; }
+      .deliverable-item {
+        flex-direction: column;
+        gap: 0;
+        padding: 36px 0;
+      }
+      .deliverable-num {
+        font-size: 48px;
+        min-width: unset;
+        top: 0;
+        line-height: 1;
+        margin-bottom: 8px;
+      }
+      .deliverable-body { padding-left: 0; padding-top: 0; }
+      .deliverable-title { font-size: 20px; margin-bottom: 10px; }
+      .deliverable-desc { font-size: 14px; line-height: 1.75; }
+
+      /* Proof */
+      #proof { padding: 64px 0; }
+      .pull-quote { font-size: 22px; line-height: 1.3; margin-bottom: 36px; letter-spacing: -0.01em; }
+      .case-study { font-size: 14px; line-height: 1.75; margin-bottom: 44px; }
+      .stat-block { padding: 28px 20px; }
+      .stat-val { font-size: 34px; }
+      .stat-label { font-size: 13px; }
+
+      /* Investment */
+      #investment { padding: 64px 0; }
+      .invest-headline { font-size: 24px; line-height: 1.2; margin-bottom: 24px; letter-spacing: -0.01em; }
+      .invest-body { font-size: 14px; line-height: 1.8; }
+
+      /* Founder */
+      #founder { padding: 64px 0; }
+      .founder-grid { gap: 32px; }
+      .founder-photo { max-width: 180px; }
+      .founder-name { font-size: 26px; margin-bottom: 6px; }
+      .founder-title { margin-bottom: 24px; }
+      .founder-text p { font-size: 14px; line-height: 1.8; margin-bottom: 16px; }
+
+      /* FAQ */
+      #faq { padding: 64px 0; }
+      .faq-btn { font-size: 17px; padding: 22px 0; gap: 16px; line-height: 1.35; }
+      .faq-answer-inner { font-size: 14px; line-height: 1.8; padding-bottom: 24px; }
+
+      /* Final CTA */
+      #cta { padding: 80px 0; }
+      .cta-headline { font-size: 26px; letter-spacing: -0.015em; line-height: 1.15; margin-bottom: 20px; }
+      .cta-body { font-size: 15px; margin-bottom: 32px; }
+      .cta-meta { font-size: 11px; line-height: 1.8; letter-spacing: 0.02em; }
+      .cta-math { font-size: 13px; margin-top: 18px; padding-top: 18px; max-width: 100%; }
+
+      /* Footer */
+      footer { padding: 48px 0 32px; }
+      .footer-col { padding: 20px 0; }
+      .footer-wordmark { font-size: 22px; }
+      .footer-col p { font-size: 13px; }
+      .footer-bottom { padding-top: 20px; }
     }
   </style>
 </head>
@@ -734,7 +834,7 @@
       <h1 class="hero-headline">Find Out Exactly How Much<br>You're Leaving on the Table.</h1>
       <p class="hero-sub">One 60-minute, vet-backed review. The only professional assessment of your breeding program against a veterinary-backed industry standard — with a written scorecard, a benchmark comparison against certified breeders, a 90-day revenue impact calculation, and a 30-day action plan.</p>
       <a href="https://buy.stripe.com/3cIeVf1mc7sbc6Ye9l4F205" class="btn-gold" target="_blank" rel="noopener">Reserve My Standard Review — $497</a>
-      <p class="hero-meta">60-minute session &nbsp;·&nbsp; Written scorecard within 24 hours &nbsp;·&nbsp; Limited weekly availability for serious breeders</p>
+      <p class="hero-meta">60-minute session &nbsp;·&nbsp; Written scorecard within 24 hours<br class="mobile-break"> &nbsp;·&nbsp; Limited weekly availability for serious breeders</p>
       <p class="hero-math">Most breeders recover the full $497 in a single improved placement. The Review exists to calculate the much larger gap you've been leaving on the table.</p>
       <p class="hero-emotional">You are doing everything right. Nobody can tell.</p>
     </div>
