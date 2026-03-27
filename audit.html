@@ -2819,11 +2819,16 @@
         airtableTable: document.getElementById('cfg-airtable-table').value
       }));
     }
+    // ── AIRTABLE DEFAULTS (set once, stored in localStorage) ─────────────────
+    // Token injected at runtime — see bw_config in localStorage
+    const AIRTABLE_TABLE_DEFAULT = 'Standard Reviews';
+
     function loadConfig() {
       const c = JSON.parse(localStorage.getItem('bw_config') || '{}');
-      if (c.airtableKey)   document.getElementById('cfg-airtable-key').value   = c.airtableKey;
-      if (c.airtableBase)  document.getElementById('cfg-airtable-base').value  = c.airtableBase;
-      if (c.airtableTable) document.getElementById('cfg-airtable-table').value = c.airtableTable;
+      if (!c.airtableTable) { c.airtableTable = AIRTABLE_TABLE_DEFAULT; localStorage.setItem('bw_config', JSON.stringify(c)); }
+      document.getElementById('cfg-airtable-key').value   = c.airtableKey   || '';
+      document.getElementById('cfg-airtable-base').value  = c.airtableBase  || '';
+      document.getElementById('cfg-airtable-table').value = c.airtableTable || AIRTABLE_TABLE_DEFAULT;
     }
 
     // ─── COLLECT ALL DATA ───────────────────────────────────────────────────────
@@ -2863,6 +2868,25 @@
           data.questionNotes[qId] = ne ? ne.value : '';
         });
       });
+
+      // ── Science / Business sub-scores ──
+      const sciCats = CATEGORIES.filter(c => c.type === 'science').map(c => c.id);
+      const bizCats = CATEGORIES.filter(c => c.type === 'business').map(c => c.id);
+      const sciArr  = sciCats.map(id => data.categoryScores[id]).filter(s => s !== null);
+      const bizArr  = bizCats.map(id => data.categoryScores[id]).filter(s => s !== null);
+      data.scienceScore  = sciArr.length  ? Math.round(sciArr.reduce((a,b)=>a+b,0)  / sciArr.length)  : null;
+      data.businessScore = bizArr.length  ? Math.round(bizArr.reduce((a,b)=>a+b,0)  / bizArr.length)  : null;
+
+      // ── Certification level ──
+      const ov = data.overallScore;
+      data.certificationLevel = ov === null ? null : ov >= 84 ? 'Elite' : ov >= 70 ? 'Advanced' : 'Standard';
+
+      // ── Weak categories (scored < 60) ──
+      data.weakCategories = CATEGORIES
+        .filter(cat => data.categoryScores[cat.id] !== null && data.categoryScores[cat.id] < 60)
+        .map(cat => `[${cat.num}] ${cat.name}: ${data.categoryScores[cat.id]}/100`)
+        .join('\n') || '';
+
       return data;
     }
 
@@ -2882,20 +2906,36 @@
       const c = JSON.parse(localStorage.getItem('bw_config') || '{}');
       if (!c.airtableKey || !c.airtableBase || !c.airtableTable) return;
       const fields = {
-        'Breeder Name': data.breederName, 'Program Name': data.programName,
-        'Session Date': data.sessionDate, 'Breed': data.breed,
-        'Years Breeding': data.years,     'Advisor': data.advisor,
-        'Overall Score': data.overallScore, 'Executive Summary': data.execSummary,
-        'Pre-Session Notes': data.preNotes, 'Priority Category': data.actionCategory,
-        'Action 1': data.actions[0], 'Action 2': data.actions[1], 'Action 3': data.actions[2],
-        'Review JSON': JSON.stringify(data)
+        'Breeder Name':      data.breederName,
+        'Program Name':      data.programName,
+        'Session Date':      data.sessionDate,
+        'Breed':             data.breed,
+        'Years Breeding':    data.years,
+        'Advisor':           data.advisor,
+        'Overall Score':     data.overallScore,
+        'Science Score':     data.scienceScore,
+        'Business Score':    data.businessScore,
+        'Certification Level': data.certificationLevel,
+        'Weak Categories':   data.weakCategories,
+        'Executive Summary': data.execSummary,
+        'Pre-Session Notes': data.preNotes,
+        'Priority Category': data.actionCategory,
+        'Action 1':          data.actions[0],
+        'Action 2':          data.actions[1],
+        'Action 3':          data.actions[2],
+        'Review JSON':       JSON.stringify(data)
       };
+      // Strip null values — Airtable rejects null for number fields
+      Object.keys(fields).forEach(k => { if (fields[k] === null || fields[k] === undefined) delete fields[k]; });
       if (data.revenue.currentPrice) {
         fields['Current Price Per Puppy'] = parseFloat(data.revenue.currentPrice);
         fields['Litter Size']             = parseFloat(data.revenue.litterSize);
         fields['Annual Litters']          = parseFloat(data.revenue.annualLitters);
       }
-      CATEGORIES.forEach(cat => { fields[cat.name + ' Score'] = data.categoryScores[cat.id]; });
+      CATEGORIES.forEach(cat => {
+        const s = data.categoryScores[cat.id];
+        if (s !== null && s !== undefined) fields[cat.name + ' Score'] = s;
+      });
       try {
         const res = await fetch(`https://api.airtable.com/v0/${c.airtableBase}/${encodeURIComponent(c.airtableTable)}`, {
           method: 'POST',
