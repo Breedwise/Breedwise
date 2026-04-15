@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breedwise Academy — Client Onboarding</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #ffffff;
+      --surface:  #f6f6f4;
+      --card:     #f0eeea;
+      --border:   #dedbd4;
+      --gold:     #b8922e;
+      --gold-06:  rgba(184,146,46,0.08);
+      --gold-12:  rgba(184,146,46,0.14);
+      --white:    #0f0e0c;
+      --muted:    #888880;
+      --mid:      #444440;
+      --success:  #2d6b3a;
+      --danger:   #8b3a3a;
+      --heading:  'Playfair Display', Georgia, serif;
+      --body:     'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --ease:     0.2s ease;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--body);
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ─── PASSWORD GATE ───────────────────────────────── */
+    #gate {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      transition: opacity 0.5s ease;
+    }
+    .gate-inner { text-align: center; max-width: 400px; padding: 0 32px; }
+    .gate-wordmark {
+      font-family: var(--heading);
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .gate-tagline {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 48px;
+      display: block;
+    }
+    .gate-label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 12px;
+    }
+    .gate-input {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-family: var(--body);
+      font-size: 15px;
+      padding: 14px 20px;
+      border-radius: 6px;
+      text-align: center;
+      letter-spacing: 0.12em;
+      outline: none;
+      transition: border-color var(--ease);
+    }
+    .gate-input:focus { border-color: var(--gold); }
+    .gate-btn {
+      margin-top: 16px;
+      width: 100%;
+      background: var(--gold);
+      color: #fff;
+      border: none;
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: opacity var(--ease);
+    }
+    .gate-btn:hover { opacity: 0.88; }
+    .gate-error {
+      color: var(--danger);
+      font-size: 13px;
+      margin-top: 12px;
+      min-height: 20px;
+    }
+    @keyframes shake {
+      0%,100%{ transform:translateX(0) }
+      20%{ transform:translateX(-8px) }
+      40%{ transform:translateX(8px) }
+      60%{ transform:translateX(-6px) }
+      80%{ transform:translateX(6px) }
+    }
+    .shake { animation: shake 0.4s ease; }
+
+    /* ─── NAV ─────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      padding: 0 40px;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--heading);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .nav-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ─── LAYOUT ──────────────────────────────────────── */
+    #app { display: none; }
+
+    .page-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 56px 40px 48px;
+      text-align: center;
+    }
+    .page-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 16px;
+    }
+    .page-title {
+      font-family: var(--heading);
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .page-sub {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .form-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 56px 40px 80px;
+    }
+
+    /* ─── SECTIONS ────────────────────────────────────── */
+    .form-section {
+      margin-bottom: 48px;
+    }
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── FIELDS ──────────────────────────────────────── */
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .field-row.full { grid-template-columns: 1fr; }
+    .field-row.three { grid-template-columns: 1fr 1fr 1fr; }
+
+    .field { display: flex; flex-direction: column; gap: 8px; }
+    .field label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+    .field label .req { color: var(--gold); margin-left: 2px; }
+
+    .field input,
+    .field select,
+    .field textarea {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-family: var(--body);
+      font-size: 15px;
+      padding: 12px 16px;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color var(--ease), background var(--ease);
+      width: 100%;
+    }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--gold);
+      background: var(--bg);
+    }
+    .field textarea { resize: vertical; min-height: 100px; }
+    .field select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888880' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+
+    .field-hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: -4px;
+    }
+
+    /* ─── GOALS CHECKLIST ─────────────────────────────── */
+    .goal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .goal-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color var(--ease), background var(--ease);
+      background: var(--surface);
+    }
+    .goal-item:hover { border-color: var(--gold); }
+    .goal-item.selected {
+      border-color: var(--gold);
+      background: var(--gold-06);
+    }
+    .goal-item input[type="checkbox"] { display: none; }
+    .goal-check {
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      border: 1.5px solid var(--border);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color var(--ease), background var(--ease);
+      margin-top: 1px;
+    }
+    .goal-item.selected .goal-check {
+      border-color: var(--gold);
+      background: var(--gold);
+    }
+    .goal-item.selected .goal-check::after {
+      content: '';
+      width: 5px;
+      height: 9px;
+      border: 2px solid #fff;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg) translateY(-1px);
+    }
+    .goal-text { font-size: 14px; line-height: 1.4; }
+
+    /* ─── SUBMIT ──────────────────────────────────────── */
+    .submit-wrap {
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .submit-note {
+      font-size: 13px;
+      color: var(--muted);
+      flex: 1;
+    }
+    .btn-submit {
+      background: var(--gold);
+      color: #fff;
+      border: none;
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 15px 36px;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity var(--ease);
+    }
+    .btn-submit:hover { opacity: 0.88; }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ─── SUCCESS STATE ───────────────────────────────── */
+    #success {
+      display: none;
+      text-align: center;
+      padding: 80px 40px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 32px;
+    }
+    .success-icon svg { width: 28px; height: 28px; stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .success-title {
+      font-family: var(--heading);
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .success-sub { font-size: 16px; color: var(--muted); margin-bottom: 40px; line-height: 1.7; }
+    .next-steps { text-align: left; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 32px; }
+    .next-steps h3 {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .next-step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      align-items: flex-start;
+    }
+    .next-step:last-child { margin-bottom: 0; }
+    .step-num {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gold);
+    }
+    .step-text { font-size: 14px; line-height: 1.6; padding-top: 4px; }
+    .step-text strong { color: var(--white); font-weight: 600; }
+
+    /* ─── TOAST ───────────────────────────────────────── */
+    #toast {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background: var(--white);
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+      z-index: 200;
+      max-width: 320px;
+    }
+    #toast.show { opacity: 1; transform: translateY(0); }
+    #toast.error { background: var(--danger); }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 20px; }
+      .page-header { padding: 40px 20px 36px; }
+      .form-wrap { padding: 36px 20px 60px; }
+      .field-row, .field-row.three { grid-template-columns: 1fr; }
+      .goal-grid { grid-template-columns: 1fr; }
+      .submit-wrap { flex-direction: column; align-items: stretch; }
+      .btn-submit { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── PASSWORD GATE ─────────────────────────────────── -->
+<div id="gate">
+  <div class="gate-inner">
+    <span class="gate-wordmark">Breedwise</span>
+    <span class="gate-tagline">Academy — Advisor Portal</span>
+    <span class="gate-label">Access Code</span>
+    <input id="gate-input" class="gate-input" type="password" placeholder="••••••••••••" autocomplete="off">
+    <button class="gate-btn" onclick="checkPassword()">Enter Portal</button>
+    <div class="gate-error" id="gate-error"></div>
+  </div>
+</div>
+
+<!-- ─── APP ───────────────────────────────────────────── -->
+<div id="app">
+
+  <nav>
+    <a class="nav-logo" href="index.html">Breedwise</a>
+    <span class="nav-label">Academy — Client Onboarding</span>
+  </nav>
+
+  <div class="page-header">
+    <span class="page-eyebrow">New Client Intake</span>
+    <h1 class="page-title">Welcome to Breedwise Academy</h1>
+    <p class="page-sub">Complete this form after the client has enrolled. It creates their record and feeds directly into Airtable.</p>
+  </div>
+
+  <div class="form-wrap">
+
+    <!-- SECTION 1: CLIENT INFO -->
+    <div class="form-section">
+      <div class="section-label">01 — Client Information</div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="f-name" placeholder="Jane Whitmore">
+        </div>
+        <div class="field">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" id="f-email" placeholder="jane@program.com">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Phone</label>
+          <input type="tel" id="f-phone" placeholder="+1 (555) 000-0000">
+        </div>
+        <div class="field">
+          <label>How They Found Us</label>
+          <select id="f-source">
+            <option value="">— Select —</option>
+            <option>Referred by another breeder</option>
+            <option>Affiliate / partner link</option>
+            <option>Social media</option>
+            <option>Google search</option>
+            <option>Podcast / press</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: PROGRAM INFO -->
+    <div class="form-section">
+      <div class="section-label">02 — Program Details</div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Program Name <span class="req">*</span></label>
+          <input type="text" id="f-program" placeholder="Whitmore Golden Retrievers">
+        </div>
+        <div class="field">
+          <label>Primary Breed <span class="req">*</span></label>
+          <input type="text" id="f-breed" placeholder="Golden Retriever">
+        </div>
+      </div>
+
+      <div class="field-row three">
+        <div class="field">
+          <label>Years Breeding</label>
+          <input type="number" id="f-years" placeholder="4" min="0" max="50">
+        </div>
+        <div class="field">
+          <label>Avg Litters / Year</label>
+          <input type="number" id="f-litters" placeholder="3" min="1" max="30">
+        </div>
+        <div class="field">
+          <label>Current Puppy Price ($)</label>
+          <input type="number" id="f-price" placeholder="2500" min="0">
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: AUDIT SCORES (if completed) -->
+    <div class="form-section">
+      <div class="section-label">03 — Standard Review Results</div>
+
+      <div class="field-row three">
+        <div class="field">
+          <label>Overall Score</label>
+          <input type="number" id="f-overall" placeholder="76" min="0" max="100">
+        </div>
+        <div class="field">
+          <label>Science Score</label>
+          <input type="number" id="f-science" placeholder="82" min="0" max="100">
+        </div>
+        <div class="field">
+          <label>Business Score</label>
+          <input type="number" id="f-business" placeholder="70" min="0" max="100">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Certification Level</label>
+          <select id="f-cert">
+            <option value="">— Not yet assessed —</option>
+            <option>Standard</option>
+            <option>Advanced</option>
+            <option>Elite</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Priority Category (Lowest Score)</label>
+          <input type="text" id="f-priority" placeholder="e.g. Brand Authority & Market Positioning">
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: GOALS -->
+    <div class="form-section">
+      <div class="section-label">04 — Goals & Focus Areas</div>
+
+      <div class="field-row full" style="margin-bottom: 16px;">
+        <div class="field">
+          <label>Primary Goal <span class="req">*</span></label>
+          <input type="text" id="f-goal" placeholder="e.g. Raise puppy prices to $4,000 within 12 months">
+        </div>
+      </div>
+
+      <div class="goal-grid" id="goal-grid">
+        <label class="goal-item" onclick="toggleGoal(this)">
+          <input type="checkbox" value="Raise pricing & puppy positioning">
+          <div class="goal-check"></div>
+          <span class="goal-text">Raise pricing &amp; puppy positioning</span>
+        </label>
+        <label class="goal-item" onclick="toggleGoal(this)">
+          <input type="checkbox" value="Build a waitlist that qualifies buyers">
+          <div class="goal-check"></div>
+          <span class="goal-text">Build a waitlist that qualifies buyers</span>
+        </label>
+        <label class="goal-item" onclick="toggleGoal(this)">
+          <input type="checkbox" value="Improve reproductive & genetic protocols">
+          <div class="goal-check"></div>
+          <span class="goal-text">Improve reproductive &amp; genetic protocols</span>
+        </label>
+        <label class="goal-item" onclick="toggleGoal(this)">
+          <input type="checkbox" value="Systematise whelping & puppy development">
+          <div class="goal-check"></div>
+          <span class="goal-text">Systematise whelping &amp; puppy development</span>
+        </label>
+        <label class="goal-item" onclick="toggleGoal(this)">
+          <input type="checkbox" value="Become fully inbound / eliminate listing sites">
+          <div class="goal-check"></div>
+          <span class="goal-text">Become fully inbound / eliminate listing sites</span>
+        </label>
+        <label class="goal-item" onclick="toggleGoal(this)">
+          <input type="checkbox" value="Build brand authority & content presence">
+          <div class="goal-check"></div>
+          <span class="goal-text">Build brand authority &amp; content presence</span>
+        </label>
+        <label class="goal-item" onclick="toggleGoal(this)">
+          <input type="checkbox" value="Streamline operations & documentation">
+          <div class="goal-check"></div>
+          <span class="goal-text">Streamline operations &amp; documentation</span>
+        </label>
+        <label class="goal-item" onclick="toggleGoal(this)">
+          <input type="checkbox" value="Earn & leverage Breedwise certification">
+          <div class="goal-check"></div>
+          <span class="goal-text">Earn &amp; leverage Breedwise certification</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- SECTION 5: CHALLENGES & NOTES -->
+    <div class="form-section">
+      <div class="section-label">05 — Advisor Notes</div>
+
+      <div class="field-row full">
+        <div class="field">
+          <label>Top Challenge (in the client's own words)</label>
+          <textarea id="f-challenge" placeholder="What did they describe as their biggest current obstacle?"></textarea>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Assigned Advisor</label>
+          <input type="text" id="f-advisor" placeholder="Dr. Emmanuel Fontaine">
+        </div>
+        <div class="field">
+          <label>Cohort</label>
+          <input type="text" id="f-cohort" placeholder="e.g. April 2026">
+        </div>
+      </div>
+
+      <div class="field-row full">
+        <div class="field">
+          <label>Internal Notes</label>
+          <textarea id="f-notes" placeholder="Anything else worth flagging before first session…" style="min-height: 80px;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-wrap">
+      <span class="submit-note">This will create the client record in Airtable and prepare their Notion dashboard.</span>
+      <button class="btn-submit" id="submit-btn" onclick="submitOnboarding()">Create Client Record</button>
+    </div>
+
+  </div><!-- /form-wrap -->
+
+  <!-- SUCCESS STATE -->
+  <div id="success">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h2 class="success-title">Client Created</h2>
+    <p class="success-sub" id="success-sub">Their record is now live in Airtable and ready for the first session.</p>
+    <div class="next-steps">
+      <h3>Next Steps</h3>
+      <div class="next-step">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Open Airtable</strong> → Breedwise Academy → Clients and confirm the record populated correctly.</div>
+      </div>
+      <div class="next-step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Duplicate the Notion dashboard</strong> template and paste the URL back into the Airtable record.</div>
+      </div>
+      <div class="next-step">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Schedule Session 1</strong> within 48 hours of enrollment and log it under Sessions in Airtable.</div>
+      </div>
+      <div class="next-step">
+        <div class="step-num">4</div>
+        <div class="step-text"><strong>Send welcome email</strong> with the Notion dashboard link and first session calendar invite.</div>
+      </div>
+    </div>
+    <button class="btn-submit" style="margin-top: 32px;" onclick="resetForm()">Onboard Another Client</button>
+  </div>
+
+</div><!-- /app -->
+
+<div id="toast"></div>
+
+<script>
+  /* ─── CONFIG — loaded from shared localStorage (set by audit.html) ── */
+  const _cfg     = JSON.parse(localStorage.getItem('bw_academy_config') || localStorage.getItem('bw_config') || '{}');
+  const AT_KEY   = _cfg.airtableKey   || '';
+  const AT_BASE  = _cfg.academyBase   || 'appMsKA0k051A1IEr';
+  const AT_TABLE = _cfg.academyTable  || 'Clients';
+
+  /* ─── PASSWORD GATE ────────────────────────────────── */
+  document.getElementById('gate-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPassword();
+  });
+
+  function checkPassword() {
+    const val = document.getElementById('gate-input').value;
+    if (val === 'breedwise2026') {
+      const gate = document.getElementById('gate');
+      gate.style.opacity = '0';
+      setTimeout(() => { gate.style.display = 'none'; }, 500);
+      document.getElementById('app').style.display = 'block';
+    } else {
+      const inp = document.getElementById('gate-input');
+      document.getElementById('gate-error').textContent = 'Incorrect access code.';
+      inp.classList.remove('shake');
+      void inp.offsetWidth;
+      inp.classList.add('shake');
+    }
+  }
+
+  /* ─── GOAL CHECKBOXES ──────────────────────────────── */
+  function toggleGoal(el) {
+    const cb = el.querySelector('input[type="checkbox"]');
+    cb.checked = !cb.checked;
+    el.classList.toggle('selected', cb.checked);
+  }
+
+  function getSelectedGoals() {
+    return [...document.querySelectorAll('#goal-grid input[type="checkbox"]')]
+      .filter(cb => cb.checked)
+      .map(cb => cb.value)
+      .join(', ');
+  }
+
+  /* ─── TOAST ────────────────────────────────────────── */
+  function showToast(msg, isError = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'show' + (isError ? ' error' : '');
+    setTimeout(() => { t.className = ''; }, 3500);
+  }
+
+  /* ─── SUBMIT ───────────────────────────────────────── */
+  function v(id) { return document.getElementById(id).value.trim(); }
+  function n(id) { const x = parseFloat(v(id)); return isNaN(x) ? null : x; }
+
+  async function submitOnboarding() {
+    if (!v('f-name'))    { showToast('Full Name is required.', true); return; }
+    if (!v('f-email'))   { showToast('Email is required.', true); return; }
+    if (!v('f-program')) { showToast('Program Name is required.', true); return; }
+    if (!v('f-breed'))   { showToast('Breed is required.', true); return; }
+    if (!v('f-goal'))    { showToast('Primary Goal is required.', true); return; }
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Creating record…';
+
+    const fields = {
+      'Full Name':           v('f-name'),
+      'Email':               v('f-email'),
+      'Program Name':        v('f-program'),
+      'Breed':               v('f-breed'),
+      'Primary Goal':        v('f-goal'),
+      'Enrollment Date':     new Date().toISOString().slice(0, 10),
+      'Status':              'Onboarding',
+    };
+
+    if (v('f-phone'))    fields['Phone']              = v('f-phone');
+    if (v('f-source'))   fields['How They Found Us']  = v('f-source');
+    if (n('f-years'))    fields['Years Breeding']     = n('f-years');
+    if (n('f-overall'))  fields['Audit Score']        = n('f-overall');
+    if (n('f-science'))  fields['Science Score']      = n('f-science');
+    if (n('f-business')) fields['Business Score']     = n('f-business');
+    if (v('f-cert'))     fields['Certification Level']= v('f-cert');
+    if (v('f-challenge')) fields['Top Challenge']     = v('f-challenge');
+    if (v('f-advisor'))  fields['Advisor']            = v('f-advisor');
+    if (v('f-cohort'))   fields['Cohort']             = v('f-cohort');
+    if (v('f-notes'))    fields['Notes']              = v('f-notes');
+
+    const goals = getSelectedGoals();
+    if (goals) fields['Notes'] = (fields['Notes'] ? fields['Notes'] + '\n\nFocus areas: ' : 'Focus areas: ') + goals;
+
+    try {
+      const res = await fetch(`https://api.airtable.com/v0/${AT_BASE}/${encodeURIComponent(AT_TABLE)}`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${AT_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fields })
+      });
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error?.message || 'Airtable error');
+
+      document.querySelector('.form-wrap').style.display = 'none';
+      document.querySelector('.page-header').style.display = 'none';
+      document.getElementById('success-sub').textContent =
+        `${v('f-name')}'s record is now live in Airtable. Record ID: ${data.id}`;
+      document.getElementById('success').style.display = 'block';
+
+    } catch (err) {
+      showToast('Failed to create record: ' + err.message, true);
+      btn.disabled = false;
+      btn.textContent = 'Create Client Record';
+    }
+  }
+
+  /* ─── RESET ────────────────────────────────────────── */
+  function resetForm() {
+    document.getElementById('success').style.display = 'none';
+    document.querySelector('.page-header').style.display = '';
+    document.querySelector('.form-wrap').style.display = '';
+    document.getElementById('submit-btn').disabled = false;
+    document.getElementById('submit-btn').textContent = 'Create Client Record';
+    document.querySelectorAll('input:not([type=checkbox]), select, textarea').forEach(el => el.value = '');
+    document.querySelectorAll('.goal-item').forEach(el => {
+      el.classList.remove('selected');
+      el.querySelector('input').checked = false;
+    });
+    window.scrollTo(0, 0);
+  }
+</script>
+
+</body>
+</html>
