@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breedwise — Sales OS</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:#ffffff; --surface:#f7f6f3; --card:#f0eeea; --card-2:#faf9f6;
+      --border:#e2dfd8; --border-2:#ece9e3; --gold:#b8922e; --gold-deep:#8a6420;
+      --gold-faint:rgba(184,146,46,0.07); --gold-mid:rgba(184,146,46,0.15);
+      --ink:#0f0e0c; --muted:#86847d; --mid:#48463f;
+      --green:#3c7a52; --green-bg:rgba(60,122,82,0.10);
+      --yellow:#b07d1e; --yellow-bg:rgba(176,125,30,0.12);
+      --red:#a33a3a; --red-bg:rgba(163,58,58,0.10); --danger:#8b3a3a;
+      --heading:'Playfair Display', Georgia, serif;
+      --body:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --ease:0.18s ease; --radius:8px;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--surface); color: var(--ink); font-family: var(--body); font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    /* LOGIN */
+    #login { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.4s ease; }
+    .login-inner { text-align: center; max-width: 360px; width: 100%; padding: 0 32px; }
+    .login-mark { display:flex; align-items:center; justify-content:center; gap:11px; margin-bottom: 6px; }
+    .login-mark svg { width: 38px; height: 38px; }
+    .login-word { font-family: var(--heading); font-size: 32px; font-weight: 600; color: var(--gold); }
+    .login-sub { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 40px; }
+    .login-lbl { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 7px; text-align: left; }
+    .login-input { width: 100%; background: var(--card); border: 1px solid var(--border); color: var(--ink); font-family: var(--body); font-size: 14px; padding: 13px 16px; border-radius: var(--radius); outline: none; transition: border-color var(--ease); margin-bottom: 14px; }
+    .login-input:focus { border-color: var(--gold); }
+    .login-btn { width: 100%; background: var(--gold); color: #fff; border: none; font-family: var(--body); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; padding: 14px; border-radius: var(--radius); cursor: pointer; transition: opacity var(--ease); }
+    .login-btn:hover { opacity: 0.88; } .login-btn:disabled { opacity: 0.5; cursor: default; }
+    .login-err { color: var(--danger); font-size: 13px; margin-top: 12px; min-height: 18px; }
+    .login-hint { font-size: 11px; color: var(--muted); margin-top: 22px; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+    .shake { animation: shake 0.38s ease; }
+
+    /* NAV */
+    nav { position: sticky; top: 0; background: rgba(255,255,255,0.96); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); z-index: 100; height: 60px; display: flex; align-items: center; padding: 0 28px; justify-content: space-between; }
+    .nav-left { display: flex; align-items: center; gap: 11px; }
+    .nav-left svg { width: 26px; height: 26px; }
+    .nav-logo { font-family: var(--heading); font-size: 20px; font-weight: 600; color: var(--gold); text-decoration: none; line-height: 1; }
+    .nav-tag { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); border-left: 1px solid var(--border); padding-left: 11px; margin-left: 4px; }
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+    .nav-user { text-align: right; line-height: 1.25; }
+    .nav-user .who { font-size: 12.5px; font-weight: 600; color: var(--ink); }
+    .nav-user .role { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold); }
+    .nav-logout { font-size: 11px; font-weight: 500; color: var(--mid); background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 7px 12px; cursor: pointer; }
+    .nav-logout:hover { border-color: var(--gold); }
+
+    .tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 60px; z-index: 90; padding: 0 28px; overflow-x: auto; }
+    .tabs-inner { display: flex; gap: 4px; max-width: 1180px; margin: 0 auto; width: 100%; }
+    .tab { font-size: 12.5px; font-weight: 500; color: var(--muted); padding: 15px 16px 13px; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color var(--ease), border-color var(--ease); }
+    .tab:hover { color: var(--mid); } .tab.active { color: var(--ink); border-bottom-color: var(--gold); }
+    .tab .tab-ic { color: var(--gold); margin-right: 6px; font-size: 11px; }
+    .panel { display: none; padding: 30px 0 80px; } .panel.active { display: block; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+
+    .view-head { margin-bottom: 24px; display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap; }
+    .view-eyebrow { font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .view-title { font-family: var(--heading); font-size: 28px; font-weight: 600; color: var(--ink); line-height: 1.15; }
+    .view-sub { font-size: 13px; color: var(--muted); margin-top: 7px; max-width: 660px; }
+    .section-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mid); font-weight: 600; margin: 34px 0 14px; display: flex; align-items: center; gap: 10px; }
+    .section-label:first-child { margin-top: 0; }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .kpi { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; transition: border-color var(--ease), transform var(--ease); }
+    .kpi:hover { border-color: var(--gold); transform: translateY(-1px); }
+    .kpi-top { display: flex; align-items: flex-start; justify-content: space-between; }
+    .kpi-name { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+    .kpi-val { font-family: var(--heading); font-size: 30px; font-weight: 600; color: var(--ink); margin-top: 10px; line-height: 1; }
+    .kpi-val .unit { font-size: 15px; color: var(--muted); font-family: var(--body); font-weight: 400; }
+    .kpi-meta { font-size: 11.5px; color: var(--muted); margin-top: 9px; } .kpi-meta strong { color: var(--mid); font-weight: 600; }
+    .kpi-flag { font-size: 9.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; }
+    .flag-pass { background: var(--green-bg); color: var(--green); } .flag-fail { background: var(--red-bg); color: var(--red); }
+    .kpi-bar { height: 5px; background: var(--border-2); border-radius: 3px; margin-top: 13px; overflow: hidden; } .kpi-bar i { display: block; height: 100%; border-radius: 3px; transition: width 0.6s cubic-bezier(.2,.7,.3,1); }
+
+    .card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; }
+    .card-h { font-family: var(--heading); font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+    .card-sub { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .funnel-row { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+    .funnel-lbl { width: 150px; font-size: 12.5px; color: var(--mid); flex-shrink: 0; }
+    .funnel-track { flex: 1; height: 28px; background: var(--card); border-radius: 6px; overflow: hidden; }
+    .funnel-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 12px; transition: width 0.6s cubic-bezier(.2,.7,.3,1); }
+    .funnel-fill span { color: #fff; font-size: 11.5px; font-weight: 600; white-space:nowrap; }
+    .funnel-pct { width: 92px; text-align: right; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+    .funnel-pct small { color: var(--muted); font-weight: 400; }
+
+    .table-wrap { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .table-tools { display: flex; align-items: center; gap: 8px; padding: 14px 16px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .search-box { margin-left: auto; font-family: var(--body); font-size: 12.5px; color: var(--ink); background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 7px 12px; outline: none; width: 180px; }
+    .search-box:focus { border-color: var(--gold); }
+    table { width: 100%; border-collapse: collapse; }
+    thead th { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; background: var(--card-2); }
+    tbody td { padding: 11px 14px; border-bottom: 1px solid var(--border-2); font-size: 12.5px; vertical-align: middle; }
+    tbody tr:last-child td { border-bottom: none; } tbody tr { transition: background var(--ease); } tbody tr:hover { background: var(--card-2); }
+    .m-name { font-weight: 600; color: var(--ink); }
+    .num { font-variant-numeric: tabular-nums; } .muted-cell { color: var(--muted); }
+    .tag { font-size: 9.5px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; background: var(--card); color: var(--mid); border: 1px solid var(--border); white-space:nowrap; }
+    .st { font-size: 10px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; }
+    .st-new{background:var(--card);color:var(--mid)} .st-engaged{background:var(--gold-mid);color:var(--gold-deep)}
+    .st-scheduled{background:var(--yellow-bg);color:var(--yellow)} .st-showed{background:var(--green-bg);color:var(--green)}
+    .st-no_show{background:var(--red-bg);color:var(--red)} .st-closed_won{background:var(--green);color:#fff}
+    .st-closed_lost{background:var(--red-bg);color:var(--red)}
+    .src { font-size:9.5px;font-weight:700;letter-spacing:.04em;padding:2px 6px;border-radius:4px; }
+    .src-CC360{background:rgba(120,80,200,.12);color:#6a48b0} .src-Close{background:rgba(40,130,180,.12);color:#1f6f96} .src-manual{background:var(--card);color:var(--muted)}
+    .row-edit { font-size: 11px; color: var(--gold-deep); background: var(--gold-faint); border: 1px solid var(--gold-mid); border-radius: 5px; padding: 5px 10px; cursor: pointer; white-space: nowrap; }
+    .row-edit:hover { background: var(--gold-mid); }
+    .btn-add { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #fff; background: var(--gold); border: none; border-radius: 6px; padding: 10px 16px; cursor: pointer; }
+    .btn-add:hover { opacity: 0.9; }
+    .rank { font-family: var(--heading); font-weight: 700; color: var(--gold); width: 22px; display:inline-block; }
+    .pill { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; padding:5px 11px; border-radius:20px; }
+    .pill-ok{background:var(--green-bg);color:var(--green)} .pill-bad{background:var(--red-bg);color:var(--red)}
+
+    /* MODAL */
+    #modal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+    #modal.open { display: flex; }
+    .modal-box { background: var(--bg); border-radius: 12px; width: 100%; max-width: 560px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); }
+    .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--border); }
+    .modal-title { font-family: var(--heading); font-size: 19px; font-weight: 600; }
+    .modal-close { font-size: 22px; color: var(--muted); cursor: pointer; line-height: 1; background: none; border: none; }
+    .modal-body { padding: 22px 24px; }
+    .fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+    .field { display: flex; flex-direction: column; } .field.full { grid-column: 1 / -1; }
+    .field label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+    .field input, .field select { font-family: var(--body); font-size: 13px; color: var(--ink); background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 9px 11px; outline: none; }
+    .field input:focus, .field select:focus { border-color: var(--gold); background: #fff; }
+    .modal-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 24px; border-top: 1px solid var(--border); }
+    .btn-save { background: var(--gold); color: #fff; border: none; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 12px 26px; border-radius: 6px; cursor: pointer; }
+    .btn-save:hover { opacity: 0.9; } .btn-save:disabled { opacity: 0.5; }
+    .btn-del { background: none; color: var(--danger); border: 1px solid var(--border); font-size: 12px; font-weight: 500; padding: 11px 18px; border-radius: 6px; cursor: pointer; }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; font-size: 12.5px; padding: 12px 22px; border-radius: 8px; z-index: 800; opacity: 0; transition: opacity 0.25s ease; pointer-events: none; }
+    .toast.show { opacity: 1; }
+    .footer { border-top: 1px solid var(--border); padding: 26px 0; text-align: center; font-size: 11px; color: var(--muted); } .footer a { color: var(--gold); text-decoration: none; }
+
+    @media (max-width: 920px) {
+      .kpi-grid { grid-template-columns: 1fr 1fr; } .grid-2 { grid-template-columns: 1fr; }
+      .fgrid { grid-template-columns: 1fr; } .funnel-lbl { width: 110px; font-size: 11px; }
+      .wrap, .tabs { padding-left: 16px; padding-right: 16px; } nav { padding: 0 16px; }
+      .nav-tag { display: none; } table { font-size: 11.5px; } .hide-sm { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div id="login">
+    <div class="login-inner">
+      <div class="login-mark">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M4 28 L4 12 L14 8 L14 26 Z" fill="url(#gl)"/><path d="M28 28 L28 12 L18 8 L18 26 Z" fill="url(#gr)"/><rect x="14" y="8" width="4" height="18" fill="#fff"/><path d="M4 12 L14 8 L16 11 L4 15 Z" fill="#c9a84c"/><path d="M28 12 L18 8 L16 11 L28 15 Z" fill="#c9a84c"/><polygon points="14,8 18,8 16,5" fill="#c9a84c"/><defs><linearGradient id="gl" x1="4" y1="8" x2="14" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#d4aa50"/><stop offset="100%" stop-color="#8a6420"/></linearGradient><linearGradient id="gr" x1="28" y1="8" x2="18" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#d4aa50"/><stop offset="100%" stop-color="#8a6420"/></linearGradient></defs></svg>
+        <span class="login-word">Breedwise</span>
+      </div>
+      <span class="login-sub">Sales OS</span>
+      <form id="loginForm" autocomplete="on">
+        <span class="login-lbl">Email</span>
+        <input type="email" id="email" class="login-input" placeholder="you@breedwise.io" autocomplete="username" required>
+        <span class="login-lbl">Password</span>
+        <input type="password" id="password" class="login-input" placeholder="••••••••" autocomplete="current-password" required>
+        <button type="submit" class="login-btn" id="loginBtn">Sign in</button>
+        <div class="login-err" id="loginErr"></div>
+      </form>
+      <div class="login-hint">The team scoreboard. Every number has a name on it.</div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="app" style="display:none">
+    <nav>
+      <div class="nav-left">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M4 28 L4 12 L14 8 L14 26 Z" fill="url(#nl)"/><path d="M28 28 L28 12 L18 8 L18 26 Z" fill="url(#nr)"/><rect x="14" y="8" width="4" height="18" fill="#f7f6f3"/><polygon points="14,8 18,8 16,5" fill="#c9a84c"/><path d="M4 12 L14 8 L16 11 L4 15 Z" fill="#c9a84c"/><path d="M28 12 L18 8 L16 11 L28 15 Z" fill="#c9a84c"/><defs><linearGradient id="nl" x1="4" y1="8" x2="14" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#d4aa50"/><stop offset="100%" stop-color="#8a6420"/></linearGradient><linearGradient id="nr" x1="28" y1="8" x2="18" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#d4aa50"/><stop offset="100%" stop-color="#8a6420"/></linearGradient></defs></svg>
+        <a href="#" class="nav-logo">Breedwise</a>
+        <span class="nav-tag">Sales OS</span>
+      </div>
+      <div class="nav-right">
+        <div class="nav-user"><div class="who" id="navWho">—</div><div class="role" id="navRole">—</div></div>
+        <button class="nav-logout" id="logoutBtn">Sign out</button>
+      </div>
+    </nav>
+
+    <div class="tabs"><div class="tabs-inner" id="tabBar">
+      <div class="tab active" data-tab="board"><span class="tab-ic">◆</span>Team Scoreboard</div>
+      <div class="tab" data-tab="mine"><span class="tab-ic">◆</span>My Dashboard</div>
+      <div class="tab" data-tab="leaderboard"><span class="tab-ic">◆</span>Leaderboard</div>
+      <div class="tab" data-tab="leads"><span class="tab-ic">◆</span>Leads</div>
+      <div class="tab" data-tab="targets"><span class="tab-ic">◆</span>Q3 Targets</div>
+    </div></div>
+
+    <div class="wrap">
+      <!-- TEAM SCOREBOARD -->
+      <section class="panel active" data-panel="board">
+        <div class="view-head"><div>
+          <div class="view-eyebrow" id="boardMonth">Month-to-date</div>
+          <h1 class="view-title">Team Scoreboard</h1>
+          <p class="view-sub">Live from the database — leads, bookings, calls and sales vs your Q3 targets. The only four conversion points that matter, with no place to hide.</p>
+        </div></div>
+        <div class="section-label">Volume vs target</div>
+        <div class="kpi-grid" id="volKpis"></div>
+        <div class="section-label">Conversion — schedule · show · close · throughput</div>
+        <div class="kpi-grid" id="convKpis"></div>
+        <div class="grid-2" style="margin-top:30px">
+          <div class="card"><div class="card-h">The funnel</div><div class="card-sub">Engaged → booked → showed → closed.</div><div id="funnel"></div></div>
+          <div class="card"><div class="card-h">Revenue collected</div><div class="card-sub">This month, from closed-won deals.</div><div id="revBox"></div></div>
+        </div>
+      </section>
+
+      <!-- MY DASHBOARD -->
+      <section class="panel" data-panel="mine">
+        <div class="view-head"><div>
+          <div class="view-eyebrow" id="mineRole">Your scoreboard</div>
+          <h1 class="view-title" id="mineTitle">My Dashboard</h1>
+          <p class="view-sub" id="mineSpec"></p>
+        </div></div>
+        <div id="mineBody"></div>
+      </section>
+
+      <!-- LEADERBOARD -->
+      <section class="panel" data-panel="leaderboard">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Who's carrying it</div>
+          <h1 class="view-title">Leaderboard</h1>
+          <p class="view-sub">Setters on outbound &amp; bookings; closers on show, close &amp; throughput. Work ethic vs skill, side by side.</p>
+        </div></div>
+        <div class="table-wrap"><div style="overflow-x:auto"><table>
+          <thead><tr><th>#</th><th>Rep</th><th>Role</th><th>Outbound (mo)</th><th>Booked</th><th>Shows</th><th>Closed</th><th>Close rate</th><th>Cash</th></tr></thead>
+          <tbody id="lbBody"></tbody>
+        </table></div></div>
+      </section>
+
+      <!-- LEADS -->
+      <section class="panel" data-panel="leads">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Pipeline · shared &amp; editable</div>
+          <h1 class="view-title">Leads</h1>
+          <p class="view-sub">Every lead, editable by the team. New leads from CC360 &amp; Close will flow in here once the sync is wired.</p>
+        </div><button class="btn-add" data-add>+ Add lead</button></div>
+        <div class="table-wrap">
+          <div class="table-tools" id="leadFilters"></div>
+          <div style="overflow-x:auto"><table>
+            <thead><tr><th>Lead</th><th>Channel</th><th>Source</th><th>Owner</th><th>Status</th><th class="hide-sm">MQL/SQL</th><th></th></tr></thead>
+            <tbody id="leadsBody"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- TARGETS -->
+      <section class="panel" data-panel="targets">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Hard-coded · the team can't hide</div>
+          <h1 class="view-title">Q3 Targets</h1>
+          <p class="view-sub">Stored in the database. Dashboards measure against these — not vibes.</p>
+        </div></div>
+        <div class="kpi-grid" id="targetKpis"></div>
+        <div class="section-label">Daily outbound targets</div>
+        <div class="table-wrap"><div style="overflow-x:auto"><table>
+          <thead><tr><th>Rep</th><th>Role</th><th>Outbound / weekday</th></tr></thead>
+          <tbody id="dailyTargets"></tbody>
+        </table></div></div>
+      </section>
+    </div>
+    <div class="footer">Breedwise Sales OS · live database · 125 sales in Q3 · <a href="https://breedwise.io" target="_blank" rel="noopener">breedwise.io</a></div>
+  </div>
+
+  <!-- LEAD MODAL -->
+  <div id="modal"><div class="modal-box">
+    <div class="modal-head"><div class="modal-title" id="modalTitle">Lead</div><button class="modal-close" id="modalClose">&times;</button></div>
+    <div class="modal-body"><div class="fgrid">
+      <div class="field full"><label>Name</label><input id="f_name" type="text"></div>
+      <div class="field"><label>Email</label><input id="f_email" type="text"></div>
+      <div class="field"><label>Phone</label><input id="f_phone" type="text"></div>
+      <div class="field"><label>Channel</label><select id="f_channel"><option>IG_inbound</option><option>IG_paid</option><option>affiliate</option><option>outbound_call</option><option>outbound_email</option><option>other</option></select></div>
+      <div class="field"><label>Source system</label><select id="f_source"><option>manual</option><option>CC360</option><option>Close</option></select></div>
+      <div class="field"><label>Owner</label><select id="f_owner"></select></div>
+      <div class="field"><label>Status</label><select id="f_status"><option>new</option><option>engaged</option><option>scheduled</option><option>no_show</option><option>showed</option><option>closed_won</option><option>closed_lost</option></select></div>
+      <div class="field"><label>IG handle</label><input id="f_ig" type="text"></div>
+      <div class="field"><label>Marketing qualified</label><select id="f_mql"><option value="false">No</option><option value="true">Yes</option></select></div>
+      <div class="field"><label>Sales qualified</label><select id="f_sql"><option value="false">No</option><option value="true">Yes</option></select></div>
+    </div></div>
+    <div class="modal-foot">
+      <button class="btn-del" id="modalDelete">Delete</button>
+      <div style="display:flex;gap:10px;align-items:center"><span class="login-err" id="modalErr" style="margin:0"></span><button class="btn-save" id="modalSave">Save</button></div>
+    </div>
+  </div></div>
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+  const SUPABASE_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+  const SUPABASE_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+  const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+  const ROLE_LABEL={setter:'Setter',closer:'Closer',qualifier:'Qualifier · Calendar Queen',manager:'Manager'};
+  let REPS=[],LEADS=[],APPTS=[],DEALS=[],ACTS=[],TARGETS=[],DAILY=[],ME=null;
+  const MONTH=new Date().toISOString().slice(0,7);
+  const TODAY=new Date().toISOString().slice(0,10);
+  const WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date().getDay()];
+  const $=s=>document.querySelector(s);
+  const pct=(n,d)=>d?(n/d):0;
+  const money=n=>'$'+Math.round(n||0).toLocaleString();
+  const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const inMonth=(ts,m)=>ts&&ts.slice(0,7)===m;
+  const isToday=ts=>ts&&ts.slice(0,10)===TODAY;
+  const repName=id=>{const r=REPS.find(x=>x.rep_id===id);return r?r.name:'—';};
+
+  /* AUTH */
+  async function boot(){ const {data:{session}}=await sb.auth.getSession(); if(session) enterApp(); else showLogin(); }
+  function showLogin(){ $('#login').style.display='flex'; $('#login').style.opacity=1; $('#app').style.display='none'; $('#email').focus(); }
+  $('#loginForm').addEventListener('submit',async e=>{
+    e.preventDefault(); const btn=$('#loginBtn'); btn.disabled=true; $('#loginErr').textContent='';
+    const {error}=await sb.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#password').value});
+    btn.disabled=false;
+    if(error){ $('#loginErr').textContent=error.message; $('.login-inner').classList.add('shake'); setTimeout(()=>$('.login-inner').classList.remove('shake'),400); }
+    else enterApp();
+  });
+  $('#logoutBtn').onclick=async()=>{ await sb.auth.signOut(); location.reload(); };
+  async function enterApp(){ await loadData(); $('#login').style.opacity=0; setTimeout(()=>{$('#login').style.display='none';},350); $('#app').style.display='block'; renderAll(); }
+
+  async function loadData(){
+    const {data:{session}}=await sb.auth.getSession();
+    const myEmail=session?.user?.email||'';
+    const [r,l,a,d,ac,t,dt]=await Promise.all([
+      sb.from('sales_reps').select('*'),
+      sb.from('leads').select('*').order('created_at',{ascending:false}),
+      sb.from('appointments').select('*'),
+      sb.from('deals').select('*'),
+      sb.from('activities').select('*'),
+      sb.from('team_monthly_targets').select('*'),
+      sb.from('rep_daily_targets').select('*'),
+    ]);
+    REPS=r.data||[]; LEADS=l.data||[]; APPTS=a.data||[]; DEALS=d.data||[]; ACTS=ac.data||[]; TARGETS=t.data||[]; DAILY=dt.data||[];
+    ME=REPS.find(x=>x.email&&x.email.toLowerCase()===myEmail.toLowerCase())||{name:myEmail,role:'',rep_id:null};
+  }
+
+  /* KPI MATH */
+  function target(){ return TARGETS.find(t=>t.month===MONTH)||{leads_target:800,bookings_target:200,sales_calls_target:136,sales_target:42,close_rate_target:0.33,show_rate_target:0.75,throughput_target:0.0525,qtr_sales_target:125}; }
+  function teamKPIs(){
+    const monthLeads=LEADS.filter(l=>inMonth(l.created_at,MONTH));
+    const engagedSet=new Set(ACTS.map(a=>a.lead_id));
+    const engaged=monthLeads.filter(l=>engagedSet.has(l.lead_id)).length;
+    const booked=APPTS.filter(a=>inMonth(a.booked_at,MONTH));
+    const shows=booked.filter(a=>a.status==='showed').length;
+    const won=DEALS.filter(d=>d.status==='closed_won'&&inMonth(d.closed_at,MONTH)).length;
+    const revenue=DEALS.filter(d=>inMonth(d.closed_at,MONTH)).reduce((s,d)=>s+Number(d.amount_collected||0),0);
+    return { leads:monthLeads.length, engaged, booked:booked.length, shows, won, revenue,
+      schedule:pct(booked.length,engaged), show:pct(shows,booked.length), close:pct(won,shows), throughput:pct(won,engaged) };
+  }
+
+  /* RENDER: scoreboard */
+  function volCard(name,actual,tgt,unit){
+    const p=Math.min(100,Math.round(actual/(tgt||1)*100));
+    return `<div class="kpi"><div class="kpi-top"><span class="kpi-name">${name}</span><span class="kpi-flag ${p>=100?'flag-pass':''}" style="${p>=100?'':'background:var(--card);color:var(--muted)'}">${p}%</span></div>
+      <div class="kpi-val">${actual.toLocaleString()}<span class="unit"> / ${tgt.toLocaleString()}${unit||''}</span></div>
+      <div class="kpi-meta">month-to-date vs target</div>
+      <div class="kpi-bar"><i style="width:${Math.max(p,3)}%;background:${p>=100?'var(--green)':'var(--gold)'}"></i></div></div>`;
+  }
+  function rateCard(name,actual,tgt){
+    const ok=actual>=tgt; const p=Math.min(100,Math.round(actual/(tgt||1)*100));
+    return `<div class="kpi"><div class="kpi-top"><span class="kpi-name">${name}</span><span class="kpi-flag ${ok?'flag-pass':'flag-fail'}">${ok?'On target':'Below'}</span></div>
+      <div class="kpi-val">${(actual*100).toFixed(1)}<span class="unit">%</span></div>
+      <div class="kpi-meta">target <strong>≥ ${(tgt*100).toFixed(tgt<0.1?2:0)}%</strong></div>
+      <div class="kpi-bar"><i style="width:${Math.max(p,3)}%;background:${ok?'var(--green)':'var(--red)'}"></i></div></div>`;
+  }
+  function renderBoard(){
+    const k=teamKPIs(), t=target();
+    $('#boardMonth').textContent=`Month-to-date · ${MONTH}`;
+    $('#volKpis').innerHTML=[volCard('Leads',k.leads,t.leads_target),volCard('Bookings',k.booked,t.bookings_target),volCard('Sales Calls (held)',k.shows,t.sales_calls_target),volCard('Sales',k.won,t.sales_target)].join('');
+    $('#convKpis').innerHTML=[rateCard('Schedule rate',k.schedule,0.25),rateCard('Show rate',k.show,t.show_rate_target),rateCard('Close rate',k.close,t.close_rate_target),rateCard('Throughput',k.throughput,t.throughput_target)].join('');
+    const steps=[['Engaged leads',k.engaged,'var(--gold)'],['Booked',k.booked,'var(--gold-deep)'],['Showed',k.shows,'var(--green)'],['Closed-won',k.won,'var(--ink)']];
+    const max=Math.max(k.engaged,1);
+    $('#funnel').innerHTML=steps.map(([l,n,c])=>`<div class="funnel-row"><div class="funnel-lbl">${l}</div><div class="funnel-track"><div class="funnel-fill" style="width:${Math.max(Math.round(n/max*100),6)}%;background:${c}"><span>${n}</span></div></div><div class="funnel-pct">${n}</div></div>`).join('');
+    $('#revBox').innerHTML=`<div style="font-family:var(--heading);font-size:46px;font-weight:700;color:var(--gold);line-height:1">${money(k.revenue)}</div><div class="kpi-meta" style="margin-top:8px">${k.won} closed-won this month · ${money(k.won? k.revenue/k.won:0)} avg</div>`;
+  }
+
+  /* RENDER: my dashboard */
+  function dailyTarget(repId){ const d=DAILY.find(x=>x.rep_id===repId&&x.weekday===WD); return d?d.outbound_target:(WD==='Sat'||WD==='Sun'?0:50); }
+  function statCard(name,val,sub,ok){ return `<div class="kpi"><div class="kpi-top"><span class="kpi-name">${name}</span>${ok===undefined?'':`<span class="kpi-flag ${ok?'flag-pass':'flag-fail'}">${ok?'✓':'•'}</span>`}</div><div class="kpi-val">${val}</div><div class="kpi-meta">${sub||''}</div></div>`; }
+  function renderMine(){
+    $('#navWho').textContent=ME.name||'Signed in';
+    $('#navRole').textContent=ROLE_LABEL[ME.role]||'';
+    if(!ME.rep_id){ $('#mineTitle').textContent='My Dashboard'; $('#mineRole').textContent='Not a sales rep'; $('#mineSpec').textContent='Your login isn’t mapped to a sales rep — but you can see the full team scoreboard.'; $('#mineBody').innerHTML=`<div class="card"><div class="card-sub" style="margin:0">No personal sales dashboard for this login.</div></div>`; return; }
+    $('#mineTitle').textContent=ME.name+' — '+(ME.role==='closer'?'Closer':ME.role==='setter'?'Setter':ME.role==='qualifier'?'Calendar Queen':'Manager');
+    $('#mineRole').textContent='Your scoreboard · '+MONTH;
+    $('#mineSpec').textContent=ME.specialty||'';
+    const ob=ACTS.filter(a=>a.rep_id===ME.rep_id&&a.direction==='outbound'&&isToday(a.ts)).length;
+    const obT=dailyTarget(ME.rep_id);
+    const myActsMonth=ACTS.filter(a=>a.rep_id===ME.rep_id&&a.direction==='outbound'&&inMonth(a.ts,MONTH)).length;
+    const touched=new Set(ACTS.filter(a=>a.rep_id===ME.rep_id&&inMonth(a.ts,MONTH)).map(a=>a.lead_id)).size;
+    let cards=statCard(`Outbound today`,`${ob}<span class="unit"> / ${obT}</span>`,`${WD} target`,ob>=obT&&obT>0);
+    cards+=statCard('Outbound (month)',myActsMonth,'all outbound activities');
+    cards+=statCard('Leads touched (month)',touched,'distinct leads worked');
+
+    let extra='';
+    if(ME.role==='closer'){
+      const myAppts=APPTS.filter(a=>a.closer_id===ME.rep_id&&inMonth(a.booked_at,MONTH));
+      const myShows=myAppts.filter(a=>a.status==='showed').length;
+      const myWon=DEALS.filter(d=>d.closer_id===ME.rep_id&&d.status==='closed_won'&&inMonth(d.closed_at,MONTH)).length;
+      const cash=DEALS.filter(d=>d.closer_id===ME.rep_id&&inMonth(d.closed_at,MONTH)).reduce((s,d)=>s+Number(d.amount_collected||0),0);
+      const cr=pct(myWon,myShows);
+      cards+=statCard('Sales calls held',myShows,'your showed appointments');
+      cards+=statCard('Deals closed',myWon,'closed-won this month');
+      cards+=statCard('Close rate',(cr*100).toFixed(0)+'%','target ≥ 33%',cr>=0.33);
+      cards+=statCard('Cash collected',money(cash),'your closed deals');
+      const upcoming=APPTS.filter(a=>a.closer_id===ME.rep_id&&a.status==='scheduled').sort((a,b)=>(a.scheduled_for||'').localeCompare(b.scheduled_for||''));
+      extra=`<div class="section-label">Upcoming calls</div>`+apptTable(upcoming);
+    } else if(ME.role==='setter'){
+      const booked=APPTS.filter(a=>a.booked_by_id===ME.rep_id&&inMonth(a.booked_at,MONTH)).length;
+      const myLeads=LEADS.filter(l=>l.current_owner_id===ME.rep_id);
+      cards+=statCard('Appointments booked',booked,'from your sets this month');
+      cards+=statCard('Leads owned',myLeads.length,'in your pipeline');
+      extra=`<div class="section-label">Your leads</div>`+leadMini(myLeads);
+    } else if(ME.role==='qualifier'){
+      const teamBooked=APPTS.filter(a=>inMonth(a.booked_at,MONTH));
+      const teamShows=teamBooked.filter(a=>a.status==='showed').length;
+      const sr=pct(teamShows,teamBooked.length);
+      const owned=APPTS.filter(a=>(a.booked_by_id===ME.rep_id||a.qualified_by_id===ME.rep_id)&&inMonth(a.booked_at,MONTH));
+      const ownedShows=owned.filter(a=>a.status==='showed').length;
+      const osr=pct(ownedShows,owned.length);
+      cards+=statCard('Team show rate',(sr*100).toFixed(1)+'%','target ≥ 75%',sr>=0.75);
+      cards+=statCard('Your owned show rate',(osr*100).toFixed(1)+'%',`${ownedShows}/${owned.length} you qualified/booked`,osr>=0.75);
+      const atRisk=APPTS.filter(a=>a.status==='scheduled').sort((a,b)=>(a.scheduled_for||'').localeCompare(b.scheduled_for||''));
+      extra=`<div class="section-label">Scheduled — keep them warm</div>`+apptTable(atRisk);
+    }
+    $('#mineBody').innerHTML=`<div class="kpi-grid">${cards}</div>${extra}`;
+  }
+  function apptTable(list){
+    if(!list.length) return `<div class="card"><div class="card-sub" style="margin:0">Nothing scheduled.</div></div>`;
+    return `<div class="table-wrap"><div style="overflow-x:auto"><table><thead><tr><th>Lead</th><th>Type</th><th>When</th><th>Status</th><th>Closer</th></tr></thead><tbody>`+
+      list.slice(0,12).map(a=>{const l=LEADS.find(x=>x.lead_id===a.lead_id)||{};return `<tr><td class="m-name">${esc(l.name||'—')}</td><td><span class="tag">${a.appt_type||''}</span></td><td class="muted-cell">${(a.scheduled_for||'').slice(0,16).replace('T',' ')}</td><td><span class="st st-${a.status}">${a.status}</span></td><td class="muted-cell">${repName(a.closer_id)}</td></tr>`;}).join('')+
+      `</tbody></table></div></div>`;
+  }
+  function leadMini(list){
+    if(!list.length) return `<div class="card"><div class="card-sub" style="margin:0">No leads owned yet.</div></div>`;
+    return `<div class="table-wrap"><div style="overflow-x:auto"><table><thead><tr><th>Lead</th><th>Channel</th><th>Status</th></tr></thead><tbody>`+
+      list.slice(0,15).map(l=>`<tr><td class="m-name">${esc(l.name)}</td><td><span class="tag">${l.channel||''}</span></td><td><span class="st st-${l.status}">${l.status}</span></td></tr>`).join('')+`</tbody></table></div></div>`;
+  }
+
+  /* RENDER: leaderboard */
+  function renderLeaderboard(){
+    const rows=REPS.map(r=>{
+      const ob=ACTS.filter(a=>a.rep_id===r.rep_id&&a.direction==='outbound'&&inMonth(a.ts,MONTH)).length;
+      const booked=APPTS.filter(a=>a.booked_by_id===r.rep_id&&inMonth(a.booked_at,MONTH)).length;
+      const shows=APPTS.filter(a=>a.closer_id===r.rep_id&&a.status==='showed'&&inMonth(a.booked_at,MONTH)).length;
+      const won=DEALS.filter(d=>d.closer_id===r.rep_id&&d.status==='closed_won'&&inMonth(d.closed_at,MONTH)).length;
+      const cash=DEALS.filter(d=>d.closer_id===r.rep_id&&inMonth(d.closed_at,MONTH)).reduce((s,d)=>s+Number(d.amount_collected||0),0);
+      const cr=shows?won/shows:0;
+      return {r,ob,booked,shows,won,cash,cr};
+    }).sort((a,b)=> (b.won-a.won)||(b.booked-a.booked)||(b.ob-a.ob));
+    $('#lbBody').innerHTML=rows.map((x,i)=>`<tr>
+      <td><span class="rank">${i+1}</span></td>
+      <td class="m-name">${esc(x.r.name)}${x.r.rep_id===ME.rep_id?' <span class="tag">you</span>':''}</td>
+      <td><span class="tag">${ROLE_LABEL[x.r.role]||x.r.role}</span></td>
+      <td class="num">${x.ob}</td><td class="num">${x.booked}</td><td class="num">${x.shows}</td><td class="num">${x.won}</td>
+      <td>${x.shows?`<span class="pill ${x.cr>=0.33?'pill-ok':'pill-bad'}">${Math.round(x.cr*100)}%</span>`:'<span class="muted-cell">—</span>'}</td>
+      <td class="num">${money(x.cash)}</td></tr>`).join('');
+  }
+
+  /* RENDER: leads */
+  let leadFilter='all',leadQ='';
+  function renderLeads(){
+    const counts={all:LEADS.length}; ['new','engaged','scheduled','showed','closed_won','closed_lost'].forEach(s=>counts[s]=LEADS.filter(l=>l.status===s).length);
+    const chips=[['all','All'],['new','New'],['engaged','Engaged'],['scheduled','Scheduled'],['showed','Showed'],['closed_won','Won']];
+    $('#leadFilters').innerHTML=chips.map(([k,lbl])=>`<div class="tag" data-f="${k}" style="cursor:pointer;${leadFilter===k?'background:var(--ink);color:#fff;border-color:var(--ink)':''}">${lbl} ${counts[k]||0}</div>`).join('')+`<input class="search-box" id="leadSearch" placeholder="Search…">`;
+    let rows=LEADS.filter(l=>leadFilter==='all'||l.status===leadFilter);
+    if(leadQ) rows=rows.filter(l=>(l.name||'').toLowerCase().includes(leadQ));
+    $('#leadsBody').innerHTML=rows.map(l=>`<tr>
+      <td><div class="m-name">${esc(l.name||'—')}</div><div class="muted-cell" style="font-size:10.5px">${esc(l.email||'')}</div></td>
+      <td><span class="tag">${l.channel||''}</span></td>
+      <td><span class="src src-${l.first_source_system||'manual'}">${l.first_source_system||'manual'}</span></td>
+      <td class="muted-cell">${repName(l.current_owner_id)}</td>
+      <td><span class="st st-${l.status}">${l.status}</span></td>
+      <td class="hide-sm">${l.marketing_qualified?'<span class="tag">MQL</span> ':''}${l.sales_qualified?'<span class="tag">SQL</span>':''}</td>
+      <td><button class="row-edit" data-edit="${l.lead_id}">Edit</button></td></tr>`).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:26px">No leads.</td></tr>`;
+    $('#leadFilters').querySelectorAll('[data-f]').forEach(c=>c.onclick=()=>{leadFilter=c.dataset.f;renderLeads();});
+    const sbx=$('#leadSearch'); sbx.value=leadQ; sbx.oninput=e=>{leadQ=e.target.value.toLowerCase();renderLeads();};
+  }
+
+  /* RENDER: targets */
+  function renderTargets(){
+    const t=target();
+    $('#targetKpis').innerHTML=[
+      ['Leads / mo',t.leads_target],['Bookings / mo',t.bookings_target],['Sales calls / mo',t.sales_calls_target],['Sales / mo',t.sales_target],
+      ['Close rate',(t.close_rate_target*100)+'%'],['Show rate',(t.show_rate_target*100)+'%'],['Throughput',(t.throughput_target*100).toFixed(2)+'%'],['Q3 sales',t.qtr_sales_target]
+    ].map(([n,v])=>`<div class="kpi"><div class="kpi-name">${n}</div><div class="kpi-val" style="font-size:26px">${v}</div></div>`).join('');
+    $('#dailyTargets').innerHTML=REPS.map(r=>{const d=DAILY.filter(x=>x.rep_id===r.rep_id);const ob=d.length?d[0].outbound_target:0;return `<tr><td class="m-name">${esc(r.name)}</td><td><span class="tag">${ROLE_LABEL[r.role]||r.role}</span></td><td class="num">${ob} <span class="muted-cell">Mon–Fri</span></td></tr>`;}).join('');
+  }
+
+  function renderAll(){ renderBoard(); renderMine(); renderLeaderboard(); renderLeads(); renderTargets(); }
+
+  /* TABS */
+  document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===t));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.dataset.panel===t.dataset.tab));
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+
+  /* LEAD MODAL */
+  let editingId=null;
+  function openModal(l){
+    editingId=l?l.lead_id:null;
+    $('#modalTitle').textContent=l?'Edit lead':'Add lead';
+    $('#modalDelete').style.display=l?'block':'none'; $('#modalErr').textContent='';
+    $('#f_owner').innerHTML=`<option value="">— unassigned —</option>`+REPS.map(r=>`<option value="${r.rep_id}">${esc(r.name)}</option>`).join('');
+    $('#f_name').value=l?l.name||'':''; $('#f_email').value=l?l.email||'':''; $('#f_phone').value=l?l.phone||'':'';
+    $('#f_channel').value=l?l.channel||'IG_inbound':'IG_inbound'; $('#f_source').value=l?l.first_source_system||'manual':'manual';
+    $('#f_owner').value=l?l.current_owner_id||'':''; $('#f_status').value=l?l.status||'new':'new'; $('#f_ig').value=l?l.ig_handle||'':'';
+    $('#f_mql').value=l&&l.marketing_qualified?'true':'false'; $('#f_sql').value=l&&l.sales_qualified?'true':'false';
+    $('#modal').classList.add('open');
+  }
+  function closeModal(){ $('#modal').classList.remove('open'); }
+  $('#modalClose').onclick=closeModal; $('#modal').onclick=e=>{ if(e.target.id==='modal') closeModal(); };
+  document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>openModal(null));
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-edit]'); if(b){const l=LEADS.find(x=>x.lead_id===b.dataset.edit); if(l) openModal(l);}});
+  $('#modalSave').onclick=async()=>{
+    const name=$('#f_name').value.trim(); if(!name){ $('#modalErr').textContent='Name required.'; return; }
+    const row={ name, email:$('#f_email').value.trim()||null, phone:$('#f_phone').value.trim()||null, channel:$('#f_channel').value,
+      first_source_system:$('#f_source').value, current_owner_id:$('#f_owner').value||null, status:$('#f_status').value,
+      ig_handle:$('#f_ig').value.trim()||null, marketing_qualified:$('#f_mql').value==='true', sales_qualified:$('#f_sql').value==='true' };
+    $('#modalSave').disabled=true;
+    let res; if(editingId) res=await sb.from('leads').update(row).eq('lead_id',editingId); else res=await sb.from('leads').insert(row);
+    $('#modalSave').disabled=false;
+    if(res.error){ $('#modalErr').textContent=res.error.message; return; }
+    closeModal(); await loadData(); renderAll(); toast(editingId?'Lead updated':'Lead added');
+  };
+  $('#modalDelete').onclick=async()=>{ if(!editingId) return; if(!confirm('Delete this lead?')) return; const res=await sb.from('leads').delete().eq('lead_id',editingId); if(res.error){ $('#modalErr').textContent=res.error.message; return;} closeModal(); await loadData(); renderAll(); toast('Lead deleted'); };
+  function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
+
+  boot();
+  </script>
+</body>
+</html>
