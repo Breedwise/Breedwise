@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breedwise — Member Success OS</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #ffffff;
+      --surface:   #f7f6f3;
+      --card:      #f0eeea;
+      --card-2:    #faf9f6;
+      --border:    #e2dfd8;
+      --border-2:  #ece9e3;
+      --gold:      #b8922e;
+      --gold-deep: #8a6420;
+      --gold-faint: rgba(184,146,46,0.07);
+      --gold-mid:  rgba(184,146,46,0.15);
+      --ink:       #0f0e0c;
+      --muted:     #86847d;
+      --mid:       #48463f;
+      --green:     #3c7a52;
+      --green-bg:  rgba(60,122,82,0.10);
+      --yellow:    #b07d1e;
+      --yellow-bg: rgba(176,125,30,0.12);
+      --red:       #a33a3a;
+      --red-bg:    rgba(163,58,58,0.10);
+      --danger:    #8b3a3a;
+      --heading:   'Playfair Display', Georgia, serif;
+      --body:      'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --ease:      0.18s ease;
+      --radius:    8px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--surface);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 14px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ═══ PASSWORD GATE ════════════════════════════════════ */
+    #gate {
+      position: fixed; inset: 0; background: var(--bg); z-index: 9999;
+      display: flex; align-items: center; justify-content: center; flex-direction: column;
+      transition: opacity 0.5s ease;
+    }
+    .gate-inner { text-align: center; max-width: 380px; padding: 0 32px; }
+    .gate-mark { display:flex; align-items:center; justify-content:center; gap:11px; margin-bottom: 6px; }
+    .gate-mark svg { width: 38px; height: 38px; }
+    .gate-word { font-family: var(--heading); font-size: 32px; font-weight: 600; color: var(--gold); }
+    .gate-sub { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 44px; }
+    .gate-lbl { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 10px; }
+    .gate-input {
+      width: 100%; background: var(--card); border: 1px solid var(--border);
+      color: var(--ink); font-family: var(--body); font-size: 15px;
+      padding: 14px 20px; border-radius: var(--radius); text-align: center;
+      letter-spacing: 0.1em; outline: none; transition: border-color var(--ease);
+    }
+    .gate-input:focus { border-color: var(--gold); }
+    .gate-btn {
+      margin-top: 14px; width: 100%; background: var(--gold); color: #fff; border: none;
+      font-family: var(--body); font-size: 12px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; padding: 14px; border-radius: var(--radius);
+      cursor: pointer; transition: opacity var(--ease);
+    }
+    .gate-btn:hover { opacity: 0.88; }
+    .gate-err { color: var(--danger); font-size: 13px; margin-top: 10px; min-height: 18px; }
+    .gate-hint { font-size: 11px; color: var(--muted); margin-top: 22px; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+    .shake { animation: shake 0.38s ease; }
+
+    /* ═══ NAV ══════════════════════════════════════════════ */
+    nav {
+      position: sticky; top: 0; background: rgba(255,255,255,0.96); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border); z-index: 100; height: 60px;
+      display: flex; align-items: center; padding: 0 28px; justify-content: space-between;
+    }
+    .nav-left { display: flex; align-items: center; gap: 11px; }
+    .nav-left svg { width: 26px; height: 26px; }
+    .nav-logo { font-family: var(--heading); font-size: 20px; font-weight: 600; color: var(--gold); text-decoration: none; line-height: 1; }
+    .nav-tag { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); border-left: 1px solid var(--border); padding-left: 11px; margin-left: 4px; }
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+    .role-select {
+      font-family: var(--body); font-size: 12px; font-weight: 500; color: var(--ink);
+      background: var(--card); border: 1px solid var(--border); border-radius: 6px;
+      padding: 8px 12px; cursor: pointer; outline: none;
+    }
+    .role-select:focus { border-color: var(--gold); }
+    .nav-clock { font-size: 11px; color: var(--muted); }
+
+    /* ═══ APP WRAPPER ══════════════════════════════════════ */
+    #app { display: none; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+
+    /* ═══ TABS ═════════════════════════════════════════════ */
+    .tabs {
+      display: flex; gap: 2px; border-bottom: 1px solid var(--border);
+      background: var(--bg); position: sticky; top: 60px; z-index: 90; padding: 0 28px;
+      overflow-x: auto;
+    }
+    .tabs-inner { display: flex; gap: 4px; max-width: 1180px; margin: 0 auto; width: 100%; }
+    .tab {
+      font-size: 12.5px; font-weight: 500; letter-spacing: 0.02em; color: var(--muted);
+      padding: 15px 16px 13px; cursor: pointer; border-bottom: 2px solid transparent;
+      white-space: nowrap; transition: color var(--ease), border-color var(--ease);
+    }
+    .tab:hover { color: var(--mid); }
+    .tab.active { color: var(--ink); border-bottom-color: var(--gold); }
+    .tab .tab-ic { color: var(--gold); margin-right: 6px; font-size: 11px; }
+
+    .panel { display: none; padding: 30px 0 80px; }
+    .panel.active { display: block; }
+
+    /* ═══ SECTION HEADERS ══════════════════════════════════ */
+    .view-head { margin-bottom: 24px; }
+    .view-eyebrow { font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .view-title { font-family: var(--heading); font-size: 28px; font-weight: 600; color: var(--ink); line-height: 1.15; }
+    .view-sub { font-size: 13px; color: var(--muted); margin-top: 7px; max-width: 640px; }
+
+    .section-label {
+      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mid);
+      font-weight: 600; margin: 34px 0 14px; display: flex; align-items: center; gap: 10px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ═══ KPI TILES ════════════════════════════════════════ */
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .kpi {
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 18px 18px 16px; cursor: pointer; transition: border-color var(--ease), transform var(--ease);
+      position: relative; overflow: hidden;
+    }
+    .kpi:hover { border-color: var(--gold); transform: translateY(-1px); }
+    .kpi-top { display: flex; align-items: flex-start; justify-content: space-between; }
+    .kpi-name { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+    .kpi-val { font-family: var(--heading); font-size: 32px; font-weight: 600; color: var(--ink); margin-top: 10px; line-height: 1; }
+    .kpi-val .unit { font-size: 16px; color: var(--muted); font-family: var(--body); font-weight: 400; }
+    .kpi-meta { font-size: 11.5px; color: var(--muted); margin-top: 9px; }
+    .kpi-meta strong { color: var(--mid); font-weight: 600; }
+    .kpi-flag { font-size: 9.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; }
+    .flag-pass { background: var(--green-bg); color: var(--green); }
+    .flag-fail { background: var(--red-bg); color: var(--red); }
+    .kpi-bar { height: 4px; background: var(--border-2); border-radius: 3px; margin-top: 13px; overflow: hidden; }
+    .kpi-bar i { display: block; height: 100%; border-radius: 3px; }
+
+    /* ═══ CARDS / PANELS ═══════════════════════════════════ */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .card {
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px;
+    }
+    .card-h { font-family: var(--heading); font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+    .card-sub { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+
+    /* ═══ FUNNEL ═══════════════════════════════════════════ */
+    .funnel-row { display: flex; align-items: center; gap: 14px; margin-bottom: 9px; }
+    .funnel-lbl { width: 168px; font-size: 12.5px; color: var(--mid); flex-shrink: 0; }
+    .funnel-track { flex: 1; height: 30px; background: var(--card); border-radius: 6px; overflow: hidden; position: relative; }
+    .funnel-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-deep)); border-radius: 6px; display: flex; align-items: center; padding-left: 12px; transition: width 0.6s cubic-bezier(.2,.7,.3,1); }
+    .funnel-fill span { color: #fff; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+    .funnel-pct { width: 52px; text-align: right; font-size: 12.5px; font-weight: 600; color: var(--ink); flex-shrink: 0; }
+
+    /* ═══ TABLE ════════════════════════════════════════════ */
+    .table-wrap { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .table-tools { display: flex; align-items: center; gap: 8px; padding: 14px 16px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .filter-chip {
+      font-size: 11.5px; font-weight: 500; color: var(--mid); background: var(--card);
+      border: 1px solid var(--border); border-radius: 20px; padding: 6px 13px; cursor: pointer;
+      transition: all var(--ease);
+    }
+    .filter-chip:hover { border-color: var(--gold); }
+    .filter-chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .filter-chip .ct { opacity: 0.6; margin-left: 4px; }
+    .search-box {
+      margin-left: auto; font-family: var(--body); font-size: 12.5px; color: var(--ink);
+      background: var(--card); border: 1px solid var(--border); border-radius: 6px;
+      padding: 7px 12px; outline: none; width: 190px; transition: border-color var(--ease);
+    }
+    .search-box:focus { border-color: var(--gold); }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+      font-weight: 600; text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--border);
+      white-space: nowrap; background: var(--card-2);
+    }
+    tbody td { padding: 12px 14px; border-bottom: 1px solid var(--border-2); font-size: 12.5px; vertical-align: middle; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr { transition: background var(--ease); cursor: pointer; }
+    tbody tr:hover { background: var(--card-2); }
+    .m-name { font-weight: 600; color: var(--ink); }
+    .m-email { font-size: 10.5px; color: var(--muted); }
+    .prog-tag { font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 3px 7px; border-radius: 4px; background: var(--gold-mid); color: var(--gold-deep); }
+    .num { font-variant-numeric: tabular-nums; }
+    .muted-cell { color: var(--muted); }
+
+    /* status dot */
+    .dot { display: inline-flex; align-items: center; gap: 7px; font-size: 11.5px; font-weight: 600; }
+    .dot::before { content: ''; width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .dot.Green { color: var(--green); } .dot.Green::before { background: var(--green); }
+    .dot.Yellow { color: var(--yellow); } .dot.Yellow::before { background: var(--yellow); }
+    .dot.Red { color: var(--red); } .dot.Red::before { background: var(--red); }
+    .tags { display: flex; gap: 4px; flex-wrap: wrap; }
+    .tag { font-size: 9.5px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; background: var(--card); color: var(--mid); border: 1px solid var(--border); }
+    .pay-good { color: var(--green); } .pay-bad { color: var(--red); font-weight: 600; }
+
+    /* ═══ COMP CALCULATOR ══════════════════════════════════ */
+    .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; max-width: 720px; }
+    .comp-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .comp-head { background: var(--ink); color: #fff; padding: 18px 20px; }
+    .comp-role { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+    .comp-person { font-family: var(--heading); font-size: 20px; font-weight: 600; margin-top: 4px; }
+    .comp-body { padding: 18px 20px; }
+    .comp-line { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border-2); }
+    .comp-line:last-of-type { border-bottom: none; }
+    .comp-line .lbl { font-size: 12px; color: var(--mid); }
+    .comp-line .lbl small { display: block; font-size: 10px; color: var(--muted); }
+    .comp-input {
+      width: 92px; font-family: var(--body); font-size: 13px; font-weight: 600; color: var(--ink);
+      text-align: right; background: var(--card); border: 1px solid var(--border); border-radius: 5px;
+      padding: 6px 9px; outline: none; transition: border-color var(--ease);
+      font-variant-numeric: tabular-nums;
+    }
+    .comp-input:focus { border-color: var(--gold); background: #fff; }
+    .comp-bonus { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; min-width: 70px; text-align: right; }
+    .bonus-on { color: var(--green); } .bonus-off { color: var(--muted); }
+    .comp-toggle { font-size: 11px; }
+    .comp-total { display: flex; align-items: baseline; justify-content: space-between; margin-top: 14px; padding-top: 14px; border-top: 2px solid var(--border); }
+    .comp-total .lbl { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+    .comp-total .val { font-family: var(--heading); font-size: 28px; font-weight: 700; color: var(--gold); font-variant-numeric: tabular-nums; }
+    .comp-note { font-size: 10.5px; color: var(--muted); padding: 0 20px 18px; line-height: 1.5; }
+
+    /* ═══ ALERTS / AUTOMATION ══════════════════════════════ */
+    .rule { display: flex; gap: 13px; padding: 14px 0; border-bottom: 1px solid var(--border-2); }
+    .rule:last-child { border-bottom: none; }
+    .rule-ic { width: 30px; height: 30px; border-radius: 7px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+    .ic-green { background: var(--green-bg); } .ic-yellow { background: var(--yellow-bg); } .ic-red { background: var(--red-bg); } .ic-gold { background: var(--gold-mid); }
+    .rule-body { flex: 1; }
+    .rule-trig { font-size: 12.5px; font-weight: 600; color: var(--ink); }
+    .rule-act { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+    .rule-tag { font-size: 9.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--gold-deep); }
+
+    /* ═══ PERMISSIONS MATRIX ═══════════════════════════════ */
+    .perm-table td, .perm-table th { text-align: center; }
+    .perm-table td:first-child, .perm-table th:first-child { text-align: left; font-weight: 500; }
+    .perm-yes { color: var(--green); font-weight: 700; } .perm-no { color: var(--border); } .perm-own { color: var(--yellow); font-weight: 600; font-size: 10px; }
+
+    /* ═══ SPEC / REFERENCE ═════════════════════════════════ */
+    .spec-block { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; margin-bottom: 14px; }
+    .spec-block h4 { font-family: var(--heading); font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+    .spec-list { list-style: none; }
+    .spec-list li { font-size: 12.5px; color: var(--mid); padding: 6px 0 6px 18px; position: relative; border-bottom: 1px solid var(--border-2); }
+    .spec-list li:last-child { border-bottom: none; }
+    .spec-list li::before { content: '·'; position: absolute; left: 4px; color: var(--gold); font-weight: 700; }
+    .spec-list code { font-family: ui-monospace, Menlo, monospace; font-size: 11.5px; background: var(--card); padding: 1px 5px; border-radius: 3px; color: var(--gold-deep); }
+    .formula { font-family: ui-monospace, Menlo, monospace; font-size: 11.5px; color: var(--mid); background: var(--card); border-radius: 6px; padding: 10px 13px; margin-top: 4px; }
+
+    .footer { border-top: 1px solid var(--border); padding: 26px 0; text-align: center; font-size: 11px; color: var(--muted); }
+    .footer a { color: var(--gold); text-decoration: none; }
+
+    /* tiny */
+    .src-note { font-size: 10.5px; color: var(--muted); font-style: italic; margin-top: 12px; }
+    .legend { display:flex; gap:18px; margin-top:14px; flex-wrap:wrap; }
+    .legend span { font-size: 11px; color: var(--muted); display:flex; align-items:center; gap:6px; }
+
+    @media (max-width: 920px) {
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+      .grid-2, .grid-3, .comp-grid { grid-template-columns: 1fr; }
+      .funnel-lbl { width: 120px; font-size: 11px; }
+      .search-box { width: 130px; }
+      .wrap, .tabs { padding-left: 16px; padding-right: 16px; }
+      nav { padding: 0 16px; }
+      .nav-tag { display: none; }
+      table { font-size: 11.5px; }
+      .hide-sm { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ GATE ═══ -->
+  <div id="gate">
+    <div class="gate-inner">
+      <div class="gate-mark">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" fill="none"/><path d="M4 28 L4 12 L14 8 L14 26 Z" fill="url(#gl)"/><path d="M28 28 L28 12 L18 8 L18 26 Z" fill="url(#gr)"/><rect x="14" y="8" width="4" height="18" fill="#fff"/><path d="M4 12 L14 8 L16 11 L4 15 Z" fill="#c9a84c"/><path d="M28 12 L18 8 L16 11 L28 15 Z" fill="#c9a84c"/><polygon points="14,8 18,8 16,5" fill="#c9a84c"/><defs><linearGradient id="gl" x1="4" y1="8" x2="14" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#d4aa50"/><stop offset="100%" stop-color="#8a6420"/></linearGradient><linearGradient id="gr" x1="28" y1="8" x2="18" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#d4aa50"/><stop offset="100%" stop-color="#8a6420"/></linearGradient></defs></svg>
+        <span class="gate-word">Breedwise</span>
+      </div>
+      <span class="gate-sub">Member Success OS</span>
+      <span class="gate-lbl">Team Access</span>
+      <input type="password" id="gate-input" class="gate-input" placeholder="Enter passphrase" autocomplete="off">
+      <button class="gate-btn" id="gate-btn">Enter</button>
+      <div class="gate-err" id="gate-err"></div>
+      <div class="gate-hint">Internal tool — for the Member Success team only.</div>
+    </div>
+  </div>
+
+  <!-- ═══ APP ═══ -->
+  <div id="app">
+    <nav>
+      <div class="nav-left">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M4 28 L4 12 L14 8 L14 26 Z" fill="url(#nl)"/><path d="M28 28 L28 12 L18 8 L18 26 Z" fill="url(#nr)"/><rect x="14" y="8" width="4" height="18" fill="#f7f6f3"/><polygon points="14,8 18,8 16,5" fill="#c9a84c"/><path d="M4 12 L14 8 L16 11 L4 15 Z" fill="#c9a84c"/><path d="M28 12 L18 8 L16 11 L28 15 Z" fill="#c9a84c"/><defs><linearGradient id="nl" x1="4" y1="8" x2="14" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#d4aa50"/><stop offset="100%" stop-color="#8a6420"/></linearGradient><linearGradient id="nr" x1="28" y1="8" x2="18" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#d4aa50"/><stop offset="100%" stop-color="#8a6420"/></linearGradient></defs></svg>
+        <a href="#" class="nav-logo">Breedwise</a>
+        <span class="nav-tag">Member Success OS</span>
+      </div>
+      <div class="nav-right">
+        <span class="nav-clock" id="clock"></span>
+        <select class="role-select" id="roleSelect" title="Switch role view">
+          <option value="all">View as — Everyone</option>
+          <option value="director">Director of Member Success</option>
+          <option value="al">Accountability Leader</option>
+          <option value="cm">Community Manager</option>
+        </select>
+      </div>
+    </nav>
+
+    <div class="tabs">
+      <div class="tabs-inner" id="tabBar">
+        <div class="tab active" data-tab="director"><span class="tab-ic">◆</span>Company Health</div>
+        <div class="tab" data-tab="al"><span class="tab-ic">◆</span>Pod Command Center</div>
+        <div class="tab" data-tab="cm"><span class="tab-ic">◆</span>Community Engine</div>
+        <div class="tab" data-tab="comp"><span class="tab-ic">◆</span>Compensation</div>
+        <div class="tab" data-tab="rules"><span class="tab-ic">◆</span>Automation</div>
+        <div class="tab" data-tab="spec"><span class="tab-ic">◆</span>System Spec</div>
+      </div>
+    </div>
+
+    <div class="wrap">
+
+      <!-- ════════════ DIRECTOR ════════════ -->
+      <section class="panel active" data-panel="director">
+        <div class="view-head">
+          <div class="view-eyebrow">Director of Member Success · Jennifer</div>
+          <h1 class="view-title">Company Health</h1>
+          <p class="view-sub">Live view across all active Academy &amp; Accelerator members. Every metric is computed from member, payment, attendance and NPS data — nothing is hand-entered.</p>
+        </div>
+
+        <div class="section-label">Month-to-date KPIs</div>
+        <div class="kpi-grid" id="dirKpis"></div>
+
+        <div class="grid-2" style="margin-top:30px">
+          <div class="card">
+            <div class="card-h">Activation Funnel</div>
+            <div class="card-sub">New members must clear all 6 activation steps inside their windows to count as Activated.</div>
+            <div id="actFunnel"></div>
+          </div>
+          <div class="card">
+            <div class="card-h">Cohort Retention</div>
+            <div class="card-sub">Last 3 start cohorts — churn &amp; NPS at 30 / 60 / 90 days.</div>
+            <div class="table-wrap" style="border:none">
+              <table>
+                <thead><tr><th>Cohort</th><th>Members</th><th>30d churn</th><th>60d churn</th><th>NPS</th></tr></thead>
+                <tbody id="cohortBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-label">Risk &amp; escalations — Red members</div>
+        <div class="table-wrap">
+          <div class="table-tools" id="dirFilters"></div>
+          <div style="overflow-x:auto">
+            <table>
+              <thead><tr>
+                <th>Member</th><th>Program</th><th class="hide-sm">Pod</th><th>Status</th>
+                <th>Calls 4w</th><th class="hide-sm">Posts 7d</th><th>HW%</th><th>Payment</th><th>NPS</th><th>Owner</th>
+              </tr></thead>
+              <tbody id="dirTable"></tbody>
+            </table>
+          </div>
+        </div>
+        <p class="src-note">Implements the four-step member journey — Activate → Testimonial (NPS) → Refer → Ascend — tracked in one place.</p>
+      </section>
+
+      <!-- ════════════ ACCOUNTABILITY LEADER ════════════ -->
+      <section class="panel" data-panel="al">
+        <div class="view-head">
+          <div class="view-eyebrow">Accountability Leader · Derek</div>
+          <h1 class="view-title">Pod Command Center</h1>
+          <p class="view-sub">Everything for one pod: attendance, homework, churn, upsell kicker, and the per-member action queue.</p>
+        </div>
+
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap">
+          <select class="role-select" id="podSelect"></select>
+          <span class="nav-clock" id="podStage"></span>
+        </div>
+
+        <div class="section-label">Pod KPIs</div>
+        <div class="kpi-grid" id="alKpis"></div>
+
+        <div class="section-label">Pod roster &amp; action queue</div>
+        <div class="table-wrap">
+          <div style="overflow-x:auto">
+            <table>
+              <thead><tr>
+                <th>Member</th><th>Program</th><th>Status</th><th>Activation</th>
+                <th>Calls 4w</th><th class="hide-sm">Posts 7d</th><th>HW%</th><th>Pay</th><th>NPS</th><th>Next action</th>
+              </tr></thead>
+              <tbody id="alTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════ COMMUNITY MANAGER ════════════ -->
+      <section class="panel" data-panel="cm">
+        <div class="view-head">
+          <div class="view-eyebrow">Community Manager · Madison</div>
+          <h1 class="view-title">Community Engine</h1>
+          <p class="view-sub">Week-1 activation calls, ongoing live attendance, meaningful engagement output, and issue-triage SLA.</p>
+        </div>
+
+        <div class="section-label">Engine KPIs</div>
+        <div class="kpi-grid" id="cmKpis"></div>
+
+        <div class="grid-2" style="margin-top:30px">
+          <div class="card">
+            <div class="card-h">Needs attention</div>
+            <div class="card-sub">Auto-surfaced from attendance &amp; post activity.</div>
+            <div id="cmQueues"></div>
+          </div>
+          <div class="card">
+            <div class="card-h">Open issues · SLA</div>
+            <div class="card-sub">Acknowledge within 24h (target 100%).</div>
+            <div class="table-wrap" style="border:none">
+              <table>
+                <thead><tr><th>Issue</th><th>Type</th><th>Pri</th><th>SLA</th></tr></thead>
+                <tbody id="issueBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════ COMPENSATION ════════════ -->
+      <section class="panel" data-panel="comp">
+        <div class="view-head">
+          <div class="view-eyebrow">Codified pay logic</div>
+          <h1 class="view-title">Compensation</h1>
+          <p class="view-sub">Inputs pre-fill from live KPIs — edit any number to model a month. Bonuses flip automatically against their targets.</p>
+        </div>
+        <div class="comp-grid" id="compGrid"></div>
+        <p class="src-note">Separates involuntary churn (failed payments) from true cancels so LTV math stays honest.</p>
+      </section>
+
+      <!-- ════════════ AUTOMATION ════════════ -->
+      <section class="panel" data-panel="rules">
+        <div class="view-head">
+          <div class="view-eyebrow">Rules engine</div>
+          <h1 class="view-title">Automation &amp; Alerts</h1>
+          <p class="view-sub">Status colors recompute nightly (with manual override); triggers spawn owned tasks with SLAs.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-h">Status color rules</div>
+            <div class="card-sub">Applied automatically to every member; a Director/AL can override.</div>
+            <div id="colorRules"></div>
+            <div class="legend">
+              <span><i class="dot Green"></i>Green</span>
+              <span><i class="dot Yellow"></i>Yellow</span>
+              <span><i class="dot Red"></i>Red</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-h">Trigger → Task</div>
+            <div class="card-sub">Events create owned tasks with due dates.</div>
+            <div id="triggerRules"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════ SPEC ════════════ -->
+      <section class="panel" data-panel="spec">
+        <div class="view-head">
+          <div class="view-eyebrow">Build blueprint</div>
+          <h1 class="view-title">System Spec</h1>
+          <p class="view-sub">Data model, KPI formulas, permissions &amp; integrations — the reference this interface is built from.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="spec-block">
+            <h4>KPI formulas — Director</h4>
+            <div class="formula">churn% = cancels_in_month ÷ active_at_month_start &nbsp;·&nbsp; target &lt; 3%</div>
+            <div class="formula">activation% = activated ÷ new_this_month &nbsp;·&nbsp; target ≥ 80%</div>
+            <div class="formula">NPS = %promoters − %detractors &nbsp;·&nbsp; target &gt; 80</div>
+            <div class="formula">failed_pay% = members_w_failed ÷ active &nbsp;·&nbsp; target &lt; 3%</div>
+          </div>
+          <div class="spec-block">
+            <h4>Activation — 6 binary steps</h4>
+            <ul class="spec-list">
+              <li>Onboarding call <code>≤ 48h</code></li>
+              <li>Strategy w/ Austin <code>≤ 7d</code></li>
+              <li>Vet strategy <code>≤ 14d</code></li>
+              <li>Joined &amp; welcomed in community <code>≤ 7d</code></li>
+              <li>First community call <code>week 1</code></li>
+              <li>First masterclass <code>week 1</code></li>
+            </ul>
+            <p class="card-sub" style="margin:12px 0 0">Activated = all six completed inside their windows. Done / not done — never a vibe.</p>
+          </div>
+          <div class="spec-block">
+            <h4>KPI formulas — Community</h4>
+            <div class="formula">week1_attend% = on both wk-1 calls ÷ new · ≥ 80%</div>
+            <div class="formula">ongoing_attend% = ≥1 call in 3-of-4 wks ÷ active · ≥ 70%</div>
+            <div class="formula">engagement = meaningful posts ÷ active ÷ wk · ≥ 1</div>
+            <div class="formula">triage = ack ≤ 24h ÷ issues · = 100%</div>
+          </div>
+          <div class="spec-block">
+            <h4>KPI formulas — Accountability Leader</h4>
+            <div class="formula">pod_attend% = pod on ≥1 call ÷ active pod</div>
+            <div class="formula">homework% = items done ÷ assigned per member</div>
+            <div class="formula">pod_churn% = pod cancels ÷ pod active at start</div>
+            <p class="card-sub" style="margin:12px 0 0">Ramp (d1–60): 2/3 → $100, 3/3 → $200. Ongoing (d61+): 3/3 → $200, else $0.</p>
+          </div>
+        </div>
+
+        <div class="section-label">Permissions matrix</div>
+        <div class="table-wrap">
+          <table class="perm-table">
+            <thead><tr><th>Capability</th><th>Director</th><th>Accountability Leader</th><th>Community Manager</th></tr></thead>
+            <tbody id="permBody"></tbody>
+          </table>
+        </div>
+
+        <div class="section-label">Data integrations</div>
+        <div class="grid-3">
+          <div class="spec-block"><h4>Stripe</h4><p class="card-sub" style="margin:0">→ Payment records, subscription status, active counts, upsell revenue by pod.</p></div>
+          <div class="spec-block"><h4>Zoom</h4><p class="card-sub" style="margin:0">→ AttendanceEvents for community, Q&amp;A, masterclass, onboarding, strategy.</p></div>
+          <div class="spec-block"><h4>Community + NPS</h4><p class="card-sub" style="margin:0">→ CommunityPosts (Circle/FB/Slack) tagged meaningful; NPS form responses.</p></div>
+        </div>
+        <p class="src-note">Nightly batch recompute for all KPIs + comp; near-real-time flags for failed payment, churn and NPS detractors.</p>
+      </section>
+
+    </div>
+
+    <div class="footer">
+      Breedwise Member Success OS · built from the $100M Retention &amp; Lifetime Value playbooks ·
+      <a href="https://breedwise.io" target="_blank" rel="noopener">breedwise.io</a>
+    </div>
+  </div>
+
+  <script>
+  /* ═══════════════════════════════════════════════════════════
+     CONFIG
+  ═══════════════════════════════════════════════════════════ */
+  // SHA-256 of the team passphrase — the plaintext never appears in source.
+  // Current passphrase: "breedwise-team-2026". To change it, run in any console:
+  //   crypto.subtle.digest('SHA-256', new TextEncoder().encode('YOUR-PASS')).then(b=>console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))
+  const GATE_HASH = '7612c2cbd509af9d38bab93e57025b80d9a954595c7d572cea2dcf18d270b4ac';
+  const HW_THRESHOLD = 60;            // homework% floor for Green
+  const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
+
+  /* ═══════════════════════════════════════════════════════════
+     SAMPLE DATA  (replace with Stripe/Zoom/Community/NPS feeds)
+  ═══════════════════════════════════════════════════════════ */
+  const PODS = [
+    { id:'pod-d', name:"Derek's Pod", al:'Derek', stage:'ongoing' },
+    // Derek is currently the only Accountability Leader. Add more pods here as the team grows.
+  ];
+
+  // status left blank -> auto-computed. tags auto-built. activated/newThisMonth/churnedThisMonth flags drive KPIs.
+  const MEMBERS = [
+    // pod-d (Derek) — ongoing
+    mk('Hannah Lowell','hannah','Accelerator','pod-d',{calls:4,posts:3,hw:88,pay:'Good',nps:9,act:true}),
+    mk('Marcus Webb','marcus','Academy','pod-d',{calls:3,posts:2,hw:72,pay:'Good',nps:8,act:true}),
+    mk('Priya Nandi','priya','Elite','pod-d',{calls:5,posts:4,hw:95,pay:'Good',nps:10,act:true,upsell:4000}),
+    mk('Tom Castellano','tom','Academy','pod-d',{calls:1,posts:0,hw:40,pay:'Failed',nps:6,act:true,failed:true}),
+    mk('Bea Olafsson','bea','Academy','pod-d',{calls:0,posts:0,hw:20,pay:'Good',nps:5,act:false,newM:true}),
+    mk('Dev Anand','dev','Accelerator','pod-d',{calls:3,posts:1,hw:64,pay:'Good',nps:8,act:true,upsell:0}),
+    mk('Carla Reyes','carla','Academy','pod-d',{calls:2,posts:2,hw:70,pay:'Good',nps:7,act:true}),
+    mk('Nina Petrova','nina','Academy','pod-d',{calls:0,posts:0,hw:0,pay:'Cancelled',nps:4,act:true,churned:true}),
+    // Derek's pod (cont.) — established members
+    mk('Greg Hollis','greg','Accelerator','pod-d',{calls:4,posts:5,hw:90,pay:'Good',nps:9,act:true}),
+    mk('Sara Lin','sara','Academy','pod-d',{calls:3,posts:1,hw:66,pay:'Good',nps:8,act:true}),
+    mk('Owen Pratt','owen','Academy','pod-d',{calls:2,posts:0,hw:55,pay:'At risk',nps:7,act:true,failed:true}),
+    mk('Lucia Mara','lucia','Elite','pod-d',{calls:5,posts:6,hw:98,pay:'Good',nps:10,act:true,upsell:6500}),
+    mk('Felix Mboge','felix','Academy','pod-d',{calls:1,posts:0,hw:30,pay:'Good',nps:6,act:true}),
+    mk('Ana Duarte','ana','Academy','pod-d',{calls:3,posts:2,hw:74,pay:'Good',nps:9,act:true,newM:true}),
+    mk('Paul Mercer','paul','Accelerator','pod-d',{calls:0,posts:0,hw:10,pay:'Cancelled',nps:3,act:true,churned:true}),
+    // Derek's pod (cont.) — newer members
+    mk('Iris Vance','iris','Academy','pod-d',{calls:2,posts:1,hw:60,pay:'Good',nps:8,act:true,newM:true}),
+    mk('Kenji Sato','kenji','Academy','pod-d',{calls:1,posts:0,hw:45,pay:'Good',nps:7,act:false,newM:true}),
+    mk('Mona El-Sayed','mona','Accelerator','pod-d',{calls:3,posts:2,hw:80,pay:'Good',nps:9,act:true,newM:true,upsell:2500}),
+    mk('Brett Quinn','brett','Academy','pod-d',{calls:0,posts:0,hw:15,pay:'Failed',nps:5,act:false,newM:true,failed:true}),
+    mk('Yara Costa','yara','Academy','pod-d',{calls:2,posts:1,hw:62,pay:'Good',nps:8,act:true,newM:true}),
+  ];
+
+  function mk(name,handle,program,pod,o){
+    return {
+      name, email:handle+'@email.com', program, pod,
+      calls:o.calls, posts:o.posts, hw:o.hw, pay:o.pay, nps:o.nps,
+      activated:o.act, newThisMonth:!!o.newM, churnedThisMonth:!!o.churned,
+      failed30:!!o.failed, upsell:o.upsell||0, override:null
+    };
+  }
+
+  const ISSUES = [
+    { t:'Course video 4.2 won\'t load', type:'platform_bug', pri:'high', ackH:6 },
+    { t:'Billing — double charge', type:'billing', pri:'high', ackH:3 },
+    { t:'Module 3 quiz answer key off', type:'curriculum', pri:'med', ackH:30 },
+    { t:'Calendar invite missing', type:'other', pri:'low', ackH:12 },
+  ];
+
+  const COHORTS = [
+    { name:'Apr 2026', n:18, c30:0, c60:6, nps:84 },
+    { name:'May 2026', n:22, c30:5, c60:null, nps:81 },
+    { name:'Jun 2026', n:20, c30:0, c60:null, nps:88 },
+  ];
+
+  /* ═══════════════════════════════════════════════════════════
+     STATUS COLOR ENGINE  (auto, with override)
+  ═══════════════════════════════════════════════════════════ */
+  function statusOf(m){
+    if (m.override) return m.override;
+    // Red
+    if (m.nps <= 6 || (m.calls===0 && m.posts===0) || m.pay==='Cancelled' || m.pay==='Failed') {
+      // distinguish 2+ failed / cancel / silent -> red ; single failed handled below as yellow
+      if (m.pay==='Cancelled' || m.nps<=4 || (m.calls===0 && m.posts===0 && !m.newThisMonth)) return 'Red';
+    }
+    if (m.nps <= 6 && m.pay!=='Good') return 'Red';
+    // Yellow
+    if (!m.activated || m.calls===0 || m.posts===0 || m.failed30 || m.hw < HW_THRESHOLD || m.pay!=='Good') return 'Yellow';
+    if (m.nps <= 7) return 'Yellow';
+    // Green
+    if (m.activated && m.calls>=3 && m.hw>=HW_THRESHOLD && m.pay==='Good') return 'Green';
+    return 'Yellow';
+  }
+  function tagsOf(m){
+    const t=[];
+    if (!m.activated) t.push('activation');
+    if (m.calls===0) t.push('attendance');
+    if (m.hw < HW_THRESHOLD) t.push('homework');
+    if (m.failed30 || m.pay==='Failed' || m.pay==='At risk') t.push('payments');
+    if (m.nps <= 6) t.push('NPS');
+    if (m.calls===0 && m.posts===0) t.push('silent');
+    return t;
+  }
+  function nextAction(m){
+    const s=statusOf(m);
+    if (m.pay==='Failed'||m.pay==='At risk') return 'Payment follow-up · due 24h';
+    if (!m.activated) return 'Complete activation steps · due 48h';
+    if (m.calls===0&&m.posts===0) return 'Re-engagement call · due 3d';
+    if (m.nps<=6) return 'Save call (NPS detractor) · due 24h';
+    if (s==='Yellow') return 'Check-in touchpoint · due 5d';
+    return 'On track · monitor';
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     KPI COMPUTATION
+  ═══════════════════════════════════════════════════════════ */
+  const active = MEMBERS.filter(m=>m.pay!=='Cancelled');
+  const activeStart = MEMBERS.length; // approx active-at-start incl. churned
+  function pct(n,d){ return d? (n/d*100):0; }
+
+  function directorKPIs(){
+    const cancels = MEMBERS.filter(m=>m.churnedThisMonth).length;
+    const churn = pct(cancels, activeStart);
+    const newM = MEMBERS.filter(m=>m.newThisMonth);
+    const activationRate = pct(newM.filter(m=>m.activated).length, newM.length);
+    // NPS: promoters(9-10) - detractors(0-6)
+    const prom = active.filter(m=>m.nps>=9).length, det = active.filter(m=>m.nps<=6).length;
+    const nps = pct(prom,active.length) - pct(det,active.length);
+    const failed = pct(active.filter(m=>m.failed30||m.pay==='Failed'||m.pay==='At risk').length, active.length);
+    return [
+      { name:'Monthly Churn', val:churn, unit:'%', target:TARGETS.churn, dir:'below', meta:`${cancels} cancels / ${activeStart} active` },
+      { name:'Activation Rate', val:activationRate, unit:'%', target:TARGETS.activation, dir:'above', meta:`${newM.filter(m=>m.activated).length}/${newM.length} new activated` },
+      { name:'NPS', val:nps, unit:'', target:TARGETS.nps, dir:'above', meta:`${prom} promoters · ${det} detractors` },
+      { name:'Failed Payments', val:failed, unit:'%', target:TARGETS.failedPay, dir:'below', meta:`${active.filter(m=>m.failed30||m.pay==='Failed'||m.pay==='At risk').length} of ${active.length} active` },
+    ];
+  }
+
+  function podKPIs(podId){
+    const pm = MEMBERS.filter(m=>m.pod===podId);
+    const pa = pm.filter(m=>m.pay!=='Cancelled');
+    const attend = pct(pa.filter(m=>m.calls>=1).length, pa.length);
+    const hw = pa.reduce((s,m)=>s+m.hw,0)/(pa.length||1);
+    const churn = pct(pm.filter(m=>m.churnedThisMonth).length, pm.length);
+    return [
+      { name:'Pod Attendance', val:attend, unit:'%', target:TARGETS.podAttend, dir:'above', meta:`${pa.filter(m=>m.calls>=1).length}/${pa.length} on ≥1 call` },
+      { name:'Homework', val:hw, unit:'%', target:HW_THRESHOLD, dir:'above', meta:`avg across ${pa.length} active` },
+      { name:'Pod Churn', val:churn, unit:'%', target:TARGETS.churn, dir:'below', meta:`${pm.filter(m=>m.churnedThisMonth).length} cancels this month` },
+    ];
+  }
+
+  function communityKPIs(){
+    const newM = MEMBERS.filter(m=>m.newThisMonth);
+    const week1 = pct(newM.filter(m=>m.calls>=2).length, newM.length); // proxy: on both wk-1 calls
+    const ongoing = pct(active.filter(m=>m.calls>=1).length, active.length);
+    const engage = active.reduce((s,m)=>s+m.posts,0)/(active.length||1)/1; // meaningful posts per active per ~week window
+    const engagePerWk = engage; // posts field already ~7d window
+    const triage = pct(ISSUES.filter(i=>i.ackH<=24).length, ISSUES.length);
+    return [
+      { name:'Week-1 Attendance', val:week1, unit:'%', target:TARGETS.week1, dir:'above', meta:`${newM.filter(m=>m.calls>=2).length}/${newM.length} new on both calls` },
+      { name:'Ongoing Attendance', val:ongoing, unit:'%', target:TARGETS.ongoing, dir:'above', meta:`${active.filter(m=>m.calls>=1).length}/${active.length} on ≥1 call` },
+      { name:'Engagement', val:engagePerWk, unit:'/wk', target:TARGETS.engage, dir:'above', meta:'meaningful posts · per active member', dec:2 },
+      { name:'Issue Triage', val:triage, unit:'%', target:TARGETS.triage, dir:'above', meta:`${ISSUES.filter(i=>i.ackH<=24).length}/${ISSUES.length} ack ≤ 24h` },
+    ];
+  }
+
+  function pass(k){ return k.dir==='above' ? k.val >= k.target : k.val <= k.target; }
+
+  /* ═══════════════════════════════════════════════════════════
+     RENDER HELPERS
+  ═══════════════════════════════════════════════════════════ */
+  const $ = s=>document.querySelector(s);
+  const el = (h)=>{ const d=document.createElement('div'); d.innerHTML=h.trim(); return d.firstChild; };
+  function fmt(v,dec){ return (dec? v.toFixed(dec) : Math.round(v)).toLocaleString(); }
+
+  function kpiCard(k){
+    const ok = pass(k);
+    const dec = k.dec||0;
+    const barPct = Math.max(6, Math.min(100, k.dir==='above' ? (k.val/(k.target*1.25))*100 : (1-(k.val/(k.target*2)))*100));
+    const barColor = ok ? 'var(--green)' : 'var(--red)';
+    return `<div class="kpi">
+      <div class="kpi-top">
+        <span class="kpi-name">${k.name}</span>
+        <span class="kpi-flag ${ok?'flag-pass':'flag-fail'}">${ok?'On target':'Off target'}</span>
+      </div>
+      <div class="kpi-val">${fmt(k.val,dec)}<span class="unit">${k.unit}</span></div>
+      <div class="kpi-meta">${k.meta} · <strong>${k.dir==='above'?'≥':'≤'} ${k.target}${k.unit||''}</strong></div>
+      <div class="kpi-bar"><i style="width:${barPct}%;background:${barColor}"></i></div>
+    </div>`;
+  }
+
+  function renderKPIs(targetSel, kpis){ $(targetSel).innerHTML = kpis.map(kpiCard).join(''); }
+
+  function memberRow(m, cols){
+    const s = statusOf(m), tags = tagsOf(m);
+    const payCls = m.pay==='Good'?'pay-good':'pay-bad';
+    const tagHTML = `<div class="tags">${tags.slice(0,3).map(t=>`<span class="tag">${t}</span>`).join('')}</div>`;
+    let html = `<td><div class="m-name">${m.name}</div><div class="m-email">${m.email}</div></td>`;
+    html += `<td><span class="prog-tag">${m.program}</span></td>`;
+    if (cols.pod) html += `<td class="hide-sm muted-cell">${podName(m.pod)}</td>`;
+    html += `<td><span class="dot ${s}">${s}</span>${tags.length?tagHTML:''}</td>`;
+    if (cols.activation) html += `<td>${m.activated?'<span class="pay-good">Activated</span>':'<span class="pay-bad">In progress</span>'}</td>`;
+    html += `<td class="num">${m.calls}</td>`;
+    html += `<td class="num hide-sm">${m.posts}</td>`;
+    html += `<td class="num">${m.hw}%</td>`;
+    html += `<td class="${payCls}">${m.pay}</td>`;
+    html += `<td class="num">${m.nps}</td>`;
+    if (cols.owner) html += `<td class="muted-cell">${podAL(m.pod)}</td>`;
+    if (cols.action) html += `<td style="font-size:11.5px;color:var(--mid)">${nextAction(m)}</td>`;
+    return `<tr>${html}</tr>`;
+  }
+  function podName(id){ return (PODS.find(p=>p.id===id)||{}).name||id; }
+  function podAL(id){ return (PODS.find(p=>p.id===id)||{}).al||'—'; }
+
+  /* ── Director table + filters ── */
+  let dirFilter='Red';
+  function renderDirTable(){
+    const counts = { All:active.length, Red:0, Yellow:0, Green:0 };
+    active.forEach(m=>{ counts[statusOf(m)]++; });
+    const chips = ['Red','Yellow','Green','All'].map(c=>
+      `<div class="filter-chip ${dirFilter===c?'active':''}" data-f="${c}">${c}<span class="ct">${counts[c]}</span></div>`).join('');
+    $('#dirFilters').innerHTML = chips +
+      `<input class="search-box" id="dirSearch" placeholder="Search members…">`;
+    let rows = active.filter(m=> dirFilter==='All' || statusOf(m)===dirFilter);
+    const q = (window._dirQ||'').toLowerCase();
+    if (q) rows = rows.filter(m=>m.name.toLowerCase().includes(q));
+    rows.sort((a,b)=>({Red:0,Yellow:1,Green:2}[statusOf(a)]-{Red:0,Yellow:1,Green:2}[statusOf(b)]));
+    $('#dirTable').innerHTML = rows.map(m=>memberRow(m,{pod:true,owner:true})).join('') ||
+      `<tr><td colspan="10" style="text-align:center;color:var(--muted);padding:26px">No members in this view.</td></tr>`;
+    $('#dirFilters').querySelectorAll('.filter-chip').forEach(c=>c.onclick=()=>{ dirFilter=c.dataset.f; renderDirTable(); });
+    const sb=$('#dirSearch'); sb.value=window._dirQ||''; sb.oninput=e=>{ window._dirQ=e.target.value; renderDirTable(); };
+  }
+
+  /* ── Activation funnel ── */
+  function renderFunnel(){
+    const newM = MEMBERS.filter(m=>m.newThisMonth);
+    const N = newM.length || 1;
+    const steps = [
+      ['New members', N],
+      ['Onboarding call ≤48h', newM.filter(m=>m.calls>=1).length],
+      ['Strategy + vet ≤14d', newM.filter(m=>m.calls>=2).length],
+      ['Joined community', newM.filter(m=>m.posts>=1||m.calls>=2).length],
+      ['Activated (all 6)', newM.filter(m=>m.activated).length],
+    ];
+    $('#actFunnel').innerHTML = steps.map(([lbl,n])=>{
+      const p = Math.round(n/N*100);
+      return `<div class="funnel-row">
+        <div class="funnel-lbl">${lbl}</div>
+        <div class="funnel-track"><div class="funnel-fill" style="width:${Math.max(p,8)}%"><span>${n}</span></div></div>
+        <div class="funnel-pct">${p}%</div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderCohorts(){
+    $('#cohortBody').innerHTML = COHORTS.map(c=>
+      `<tr><td class="m-name">${c.name}</td><td class="num">${c.n}</td>
+       <td class="num">${c.c30}%</td><td class="num">${c.c60==null?'—':c.c60+'%'}</td>
+       <td class="num"><span class="${c.nps>=80?'pay-good':'pay-bad'}">${c.nps}</span></td></tr>`).join('');
+  }
+
+  /* ── AL view ── */
+  let curPod = 'pod-d';
+  function renderPodSelect(){
+    $('#podSelect').innerHTML = PODS.map(p=>`<option value="${p.id}">${p.name} · ${MEMBERS.filter(m=>m.pod===p.id&&m.pay!=='Cancelled').length} active</option>`).join('');
+    $('#podSelect').value = curPod;
+    $('#podSelect').onchange = e=>{ curPod=e.target.value; renderAL(); };
+  }
+  function renderAL(){
+    const pod = PODS.find(p=>p.id===curPod);
+    $('#podStage').textContent = pod.stage==='ramp' ? 'Stage: Ramp (days 1–60)' : 'Stage: Ongoing (day 61+)';
+    renderKPIs('#alKpis', podKPIs(curPod));
+    const pm = MEMBERS.filter(m=>m.pod===curPod);
+    pm.sort((a,b)=>({Red:0,Yellow:1,Green:2}[statusOf(a)]-{Red:0,Yellow:1,Green:2}[statusOf(b)]));
+    $('#alTable').innerHTML = pm.map(m=>memberRow(m,{activation:true,action:true})).join('');
+  }
+
+  /* ── CM view ── */
+  function renderCM(){
+    renderKPIs('#cmKpis', communityKPIs());
+    const notOnCalls = MEMBERS.filter(m=>m.newThisMonth && m.calls<2);
+    const quiet = active.filter(m=>m.calls===0 && m.posts===0);
+    const wins = active.filter(m=>m.posts>=4);
+    const q = (title,arr,empty)=>`<div style="margin-bottom:16px">
+      <div class="rule-tag" style="margin-bottom:8px">${title} · ${arr.length}</div>
+      ${arr.length? arr.map(m=>`<div class="comp-line"><div class="lbl">${m.name}<small>${podName(m.pod)} · ${m.program}</small></div>
+        <span class="filter-chip" style="cursor:default">${m.calls} calls · ${m.posts} posts</span></div>`).join('')
+        : `<div class="card-sub">${empty}</div>`}
+    </div>`;
+    $('#cmQueues').innerHTML =
+      q('New — not on both week-1 calls', notOnCalls, 'All new members on track.') +
+      q('Quiet 7+ days', quiet, 'No silent members.') +
+      q('High-potential wins to amplify', wins, 'No standout posts yet.');
+    $('#issueBody').innerHTML = ISSUES.map(i=>{
+      const breach = i.ackH>24;
+      return `<tr><td class="m-name">${i.t}</td><td class="muted-cell">${i.type.replace('_',' ')}</td>
+        <td><span class="tag">${i.pri}</span></td>
+        <td class="${breach?'pay-bad':'pay-good'}">${breach?'⚠ '+i.ackH+'h':'✓ '+i.ackH+'h'}</td></tr>`;
+    }).join('');
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     COMPENSATION CALCULATORS
+  ═══════════════════════════════════════════════════════════ */
+  function money(n){ return '$'+Math.round(n).toLocaleString(); }
+
+  function buildComp(){
+    const ck = communityKPIs();
+    // Derek pod live values
+    const derekActive = MEMBERS.filter(m=>m.pod==='pod-d'&&m.pay!=='Cancelled').length;
+    const derekPod = podKPIs('pod-d');
+    const derekUpsell = MEMBERS.filter(m=>m.pod==='pod-d').reduce((s,m)=>s+m.upsell,0);
+    const derekMetricsHit = derekPod.filter(pass).length;
+
+    const cards = [
+      {
+        role:'Accountability Leader', person:'Derek', id:'derek',
+        fields:[
+          {k:'members', lbl:'Active pod members', sub:'× $20 base', val:derekActive, type:'num'},
+          {k:'metrics', lbl:'Pod metrics hit (of 3)', sub:'attendance · homework · churn', val:derekMetricsHit, type:'num'},
+          {k:'upsell', lbl:'Accel/Elite revenue in pod', sub:'× 2% kicker', val:derekUpsell, type:'money'},
+        ],
+        stage:'ongoing',
+        note:'Base = $20 × active members. Pod bonus: ramp (d1–60) 2/3→$100, 3/3→$200; ongoing (d61+) 3/3→$200 else $0. Kicker = 2% of Accelerator/Elite revenue closed in pod. Subscription waiver tracked separately (non-cash).'
+      },
+      {
+        role:'Community Manager', person:'Madison', id:'madison',
+        fields:[
+          {k:'week1', lbl:'Week-1 attendance %', sub:'≥80% → +$100', val:ck[0].val, type:'num'},
+          {k:'ongoing', lbl:'Ongoing attendance %', sub:'≥70% → +$100', val:ck[1].val, type:'num'},
+          {k:'engage', lbl:'Engagement /member/wk', sub:'≥1 → +$100', val:ck[2].val, type:'dec'},
+        ],
+        note:'Base = $200. Each KPI on target adds $100. Issue triage (ack ≤24h) is baseline — required, no bonus.'
+      },
+    ];
+
+    $('#compGrid').innerHTML = cards.map(c=>`
+      <div class="comp-card">
+        <div class="comp-head"><div class="comp-role">${c.role}</div><div class="comp-person">${c.person}</div></div>
+        <div class="comp-body" data-comp="${c.id}">
+          ${c.fields.map(f=>`<div class="comp-line">
+            <div class="lbl">${f.lbl}<small>${f.sub}</small></div>
+            <input class="comp-input" data-k="${f.k}" type="number" step="${f.type==='dec'?'0.1':'1'}" value="${f.type==='dec'?(+f.val).toFixed(1):Math.round(f.val)}">
+          </div>`).join('')}
+          <div class="comp-total"><span class="lbl">Total / mo</span><span class="val" id="total-${c.id}">$0</span></div>
+        </div>
+        <div class="comp-note">${c.note}</div>
+      </div>`).join('');
+
+    document.querySelectorAll('[data-comp] .comp-input').forEach(inp=>inp.oninput=recalcComp);
+    recalcComp();
+  }
+
+  function val(compId,k){ const e=document.querySelector(`[data-comp="${compId}"] [data-k="${k}"]`); return e?parseFloat(e.value)||0:0; }
+
+  function recalcComp(){
+    // Derek
+    const dm = val('derek','members'), hit = val('derek','metrics'), up = val('derek','upsell');
+    const base = 20*dm;
+    let podBonus = 0;
+    // ongoing stage rules (Derek pod is ongoing): 3/3 -> 200 else 0
+    podBonus = hit>=3 ? 200 : 0;
+    const kicker = up*0.02;
+    document.getElementById('total-derek').textContent = money(base+podBonus+kicker);
+
+    // Madison
+    let m = 200;
+    if (val('madison','week1') >= TARGETS.week1) m+=100;
+    if (val('madison','ongoing') >= TARGETS.ongoing) m+=100;
+    if (val('madison','engage') >= TARGETS.engage) m+=100;
+    document.getElementById('total-madison').textContent = money(m);
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     AUTOMATION + PERMISSIONS
+  ═══════════════════════════════════════════════════════════ */
+  const COLOR_RULES = [
+    { c:'green', dot:'Green', trig:'Green — healthy', act:'Activated · ≥3 calls in 4 wks · homework ≥ threshold · payment Good' },
+    { c:'yellow', dot:'Yellow', trig:'Yellow — drifting', act:'Missed an activation deadline · 0 calls in 4 wks · no posts 14d · or 1 failed payment' },
+    { c:'red', dot:'Red', trig:'Red — at risk', act:'NPS ≤ 6 · 30+ days no calls & no posts · 2+ failed payments · or AL/Director escalation' },
+  ];
+  const TRIGGERS = [
+    { ic:'⏱', c:'gold', trig:'24h after start, no onboarding booked', act:'Task → Director', tag:'Activation' },
+    { ic:'📅', c:'yellow', trig:'Day 5: not in community + no wk-1 call', act:'Tasks → Community Manager + AL', tag:'Activation' },
+    { ic:'💳', c:'red', trig:'Failed payment', act:'Task → Director · "Payment follow-up"', tag:'Billing' },
+    { ic:'🎟', c:'gold', trig:'New issue logged', act:'Auto-assign owner + SLA · alert Community if unacked 12h', tag:'Issue' },
+    { ic:'📉', c:'red', trig:'NPS ≤ 6 detractor', act:'Create "save call" task → Director / AL', tag:'Retention' },
+  ];
+  function renderRules(){
+    $('#colorRules').innerHTML = COLOR_RULES.map(r=>`<div class="rule">
+      <div class="rule-ic ic-${r.c}"><span class="dot ${r.dot}" style="font-size:0"></span></div>
+      <div class="rule-body"><div class="rule-trig">${r.trig}</div><div class="rule-act">${r.act}</div></div></div>`).join('');
+    $('#triggerRules').innerHTML = TRIGGERS.map(r=>`<div class="rule">
+      <div class="rule-ic ic-${r.c}">${r.ic}</div>
+      <div class="rule-body"><div class="rule-trig">${r.trig}</div><div class="rule-act">${r.act}</div></div>
+      <span class="rule-tag">${r.tag}</span></div>`).join('');
+  }
+
+  const PERMS = [
+    ['Members — create/edit/delete','yes','own','no'],
+    ['Status color override','yes','own','no'],
+    ['Pods & assignments','yes','no','no'],
+    ['KPIs (read)','yes','yes','yes'],
+    ['Compensation','yes','no','no'],
+    ['Community fields & DM logs','yes','no','yes'],
+    ['Issues','yes','no','yes'],
+    ['Tasks (own pod / area)','yes','own','yes'],
+  ];
+  function renderPerms(){
+    const cell=v=> v==='yes'?'<span class="perm-yes">✓</span>': v==='no'?'<span class="perm-no">—</span>':'<span class="perm-own">OWN</span>';
+    $('#permBody').innerHTML = PERMS.map(p=>`<tr><td>${p[0]}</td><td>${cell(p[1])}</td><td>${cell(p[2])}</td><td>${cell(p[3])}</td></tr>`).join('');
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     TABS + ROLE
+  ═══════════════════════════════════════════════════════════ */
+  function setTab(name){
+    document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.dataset.panel===name));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>setTab(t.dataset.tab));
+
+  // role select narrows the visible tabs
+  $('#roleSelect').onchange = e=>{
+    const r=e.target.value;
+    const map={ director:['director','comp','rules','spec'], al:['al','comp','rules','spec'], cm:['cm','comp','rules','spec'], all:['director','al','cm','comp','rules','spec'] };
+    const allow=map[r];
+    document.querySelectorAll('.tab').forEach(t=>t.style.display = allow.includes(t.dataset.tab)?'':'none');
+    setTab(allow[0]);
+  };
+
+  /* ═══════════════════════════════════════════════════════════
+     CLOCK + GATE + INIT
+  ═══════════════════════════════════════════════════════════ */
+  function tickClock(){
+    const d=new Date();
+    $('#clock').textContent = d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  }
+
+  function renderAll(){
+    renderKPIs('#dirKpis', directorKPIs());
+    renderFunnel(); renderCohorts(); renderDirTable();
+    renderPodSelect(); renderAL();
+    renderCM();
+    buildComp();
+    renderRules(); renderPerms();
+    tickClock();
+  }
+
+  async function sha256(str){
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return [...new Uint8Array(buf)].map(x=>x.toString(16).padStart(2,'0')).join('');
+  }
+  async function unlock(){
+    const v = $('#gate-input').value.trim().toLowerCase();
+    if (await sha256(v) === GATE_HASH){
+      sessionStorage.setItem('bw_team','1');
+      $('#gate').style.opacity=0;
+      setTimeout(()=>{ $('#gate').style.display='none'; $('#app').style.display='block'; renderAll(); },500);
+    } else {
+      $('#gate-err').textContent='Incorrect passphrase.';
+      $('.gate-inner').classList.add('shake');
+      setTimeout(()=>$('.gate-inner').classList.remove('shake'),400);
+    }
+  }
+  // stay unlocked for the browser session
+  if (sessionStorage.getItem('bw_team')==='1'){
+    $('#gate').style.display='none'; $('#app').style.display='block'; renderAll();
+  }
+  $('#gate-btn').onclick=unlock;
+  $('#gate-input').addEventListener('keydown',e=>{ if(e.key==='Enter') unlock(); });
+  $('#gate-input').focus();
+  </script>
+</body>
+</html>

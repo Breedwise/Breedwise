@@ -1,0 +1,19 @@
+# Whitelist approach: ignore EVERYTHING by default, then explicitly allow
+# only the files that make up the public GitHub Pages site.
+# This protects the financial PDFs, business docs, node_modules, and other
+# local working files from ever being committed/published.
+
+/*
+
+# --- Published site files (root) ---
+!index.html
+!onboarding.html
+!audit.html
+!fontaine.html
+!team.html
+!favicon.svg
+!breedwise-logo.png
+!Fontaine.jpg
+!download.jpg
+!CNAME
+!.gitignore
