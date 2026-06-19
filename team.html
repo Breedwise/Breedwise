@@ -401,9 +401,9 @@
 
   const HW_THRESHOLD = 60;
   const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
-  const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager' };
+  const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager', Founder:'Founder' };
 
-  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, ME=null, curPod=null;
+  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null;
   const $ = s=>document.querySelector(s);
   const pct=(n,d)=>d?(n/d*100):0;
   const money=n=>'$'+Math.round(n).toLocaleString();
@@ -452,7 +452,8 @@
     MEMBERS = (mem.data||[]).map(norm);
     PODS = pods.data||[];
     PROFILES = prof.data||[];
-    MYCOMP = (comp.data||[])[0] || null;
+    MYCOMP_ROWS = comp.data || [];
+    MYCOMP = MYCOMP_ROWS[0] || null;
     ME = PROFILES.find(p=>p.email===myEmail) || { email:myEmail, full_name:myEmail, role:(MYCOMP&&MYCOMP.role)||'' };
     if (!curPod && PODS.length) curPod = PODS[0].id;
   }
@@ -599,9 +600,9 @@
   }
 
   /* ═══ MY PAY (private, computed from my comp row + shared members) ═══ */
-  function computeComp(){
-    if (!MYCOMP) return null;
-    const c=MYCOMP, cfg=c.config||{};
+  function computeCompFor(c){
+    if (!c) return null;
+    const cfg=c.config||{};
     if (c.role==='AccountabilityLeader'){
       const myPod=PODS.find(p=>p.al_name===c.person)||PODS.find(p=>p.id===(cfg.podId||'pod-d'))||PODS[0]||{id:null,stage:'ongoing'};
       const pm=MEMBERS.filter(m=>m.pod===myPod.id), pa=pm.filter(m=>m.pay!=='Cancelled');
@@ -629,13 +630,26 @@
     return null;
   }
   function renderComp(){
-    const c=computeComp();
-    if (!c){ $('#compWrap').innerHTML=`<div class="card"><div class="card-h">No personal pay view</div><div class="card-sub" style="margin:0">Your login doesn't have a compensation record. Everything else in the tool is available to you.</div></div>`; return; }
-    $('#compWrap').innerHTML=`<div class="private-badge">🔒 Private — only ${esc(c.person)} can see this</div>
-      <div class="comp-card"><div class="comp-head"><div class="comp-role">${c.role}</div><div class="comp-person">${esc(c.person)}</div></div>
+    const founder = (ME?.role==='Founder') || (MYCOMP_ROWS||[]).length>1;
+    const tab=document.querySelector('.tab[data-tab="comp"]');
+    if (tab) tab.innerHTML = `<span class="tab-ic">◆</span>${founder?'Team Pay':'My Pay'}`;
+    const title=document.querySelector('[data-panel="comp"] .view-title');
+    const sub=document.querySelector('[data-panel="comp"] .view-sub');
+    if (title) title.textContent = founder?'Team Pay':'My Pay';
+    if (sub) sub.textContent = founder
+      ? 'Founder oversight. You can see every person’s compensation; no one else can see anyone’s but their own.'
+      : 'Only you can see this. The database is locked so no teammate can read your compensation.';
+
+    const cards=(MYCOMP_ROWS||[]).map(computeCompFor).filter(Boolean).sort((a,b)=>b.total-a.total);
+    if (!cards.length){ $('#compWrap').innerHTML=`<div class="card"><div class="card-h">No personal pay view</div><div class="card-sub" style="margin:0">Your login doesn't have a compensation record. Everything else in the tool is available to you.</div></div>`; return; }
+    const badge = founder
+      ? `<div class="private-badge" style="color:var(--gold-deep);background:var(--gold-faint)">🔒 Founder view — full team compensation, visible only to you</div>`
+      : `<div class="private-badge">🔒 Private — only ${esc(cards[0].person)} can see this</div>`;
+    $('#compWrap').innerHTML = badge + cards.map(c=>`
+      <div class="comp-card" style="margin-bottom:16px"><div class="comp-head"><div class="comp-role">${c.role}</div><div class="comp-person">${esc(c.person)}</div></div>
       <div class="comp-body">${c.lines.map(l=>`<div class="comp-line"><span class="lbl">${l[0]}</span><span class="amt">${l[1]}</span></div>`).join('')}
         <div class="comp-total"><span class="lbl">Total / mo</span><span class="val">${money(c.total)}</span></div></div>
-      <div class="comp-note">${c.note}</div></div>`;
+      <div class="comp-note">${c.note}</div></div>`).join('');
   }
 
   /* ═══ AUTOMATION + PERMS ═══ */
