@@ -308,7 +308,8 @@
   const pct=(n,d)=>d?(n/d):0;
   const money=n=>'$'+Math.round(n||0).toLocaleString();
   const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  const inMonth=(ts,m)=>ts&&ts.slice(0,7)===m;
+  const TRACKING_START='2026-06-20'; // go-live: scoreboard counts only activity on/after this date
+  const inMonth=(ts,m)=>ts&&ts.slice(0,7)===m&&ts.slice(0,10)>=TRACKING_START;
   const isToday=ts=>ts&&ts.slice(0,10)===TODAY;
   const repName=id=>{const r=REPS.find(x=>x.rep_id===id);return r?r.name:'—';};
 
@@ -372,7 +373,7 @@
   }
   function renderBoard(){
     const k=teamKPIs(), t=target();
-    $('#boardMonth').textContent=`Month-to-date · ${MONTH}`;
+    $('#boardMonth').textContent=`Tracking since Jun 20, 2026 · ${MONTH} MTD`;
     $('#volKpis').innerHTML=[volCard('Leads',k.leads,t.leads_target),volCard('Bookings',k.booked,t.bookings_target),volCard('Sales Calls (held)',k.shows,t.sales_calls_target),volCard('Sales',k.won,t.sales_target)].join('');
     $('#convKpis').innerHTML=[rateCard('Schedule rate',k.schedule,0.25),rateCard('Show rate',k.show,t.show_rate_target),rateCard('Close rate',k.close,t.close_rate_target),rateCard('Throughput',k.throughput,t.throughput_target)].join('');
     const steps=[['Engaged leads',k.engaged,'var(--gold)'],['Booked',k.booked,'var(--gold-deep)'],['Showed',k.shows,'var(--green)'],['Closed-won',k.won,'var(--ink)']];
