@@ -328,7 +328,7 @@
         <h3>Apply to work with us</h3>
         <p>A few quick questions. We review every application — and if we’re not a fit, we’ll tell you straight and point you in the right direction.</p>
       </div>
-      <div class="progress" id="progress"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="progress" id="progress"><i></i><i></i><i></i><i></i></div>
       <form id="applyForm" autocomplete="on" novalidate><div style="padding:18px 26px 26px">
 
         <div class="step active" data-step="0">
@@ -375,24 +375,6 @@
         </div>
 
         <div class="step" data-step="3">
-          <div class="step-h">Your standards</div>
-          <div class="fld"><label>What does “ethical breeding” mean to you, in practice? <span class="q-req">*</span></label><textarea id="ethical_meaning" placeholder="A sentence or two…"></textarea></div>
-          <div class="q" style="margin-top:16px"><div class="q-label">Which are part of your program? (check all that apply)</div>
-            <div class="opts" data-field="practices" data-multi="1">
-              <div class="opt check" data-val="health_testing"><span class="dot"></span>Health testing (appropriate for my breed)</div>
-              <div class="opt check" data-val="placement"><span class="dot"></span>Thoughtful placement / screening of homes</div>
-              <div class="opt check" data-val="contracts"><span class="dot"></span>Written contracts &amp; lifetime support</div>
-              <div class="opt check" data-val="litter_limits"><span class="dot"></span>Limiting litters per female to protect their health</div>
-              <div class="opt check" data-val="say_no"><span class="dot"></span>Willing to say no to a breeding or a buyer</div>
-            </div></div>
-          <div class="q"><div class="q-label">If we felt your practices weren’t aligned with our standard… <span class="q-req">*</span></div>
-            <div class="opts" data-field="alignment">
-              <div class="opt" data-val="direct"><span class="dot"></span>Tell me directly — give me honest feedback</div>
-              <div class="opt" data-val="prefer_not"><span class="dot"></span>I’d prefer not to work with a program that questions my practices</div>
-            </div></div>
-        </div>
-
-        <div class="step" data-step="4">
           <div class="step-h">Your goals</div>
           <div class="fld"><label>Your #1 goal with your program in the next 12 months? <span class="q-req">*</span></label><textarea id="goal" placeholder="What does success look like?"></textarea></div>
           <div class="fld" style="margin-top:14px"><label>The biggest challenge holding you back from that? <span class="q-req">*</span></label><textarea id="challenge" placeholder="What’s in the way right now?"></textarea></div>
@@ -490,8 +472,7 @@
       if(i===0){ const n=$('#name').value.trim(),em=$('#email').value.trim(),ph=$('#phone').value.trim(); if(!n||!em||!ph) return 'Please fill in your name, email and phone.'; if(!emailRe.test(em)) return 'Please enter a valid email address.'; return ''; }
       if(i===1){ if(!answers.breeding_status) return 'Pick where you’re at.'; if(!answers.next_litter) return 'Pick your next litter timing.'; if(!answers.urgency) return 'Rate your urgency (1–10).'; return ''; }
       if(i===2){ if(!answers.investment) return 'Pick your investment readiness.'; if(!answers.mindset) return 'Pick how you’re thinking about it.'; return ''; }
-      if(i===3){ if(!$('#ethical_meaning').value.trim()) return 'Tell us what ethical breeding means to you.'; if(!answers.alignment) return 'Pick how you’d want us to handle misalignment.'; return ''; }
-      if(i===4){ if(!$('#goal').value.trim()) return 'Share your #1 goal.'; if(!$('#challenge').value.trim()) return 'Share your biggest challenge.'; return ''; }
+      if(i===3){ if(!$('#goal').value.trim()) return 'Share your #1 goal.'; if(!$('#challenge').value.trim()) return 'Share your biggest challenge.'; return ''; }
       return '';
     }
 
@@ -506,7 +487,6 @@
         name:$('#name').value.trim(), email:$('#email').value.trim(), phone:$('#phone').value.trim(),
         breeding_status:answers.breeding_status, next_litter:answers.next_litter, urgency:answers.urgency,
         investment:answers.investment, mindset:answers.mindset,
-        ethical_meaning:$('#ethical_meaning').value.trim(), practices:answers.practices||[], alignment:answers.alignment,
         goal:$('#goal').value.trim(), challenge:$('#challenge').value.trim(),
         source:'VSL Landing Page', page:location.href, utm
       };
