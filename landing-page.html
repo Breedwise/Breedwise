@@ -6,6 +6,12 @@
   <title>Breedwise — Watch &amp; Apply</title>
   <meta name="description" content="For serious dog &amp; pet breeders. Watch the training, then apply to work with Breedwise Academy.">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <!-- Meta Pixel -->
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','1337266034525554');fbq('track','PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1337266034525554&ev=PageView&noscript=1"/></noscript>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
@@ -132,7 +138,10 @@
     .check{width:64px;height:64px;border-radius:50%;background:var(--gold-soft);color:var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
     .check svg{width:30px;height:30px}
     .success h3{font-size:24px;font-weight:700;margin-bottom:8px;color:var(--ink)}
-    .success p{color:var(--mid);font-weight:300;margin-bottom:24px}
+    .success p{color:var(--mid);font-weight:300;margin-bottom:8px}
+    .modal.wide{max-width:660px}
+    .cal-wrap{margin-top:14px;min-height:700px;border-radius:10px;overflow:hidden;background:#fff}
+    .cal-wrap iframe{width:100%;border:0;min-height:700px;display:block}
     .progress{display:flex;gap:6px;padding:6px 26px 0}
     .progress i{height:4px;flex:1;background:var(--line);border-radius:2px;transition:background .2s}
     .progress i.done{background:var(--gold)}
@@ -399,15 +408,15 @@
       <div class="success" id="success">
         <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
         <h3>Application received</h3>
-        <p>You’re one step away. Book your call now 👇</p>
-        <a class="cta" id="bookBtn" href="#">Book your call <svg viewBox="0 0 24 24" fill="none" stroke="#1a160c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <p>You’re one step away — pick a time for your call below.</p>
+        <div id="calWrap" class="cal-wrap"></div>
       </div>
     </div>
   </div>
 
   <script>
     const ENDPOINT = 'https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/vsl-apply';
-    const CALENDAR_URL = '';
+    const BOOKING_URL = 'https://link.breedwise.io/widget/booking/Vf5YgCxLMJqdeAbYFOfB';
     const $ = s => document.querySelector(s);
     document.getElementById('yr').textContent = new Date().getFullYear();
 
@@ -421,11 +430,18 @@
     $('#closeBtn').onclick=closeApply;
     overlay.onclick=e=>{ if(e.target===overlay) closeApply(); };
     document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeApply(); });
-    if(CALENDAR_URL) $('#bookBtn').href = CALENDAR_URL;
+    function showBooking(name,email,phone){
+      const parts=(name||'').trim().split(' '); const first=parts.shift()||name||''; const last=parts.join(' ');
+      const q=new URLSearchParams({first_name:first,last_name:last,email:email||'',phone:phone||''});
+      $('#calWrap').innerHTML='<iframe src="'+BOOKING_URL+'?'+q.toString()+'" scrolling="no" id="vsl_booking"></iframe>';
+      if(!document.getElementById('ghl-embed')){ const s=document.createElement('script'); s.id='ghl-embed'; s.src='https://link.breedwise.io/js/form_embed.js'; document.body.appendChild(s); }
+    }
+    // best-effort: fire Meta "Schedule" when the embedded calendar reports a booking
+    window.addEventListener('message',e=>{ try{ const s=typeof e.data==='string'?e.data:JSON.stringify(e.data||''); if(window.fbq && /appointment|booking|booked/i.test(s)) fbq('track','Schedule'); }catch(_){ } });
 
     // main VSL: click-to-play
     const vsl=$('#vsl'), poster=$('#poster');
-    function playVSL(){ if(!vsl) return; vsl.setAttribute('controls','controls'); if(poster) poster.style.display='none'; vsl.play().catch(()=>{}); }
+    function playVSL(){ if(!vsl) return; vsl.setAttribute('controls','controls'); if(poster) poster.style.display='none'; vsl.play().catch(()=>{}); if(window.fbq) fbq('trackCustom','VSLStart'); }
     if(poster){ poster.addEventListener('click',playVSL); poster.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' ') playVSL(); }); }
     const watchBtn=$('#watchBtn');
     if(watchBtn){ watchBtn.addEventListener('click',()=>{ document.querySelector('.video-wrap').scrollIntoView({behavior:'smooth',block:'center'}); playVSL(); }); }
@@ -497,7 +513,10 @@
       try{
         const r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
         if(!r.ok) throw new Error('bad status '+r.status);
-        $('#formHead').style.display='none'; $('#progress').style.display='none'; $('#applyForm').style.display='none'; $('#success').classList.add('show');
+        if(window.fbq){ fbq('track','Lead'); fbq('trackCustom','SubmitApplication'); }
+        $('#formHead').style.display='none'; $('#progress').style.display='none'; $('#applyForm').style.display='none';
+        document.querySelector('.modal').classList.add('wide'); $('#success').classList.add('show');
+        showBooking(payload.name,payload.email,payload.phone);
       }catch(ex){ btn.disabled=false; btn.textContent='Submit application'; $('#err').textContent='Something went wrong — please try again, or email support@breedwise.io.'; }
     };
   </script>
