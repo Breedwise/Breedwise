@@ -89,7 +89,17 @@
     .vets{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
     .vet{background:var(--card);border:1px solid var(--gold-line);border-radius:var(--radius);padding:16px 22px;text-align:center;min-width:200px;flex:1}
     .vet b{display:block;font-size:15px;font-weight:600;color:var(--ink)}
-    .vet span{font-size:12.5px;letter-spacing:.01em;color:var(--gold);margin-top:6px;display:block;line-height:1.4}
+    .vet em{display:block;font-style:normal;font-weight:600;color:var(--gold);font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin-top:8px}
+    .vet span{font-size:12.5px;letter-spacing:.01em;color:var(--mid);margin-top:5px;display:block;line-height:1.45;font-weight:300}
+    .vet-intro{font-size:15px;color:var(--mid);font-weight:300;max-width:580px;margin:0 auto 28px;line-height:1.55}
+    .fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:left}
+    .fit-col{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px}
+    .fit-yes{border-color:var(--gold-line)}
+    .fit-h{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:15px}
+    .fit-col ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+    .fit-col li{position:relative;padding-left:26px;font-size:14px;color:var(--mid);line-height:1.5;font-weight:300}
+    .fit-yes li::before{content:'✓';position:absolute;left:0;top:-1px;color:var(--gold);font-weight:700}
+    .fit-no li::before{content:'✕';position:absolute;left:0;top:-1px;color:var(--muted);font-weight:700}
 
     .close-cta{text-align:center;padding:20px 0}
     .close-cta h2{font-size:30px;font-weight:700;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
@@ -127,7 +137,7 @@
     @media (max-width:640px){
       h1{font-size:34px;line-height:1.12} .sub{font-size:16px} .cta{width:100%;padding:17px 24px}
       .logo{height:58px} .close-cta h2{font-size:25px} .stat b{font-size:23px}
-      .tgrid{grid-template-columns:1fr} .vtgrid{grid-template-columns:1fr}
+      .tgrid{grid-template-columns:1fr} .vtgrid{grid-template-columns:1fr} .fit-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -143,8 +153,8 @@
     <section class="hero wrap center">
       <div class="eyebrow">For serious dog &amp; pet breeders</div>
       <h1>Build an <em>ethical, six-figure</em><br>breeding program</h1>
-      <p class="sub-out">In the next 12 months — <em>without losing puppies, lowering your prices, or burning out.</em></p>
-      <p class="sub">Vet-backed business and breeding systems so you can raise your standards, your prices, and your peace of mind.</p>
+      <p class="sub-out"><em>Without losing puppies, discounting litters, or burning out.</em></p>
+      <p class="sub">Vet-backed business and breeding systems for serious dog &amp; pet breeders who want premium prices, healthy litters, and a reputation they’re proud of.</p>
 
       <div class="video-wrap">
         <div class="video-frame" id="videoFrame">
@@ -158,17 +168,18 @@
       </div>
 
       <div class="learn">
-        <div class="learn-label">In this free training you'll learn</div>
+        <div class="learn-label">What you’ll learn in the 30-minute training</div>
         <ul class="learn-list">
-          <li>Why most breeders stay stuck between hobby and business — and how to break through ethically.</li>
-          <li>The 3 systems every six-figure breeding program needs: brand, buyer pipeline, and breeding standard.</li>
-          <li>How our Academy and Accelerator work — and who they’re not for.</li>
+          <li>Why most breeders get stuck between “hobby” and “real business” — and the 3 systems every six-figure program needs.</li>
+          <li>How to raise prices and still sell out litters by positioning yourself as the ethical, science-driven option.</li>
+          <li>The difference between random tips from Facebook and a vet-backed breeding standard that lets you sleep at night.</li>
+          <li>Exactly how Breedwise Academy and Accelerator work — and who we’re not a fit for.</li>
         </ul>
       </div>
 
       <div class="cta-row">
-        <button class="cta" data-apply>Apply to work with us <svg viewBox="0 0 24 24" fill="none" stroke="#1a160c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-        <div class="micro">By application only · <strong>We only take on breeders we know we can help.</strong></div>
+        <button class="cta" id="watchBtn">Watch the Free Training <svg viewBox="0 0 24 24" fill="#1a160c"><path d="M8 5v14l11-7z"/></svg></button>
+        <div class="micro">Then apply to see if <strong>Breedwise Academy or Accelerator</strong> is a fit for you.</div>
       </div>
     </section>
 
@@ -198,13 +209,13 @@
       <div class="sectitle">What happens when breeders go all in</div>
       <div class="tgrid">
         <div class="quote">
-          <div class="qhead">Premium prices, no pushback <em>— without feeling like a salesperson</em></div>
+          <div class="qhead">Raised prices <em>— and still selling out litters</em></div>
           <div class="stars">★★★★★</div>
           <p>“Thank you for teaching me how to operate and showcase my dogs professionally — now people aren’t even questioning my prices. It’s been life-changing.”</p>
           <div class="who">Breedwise Academy Member</div>
         </div>
         <div class="quote">
-          <div class="qhead">21,000 followers in 14 months <em>— without any social media experience</em></div>
+          <div class="qhead">0 to 21K followers <em>— with a real brand</em></div>
           <div class="stars">★★★★★</div>
           <p>“I started with zero social media or content creation experience. I started my Instagram 14 months ago and I’m at 21,000 followers… it’s honestly been a game changer for me and my family. One of the best decisions I’ve ever made.”</p>
           <div class="who">Breedwise Academy Member</div>
@@ -216,13 +227,13 @@
           <div class="who">Breedwise Academy Member · 13-year breeder</div>
         </div>
         <div class="quote">
-          <div class="qhead">A trusted vet 20 minutes away <em>— without being judged for breeding</em></div>
+          <div class="qhead">A non-judgmental repro vet <em>— 20 minutes away</em></div>
           <div class="stars">★★★★★</div>
           <p>“I’ve been to so many vets trying to find ones that listen and don’t judge me for being a breeder. The vet connected through Breedwise is 20 minutes away, and I didn’t have to explain myself. Having a vet I can rely on made a huge difference.”</p>
           <div class="who">Breedwise Academy Member</div>
         </div>
         <div class="quote">
-          <div class="qhead">Deposits rolling in <em>— without pressure tactics or discounting</em></div>
+          <div class="qhead">Deposits coming in <em>— without pressuring buyers</em></div>
           <div class="stars">★★★★★</div>
           <p>“It’s crazy when I sit back and think — if I would not have moved forward with Breedwise even just 3 months ago, I would not be in this position in life. Just got another deposit in, with 2 more families ready to place deposits today.”</p>
           <div class="who">Breedwise Academy Member</div>
@@ -234,12 +245,37 @@
     <section class="band"><div class="proof wrap center">
       <div class="seclabel">Backed by veterinary authority</div>
       <div class="sectitle">Guided by a world-class vet board</div>
+      <p class="vet-intro">Our curriculum is built and reviewed with a veterinary advisory board — so you’re not guessing on health, repro, or genetics.</p>
       <div class="vets">
-        <div class="vet"><b>Dr. Emmanuel Fontaine</b><span>Board-certified therio, repro &amp; whelping</span></div>
-        <div class="vet"><b>Dr. Angela Hughes</b><span>Genetics &amp; hereditary health</span></div>
-        <div class="vet"><b>Dr. David Mahoney</b><span>Clinical partnerships &amp; repro practice</span></div>
+        <div class="vet"><b>Dr. Emmanuel Fontaine</b><em>Scientific Architect</em><span>Reproduction, whelping &amp; neonatal care.</span></div>
+        <div class="vet"><b>Dr. Angela Hughes</b><em>Genetics &amp; hereditary health</em><span>Helps you build better, healthier dogs.</span></div>
+        <div class="vet"><b>Dr. David Mahoney</b><em>Clinical partnerships</em><span>How repro clinics &amp; vets work with ethical breeders.</span></div>
       </div>
     </div></section>
+
+    <!-- WHO IT'S FOR -->
+    <section class="proof wrap">
+      <div class="seclabel">An honest fit check</div>
+      <div class="sectitle">Is this you?</div>
+      <div class="fit-grid">
+        <div class="fit-col fit-yes">
+          <div class="fit-h">This is for you if…</div>
+          <ul>
+            <li>You already breed, or you’re actively preparing your first litter.</li>
+            <li>You care about health, temperament, and placement — not just selling puppies.</li>
+            <li>You’re willing to do the work to build a real program (not a get-rich-quick scheme).</li>
+          </ul>
+        </div>
+        <div class="fit-col fit-no">
+          <div class="fit-h">This is not for you if…</div>
+          <ul>
+            <li>You just want to crank out volume and cut corners.</li>
+            <li>You’re looking for “free tips,” not a vet-backed standard.</li>
+            <li>You’re allergic to structure and accountability.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
     <section class="close-cta wrap">
       <h2>Ready to build <em>yours</em>?</h2>
@@ -303,6 +339,8 @@
     const vsl=$('#vsl'), poster=$('#poster');
     function playVSL(){ if(!vsl) return; vsl.setAttribute('controls','controls'); if(poster) poster.style.display='none'; vsl.play().catch(()=>{}); }
     if(poster){ poster.addEventListener('click',playVSL); poster.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' ') playVSL(); }); }
+    const watchBtn=$('#watchBtn');
+    if(watchBtn){ watchBtn.addEventListener('click',()=>{ document.querySelector('.video-wrap').scrollIntoView({behavior:'smooth',block:'center'}); playVSL(); }); }
 
     // video testimonials: click thumbnail → play
     document.querySelectorAll('.vt').forEach(card=>{
