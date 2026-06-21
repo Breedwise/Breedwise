@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breedwise — Watch &amp; Apply</title>
+  <meta name="description" content="For serious dog &amp; pet breeders. Watch the training, then apply to work with Breedwise Academy.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#050608; --band:#101218; --card:#13161d;
+      --ink:#F5F5F7; --mid:rgba(245,245,247,.74); --muted:rgba(245,245,247,.52);
+      --gold:#c9ab6e; --gold-soft:rgba(201,171,110,.12); --gold-line:rgba(201,171,110,.30);
+      --cta:#c9ab6e; --cta-hover:#b89a5c; --cta-ink:#1a160c;
+      --line:rgba(245,245,247,.10);
+      --font:'Poppins',-apple-system,BlinkMacSystemFont,sans-serif;
+      --radius:12px; --ease:.18s ease;
+    }
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    .wrap{max-width:780px;margin:0 auto;padding:0 22px}
+    .center{text-align:center}
+    .band{background:var(--band)}
+
+    header{padding:30px 0 6px;background:var(--bg)}
+    .brand{display:flex;align-items:center;justify-content:center}
+    .logo{height:72px;width:auto;display:block}
+
+    .hero{padding:30px 0 16px}
+    .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:16px}
+    h1{font-weight:700;font-size:38px;line-height:1.16;letter-spacing:.005em;color:var(--ink);text-transform:uppercase}
+    h1 em{font-style:normal;color:var(--gold)}
+    .sub{font-size:18px;color:var(--mid);font-weight:300;margin:18px auto 0;max-width:560px}
+
+    .video-wrap{margin:32px auto 8px;border-radius:var(--radius);overflow:hidden;background:var(--band);padding:10px;border:1px solid var(--line);box-shadow:0 28px 70px -30px rgba(0,0,0,.9)}
+    .video-frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:#000}
+    .video-frame iframe,.video-frame video{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover;background:#000}
+    .video-poster{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:radial-gradient(120% 120% at 50% 32%,#1b1d24 0%,#000 78%);cursor:pointer}
+    .play{width:80px;height:80px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;transition:transform var(--ease)}
+    .video-poster:hover .play,.vt:hover .play{transform:scale(1.06)}
+    .play svg{width:30px;height:30px;margin-left:5px}
+    .poster-note{font-size:13px;letter-spacing:.06em;color:rgba(245,245,247,.5)}
+
+    .cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--cta);color:var(--cta-ink);
+      font-family:var(--font);font-size:16px;font-weight:700;letter-spacing:.005em;border:none;cursor:pointer;
+      padding:18px 42px;border-radius:10px;transition:transform var(--ease),background var(--ease);box-shadow:0 12px 30px -12px rgba(201,171,110,.5)}
+    .cta:hover{background:var(--cta-hover);transform:translateY(-1px)}
+    .cta svg{width:17px;height:17px}
+    .cta-row{margin:28px 0 8px}
+    .micro{font-size:13.5px;color:var(--muted);margin-top:14px}
+    .micro strong{color:var(--mid);font-weight:600}
+
+    .strip{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 40px;margin:44px 0 0;padding:24px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .stat{text-align:center}
+    .stat b{display:block;font-size:28px;font-weight:700;color:var(--gold);line-height:1}
+    .stat span{font-size:12px;letter-spacing:.05em;color:var(--muted);text-transform:uppercase;margin-top:5px;display:block}
+
+    section.proof{padding:54px 0}
+    .seclabel{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px;text-align:center}
+    .sectitle{font-size:25px;font-weight:700;color:var(--ink);text-align:center;margin-bottom:30px;letter-spacing:-.01em}
+
+    .tgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .quote{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;text-align:left;display:flex;flex-direction:column}
+    .qhead{font-size:15.5px;font-weight:600;color:var(--ink);line-height:1.4;margin-bottom:10px}
+    .qhead em{font-style:normal;color:var(--gold);font-weight:600}
+    .stars{color:var(--gold);font-size:13px;letter-spacing:2px;margin-bottom:9px}
+    .quote p{font-size:14.5px;color:var(--mid);line-height:1.62;font-weight:300}
+    .who{font-size:11.5px;letter-spacing:.04em;color:var(--gold);font-weight:600;text-transform:uppercase;margin-top:16px}
+
+    .vtgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .vt{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:#000;cursor:pointer;aspect-ratio:9/16}
+    .vt img,.vt video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .vt-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.45))}
+    .vt .play{width:58px;height:58px}.vt .play svg{width:22px;height:22px}
+
+    .vets{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+    .vet{background:var(--card);border:1px solid var(--gold-line);border-radius:var(--radius);padding:16px 22px;text-align:center;min-width:200px;flex:1}
+    .vet b{display:block;font-size:15px;font-weight:600;color:var(--ink)}
+    .vet span{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-top:3px;display:block}
+
+    .close-cta{text-align:center;padding:58px 0}
+    .close-cta h2{font-size:30px;font-weight:700;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
+    .close-cta h2 em{font-style:normal;color:var(--gold)}
+    .close-cta p{color:var(--mid);font-weight:300;margin-bottom:28px}
+
+    footer{border-top:1px solid var(--line);padding:26px 0;text-align:center;font-size:12.5px;color:var(--muted);background:var(--bg)}
+    footer a{color:var(--gold);text-decoration:none}
+
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(3px);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:34px 16px;overflow-y:auto}
+    .overlay.open{display:flex}
+    .modal{background:var(--band);border:1px solid var(--gold-line);border-radius:16px;width:100%;max-width:480px;box-shadow:0 40px 90px -20px rgba(0,0,0,.85);overflow:hidden}
+    .modal-head{padding:24px 26px 4px;position:relative}
+    .modal-head .eyebrow{margin-bottom:8px}
+    .modal-head h3{font-size:23px;font-weight:700;color:var(--ink)}
+    .modal-head p{font-size:13.5px;color:var(--muted);font-weight:300;margin-top:5px}
+    .x{position:absolute;top:18px;right:20px;background:none;border:none;font-size:24px;color:var(--muted);cursor:pointer;line-height:1}
+    .x:hover{color:var(--ink)}
+    form{padding:18px 26px 26px;display:flex;flex-direction:column;gap:13px}
+    .fld label{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--mid);font-weight:600;display:block;margin-bottom:6px}
+    .fld input,.fld select,.fld textarea{width:100%;font-family:var(--font);font-size:15px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:12px 13px;outline:none;transition:border-color var(--ease)}
+    .fld input::placeholder,.fld textarea::placeholder{color:rgba(245,245,247,.34)}
+    .fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--gold)}
+    .fld select{appearance:none}.fld select option{background:#101218;color:var(--ink)}
+    .fld textarea{resize:vertical;min-height:64px}
+    .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+    .submit{margin-top:6px;width:100%}.submit:disabled{opacity:.55;cursor:default}
+    .err{color:#e88;font-size:13px;min-height:16px;text-align:center}
+    .success{padding:40px 30px 42px;text-align:center;display:none}.success.show{display:block}
+    .check{width:64px;height:64px;border-radius:50%;background:var(--gold-soft);color:var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+    .check svg{width:30px;height:30px}
+    .success h3{font-size:24px;font-weight:700;margin-bottom:8px;color:var(--ink)}
+    .success p{color:var(--mid);font-weight:300;margin-bottom:24px}
+
+    @media (max-width:640px){
+      h1{font-size:30px} .sub{font-size:16px} .cta{width:100%;padding:17px 24px}
+      .logo{height:58px} .close-cta h2{font-size:25px} .stat b{font-size:23px}
+      .tgrid{grid-template-columns:1fr} .vtgrid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <img class="logo" src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/68bdf2958301fad2278681fd.svg" alt="Breedwise Academy" />
+    </div>
+  </header>
+
+  <main>
+    <section class="hero wrap center">
+      <div class="eyebrow">For serious dog &amp; pet breeders</div>
+      <h1>Build an <em>ethical, six-figure</em> breeding program</h1>
+      <p class="sub">Watch the short training below — then apply to work with us.</p>
+
+      <div class="video-wrap">
+        <div class="video-frame" id="videoFrame">
+          <video id="vsl" playsinline preload="metadata" src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a30a473998928ce1fd43d16.mp4#t=0.1"></video>
+          <div class="video-poster" id="poster" role="button" aria-label="Play video" tabindex="0">
+            <div class="play"><svg viewBox="0 0 24 24" fill="#1a160c" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/></svg></div>
+            <div class="poster-note">Watch the training</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-row">
+        <button class="cta" data-apply>Apply to work with us <svg viewBox="0 0 24 24" fill="none" stroke="#1a160c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        <div class="micro">By application only · <strong>We only take on breeders we know we can help.</strong></div>
+      </div>
+    </section>
+
+    <!-- WRITTEN TESTIMONIALS -->
+    <section class="band"><div class="proof wrap">
+      <div class="seclabel">Real members, real results</div>
+      <div class="sectitle">What happens when breeders go all in</div>
+      <div class="tgrid">
+        <div class="quote">
+          <div class="qhead">Premium prices, no pushback <em>— without feeling like a salesperson</em></div>
+          <div class="stars">★★★★★</div>
+          <p>“Thank you for teaching me how to operate and showcase my dogs professionally — now people aren’t even questioning my prices. It’s been life-changing.”</p>
+          <div class="who">Breedwise Academy Member</div>
+        </div>
+        <div class="quote">
+          <div class="qhead">21,000 followers in 14 months <em>— without any social media experience</em></div>
+          <div class="stars">★★★★★</div>
+          <p>“I started with zero social media or content creation experience. I started my Instagram 14 months ago and I’m at 21,000 followers… it’s honestly been a game changer for me and my family. One of the best decisions I’ve ever made.”</p>
+          <div class="who">Breedwise Academy Member</div>
+        </div>
+        <div class="quote">
+          <div class="qhead">Results in one week <em>— without throwing out 13 years of experience</em></div>
+          <div class="stars">★★★★★</div>
+          <p>“I’ve personally been breeding for almost 13 years. Austin and I had a really good discussion on my social media content, and in just a short week I implemented some concepts he brought forward and you know what? IT WORKED.”</p>
+          <div class="who">Breedwise Academy Member · 13-year breeder</div>
+        </div>
+        <div class="quote">
+          <div class="qhead">A trusted vet 20 minutes away <em>— without being judged for breeding</em></div>
+          <div class="stars">★★★★★</div>
+          <p>“I’ve been to so many vets trying to find ones that listen and don’t judge me for being a breeder. The vet connected through Breedwise is 20 minutes away, and I didn’t have to explain myself. Having a vet I can rely on made a huge difference.”</p>
+          <div class="who">Breedwise Academy Member</div>
+        </div>
+        <div class="quote">
+          <div class="qhead">Deposits rolling in <em>— without pressure tactics or discounting</em></div>
+          <div class="stars">★★★★★</div>
+          <p>“It’s crazy when I sit back and think — if I would not have moved forward with Breedwise even just 3 months ago, I would not be in this position in life. Just got another deposit in, with 2 more families ready to place deposits today.”</p>
+          <div class="who">Breedwise Academy Member</div>
+        </div>
+      </div>
+    </div></section>
+
+    <!-- VIDEO TESTIMONIALS -->
+    <section class="proof wrap">
+      <div class="seclabel">In their own words</div>
+      <div class="sectitle">Hear it from our members</div>
+      <div class="vtgrid" id="vtGrid">
+        <div class="vt" data-mov="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a2aa063c53e51acc07b32d4.mov">
+          <img src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a2e0412e650055aa22bc975.png" alt="Member testimonial">
+          <div class="vt-overlay"><div class="play"><svg viewBox="0 0 24 24" fill="#1a160c"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+        <div class="vt" data-mov="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/698393187732b504da352029.mov">
+          <img src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a2e04128a3c98ce568172b9.png" alt="Member testimonial">
+          <div class="vt-overlay"><div class="play"><svg viewBox="0 0 24 24" fill="#1a160c"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+        <div class="vt" data-mov="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/698a54eda41b87bdf623b3a3.mov">
+          <img src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a2e0412e650055aa22bc971.png" alt="Member testimonial">
+          <div class="vt-overlay"><div class="play"><svg viewBox="0 0 24 24" fill="#1a160c"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VET BOARD -->
+    <section class="band"><div class="proof wrap center">
+      <div class="seclabel">Backed by veterinary authority</div>
+      <div class="sectitle">Guided by a world-class vet board</div>
+      <div class="vets">
+        <div class="vet"><b>Dr. Emmanuel Fontaine</b><span>Veterinary Advisor</span></div>
+        <div class="vet"><b>Dr. Angela Hughes</b><span>Veterinary Advisor</span></div>
+        <div class="vet"><b>Dr. David Mahoney</b><span>Veterinary Advisor</span></div>
+      </div>
+    </div></section>
+
+    <section class="close-cta wrap">
+      <h2>Ready to build <em>yours</em>?</h2>
+      <p>Watch the training, then take the next step.</p>
+      <button class="cta" data-apply>Apply to work with us <svg viewBox="0 0 24 24" fill="none" stroke="#1a160c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </section>
+  </main>
+
+  <footer>© <span id="yr"></span> Breedwise Academy · <a href="https://breedwise.io" target="_blank" rel="noopener">breedwise.io</a> · <a href="/privacy">Privacy</a></footer>
+
+  <!-- APPLICATION MODAL -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <div class="modal-head" id="formHead">
+        <button class="x" id="closeBtn" aria-label="Close">&times;</button>
+        <div class="eyebrow">Application</div>
+        <h3>Apply to work with us</h3>
+        <p>Takes about 60 seconds. We review every application.</p>
+      </div>
+      <form id="applyForm" autocomplete="on">
+        <div class="fld"><label>Full name</label><input id="name" name="name" type="text" required placeholder="Jane Breeder"></div>
+        <div class="fld"><label>Email</label><input id="email" name="email" type="email" required placeholder="you@example.com"></div>
+        <div class="fld"><label>Phone</label><input id="phone" name="phone" type="tel" required placeholder="(555) 123-4567"></div>
+        <div class="fld"><label>What do you breed?</label><input id="breeds" name="breeds" type="text" placeholder="e.g. Golden Retrievers"></div>
+        <div class="fld"><label>Litters per year</label>
+          <select id="litters" name="litters"><option value="">Select…</option><option>Just starting out</option><option>1–3</option><option>4–8</option><option>9+</option></select>
+        </div>
+        <div class="fld"><label>Biggest challenge right now? (optional)</label><textarea id="challenge" name="challenge" placeholder="What are you hoping to fix or grow?"></textarea></div>
+        <input class="hp" type="text" id="company" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit" class="cta submit" id="submitBtn">Submit application</button>
+        <div class="err" id="err"></div>
+      </form>
+      <div class="success" id="success">
+        <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+        <h3>Application received</h3>
+        <p>You’re one step away. Book your call now 👇</p>
+        <a class="cta" id="bookBtn" href="#">Book your call <svg viewBox="0 0 24 24" fill="none" stroke="#1a160c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ENDPOINT = 'https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/vsl-apply';
+    const CALENDAR_URL = '';
+    const $ = s => document.querySelector(s);
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    const qs = new URLSearchParams(location.search);
+    const utm = {}; ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(k=>{ if(qs.get(k)) utm[k]=qs.get(k); });
+
+    const overlay = $('#overlay');
+    function openApply(){ overlay.classList.add('open'); document.body.style.overflow='hidden'; setTimeout(()=>$('#name').focus(),60); }
+    function closeApply(){ overlay.classList.remove('open'); document.body.style.overflow=''; }
+    document.querySelectorAll('[data-apply]').forEach(b=>b.onclick=openApply);
+    $('#closeBtn').onclick=closeApply;
+    overlay.onclick=e=>{ if(e.target===overlay) closeApply(); };
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeApply(); });
+    if(CALENDAR_URL) $('#bookBtn').href = CALENDAR_URL;
+
+    // main VSL: click-to-play
+    const vsl=$('#vsl'), poster=$('#poster');
+    function playVSL(){ if(!vsl) return; vsl.setAttribute('controls','controls'); if(poster) poster.style.display='none'; vsl.play().catch(()=>{}); }
+    if(poster){ poster.addEventListener('click',playVSL); poster.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' ') playVSL(); }); }
+
+    // video testimonials: click thumbnail → play
+    document.querySelectorAll('.vt').forEach(card=>{
+      card.addEventListener('click',()=>{
+        const url=card.dataset.mov;
+        card.innerHTML='<video controls autoplay playsinline src="'+url+'"></video>';
+        const v=card.querySelector('video'); if(v) v.play().catch(()=>{});
+      });
+    });
+
+    $('#applyForm').addEventListener('submit', async e=>{
+      e.preventDefault();
+      if($('#company').value){ return; }
+      const btn=$('#submitBtn'); const err=$('#err'); err.textContent='';
+      const name=$('#name').value.trim(), email=$('#email').value.trim(), phone=$('#phone').value.trim();
+      if(!name||!email||!phone){ err.textContent='Please fill in your name, email and phone.'; return; }
+      const payload={ name, email, phone, breeds:$('#breeds').value.trim(), litters:$('#litters').value, challenge:$('#challenge').value.trim(), source:'VSL Landing Page', page:location.href, utm };
+      btn.disabled=true; btn.textContent='Submitting…';
+      try{
+        const r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+        if(!r.ok) throw new Error('bad status '+r.status);
+        $('#formHead').style.display='none'; $('#applyForm').style.display='none'; $('#success').classList.add('show');
+      }catch(ex){ btn.disabled=false; btn.textContent='Submit application'; err.textContent='Something went wrong — please try again, or email support@breedwise.io.'; }
+    });
+  </script>
+</body>
+</html>
