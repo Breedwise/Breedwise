@@ -34,7 +34,14 @@
     .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:16px}
     h1{font-weight:800;font-size:46px;line-height:1.1;letter-spacing:0;color:var(--ink);text-transform:uppercase}
     h1 em{font-style:normal;color:var(--gold)}
-    .sub{font-size:18px;color:var(--mid);font-weight:300;margin:18px auto 0;max-width:560px}
+    .sub-out{font-size:20px;color:var(--ink);font-weight:500;line-height:1.45;margin:18px auto 0;max-width:620px}
+    .sub-out em{font-style:italic;color:var(--gold);font-weight:600}
+    .sub{font-size:16px;color:var(--mid);font-weight:300;margin:12px auto 0;max-width:580px}
+    .learn{max-width:600px;margin:28px auto 0;text-align:left}
+    .learn-label{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:14px;text-align:center}
+    .learn-list{list-style:none;display:flex;flex-direction:column;gap:12px}
+    .learn-list li{position:relative;padding-left:30px;font-size:15px;color:var(--mid);line-height:1.5}
+    .learn-list li::before{content:'✓';position:absolute;left:0;top:-1px;color:var(--gold);font-weight:700}
 
     .video-wrap{margin:32px auto 8px;border-radius:var(--radius);overflow:hidden;background:var(--band);padding:10px;border:1px solid var(--line)}
     .video-frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:#000}
@@ -82,7 +89,7 @@
     .vets{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
     .vet{background:var(--card);border:1px solid var(--gold-line);border-radius:var(--radius);padding:16px 22px;text-align:center;min-width:200px;flex:1}
     .vet b{display:block;font-size:15px;font-weight:600;color:var(--ink)}
-    .vet span{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-top:3px;display:block}
+    .vet span{font-size:12.5px;letter-spacing:.01em;color:var(--gold);margin-top:6px;display:block;line-height:1.4}
 
     .close-cta{text-align:center;padding:90px 0}
     .close-cta h2{font-size:30px;font-weight:700;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
@@ -136,7 +143,8 @@
     <section class="hero wrap center">
       <div class="eyebrow">For serious dog &amp; pet breeders</div>
       <h1>Build an <em>ethical, six-figure</em><br>breeding program</h1>
-      <p class="sub">Watch the short training below — then apply to work with us.</p>
+      <p class="sub-out">In the next 12 months — <em>without losing puppies, lowering your prices, or burning out.</em></p>
+      <p class="sub">Vet-backed business and breeding systems so you can raise your standards, your prices, and your peace of mind.</p>
 
       <div class="video-wrap">
         <div class="video-frame" id="videoFrame">
@@ -147,6 +155,15 @@
             <div class="poster-note">Watch the training</div>
           </div>
         </div>
+      </div>
+
+      <div class="learn">
+        <div class="learn-label">In this free training you'll learn</div>
+        <ul class="learn-list">
+          <li>Why most breeders stay stuck between hobby and business — and how to break through ethically.</li>
+          <li>The 3 systems every six-figure breeding program needs: brand, buyer pipeline, and breeding standard.</li>
+          <li>How our Academy and Accelerator work — and who they’re not for.</li>
+        </ul>
       </div>
 
       <div class="cta-row">
@@ -218,9 +235,9 @@
       <div class="seclabel">Backed by veterinary authority</div>
       <div class="sectitle">Guided by a world-class vet board</div>
       <div class="vets">
-        <div class="vet"><b>Dr. Emmanuel Fontaine</b><span>Veterinary Advisor</span></div>
-        <div class="vet"><b>Dr. Angela Hughes</b><span>Veterinary Advisor</span></div>
-        <div class="vet"><b>Dr. David Mahoney</b><span>Veterinary Advisor</span></div>
+        <div class="vet"><b>Dr. Emmanuel Fontaine</b><span>Board-certified therio, repro &amp; whelping</span></div>
+        <div class="vet"><b>Dr. Angela Hughes</b><span>Genetics &amp; hereditary health</span></div>
+        <div class="vet"><b>Dr. David Mahoney</b><span>Clinical partnerships &amp; repro practice</span></div>
       </div>
     </div></section>
 
@@ -240,7 +257,7 @@
         <button class="x" id="closeBtn" aria-label="Close">&times;</button>
         <div class="eyebrow">Application</div>
         <h3>Apply to work with us</h3>
-        <p>Takes about 60 seconds. We review every application.</p>
+        <p>Takes about 60 seconds. We review every application — and if we’re not a fit, we’ll tell you straight and point you in the right direction.</p>
       </div>
       <form id="applyForm" autocomplete="on">
         <div class="fld"><label>Full name</label><input id="name" name="name" type="text" required placeholder="Jane Breeder"></div>
