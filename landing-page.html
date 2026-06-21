@@ -133,6 +133,30 @@
     .check svg{width:30px;height:30px}
     .success h3{font-size:24px;font-weight:700;margin-bottom:8px;color:var(--ink)}
     .success p{color:var(--mid);font-weight:300;margin-bottom:24px}
+    .progress{display:flex;gap:6px;padding:6px 26px 0}
+    .progress i{height:4px;flex:1;background:var(--line);border-radius:2px;transition:background .2s}
+    .progress i.done{background:var(--gold)}
+    .step{display:none} .step.active{display:block}
+    .step-h{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:16px}
+    .q{margin-bottom:20px} .q:last-child{margin-bottom:0}
+    .q-label{display:block;font-size:14.5px;font-weight:500;color:var(--ink);margin-bottom:11px;line-height:1.4}
+    .q-req{color:var(--gold)}
+    .opts{display:flex;flex-direction:column;gap:8px}
+    .opt{display:flex;align-items:center;gap:11px;padding:12px 14px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--mid);font-size:14px;cursor:pointer;transition:border-color .15s,color .15s,background .15s;line-height:1.35}
+    .opt:hover{border-color:var(--gold-line)}
+    .opt.sel{border-color:var(--gold);color:var(--ink);background:var(--gold-soft)}
+    .opt .dot{width:17px;height:17px;border-radius:50%;border:1.5px solid var(--muted);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+    .opt.check .dot{border-radius:5px}
+    .opt.sel .dot{border-color:var(--gold)}
+    .opt.sel .dot::after{content:'';width:9px;height:9px;border-radius:inherit;background:var(--gold)}
+    .scale{display:flex;gap:6px;flex-wrap:wrap}
+    .scale button{width:38px;height:38px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--mid);font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font)}
+    .scale button.sel{border-color:var(--gold);background:var(--gold);color:var(--cta-ink)}
+    .scale-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:7px}
+    .wiz-nav{display:flex;gap:10px;align-items:center;margin-top:20px}
+    .wiz-nav .ghost{background:transparent;border:1px solid var(--line);color:var(--mid);padding:13px 20px;border-radius:9px;cursor:pointer;font-family:var(--font);font-size:14px;font-weight:500}
+    .wiz-nav .ghost:hover{border-color:var(--gold-line);color:var(--ink)}
+    .wiz-nav .cta{flex:1;padding:14px;font-size:15px}
 
     @media (max-width:640px){
       h1{font-size:34px;line-height:1.12} .sub{font-size:16px} .cta{width:100%;padding:17px 24px}
@@ -293,21 +317,85 @@
         <button class="x" id="closeBtn" aria-label="Close">&times;</button>
         <div class="eyebrow">Application</div>
         <h3>Apply to work with us</h3>
-        <p>Takes about 60 seconds. We review every application — and if we’re not a fit, we’ll tell you straight and point you in the right direction.</p>
+        <p>A few quick questions. We review every application — and if we’re not a fit, we’ll tell you straight and point you in the right direction.</p>
       </div>
-      <form id="applyForm" autocomplete="on">
-        <div class="fld"><label>Full name</label><input id="name" name="name" type="text" required placeholder="Jane Breeder"></div>
-        <div class="fld"><label>Email</label><input id="email" name="email" type="email" required placeholder="you@example.com"></div>
-        <div class="fld"><label>Phone</label><input id="phone" name="phone" type="tel" required placeholder="(555) 123-4567"></div>
-        <div class="fld"><label>What do you breed?</label><input id="breeds" name="breeds" type="text" placeholder="e.g. Golden Retrievers"></div>
-        <div class="fld"><label>Litters per year</label>
-          <select id="litters" name="litters"><option value="">Select…</option><option>Just starting out</option><option>1–3</option><option>4–8</option><option>9+</option></select>
+      <div class="progress" id="progress"><i></i><i></i><i></i><i></i><i></i></div>
+      <form id="applyForm" autocomplete="on" novalidate><div style="padding:18px 26px 26px">
+
+        <div class="step active" data-step="0">
+          <div class="step-h">About you</div>
+          <div class="fld"><label>Full name</label><input id="name" type="text" placeholder="Jane Breeder"></div>
+          <div class="fld" style="margin-top:12px"><label>Email</label><input id="email" type="email" placeholder="you@example.com"></div>
+          <div class="fld" style="margin-top:12px"><label>Phone</label><input id="phone" type="tel" placeholder="(555) 123-4567"></div>
         </div>
-        <div class="fld"><label>Biggest challenge right now? (optional)</label><textarea id="challenge" name="challenge" placeholder="What are you hoping to fix or grow?"></textarea></div>
-        <input class="hp" type="text" id="company" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <button type="submit" class="cta submit" id="submitBtn">Submit application</button>
+
+        <div class="step" data-step="1">
+          <div class="step-h">Your program</div>
+          <div class="q"><div class="q-label">Where are you right now? <span class="q-req">*</span></div>
+            <div class="opts" data-field="breeding_status">
+              <div class="opt" data-val="first"><span class="dot"></span>I’m planning my first litter</div>
+              <div class="opt" data-val="1-3"><span class="dot"></span>I’ve had 1–3 litters</div>
+              <div class="opt" data-val="4-10"><span class="dot"></span>I’ve had 4–10 litters</div>
+              <div class="opt" data-val="10plus"><span class="dot"></span>I’ve been breeding 10+ litters (established)</div>
+            </div></div>
+          <div class="q"><div class="q-label">When is your next (or first) planned litter due? <span class="q-req">*</span></div>
+            <div class="opts" data-field="next_litter">
+              <div class="opt" data-val="30days"><span class="dot"></span>Within the next 30 days</div>
+              <div class="opt" data-val="1-3mo"><span class="dot"></span>1–3 months from now</div>
+              <div class="opt" data-val="3-6mo"><span class="dot"></span>3–6 months from now</div>
+              <div class="opt" data-val="6plus"><span class="dot"></span>6+ months away / not scheduled</div>
+            </div></div>
+          <div class="q"><div class="q-label">How urgent is it to fix your current challenges? <span class="q-req">*</span></div>
+            <div class="scale" id="urgency"></div>
+            <div class="scale-ends"><span>1 · just curious</span><span>10 · must fix now</span></div></div>
+        </div>
+
+        <div class="step" data-step="2">
+          <div class="step-h">Readiness</div>
+          <div class="q"><div class="q-label">If we decide together that Breedwise is a fit… <span class="q-req">*</span></div>
+            <div class="opts" data-field="investment">
+              <div class="opt" data-val="ready"><span class="dot"></span>I have $1,500+ and am ready to invest now if it’s right</div>
+              <div class="opt" data-val="payplan"><span class="dot"></span>I’d need a payment plan but can commit if the fit is right</div>
+              <div class="opt" data-val="not_now"><span class="dot"></span>I’m not in a position to invest right now</div>
+            </div></div>
+          <div class="q"><div class="q-label">How are you thinking about this investment? <span class="q-req">*</span></div>
+            <div class="opts" data-field="mindset">
+              <div class="opt" data-val="serious"><span class="dot"></span>A serious business investment — I expect to do the work</div>
+              <div class="opt" data-val="tips"><span class="dot"></span>Hoping for some tips, not ready for a big change yet</div>
+            </div></div>
+        </div>
+
+        <div class="step" data-step="3">
+          <div class="step-h">Your standards</div>
+          <div class="fld"><label>What does “ethical breeding” mean to you, in practice? <span class="q-req">*</span></label><textarea id="ethical_meaning" placeholder="A sentence or two…"></textarea></div>
+          <div class="q" style="margin-top:16px"><div class="q-label">Which are part of your program? (check all that apply)</div>
+            <div class="opts" data-field="practices" data-multi="1">
+              <div class="opt check" data-val="health_testing"><span class="dot"></span>Health testing (appropriate for my breed)</div>
+              <div class="opt check" data-val="placement"><span class="dot"></span>Thoughtful placement / screening of homes</div>
+              <div class="opt check" data-val="contracts"><span class="dot"></span>Written contracts &amp; lifetime support</div>
+              <div class="opt check" data-val="litter_limits"><span class="dot"></span>Limiting litters per female to protect their health</div>
+              <div class="opt check" data-val="say_no"><span class="dot"></span>Willing to say no to a breeding or a buyer</div>
+            </div></div>
+          <div class="q"><div class="q-label">If we felt your practices weren’t aligned with our standard… <span class="q-req">*</span></div>
+            <div class="opts" data-field="alignment">
+              <div class="opt" data-val="direct"><span class="dot"></span>Tell me directly — give me honest feedback</div>
+              <div class="opt" data-val="prefer_not"><span class="dot"></span>I’d prefer not to work with a program that questions my practices</div>
+            </div></div>
+        </div>
+
+        <div class="step" data-step="4">
+          <div class="step-h">Your goals</div>
+          <div class="fld"><label>Your #1 goal with your program in the next 12 months? <span class="q-req">*</span></label><textarea id="goal" placeholder="What does success look like?"></textarea></div>
+          <div class="fld" style="margin-top:14px"><label>The biggest challenge holding you back from that? <span class="q-req">*</span></label><textarea id="challenge" placeholder="What’s in the way right now?"></textarea></div>
+        </div>
+
+        <input class="hp" type="text" id="company" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="err" id="err"></div>
-      </form>
+        <div class="wiz-nav">
+          <button type="button" class="ghost" id="backBtn" style="display:none">Back</button>
+          <button type="button" class="cta" id="nextBtn">Next</button>
+        </div>
+      </div></form>
       <div class="success" id="success">
         <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
         <h3>Application received</h3>
@@ -327,7 +415,7 @@
     const utm = {}; ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(k=>{ if(qs.get(k)) utm[k]=qs.get(k); });
 
     const overlay = $('#overlay');
-    function openApply(){ overlay.classList.add('open'); document.body.style.overflow='hidden'; setTimeout(()=>$('#name').focus(),60); }
+    function openApply(){ overlay.classList.add('open'); document.body.style.overflow='hidden'; if(typeof resetWizard==='function') resetWizard(); setTimeout(()=>$('#name').focus(),60); }
     function closeApply(){ overlay.classList.remove('open'); document.body.style.overflow=''; }
     document.querySelectorAll('[data-apply]').forEach(b=>b.onclick=openApply);
     $('#closeBtn').onclick=closeApply;
@@ -351,20 +439,67 @@
       });
     });
 
-    $('#applyForm').addEventListener('submit', async e=>{
-      e.preventDefault();
-      if($('#company').value){ return; }
-      const btn=$('#submitBtn'); const err=$('#err'); err.textContent='';
-      const name=$('#name').value.trim(), email=$('#email').value.trim(), phone=$('#phone').value.trim();
-      if(!name||!email||!phone){ err.textContent='Please fill in your name, email and phone.'; return; }
-      const payload={ name, email, phone, breeds:$('#breeds').value.trim(), litters:$('#litters').value, challenge:$('#challenge').value.trim(), source:'VSL Landing Page', page:location.href, utm };
-      btn.disabled=true; btn.textContent='Submitting…';
+    /* ── APPLICATION WIZARD ── */
+    let step=0, answers={practices:[]};
+    const steps=[...document.querySelectorAll('.step')], TOTAL=steps.length;
+    const urgEl=$('#urgency');
+    for(let i=1;i<=10;i++){ const b=document.createElement('button'); b.type='button'; b.textContent=i; b.dataset.val=i; urgEl.appendChild(b); }
+
+    function showStep(i){
+      step=i; steps.forEach(s=>s.classList.toggle('active',+s.dataset.step===i));
+      document.querySelectorAll('#progress i').forEach((p,idx)=>p.classList.toggle('done',idx<=i));
+      $('#backBtn').style.display=i===0?'none':'block';
+      $('#nextBtn').textContent=i===TOTAL-1?'Submit application':'Next';
+      $('#err').textContent='';
+    }
+    function resetWizard(){
+      answers={practices:[]};
+      document.querySelectorAll('.opt.sel,.scale button.sel').forEach(o=>o.classList.remove('sel'));
+      ['name','email','phone','ethical_meaning','goal','challenge'].forEach(id=>{const el=$('#'+id); if(el) el.value='';});
+      $('#nextBtn').disabled=false; showStep(0);
+    }
+
+    document.querySelectorAll('.opts').forEach(grp=>{
+      grp.addEventListener('click',e=>{
+        const opt=e.target.closest('.opt'); if(!opt) return;
+        const field=grp.dataset.field;
+        if(grp.dataset.multi){ opt.classList.toggle('sel'); answers[field]=[...grp.querySelectorAll('.opt.sel')].map(o=>o.dataset.val); }
+        else { grp.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel')); opt.classList.add('sel'); answers[field]=opt.dataset.val; }
+      });
+    });
+    urgEl.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; urgEl.querySelectorAll('button').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); answers.urgency=b.dataset.val; });
+
+    function validateStep(i){
+      const emailRe=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+      if(i===0){ const n=$('#name').value.trim(),em=$('#email').value.trim(),ph=$('#phone').value.trim(); if(!n||!em||!ph) return 'Please fill in your name, email and phone.'; if(!emailRe.test(em)) return 'Please enter a valid email address.'; return ''; }
+      if(i===1){ if(!answers.breeding_status) return 'Pick where you’re at.'; if(!answers.next_litter) return 'Pick your next litter timing.'; if(!answers.urgency) return 'Rate your urgency (1–10).'; return ''; }
+      if(i===2){ if(!answers.investment) return 'Pick your investment readiness.'; if(!answers.mindset) return 'Pick how you’re thinking about it.'; return ''; }
+      if(i===3){ if(!$('#ethical_meaning').value.trim()) return 'Tell us what ethical breeding means to you.'; if(!answers.alignment) return 'Pick how you’d want us to handle misalignment.'; return ''; }
+      if(i===4){ if(!$('#goal').value.trim()) return 'Share your #1 goal.'; if(!$('#challenge').value.trim()) return 'Share your biggest challenge.'; return ''; }
+      return '';
+    }
+
+    $('#backBtn').onclick=()=>{ if(step>0) showStep(step-1); };
+    $('#applyForm').addEventListener('submit',e=>e.preventDefault());
+    $('#nextBtn').onclick=async()=>{
+      const v=validateStep(step); if(v){ $('#err').textContent=v; return; }
+      if(step<TOTAL-1){ showStep(step+1); return; }
+      if($('#company').value) return;                                   // honeypot
+      const btn=$('#nextBtn'); btn.disabled=true; btn.textContent='Submitting…'; $('#err').textContent='';
+      const payload={
+        name:$('#name').value.trim(), email:$('#email').value.trim(), phone:$('#phone').value.trim(),
+        breeding_status:answers.breeding_status, next_litter:answers.next_litter, urgency:answers.urgency,
+        investment:answers.investment, mindset:answers.mindset,
+        ethical_meaning:$('#ethical_meaning').value.trim(), practices:answers.practices||[], alignment:answers.alignment,
+        goal:$('#goal').value.trim(), challenge:$('#challenge').value.trim(),
+        source:'VSL Landing Page', page:location.href, utm
+      };
       try{
         const r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
         if(!r.ok) throw new Error('bad status '+r.status);
-        $('#formHead').style.display='none'; $('#applyForm').style.display='none'; $('#success').classList.add('show');
-      }catch(ex){ btn.disabled=false; btn.textContent='Submit application'; err.textContent='Something went wrong — please try again, or email support@breedwise.io.'; }
-    });
+        $('#formHead').style.display='none'; $('#progress').style.display='none'; $('#applyForm').style.display='none'; $('#success').classList.add('show');
+      }catch(ex){ btn.disabled=false; btn.textContent='Submit application'; $('#err').textContent='Something went wrong — please try again, or email support@breedwise.io.'; }
+    };
   </script>
 </body>
 </html>
