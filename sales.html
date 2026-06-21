@@ -117,6 +117,8 @@
     .src-CC360{background:rgba(120,80,200,.12);color:#6a48b0} .src-Close{background:rgba(40,130,180,.12);color:#1f6f96} .src-manual{background:var(--card);color:var(--muted)}
     .row-edit { font-size: 11px; color: var(--gold-deep); background: var(--gold-faint); border: 1px solid var(--gold-mid); border-radius: 5px; padding: 5px 10px; cursor: pointer; white-space: nowrap; }
     .row-edit:hover { background: var(--gold-mid); }
+    .row-view { font-size: 11px; color: var(--mid); background: var(--card); border: 1px solid var(--border); border-radius: 5px; padding: 5px 10px; cursor: pointer; white-space: nowrap; }
+    .row-view:hover { border-color: var(--gold); color: var(--ink); }
     .btn-add { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #fff; background: var(--gold); border: none; border-radius: 6px; padding: 10px 16px; cursor: pointer; }
     .btn-add:hover { opacity: 0.9; }
     .rank { font-family: var(--heading); font-weight: 700; color: var(--gold); width: 22px; display:inline-block; }
@@ -124,8 +126,8 @@
     .pill-ok{background:var(--green-bg);color:var(--green)} .pill-bad{background:var(--red-bg);color:var(--red)}
 
     /* MODAL */
-    #modal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
-    #modal.open { display: flex; }
+    #modal, #editModal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+    #modal.open, #editModal.open { display: flex; }
     .modal-box { background: var(--bg); border-radius: 12px; width: 100%; max-width: 560px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); }
     .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--border); }
     .modal-title { font-family: var(--heading); font-size: 19px; font-weight: 600; }
@@ -143,6 +145,32 @@
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; font-size: 12.5px; padding: 12px 22px; border-radius: 8px; z-index: 800; opacity: 0; transition: opacity 0.25s ease; pointer-events: none; }
     .toast.show { opacity: 1; }
     .footer { border-top: 1px solid var(--border); padding: 26px 0; text-align: center; font-size: 11px; color: var(--muted); } .footer a { color: var(--gold); text-decoration: none; }
+
+    /* LEAD DETAIL DRAWER */
+    .detail-box { max-width: 600px; }
+    .detail-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .dv-metas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; margin-bottom: 6px; }
+    .dv-meta { display: flex; flex-direction: column; gap: 4px; }
+    .dv-meta-l { font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+    .dv-meta-v { font-size: 13px; color: var(--ink); }
+    .dv-ai { background: var(--gold-faint); border: 1px solid var(--gold-mid); border-radius: 8px; padding: 14px 16px; margin-top: 18px; }
+    .dv-ai-h { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-deep); font-weight: 700; margin-bottom: 7px; }
+    .dv-ai-body { font-size: 13px; color: var(--mid); line-height: 1.55; }
+    .dv-steps { margin: 6px 0 0; padding-left: 18px; } .dv-steps li { font-size: 12.5px; color: var(--mid); margin-bottom: 3px; }
+    .dv-timeline { position: relative; margin-top: 6px; }
+    .dv-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border-2); }
+    .dv-item:last-child { border-bottom: none; }
+    .dv-ic { width: 30px; height: 30px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; }
+    .tl-won .dv-ic { background: var(--green-bg); border-color: var(--green); }
+    .tl-lost .dv-ic { background: var(--red-bg); border-color: var(--red-bg); }
+    .tl-note .dv-ic { background: var(--gold-faint); border-color: var(--gold-mid); }
+    .dv-content { flex: 1; min-width: 0; }
+    .dv-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .dv-title { font-size: 13px; font-weight: 600; color: var(--ink); text-transform: capitalize; }
+    .dv-body { font-size: 12.5px; color: var(--mid); margin-top: 4px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+    .dv-foot { font-size: 11px; color: var(--muted); margin-top: 5px; }
+    .dv-empty { text-align: center; color: var(--muted); font-size: 13px; padding: 28px 16px; line-height: 1.6; }
+    .src-CC360{background:rgba(120,80,200,.12);color:#6a48b0} .src-Close{background:rgba(40,130,180,.12);color:#1f6f96}
 
     @media (max-width: 920px) {
       .kpi-grid { grid-template-columns: 1fr 1fr; } .grid-2 { grid-template-columns: 1fr; }
@@ -247,7 +275,7 @@
         <div class="table-wrap">
           <div class="table-tools" id="leadFilters"></div>
           <div style="overflow-x:auto"><table>
-            <thead><tr><th>Lead</th><th>Channel</th><th>Source</th><th>Owner</th><th>Status</th><th class="hide-sm">MQL/SQL</th></tr></thead>
+            <thead><tr><th>Lead</th><th>Channel</th><th>Source</th><th>Owner</th><th>Status</th><th class="hide-sm">MQL/SQL</th><th></th></tr></thead>
             <tbody id="leadsBody"></tbody>
           </table></div>
         </div>
@@ -271,9 +299,18 @@
     <div class="footer">Breedwise Sales OS · live database · 125 sales in Q3 · <a href="https://breedwise.io" target="_blank" rel="noopener">breedwise.io</a></div>
   </div>
 
-  <!-- LEAD MODAL -->
-  <div id="modal"><div class="modal-box">
-    <div class="modal-head"><div class="modal-title" id="modalTitle">Lead</div><button class="modal-close" id="modalClose">&times;</button></div>
+  <!-- LEAD DETAIL DRAWER -->
+  <div id="modal"><div class="modal-box detail-box">
+    <div class="modal-head">
+      <div><div class="modal-title" id="detailTitle">Lead</div><div class="detail-sub" id="detailSub"></div></div>
+      <button class="modal-close" id="modalClose">&times;</button>
+    </div>
+    <div class="modal-body" id="detailBody"></div>
+  </div></div>
+
+  <!-- LEAD EDIT MODAL -->
+  <div id="editModal"><div class="modal-box">
+    <div class="modal-head"><div><div class="modal-title" id="editTitle">Edit lead</div><div class="detail-sub">Edits save to the OS. The CRM stays the source of truth for synced fields.</div></div><button class="modal-close" id="editClose">&times;</button></div>
     <div class="modal-body"><div class="fgrid">
       <div class="field full"><label>Name</label><input id="f_name" type="text"></div>
       <div class="field"><label>Email</label><input id="f_email" type="text"></div>
@@ -287,8 +324,8 @@
       <div class="field"><label>Sales qualified</label><select id="f_sql"><option value="false">No</option><option value="true">Yes</option></select></div>
     </div></div>
     <div class="modal-foot">
-      <button class="btn-del" id="modalDelete">Delete</button>
-      <div style="display:flex;gap:10px;align-items:center"><span class="login-err" id="modalErr" style="margin:0"></span><button class="btn-save" id="modalSave">Save</button></div>
+      <button class="btn-del" id="editDelete">Delete</button>
+      <div style="display:flex;gap:10px;align-items:center"><span class="login-err" id="editErr" style="margin:0"></span><button class="btn-save" id="editSave">Save</button></div>
     </div>
   </div></div>
   <div class="toast" id="toast"></div>
@@ -300,7 +337,7 @@
   const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
   const ROLE_LABEL={setter:'Setter',closer:'Closer',qualifier:'Qualifier · Calendar Queen',manager:'Manager'};
-  let REPS=[],LEADS=[],APPTS=[],DEALS=[],ACTS=[],TARGETS=[],DAILY=[],ME=null;
+  let REPS=[],LEADS=[],APPTS=[],DEALS=[],ACTS=[],TARGETS=[],DAILY=[],NOTES=[],TASKS=[],ME=null;
   const MONTH=new Date().toISOString().slice(0,7);
   const TODAY=new Date().toISOString().slice(0,10);
   const WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date().getDay()];
@@ -329,7 +366,7 @@
   async function loadData(){
     const {data:{session}}=await sb.auth.getSession();
     const myEmail=session?.user?.email||'';
-    const [r,l,a,d,ac,t,dt]=await Promise.all([
+    const [r,l,a,d,ac,t,dt,nt,tk]=await Promise.all([
       sb.from('sales_reps').select('*'),
       sb.from('leads').select('*').order('created_at',{ascending:false}),
       sb.from('appointments').select('*'),
@@ -337,8 +374,10 @@
       sb.from('activities').select('*'),
       sb.from('team_monthly_targets').select('*'),
       sb.from('rep_daily_targets').select('*'),
+      sb.from('lead_notes').select('*').order('ts',{ascending:false}),
+      sb.from('lead_tasks').select('*'),
     ]);
-    REPS=r.data||[]; LEADS=l.data||[]; APPTS=a.data||[]; DEALS=d.data||[]; ACTS=ac.data||[]; TARGETS=t.data||[]; DAILY=dt.data||[];
+    REPS=r.data||[]; LEADS=l.data||[]; APPTS=a.data||[]; DEALS=d.data||[]; ACTS=ac.data||[]; TARGETS=t.data||[]; DAILY=dt.data||[]; NOTES=nt.data||[]; TASKS=tk.data||[];
     ME=REPS.find(x=>x.email&&x.email.toLowerCase()===myEmail.toLowerCase())||{name:myEmail,role:'',rep_id:null};
   }
 
@@ -436,13 +475,13 @@
   function apptTable(list){
     if(!list.length) return `<div class="card"><div class="card-sub" style="margin:0">Nothing scheduled.</div></div>`;
     return `<div class="table-wrap"><div style="overflow-x:auto"><table><thead><tr><th>Lead</th><th>Type</th><th>When</th><th>Status</th><th>Closer</th></tr></thead><tbody>`+
-      list.slice(0,12).map(a=>{const l=LEADS.find(x=>x.lead_id===a.lead_id)||{};return `<tr><td class="m-name">${esc(l.name||'—')}</td><td><span class="tag">${a.appt_type||''}</span></td><td class="muted-cell">${(a.scheduled_for||'').slice(0,16).replace('T',' ')}</td><td><span class="st st-${a.status}">${a.status}</span></td><td class="muted-cell">${repName(a.closer_id)}</td></tr>`;}).join('')+
+      list.slice(0,12).map(a=>{const l=LEADS.find(x=>x.lead_id===a.lead_id)||{};return `<tr data-lead="${a.lead_id}" style="cursor:pointer"><td class="m-name">${esc(l.name||'—')}</td><td><span class="tag">${a.appt_type||''}</span></td><td class="muted-cell">${(a.scheduled_for||'').slice(0,16).replace('T',' ')}</td><td><span class="st st-${a.status}">${a.status}</span></td><td class="muted-cell">${repName(a.closer_id)}</td></tr>`;}).join('')+
       `</tbody></table></div></div>`;
   }
   function leadMini(list){
     if(!list.length) return `<div class="card"><div class="card-sub" style="margin:0">No leads owned yet.</div></div>`;
     return `<div class="table-wrap"><div style="overflow-x:auto"><table><thead><tr><th>Lead</th><th>Channel</th><th>Status</th></tr></thead><tbody>`+
-      list.slice(0,15).map(l=>`<tr><td class="m-name">${esc(l.name)}</td><td><span class="tag">${l.channel||''}</span></td><td><span class="st st-${l.status}">${l.status}</span></td></tr>`).join('')+`</tbody></table></div></div>`;
+      list.slice(0,15).map(l=>`<tr data-lead="${l.lead_id}" style="cursor:pointer"><td class="m-name">${esc(l.name)}</td><td><span class="tag">${l.channel||''}</span></td><td><span class="st st-${l.status}">${l.status}</span></td></tr>`).join('')+`</tbody></table></div></div>`;
   }
 
   /* RENDER: leaderboard */
@@ -473,14 +512,15 @@
     $('#leadFilters').innerHTML=chips.map(([k,lbl])=>`<div class="tag" data-f="${k}" style="cursor:pointer;${leadFilter===k?'background:var(--ink);color:#fff;border-color:var(--ink)':''}">${lbl} ${counts[k]||0}</div>`).join('')+`<input class="search-box" id="leadSearch" placeholder="Search…">`;
     let rows=LEADS.filter(l=>leadFilter==='all'||l.status===leadFilter);
     if(leadQ) rows=rows.filter(l=>(l.name||'').toLowerCase().includes(leadQ));
-    $('#leadsBody').innerHTML=rows.map(l=>`<tr>
+    $('#leadsBody').innerHTML=rows.map(l=>{const ct=leadActivityCount(l.lead_id);return `<tr>
       <td><div class="m-name">${esc(l.name||'—')}</div><div class="muted-cell" style="font-size:10.5px">${esc(l.email||'')}</div></td>
       <td><span class="tag">${l.channel||''}</span></td>
       <td><span class="src src-${l.first_source_system||'manual'}">${l.first_source_system||'manual'}</span></td>
       <td class="muted-cell">${repName(l.current_owner_id)}</td>
       <td><span class="st st-${l.status}">${l.status}</span></td>
       <td class="hide-sm">${l.marketing_qualified?'<span class="tag">MQL</span> ':''}${l.sales_qualified?'<span class="tag">SQL</span>':''}</td>
-      </tr>`).join('')||`<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:26px">No leads.</td></tr>`;
+      <td style="text-align:right;white-space:nowrap">${ct?`<span class="tag" style="border-color:var(--gold-mid);color:var(--gold-deep)">${ct} ✦</span> `:''}<button class="row-view" data-lead="${l.lead_id}">View</button> <button class="row-edit" data-edit="${l.lead_id}">Edit</button></td>
+      </tr>`;}).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:26px">No leads.</td></tr>`;
     $('#leadFilters').querySelectorAll('[data-f]').forEach(c=>c.onclick=()=>{leadFilter=c.dataset.f;renderLeads();});
     const sbx=$('#leadSearch'); sbx.value=leadQ; sbx.oninput=e=>{leadQ=e.target.value.toLowerCase();renderLeads();};
   }
@@ -504,35 +544,88 @@
     window.scrollTo({top:0,behavior:'smooth'});
   });
 
-  /* LEAD MODAL */
-  let editingId=null;
-  function openModal(l){
-    editingId=l?l.lead_id:null;
-    $('#modalTitle').textContent=l?'Edit lead':'Add lead';
-    $('#modalDelete').style.display=l?'block':'none'; $('#modalErr').textContent='';
-    $('#f_owner').innerHTML=`<option value="">— unassigned —</option>`+REPS.map(r=>`<option value="${r.rep_id}">${esc(r.name)}</option>`).join('');
-    $('#f_name').value=l?l.name||'':''; $('#f_email').value=l?l.email||'':''; $('#f_phone').value=l?l.phone||'':'';
-    $('#f_channel').value=l?l.channel||'IG_inbound':'IG_inbound'; $('#f_source').value=l?l.first_source_system||'manual':'manual';
-    $('#f_owner').value=l?l.current_owner_id||'':''; $('#f_status').value=l?l.status||'new':'new'; $('#f_ig').value=l?l.ig_handle||'':'';
-    $('#f_mql').value=l&&l.marketing_qualified?'true':'false'; $('#f_sql').value=l&&l.sales_qualified?'true':'false';
+  /* LEAD DETAIL — read-only, synced from CC360 & Close */
+  const fmtTime=ts=>{ if(!ts) return ''; const d=new Date(ts); if(isNaN(d)) return String(ts).slice(0,16).replace('T',' ');
+    return d.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}); };
+  function leadActivityCount(id){
+    return NOTES.filter(n=>n.lead_id===id).length + ACTS.filter(a=>a.lead_id===id).length +
+           APPTS.filter(a=>a.lead_id===id).length + DEALS.filter(d=>d.lead_id===id).length + TASKS.filter(t=>t.lead_id===id).length;
+  }
+  function leadTimeline(id){
+    const items=[];
+    NOTES.filter(n=>n.lead_id===id).forEach(n=>items.push({ts:n.ts,icon:'📝',cls:'tl-note',title:n.kind==='summary'?'Call summary':'Note',body:n.body,who:repName(n.rep_id),tag:n.cc360_note_id?'CC360':n.close_note_id?'Close':null}));
+    ACTS.filter(a=>a.lead_id===id).forEach(a=>items.push({ts:a.ts,icon:a.channel==='call'?'📞':a.channel==='email'?'✉️':'💬',cls:'tl-act',title:`${a.direction||''} ${a.channel||'touch'}`.trim(),body:a.notes||'',who:repName(a.rep_id),tag:a.close_activity_id?'Close':null}));
+    APPTS.filter(a=>a.lead_id===id).forEach(a=>items.push({ts:a.booked_at||a.scheduled_for,icon:'📅',cls:'tl-appt',title:`Appointment · ${a.status||'scheduled'}`,body:a.scheduled_for?('Scheduled for '+fmtTime(a.scheduled_for)):'',who:repName(a.closer_id),tag:a.source_system||null}));
+    DEALS.filter(d=>d.lead_id===id).forEach(d=>items.push({ts:d.closed_at,icon:d.status==='closed_won'?'🏆':'✕',cls:d.status==='closed_won'?'tl-won':'tl-lost',title:d.status==='closed_won'?('Won · '+money(d.amount_collected)):'Lost',body:d.lost_reason||'',who:repName(d.closer_id),tag:d.close_opp_id?'Close':null}));
+    TASKS.filter(t=>t.lead_id===id).forEach(t=>items.push({ts:t.due_at||t.updated_at,icon:t.is_complete?'☑':'☐',cls:'tl-task',title:'Task'+(t.is_complete?' · done':''),body:t.text||'',who:repName(t.rep_id),tag:t.close_task_id?'Close':null}));
+    return items.filter(i=>i.ts).sort((a,b)=>String(b.ts||'').localeCompare(String(a.ts||'')));
+  }
+  function openDetail(id){
+    const l=LEADS.find(x=>x.lead_id===id); if(!l) return;
+    $('#detailTitle').textContent=l.name||'Lead';
+    $('#detailSub').innerHTML=[l.email?esc(l.email):'',l.phone?esc(l.phone):''].filter(Boolean).join(' · ')||'No contact details on file';
+    const chip=(lbl,val)=>`<div class="dv-meta"><span class="dv-meta-l">${lbl}</span><span class="dv-meta-v">${val}</span></div>`;
+    const meta=`<div class="dv-metas">
+      ${chip('Status',`<span class="st st-${l.status}">${l.status}</span>`)}
+      ${chip('Source',`<span class="src src-${l.first_source_system||'manual'}">${l.first_source_system||'manual'}</span>`)}
+      ${chip('Owner',esc(repName(l.current_owner_id)))}
+      ${chip('Channel',`<span class="tag">${l.channel||'—'}</span>`)}
+    </div>`;
+    let ai='';
+    if(l.ai_summary){
+      const steps=Array.isArray(l.ai_next_steps)?l.ai_next_steps:[];
+      ai=`<div class="dv-ai"><div class="dv-ai-h">✦ AI summary</div><div class="dv-ai-body">${esc(l.ai_summary)}</div>${steps.length?`<div class="dv-ai-h" style="margin-top:12px">Next steps</div><ul class="dv-steps">${steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ul>`:''}</div>`;
+    }
+    const tl=leadTimeline(id);
+    const timeline = tl.length
+      ? `<div class="dv-timeline">${tl.map(i=>`<div class="dv-item ${i.cls}">
+          <div class="dv-ic">${i.icon}</div>
+          <div class="dv-content">
+            <div class="dv-row"><span class="dv-title">${esc(i.title)}</span>${i.tag?`<span class="src src-${i.tag}">${i.tag}</span>`:''}</div>
+            ${i.body?`<div class="dv-body">${esc(i.body)}</div>`:''}
+            <div class="dv-foot">${i.who&&i.who!=='—'?esc(i.who)+' · ':''}${fmtTime(i.ts)}</div>
+          </div></div>`).join('')}</div>`
+      : `<div class="dv-empty">No notes, calls, appointments or tasks have synced for this lead yet.<br><span style="font-size:11px">As the team works this lead in CC360 or Close, the history appears here automatically.</span></div>`;
+    $('#detailBody').innerHTML=meta+ai+`<div class="section-label" style="margin:22px 0 4px">History · ${tl.length} ${tl.length===1?'event':'events'}</div>`+timeline;
     $('#modal').classList.add('open');
   }
   function closeModal(){ $('#modal').classList.remove('open'); }
   $('#modalClose').onclick=closeModal; $('#modal').onclick=e=>{ if(e.target.id==='modal') closeModal(); };
-  document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>openModal(null));
-  document.addEventListener('click',e=>{const b=e.target.closest('[data-edit]'); if(b){const l=LEADS.find(x=>x.lead_id===b.dataset.edit); if(l) openModal(l);}});
-  $('#modalSave').onclick=async()=>{
-    const name=$('#f_name').value.trim(); if(!name){ $('#modalErr').textContent='Name required.'; return; }
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeModal(); closeEdit(); } });
+  document.addEventListener('click',e=>{ if(e.target.closest('[data-edit]')) return; const tr=e.target.closest('[data-lead]'); if(tr&&tr.dataset.lead) openDetail(tr.dataset.lead); });
+
+  /* LEAD EDIT — writes to the OS database */
+  let editingId=null;
+  function openEdit(id){
+    const l=LEADS.find(x=>x.lead_id===id); if(!l) return;
+    editingId=id; $('#editErr').textContent='';
+    $('#editTitle').textContent='Edit · '+(l.name||'Lead');
+    $('#f_owner').innerHTML=`<option value="">— unassigned —</option>`+REPS.map(r=>`<option value="${r.rep_id}">${esc(r.name)}</option>`).join('');
+    $('#f_name').value=l.name||''; $('#f_email').value=l.email||''; $('#f_phone').value=l.phone||'';
+    $('#f_channel').value=l.channel||'IG_inbound'; $('#f_source').value=l.first_source_system||'manual';
+    $('#f_owner').value=l.current_owner_id||''; $('#f_status').value=l.status||'new'; $('#f_ig').value=l.ig_handle||'';
+    $('#f_mql').value=l.marketing_qualified?'true':'false'; $('#f_sql').value=l.sales_qualified?'true':'false';
+    $('#editModal').classList.add('open');
+  }
+  function closeEdit(){ $('#editModal').classList.remove('open'); }
+  $('#editClose').onclick=closeEdit; $('#editModal').onclick=e=>{ if(e.target.id==='editModal') closeEdit(); };
+  document.addEventListener('click',e=>{ const b=e.target.closest('[data-edit]'); if(b&&b.dataset.edit) openEdit(b.dataset.edit); });
+  $('#editSave').onclick=async()=>{
+    if(!editingId) return;
+    const name=$('#f_name').value.trim(); if(!name){ $('#editErr').textContent='Name required.'; return; }
     const row={ name, email:$('#f_email').value.trim()||null, phone:$('#f_phone').value.trim()||null, channel:$('#f_channel').value,
       first_source_system:$('#f_source').value, current_owner_id:$('#f_owner').value||null, status:$('#f_status').value,
-      ig_handle:$('#f_ig').value.trim()||null, marketing_qualified:$('#f_mql').value==='true', sales_qualified:$('#f_sql').value==='true' };
-    $('#modalSave').disabled=true;
-    let res; if(editingId) res=await sb.from('leads').update(row).eq('lead_id',editingId); else res=await sb.from('leads').insert(row);
-    $('#modalSave').disabled=false;
-    if(res.error){ $('#modalErr').textContent=res.error.message; return; }
-    closeModal(); await loadData(); renderAll(); toast(editingId?'Lead updated':'Lead added');
+      ig_handle:$('#f_ig').value.trim()||null,
+      marketing_qualified:$('#f_mql').value==='true', sales_qualified:$('#f_sql').value==='true' };
+    $('#editSave').disabled=true;
+    const res=await sb.from('leads').update(row).eq('lead_id',editingId);
+    $('#editSave').disabled=false;
+    if(res.error){ $('#editErr').textContent=res.error.message; return; }
+    closeEdit(); await loadData(); renderAll(); toast('Lead updated');
   };
-  $('#modalDelete').onclick=async()=>{ if(!editingId) return; if(!confirm('Delete this lead?')) return; const res=await sb.from('leads').delete().eq('lead_id',editingId); if(res.error){ $('#modalErr').textContent=res.error.message; return;} closeModal(); await loadData(); renderAll(); toast('Lead deleted'); };
+  $('#editDelete').onclick=async()=>{ if(!editingId) return; if(!confirm('Delete this lead from the OS?')) return;
+    const res=await sb.from('leads').delete().eq('lead_id',editingId); if(res.error){ $('#editErr').textContent=res.error.message; return; }
+    closeEdit(); await loadData(); renderAll(); toast('Lead deleted'); };
   function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
 
   boot();
