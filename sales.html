@@ -424,9 +424,60 @@
   /* RENDER: my dashboard */
   function dailyTarget(repId){ const d=DAILY.find(x=>x.rep_id===repId&&x.weekday===WD); return d?d.outbound_target:(WD==='Sat'||WD==='Sun'?0:50); }
   function statCard(name,val,sub,ok){ return `<div class="kpi"><div class="kpi-top"><span class="kpi-name">${name}</span>${ok===undefined?'':`<span class="kpi-flag ${ok?'flag-pass':'flag-fail'}">${ok?'✓':'•'}</span>`}</div><div class="kpi-val">${val}</div><div class="kpi-meta">${sub||''}</div></div>`; }
+  /* FOUNDER OVERSIGHT — full team visibility */
+  const FOUNDER_EMAILS=['austin@breedwise.io'];
+  const isFounder=()=>!!(ME&&ME.email&&FOUNDER_EMAILS.includes((ME.email||'').toLowerCase()));
+  function repStats(r){
+    const obToday=ACTS.filter(a=>a.rep_id===r.rep_id&&a.direction==='outbound'&&isToday(a.ts)).length;
+    const obMonth=ACTS.filter(a=>a.rep_id===r.rep_id&&a.direction==='outbound'&&inMonth(a.ts,MONTH)).length;
+    const touched=new Set(ACTS.filter(a=>a.rep_id===r.rep_id&&inMonth(a.ts,MONTH)).map(a=>a.lead_id)).size;
+    const owned=LEADS.filter(l=>l.current_owner_id===r.rep_id).length;
+    const booked=APPTS.filter(a=>a.booked_by_id===r.rep_id&&inMonth(a.booked_at,MONTH)).length;
+    const shows=APPTS.filter(a=>a.closer_id===r.rep_id&&a.status==='showed'&&inMonth(a.booked_at,MONTH)).length;
+    const won=DEALS.filter(d=>d.closer_id===r.rep_id&&d.status==='closed_won'&&inMonth(d.closed_at,MONTH)).length;
+    const cash=DEALS.filter(d=>d.closer_id===r.rep_id&&inMonth(d.closed_at,MONTH)).reduce((s,d)=>s+Number(d.amount_collected||0),0);
+    return {r,obToday,obMonth,obT:dailyTarget(r.rep_id),touched,owned,booked,shows,won,cash,cr:pct(won,shows)};
+  }
+  function renderFounder(){
+    $('#mineTitle').textContent='Founder Oversight';
+    $('#mineRole').textContent='Full team visibility · '+MONTH;
+    $('#mineSpec').textContent='Every rep’s effort and output — outbound, leads, bookings, shows, closes and cash. Nothing hidden.';
+    const k=teamKPIs();
+    const obTodayTeam=ACTS.filter(a=>a.direction==='outbound'&&isToday(a.ts)).length;
+    const obMonthTeam=ACTS.filter(a=>a.direction==='outbound'&&inMonth(a.ts,MONTH)).length;
+    const touchedTeam=new Set(ACTS.filter(a=>inMonth(a.ts,MONTH)).map(a=>a.lead_id)).size;
+    const cards=[
+      statCard('Outbound today',obTodayTeam,'whole team · '+WD),
+      statCard('Outbound (month)',obMonthTeam,'all reps'),
+      statCard('Leads (month)',k.leads,'new this month'),
+      statCard('Leads worked',touchedTeam,'had activity'),
+      statCard('Bookings',k.booked,'this month'),
+      statCard('Sales calls held',k.shows,'showed'),
+      statCard('Closes',k.won,'closed-won'),
+      statCard('Cash collected',money(k.revenue),'this month'),
+    ].join('');
+    const stats=REPS.map(repStats).sort((a,b)=>(b.obMonth-a.obMonth)||(b.won-a.won)||(b.booked-a.booked));
+    const tbl=`<div class="table-wrap"><div style="overflow-x:auto"><table>
+      <thead><tr><th>Rep</th><th>Role</th><th>Outbound today</th><th>Outbound (mo)</th><th>Leads worked</th><th>Owned</th><th>Booked</th><th>Shows</th><th>Closed</th><th>Close rate</th><th>Cash</th></tr></thead>
+      <tbody>${stats.map(x=>`<tr>
+        <td class="m-name">${esc(x.r.name)}${x.r.rep_id===ME.rep_id?' <span class="tag">you</span>':''}</td>
+        <td><span class="tag">${ROLE_LABEL[x.r.role]||x.r.role}</span></td>
+        <td>${x.obT>0?`<span class="pill ${x.obToday>=x.obT?'pill-ok':'pill-bad'}">${x.obToday} / ${x.obT}</span>`:`<span class="muted-cell">${x.obToday}</span>`}</td>
+        <td class="num">${x.obMonth}</td>
+        <td class="num">${x.touched}</td>
+        <td class="num">${x.owned}</td>
+        <td class="num">${x.booked}</td>
+        <td class="num">${x.shows}</td>
+        <td class="num">${x.won}</td>
+        <td>${x.shows?`<span class="pill ${x.cr>=0.33?'pill-ok':'pill-bad'}">${Math.round(x.cr*100)}%</span>`:'<span class="muted-cell">—</span>'}</td>
+        <td class="num">${money(x.cash)}</td></tr>`).join('')}</tbody></table></div></div>`;
+    $('#mineBody').innerHTML=`<div class="kpi-grid">${cards}</div><div class="section-label">Every rep — effort &amp; output · ${MONTH}</div>${tbl}<div class="kpi-meta" style="margin-top:12px">Open any lead from the <strong>Leads</strong> tab to see its full CC360 + Close history.</div>`;
+  }
+
   function renderMine(){
     $('#navWho').textContent=ME.name||'Signed in';
-    $('#navRole').textContent=ROLE_LABEL[ME.role]||'';
+    $('#navRole').textContent=isFounder()?'Founder':(ROLE_LABEL[ME.role]||'');
+    if(isFounder()){ renderFounder(); return; }
     if(!ME.rep_id){ $('#mineTitle').textContent='My Dashboard'; $('#mineRole').textContent='Not a sales rep'; $('#mineSpec').textContent='Your login isn’t mapped to a sales rep — but you can see the full team scoreboard.'; $('#mineBody').innerHTML=`<div class="card"><div class="card-sub" style="margin:0">No personal sales dashboard for this login.</div></div>`; return; }
     $('#mineTitle').textContent=ME.name+' — '+(ME.role==='closer'?'Closer':ME.role==='setter'?'Setter':ME.role==='qualifier'?'Calendar Queen':'Manager');
     $('#mineRole').textContent='Your scoreboard · '+MONTH;
