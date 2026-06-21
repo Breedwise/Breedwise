@@ -36,14 +36,16 @@
     h1 em{font-style:normal;color:var(--gold)}
     .sub{font-size:18px;color:var(--mid);font-weight:300;margin:18px auto 0;max-width:560px}
 
-    .video-wrap{margin:32px auto 8px;border-radius:var(--radius);overflow:hidden;background:var(--band);padding:10px;border:1px solid var(--line);box-shadow:0 28px 70px -30px rgba(0,0,0,.9)}
+    .video-wrap{margin:32px auto 8px;border-radius:var(--radius);overflow:hidden;background:var(--band);padding:10px;border:1px solid var(--line)}
     .video-frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:#000}
     .video-frame iframe,.video-frame video{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover;background:#000}
     .video-poster{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:radial-gradient(120% 120% at 50% 32%,#1b1d24 0%,#000 78%);cursor:pointer}
     .play{width:80px;height:80px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;transition:transform var(--ease)}
     .video-poster:hover .play,.vt:hover .play{transform:scale(1.06)}
     .play svg{width:30px;height:30px;margin-left:5px}
-    .poster-note{font-size:13px;letter-spacing:.06em;color:rgba(245,245,247,.5)}
+    .poster-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .video-poster .play,.poster-note{position:relative;z-index:1}
+    .poster-note{font-size:13px;letter-spacing:.06em;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.8)}
 
     .cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--cta);color:var(--cta-ink);
       font-family:var(--font);font-size:16px;font-weight:700;letter-spacing:.005em;border:none;cursor:pointer;
@@ -139,7 +141,8 @@
       <div class="video-wrap">
         <div class="video-frame" id="videoFrame">
           <video id="vsl" playsinline preload="none" poster="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a2e04128a3c98ce568172be.png" src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a30a473998928ce1fd43d16.mp4"></video>
-          <div class="video-poster" id="poster" role="button" aria-label="Play video" tabindex="0" style="background:linear-gradient(rgba(5,6,8,.30),rgba(5,6,8,.45)),url('https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a2e04128a3c98ce568172be.png') center/cover no-repeat">
+          <div class="video-poster" id="poster" role="button" aria-label="Play video" tabindex="0">
+            <img class="poster-img" src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a2e04128a3c98ce568172be.png" alt="Watch the training">
             <div class="play"><svg viewBox="0 0 24 24" fill="#1a160c" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/></svg></div>
             <div class="poster-note">Watch the training</div>
           </div>
