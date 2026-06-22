@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales OS — Team Manual · Breedwise</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#f7f6f3;--surface:#fff;--card:#fbfaf8;--border:#e2dfd8;--gold:#b8922e;--gold-deep:#8a6420;--gold-faint:rgba(184,146,46,.08);
+      --ink:#1a1813;--mid:#48463f;--muted:#86847d;--green:#3c7a52;--green-bg:rgba(60,122,82,.1);--yellow:#b07d1e;--yellow-bg:rgba(176,125,30,.12);--red:#a33a3a;--red-bg:rgba(163,58,58,.1);
+      --heading:'Playfair Display',Georgia,serif;--body:'Inter',-apple-system,sans-serif}
+    html{scroll-behavior:smooth}body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+    .wrap{max-width:860px;margin:0 auto;padding:0 24px}
+    header{background:var(--surface);border-bottom:1px solid var(--border);padding:22px 0}
+    .head-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:11px}.brand svg{width:30px;height:30px}
+    .brand b{font-family:var(--heading);font-size:21px;font-weight:600;color:var(--gold)}.brand span{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);border-left:1px solid var(--border);padding-left:11px}
+    .back{font-size:13px;color:var(--gold-deep);text-decoration:none;font-weight:500}.back:hover{text-decoration:underline}
+    .hero{padding:46px 0 14px}.eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:12px}
+    h1{font-family:var(--heading);font-size:38px;font-weight:600;line-height:1.12}.lead{font-size:17px;color:var(--mid);margin-top:14px;max-width:640px}
+    .jump{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0 0}
+    .jump a{font-size:12.5px;font-weight:500;color:var(--mid);background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:7px 15px;text-decoration:none}
+    .jump a:hover{border-color:var(--gold);color:var(--ink)}
+    section.block{padding:34px 0;border-top:1px solid var(--border)}
+    h2{font-family:var(--heading);font-size:25px;font-weight:600;margin-bottom:6px}h2 .role-tag{font-family:var(--body);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-deep);background:var(--gold-faint);border:1px solid rgba(184,146,46,.25);padding:3px 9px;border-radius:5px;vertical-align:middle;margin-left:10px}
+    h3{font-size:15px;font-weight:700;color:var(--ink);margin:22px 0 8px;letter-spacing:.01em}
+    p{margin:10px 0;color:var(--mid)}p strong{color:var(--ink);font-weight:600}
+    ul,ol{margin:10px 0 10px 4px;padding-left:22px}li{margin:6px 0;color:var(--mid)}li strong{color:var(--ink)}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin:16px 0}
+    .card-h{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:10px}
+    .kv{display:grid;grid-template-columns:170px 1fr;gap:6px 16px;font-size:14px}.kv dt{color:var(--muted);font-weight:500}.kv dd{color:var(--ink)}
+    code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:var(--gold-faint);color:var(--gold-deep);padding:1px 6px;border-radius:4px}
+    .pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.03em}
+    .hot{background:var(--gold);color:#fff}.warm{background:var(--yellow-bg);color:var(--yellow)}
+    .tip{border-left:3px solid var(--gold);background:var(--gold-faint);padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0;font-size:14px;color:var(--mid)}
+    .truth{background:var(--ink);color:#f3f0e8;border-radius:10px;padding:20px 22px;margin:18px 0}
+    .truth b{color:var(--gold);font-family:var(--heading);font-size:15px}.truth ol{margin:8px 0 0;color:#d8d4c8}.truth li{color:#d8d4c8}
+    .steps{counter-reset:s;list-style:none;padding-left:0}.steps li{counter-increment:s;position:relative;padding-left:38px;margin:12px 0}
+    .steps li::before{content:counter(s);position:absolute;left:0;top:-2px;width:26px;height:26px;background:var(--gold);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+    footer{border-top:1px solid var(--border);padding:30px 0;text-align:center;font-size:12.5px;color:var(--muted)}footer a{color:var(--gold-deep);text-decoration:none}
+    @media print{.jump,.back{display:none}body{font-size:12px}section.block{padding:18px 0}}
+    @media (max-width:600px){h1{font-size:30px}.kv{grid-template-columns:1fr}.kv dt{margin-top:8px}}
+  </style>
+</head>
+<body>
+  <header><div class="wrap head-row">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M4 28 L4 12 L14 8 L14 26 Z" fill="url(#g)"/><path d="M28 28 L28 12 L18 8 L18 26 Z" fill="url(#g)"/><rect x="14" y="8" width="4" height="18" fill="#f7f6f3"/><polygon points="14,8 18,8 16,5" fill="#c9a84c"/><path d="M4 12 L14 8 L16 11 L4 15 Z" fill="#c9a84c"/><path d="M28 12 L18 8 L16 11 L28 15 Z" fill="#c9a84c"/><defs><linearGradient id="g" x1="4" y1="8" x2="14" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#d4aa50"/><stop offset="100%" stop-color="#8a6420"/></linearGradient></defs></svg>
+      <b>Breedwise</b><span>Manual</span>
+    </div>
+    <a class="back" href="/sales">← Open the Sales OS</a>
+  </div></header>
+
+  <main class="wrap">
+    <div class="hero">
+      <div class="eyebrow">Sales OS</div>
+      <h1>Team Manual</h1>
+      <p class="lead">How to use the Sales OS — every tab, what your numbers mean, and exactly what your role owns. Find your name below.</p>
+      <div class="jump">
+        <a href="#basics">Start here</a><a href="#closer">Closer</a><a href="#setter">Setter</a><a href="#qualifier">Calendar Queen</a><a href="#founder">Founder</a>
+      </div>
+    </div>
+
+    <!-- BASICS -->
+    <section class="block" id="basics">
+      <h2>Start here — everyone</h2>
+      <p>The Sales OS is the <strong>team scoreboard</strong>: leads, bookings, calls, and sales measured against your Q3 targets — every number with a name on it. It's fed live from <strong>CC360</strong> (scheduling) and <strong>Close</strong> (calls &amp; notes).</p>
+
+      <h3>Logging in</h3>
+      <ol class="steps">
+        <li>Go to <code>review.breedwise.io/sales</code></li>
+        <li>Sign in with your <strong>Breedwise email + password</strong> (ask Austin if you need one).</li>
+        <li>You'll see the Team Scoreboard; <strong>My Dashboard</strong> is your personal view.</li>
+      </ol>
+
+      <div class="tip">🔁 <strong>The CRM is the source of truth.</strong> Leads sync <em>in</em> from CC360 + Close — the Leads tab is a live mirror. You work leads in the CRM (CC360 for scheduling/stage, Close for calls/notes), and the OS reflects it.</div>
+
+      <h3>The tabs</h3>
+      <div class="card"><dl class="kv">
+        <dt>Team Scoreboard</dt><dd>Volume vs target (leads, bookings, calls, sales) and the four conversion rates that matter, with the funnel + revenue.</dd>
+        <dt>My Dashboard</dt><dd>Your personal numbers, shaped to your role. (Founder sees full-team oversight here.)</dd>
+        <dt>Leaderboard</dt><dd>Every rep ranked — outbound, booked, shows, closed, close rate, cash.</dd>
+        <dt>Leads</dt><dd>The pipeline. <strong>View</strong> any lead to see its full history; <strong>Edit</strong> to update OS fields.</dd>
+        <dt>Q3 Targets</dt><dd>The hard-coded quarterly targets + each rep's daily outbound target.</dd>
+      </dl></div>
+
+      <h3>Reading a lead</h3>
+      <p>On the <strong>Leads</strong> tab, click <strong>View</strong> on any lead to open its history — notes from CC360 &amp; Close, calls, appointments, and (for applicants) their full application. A tier badge shows application quality:</p>
+      <ul>
+        <li><span class="pill hot">Hot</span> ready to invest, urgent, serious — call these first.</li>
+        <li><span class="pill warm">Warm</span> good fit, needs nurture / a payment plan.</li>
+        <li><em>Disqualified</em> — not a fit (can't invest, just wants tips). Don't burn call time here.</li>
+      </ul>
+
+      <div class="truth"><b>The 3 moments of truth</b><p style="color:#d8d4c8;margin:6px 0">The scoreboard is only as real as these. Mark them in the CRM every time:</p>
+        <ol><li><strong style="color:#fff">Booked</strong> — the call is set (CC360 handles this).</li><li><strong style="color:#fff">Showed / No-show</strong> — mark it after every call.</li><li><strong style="color:#fff">Won / Lost</strong> — disposition every opportunity.</li></ol>
+        <p style="color:#a8a498;margin:8px 0 0;font-size:13px">Skip these and your close rate, show rate, and revenue all read blank — no matter how hard you worked.</p>
+      </div>
+    </section>
+
+    <!-- CLOSER -->
+    <section class="block" id="closer">
+      <h2>Closer <span class="role-tag">Ray · Austin</span></h2>
+      <p>You own the calls and the close.</p>
+      <h3>Your home tab</h3><p><strong>My Dashboard.</strong> It shows your outbound, sales calls held, deals closed, close rate, and cash collected.</p>
+      <h3>Your numbers &amp; targets</h3>
+      <div class="card"><dl class="kv">
+        <dt>Sales calls held</dt><dd>your showed appointments this month</dd>
+        <dt>Close rate</dt><dd>won ÷ shows · target <strong>≥ 33%</strong></dd>
+        <dt>Cash collected</dt><dd>your closed-won revenue</dd>
+        <dt>Outbound / weekday</dt><dd>target <strong>50</strong></dd>
+      </dl></div>
+      <h3>Daily rhythm</h3>
+      <ul>
+        <li>Check <strong>My Dashboard → Upcoming calls</strong> and prep — open each lead's <strong>View</strong> to read its history and application before you dial.</li>
+        <li>Prioritize <span class="pill hot">Hot</span> applicants.</li>
+        <li>After <em>every</em> call: mark <strong>showed/no-show</strong> and <strong>won/lost</strong> in Close. This is what makes the scoreboard (and your pay case) real.</li>
+        <li>Log your outbound activity in Close so it counts.</li>
+      </ul>
+      <p>New applications route <strong>75% to Ray, 25% to Austin</strong> automatically, so each lead has an owner.</p>
+    </section>
+
+    <!-- SETTER -->
+    <section class="block" id="setter">
+      <h2>Setter <span class="role-tag">Madison · Jake</span></h2>
+      <p>You own outbound effort and booked calls.</p>
+      <h3>Your home tab</h3><p><strong>My Dashboard.</strong> Your outbound-today vs target, appointments booked, and leads owned.</p>
+      <h3>Your numbers &amp; targets</h3>
+      <div class="card"><dl class="kv">
+        <dt>Outbound today</dt><dd>vs your daily target (<strong>50</strong> on weekdays)</dd>
+        <dt>Appointments booked</dt><dd>from your sets this month</dd>
+        <dt>Leads owned</dt><dd>in your pipeline to work</dd>
+      </dl></div>
+      <h3>Daily rhythm</h3>
+      <ul>
+        <li>Hit your <strong>outbound number</strong> — it shows green when you've cleared the day's target.</li>
+        <li>Work your owned leads; book qualified prospects onto the calendar.</li>
+        <li>Log every dial / DM / email in Close so your effort counts on the Leaderboard.</li>
+      </ul>
+    </section>
+
+    <!-- QUALIFIER -->
+    <section class="block" id="qualifier">
+      <h2>Calendar Queen <span class="role-tag">Yasmin · Qualifier</span></h2>
+      <p>You own the <strong>show rate</strong> — turning bookings into calls that actually happen.</p>
+      <h3>Your home tab</h3><p><strong>My Dashboard.</strong> Team show rate, your owned show rate, and the list of scheduled calls to keep warm.</p>
+      <h3>Your numbers &amp; targets</h3>
+      <div class="card"><dl class="kv">
+        <dt>Team show rate</dt><dd>shows ÷ booked · target <strong>≥ 75%</strong></dd>
+        <dt>Your owned show rate</dt><dd>shows on the calls you qualified/booked</dd>
+      </dl></div>
+      <h3>Daily rhythm</h3>
+      <ul>
+        <li>Work the <strong>"Scheduled — keep them warm"</strong> list: confirmations, reminders, what-to-bring.</li>
+        <li>Rebook no-shows fast (CC360's reminder + no-show workflows back you up — you add the personal touch on high-value leads).</li>
+        <li>Every recovered call lifts the whole team's show rate.</li>
+      </ul>
+    </section>
+
+    <!-- FOUNDER -->
+    <section class="block" id="founder">
+      <h2>Founder <span class="role-tag">Austin</span></h2>
+      <p>Your <strong>My Dashboard</strong> becomes a full-team oversight view.</p>
+      <ul>
+        <li><strong>Team totals</strong> — outbound, leads, bookings, shows, closes, cash.</li>
+        <li><strong>Per-rep table</strong> — everyone's outbound (today vs target &amp; month), leads worked/owned, bookings, shows, closes, close rate, and cash, side by side.</li>
+        <li>Use it to see who's putting in the work and who's converting — and where to coach.</li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <h2>Quick answers</h2>
+      <ul>
+        <li><strong>A lead isn't showing?</strong> Leads sync from the CRM — new ones land within a few minutes.</li>
+        <li><strong>Edited a lead but the CRM didn't change?</strong> The Leads tab is a one-way mirror for synced fields — make CRM changes in CC360/Close.</li>
+        <li><strong>My numbers look low?</strong> Almost always means outcomes weren't logged. Mark showed/no-show and won/lost in Close.</li>
+        <li><strong>Forgot your password?</strong> Ask Austin to reset it.</li>
+      </ul>
+    </section>
+  </main>
+  <footer><div class="wrap">Breedwise Sales OS · Team Manual · 125 sales in Q3 · <a href="https://breedwise.io" target="_blank" rel="noopener">breedwise.io</a></div></footer>
+</body>
+</html>
