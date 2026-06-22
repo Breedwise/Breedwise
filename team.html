@@ -160,8 +160,13 @@
     .src-note { font-size: 10.5px; color: var(--muted); font-style: italic; margin-top: 12px; }
 
     /* ═══ MODAL ═══ */
-    #modal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
-    #modal.open { display: flex; }
+    #modal, #issueModal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+    #modal.open, #issueModal.open { display: flex; }
+    .urg{font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap}
+    .urg-low{background:#efece4;color:#86847d}.urg-medium{background:var(--yellow-bg);color:var(--yellow)}.urg-high{background:rgba(194,102,30,.14);color:#b5651d}.urg-urgent{background:var(--red);color:#fff}
+    .ist{font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 8px;border-radius:4px}
+    .ist-open{background:#efece4;color:#48463f}.ist-in_progress{background:var(--yellow-bg);color:var(--yellow)}.ist-resolved{background:rgba(60,122,82,.12);color:#3c7a52}
+    .due-over{color:var(--red);font-weight:700}.row-issue{font-size:11px;color:var(--gold-deep);background:rgba(184,146,46,.08);border:1px solid rgba(184,146,46,.25);border-radius:5px;padding:5px 10px;cursor:pointer;white-space:nowrap}
     .modal-box { background: var(--bg); border-radius: 12px; width: 100%; max-width: 560px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); }
     .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--border); }
     .modal-title { font-family: var(--heading); font-size: 19px; font-weight: 600; }
@@ -232,6 +237,7 @@
       <div class="tab active" data-tab="director"><span class="tab-ic">◆</span>Company Health</div>
       <div class="tab" data-tab="al"><span class="tab-ic">◆</span>Pod Command Center</div>
       <div class="tab" data-tab="cm"><span class="tab-ic">◆</span>Community Engine</div>
+      <div class="tab" data-tab="issues"><span class="tab-ic">◆</span>Issues</div>
       <div class="tab" data-tab="comp"><span class="tab-ic">◆</span>My Pay</div>
       <div class="tab" data-tab="rules"><span class="tab-ic">◆</span>Automation</div>
       <div class="tab" data-tab="spec"><span class="tab-ic">◆</span>System Spec</div>
@@ -297,6 +303,26 @@
         <div class="section-label">Engine KPIs</div>
         <div class="kpi-grid" id="cmKpis"></div>
         <div class="card" style="margin-top:30px"><div class="card-h">Needs attention</div><div class="card-sub">Auto-surfaced from attendance &amp; post activity.</div><div id="cmQueues"></div></div>
+      </section>
+
+      <!-- ISSUES LOG -->
+      <section class="panel" data-panel="issues">
+        <div class="view-head">
+          <div>
+            <div class="view-eyebrow">Member &amp; community issues</div>
+            <h1 class="view-title">Issues Log</h1>
+            <p class="view-sub">Log anything a member or the community is struggling with — tag urgency and a due date so nothing slips through.</p>
+          </div>
+          <button class="btn-save" data-add-issue>+ Log an issue</button>
+        </div>
+        <div class="kpi-grid" id="issueKpis"></div>
+        <div class="table-wrap" style="margin-top:24px">
+          <div class="table-tools" id="issueFilters"></div>
+          <div style="overflow-x:auto"><table>
+            <thead><tr><th>Issue</th><th>Member</th><th>Urgency</th><th>Due</th><th>Status</th><th class="hide-sm">Logged by</th><th></th></tr></thead>
+            <tbody id="issuesBody"></tbody>
+          </table></div>
+        </div>
       </section>
 
       <!-- COMP (private) -->
@@ -390,6 +416,23 @@
       </div>
     </div>
   </div></div>
+
+  <!-- ═══ ISSUE MODAL ═══ -->
+  <div id="issueModal"><div class="modal-box">
+    <div class="modal-head"><div class="modal-title" id="issueModalTitle">Log an issue</div><button class="modal-close" id="issueClose">&times;</button></div>
+    <div class="modal-body"><div class="fgrid">
+      <div class="field full"><label>Issue / summary</label><input id="i_title" type="text" placeholder="e.g. Frustrated with vet wait time"></div>
+      <div class="field"><label>Member (optional)</label><select id="i_member"></select></div>
+      <div class="field"><label>Urgency</label><select id="i_urgency"><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option><option value="urgent">Urgent</option></select></div>
+      <div class="field"><label>Due date</label><input id="i_due" type="date"></div>
+      <div class="field"><label>Status</label><select id="i_status"><option value="open">Open</option><option value="in_progress">In progress</option><option value="resolved">Resolved</option></select></div>
+      <div class="field full"><label>Details</label><textarea id="i_details" rows="3" placeholder="Context for whoever picks this up."></textarea></div>
+    </div></div>
+    <div class="modal-foot">
+      <button class="btn-del" id="issueDelete">Delete</button>
+      <div style="display:flex;gap:10px;align-items:center"><span class="login-err" id="issueErr" style="margin:0"></span><button class="btn-save" id="issueSave">Save</button></div>
+    </div>
+  </div></div>
   <div class="toast" id="toast"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -403,7 +446,7 @@
   const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
   const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager', Founder:'Founder' };
 
-  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null;
+  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, ISSUES=[];
   const $ = s=>document.querySelector(s);
   const pct=(n,d)=>d?(n/d*100):0;
   const money=n=>'$'+Math.round(n).toLocaleString();
@@ -443,15 +486,17 @@
   async function loadData(){
     const { data:{ session } } = await sb.auth.getSession();
     const myEmail = session?.user?.email || '';
-    const [mem, pods, comp, prof] = await Promise.all([
+    const [mem, pods, comp, prof, iss] = await Promise.all([
       sb.from('members').select('*').order('name'),
       sb.from('pods').select('*').order('name'),
       sb.from('comp').select('*'),       // RLS → only my row
       sb.from('profiles').select('*'),
+      sb.from('issues').select('*').order('created_at',{ascending:false}),
     ]);
     MEMBERS = (mem.data||[]).map(norm);
     PODS = pods.data||[];
     PROFILES = prof.data||[];
+    ISSUES = iss.data||[];
     MYCOMP_ROWS = comp.data || [];
     MYCOMP = MYCOMP_ROWS[0] || null;
     ME = PROFILES.find(p=>p.email===myEmail) || { email:myEmail, full_name:myEmail, role:(MYCOMP&&MYCOMP.role)||'' };
@@ -668,7 +713,7 @@
     $('#navRole').textContent = ROLE_LABEL[ME?.role] || '';
     renderKPIs('#dirKpis', directorKPIs());
     renderFunnel(); renderStatusMix(); renderDirTable();
-    renderAL(); renderCM(); renderComp(); renderStatic();
+    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues();
   }
 
   /* ═══ TABS ═══ */
@@ -726,6 +771,70 @@
     closeModal(); await loadData(); renderAll(); toast('Member deleted');
   };
   function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
+
+  /* ═══ ISSUES LOG ═══ */
+  let issueFilter='open', editingIssue=null;
+  function renderIssues(){
+    const today=new Date().toISOString().slice(0,10);
+    const overdue=i=> i.status!=='resolved' && i.due_date && i.due_date < today;
+    const counts={ all:ISSUES.length, open:ISSUES.filter(i=>i.status!=='resolved').length, urgent:ISSUES.filter(i=>i.status!=='resolved'&&i.urgency==='urgent').length, overdue:ISSUES.filter(overdue).length, resolved:ISSUES.filter(i=>i.status==='resolved').length };
+    $('#issueKpis').innerHTML=[['Open',counts.open],['Urgent',counts.urgent],['Overdue',counts.overdue],['Resolved',counts.resolved]].map(([n,v])=>`<div class="kpi"><div class="kpi-name">${n}</div><div class="kpi-val" style="font-size:26px">${v}</div></div>`).join('');
+    const chips=[['open','Open'],['urgent','Urgent'],['overdue','Overdue'],['all','All'],['resolved','Resolved']];
+    $('#issueFilters').innerHTML=chips.map(([k,l])=>`<div class="tag" data-if="${k}" style="cursor:pointer;${issueFilter===k?'background:var(--ink);color:#fff;border-color:var(--ink)':''}">${l} ${counts[k]||0}</div>`).join('');
+    let rows=ISSUES.slice();
+    if(issueFilter==='open') rows=rows.filter(i=>i.status!=='resolved');
+    else if(issueFilter==='urgent') rows=rows.filter(i=>i.status!=='resolved'&&i.urgency==='urgent');
+    else if(issueFilter==='overdue') rows=rows.filter(overdue);
+    else if(issueFilter==='resolved') rows=rows.filter(i=>i.status==='resolved');
+    const urgRank={urgent:0,high:1,medium:2,low:3};
+    rows.sort((a,b)=>((overdue(b)?1:0)-(overdue(a)?1:0))||((urgRank[a.urgency]??9)-(urgRank[b.urgency]??9))||(String(a.due_date||'9999').localeCompare(String(b.due_date||'9999'))));
+    $('#issuesBody').innerHTML=rows.map(i=>{
+      const due=i.due_date?`<span class="${overdue(i)?'due-over':''}">${i.due_date}${overdue(i)?' · overdue':''}</span>`:'<span class="muted-cell">—</span>';
+      return `<tr>
+        <td><div class="m-name">${esc(i.title||'—')}</div>${i.details?`<div class="muted-cell" style="font-size:10.5px">${esc(i.details.slice(0,80))}${i.details.length>80?'…':''}</div>`:''}</td>
+        <td class="muted-cell">${esc(i.member_name||'—')}</td>
+        <td><span class="urg urg-${i.urgency||'medium'}">${i.urgency||'medium'}</span></td>
+        <td>${due}</td>
+        <td><span class="ist ist-${i.status||'open'}">${(i.status||'open').replace('_',' ')}</span></td>
+        <td class="hide-sm muted-cell">${esc(i.created_by||'—')}</td>
+        <td style="text-align:right;white-space:nowrap">${i.status!=='resolved'?`<button class="row-issue" data-resolve-issue="${i.id}">Resolve</button> `:''}<button class="row-issue" data-edit-issue="${i.id}">Edit</button></td>
+      </tr>`;
+    }).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:26px">No issues ${issueFilter!=='all'?'in this view':'logged yet'}.</td></tr>`;
+    $('#issueFilters').querySelectorAll('[data-if]').forEach(c=>c.onclick=()=>{issueFilter=c.dataset.if;renderIssues();});
+  }
+  function openIssue(it){
+    editingIssue=it?it.id:null;
+    $('#issueModalTitle').textContent=it?'Edit issue':'Log an issue';
+    $('#issueDelete').style.display=it?'block':'none'; $('#issueErr').textContent='';
+    $('#i_member').innerHTML='<option value="">— none / general —</option>'+MEMBERS.map(m=>`<option value="${esc(m.name)}">${esc(m.name)}</option>`).join('');
+    $('#i_title').value=it?it.title||'':''; $('#i_member').value=it?(it.member_name||''):'';
+    $('#i_urgency').value=it?it.urgency||'medium':'medium'; $('#i_due').value=it?(it.due_date||''):'';
+    $('#i_status').value=it?it.status||'open':'open'; $('#i_details').value=it?it.details||'':'';
+    $('#issueModal').classList.add('open');
+  }
+  function closeIssue(){ $('#issueModal').classList.remove('open'); }
+  $('#issueClose').onclick=closeIssue; $('#issueModal').onclick=e=>{ if(e.target.id==='issueModal') closeIssue(); };
+  document.querySelectorAll('[data-add-issue]').forEach(b=>b.onclick=()=>openIssue(null));
+  document.addEventListener('click',e=>{
+    const ed=e.target.closest('[data-edit-issue]'); if(ed){ const it=ISSUES.find(x=>x.id===ed.dataset.editIssue); if(it) openIssue(it); return; }
+    const rs=e.target.closest('[data-resolve-issue]'); if(rs){ resolveIssue(rs.dataset.resolveIssue); }
+  });
+  async function resolveIssue(id){
+    const res=await sb.from('issues').update({status:'resolved', resolved_at:new Date().toISOString()}).eq('id',id);
+    if(!res.error){ await loadData(); renderIssues(); toast('Issue resolved'); }
+  }
+  $('#issueSave').onclick=async ()=>{
+    const title=$('#i_title').value.trim(); if(!title){ $('#issueErr').textContent='Give the issue a short summary.'; return; }
+    const row={ title, member_name:$('#i_member').value||null, urgency:$('#i_urgency').value, due_date:$('#i_due').value||null, status:$('#i_status').value, details:$('#i_details').value.trim()||null };
+    if($('#i_status').value==='resolved') row.resolved_at=new Date().toISOString();
+    if(!editingIssue) row.created_by=ME?.full_name||ME?.email||null;
+    $('#issueSave').disabled=true;
+    let res; if(editingIssue) res=await sb.from('issues').update(row).eq('id',editingIssue); else res=await sb.from('issues').insert(row);
+    $('#issueSave').disabled=false;
+    if(res.error){ $('#issueErr').textContent=res.error.message; return; }
+    closeIssue(); await loadData(); renderIssues(); toast(editingIssue?'Issue updated':'Issue logged');
+  };
+  $('#issueDelete').onclick=async ()=>{ if(!editingIssue) return; if(!confirm('Delete this issue?')) return; const res=await sb.from('issues').delete().eq('id',editingIssue); if(res.error){ $('#issueErr').textContent=res.error.message; return; } closeIssue(); await loadData(); renderIssues(); toast('Issue deleted'); };
 
   boot();
   </script>
