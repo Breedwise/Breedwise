@@ -160,6 +160,10 @@
     .src-note { font-size: 10.5px; color: var(--muted); font-style: italic; margin-top: 12px; }
 
     /* ═══ MODAL ═══ */
+    .mnotes{max-height:170px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+    .mnote{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:9px 11px;font-size:13px;color:var(--mid);line-height:1.5;white-space:pre-wrap}
+    .mnote .meta{font-size:10.5px;color:var(--muted);margin-top:5px;letter-spacing:.02em}
+    .mnotes-empty{font-size:12.5px;color:var(--muted);padding:4px 2px}
     #modal, #issueModal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
     #modal.open, #issueModal.open { display: flex; }
     .urg{font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap}
@@ -407,7 +411,10 @@
         <label class="check"><input type="checkbox" id="f_churned"> Churned this month</label>
         <label class="check"><input type="checkbox" id="f_failed"> Failed payment (30d)</label>
       </div></div>
-      <div class="field full"><label>Notes</label><textarea id="f_notes" rows="2"></textarea></div>
+      <div class="field full"><label>Notes log</label>
+        <div class="mnotes" id="m_notes_list"></div>
+        <textarea id="m_new_note" rows="2" placeholder="Add a note — saved with your name &amp; the date…"></textarea>
+      </div>
     </div></div>
     <div class="modal-foot">
       <button class="btn-del" id="modalDelete">Delete</button>
@@ -447,7 +454,7 @@
   const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
   const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager', Founder:'Founder' };
 
-  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, ISSUES=[];
+  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, ISSUES=[], MEMBER_NOTES=[];
   const $ = s=>document.querySelector(s);
   const pct=(n,d)=>d?(n/d*100):0;
   const money=n=>'$'+Math.round(n).toLocaleString();
@@ -487,17 +494,19 @@
   async function loadData(){
     const { data:{ session } } = await sb.auth.getSession();
     const myEmail = session?.user?.email || '';
-    const [mem, pods, comp, prof, iss] = await Promise.all([
+    const [mem, pods, comp, prof, iss, mnotes] = await Promise.all([
       sb.from('members').select('*').order('name'),
       sb.from('pods').select('*').order('name'),
       sb.from('comp').select('*'),       // RLS → only my row
       sb.from('profiles').select('*'),
       sb.from('issues').select('*').order('created_at',{ascending:false}),
+      sb.from('member_notes').select('*').order('created_at',{ascending:false}),
     ]);
     MEMBERS = (mem.data||[]).map(norm);
     PODS = pods.data||[];
     PROFILES = prof.data||[];
     ISSUES = iss.data||[];
+    MEMBER_NOTES = mnotes.data||[];
     MYCOMP_ROWS = comp.data || [];
     MYCOMP = MYCOMP_ROWS[0] || null;
     ME = PROFILES.find(p=>p.email===myEmail) || { email:myEmail, full_name:myEmail, role:(MYCOMP&&MYCOMP.role)||'' };
@@ -726,6 +735,14 @@
 
   /* ═══ MEMBER MODAL (add / edit / delete) ═══ */
   let editingId=null;
+  function mnoteDate(ts){ if(!ts) return ''; const d=new Date(ts); return isNaN(d)?String(ts).slice(0,10):d.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}); }
+  function renderMemberNotes(memberId){
+    const list=$('#m_notes_list');
+    const notes=memberId?MEMBER_NOTES.filter(n=>n.member_id===memberId):[];
+    list.innerHTML = notes.length
+      ? notes.map(n=>`<div class="mnote">${esc(n.body)}<div class="meta">${esc(n.created_by||'—')} · ${mnoteDate(n.created_at)}</div></div>`).join('')
+      : '<div class="mnotes-empty">No notes yet — add the first below.</div>';
+  }
   function openModal(m){
     editingId = m?m.id:null;
     $('#modalTitle').textContent = m?'Edit member':'Add member';
@@ -739,7 +756,7 @@
     $('#f_nps').value=m&&m.nps!=null?m.nps:''; $('#f_upsell').value=m?m.upsell:0; $('#f_override').value=m?(m.override||''):'';
     $('#f_activated').checked=m?m.activated:false; $('#f_new').checked=m?m.newThisMonth:false;
     $('#f_churned').checked=m?m.churnedThisMonth:false; $('#f_failed').checked=m?m.failed30:false;
-    $('#f_notes').value=m?m.notes:'';
+    renderMemberNotes(m?m.id:null); $('#m_new_note').value='';
     $('#modal').classList.add('open');
   }
   function closeModal(){ $('#modal').classList.remove('open'); }
@@ -756,12 +773,16 @@
       payment:$('#f_payment').value, calls:+$('#f_calls').value||0, posts:+$('#f_posts').value||0, homework:+$('#f_homework').value||0,
       nps: $('#f_nps').value===''?null:+$('#f_nps').value, upsell:+$('#f_upsell').value||0, status_override:$('#f_override').value||null,
       activated:$('#f_activated').checked, new_this_month:$('#f_new').checked, churned_this_month:$('#f_churned').checked, failed_30:$('#f_failed').checked,
-      notes:$('#f_notes').value.trim()||null, updated_by: ME?.full_name||ME?.email||null
+      updated_by: ME?.full_name||ME?.email||null
     };
     $('#modalSave').disabled=true;
-    let res; if(editingId) res=await sb.from('members').update(row).eq('id',editingId); else res=await sb.from('members').insert(row);
+    let memberId=editingId, err=null;
+    if(editingId){ const res=await sb.from('members').update(row).eq('id',editingId); err=res.error; }
+    else { const res=await sb.from('members').insert(row).select('id').single(); err=res.error; memberId=res.data?.id; }
+    const newNote=$('#m_new_note').value.trim();
+    if(!err && newNote && memberId){ const nr=await sb.from('member_notes').insert({ member_id:memberId, body:newNote, created_by:ME?.full_name||ME?.email||null }); err=nr.error; }
     $('#modalSave').disabled=false;
-    if(res.error){ $('#modalErr').textContent=res.error.message; return; }
+    if(err){ $('#modalErr').textContent=err.message; return; }
     closeModal(); await loadData(); renderAll(); toast(editingId?'Member updated':'Member added');
   };
   $('#modalDelete').onclick=async ()=>{
