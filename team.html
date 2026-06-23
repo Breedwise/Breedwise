@@ -164,6 +164,9 @@
     .mnote{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:9px 11px;font-size:13px;color:var(--mid);line-height:1.5;white-space:pre-wrap}
     .mnote .meta{font-size:10.5px;color:var(--muted);margin-top:5px;letter-spacing:.02em}
     .mnotes-empty{font-size:12.5px;color:var(--muted);padding:4px 2px}
+    .cmw-grid{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:14px;align-items:end;margin-top:16px}
+    .cmw-grid .field input{width:100%}
+    @media(max-width:640px){.cmw-grid{grid-template-columns:1fr 1fr}.cmw-grid button{grid-column:1/-1}}
     #modal, #issueModal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
     #modal.open, #issueModal.open { display: flex; }
     .urg{font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap}
@@ -305,9 +308,17 @@
           <h1 class="view-title">Community Engine</h1>
           <p class="view-sub">Week-1 activation, ongoing attendance, meaningful engagement, and issue triage.</p>
         </div></div>
-        <div class="section-label">Engine KPIs</div>
+        <div class="section-label">Madison's KPIs · this week</div>
         <div class="kpi-grid" id="cmKpis"></div>
-        <div class="card" style="margin-top:30px"><div class="card-h">Needs attention</div><div class="card-sub">Auto-surfaced from attendance &amp; post activity.</div><div id="cmQueues"></div></div>
+        <div class="card" style="margin-top:22px"><div class="card-h">Log this week</div><div class="card-sub">Madison updates her weekly activity — feeds the two KPIs above that aren't auto-tracked.</div>
+          <div class="cmw-grid">
+            <div class="field"><label>Calls co-hosted</label><input id="cmw_calls" type="number" min="0"></div>
+            <div class="field"><label>Recordings due</label><input id="cmw_due" type="number" min="0"></div>
+            <div class="field"><label>Uploaded by 12pm</label><input id="cmw_ontime" type="number" min="0"></div>
+            <button class="btn-save" id="cmwSave">Save week</button>
+          </div>
+        </div>
+        <div class="card" style="margin-top:22px"><div class="card-h">Needs attention</div><div class="card-sub">Auto-surfaced from attendance &amp; post activity.</div><div id="cmQueues"></div></div>
       </section>
 
       <!-- ISSUES LOG -->
@@ -454,7 +465,8 @@
   const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
   const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager', Founder:'Founder' };
 
-  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, ISSUES=[], MEMBER_NOTES=[];
+  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null;
+  function weekStartISO(){ const d=new Date(); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return d.toISOString().slice(0,10); }
   const $ = s=>document.querySelector(s);
   const pct=(n,d)=>d?(n/d*100):0;
   const money=n=>'$'+Math.round(n).toLocaleString();
@@ -494,19 +506,21 @@
   async function loadData(){
     const { data:{ session } } = await sb.auth.getSession();
     const myEmail = session?.user?.email || '';
-    const [mem, pods, comp, prof, iss, mnotes] = await Promise.all([
+    const [mem, pods, comp, prof, iss, mnotes, cmw] = await Promise.all([
       sb.from('members').select('*').order('name'),
       sb.from('pods').select('*').order('name'),
       sb.from('comp').select('*'),       // RLS → only my row
       sb.from('profiles').select('*'),
       sb.from('issues').select('*').order('created_at',{ascending:false}),
       sb.from('member_notes').select('*').order('created_at',{ascending:false}),
+      sb.from('cm_weekly').select('*').eq('week_start', weekStartISO()).maybeSingle(),
     ]);
     MEMBERS = (mem.data||[]).map(norm);
     PODS = pods.data||[];
     PROFILES = prof.data||[];
     ISSUES = iss.data||[];
     MEMBER_NOTES = mnotes.data||[];
+    CM_WEEK = cmw.data || { calls_cohosted:0, recordings_due:0, recordings_on_time:0 };
     MYCOMP_ROWS = comp.data || [];
     MYCOMP = MYCOMP_ROWS[0] || null;
     ME = PROFILES.find(p=>p.email===myEmail) || { email:myEmail, full_name:myEmail, role:(MYCOMP&&MYCOMP.role)||'' };
@@ -646,8 +660,37 @@
     pm.sort((a,b)=>ord[statusOf(a)]-ord[statusOf(b)]);
     $('#alTable').innerHTML=pm.map(m=>memberRow(m,{activation:true,action:true})).join('')||`<tr><td colspan="11" style="text-align:center;color:var(--muted);padding:26px">No members in this pod.</td></tr>`;
   }
+  function madisonKPIs(){
+    const w=CM_WEEK||{};
+    const cohosted=+w.calls_cohosted||0, due=+w.recordings_due||0, ontime=+w.recordings_on_time||0;
+    const recPct=due?(ontime/due*100):100;
+    const today=new Date().toISOString().slice(0,10);
+    const open=ISSUES.filter(i=>i.status!=='resolved').length;
+    const resolved=ISSUES.filter(i=>i.status==='resolved').length;
+    const overdue=ISSUES.filter(i=>i.status!=='resolved'&&i.due_date&&i.due_date<today).length;
+    const handled=(open+resolved)?(resolved/(open+resolved)*100):100;
+    const act=activeMembers(), engage=act.reduce((s,m)=>s+m.posts,0)/(act.length||1);
+    return [
+      { name:'Calls Co-hosted (wk)', val:cohosted, unit:'', target:1, dir:'above', meta:'co-host ≥ 1 per week' },
+      { name:'Recordings On Time', val:recPct, unit:'%', target:100, dir:'above', meta:`${ontime}/${due} uploaded by 12pm` },
+      { name:'Issues Handled', val:handled, unit:'%', target:100, dir:'above', meta:`${open} open · ${overdue} overdue` },
+      { name:'Posts / Member · wk', val:engage, unit:'/wk', target:TARGETS.engage, dir:'above', meta:'1 post per member per week', dec:2 },
+    ];
+  }
+  function renderCMWeek(){
+    const w=CM_WEEK||{};
+    $('#cmw_calls').value=w.calls_cohosted??0; $('#cmw_due').value=w.recordings_due??0; $('#cmw_ontime').value=w.recordings_on_time??0;
+    $('#cmwSave').onclick=async ()=>{
+      const row={ week_start:weekStartISO(), calls_cohosted:+$('#cmw_calls').value||0, recordings_due:+$('#cmw_due').value||0, recordings_on_time:+$('#cmw_ontime').value||0, updated_by:ME?.full_name||ME?.email||null, updated_at:new Date().toISOString() };
+      $('#cmwSave').disabled=true;
+      const res=await sb.from('cm_weekly').upsert(row,{onConflict:'week_start'});
+      $('#cmwSave').disabled=false;
+      if(res.error){ toast(res.error.message); return; }
+      await loadData(); renderCM(); toast('Week saved');
+    };
+  }
   function renderCM(){
-    renderKPIs('#cmKpis', communityKPIs());
+    renderKPIs('#cmKpis', madisonKPIs()); renderCMWeek();
     const act=activeMembers();
     const notOn=MEMBERS.filter(m=>m.newThisMonth&&m.calls<2), quiet=act.filter(m=>m.calls===0&&m.posts===0), wins=act.filter(m=>m.posts>=4);
     const q=(t,arr,empty)=>`<div style="margin-bottom:16px"><div class="rule-tag" style="margin-bottom:8px">${t} · ${arr.length}</div>${arr.length?arr.map(m=>`<div class="comp-line"><div class="lbl">${esc(m.name)} · <span class="muted-cell">${m.program}</span></div><span class="filter-chip" style="cursor:default">${m.calls} calls · ${m.posts} posts</span></div>`).join(''):`<div class="card-sub">${empty}</div>`}</div>`;
