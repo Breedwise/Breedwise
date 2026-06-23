@@ -248,6 +248,7 @@
 
     <div class="tabs"><div class="tabs-inner" id="tabBar">
       <div class="tab active" data-tab="director"><span class="tab-ic">◆</span>Company Health</div>
+      <div class="tab" data-tab="directory"><span class="tab-ic">◆</span>Directory</div>
       <div class="tab" data-tab="al"><span class="tab-ic">◆</span>Pod Command Center</div>
       <div class="tab" data-tab="cm"><span class="tab-ic">◆</span>Community Engine</div>
       <div class="tab" data-tab="issues"><span class="tab-ic">◆</span>Issues</div>
@@ -280,6 +281,22 @@
           <div style="overflow-x:auto"><table>
             <thead><tr><th>Member</th><th>Program</th><th>Status</th><th>Calls 4w</th><th class="hide-sm">Posts 7d</th><th>HW%</th><th>Payment</th><th>NPS</th><th></th></tr></thead>
             <tbody id="dirTable"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- DIRECTORY -->
+      <section class="panel" data-panel="directory">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Member contacts</div>
+          <h1 class="view-title">Directory</h1>
+          <p class="view-sub">Every member's name, email, and phone — for quick outreach.</p>
+        </div></div>
+        <div class="table-wrap">
+          <div class="table-tools"><input id="dirSearch" type="text" placeholder="Search name, email or phone…" style="margin-left:auto;font-size:12.5px;color:var(--ink);background:var(--card);border:1px solid var(--border);border-radius:6px;padding:7px 12px;outline:none;width:230px"></div>
+          <div style="overflow-x:auto"><table>
+            <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th class="hide-sm">Program</th><th class="hide-sm">Pod</th></tr></thead>
+            <tbody id="directoryBody"></tbody>
           </table></div>
         </div>
       </section>
@@ -434,6 +451,7 @@
     <div class="modal-body"><div class="fgrid">
       <div class="field full"><label>Name</label><input id="f_name" type="text"></div>
       <div class="field"><label>Email</label><input id="f_email" type="text"></div>
+      <div class="field"><label>Phone</label><input id="f_phone" type="tel"></div>
       <div class="field"><label>Program</label><select id="f_program"><option>Academy</option><option>Accelerator</option><option>Elite</option></select></div>
       <div class="field"><label>Pod</label><select id="f_pod"></select></div>
       <div class="field"><label>Payment</label><select id="f_payment"><option>Good</option><option>Failed</option><option>At risk</option><option>Cancelled</option></select></div>
@@ -514,7 +532,7 @@
   const money=n=>'$'+Math.round(n).toLocaleString();
 
   function norm(r){ return {
-    id:r.id, name:r.name, email:r.email||'', program:r.program, pod:r.pod_id,
+    id:r.id, name:r.name, email:r.email||'', phone:r.phone||'', program:r.program, pod:r.pod_id,
     calls:r.calls||0, posts:r.posts||0, hw:r.homework||0, pay:r.payment, nps:r.nps,
     activated:!!r.activated, newThisMonth:!!r.new_this_month, churnedThisMonth:!!r.churned_this_month,
     failed30:!!r.failed_30, upsell:Number(r.upsell)||0, override:r.status_override||null, notes:r.notes||'' };
@@ -812,7 +830,7 @@
     const stratTab=document.querySelector('.tab[data-tab="strategy"]'); if(stratTab) stratTab.style.display=canStrat?'':'none';
     renderKPIs('#dirKpis', directorKPIs());
     renderFunnel(); renderStatusMix(); renderDirTable();
-    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy();
+    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderDirectory();
   }
 
   /* ═══ TABS ═══ */
@@ -838,7 +856,7 @@
     $('#modalDelete').style.display = m?'block':'none';
     $('#modalErr').textContent='';
     $('#f_pod').innerHTML = PODS.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
-    $('#f_name').value=m?m.name:''; $('#f_email').value=m?m.email:'';
+    $('#f_name').value=m?m.name:''; $('#f_email').value=m?m.email:''; $('#f_phone').value=m?m.phone:'';
     $('#f_program').value=m?m.program:'Academy'; $('#f_pod').value=m?m.pod:(PODS[0]?.id||'');
     $('#f_payment').value=m?m.pay:'Good';
     $('#f_calls').value=m?m.calls:0; $('#f_posts').value=m?m.posts:0; $('#f_homework').value=m?m.hw:0;
@@ -858,7 +876,7 @@
     const name=$('#f_name').value.trim();
     if(!name){ $('#modalErr').textContent='Name is required.'; return; }
     const row={
-      name, email:$('#f_email').value.trim()||null, program:$('#f_program').value, pod_id:$('#f_pod').value||null,
+      name, email:$('#f_email').value.trim()||null, phone:$('#f_phone').value.trim()||null, program:$('#f_program').value, pod_id:$('#f_pod').value||null,
       payment:$('#f_payment').value, calls:+$('#f_calls').value||0, posts:+$('#f_posts').value||0, homework:+$('#f_homework').value||0,
       nps: $('#f_nps').value===''?null:+$('#f_nps').value, upsell:+$('#f_upsell').value||0, status_override:$('#f_override').value||null,
       activated:$('#f_activated').checked, new_this_month:$('#f_new').checked, churned_this_month:$('#f_churned').checked, failed_30:$('#f_failed').checked,
@@ -1007,6 +1025,21 @@
     closeSS(); await loadData(); renderStrategy(); toast(editingSS?'Session updated':'Session scheduled');
   };
   $('#ssDelete').onclick=async ()=>{ if(!editingSS) return; if(!confirm('Delete this session?')) return; const res=await sb.from('strategy_sessions').delete().eq('id',editingSS); if(res.error){ $('#ssErr').textContent=res.error.message; return; } closeSS(); await loadData(); renderStrategy(); toast('Session deleted'); };
+
+  /* ═══ DIRECTORY ═══ */
+  let dirQ='';
+  function renderDirectory(){
+    let rows=MEMBERS.slice().sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+    if(dirQ) rows=rows.filter(m=>((m.name||'')+' '+(m.email||'')+' '+(m.phone||'')).toLowerCase().includes(dirQ));
+    $('#directoryBody').innerHTML=rows.map(m=>`<tr>
+      <td class="m-name">${esc(m.name)}</td>
+      <td>${m.email?`<a href="mailto:${esc(m.email)}" style="color:var(--gold-deep);text-decoration:none">${esc(m.email)}</a>`:'<span class="muted-cell">—</span>'}</td>
+      <td>${m.phone?`<a href="tel:${esc(m.phone)}" style="color:var(--gold-deep);text-decoration:none">${esc(m.phone)}</a>`:'<span class="muted-cell">—</span>'}</td>
+      <td class="hide-sm"><span class="prog-tag">${m.program||'—'}</span></td>
+      <td class="hide-sm muted-cell">${esc(podName(m.pod))}</td>
+    </tr>`).join('')||`<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:26px">No members.</td></tr>`;
+    const sbx=$('#dirSearch'); if(sbx) sbx.oninput=e=>{dirQ=e.target.value.toLowerCase();renderDirectory();};
+  }
 
   boot();
   </script>
