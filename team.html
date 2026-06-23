@@ -167,12 +167,17 @@
     .cmw-grid{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:14px;align-items:end;margin-top:16px}
     .cmw-grid .field input{width:100%}
     @media(max-width:640px){.cmw-grid{grid-template-columns:1fr 1fr}.cmw-grid button{grid-column:1/-1}}
-    #modal, #issueModal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
-    #modal.open, #issueModal.open { display: flex; }
+    #modal, #issueModal, #ssModal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+    #modal.open, #issueModal.open, #ssModal.open { display: flex; }
     .urg{font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap}
     .urg-low{background:#efece4;color:#86847d}.urg-medium{background:var(--yellow-bg);color:var(--yellow)}.urg-high{background:rgba(194,102,30,.14);color:#b5651d}.urg-urgent{background:var(--red);color:#fff}
     .ist{font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 8px;border-radius:4px}
     .ist-open{background:#efece4;color:#48463f}.ist-in_progress{background:var(--yellow-bg);color:var(--yellow)}.ist-resolved{background:rgba(60,122,82,.12);color:#3c7a52}
+    .sst{font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap}
+    .sst-scheduled{background:var(--yellow-bg);color:var(--yellow)}.sst-completed{background:rgba(60,122,82,.12);color:#3c7a52}.sst-no_show{background:var(--red-bg);color:var(--red)}.sst-canceled{background:#efece4;color:#86847d}
+    .stype{font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:4px;white-space:nowrap}
+    .stype-activation{background:rgba(184,146,46,.13);color:var(--gold-deep)}.stype-accelerator{background:rgba(120,80,200,.12);color:#6a48b0}
+    .exp-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)}.exp-row:last-child{border-bottom:none}.exp-row b{font-size:13.5px;color:var(--ink);font-weight:600}.exp-row .ec{font-size:12.5px;color:var(--muted)}
     .due-over{color:var(--red);font-weight:700}.row-issue{font-size:11px;color:var(--gold-deep);background:rgba(184,146,46,.08);border:1px solid rgba(184,146,46,.25);border-radius:5px;padding:5px 10px;cursor:pointer;white-space:nowrap}
     .modal-box { background: var(--bg); border-radius: 12px; width: 100%; max-width: 560px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); }
     .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--border); }
@@ -246,6 +251,7 @@
       <div class="tab" data-tab="al"><span class="tab-ic">◆</span>Pod Command Center</div>
       <div class="tab" data-tab="cm"><span class="tab-ic">◆</span>Community Engine</div>
       <div class="tab" data-tab="issues"><span class="tab-ic">◆</span>Issues</div>
+      <div class="tab" data-tab="strategy"><span class="tab-ic">◆</span>Strategy Sessions</div>
       <div class="tab" data-tab="comp"><span class="tab-ic">◆</span>My Pay</div>
       <div class="tab" data-tab="rules"><span class="tab-ic">◆</span>Automation</div>
       <div class="tab" data-tab="spec"><span class="tab-ic">◆</span>System Spec</div>
@@ -337,6 +343,27 @@
           <div style="overflow-x:auto"><table>
             <thead><tr><th>Issue</th><th>Member</th><th>Urgency</th><th>Due</th><th>Status</th><th class="hide-sm">Logged by</th><th></th></tr></thead>
             <tbody id="issuesBody"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- STRATEGY SESSIONS -->
+      <section class="panel" data-panel="strategy">
+        <div class="view-head">
+          <div>
+            <div class="view-eyebrow">Expert strategy sessions</div>
+            <h1 class="view-title">Strategy Sessions</h1>
+            <p class="view-sub">Activation sessions for new members and accelerator sessions — with Dr. Emmanuel, Dr. Angela, Austin, Dr. David &amp; Yasmin.</p>
+          </div>
+          <button class="btn-save" data-add-ss>+ Schedule session</button>
+        </div>
+        <div class="kpi-grid" id="ssKpis"></div>
+        <div class="card" style="margin-top:22px"><div class="card-h">Sessions by expert</div><div class="card-sub">Upcoming &amp; total per expert.</div><div id="ssExperts"></div></div>
+        <div class="table-wrap" style="margin-top:22px">
+          <div class="table-tools" id="ssFilters"></div>
+          <div style="overflow-x:auto"><table>
+            <thead><tr><th>Member</th><th>Type</th><th>Expert</th><th>When</th><th>Status</th><th></th></tr></thead>
+            <tbody id="ssBody"></tbody>
           </table></div>
         </div>
       </section>
@@ -452,6 +479,20 @@
       <div style="display:flex;gap:10px;align-items:center"><span class="login-err" id="issueErr" style="margin:0"></span><button class="btn-save" id="issueSave">Save</button></div>
     </div>
   </div></div>
+
+  <!-- ═══ STRATEGY SESSION MODAL ═══ -->
+  <div id="ssModal"><div class="modal-box">
+    <div class="modal-head"><div class="modal-title" id="ssModalTitle">Schedule session</div><button class="modal-close" id="ssClose">&times;</button></div>
+    <div class="modal-body"><div class="fgrid">
+      <div class="field full"><label>Member</label><select id="s_member"></select></div>
+      <div class="field"><label>Type</label><select id="s_type"><option value="activation">Activation (new member)</option><option value="accelerator">Accelerator</option></select></div>
+      <div class="field"><label>Expert</label><select id="s_expert"></select></div>
+      <div class="field"><label>Date &amp; time</label><input id="s_when" type="datetime-local"></div>
+      <div class="field"><label>Status</label><select id="s_status"><option value="scheduled">Scheduled</option><option value="completed">Completed</option><option value="no_show">No-show</option><option value="canceled">Canceled</option></select></div>
+      <div class="field full"><label>Notes</label><textarea id="s_notes" rows="2"></textarea></div>
+    </div></div>
+    <div class="modal-foot"><button class="btn-del" id="ssDelete">Delete</button><div style="display:flex;gap:10px;align-items:center"><span class="login-err" id="ssErr" style="margin:0"></span><button class="btn-save" id="ssSave">Save</button></div></div>
+  </div></div>
   <div class="toast" id="toast"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -465,7 +506,8 @@
   const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
   const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager', Founder:'Founder' };
 
-  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null;
+  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[];
+  const EXPERTS=['Dr. Emmanuel Fontaine','Dr. Angela Hughes','Austin Shanks','Dr. David Mahoney','Yasmin Omar'];
   function weekStartISO(){ const d=new Date(); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return d.toISOString().slice(0,10); }
   const $ = s=>document.querySelector(s);
   const pct=(n,d)=>d?(n/d*100):0;
@@ -506,7 +548,7 @@
   async function loadData(){
     const { data:{ session } } = await sb.auth.getSession();
     const myEmail = session?.user?.email || '';
-    const [mem, pods, comp, prof, iss, mnotes, cmw] = await Promise.all([
+    const [mem, pods, comp, prof, iss, mnotes, cmw, ss] = await Promise.all([
       sb.from('members').select('*').order('name'),
       sb.from('pods').select('*').order('name'),
       sb.from('comp').select('*'),       // RLS → only my row
@@ -514,6 +556,7 @@
       sb.from('issues').select('*').order('created_at',{ascending:false}),
       sb.from('member_notes').select('*').order('created_at',{ascending:false}),
       sb.from('cm_weekly').select('*').eq('week_start', weekStartISO()).maybeSingle(),
+      sb.from('strategy_sessions').select('*').order('scheduled_for',{ascending:true}),
     ]);
     MEMBERS = (mem.data||[]).map(norm);
     PODS = pods.data||[];
@@ -521,6 +564,7 @@
     ISSUES = iss.data||[];
     MEMBER_NOTES = mnotes.data||[];
     CM_WEEK = cmw.data || { calls_cohosted:0, recordings_due:0, recordings_on_time:0 };
+    STRATEGY = ss.data||[];
     MYCOMP_ROWS = comp.data || [];
     MYCOMP = MYCOMP_ROWS[0] || null;
     ME = PROFILES.find(p=>p.email===myEmail) || { email:myEmail, full_name:myEmail, role:(MYCOMP&&MYCOMP.role)||'' };
@@ -766,7 +810,7 @@
     $('#navRole').textContent = ROLE_LABEL[ME?.role] || '';
     renderKPIs('#dirKpis', directorKPIs());
     renderFunnel(); renderStatusMix(); renderDirTable();
-    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues();
+    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy();
   }
 
   /* ═══ TABS ═══ */
@@ -900,6 +944,67 @@
     closeIssue(); await loadData(); renderIssues(); toast(editingIssue?'Issue updated':'Issue logged');
   };
   $('#issueDelete').onclick=async ()=>{ if(!editingIssue) return; if(!confirm('Delete this issue?')) return; const res=await sb.from('issues').delete().eq('id',editingIssue); if(res.error){ $('#issueErr').textContent=res.error.message; return; } closeIssue(); await loadData(); renderIssues(); toast('Issue deleted'); };
+
+  /* ═══ STRATEGY SESSIONS ═══ */
+  let ssFilter='upcoming', editingSS=null;
+  function ssDate(ts){ if(!ts) return 'TBD'; const d=new Date(ts); return isNaN(d)?String(ts).slice(0,16):d.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}); }
+  function tsLocal(ts){ if(!ts) return ''; const d=new Date(ts); if(isNaN(d)) return ''; const p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; }
+  function renderStrategy(){
+    const cards=[
+      ['Activation · upcoming', STRATEGY.filter(s=>s.session_type==='activation'&&s.status==='scheduled').length],
+      ['Activation · completed', STRATEGY.filter(s=>s.session_type==='activation'&&s.status==='completed').length],
+      ['Accelerator · upcoming', STRATEGY.filter(s=>s.session_type==='accelerator'&&s.status==='scheduled').length],
+      ['Accelerator · completed', STRATEGY.filter(s=>s.session_type==='accelerator'&&s.status==='completed').length],
+    ];
+    $('#ssKpis').innerHTML=cards.map(([n,v])=>`<div class="kpi"><div class="kpi-name">${n}</div><div class="kpi-val" style="font-size:26px">${v}</div></div>`).join('');
+    $('#ssExperts').innerHTML=EXPERTS.map(e=>{const all=STRATEGY.filter(s=>s.expert===e);const up=all.filter(s=>s.status==='scheduled').length;return `<div class="exp-row"><b>${esc(e)}</b><span class="ec">${all.length} total · <strong style="color:var(--gold-deep)">${up} upcoming</strong></span></div>`;}).join('');
+    const counts={all:STRATEGY.length, upcoming:STRATEGY.filter(s=>s.status==='scheduled').length, activation:STRATEGY.filter(s=>s.session_type==='activation').length, accelerator:STRATEGY.filter(s=>s.session_type==='accelerator').length, completed:STRATEGY.filter(s=>s.status==='completed').length};
+    const chips=[['upcoming','Upcoming'],['activation','Activation'],['accelerator','Accelerator'],['completed','Completed'],['all','All']];
+    $('#ssFilters').innerHTML=chips.map(([k,l])=>`<div class="tag" data-sf="${k}" style="cursor:pointer;${ssFilter===k?'background:var(--ink);color:#fff;border-color:var(--ink)':''}">${l} ${counts[k]||0}</div>`).join('');
+    let rows=STRATEGY.slice();
+    if(ssFilter==='upcoming') rows=rows.filter(s=>s.status==='scheduled');
+    else if(ssFilter==='activation') rows=rows.filter(s=>s.session_type==='activation');
+    else if(ssFilter==='accelerator') rows=rows.filter(s=>s.session_type==='accelerator');
+    else if(ssFilter==='completed') rows=rows.filter(s=>s.status==='completed');
+    rows.sort((a,b)=>String(a.scheduled_for||'9999').localeCompare(String(b.scheduled_for||'9999')));
+    $('#ssBody').innerHTML=rows.map(s=>`<tr>
+      <td class="m-name">${esc(s.member_name||'—')}</td>
+      <td><span class="stype stype-${s.session_type||'activation'}">${s.session_type||'activation'}</span></td>
+      <td class="muted-cell">${esc(s.expert||'—')}</td>
+      <td class="muted-cell">${ssDate(s.scheduled_for)}</td>
+      <td><span class="sst sst-${s.status||'scheduled'}">${(s.status||'scheduled').replace('_',' ')}</span></td>
+      <td style="text-align:right"><button class="row-issue" data-edit-ss="${s.id}">Edit</button></td>
+    </tr>`).join('')||`<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:26px">No sessions ${ssFilter!=='all'?'in this view':'yet'}.</td></tr>`;
+    $('#ssFilters').querySelectorAll('[data-sf]').forEach(c=>c.onclick=()=>{ssFilter=c.dataset.sf;renderStrategy();});
+  }
+  function openSS(s){
+    editingSS=s?s.id:null;
+    $('#ssModalTitle').textContent=s?'Edit session':'Schedule session';
+    $('#ssDelete').style.display=s?'block':'none'; $('#ssErr').textContent='';
+    $('#s_member').innerHTML='<option value="">— select member —</option>'+MEMBERS.map(m=>`<option value="${esc(m.name)}" data-id="${m.id}">${esc(m.name)}</option>`).join('');
+    $('#s_expert').innerHTML=EXPERTS.map(e=>`<option>${esc(e)}</option>`).join('');
+    $('#s_member').value=s?(s.member_name||''):''; $('#s_type').value=s?s.session_type||'activation':'activation';
+    $('#s_expert').value=s?s.expert||EXPERTS[0]:EXPERTS[0]; $('#s_when').value=s?tsLocal(s.scheduled_for):'';
+    $('#s_status').value=s?s.status||'scheduled':'scheduled'; $('#s_notes').value=s?s.notes||'':'';
+    $('#ssModal').classList.add('open');
+  }
+  function closeSS(){ $('#ssModal').classList.remove('open'); }
+  $('#ssClose').onclick=closeSS; $('#ssModal').onclick=e=>{ if(e.target.id==='ssModal') closeSS(); };
+  document.querySelectorAll('[data-add-ss]').forEach(b=>b.onclick=()=>openSS(null));
+  document.addEventListener('click',e=>{ const b=e.target.closest('[data-edit-ss]'); if(b){ const s=STRATEGY.find(x=>x.id===b.dataset.editSs); if(s) openSS(s); } });
+  $('#ssSave').onclick=async ()=>{
+    const member=$('#s_member').value; if(!member){ $('#ssErr').textContent='Pick a member.'; return; }
+    const opt=$('#s_member').selectedOptions[0];
+    const row={ member_name:member, member_id:opt?opt.dataset.id:null, expert:$('#s_expert').value, session_type:$('#s_type').value,
+      scheduled_for:$('#s_when').value?new Date($('#s_when').value).toISOString():null, status:$('#s_status').value, notes:$('#s_notes').value.trim()||null };
+    if(!editingSS) row.created_by=ME?.full_name||ME?.email||null;
+    $('#ssSave').disabled=true;
+    let res; if(editingSS) res=await sb.from('strategy_sessions').update(row).eq('id',editingSS); else res=await sb.from('strategy_sessions').insert(row);
+    $('#ssSave').disabled=false;
+    if(res.error){ $('#ssErr').textContent=res.error.message; return; }
+    closeSS(); await loadData(); renderStrategy(); toast(editingSS?'Session updated':'Session scheduled');
+  };
+  $('#ssDelete').onclick=async ()=>{ if(!editingSS) return; if(!confirm('Delete this session?')) return; const res=await sb.from('strategy_sessions').delete().eq('id',editingSS); if(res.error){ $('#ssErr').textContent=res.error.message; return; } closeSS(); await loadData(); renderStrategy(); toast('Session deleted'); };
 
   boot();
   </script>
