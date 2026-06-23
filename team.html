@@ -808,6 +808,8 @@
   function renderAll(){
     $('#navWho').textContent = ME?.full_name || 'Signed in';
     $('#navRole').textContent = ROLE_LABEL[ME?.role] || '';
+    const canStrat=['jennifer@breedwise.io','austin@breedwise.io'].includes((ME?.email||'').toLowerCase());
+    const stratTab=document.querySelector('.tab[data-tab="strategy"]'); if(stratTab) stratTab.style.display=canStrat?'':'none';
     renderKPIs('#dirKpis', directorKPIs());
     renderFunnel(); renderStatusMix(); renderDirTable();
     renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy();
