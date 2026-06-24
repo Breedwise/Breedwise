@@ -48,7 +48,8 @@
     .stage:first-child{border-top:none}
     .stage .badge{font-size:12.5px;font-weight:700;letter-spacing:.02em;color:#fff;padding:5px 0;border-radius:7px;text-align:center;background:var(--gold)}
     .stage .badge.s-new{background:#5b6b7a}.stage .badge.s-working{background:#7a6a3c}.stage .badge.s-app{background:#b07d1e}
-    .stage .badge.s-booked{background:#3c6a8a}.stage .badge.s-show{background:var(--green)}.stage .badge.s-noshow{background:#a85a2a}
+    .stage .badge.s-sessb{background:#2f7d8a}.stage .badge.s-sessh{background:#246b76}
+    .stage .badge.s-gameb{background:#3c6a8a}.stage .badge.s-gameh{background:var(--green)}
     .stage .badge.s-won{background:#2f7a4f}.stage .badge.s-lost{background:var(--red)}.stage .badge.s-nurture{background:#6a6458}
     .stage .body strong{display:block;color:var(--ink);font-size:14px;margin-bottom:2px}
     .stage .body span{font-size:14px;color:var(--mid)}
@@ -78,7 +79,7 @@
       <h1>One simple system</h1>
       <p class="lead">So every rep knows exactly what a "lead" is, where each lead lives, what to do next, and how we measure success. Everything else is details. If it doesn't fit on this page, it's too complex.</p>
       <div class="jump">
-        <a href="#rules">Golden Rules</a><a href="#stages">9 Stages</a><a href="#roles">Roles</a><a href="#flow">Daily Flow</a><a href="#track">What We Track</a>
+        <a href="#rules">Golden Rules</a><a href="#stages">10 Stages</a><a href="#roles">Roles</a><a href="#flow">Daily Flow</a><a href="#track">What We Track</a>
       </div>
     </div>
 
@@ -110,26 +111,28 @@
       <h3>Every lead has a source</h3>
       <p>Exactly <strong>one</strong> source tag per lead, so we always know what's working:</p>
       <div class="tags">
-        <code>ad-casestudy</code><code>ig-dm</code><code>ig-organic</code><code>vsl-application</code><code>referral</code>
+        <code>ad-casestudy</code><code>ig-dm</code><code>ig-organic</code><code>vsl-application</code><code>webinar</code><code>referral</code>
       </div>
       <p style="font-size:13.5px;color:var(--muted)">We can add more later — but it's always exactly 1 per lead.</p>
     </section>
 
     <!-- 2. STAGES -->
     <section class="block" id="stages">
-      <h2><span class="num">2</span>The 9 Pipeline Stages</h2>
-      <p>All opportunities live in <strong>one CC360 pipeline</strong> with these stages:</p>
+      <h2><span class="num">2</span>The 10 Pipeline Stages</h2>
+      <p>All opportunities live in <strong>one CC360 pipeline</strong>. We run a <strong>two-call funnel</strong> — a free <em>Strategy Session</em>, then the <em>Gameplan &amp; Enrollment Call</em> — so each call has its own Booked + Held stage and you get a real show rate for both.</p>
       <div class="stages">
         <div class="stage"><div class="badge s-new">New</div><div class="body"><strong>Raised-hand lead just created</strong><span>App, booked call, or DM with intent. No human has touched it yet.</span></div></div>
-        <div class="stage"><div class="badge s-working">Working</div><div class="body"><strong>Outreach has started</strong><span>Setter/closer is working it — calls, texts, emails. Not yet applied or booked.</span></div></div>
-        <div class="stage"><div class="badge s-app">App</div><div class="body"><strong>Application submitted</strong><span>Applied, but not yet booked for a Gameplan Call.</span></div></div>
-        <div class="stage"><div class="badge s-booked">Booked</div><div class="body"><strong>Gameplan &amp; Enrollment Call on the calendar</strong><span>Lead has received confirmation email/text.</span></div></div>
-        <div class="stage"><div class="badge s-show">Show</div><div class="body"><strong>Attended the Gameplan Call (≥ 15 min)</strong><span>Call complete; next step is decision or follow-up.</span></div></div>
-        <div class="stage"><div class="badge s-noshow">No-Show</div><div class="body"><strong>Booked but did not attend</strong><span>Triggers reactivation / reschedule attempts.</span></div></div>
+        <div class="stage"><div class="badge s-working">Working</div><div class="body"><strong>Outreach has started</strong><span>Setter is working it — calls, texts, emails. Not yet booked or applied.</span></div></div>
+        <div class="stage"><div class="badge s-sessb">Session Booked</div><div class="body"><strong>Free Strategy Session on the calendar</strong><span>The earlier, free call (mainly IG/DM leads). Confirmation sent. <em>Setter owns this.</em></span></div></div>
+        <div class="stage"><div class="badge s-sessh">Session Held</div><div class="body"><strong>Attended the Strategy Session</strong><span>If it's a fit, lead is invited to apply / book the Gameplan Call.</span></div></div>
+        <div class="stage"><div class="badge s-app">App</div><div class="body"><strong>Application submitted</strong><span>FCS / VSL / Webinar leads often start here; IG leads reach it after the session. Not yet booked for a Gameplan Call.</span></div></div>
+        <div class="stage"><div class="badge s-gameb">Gameplan Booked</div><div class="body"><strong>Gameplan &amp; Enrollment Call on the calendar</strong><span>The closing call. Confirmation sent. <em>Closer owns this.</em></span></div></div>
+        <div class="stage"><div class="badge s-gameh">Gameplan Held</div><div class="body"><strong>Attended the Gameplan Call (≥ 15 min)</strong><span>Call complete; next step is decision or follow-up.</span></div></div>
         <div class="stage"><div class="badge s-won">Won</div><div class="body"><strong>Enrolled + made initial payment</strong><span>Now belongs to Ops/Success for onboarding.</span></div></div>
         <div class="stage"><div class="badge s-lost">Lost</div><div class="body"><strong>Clear "no" or not a fit</strong><span>No further sales work planned.</span></div></div>
         <div class="stage"><div class="badge s-nurture">Nurture</div><div class="body"><strong>Not ready now, worth staying in touch</strong><span>Timing or funds. Worked by long-term nurture / scheduled outbound later.</span></div></div>
       </div>
+      <div class="tip">⏱️ <strong>No-Show isn't a stage — it's an automation.</strong> If a lead misses either call, a CC360 workflow tags them (<code>no-show-session</code> / <code>no-show-gameplan</code>), fires reschedule attempts, and bounces them back to <strong>Working</strong> (or <strong>Nurture</strong> after enough tries). A no-show is never a place a lead sits and dies.</div>
     </section>
 
     <!-- 3. ROLES -->
@@ -151,18 +154,18 @@
         <ul style="margin-top:6px">
           <li>Works <strong>New</strong> and <strong>Working</strong> stages.</li>
           <li>Calls/texts from <strong>Close</strong>, updates stage in <strong>CC360</strong> only.</li>
-          <li>Books Gameplan Calls → moves to <strong>Booked</strong>.</li>
-          <li>Runs show-up / reminder sequences. <strong>Owns show rate</strong> on their sets.</li>
+          <li>Books the free <strong>Strategy Session</strong> → moves to <strong>Session Booked</strong>, then runs reminders to get them to <strong>Session Held</strong>.</li>
+          <li><strong>Owns the Session show rate.</strong></li>
         </ul>
       </div>
 
       <div class="role">
         <h4>Closer <span class="where">Close + CC360</span></h4>
         <ul style="margin-top:6px">
-          <li>Runs Gameplan &amp; Enrollment Calls.</li>
-          <li>After every call, moves the lead to <strong>Show, No-Show, Won, or Lost</strong>.</li>
+          <li>Books + runs the <strong>Gameplan &amp; Enrollment Call</strong> (<strong>Gameplan Booked → Gameplan Held</strong>).</li>
+          <li>After every call, moves the lead to <strong>Won, Lost, or Nurture</strong>.</li>
           <li>Adds notes + next steps in <strong>CC360</strong>.</li>
-          <li><strong>Owns close rate</strong> and cash collected from Shows.</li>
+          <li><strong>Owns the Gameplan show rate, close rate, and cash collected.</strong></li>
         </ul>
       </div>
 
@@ -184,13 +187,14 @@
     <!-- 4. DAILY FLOW -->
     <section class="block" id="flow">
       <h2><span class="num">4</span>Daily Flow</h2>
-      <div class="flow-arrow">Lead raises hand → CC360 creates contact + source tag → <strong style="color:#5b6b7a">New</strong> → Setter works it → <strong style="color:#7a6a3c">Working</strong> → qualifies + books → <strong style="color:#3c6a8a">Booked</strong> → reminders → <strong style="color:var(--green)">Show</strong> / <strong style="color:#a85a2a">No-Show</strong> → Closer runs call → <strong style="color:#2f7a4f">Won</strong> / <strong style="color:var(--red)">Lost</strong> / <strong style="color:#6a6458">Nurture</strong></div>
+      <div class="flow-arrow">Lead raises hand → CC360 creates contact + source tag → <strong style="color:#5b6b7a">New</strong> → Setter works it → <strong style="color:#7a6a3c">Working</strong> → <strong style="color:#2f7d8a">Session Booked</strong> → <strong style="color:#246b76">Session Held</strong> → <strong style="color:#b07d1e">App</strong> → <strong style="color:#3c6a8a">Gameplan Booked</strong> → <strong style="color:var(--green)">Gameplan Held</strong> → Closer runs call → <strong style="color:#2f7a4f">Won</strong> / <strong style="color:var(--red)">Lost</strong> / <strong style="color:#6a6458">Nurture</strong></div>
       <ol class="steps">
         <li>Lead raises hand → CC360 creates/updates contact + applies <strong>one source tag</strong> → <strong>New</strong>.</li>
         <li>Setter pulls from <strong>New</strong> → starts outreach → <strong>Working</strong>.</li>
-        <li>Setter qualifies + books → moves to <strong>Booked</strong>.</li>
-        <li>Setter runs the reminder sequence → lead <strong>Shows</strong> or is <strong>No-Show</strong>.</li>
-        <li>Closer runs the call: enrolls → <strong>Won</strong>; otherwise <strong>Lost</strong> or <strong>Nurture</strong> (with a reason).</li>
+        <li>Setter books the free <strong>Strategy Session</strong> → <strong>Session Booked</strong> → reminders → <strong>Session Held</strong>. <span style="font-size:13px;color:var(--muted)">(FCS/VSL/Webinar leads may skip straight to App.)</span></li>
+        <li>Fit confirmed → lead applies (<strong>App</strong>) and the Closer books the <strong>Gameplan Call</strong> → <strong>Gameplan Booked</strong> → reminders → <strong>Gameplan Held</strong>.</li>
+        <li>Closer runs the Gameplan Call: enrolls → <strong>Won</strong>; otherwise <strong>Lost</strong> or <strong>Nurture</strong> (with a reason).</li>
+        <li>Miss either call? Automation tags the no-show, reschedules, and bounces them to <strong>Working</strong>.</li>
         <li>Sales OS ingests every event → updates the scoreboard.</li>
       </ol>
     </section>
@@ -203,19 +207,19 @@
           <ul style="margin:0">
             <li>Leads (by source)</li>
             <li>Applications</li>
-            <li>Booked Calls</li>
-            <li>Shows</li>
-            <li>Won Deals</li>
-            <li>Cash Collected</li>
-            <li>App rate · book rate · show rate · close rate</li>
+            <li>Sessions booked &amp; held</li>
+            <li>Gameplan calls booked &amp; held</li>
+            <li>Won Deals · Cash Collected</li>
+            <li>Session show rate · Gameplan show rate</li>
+            <li>App rate · book rate · close rate</li>
           </ul>
         </div>
         <div>
           <div class="card"><div class="card-h">Per Setter</div>
-            <ul style="margin:0"><li>Outbound dials / day</li><li>Booked Calls / day</li><li>Show rate on their sets</li></ul>
+            <ul style="margin:0"><li>Outbound dials / day</li><li>Sessions booked / day</li><li><strong>Session show rate</strong></li></ul>
           </div>
           <div class="card"><div class="card-h">Per Closer</div>
-            <ul style="margin:0"><li>Shows handled</li><li>Close rate</li><li>Cash per show</li></ul>
+            <ul style="margin:0"><li>Gameplan calls held</li><li><strong>Gameplan show rate · close rate</strong></li><li>Cash per call</li></ul>
           </div>
         </div>
       </div>
