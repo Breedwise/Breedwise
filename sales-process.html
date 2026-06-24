@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How Sales Works · Breedwise</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#f7f6f3;--surface:#fff;--card:#fbfaf8;--border:#e2dfd8;--gold:#b8922e;--gold-deep:#8a6420;--gold-faint:rgba(184,146,46,.08);
+      --ink:#1a1813;--mid:#48463f;--muted:#86847d;--green:#3c7a52;--green-bg:rgba(60,122,82,.1);--yellow:#b07d1e;--yellow-bg:rgba(176,125,30,.12);--red:#a33a3a;--red-bg:rgba(163,58,58,.1);
+      --heading:'Playfair Display',Georgia,serif;--body:'Inter',-apple-system,sans-serif}
+    html{scroll-behavior:smooth}body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+    .wrap{max-width:860px;margin:0 auto;padding:0 24px}
+    header{background:var(--surface);border-bottom:1px solid var(--border);padding:22px 0}
+    .head-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:11px}.brand svg{width:30px;height:30px}
+    .brand b{font-family:var(--heading);font-size:21px;font-weight:600;color:var(--gold)}.brand span{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);border-left:1px solid var(--border);padding-left:11px}
+    .back{font-size:13px;color:var(--gold-deep);text-decoration:none;font-weight:500}.back:hover{text-decoration:underline}
+    .hero{padding:46px 0 14px}.eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:12px}
+    h1{font-family:var(--heading);font-size:38px;font-weight:600;line-height:1.12}.lead{font-size:17px;color:var(--mid);margin-top:14px;max-width:660px}
+    .jump{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0 0}
+    .jump a{font-size:12.5px;font-weight:500;color:var(--mid);background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:7px 15px;text-decoration:none}
+    .jump a:hover{border-color:var(--gold);color:var(--ink)}
+    section.block{padding:34px 0;border-top:1px solid var(--border)}
+    h2{font-family:var(--heading);font-size:25px;font-weight:600;margin-bottom:6px}
+    h2 .num{font-family:var(--body);font-size:13px;font-weight:700;color:var(--gold-deep);background:var(--gold-faint);border:1px solid rgba(184,146,46,.25);width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:7px;vertical-align:middle;margin-right:12px}
+    h3{font-size:15px;font-weight:700;color:var(--ink);margin:22px 0 8px;letter-spacing:.01em}
+    p{margin:10px 0;color:var(--mid)}p strong{color:var(--ink);font-weight:600}
+    ul,ol{margin:10px 0 10px 4px;padding-left:22px}li{margin:6px 0;color:var(--mid)}li strong{color:var(--ink)}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin:16px 0}
+    .card-h{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:10px}
+    code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:var(--gold-faint);color:var(--gold-deep);padding:1px 6px;border-radius:4px}
+    .tip{border-left:3px solid var(--gold);background:var(--gold-faint);padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0;font-size:14px;color:var(--mid)}
+    .truth{background:var(--ink);color:#f3f0e8;border-radius:10px;padding:22px 24px;margin:18px 0}
+    .truth b{color:var(--gold);font-family:var(--heading);font-size:16px}.truth p{color:#d8d4c8}.truth li{color:#d8d4c8}.truth strong{color:#fff}
+    .steps{counter-reset:s;list-style:none;padding-left:0}.steps li{counter-increment:s;position:relative;padding-left:38px;margin:12px 0}
+    .steps li::before{content:counter(s);position:absolute;left:0;top:-2px;width:26px;height:26px;background:var(--gold);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+    /* source tags */
+    .tags{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+    .tags code{font-size:13px;padding:5px 12px;border-radius:20px;background:var(--surface);border:1px solid var(--border);color:var(--gold-deep)}
+    /* pipeline stages */
+    .stages{margin:14px 0}
+    .stage{display:grid;grid-template-columns:150px 1fr;gap:0 18px;align-items:start;padding:14px 0;border-top:1px dashed var(--border)}
+    .stage:first-child{border-top:none}
+    .stage .badge{font-size:12.5px;font-weight:700;letter-spacing:.02em;color:#fff;padding:5px 0;border-radius:7px;text-align:center;background:var(--gold)}
+    .stage .badge.s-new{background:#5b6b7a}.stage .badge.s-working{background:#7a6a3c}.stage .badge.s-app{background:#b07d1e}
+    .stage .badge.s-booked{background:#3c6a8a}.stage .badge.s-show{background:var(--green)}.stage .badge.s-noshow{background:#a85a2a}
+    .stage .badge.s-won{background:#2f7a4f}.stage .badge.s-lost{background:var(--red)}.stage .badge.s-nurture{background:#6a6458}
+    .stage .body strong{display:block;color:var(--ink);font-size:14px;margin-bottom:2px}
+    .stage .body span{font-size:14px;color:var(--mid)}
+    .flow-arrow{font-family:ui-monospace,monospace;font-size:13px;color:var(--gold-deep);background:var(--gold-faint);border:1px solid rgba(184,146,46,.2);border-radius:8px;padding:12px 16px;margin:12px 0;line-height:2.1;word-spacing:2px}
+    .role{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin:14px 0}
+    .role h4{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:2px}
+    .role .where{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--gold-deep);background:var(--gold-faint);border:1px solid rgba(184,146,46,.22);padding:2px 9px;border-radius:5px;margin-left:8px;vertical-align:middle}
+    .role ul{margin:8px 0 0}
+    .twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+    footer{border-top:1px solid var(--border);padding:30px 0;text-align:center;font-size:12.5px;color:var(--muted)}footer a{color:var(--gold-deep);text-decoration:none}
+    @media print{.jump,.back{display:none}body{font-size:11.5px}section.block{padding:18px 0}.stage{padding:9px 0}}
+    @media (max-width:600px){h1{font-size:30px}.stage{grid-template-columns:1fr;gap:6px}.stage .badge{width:max-content;padding:5px 14px}.twocol{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header><div class="wrap head-row">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M4 28 L4 12 L14 8 L14 26 Z" fill="url(#g)"/><path d="M28 28 L28 12 L18 8 L18 26 Z" fill="url(#g)"/><rect x="14" y="8" width="4" height="18" fill="#f7f6f3"/><polygon points="14,8 18,8 16,5" fill="#c9a84c"/><path d="M4 12 L14 8 L16 11 L4 15 Z" fill="#c9a84c"/><path d="M28 12 L18 8 L16 11 L28 15 Z" fill="#c9a84c"/><defs><linearGradient id="g" x1="4" y1="8" x2="14" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#d4aa50"/><stop offset="100%" stop-color="#8a6420"/></linearGradient></defs></svg>
+      <b>Breedwise</b><span>Sales Standard</span>
+    </div>
+    <a class="back" href="/sales">← Open the Sales OS</a>
+  </div></header>
+
+  <main class="wrap">
+    <div class="hero">
+      <div class="eyebrow">How Sales Works at Breedwise</div>
+      <h1>One simple system</h1>
+      <p class="lead">So every rep knows exactly what a "lead" is, where each lead lives, what to do next, and how we measure success. Everything else is details. If it doesn't fit on this page, it's too complex.</p>
+      <div class="jump">
+        <a href="#rules">Golden Rules</a><a href="#stages">9 Stages</a><a href="#roles">Roles</a><a href="#flow">Daily Flow</a><a href="#track">What We Track</a>
+      </div>
+    </div>
+
+    <!-- 1. GOLDEN RULES -->
+    <section class="block" id="rules">
+      <h2><span class="num">1</span>Golden Rules</h2>
+
+      <div class="truth">
+        <b>One pipeline. One record.</b>
+        <p style="margin:6px 0 0">All sales work happens in <strong>CC360</strong>, in a single pipeline. One lead = one record, one place to change stages.</p>
+      </div>
+
+      <h3>Lead = raised hand only</h3>
+      <p>A "lead" is someone who has:</p>
+      <ul>
+        <li><strong>Booked a call</strong>, or</li>
+        <li><strong>Submitted an application</strong>, or</li>
+        <li><strong>DM'd / replied with clear buying intent</strong> — "I want help with my breeding program," "How do I apply?"</li>
+      </ul>
+      <div class="tip">👥 New followers, likes, and casual DMs = <strong>audience, not leads.</strong> They live in CC360 as audience and never enter the pipeline. This one rule is what keeps every number honest.</div>
+
+      <h3>CC360 is the brain</h3>
+      <div class="card"><dl class="kv" style="display:grid;grid-template-columns:130px 1fr;gap:8px 16px;font-size:14px">
+        <dt style="color:var(--muted);font-weight:500">CC360</dt><dd style="color:var(--ink)">The <strong>only</strong> place stages change. The operational CRM + pipeline.</dd>
+        <dt style="color:var(--muted);font-weight:500">Close</dt><dd style="color:var(--ink)">Dialer + call log only. No deals, no stages.</dd>
+        <dt style="color:var(--muted);font-weight:500">Sales OS</dt><dd style="color:var(--ink)">Scoreboard only. Reporting, attribution &amp; comp.</dd>
+      </dl></div>
+
+      <h3>Every lead has a source</h3>
+      <p>Exactly <strong>one</strong> source tag per lead, so we always know what's working:</p>
+      <div class="tags">
+        <code>ad-casestudy</code><code>ig-dm</code><code>ig-organic</code><code>vsl-application</code><code>referral</code>
+      </div>
+      <p style="font-size:13.5px;color:var(--muted)">We can add more later — but it's always exactly 1 per lead.</p>
+    </section>
+
+    <!-- 2. STAGES -->
+    <section class="block" id="stages">
+      <h2><span class="num">2</span>The 9 Pipeline Stages</h2>
+      <p>All opportunities live in <strong>one CC360 pipeline</strong> with these stages:</p>
+      <div class="stages">
+        <div class="stage"><div class="badge s-new">New</div><div class="body"><strong>Raised-hand lead just created</strong><span>App, booked call, or DM with intent. No human has touched it yet.</span></div></div>
+        <div class="stage"><div class="badge s-working">Working</div><div class="body"><strong>Outreach has started</strong><span>Setter/closer is working it — calls, texts, emails. Not yet applied or booked.</span></div></div>
+        <div class="stage"><div class="badge s-app">App</div><div class="body"><strong>Application submitted</strong><span>Applied, but not yet booked for a Gameplan Call.</span></div></div>
+        <div class="stage"><div class="badge s-booked">Booked</div><div class="body"><strong>Gameplan &amp; Enrollment Call on the calendar</strong><span>Lead has received confirmation email/text.</span></div></div>
+        <div class="stage"><div class="badge s-show">Show</div><div class="body"><strong>Attended the Gameplan Call (≥ 15 min)</strong><span>Call complete; next step is decision or follow-up.</span></div></div>
+        <div class="stage"><div class="badge s-noshow">No-Show</div><div class="body"><strong>Booked but did not attend</strong><span>Triggers reactivation / reschedule attempts.</span></div></div>
+        <div class="stage"><div class="badge s-won">Won</div><div class="body"><strong>Enrolled + made initial payment</strong><span>Now belongs to Ops/Success for onboarding.</span></div></div>
+        <div class="stage"><div class="badge s-lost">Lost</div><div class="body"><strong>Clear "no" or not a fit</strong><span>No further sales work planned.</span></div></div>
+        <div class="stage"><div class="badge s-nurture">Nurture</div><div class="body"><strong>Not ready now, worth staying in touch</strong><span>Timing or funds. Worked by long-term nurture / scheduled outbound later.</span></div></div>
+      </div>
+    </section>
+
+    <!-- 3. ROLES -->
+    <section class="block" id="roles">
+      <h2><span class="num">3</span>Who Owns What</h2>
+
+      <div class="role">
+        <h4>Marketing <span class="where">CC360</span></h4>
+        <p style="margin:6px 0 0">Drives traffic to VSL, Playbook, IG. Ensures every form/opt-in:</p>
+        <ul>
+          <li>Creates/updates the contact in CC360</li>
+          <li>Applies <strong>exactly one source tag</strong></li>
+          <li>Only creates an opportunity when the lead <strong>raises a hand</strong></li>
+        </ul>
+      </div>
+
+      <div class="role">
+        <h4>Setter <span class="where">Close + CC360</span></h4>
+        <ul style="margin-top:6px">
+          <li>Works <strong>New</strong> and <strong>Working</strong> stages.</li>
+          <li>Calls/texts from <strong>Close</strong>, updates stage in <strong>CC360</strong> only.</li>
+          <li>Books Gameplan Calls → moves to <strong>Booked</strong>.</li>
+          <li>Runs show-up / reminder sequences. <strong>Owns show rate</strong> on their sets.</li>
+        </ul>
+      </div>
+
+      <div class="role">
+        <h4>Closer <span class="where">Close + CC360</span></h4>
+        <ul style="margin-top:6px">
+          <li>Runs Gameplan &amp; Enrollment Calls.</li>
+          <li>After every call, moves the lead to <strong>Show, No-Show, Won, or Lost</strong>.</li>
+          <li>Adds notes + next steps in <strong>CC360</strong>.</li>
+          <li><strong>Owns close rate</strong> and cash collected from Shows.</li>
+        </ul>
+      </div>
+
+      <div class="role">
+        <h4>Ops / Success <span class="where">Member OS</span></h4>
+        <ul style="margin-top:6px">
+          <li>Takes over after <strong>Won</strong>.</li>
+          <li>Runs onboarding and fulfillment.</li>
+          <li>Feeds back proof, churn drivers, and client stories.</li>
+        </ul>
+      </div>
+
+      <div class="role">
+        <h4>Sales OS <span class="where">Leadership only</span></h4>
+        <p style="margin:6px 0 0">Reads events from CC360 + Close. Shows daily/weekly numbers — leads, apps, booked, shows, won, cash; show rate, close rate; dials &amp; talk time per rep. Drives comp and decisions. <strong>No reps work here day-to-day.</strong></p>
+      </div>
+    </section>
+
+    <!-- 4. DAILY FLOW -->
+    <section class="block" id="flow">
+      <h2><span class="num">4</span>Daily Flow</h2>
+      <div class="flow-arrow">Lead raises hand → CC360 creates contact + source tag → <strong style="color:#5b6b7a">New</strong> → Setter works it → <strong style="color:#7a6a3c">Working</strong> → qualifies + books → <strong style="color:#3c6a8a">Booked</strong> → reminders → <strong style="color:var(--green)">Show</strong> / <strong style="color:#a85a2a">No-Show</strong> → Closer runs call → <strong style="color:#2f7a4f">Won</strong> / <strong style="color:var(--red)">Lost</strong> / <strong style="color:#6a6458">Nurture</strong></div>
+      <ol class="steps">
+        <li>Lead raises hand → CC360 creates/updates contact + applies <strong>one source tag</strong> → <strong>New</strong>.</li>
+        <li>Setter pulls from <strong>New</strong> → starts outreach → <strong>Working</strong>.</li>
+        <li>Setter qualifies + books → moves to <strong>Booked</strong>.</li>
+        <li>Setter runs the reminder sequence → lead <strong>Shows</strong> or is <strong>No-Show</strong>.</li>
+        <li>Closer runs the call: enrolls → <strong>Won</strong>; otherwise <strong>Lost</strong> or <strong>Nurture</strong> (with a reason).</li>
+        <li>Sales OS ingests every event → updates the scoreboard.</li>
+      </ol>
+    </section>
+
+    <!-- 5. WHAT WE TRACK -->
+    <section class="block" id="track">
+      <h2><span class="num">5</span>What We Track</h2>
+      <div class="twocol">
+        <div class="card"><div class="card-h">Company (Sales OS)</div>
+          <ul style="margin:0">
+            <li>Leads (by source)</li>
+            <li>Applications</li>
+            <li>Booked Calls</li>
+            <li>Shows</li>
+            <li>Won Deals</li>
+            <li>Cash Collected</li>
+            <li>App rate · book rate · show rate · close rate</li>
+          </ul>
+        </div>
+        <div>
+          <div class="card"><div class="card-h">Per Setter</div>
+            <ul style="margin:0"><li>Outbound dials / day</li><li>Booked Calls / day</li><li>Show rate on their sets</li></ul>
+          </div>
+          <div class="card"><div class="card-h">Per Closer</div>
+            <ul style="margin:0"><li>Shows handled</li><li>Close rate</li><li>Cash per show</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="truth" style="margin-top:22px">
+        <b>The whole system in one breath</b>
+        <p style="margin:6px 0 0">One working pipeline (<strong>CC360</strong>). One dialer (<strong>Close</strong>). One brain (<strong>Sales OS</strong>). A lead is a raised hand, it carries one source, and it moves through nine stages. That's it.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="wrap">
+    Breedwise — Sales Standard · <a href="/sales">Sales OS</a> · <a href="/sales-manual">Team Manual</a><br>
+    Teach it in 10 minutes. Build CC360 around it. Wire Close as a dumb dialer. Read the truth in the Sales OS.
+  </div></footer>
+</body>
+</html>
