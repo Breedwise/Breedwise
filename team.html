@@ -293,7 +293,7 @@
           <p class="view-sub">Every member's name, email, and phone — for quick outreach.</p>
         </div></div>
         <div class="table-wrap">
-          <div class="table-tools"><input id="dirSearch" type="text" placeholder="Search name, email or phone…" style="margin-left:auto;font-size:12.5px;color:var(--ink);background:var(--card);border:1px solid var(--border);border-radius:6px;padding:7px 12px;outline:none;width:230px"></div>
+          <div class="table-tools"><input id="directorySearch" type="text" placeholder="Search name, email or phone…" style="margin-left:auto;font-size:12.5px;color:var(--ink);background:var(--card);border:1px solid var(--border);border-radius:6px;padding:7px 12px;outline:none;width:230px"></div>
           <div style="overflow-x:auto"><table>
             <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th class="hide-sm">Program</th><th class="hide-sm">Pod</th></tr></thead>
             <tbody id="directoryBody"></tbody>
@@ -1027,10 +1027,10 @@
   $('#ssDelete').onclick=async ()=>{ if(!editingSS) return; if(!confirm('Delete this session?')) return; const res=await sb.from('strategy_sessions').delete().eq('id',editingSS); if(res.error){ $('#ssErr').textContent=res.error.message; return; } closeSS(); await loadData(); renderStrategy(); toast('Session deleted'); };
 
   /* ═══ DIRECTORY ═══ */
-  let dirQ='';
+  let directoryQ='';
   function renderDirectory(){
     let rows=MEMBERS.slice().sort((a,b)=>String(a.name).localeCompare(String(b.name)));
-    if(dirQ) rows=rows.filter(m=>((m.name||'')+' '+(m.email||'')+' '+(m.phone||'')).toLowerCase().includes(dirQ));
+    if(directoryQ) rows=rows.filter(m=>((m.name||'')+' '+(m.email||'')+' '+(m.phone||'')).toLowerCase().includes(directoryQ));
     $('#directoryBody').innerHTML=rows.map(m=>`<tr>
       <td class="m-name">${esc(m.name)}</td>
       <td>${m.email?`<a href="mailto:${esc(m.email)}" style="color:var(--gold-deep);text-decoration:none">${esc(m.email)}</a>`:'<span class="muted-cell">—</span>'}</td>
@@ -1038,7 +1038,7 @@
       <td class="hide-sm"><span class="prog-tag">${m.program||'—'}</span></td>
       <td class="hide-sm muted-cell">${esc(podName(m.pod))}</td>
     </tr>`).join('')||`<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:26px">No members.</td></tr>`;
-    const sbx=$('#dirSearch'); if(sbx) sbx.oninput=e=>{dirQ=e.target.value.toLowerCase();renderDirectory();};
+    const sbx=$('#directorySearch'); if(sbx){ sbx.value=directoryQ; sbx.oninput=e=>{directoryQ=e.target.value.toLowerCase();renderDirectory();}; }
   }
 
   boot();
