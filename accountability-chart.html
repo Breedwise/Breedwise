@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accountability Chart · Breedwise Academy</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#f7f6f3;--surface:#fff;--card:#fbfaf8;--border:#e2dfd8;--gold:#b8922e;--gold-deep:#8a6420;--gold-faint:rgba(184,146,46,.08);
+      --ink:#1a1813;--mid:#48463f;--muted:#86847d;--green:#3c7a52;--green-bg:rgba(60,122,82,.1);--yellow:#b07d1e;--yellow-bg:rgba(176,125,30,.12);--red:#a33a3a;--red-bg:rgba(163,58,58,.1);
+      --growth:#3c6a8a;--outcomes:#3c7a52;--ops:#8a6420;
+      --heading:'Playfair Display',Georgia,serif;--body:'Inter',-apple-system,sans-serif}
+    html{scroll-behavior:smooth}body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+    .wrap{max-width:960px;margin:0 auto;padding:0 24px}
+    header{background:var(--surface);border-bottom:1px solid var(--border);padding:22px 0}
+    .head-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:11px}.brand svg{width:30px;height:30px}
+    .brand b{font-family:var(--heading);font-size:21px;font-weight:600;color:var(--gold)}.brand span{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);border-left:1px solid var(--border);padding-left:11px}
+    .back{font-size:13px;color:var(--gold-deep);text-decoration:none;font-weight:500}.back:hover{text-decoration:underline}
+    .hero{padding:46px 0 14px}.eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:12px}
+    h1{font-family:var(--heading);font-size:38px;font-weight:600;line-height:1.12}.lead{font-size:17px;color:var(--mid);margin-top:14px;max-width:720px}
+    .jump{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0 0}
+    .jump a{font-size:12.5px;font-weight:500;color:var(--mid);background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:7px 15px;text-decoration:none}
+    .jump a:hover{border-color:var(--gold);color:var(--ink)}
+    section.block{padding:34px 0;border-top:1px solid var(--border)}
+    h2{font-family:var(--heading);font-size:25px;font-weight:600;margin-bottom:6px}
+    h2 .num{font-family:var(--body);font-size:13px;font-weight:700;color:var(--gold-deep);background:var(--gold-faint);border:1px solid rgba(184,146,46,.25);width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:7px;vertical-align:middle;margin-right:12px}
+    h3{font-size:15px;font-weight:700;color:var(--ink);margin:22px 0 8px;letter-spacing:.01em}
+    p{margin:10px 0;color:var(--mid)}p strong{color:var(--ink);font-weight:600}
+    code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:var(--gold-faint);color:var(--gold-deep);padding:1px 6px;border-radius:4px}
+    .tip{border-left:3px solid var(--gold);background:var(--gold-faint);padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0;font-size:14px;color:var(--mid)}
+    .truth{background:var(--ink);color:#f3f0e8;border-radius:10px;padding:22px 24px;margin:18px 0}
+    .truth b{color:var(--gold);font-family:var(--heading);font-size:16px}.truth p{color:#d8d4c8}.truth li{color:#d8d4c8}.truth strong{color:#fff}
+    table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+    th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+    th{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700}
+    td strong{color:var(--ink)}
+    /* ── TREE ── */
+    .tree{margin:16px 0;font-size:14px}
+    .node{position:relative;padding:7px 0 7px 0}
+    .lvl{padding-left:26px;border-left:1.5px solid var(--border);margin-left:8px}
+    .node .seatname{font-weight:600;color:var(--ink)}
+    .node .ns-mini{font-size:11.5px;color:var(--muted);margin-left:8px}
+    .node .ns-mini b{color:var(--gold-deep);font-weight:600}
+    .divtag{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;padding:3px 10px;border-radius:5px;margin:6px 0 2px}
+    .divtag.a{background:var(--growth)}.divtag.b{background:var(--outcomes)}.divtag.c{background:var(--ops)}
+    .top-seat{font-family:var(--heading);font-size:17px;font-weight:600;color:var(--ink)}
+    /* ── SEAT CARDS ── */
+    .divhead{display:flex;align-items:center;gap:12px;margin:30px 0 6px}
+    .divhead .bar{width:5px;height:30px;border-radius:3px}
+    .divhead.a .bar{background:var(--growth)}.divhead.b .bar{background:var(--outcomes)}.divhead.c .bar{background:var(--ops)}
+    .divhead h3{margin:0;font-family:var(--heading);font-size:20px}
+    .divhead .dsub{font-size:12.5px;color:var(--muted);margin-left:4px}
+    .seat{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:18px 20px;margin:14px 0}
+    .seat.head{border-color:rgba(184,146,46,.4);background:#fcfaf4}
+    .seat-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+    .seat-name{font-size:16px;font-weight:700;color:var(--ink)}
+    .reports{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
+    .reports b{color:var(--mid);font-weight:600}
+    .ns{text-align:right;min-width:230px;flex:1}
+    .ns-label{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700}
+    .ns-val{display:inline-block;font-size:14px;font-weight:700;color:#fff;background:var(--gold-deep);padding:5px 12px;border-radius:7px;margin-top:4px;line-height:1.3}
+    .seat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+    .seat-grid .lab{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:6px}
+    .seat-grid ul{margin:0;padding-left:16px}.seat-grid li{margin:4px 0;font-size:13px;color:var(--mid)}
+    .seat-grid li strong{color:var(--ink)}
+    /* ── PEOPLE LOAD ── */
+    .load-badge{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;margin-left:8px}
+    .load-1{background:var(--green-bg);color:var(--green)}
+    .load-hi{background:var(--red-bg);color:var(--red)}
+    .load-mid{background:var(--yellow-bg);color:var(--yellow)}
+    .pin{font-size:11px;color:var(--muted)}
+    footer{border-top:1px solid var(--border);padding:30px 0;text-align:center;font-size:12.5px;color:var(--muted)}footer a{color:var(--gold-deep);text-decoration:none}
+    @media print{.jump,.back{display:none}body{font-size:11px}section.block{padding:16px 0}.seat{break-inside:avoid}}
+    @media (max-width:760px){h1{font-size:30px}.seat-grid{grid-template-columns:1fr}.ns{text-align:left;min-width:0}.seat-top{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <header><div class="wrap head-row">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M4 28 L4 12 L14 8 L14 26 Z" fill="url(#g)"/><path d="M28 28 L28 12 L18 8 L18 26 Z" fill="url(#g)"/><rect x="14" y="8" width="4" height="18" fill="#f7f6f3"/><polygon points="14,8 18,8 16,5" fill="#c9a84c"/><path d="M4 12 L14 8 L16 11 L4 15 Z" fill="#c9a84c"/><path d="M28 12 L18 8 L16 11 L28 15 Z" fill="#c9a84c"/><defs><linearGradient id="g" x1="4" y1="8" x2="14" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#d4aa50"/><stop offset="100%" stop-color="#8a6420"/></linearGradient></defs></svg>
+      <b>Breedwise</b><span>Accountability Chart</span>
+    </div>
+    <a class="back" href="/team">← Open the OS</a>
+  </div></header>
+
+  <main class="wrap">
+    <div class="hero">
+      <div class="eyebrow">Breedwise Academy · Q3 Accountability Chart</div>
+      <h1>Who owns what outcome</h1>
+      <p class="lead">This is an <strong>accountability chart, not an org chart</strong>. It maps the company by <strong>seats</strong> (not people) — every seat owns exactly <strong>one North Star metric</strong>, and every Q3 target routes to exactly one seat. It works even if everyone were replaced tomorrow. People are mapped to seats at the bottom.</p>
+      <div class="jump">
+        <a href="#tree">1 · The Chart</a><a href="#q3">Q3 Ownership Map</a><a href="#seats">2 · Seat-by-Seat</a><a href="#people">3 · People (Now)</a>
+      </div>
+    </div>
+
+    <!-- SECTION 1 — TREE -->
+    <section class="block" id="tree">
+      <h2><span class="num">1</span>Hierarchical Accountability Chart</h2>
+      <p>Structure only — no names. Each line shows the seat and the single outcome it owns.</p>
+      <div class="tree">
+        <div class="node"><span class="top-seat">Visionary (CEO)</span><span class="ns-mini"><b>Owns:</b> 3-yr vision, brand authority & key relationships</span></div>
+        <div class="lvl">
+          <div class="node"><span class="top-seat">Integrator (COO)</span><span class="ns-mini"><b>Owns:</b> Q3 scorecard attainment — every seat's North Star green</span></div>
+          <div class="lvl">
+
+            <div class="divtag a">Division A — Growth</div>
+            <div class="node"><span class="seatname">Head of Growth</span><span class="ns-mini"><b>$283,500</b> cash collected</span></div>
+            <div class="lvl">
+              <div class="node"><span class="seatname">Marketing Manager (Content & Social)</span><span class="ns-mini"><b>10,000</b> IG followers</span></div>
+              <div class="node"><span class="seatname">Lead Generation / Setters</span><span class="ns-mini"><b>2,400</b> leads generated</span></div>
+              <div class="node"><span class="seatname">Calendar Captain / Qualifier</span><span class="ns-mini"><b>75%</b> show rate</span></div>
+              <div class="node"><span class="seatname">Sales Manager</span><span class="ns-mini"><b>126</b> sales (at 40% close)</span></div>
+              <div class="node"><span class="seatname">Affiliate Manager</span><span class="ns-mini"><b>15</b> active affiliates</span></div>
+              <div class="node"><span class="seatname">Clinic Partnerships Manager</span><span class="ns-mini"><b>5</b> vet clinics signed</span></div>
+            </div>
+
+            <div class="divtag b">Division B — Outcomes</div>
+            <div class="node"><span class="seatname">Director of Customer Success</span><span class="ns-mini"><b>≤3%</b> monthly churn</span></div>
+            <div class="lvl">
+              <div class="node"><span class="seatname">Customer Onboarding Specialist</span><span class="ns-mini"><b>≥80%</b> activation rate</span></div>
+              <div class="node"><span class="seatname">Accountability & Community Lead</span><span class="ns-mini"><b>≥65%</b> weekly engagement</span></div>
+              <div class="node"><span class="seatname">Curriculum / Program Manager</span><span class="ns-mini"><b>Member results rate</b> (milestones hit)</span></div>
+              <div class="node"><span class="seatname">Veterinary Advisory Lead</span><span class="ns-mini"><b>100%</b> vet sessions on schedule + clinical accuracy</span></div>
+            </div>
+
+            <div class="divtag c">Division C — Ops & Finance</div>
+            <div class="node"><span class="seatname">Head of Ops & Finance</span><span class="ns-mini"><b>≥97%</b> collection rate</span></div>
+            <div class="lvl">
+              <div class="node"><span class="seatname">Finance & Accounting</span><span class="ns-mini"><b>Close ≤5 days</b>, 100% reconciled</span></div>
+              <div class="node"><span class="seatname">CRM / Systems Manager</span><span class="ns-mini"><b>≥99%</b> pipeline data integrity</span></div>
+              <div class="node"><span class="seatname">Event & Project Manager</span><span class="ns-mini"><b>100%</b> on-time & on-budget delivery</span></div>
+              <div class="node"><span class="seatname">Admin / HR & Hiring Support</span><span class="ns-mini"><b>Open seats filled ≤30 days</b></span></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Q3 OWNERSHIP MAP -->
+    <section class="block" id="q3">
+      <h2><span class="num">★</span>Every Q3 Target → One Owner</h2>
+      <p>The eight Q3 targets, each routed to exactly one seat. No target has two owners.</p>
+      <table>
+        <thead><tr><th>Q3 Target</th><th>Owning Seat</th><th>Role of metric</th></tr></thead>
+        <tbody>
+          <tr><td><strong>$283,500</strong> cash collected</td><td>Head of Growth</td><td>North Star</td></tr>
+          <tr><td><strong>126</strong> sales</td><td>Sales Manager</td><td>North Star</td></tr>
+          <tr><td><strong>40%</strong> sales conversion (close) rate</td><td>Sales Manager</td><td>Owned supporting KPI (quality gate behind the 126)</td></tr>
+          <tr><td><strong>2,400</strong> leads generated</td><td>Lead Generation / Setters</td><td>North Star</td></tr>
+          <tr><td><strong>75%</strong> show rate to qualified calls</td><td>Calendar Captain / Qualifier</td><td>North Star</td></tr>
+          <tr><td><strong>10,000</strong> IG followers</td><td>Marketing Manager</td><td>North Star</td></tr>
+          <tr><td><strong>15</strong> active, producing affiliates</td><td>Affiliate Manager</td><td>North Star</td></tr>
+          <tr><td><strong>5</strong> vet clinics signed</td><td>Clinic Partnerships Manager</td><td>North Star</td></tr>
+        </tbody>
+      </table>
+      <div class="tip">🔗 <strong>The rollup:</strong> Followers (Marketing) → Leads (Setters) → Show rate (Calendar Captain) → Sales + close rate (Sales Manager) → <strong>Cash (Head of Growth)</strong>. Affiliates & Clinics feed extra leads/sales into the same chain. Everything in Growth rolls into the $283,500.</div>
+    </section>
+
+    <!-- SECTION 2 — SEATS -->
+    <section class="block" id="seats">
+      <h2><span class="num">2</span>Seat-by-Seat Accountability</h2>
+      <p>Each seat: who it reports to, its one North Star, the KPIs that feed it, what it does, and what it can decide <em>without</em> asking the founder.</p>
+
+      <!-- LEADERSHIP -->
+      <div class="divhead"><div class="bar" style="background:var(--gold)"></div><h3>Leadership</h3></div>
+
+      <div class="seat head">
+        <div class="seat-top"><div><span class="seat-name">Visionary (CEO)</span><span class="reports">Reports to <b>the board / themselves</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">3-yr vision, brand authority & key relationships</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>Brand authority / reach</li><li>Strategic partnerships landed</li><li>Culture & values health</li><li>Big-bet decision quality</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Set vision, values, and the big bets</li><li>Own brand + highest-leverage relationships (vets, partners, talent)</li><li>Final escalation point; protect the culture</li><li>Steward the 3-year direction over the quarter</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Vision, pricing philosophy, brand</li><li>Major hires & big financial commitments</li><li>New product lines / market moves</li></ul></div>
+        </div>
+      </div>
+
+      <div class="seat head">
+        <div class="seat-top"><div><span class="seat-name">Integrator (COO)</span><span class="reports">Reports to <b>Visionary</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">Q3 scorecard attainment — every North Star green</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>Weekly scorecard health (% green)</li><li>Cross-division blockers cleared</li><li>Accountability-meeting adherence</li><li>Forecast vs actual</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Turn vision into the Q3 plan; run the weekly pulse</li><li>Hold every division head to their North Star</li><li>Remove cross-division blockers & manage tradeoffs</li><li>Own the company scorecard end-to-end</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Resource allocation across divisions</li><li>Quarter-to-quarter priorities & tradeoffs</li><li>Holding / replacing seat owners on performance</li></ul></div>
+        </div>
+      </div>
+
+      <!-- DIVISION A -->
+      <div class="divhead a"><div class="bar"></div><h3>Division A — Growth <span class="dsub">Marketing · Sales · Partnerships</span></h3></div>
+
+      <div class="seat head">
+        <div class="seat-top"><div><span class="seat-name">Head of Growth</span><span class="reports">Reports to <b>Integrator</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">$283,500 cash collected (Q3)</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>126 sales · 2,400 leads</li><li>75% show · 40% close</li><li>15 affiliates · 5 clinics</li><li>CAC & blended ROAS</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Own the whole revenue engine: traffic → leads → calls → close → cash</li><li>Hold the weekly growth scorecard across all 6 growth seats</li><li>Allocate ad/affiliate/partnership budget to CAC targets</li><li>Forecast Q3 cash weekly; fix funnel leaks</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Marketing budget & channel mix (within plan)</li><li>Pricing, discounts, promo offers</li><li>Hiring/firing within Growth</li><li>Which partnerships/affiliates to greenlight</li></ul></div>
+        </div>
+      </div>
+
+      <div class="seat">
+        <div class="seat-top"><div><span class="seat-name">Marketing Manager (Content & Social)</span><span class="reports">Reports to <b>Head of Growth</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">10,000 IG followers (end of Q3)</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>Content pieces / week</li><li>Reach & impressions</li><li>Profile → DM rate</li><li>DM opt-ins → landing-page visits</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Own the content calendar & publishing cadence</li><li>Grow followers with ethical-breeding authority content</li><li>Turn audience → DM conversations → opt-ins (hand to Setters)</li><li>Guard brand voice & creative quality</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Content topics, formats, schedule</li><li>Creative direction & brand voice</li><li>Trends/collabs to pursue</li></ul></div>
+        </div>
+      </div>
+
+      <div class="seat">
+        <div class="seat-top"><div><span class="seat-name">Lead Generation / Setters</span><span class="reports">Reports to <b>Head of Growth</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">2,400 leads generated (Q3)</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>DMs sent · reply rate</li><li>Applications started</li><li>Audience → raised-hand rate</li><li>Leads / day · response time</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Work inbound DMs + outbound into raised-hand leads</li><li>Qualify intent, apply one source tag, create the opportunity at <code>New</code></li><li>Hand qualified leads to the Calendar Captain</li><li>Follow up on no-replies; keep response time low</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Outreach scripts & follow-up cadence (on brand)</li><li>Qualified lead vs audience call</li><li>Daily activity prioritization</li></ul></div>
+        </div>
+      </div>
+
+      <div class="seat">
+        <div class="seat-top"><div><span class="seat-name">Calendar Captain / Qualifier</span><span class="reports">Reports to <b>Head of Growth</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">75% show rate to qualified calls (Q3)</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>Sessions booked · confirmations sent</li><li>Reminder completion</li><li>Reschedule rate</li><li>No-show recovery rate</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Book qualified leads into Strategy / Gameplan calls</li><li>Run the confirm + reminder sequence so people show</li><li>Reschedule & recover no-shows</li><li>Protect closer calendars (only qualified, confirmed calls)</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Booking rules & reminder cadence</li><li>Who is qualified enough to book</li><li>Reschedule vs nurture</li></ul></div>
+        </div>
+      </div>
+
+      <div class="seat">
+        <div class="seat-top"><div><span class="seat-name">Sales Manager</span><span class="reports">Reports to <b>Head of Growth</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">126 sales (Q3) · at ≥40% close</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li><strong>40% close rate</strong> (owned here)</li><li>Calls held · offer rate</li><li>Average ticket</li><li>Cash collected per call</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Own the closing team & the Gameplan / Enrollment call</li><li>Hit 126 closed deals at ≥40% close</li><li>Coach reps, review calls, maintain script & objections</li><li>Disposition every opportunity (Won/Lost/Nurture)</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Deal-level discounts / payment plans (within guardrails)</li><li>Rep assignment & lead distribution</li><li>Coaching, ramp & performance calls</li></ul></div>
+        </div>
+      </div>
+
+      <div class="seat">
+        <div class="seat-top"><div><span class="seat-name">Affiliate Manager</span><span class="reports">Reports to <b>Head of Growth</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">15 active, producing affiliates (Q3)</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>Affiliates recruited · % activated</li><li>Sales per affiliate</li><li>Affiliate-sourced revenue</li><li>Payout accuracy</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Recruit, onboard & activate affiliates</li><li>Equip them with assets, links & tracking</li><li>Keep ≥15 producing; prune dead ones</li><li>Reconcile payouts with Finance</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Who to bring on as an affiliate</li><li>Commission structures (within plan)</li><li>Affiliate assets & promo windows</li></ul></div>
+        </div>
+      </div>
+
+      <div class="seat">
+        <div class="seat-top"><div><span class="seat-name">Clinic Partnerships Manager</span><span class="reports">Reports to <b>Head of Growth</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">5 vet clinics signed & onboarded (Q3)</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>Clinics in pipeline · meetings booked</li><li>Clinics signed</li><li>Referrals generated</li><li>Co-marketing assets live</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Build a pipeline of vet clinics & pitch the partnership</li><li>Sign + onboard 5 clinics in Q3</li><li>Stand up referral mechanics + co-marketing</li><li>Coordinate with the Vet Advisory Lead for credibility</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Which clinics to pursue</li><li>Partnership terms (within plan)</li><li>Co-marketing offers</li></ul></div>
+        </div>
+      </div>
+
+      <!-- DIVISION B -->
+      <div class="divhead b"><div class="bar"></div><h3>Division B — Outcomes <span class="dsub">Product · Customer Success · Vet Team</span></h3></div>
+
+      <div class="seat head">
+        <div class="seat-top"><div><span class="seat-name">Director of Customer Success</span><span class="reports">Reports to <b>Integrator</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">Monthly churn ≤ 3%</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>NPS · activation rate</li><li>At-risk members recovered</li><li>Renewal / retention rate</li><li>LTV</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Own the member journey: Won → result → renewal</li><li>Keep churn ≤3% — protect the collected cash</li><li>Run the health/risk system (the Member OS)</li><li>Lead onboarding, community, curriculum & vet coordination</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Member save offers / pauses (within policy)</li><li>Success playbooks & health thresholds</li><li>Hiring within Outcomes</li></ul></div>
+        </div>
+      </div>
+
+      <div class="seat">
+        <div class="seat-top"><div><span class="seat-name">Customer Onboarding Specialist</span><span class="reports">Reports to <b>Director of Customer Success</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">Activation rate ≥ 80%</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>Onboarding ≤ 48h</li><li>Strategy + vet session ≤ 14d</li><li>Community joined</li><li>Time-to-first-win</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Drive every new member through the 6-step activation funnel on time</li><li>Schedule onboarding + first strategy/vet session</li><li>Remove friction in the first 14 days</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Onboarding sequence & scheduling</li><li>When a member counts as "activated"</li></ul></div>
+        </div>
+      </div>
+
+      <div class="seat">
+        <div class="seat-top"><div><span class="seat-name">Accountability & Community Lead</span><span class="reports">Reports to <b>Director of Customer Success</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">Weekly active engagement ≥ 65%</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>Call attendance</li><li>Posts / comments per member</li><li>Homework completion</li><li>At-risk flags raised</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Run the community + accountability cadence</li><li>Drive weekly engagement & attendance</li><li>Surface silent/at-risk members to CS</li><li>Capture wins & testimonials</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Community programming & cadence</li><li>Moderation & escalation calls</li></ul></div>
+        </div>
+      </div>
+
+      <div class="seat">
+        <div class="seat-top"><div><span class="seat-name">Curriculum / Program Manager</span><span class="reports">Reports to <b>Director of Customer Success</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">Member results rate (milestones achieved)</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>Completion rate</li><li>Curriculum NPS</li><li>Content freshness</li><li>Time-to-milestone</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Own curriculum quality & roadmap across programs + the software OS</li><li>Keep content current, outcome-driven & on-brand</li><li>Fold vet input into the curriculum</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Curriculum structure & updates</li><li>What ships on the program / software roadmap (within plan)</li></ul></div>
+        </div>
+      </div>
+
+      <div class="seat">
+        <div class="seat-top"><div><span class="seat-name">Veterinary Advisory Lead</span><span class="reports">Reports to <b>Director of Customer Success</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">100% vet sessions on schedule + clinical accuracy</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>Sessions delivered · turnaround</li><li>Clinical content reviewed</li><li>Clinic referrals supported</li><li>Member clinical satisfaction</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Lead the vet team</li><li>Deliver strategy/vet sessions & review clinical content</li><li>Lend credibility to clinic partnerships & marketing</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Clinical content sign-off</li><li>Vet team scheduling & standards</li></ul></div>
+        </div>
+      </div>
+
+      <!-- DIVISION C -->
+      <div class="divhead c"><div class="bar"></div><h3>Division C — Ops & Finance <span class="dsub">Systems · Events · Finance · Admin</span></h3></div>
+
+      <div class="seat head">
+        <div class="seat-top"><div><span class="seat-name">Head of Ops & Finance</span><span class="reports">Reports to <b>Integrator</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">Collection rate ≥ 97% (cash collected ÷ billed)</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>Cash vs forecast · AR aging</li><li>Failed-payment recovery</li><li>Systems uptime</li><li>On-time project delivery · runway</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Own financial integrity + the systems backbone</li><li>Recover failed payments; protect collected cash</li><li>Keep CRM/systems, events, finance & admin running</li><li>Give the Integrator a clean weekly numbers pack</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Vendor & tooling spend (within budget)</li><li>Process / system changes</li><li>Hiring within Ops</li></ul></div>
+        </div>
+      </div>
+
+      <div class="seat">
+        <div class="seat-top"><div><span class="seat-name">Finance & Accounting</span><span class="reports">Reports to <b>Head of Ops & Finance</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">Month-end close ≤ 5 days, 100% reconciled</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>Reconciliation accuracy</li><li>AR / AP current</li><li>Payroll on time</li><li>Cash-report accuracy (matches Sales)</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Books, reconciliation, payroll, payouts (w/ external bookkeeping)</li><li>Accurate cash-collected reporting that matches Sales</li><li>Affiliate & commission payouts</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Bookkeeping process & categorization</li><li>Payment runs (within authority)</li></ul></div>
+        </div>
+      </div>
+
+      <div class="seat">
+        <div class="seat-top"><div><span class="seat-name">CRM / Systems Manager</span><span class="reports">Reports to <b>Head of Ops & Finance</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">Pipeline data integrity ≥ 99%</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>Sync success rate · dup rate</li><li>1 source tag / lead · stage hygiene</li><li>Automation uptime</li><li>Report accuracy</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Own CC360 pipeline + Close + Sales OS integrations</li><li>Keep source tags, stages & syncs clean — the single source of truth</li><li>Build/maintain automations & dashboards</li><li>Guard data security & access</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>System config, automations, integrations</li><li>Data model & tagging standards</li></ul></div>
+        </div>
+      </div>
+
+      <div class="seat">
+        <div class="seat-top"><div><span class="seat-name">Event & Project Manager</span><span class="reports">Reports to <b>Head of Ops & Finance</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">100% events/launches on-time & on-budget</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>Milestones on time</li><li>Budget variance</li><li>Attendance</li><li>Post-event NPS</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Run launches, events & cross-team projects</li><li>Hold timelines, owners & budgets</li><li>Coordinate Growth + Outcomes for promos/events</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Project plans & timelines</li><li>Event vendors (within budget)</li></ul></div>
+        </div>
+      </div>
+
+      <div class="seat">
+        <div class="seat-top"><div><span class="seat-name">Admin / HR & Hiring Support</span><span class="reports">Reports to <b>Head of Ops & Finance</b></span></div>
+          <div class="ns"><span class="ns-label">North Star</span><span class="ns-val">Open seats filled ≤ 30 days</span></div></div>
+        <div class="seat-grid">
+          <div><div class="lab">Supporting KPIs</div><ul><li>Time-to-fill</li><li>Candidate pipeline depth</li><li>New-hire onboarding completion</li><li>Compliance docs current</li></ul></div>
+          <div><div class="lab">Core Responsibilities</div><ul><li>Run the hiring pipeline to fill double-seated roles (relieve founder overload)</li><li>Onboard new hires; maintain HR docs & compliance</li><li>General admin support to leadership</li></ul></div>
+          <div><div class="lab">Decisions They Own</div><ul><li>Sourcing channels & screening</li><li>Onboarding logistics</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3 — PEOPLE -->
+    <section class="block" id="people">
+      <h2><span class="num">3</span>People Mapping — Current State</h2>
+      <p>Who sits in each seat <em>today</em>. The structure above doesn't change; this just shows where the same person is wearing multiple hats "for now."</p>
+      <table>
+        <thead><tr><th>Seat</th><th>Person (now)</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Visionary (CEO)</td><td><strong>Austin</strong></td><td></td></tr>
+          <tr><td>Integrator (COO)</td><td><strong>Austin</strong></td><td><span class="pin">for now</span></td></tr>
+          <tr><td>Head of Growth</td><td><strong>Austin</strong></td><td></td></tr>
+          <tr><td>Marketing Manager (Content & Social)</td><td>Bryan</td><td></td></tr>
+          <tr><td>Lead Generation / Setters</td><td>Madison</td><td></td></tr>
+          <tr><td>Calendar Captain / Qualifier</td><td>Yasmin</td><td></td></tr>
+          <tr><td>Sales Manager</td><td>Raymond</td><td></td></tr>
+          <tr><td>Affiliate Manager</td><td>Jennifer</td><td></td></tr>
+          <tr><td>Clinic Partnerships Manager</td><td><strong>Austin</strong></td><td><span class="pin">for now</span></td></tr>
+          <tr><td>Director of Customer Success</td><td>Jennifer</td><td></td></tr>
+          <tr><td>Customer Onboarding Specialist</td><td>Jennifer</td><td><span class="pin">for now</span></td></tr>
+          <tr><td>Accountability & Community Lead</td><td>Derek</td><td></td></tr>
+          <tr><td>Curriculum / Program Manager</td><td><strong>Austin</strong></td><td><span class="pin">for now</span></td></tr>
+          <tr><td>Veterinary Advisory Lead</td><td>Emmanuel</td><td><span class="pin">+ Angela & David on the vet team</span></td></tr>
+          <tr><td>Head of Ops & Finance</td><td>Jennifer</td><td><span class="pin">for now</span></td></tr>
+          <tr><td>Finance & Accounting</td><td><strong>Austin</strong></td><td><span class="pin">for now · + external bookkeeping</span></td></tr>
+          <tr><td>CRM / Systems Manager</td><td>Godfred</td><td></td></tr>
+          <tr><td>Event & Project Manager</td><td>Jennifer</td><td><span class="pin">for now</span></td></tr>
+          <tr><td>Admin / HR & Hiring Support</td><td><strong>Austin</strong></td><td><span class="pin">for now</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Where the load is concentrated</h3>
+      <table>
+        <thead><tr><th>Person</th><th>Seats held</th><th>Spans</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Austin</strong> <span class="load-badge load-hi">7 seats</span></td><td>Visionary · Integrator · Head of Growth · Clinic Partnerships · Curriculum/Program · Finance & Accounting · Admin/HR</td><td>Both top seats + a seat in <strong>all three</strong> divisions</td></tr>
+          <tr><td><strong>Jennifer</strong> <span class="load-badge load-mid">5 seats</span></td><td>Affiliate Manager · Director of Customer Success · Onboarding Specialist · Head of Ops & Finance · Event & Project</td><td>Spans <strong>all three</strong> divisions</td></tr>
+          <tr><td>Bryan · Madison · Yasmin · Raymond · Derek · Emmanuel · Godfred <span class="load-badge load-1">1 each</span></td><td>One seat each — clean ownership</td><td>—</td></tr>
+        </tbody>
+      </table>
+
+      <div class="truth">
+        <b>What the chart reveals (structure, not blame)</b>
+        <p style="margin:6px 0 0">Two people hold <strong>12 of 19 seats</strong>. The structural risks, in priority order:</p>
+        <ol style="margin:8px 0 0">
+          <li><strong>Austin is Visionary + Integrator + Head of Growth.</strong> The person setting the 3-year vision is also running weekly ops and owning revenue — the classic bottleneck. First backfill: <strong>Integrator</strong>, then <strong>Head of Growth</strong>, so the Visionary seat is freed.</li>
+          <li><strong>Jennifer is Director of CS + Head of Ops & Finance</strong> at the same time — two division-head seats across different divisions. These should split as the next hire.</li>
+          <li><strong>Finance & Accounting and Admin/HR sit on Austin</strong> — lowest-leverage seats for a CEO. Cheapest, fastest things to delegate (the Admin/HR seat's own North Star is literally "fill open seats").</li>
+        </ol>
+        <p style="margin:10px 0 0;color:#a8a498;font-size:13px">The mapping above is intentionally left as-is. The point of the chart is that each of these seats already has a clear North Star — so the moment you hire, the new person knows exactly what they own on day one.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="wrap">
+    Breedwise Academy — Accountability Chart · <a href="/team">Member OS</a> · <a href="/sales">Sales OS</a> · <a href="/sales-process">How Sales Works</a><br>
+    Seats own outcomes, not tasks. One North Star per seat. One owner per metric.
+  </div></footer>
+</body>
+</html>
