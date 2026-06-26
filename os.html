@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breedwise — Operating System</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:#ffffff; --surface:#f7f6f3; --card:#f0eeea; --card-2:#faf9f6;
+      --border:#e2dfd8; --border-2:#ece9e3; --gold:#b8922e; --gold-deep:#8a6420;
+      --gold-faint:rgba(184,146,46,0.07); --gold-mid:rgba(184,146,46,0.15);
+      --ink:#0f0e0c; --muted:#86847d; --mid:#48463f;
+      --green:#3c7a52; --green-bg:rgba(60,122,82,0.10);
+      --yellow:#b07d1e; --yellow-bg:rgba(176,125,30,0.12);
+      --red:#a33a3a; --red-bg:rgba(163,58,58,0.10); --danger:#8b3a3a;
+      --heading:'Playfair Display', Georgia, serif;
+      --body:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --ease:0.18s ease; --radius:8px;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--surface); color: var(--ink); font-family: var(--body); font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    /* ═══ LOGIN ═══ */
+    #login { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.4s ease; }
+    .login-inner { text-align: center; max-width: 360px; width: 100%; padding: 0 32px; }
+    .login-mark { display:flex; align-items:center; justify-content:center; gap:11px; margin-bottom: 6px; }
+    .login-mark svg { width: 38px; height: 38px; }
+    .login-word { font-family: var(--heading); font-size: 32px; font-weight: 600; color: var(--gold); }
+    .login-sub { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 40px; }
+    .login-lbl { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 7px; text-align: left; }
+    .login-input { width: 100%; background: var(--card); border: 1px solid var(--border); color: var(--ink); font-family: var(--body); font-size: 14px; padding: 13px 16px; border-radius: var(--radius); outline: none; transition: border-color var(--ease); margin-bottom: 14px; }
+    .login-input:focus { border-color: var(--gold); }
+    .login-btn { width: 100%; background: var(--gold); color: #fff; border: none; font-family: var(--body); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; padding: 14px; border-radius: var(--radius); cursor: pointer; transition: opacity var(--ease); }
+    .login-btn:hover { opacity: 0.88; } .login-btn:disabled { opacity: 0.5; cursor: default; }
+    .login-err { color: var(--danger); font-size: 13px; margin-top: 12px; min-height: 18px; }
+    .login-hint { font-size: 11px; color: var(--muted); margin-top: 22px; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+    .shake { animation: shake 0.38s ease; }
+
+    /* ═══ NAV ═══ */
+    nav { position: sticky; top: 0; background: rgba(255,255,255,0.96); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); z-index: 100; height: 60px; display: flex; align-items: center; padding: 0 28px; justify-content: space-between; }
+    .nav-left { display: flex; align-items: center; gap: 11px; }
+    .nav-left svg { width: 26px; height: 26px; }
+    .nav-logo { font-family: var(--heading); font-size: 20px; font-weight: 600; color: var(--gold); text-decoration: none; line-height: 1; }
+    .nav-tag { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); border-left: 1px solid var(--border); padding-left: 11px; margin-left: 4px; }
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+    .nav-user { text-align: right; line-height: 1.25; }
+    .nav-user .who { font-size: 12.5px; font-weight: 600; color: var(--ink); }
+    .nav-user .role { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold); }
+    .nav-logout { font-size: 11px; font-weight: 500; color: var(--mid); background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 7px 12px; cursor: pointer; }
+    .nav-logout:hover { border-color: var(--gold); }
+
+    /* ═══ TABS ═══ */
+    .tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 60px; z-index: 90; padding: 0 28px; overflow-x: auto; }
+    .tabs-inner { display: flex; gap: 4px; max-width: 1180px; margin: 0 auto; width: 100%; }
+    .tab { font-size: 12.5px; font-weight: 500; color: var(--muted); padding: 15px 16px 13px; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color var(--ease), border-color var(--ease); }
+    .tab:hover { color: var(--mid); } .tab.active { color: var(--ink); border-bottom-color: var(--gold); }
+    .tab .tab-ic { color: var(--gold); margin-right: 6px; font-size: 11px; }
+    .panel { display: none; padding: 30px 0 80px; } .panel.active { display: block; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+
+    .view-head { margin-bottom: 24px; display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap; }
+    .view-eyebrow { font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .view-title { font-family: var(--heading); font-size: 28px; font-weight: 600; color: var(--ink); line-height: 1.15; }
+    .view-sub { font-size: 13px; color: var(--muted); margin-top: 7px; max-width: 640px; }
+    .section-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mid); font-weight: 600; margin: 34px 0 14px; display: flex; align-items: center; gap: 10px; }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .kpi { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; transition: border-color var(--ease), transform var(--ease); }
+    .kpi:hover { border-color: var(--gold); transform: translateY(-1px); }
+    .kpi-top { display: flex; align-items: flex-start; justify-content: space-between; }
+    .kpi-name { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+    .kpi-val { font-family: var(--heading); font-size: 32px; font-weight: 600; color: var(--ink); margin-top: 10px; line-height: 1; }
+    .kpi-val .unit { font-size: 16px; color: var(--muted); font-family: var(--body); font-weight: 400; }
+    .kpi-meta { font-size: 11.5px; color: var(--muted); margin-top: 9px; } .kpi-meta strong { color: var(--mid); font-weight: 600; }
+    .kpi-flag { font-size: 9.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; }
+    .flag-pass { background: var(--green-bg); color: var(--green); } .flag-fail { background: var(--red-bg); color: var(--red); }
+    .kpi-bar { height: 4px; background: var(--border-2); border-radius: 3px; margin-top: 13px; overflow: hidden; } .kpi-bar i { display: block; height: 100%; border-radius: 3px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; }
+    .card-h { font-family: var(--heading); font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+    .card-sub { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+
+    .funnel-row { display: flex; align-items: center; gap: 14px; margin-bottom: 9px; }
+    .funnel-lbl { width: 168px; font-size: 12.5px; color: var(--mid); flex-shrink: 0; }
+    .funnel-track { flex: 1; height: 30px; background: var(--card); border-radius: 6px; overflow: hidden; }
+    .funnel-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-deep)); border-radius: 6px; display: flex; align-items: center; padding-left: 12px; transition: width 0.6s cubic-bezier(.2,.7,.3,1); }
+    .funnel-fill span { color: #fff; font-size: 11.5px; font-weight: 600; }
+    .funnel-pct { width: 52px; text-align: right; font-size: 12.5px; font-weight: 600; flex-shrink: 0; }
+
+    .table-wrap { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .table-tools { display: flex; align-items: center; gap: 8px; padding: 14px 16px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .filter-chip { font-size: 11.5px; font-weight: 500; color: var(--mid); background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 6px 13px; cursor: pointer; transition: all var(--ease); }
+    .filter-chip:hover { border-color: var(--gold); } .filter-chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .filter-chip .ct { opacity: 0.6; margin-left: 4px; }
+    .search-box { margin-left: auto; font-family: var(--body); font-size: 12.5px; color: var(--ink); background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 7px 12px; outline: none; width: 180px; }
+    .search-box:focus { border-color: var(--gold); }
+    table { width: 100%; border-collapse: collapse; }
+    thead th { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; background: var(--card-2); }
+    tbody td { padding: 12px 14px; border-bottom: 1px solid var(--border-2); font-size: 12.5px; vertical-align: middle; }
+    tbody tr:last-child td { border-bottom: none; } tbody tr { transition: background var(--ease); } tbody tr:hover { background: var(--card-2); }
+    .m-name { font-weight: 600; color: var(--ink); } .m-email { font-size: 10.5px; color: var(--muted); }
+    .prog-tag { font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 3px 7px; border-radius: 4px; background: var(--gold-mid); color: var(--gold-deep); }
+    .num { font-variant-numeric: tabular-nums; } .muted-cell { color: var(--muted); }
+    .dot { display: inline-flex; align-items: center; gap: 7px; font-size: 11.5px; font-weight: 600; }
+    .dot::before { content: ''; width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .dot.Green { color: var(--green); } .dot.Green::before { background: var(--green); }
+    .dot.Yellow { color: var(--yellow); } .dot.Yellow::before { background: var(--yellow); }
+    .dot.Red { color: var(--red); } .dot.Red::before { background: var(--red); }
+    .tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
+    .tag { font-size: 9.5px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; background: var(--card); color: var(--mid); border: 1px solid var(--border); }
+    .pay-good { color: var(--green); } .pay-bad { color: var(--red); font-weight: 600; }
+    .row-edit { font-size: 11px; color: var(--gold-deep); background: var(--gold-faint); border: 1px solid var(--gold-mid); border-radius: 5px; padding: 5px 10px; cursor: pointer; white-space: nowrap; }
+    .row-edit:hover { background: var(--gold-mid); }
+
+    .btn-add { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #fff; background: var(--gold); border: none; border-radius: 6px; padding: 10px 16px; cursor: pointer; transition: opacity var(--ease); }
+    .btn-add:hover { opacity: 0.9; }
+
+    /* ═══ COMP ═══ */
+    .comp-wrap { max-width: 460px; }
+    .comp-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .comp-head { background: var(--ink); color: #fff; padding: 20px; }
+    .comp-role { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+    .comp-person { font-family: var(--heading); font-size: 22px; font-weight: 600; margin-top: 4px; }
+    .comp-body { padding: 18px 20px; }
+    .comp-line { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border-2); }
+    .comp-line:last-of-type { border-bottom: none; }
+    .comp-line .lbl { font-size: 12.5px; color: var(--mid); }
+    .comp-line .amt { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .comp-total { display: flex; align-items: baseline; justify-content: space-between; margin-top: 14px; padding-top: 14px; border-top: 2px solid var(--border); }
+    .comp-total .lbl { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+    .comp-total .val { font-family: var(--heading); font-size: 30px; font-weight: 700; color: var(--gold); font-variant-numeric: tabular-nums; }
+    .comp-note { font-size: 10.5px; color: var(--muted); padding: 0 20px 18px; line-height: 1.5; }
+    .private-badge { display:inline-flex; align-items:center; gap:6px; font-size:10.5px; color:var(--green); background:var(--green-bg); padding:5px 11px; border-radius:20px; font-weight:600; margin-bottom:18px; }
+
+    .rule { display: flex; gap: 13px; padding: 14px 0; border-bottom: 1px solid var(--border-2); } .rule:last-child { border-bottom: none; }
+    .rule-ic { width: 30px; height: 30px; border-radius: 7px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+    .ic-green { background: var(--green-bg); } .ic-yellow { background: var(--yellow-bg); } .ic-red { background: var(--red-bg); } .ic-gold { background: var(--gold-mid); }
+    .rule-trig { font-size: 12.5px; font-weight: 600; color: var(--ink); } .rule-act { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+    .rule-tag { font-size: 9.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--gold-deep); }
+    .perm-table td, .perm-table th { text-align: center; } .perm-table td:first-child, .perm-table th:first-child { text-align: left; font-weight: 500; }
+    .perm-yes { color: var(--green); font-weight: 700; } .perm-no { color: var(--border); } .perm-own { color: var(--yellow); font-weight: 600; font-size: 10px; }
+    .spec-block { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; margin-bottom: 14px; }
+    .spec-block h4 { font-family: var(--heading); font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+    .spec-list { list-style: none; } .spec-list li { font-size: 12.5px; color: var(--mid); padding: 6px 0 6px 18px; position: relative; border-bottom: 1px solid var(--border-2); }
+    .spec-list li:last-child { border-bottom: none; } .spec-list li::before { content: '·'; position: absolute; left: 4px; color: var(--gold); font-weight: 700; }
+    .spec-list code { font-family: ui-monospace, Menlo, monospace; font-size: 11.5px; background: var(--card); padding: 1px 5px; border-radius: 3px; color: var(--gold-deep); }
+    .formula { font-family: ui-monospace, Menlo, monospace; font-size: 11.5px; color: var(--mid); background: var(--card); border-radius: 6px; padding: 10px 13px; margin-top: 4px; }
+    .footer { border-top: 1px solid var(--border); padding: 26px 0; text-align: center; font-size: 11px; color: var(--muted); } .footer a { color: var(--gold); text-decoration: none; }
+    .legend { display:flex; gap:18px; margin-top:14px; flex-wrap:wrap; } .legend span { font-size: 11px; color: var(--muted); display:flex; align-items:center; gap:6px; }
+    .src-note { font-size: 10.5px; color: var(--muted); font-style: italic; margin-top: 12px; }
+
+    /* ═══ MODAL ═══ */
+    .mnotes{max-height:170px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+    .mnote{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:9px 11px;font-size:13px;color:var(--mid);line-height:1.5;white-space:pre-wrap}
+    .mnote .meta{font-size:10.5px;color:var(--muted);margin-top:5px;letter-spacing:.02em}
+    .mnotes-empty{font-size:12.5px;color:var(--muted);padding:4px 2px}
+    .cmw-grid{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:14px;align-items:end;margin-top:16px}
+    .cmw-grid .field input{width:100%}
+    @media(max-width:640px){.cmw-grid{grid-template-columns:1fr 1fr}.cmw-grid button{grid-column:1/-1}}
+    #modal, #issueModal, #ssModal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+    #modal.open, #issueModal.open, #ssModal.open { display: flex; }
+    .urg{font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap}
+    .urg-low{background:#efece4;color:#86847d}.urg-medium{background:var(--yellow-bg);color:var(--yellow)}.urg-high{background:rgba(194,102,30,.14);color:#b5651d}.urg-urgent{background:var(--red);color:#fff}
+    .ist{font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 8px;border-radius:4px}
+    .ist-open{background:#efece4;color:#48463f}.ist-in_progress{background:var(--yellow-bg);color:var(--yellow)}.ist-resolved{background:rgba(60,122,82,.12);color:#3c7a52}
+    .sst{font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap}
+    .sst-scheduled{background:var(--yellow-bg);color:var(--yellow)}.sst-completed{background:rgba(60,122,82,.12);color:#3c7a52}.sst-no_show{background:var(--red-bg);color:var(--red)}.sst-canceled{background:#efece4;color:#86847d}
+    .stype{font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:4px;white-space:nowrap}
+    .stype-activation{background:rgba(184,146,46,.13);color:var(--gold-deep)}.stype-accelerator{background:rgba(120,80,200,.12);color:#6a48b0}
+    .exp-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)}.exp-row:last-child{border-bottom:none}.exp-row b{font-size:13.5px;color:var(--ink);font-weight:600}.exp-row .ec{font-size:12.5px;color:var(--muted)}
+    .due-over{color:var(--red);font-weight:700}.row-issue{font-size:11px;color:var(--gold-deep);background:rgba(184,146,46,.08);border:1px solid rgba(184,146,46,.25);border-radius:5px;padding:5px 10px;cursor:pointer;white-space:nowrap}
+    .modal-box { background: var(--bg); border-radius: 12px; width: 100%; max-width: 560px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); }
+    .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--border); }
+    .modal-title { font-family: var(--heading); font-size: 19px; font-weight: 600; }
+    .modal-close { font-size: 22px; color: var(--muted); cursor: pointer; line-height: 1; background: none; border: none; }
+    .modal-body { padding: 22px 24px; }
+    .fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+    .field { display: flex; flex-direction: column; }
+    .field.full { grid-column: 1 / -1; }
+    .field label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+    .field input, .field select, .field textarea { font-family: var(--body); font-size: 13px; color: var(--ink); background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 9px 11px; outline: none; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold); background: #fff; }
+    .checks { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 4px; }
+    .check { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--mid); cursor: pointer; }
+    .check input { width: 15px; height: 15px; accent-color: var(--gold); }
+    .modal-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 24px; border-top: 1px solid var(--border); }
+    .btn-save { background: var(--gold); color: #fff; border: none; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 12px 26px; border-radius: 6px; cursor: pointer; }
+    .btn-save:hover { opacity: 0.9; } .btn-save:disabled { opacity: 0.5; }
+    .btn-del { background: none; color: var(--danger); border: 1px solid var(--border); font-size: 12px; font-weight: 500; padding: 11px 18px; border-radius: 6px; cursor: pointer; }
+    .btn-del:hover { border-color: var(--danger); }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; font-size: 12.5px; padding: 12px 22px; border-radius: 8px; z-index: 800; opacity: 0; transition: opacity 0.25s ease; pointer-events: none; }
+    .toast.show { opacity: 1; }
+
+    @media (max-width: 920px) {
+      .kpi-grid { grid-template-columns: 1fr 1fr; } .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .fgrid { grid-template-columns: 1fr; } .funnel-lbl { width: 120px; font-size: 11px; }
+      .wrap, .tabs { padding-left: 16px; padding-right: 16px; } nav { padding: 0 16px; }
+      .nav-tag { display: none; } table { font-size: 11.5px; } .hide-sm { display: none; }
+    }
+
+    /* ═══ APP SHELL · LEFT SIDEBAR ═══ */
+    .shell { display: flex; min-height: 100vh; align-items: stretch; }
+    .sidebar { width: 234px; flex-shrink: 0; background: var(--bg); border-right: 1px solid var(--border); position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; padding: 18px 14px 16px; }
+    .side-brand { display: flex; align-items: center; gap: 10px; padding: 4px 8px 16px; border-bottom: 1px solid var(--border-2); margin-bottom: 6px; }
+    .side-brand svg { width: 27px; height: 27px; flex-shrink: 0; }
+    .side-brand .bw { font-family: var(--heading); font-size: 18px; font-weight: 600; color: var(--gold); line-height: 1; }
+    .side-brand .sub { display: block; font-size: 8.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+    .side-nav { flex: 1; display: flex; flex-direction: column; gap: 1px; overflow-y: auto; margin: 2px -4px; padding: 0 4px; }
+    .side-group { font-size: 9.5px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin: 16px 8px 5px; }
+    .side-group:first-child { margin-top: 6px; }
+    .side-item { display: flex; align-items: center; gap: 9px; width: 100%; text-align: left; background: none; border: none; font-family: var(--body); font-size: 13px; color: var(--mid); padding: 8px 10px; border-radius: 7px; cursor: pointer; transition: background var(--ease), color var(--ease); }
+    .side-item:hover { background: var(--card); color: var(--ink); }
+    .side-item.active { background: var(--gold-faint); color: var(--ink); font-weight: 600; }
+    .side-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: background var(--ease); }
+    .side-item:hover .side-dot { background: var(--gold-deep); }
+    .side-item.active .side-dot { background: var(--gold); }
+    .side-foot { border-top: 1px solid var(--border-2); padding-top: 12px; margin-top: 8px; }
+    .side-user .who { font-size: 12.5px; font-weight: 600; color: var(--ink); }
+    .side-user .role { font-size: 9.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold); margin-top: 1px; margin-bottom: 11px; }
+    .side-links { display: flex; gap: 7px; margin-bottom: 9px; flex-wrap: wrap; }
+    .side-links a { font-size: 11px; color: var(--mid); background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 5px 9px; text-decoration: none; transition: border-color var(--ease); }
+    .side-links a:hover { border-color: var(--gold); }
+    .side-logout { width: 100%; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; color: var(--mid); background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 9px; cursor: pointer; transition: border-color var(--ease); }
+    .side-logout:hover { border-color: var(--gold); }
+    .side-main { flex: 1; min-width: 0; }
+    .side-empty { max-width: 460px; margin: 80px auto; text-align: center; color: var(--muted); }
+    .side-empty h2 { font-family: var(--heading); font-size: 22px; color: var(--ink); margin-bottom: 8px; }
+    @media (max-width: 860px) {
+      .shell { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border); }
+      .side-nav { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+      .side-group { width: 100%; margin: 8px 8px 2px; }
+      .side-foot { display: flex; align-items: center; gap: 14px; justify-content: space-between; flex-wrap: wrap; }
+      .side-user .role { margin-bottom: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ LOGIN ═══ -->
+  <div id="login">
+    <div class="login-inner">
+      <div class="login-mark">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M4 28 L4 12 L14 8 L14 26 Z" fill="url(#gl)"/><path d="M28 28 L28 12 L18 8 L18 26 Z" fill="url(#gr)"/><rect x="14" y="8" width="4" height="18" fill="#fff"/><path d="M4 12 L14 8 L16 11 L4 15 Z" fill="#c9a84c"/><path d="M28 12 L18 8 L16 11 L28 15 Z" fill="#c9a84c"/><polygon points="14,8 18,8 16,5" fill="#c9a84c"/><defs><linearGradient id="gl" x1="4" y1="8" x2="14" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#d4aa50"/><stop offset="100%" stop-color="#8a6420"/></linearGradient><linearGradient id="gr" x1="28" y1="8" x2="18" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#d4aa50"/><stop offset="100%" stop-color="#8a6420"/></linearGradient></defs></svg>
+        <span class="login-word">Breedwise</span>
+      </div>
+      <span class="login-sub">Operating System</span>
+      <form id="loginForm" autocomplete="on">
+        <span class="login-lbl">Email</span>
+        <input type="email" id="email" class="login-input" placeholder="you@breedwise.io" autocomplete="username" required>
+        <span class="login-lbl">Password</span>
+        <input type="password" id="password" class="login-input" placeholder="••••••••" autocomplete="current-password" required>
+        <button type="submit" class="login-btn" id="loginBtn">Sign in</button>
+        <div class="login-err" id="loginErr"></div>
+      </form>
+      <div class="login-hint">Your individual team login. Each person sees their own pay.</div>
+    </div>
+  </div>
+
+  <!-- ═══ APP ═══ -->
+  <div id="app" style="display:none"><div class="shell">
+    <aside class="sidebar">
+      <div class="side-brand">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M4 28 L4 12 L14 8 L14 26 Z" fill="url(#nl)"/><path d="M28 28 L28 12 L18 8 L18 26 Z" fill="url(#nr)"/><rect x="14" y="8" width="4" height="18" fill="#f7f6f3"/><polygon points="14,8 18,8 16,5" fill="#c9a84c"/><path d="M4 12 L14 8 L16 11 L4 15 Z" fill="#c9a84c"/><path d="M28 12 L18 8 L16 11 L28 15 Z" fill="#c9a84c"/><defs><linearGradient id="nl" x1="4" y1="8" x2="14" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#d4aa50"/><stop offset="100%" stop-color="#8a6420"/></linearGradient><linearGradient id="nr" x1="28" y1="8" x2="18" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#d4aa50"/><stop offset="100%" stop-color="#8a6420"/></linearGradient></defs></svg>
+        <div><div class="bw">Breedwise</div><span class="sub">Operating System</span></div>
+      </div>
+      <nav class="side-nav" id="sideNav"></nav>
+      <div class="side-foot">
+        <div class="side-user"><div class="who" id="navWho">—</div><div class="role" id="navRole">—</div></div>
+        <div class="side-links">
+          <a href="/accountability-chart" target="_blank">Org Chart</a>
+          <a href="/team-manual" target="_blank">Manual</a>
+        </div>
+        <button class="side-logout" id="logoutBtn">Sign out</button>
+      </div>
+    </aside>
+
+    <main class="side-main">
+    <div class="wrap">
+      <!-- DIRECTOR -->
+      <section class="panel active" data-panel="director">
+        <div class="view-head">
+          <div>
+            <div class="view-eyebrow">Company-wide · visible to the whole team</div>
+            <h1 class="view-title">Company Health</h1>
+            <p class="view-sub">Live across all active members. Computed from the shared database — every teammate edits the same source of truth.</p>
+          </div>
+          <button class="btn-add" data-add>+ Add member</button>
+        </div>
+        <div class="section-label">Month-to-date KPIs</div>
+        <div class="kpi-grid" id="dirKpis"></div>
+        <div class="grid-2" style="margin-top:30px">
+          <div class="card"><div class="card-h">Activation Funnel</div><div class="card-sub">New members must clear all 6 activation steps in their windows.</div><div id="actFunnel"></div></div>
+          <div class="card"><div class="card-h">Status mix</div><div class="card-sub">Auto-computed health across active members.</div><div id="statusMix"></div></div>
+        </div>
+        <div class="section-label">Members · risk first</div>
+        <div class="table-wrap">
+          <div class="table-tools" id="dirFilters"></div>
+          <div style="overflow-x:auto"><table>
+            <thead><tr><th>Member</th><th>Program</th><th>Status</th><th>Calls 4w</th><th class="hide-sm">Posts 7d</th><th>HW%</th><th>Payment</th><th>NPS</th><th></th></tr></thead>
+            <tbody id="dirTable"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- DIRECTORY -->
+      <section class="panel" data-panel="directory">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Member contacts</div>
+          <h1 class="view-title">Directory</h1>
+          <p class="view-sub">Every member's name, email, and phone — for quick outreach.</p>
+        </div></div>
+        <div class="table-wrap">
+          <div class="table-tools"><input id="directorySearch" type="text" placeholder="Search name, email or phone…" style="margin-left:auto;font-size:12.5px;color:var(--ink);background:var(--card);border:1px solid var(--border);border-radius:6px;padding:7px 12px;outline:none;width:230px"></div>
+          <div style="overflow-x:auto"><table>
+            <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th class="hide-sm">Program</th><th class="hide-sm">Pod</th></tr></thead>
+            <tbody id="directoryBody"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- AL -->
+      <section class="panel" data-panel="al">
+        <div class="view-head">
+          <div>
+            <div class="view-eyebrow">Pod operations · visible to the whole team</div>
+            <h1 class="view-title">Pod Command Center</h1>
+            <p class="view-sub">Attendance, homework, churn and the per-member action queue for each pod.</p>
+          </div>
+          <button class="btn-add" data-add>+ Add member</button>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap">
+          <select class="search-box" id="podSelect" style="margin-left:0;width:auto"></select>
+          <span class="kpi-meta" id="podStage"></span>
+        </div>
+        <div class="section-label">Pod KPIs</div>
+        <div class="kpi-grid" id="alKpis"></div>
+        <div class="section-label">Pod roster &amp; action queue</div>
+        <div class="table-wrap"><div style="overflow-x:auto"><table>
+          <thead><tr><th>Member</th><th>Program</th><th>Status</th><th>Activation</th><th>Calls 4w</th><th class="hide-sm">Posts 7d</th><th>HW%</th><th>Pay</th><th>NPS</th><th>Next action</th><th></th></tr></thead>
+          <tbody id="alTable"></tbody>
+        </table></div></div>
+      </section>
+
+      <!-- CM -->
+      <section class="panel" data-panel="cm">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Community · visible to the whole team</div>
+          <h1 class="view-title">Community Engine</h1>
+          <p class="view-sub">Week-1 activation, ongoing attendance, meaningful engagement, and issue triage.</p>
+        </div></div>
+        <div class="section-label">Madison's KPIs · this week</div>
+        <div class="kpi-grid" id="cmKpis"></div>
+        <div class="card" style="margin-top:22px"><div class="card-h">Log this week</div><div class="card-sub">Madison updates her weekly activity — feeds the two KPIs above that aren't auto-tracked.</div>
+          <div class="cmw-grid">
+            <div class="field"><label>Calls co-hosted</label><input id="cmw_calls" type="number" min="0"></div>
+            <div class="field"><label>Recordings due</label><input id="cmw_due" type="number" min="0"></div>
+            <div class="field"><label>Uploaded by 12pm</label><input id="cmw_ontime" type="number" min="0"></div>
+            <button class="btn-save" id="cmwSave">Save week</button>
+          </div>
+        </div>
+        <div class="card" style="margin-top:22px"><div class="card-h">Needs attention</div><div class="card-sub">Auto-surfaced from attendance &amp; post activity.</div><div id="cmQueues"></div></div>
+      </section>
+
+      <!-- ISSUES LOG -->
+      <section class="panel" data-panel="issues">
+        <div class="view-head">
+          <div>
+            <div class="view-eyebrow">Member &amp; community issues</div>
+            <h1 class="view-title">Issues Log</h1>
+            <p class="view-sub">Log anything a member or the community is struggling with — tag urgency and a due date so nothing slips through.</p>
+          </div>
+          <button class="btn-save" data-add-issue>+ Log an issue</button>
+        </div>
+        <div class="kpi-grid" id="issueKpis"></div>
+        <div class="table-wrap" style="margin-top:24px">
+          <div class="table-tools" id="issueFilters"></div>
+          <div style="overflow-x:auto"><table>
+            <thead><tr><th>Issue</th><th>Member</th><th>Urgency</th><th>Due</th><th>Status</th><th class="hide-sm">Logged by</th><th></th></tr></thead>
+            <tbody id="issuesBody"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- STRATEGY SESSIONS -->
+      <section class="panel" data-panel="strategy">
+        <div class="view-head">
+          <div>
+            <div class="view-eyebrow">Expert strategy sessions</div>
+            <h1 class="view-title">Strategy Sessions</h1>
+            <p class="view-sub">Activation sessions for new members and accelerator sessions — with Dr. Emmanuel, Dr. Angela, Austin, Dr. David &amp; Yasmin.</p>
+          </div>
+          <button class="btn-save" data-add-ss>+ Schedule session</button>
+        </div>
+        <div class="kpi-grid" id="ssKpis"></div>
+        <div class="card" style="margin-top:22px"><div class="card-h">Sessions by expert</div><div class="card-sub">Upcoming &amp; total per expert.</div><div id="ssExperts"></div></div>
+        <div class="table-wrap" style="margin-top:22px">
+          <div class="table-tools" id="ssFilters"></div>
+          <div style="overflow-x:auto"><table>
+            <thead><tr><th>Member</th><th>Type</th><th>Expert</th><th>When</th><th>Status</th><th></th></tr></thead>
+            <tbody id="ssBody"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- COMP (private) -->
+      <section class="panel" data-panel="comp">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Private to you</div>
+          <h1 class="view-title">My Pay</h1>
+          <p class="view-sub">Only you can see this. The database is locked so no teammate can read your compensation.</p>
+        </div></div>
+        <div class="comp-wrap" id="compWrap"></div>
+      </section>
+
+      <!-- AUTOMATION -->
+      <section class="panel" data-panel="rules">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Rules engine</div>
+          <h1 class="view-title">Automation &amp; Alerts</h1>
+          <p class="view-sub">Status colors auto-compute; triggers create owned tasks.</p>
+        </div></div>
+        <div class="grid-2">
+          <div class="card"><div class="card-h">Status color rules</div><div class="card-sub">Applied automatically; a Director/AL can override per member.</div><div id="colorRules"></div>
+            <div class="legend"><span><i class="dot Green"></i>Green</span><span><i class="dot Yellow"></i>Yellow</span><span><i class="dot Red"></i>Red</span></div></div>
+          <div class="card"><div class="card-h">Trigger → Task</div><div class="card-sub">Events create owned tasks with due dates.</div><div id="triggerRules"></div></div>
+        </div>
+      </section>
+
+      <!-- SPEC -->
+      <section class="panel" data-panel="spec">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Build blueprint</div>
+          <h1 class="view-title">System Spec</h1>
+          <p class="view-sub">KPI formulas, activation steps &amp; permissions — the reference this interface is built from.</p>
+        </div></div>
+        <div class="grid-2">
+          <div class="spec-block"><h4>KPI formulas — Director</h4>
+            <div class="formula">churn% = cancels ÷ active_at_start · target &lt; 3%</div>
+            <div class="formula">activation% = activated ÷ new · target ≥ 80%</div>
+            <div class="formula">NPS = %promoters − %detractors · target &gt; 80</div>
+            <div class="formula">failed_pay% = members_w_failed ÷ active · &lt; 3%</div></div>
+          <div class="spec-block"><h4>Activation — 6 binary steps</h4>
+            <ul class="spec-list"><li>Onboarding call <code>≤48h</code></li><li>Strategy w/ Austin <code>≤7d</code></li><li>Vet strategy <code>≤14d</code></li><li>Joined &amp; welcomed <code>≤7d</code></li><li>First community call <code>week 1</code></li><li>First masterclass <code>week 1</code></li></ul></div>
+          <div class="spec-block"><h4>KPI formulas — Community</h4>
+            <div class="formula">week1% = on both wk-1 calls ÷ new · ≥ 80%</div>
+            <div class="formula">ongoing% = ≥1 call in 3-of-4 wks ÷ active · ≥ 70%</div>
+            <div class="formula">engagement = meaningful posts ÷ active ÷ wk · ≥ 1</div></div>
+          <div class="spec-block"><h4>KPI formulas — Accountability Leader</h4>
+            <div class="formula">pod_attend% = pod on ≥1 call ÷ active pod</div>
+            <div class="formula">homework% = items done ÷ assigned</div>
+            <div class="formula">pod_churn% = pod cancels ÷ pod active</div>
+            <p class="card-sub" style="margin:12px 0 0">Ramp (d1–60): 2/3→$100, 3/3→$200. Ongoing (d61+): 3/3→$200, else $0.</p></div>
+        </div>
+        <div class="section-label">Permissions matrix</div>
+        <div class="table-wrap"><table class="perm-table">
+          <thead><tr><th>Capability</th><th>Director</th><th>Accountability Leader</th><th>Community Manager</th></tr></thead>
+          <tbody id="permBody"></tbody>
+        </table></div>
+      </section>
+    </div>
+
+    <div class="footer">Breedwise Operating System · live database · <a href="https://breedwise.io" target="_blank" rel="noopener">breedwise.io</a></div>
+    </main>
+  </div></div>
+
+  <!-- ═══ MEMBER MODAL ═══ -->
+  <div id="modal"><div class="modal-box">
+    <div class="modal-head"><div class="modal-title" id="modalTitle">Member</div><button class="modal-close" id="modalClose">&times;</button></div>
+    <div class="modal-body"><div class="fgrid">
+      <div class="field full"><label>Name</label><input id="f_name" type="text"></div>
+      <div class="field"><label>Email</label><input id="f_email" type="text"></div>
+      <div class="field"><label>Phone</label><input id="f_phone" type="tel"></div>
+      <div class="field"><label>Program</label><select id="f_program"><option>Academy</option><option>Accelerator</option><option>Elite</option></select></div>
+      <div class="field"><label>Pod</label><select id="f_pod"></select></div>
+      <div class="field"><label>Payment</label><select id="f_payment"><option>Good</option><option>Failed</option><option>At risk</option><option>Cancelled</option></select></div>
+      <div class="field"><label>Calls (4 wks)</label><input id="f_calls" type="number" min="0"></div>
+      <div class="field"><label>Posts (7 days)</label><input id="f_posts" type="number" min="0"></div>
+      <div class="field"><label>Homework %</label><input id="f_homework" type="number" min="0" max="100"></div>
+      <div class="field"><label>NPS (0–10)</label><input id="f_nps" type="number" min="0" max="10"></div>
+      <div class="field"><label>Upsell revenue $</label><input id="f_upsell" type="number" min="0"></div>
+      <div class="field"><label>Status override</label><select id="f_override"><option value="">Auto</option><option>Green</option><option>Yellow</option><option>Red</option></select></div>
+      <div class="field full"><label>Flags</label><div class="checks">
+        <label class="check"><input type="checkbox" id="f_activated"> Activated</label>
+        <label class="check"><input type="checkbox" id="f_new"> New this month</label>
+        <label class="check"><input type="checkbox" id="f_churned"> Churned this month</label>
+        <label class="check"><input type="checkbox" id="f_failed"> Failed payment (30d)</label>
+      </div></div>
+      <div class="field full"><label>Notes log</label>
+        <div class="mnotes" id="m_notes_list"></div>
+        <textarea id="m_new_note" rows="2" placeholder="Add a note — saved with your name &amp; the date…"></textarea>
+      </div>
+    </div></div>
+    <div class="modal-foot">
+      <button class="btn-del" id="modalDelete">Delete</button>
+      <div style="display:flex;gap:10px;align-items:center">
+        <span class="login-err" id="modalErr" style="margin:0"></span>
+        <button class="btn-save" id="modalSave">Save</button>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- ═══ ISSUE MODAL ═══ -->
+  <div id="issueModal"><div class="modal-box">
+    <div class="modal-head"><div class="modal-title" id="issueModalTitle">Log an issue</div><button class="modal-close" id="issueClose">&times;</button></div>
+    <div class="modal-body"><div class="fgrid">
+      <div class="field full"><label>Issue / summary</label><input id="i_title" type="text" placeholder="e.g. Frustrated with vet wait time"></div>
+      <div class="field"><label>Member (optional)</label><select id="i_member"></select></div>
+      <div class="field"><label>Urgency</label><select id="i_urgency"><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option><option value="urgent">Urgent</option></select></div>
+      <div class="field"><label>Due date</label><input id="i_due" type="date"></div>
+      <div class="field"><label>Status</label><select id="i_status"><option value="open">Open</option><option value="in_progress">In progress</option><option value="resolved">Resolved</option></select></div>
+      <div class="field full"><label>Details</label><textarea id="i_details" rows="3" placeholder="Context for whoever picks this up."></textarea></div>
+    </div></div>
+    <div class="modal-foot">
+      <button class="btn-del" id="issueDelete">Delete</button>
+      <div style="display:flex;gap:10px;align-items:center"><span class="login-err" id="issueErr" style="margin:0"></span><button class="btn-save" id="issueSave">Save</button></div>
+    </div>
+  </div></div>
+
+  <!-- ═══ STRATEGY SESSION MODAL ═══ -->
+  <div id="ssModal"><div class="modal-box">
+    <div class="modal-head"><div class="modal-title" id="ssModalTitle">Schedule session</div><button class="modal-close" id="ssClose">&times;</button></div>
+    <div class="modal-body"><div class="fgrid">
+      <div class="field full"><label>Member</label><select id="s_member"></select></div>
+      <div class="field"><label>Type</label><select id="s_type"><option value="activation">Activation (new member)</option><option value="accelerator">Accelerator</option></select></div>
+      <div class="field"><label>Expert</label><select id="s_expert"></select></div>
+      <div class="field"><label>Date &amp; time</label><input id="s_when" type="datetime-local"></div>
+      <div class="field"><label>Status</label><select id="s_status"><option value="scheduled">Scheduled</option><option value="completed">Completed</option><option value="no_show">No-show</option><option value="canceled">Canceled</option></select></div>
+      <div class="field full"><label>Notes</label><textarea id="s_notes" rows="2"></textarea></div>
+    </div></div>
+    <div class="modal-foot"><button class="btn-del" id="ssDelete">Delete</button><div style="display:flex;gap:10px;align-items:center"><span class="login-err" id="ssErr" style="margin:0"></span><button class="btn-save" id="ssSave">Save</button></div></div>
+  </div></div>
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+  /* ═══ CONFIG ═══ */
+  const SUPABASE_URL = 'https://xhjdowbnqcsvhtcccuqx.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const HW_THRESHOLD = 60;
+  const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
+  const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager', Founder:'Founder' };
+
+  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[];
+  const EXPERTS=['Dr. Emmanuel Fontaine','Dr. Angela Hughes','Austin Shanks','Dr. David Mahoney','Yasmin Omar'];
+  function weekStartISO(){ const d=new Date(); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return d.toISOString().slice(0,10); }
+  const $ = s=>document.querySelector(s);
+  const pct=(n,d)=>d?(n/d*100):0;
+  const money=n=>'$'+Math.round(n).toLocaleString();
+
+  function norm(r){ return {
+    id:r.id, name:r.name, email:r.email||'', phone:r.phone||'', program:r.program, pod:r.pod_id,
+    calls:r.calls||0, posts:r.posts||0, hw:r.homework||0, pay:r.payment, nps:r.nps,
+    activated:!!r.activated, newThisMonth:!!r.new_this_month, churnedThisMonth:!!r.churned_this_month,
+    failed30:!!r.failed_30, upsell:Number(r.upsell)||0, override:r.status_override||null, notes:r.notes||'' };
+  }
+
+  /* ═══ AUTH ═══ */
+  async function boot(){
+    const { data:{ session } } = await sb.auth.getSession();
+    if (session) enterApp(); else showLogin();
+  }
+  function showLogin(){ $('#login').style.display='flex'; $('#login').style.opacity=1; $('#app').style.display='none'; $('#email').focus(); }
+
+  $('#loginForm').addEventListener('submit', async e=>{
+    e.preventDefault();
+    const btn=$('#loginBtn'); btn.disabled=true; $('#loginErr').textContent='';
+    const { error } = await sb.auth.signInWithPassword({ email:$('#email').value.trim(), password:$('#password').value });
+    btn.disabled=false;
+    if (error){ $('#loginErr').textContent = error.message; $('.login-inner').classList.add('shake'); setTimeout(()=>$('.login-inner').classList.remove('shake'),400); }
+    else enterApp();
+  });
+  $('#logoutBtn').onclick = async ()=>{ await sb.auth.signOut(); location.reload(); };
+
+  async function enterApp(){
+    await loadData();
+    $('#login').style.opacity=0;
+    setTimeout(()=>{ $('#login').style.display='none'; },350);
+    $('#app').style.display='block';
+    renderAll();
+  }
+
+  async function loadData(){
+    const { data:{ session } } = await sb.auth.getSession();
+    const myEmail = session?.user?.email || '';
+    const [mem, pods, comp, prof, iss, mnotes, cmw, ss] = await Promise.all([
+      sb.from('members').select('*').order('name'),
+      sb.from('pods').select('*').order('name'),
+      sb.from('comp').select('*'),       // RLS → only my row
+      sb.from('profiles').select('*'),
+      sb.from('issues').select('*').order('created_at',{ascending:false}),
+      sb.from('member_notes').select('*').order('created_at',{ascending:false}),
+      sb.from('cm_weekly').select('*').eq('week_start', weekStartISO()).maybeSingle(),
+      sb.from('strategy_sessions').select('*').order('scheduled_for',{ascending:true}),
+    ]);
+    MEMBERS = (mem.data||[]).map(norm);
+    PODS = pods.data||[];
+    PROFILES = prof.data||[];
+    ISSUES = iss.data||[];
+    MEMBER_NOTES = mnotes.data||[];
+    CM_WEEK = cmw.data || { calls_cohosted:0, recordings_due:0, recordings_on_time:0 };
+    STRATEGY = ss.data||[];
+    MYCOMP_ROWS = comp.data || [];
+    MYCOMP = MYCOMP_ROWS[0] || null;
+    ME = PROFILES.find(p=>p.email===myEmail) || { email:myEmail, full_name:myEmail, role:(MYCOMP&&MYCOMP.role)||'' };
+    if (!curPod && PODS.length) curPod = PODS[0].id;
+  }
+
+  /* ═══ DERIVED ═══ */
+  const activeMembers = ()=> MEMBERS.filter(m=>m.pay!=='Cancelled');
+  function statusOf(m){
+    if (m.override) return m.override;
+    if (m.pay==='Cancelled' || m.nps<=4 || (m.calls===0 && m.posts===0 && !m.newThisMonth)) return 'Red';
+    if (m.nps!=null && m.nps<=6 && m.pay!=='Good') return 'Red';
+    if (!m.activated || m.calls===0 || m.posts===0 || m.failed30 || m.hw<HW_THRESHOLD || m.pay!=='Good' || (m.nps!=null&&m.nps<=7)) return 'Yellow';
+    if (m.activated && m.calls>=3 && m.hw>=HW_THRESHOLD && m.pay==='Good') return 'Green';
+    return 'Yellow';
+  }
+  function tagsOf(m){ const t=[];
+    if (!m.activated) t.push('activation');
+    if (m.calls===0) t.push('attendance');
+    if (m.hw<HW_THRESHOLD) t.push('homework');
+    if (m.failed30||m.pay==='Failed'||m.pay==='At risk') t.push('payments');
+    if (m.nps!=null&&m.nps<=6) t.push('NPS');
+    if (m.calls===0&&m.posts===0) t.push('silent');
+    return t;
+  }
+  function nextAction(m){ const s=statusOf(m);
+    if (m.pay==='Failed'||m.pay==='At risk') return 'Payment follow-up · 24h';
+    if (!m.activated) return 'Complete activation · 48h';
+    if (m.calls===0&&m.posts===0) return 'Re-engagement call · 3d';
+    if (m.nps!=null&&m.nps<=6) return 'Save call (NPS) · 24h';
+    if (s==='Yellow') return 'Check-in · 5d';
+    return 'On track';
+  }
+  function podName(id){ const p=PODS.find(x=>x.id===id); return p?p.name:'—'; }
+
+  function directorKPIs(){
+    const act=activeMembers(), start=MEMBERS.length;
+    const cancels=MEMBERS.filter(m=>m.churnedThisMonth).length;
+    const churn=pct(cancels,start);
+    const newM=MEMBERS.filter(m=>m.newThisMonth);
+    const activation=pct(newM.filter(m=>m.activated).length,newM.length);
+    const prom=act.filter(m=>m.nps>=9).length, det=act.filter(m=>m.nps!=null&&m.nps<=6).length;
+    const nps=pct(prom,act.length)-pct(det,act.length);
+    const fail=pct(act.filter(m=>m.failed30||m.pay==='Failed'||m.pay==='At risk').length,act.length);
+    return [
+      { name:'Monthly Churn', val:churn, unit:'%', target:TARGETS.churn, dir:'below', meta:`${cancels} cancels / ${start}`, dec:1 },
+      { name:'Activation Rate', val:activation, unit:'%', target:TARGETS.activation, dir:'above', meta:`${newM.filter(m=>m.activated).length}/${newM.length} new` },
+      { name:'NPS', val:nps, unit:'', target:TARGETS.nps, dir:'above', meta:`${prom} prom · ${det} detr` },
+      { name:'Failed Payments', val:fail, unit:'%', target:TARGETS.failedPay, dir:'below', meta:`of ${act.length} active`, dec:1 },
+    ];
+  }
+  function podKPIs(pid){
+    const pm=MEMBERS.filter(m=>m.pod===pid), pa=pm.filter(m=>m.pay!=='Cancelled');
+    return [
+      { name:'Pod Attendance', val:pct(pa.filter(m=>m.calls>=1).length,pa.length), unit:'%', target:TARGETS.podAttend, dir:'above', meta:`${pa.filter(m=>m.calls>=1).length}/${pa.length} on ≥1 call` },
+      { name:'Homework', val:pa.reduce((s,m)=>s+m.hw,0)/(pa.length||1), unit:'%', target:HW_THRESHOLD, dir:'above', meta:`avg of ${pa.length}` },
+      { name:'Pod Churn', val:pct(pm.filter(m=>m.churnedThisMonth).length,pm.length), unit:'%', target:TARGETS.churn, dir:'below', meta:`${pm.filter(m=>m.churnedThisMonth).length} cancels`, dec:1 },
+    ];
+  }
+  function communityKPIs(){
+    const act=activeMembers(), newM=MEMBERS.filter(m=>m.newThisMonth);
+    const week1=pct(newM.filter(m=>m.calls>=2).length,newM.length);
+    const ongoing=pct(act.filter(m=>m.calls>=1).length,act.length);
+    const engage=act.reduce((s,m)=>s+m.posts,0)/(act.length||1);
+    return [
+      { name:'Week-1 Attendance', val:week1, unit:'%', target:TARGETS.week1, dir:'above', meta:`${newM.filter(m=>m.calls>=2).length}/${newM.length} new` },
+      { name:'Ongoing Attendance', val:ongoing, unit:'%', target:TARGETS.ongoing, dir:'above', meta:`${act.filter(m=>m.calls>=1).length}/${act.length} on ≥1 call` },
+      { name:'Engagement', val:engage, unit:'/wk', target:TARGETS.engage, dir:'above', meta:'posts per active', dec:2 },
+      { name:'Issue Triage', val:100, unit:'%', target:TARGETS.triage, dir:'above', meta:'ack ≤ 24h' },
+    ];
+  }
+  const pass=k=> k.dir==='above' ? k.val>=k.target : k.val<=k.target;
+
+  /* ═══ RENDER ═══ */
+  function kpiCard(k){
+    const ok=pass(k), dec=k.dec||0;
+    const barPct=Math.max(6,Math.min(100, k.dir==='above'?(k.val/(k.target*1.25))*100:(1-(k.val/(k.target*2)))*100));
+    return `<div class="kpi"><div class="kpi-top"><span class="kpi-name">${k.name}</span>
+      <span class="kpi-flag ${ok?'flag-pass':'flag-fail'}">${ok?'On target':'Off target'}</span></div>
+      <div class="kpi-val">${(dec?k.val.toFixed(dec):Math.round(k.val)).toLocaleString()}<span class="unit">${k.unit}</span></div>
+      <div class="kpi-meta">${k.meta} · <strong>${k.dir==='above'?'≥':'≤'} ${k.target}${k.unit||''}</strong></div>
+      <div class="kpi-bar"><i style="width:${barPct}%;background:${ok?'var(--green)':'var(--red)'}"></i></div></div>`;
+  }
+  const renderKPIs=(sel,ks)=> $(sel).innerHTML=ks.map(kpiCard).join('');
+
+  function memberRow(m, opts){
+    const s=statusOf(m), tags=tagsOf(m);
+    let h=`<td><div class="m-name">${esc(m.name)}</div><div class="m-email">${esc(m.email)}</div></td>`;
+    h+=`<td><span class="prog-tag">${m.program||'—'}</span></td>`;
+    h+=`<td><span class="dot ${s}">${s}</span>${tags.length?`<div class="tags">${tags.slice(0,3).map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}</td>`;
+    if (opts.activation) h+=`<td>${m.activated?'<span class="pay-good">Activated</span>':'<span class="pay-bad">In progress</span>'}</td>`;
+    h+=`<td class="num">${m.calls}</td><td class="num hide-sm">${m.posts}</td><td class="num">${m.hw}%</td>`;
+    h+=`<td class="${m.pay==='Good'?'pay-good':'pay-bad'}">${m.pay}</td><td class="num">${m.nps??'—'}</td>`;
+    if (opts.action) h+=`<td style="font-size:11.5px;color:var(--mid)">${nextAction(m)}</td>`;
+    h+=`<td><button class="row-edit" data-edit="${m.id}">Edit</button></td>`;
+    return `<tr>${h}</tr>`;
+  }
+  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+  let dirFilter='Red', dirQ='';
+  function renderDirTable(){
+    const act=activeMembers(), counts={All:act.length,Red:0,Yellow:0,Green:0};
+    act.forEach(m=>counts[statusOf(m)]++);
+    $('#dirFilters').innerHTML = ['Red','Yellow','Green','All'].map(c=>`<div class="filter-chip ${dirFilter===c?'active':''}" data-f="${c}">${c}<span class="ct">${counts[c]}</span></div>`).join('')+`<input class="search-box" id="dirSearch" placeholder="Search…">`;
+    let rows=act.filter(m=>dirFilter==='All'||statusOf(m)===dirFilter);
+    if (dirQ) rows=rows.filter(m=>m.name.toLowerCase().includes(dirQ));
+    const ord={Red:0,Yellow:1,Green:2};
+    rows.sort((a,b)=>ord[statusOf(a)]-ord[statusOf(b)]);
+    $('#dirTable').innerHTML = rows.map(m=>memberRow(m,{})).join('')||`<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:26px">No members.</td></tr>`;
+    $('#dirFilters').querySelectorAll('.filter-chip').forEach(c=>c.onclick=()=>{dirFilter=c.dataset.f;renderDirTable();});
+    const sb2=$('#dirSearch'); sb2.value=dirQ; sb2.oninput=e=>{dirQ=e.target.value.toLowerCase();renderDirTable();};
+  }
+  function renderStatusMix(){
+    const act=activeMembers(); const c={Green:0,Yellow:0,Red:0}; act.forEach(m=>c[statusOf(m)]++);
+    const N=act.length||1;
+    $('#statusMix').innerHTML=['Green','Yellow','Red'].map(k=>{
+      const p=Math.round(c[k]/N*100);
+      return `<div class="funnel-row"><div class="funnel-lbl"><span class="dot ${k}">${k}</span></div>
+        <div class="funnel-track"><div class="funnel-fill" style="width:${Math.max(p,6)}%;background:${k==='Green'?'var(--green)':k==='Yellow'?'var(--yellow)':'var(--red)'}"><span>${c[k]}</span></div></div>
+        <div class="funnel-pct">${p}%</div></div>`;
+    }).join('');
+  }
+  function renderFunnel(){
+    const newM=MEMBERS.filter(m=>m.newThisMonth), N=newM.length||1;
+    const steps=[['New members',N],['Onboarding ≤48h',newM.filter(m=>m.calls>=1).length],['Strategy + vet ≤14d',newM.filter(m=>m.calls>=2).length],['Joined community',newM.filter(m=>m.posts>=1||m.calls>=2).length],['Activated (all 6)',newM.filter(m=>m.activated).length]];
+    $('#actFunnel').innerHTML=steps.map(([l,n])=>{const p=Math.round(n/N*100);return `<div class="funnel-row"><div class="funnel-lbl">${l}</div><div class="funnel-track"><div class="funnel-fill" style="width:${Math.max(p,8)}%"><span>${n}</span></div></div><div class="funnel-pct">${p}%</div></div>`;}).join('');
+  }
+
+  function renderAL(){
+    $('#podSelect').innerHTML=PODS.map(p=>`<option value="${p.id}">${esc(p.name)} · ${MEMBERS.filter(m=>m.pod===p.id&&m.pay!=='Cancelled').length} active</option>`).join('');
+    $('#podSelect').value=curPod;
+    $('#podSelect').onchange=e=>{curPod=e.target.value;renderAL();};
+    const pod=PODS.find(p=>p.id===curPod)||{};
+    $('#podStage').textContent= pod.stage==='ramp'?'Stage: Ramp (days 1–60)':'Stage: Ongoing (day 61+)';
+    renderKPIs('#alKpis', podKPIs(curPod));
+    const pm=MEMBERS.filter(m=>m.pod===curPod); const ord={Red:0,Yellow:1,Green:2};
+    pm.sort((a,b)=>ord[statusOf(a)]-ord[statusOf(b)]);
+    $('#alTable').innerHTML=pm.map(m=>memberRow(m,{activation:true,action:true})).join('')||`<tr><td colspan="11" style="text-align:center;color:var(--muted);padding:26px">No members in this pod.</td></tr>`;
+  }
+  function madisonKPIs(){
+    const w=CM_WEEK||{};
+    const cohosted=+w.calls_cohosted||0, due=+w.recordings_due||0, ontime=+w.recordings_on_time||0;
+    const recPct=due?(ontime/due*100):100;
+    const today=new Date().toISOString().slice(0,10);
+    const open=ISSUES.filter(i=>i.status!=='resolved').length;
+    const resolved=ISSUES.filter(i=>i.status==='resolved').length;
+    const overdue=ISSUES.filter(i=>i.status!=='resolved'&&i.due_date&&i.due_date<today).length;
+    const handled=(open+resolved)?(resolved/(open+resolved)*100):100;
+    const act=activeMembers(), engage=act.reduce((s,m)=>s+m.posts,0)/(act.length||1);
+    return [
+      { name:'Calls Co-hosted (wk)', val:cohosted, unit:'', target:1, dir:'above', meta:'co-host ≥ 1 per week' },
+      { name:'Recordings On Time', val:recPct, unit:'%', target:100, dir:'above', meta:`${ontime}/${due} uploaded by 12pm` },
+      { name:'Issues Handled', val:handled, unit:'%', target:100, dir:'above', meta:`${open} open · ${overdue} overdue` },
+      { name:'Posts / Member · wk', val:engage, unit:'/wk', target:TARGETS.engage, dir:'above', meta:'1 post per member per week', dec:2 },
+    ];
+  }
+  function renderCMWeek(){
+    const w=CM_WEEK||{};
+    $('#cmw_calls').value=w.calls_cohosted??0; $('#cmw_due').value=w.recordings_due??0; $('#cmw_ontime').value=w.recordings_on_time??0;
+    $('#cmwSave').onclick=async ()=>{
+      const row={ week_start:weekStartISO(), calls_cohosted:+$('#cmw_calls').value||0, recordings_due:+$('#cmw_due').value||0, recordings_on_time:+$('#cmw_ontime').value||0, updated_by:ME?.full_name||ME?.email||null, updated_at:new Date().toISOString() };
+      $('#cmwSave').disabled=true;
+      const res=await sb.from('cm_weekly').upsert(row,{onConflict:'week_start'});
+      $('#cmwSave').disabled=false;
+      if(res.error){ toast(res.error.message); return; }
+      await loadData(); renderCM(); toast('Week saved');
+    };
+  }
+  function renderCM(){
+    renderKPIs('#cmKpis', madisonKPIs()); renderCMWeek();
+    const act=activeMembers();
+    const notOn=MEMBERS.filter(m=>m.newThisMonth&&m.calls<2), quiet=act.filter(m=>m.calls===0&&m.posts===0), wins=act.filter(m=>m.posts>=4);
+    const q=(t,arr,empty)=>`<div style="margin-bottom:16px"><div class="rule-tag" style="margin-bottom:8px">${t} · ${arr.length}</div>${arr.length?arr.map(m=>`<div class="comp-line"><div class="lbl">${esc(m.name)} · <span class="muted-cell">${m.program}</span></div><span class="filter-chip" style="cursor:default">${m.calls} calls · ${m.posts} posts</span></div>`).join(''):`<div class="card-sub">${empty}</div>`}</div>`;
+    $('#cmQueues').innerHTML=q('New — not on both week-1 calls',notOn,'All new members on track.')+q('Quiet 7+ days',quiet,'No silent members.')+q('High-potential wins to amplify',wins,'No standout posts yet.');
+  }
+
+  /* ═══ MY PAY (private, computed from my comp row + shared members) ═══ */
+  function computeCompFor(c){
+    if (!c) return null;
+    const cfg=c.config||{};
+    if (c.role==='AccountabilityLeader'){
+      const myPod=PODS.find(p=>p.al_name===c.person)||PODS.find(p=>p.id===(cfg.podId||'pod-d'))||PODS[0]||{id:null,stage:'ongoing'};
+      const pm=MEMBERS.filter(m=>m.pod===myPod.id), pa=pm.filter(m=>m.pay!=='Cancelled');
+      const attend=pct(pa.filter(m=>m.calls>=1).length,pa.length), hw=pa.reduce((s,m)=>s+m.hw,0)/(pa.length||1), churn=pct(pm.filter(m=>m.churnedThisMonth).length,pm.length);
+      let hits=0; if(attend>=TARGETS.podAttend)hits++; if(hw>=HW_THRESHOLD)hits++; if(churn<=TARGETS.churn)hits++;
+      const base=(cfg.per_member||0)*pa.length, stage=myPod.stage||cfg.stage||'ongoing';
+      let bonus = stage==='ongoing' ? (hits>=3?(cfg.ongoing_full||0):0) : (hits>=3?(cfg.ramp_full||0):(hits>=2?(cfg.ramp_partial||0):0));
+      const upTot=pm.reduce((s,m)=>s+m.upsell,0), kicker=(cfg.kicker_rate||0)*upTot;
+      return { person:c.person, role:ROLE_LABEL.AccountabilityLeader, total:base+bonus+kicker,
+        lines:[[`Base · ${pa.length} active × $${cfg.per_member||0}`,money(base)],[`Pod bonus · ${hits}/3 metrics (${stage})`,money(bonus)],[`Upsell kicker · ${Math.round((cfg.kicker_rate||0)*100)}% of ${money(upTot)}`,money(kicker)]],
+        note:`Base = $${cfg.per_member||0} × active members. Pod bonus: ramp 2/3→$${cfg.ramp_partial}, 3/3→$${cfg.ramp_full}; ongoing 3/3→$${cfg.ongoing_full} else $0. Kicker = ${Math.round((cfg.kicker_rate||0)*100)}% of Accel/Elite revenue closed in pod.` };
+    }
+    if (c.role==='Director'){
+      const k=directorKPIs(), t=cfg.targets||{}, b=cfg.bonus||0; let total=Number(c.base)||0;
+      const lines=[['Base salary',money(c.base)]];
+      [[`Churn < ${t.churn??3}% (${k[0].val.toFixed(1)}%)`,k[0].val<(t.churn??3)],[`Activation ≥ ${t.activation??80}% (${Math.round(k[1].val)}%)`,k[1].val>=(t.activation??80)],[`NPS > ${t.nps??80} (${Math.round(k[2].val)})`,k[2].val>(t.nps??80)],[`Failed pay < ${t.failed??3}% (${k[3].val.toFixed(1)}%)`,k[3].val<(t.failed??3)]].forEach(([l,ok])=>{ if(ok)total+=b; lines.push([l+(ok?' ✓':''),ok?money(b):'$0']); });
+      return { person:c.person, role:ROLE_LABEL.Director, total, lines, note:`Base = ${money(c.base)}. Each of 4 KPIs on target adds ${money(b)}.` };
+    }
+    if (c.role==='CommunityManager'){
+      const k=communityKPIs(), t=cfg.targets||{}, b=cfg.bonus||0; let total=Number(c.base)||0;
+      const lines=[['Base',money(c.base)]];
+      [[`Week-1 ≥ ${t.week1??80}% (${Math.round(k[0].val)}%)`,k[0].val>=(t.week1??80)],[`Ongoing ≥ ${t.ongoing??70}% (${Math.round(k[1].val)}%)`,k[1].val>=(t.ongoing??70)],[`Engagement ≥ ${t.engage??1} (${k[2].val.toFixed(2)})`,k[2].val>=(t.engage??1)]].forEach(([l,ok])=>{ if(ok)total+=b; lines.push([l+(ok?' ✓':''),ok?money(b):'$0']); });
+      return { person:c.person, role:ROLE_LABEL.CommunityManager, total, lines, note:`Base = ${money(c.base)}. Each KPI on target adds ${money(b)}. Issue triage is baseline (required, no bonus).` };
+    }
+    return null;
+  }
+  function renderComp(){
+    const founder = (ME?.role==='Founder') || (MYCOMP_ROWS||[]).length>1;
+    const tabLbl=document.querySelector('.side-item[data-tab="comp"] .side-label');
+    if (tabLbl) tabLbl.textContent = founder?'Team Pay':'My Pay';
+    const title=document.querySelector('[data-panel="comp"] .view-title');
+    const sub=document.querySelector('[data-panel="comp"] .view-sub');
+    if (title) title.textContent = founder?'Team Pay':'My Pay';
+    if (sub) sub.textContent = founder
+      ? 'Founder oversight. You can see every person’s compensation; no one else can see anyone’s but their own.'
+      : 'Only you can see this. The database is locked so no teammate can read your compensation.';
+
+    const cards=(MYCOMP_ROWS||[]).map(computeCompFor).filter(Boolean).sort((a,b)=>b.total-a.total);
+    if (!cards.length){ $('#compWrap').innerHTML=`<div class="card"><div class="card-h">No personal pay view</div><div class="card-sub" style="margin:0">Your login doesn't have a compensation record. Everything else in the tool is available to you.</div></div>`; return; }
+    const badge = founder
+      ? `<div class="private-badge" style="color:var(--gold-deep);background:var(--gold-faint)">🔒 Founder view — full team compensation, visible only to you</div>`
+      : `<div class="private-badge">🔒 Private — only ${esc(cards[0].person)} can see this</div>`;
+    $('#compWrap').innerHTML = badge + cards.map(c=>`
+      <div class="comp-card" style="margin-bottom:16px"><div class="comp-head"><div class="comp-role">${c.role}</div><div class="comp-person">${esc(c.person)}</div></div>
+      <div class="comp-body">${c.lines.map(l=>`<div class="comp-line"><span class="lbl">${l[0]}</span><span class="amt">${l[1]}</span></div>`).join('')}
+        <div class="comp-total"><span class="lbl">Total / mo</span><span class="val">${money(c.total)}</span></div></div>
+      <div class="comp-note">${c.note}</div></div>`).join('');
+  }
+
+  /* ═══ AUTOMATION + PERMS ═══ */
+  function renderStatic(){
+    const COLOR=[['Green','Green — healthy','Activated · ≥3 calls/4wks · homework ≥ threshold · payment Good','green'],['Yellow','Yellow — drifting','Missed activation · 0 calls · no posts 14d · or 1 failed payment','yellow'],['Red','Red — at risk','NPS ≤ 6 · 30+ days silent · 2+ failed payments · or escalation','red']];
+    $('#colorRules').innerHTML=COLOR.map(r=>`<div class="rule"><div class="rule-ic ic-${r[3]}"><span class="dot ${r[0]}" style="font-size:0"></span></div><div><div class="rule-trig">${r[1]}</div><div class="rule-act">${r[2]}</div></div></div>`).join('');
+    const TRIG=[['⏱','gold','24h after start, no onboarding booked','Task → Director','Activation'],['📅','yellow','Day 5: not in community + no wk-1 call','Tasks → Community + AL','Activation'],['💳','red','Failed payment','Task → Director · Payment follow-up','Billing'],['📉','red','NPS ≤ 6 detractor','Create save-call task → Director / AL','Retention']];
+    $('#triggerRules').innerHTML=TRIG.map(r=>`<div class="rule"><div class="rule-ic ic-${r[1]}">${r[0]}</div><div style="flex:1"><div class="rule-trig">${r[2]}</div><div class="rule-act">${r[3]}</div></div><span class="rule-tag">${r[4]}</span></div>`).join('');
+    const PERMS=[['Members — create/edit/delete','yes','yes','yes'],['Status override','yes','own','own'],['KPIs (read)','yes','yes','yes'],['Own compensation','yes','yes','yes'],['Others’ compensation','no','no','no'],['Pods & assignments','yes','no','no']];
+    const cell=v=>v==='yes'?'<span class="perm-yes">✓</span>':v==='no'?'<span class="perm-no">—</span>':'<span class="perm-own">OWN</span>';
+    $('#permBody').innerHTML=PERMS.map(p=>`<tr><td>${p[0]}</td><td>${cell(p[1])}</td><td>${cell(p[2])}</td><td>${cell(p[3])}</td></tr>`).join('');
+  }
+
+  function renderAll(){
+    $('#navWho').textContent = ME?.full_name || 'Signed in';
+    $('#navRole').textContent = ROLE_LABEL[ME?.role] || roleLabel(ME?.role) || '';
+    buildSidebar();
+    renderKPIs('#dirKpis', directorKPIs());
+    renderFunnel(); renderStatusMix(); renderDirTable();
+    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderDirectory();
+  }
+
+  /* ═══ SIDEBAR · role-gated navigation ═══ */
+  // Founder sees everything. Each section lists the roles allowed to see it.
+  const NAV = [
+    { group:'Company', items:[
+      ['director','Company Health',['Founder','Director']],
+    ]},
+    { group:'Member Success', items:[
+      ['directory','Directory',['Founder','Director','CommunityManager']],
+      ['al','Pod Command Center',['Founder','Director','AccountabilityLeader']],
+      ['cm','Community Engine',['Founder','Director','CommunityManager']],
+      ['issues','Issues',['Founder','Director','CommunityManager']],
+      ['strategy','Strategy Sessions',['Founder','Director','Vet']],
+    ]},
+    { group:'Ops & Systems', items:[
+      ['rules','Automation',['Founder','Director','Systems']],
+      ['spec','System Spec',['Founder','Director','Systems']],
+    ]},
+    { group:'Me', items:[
+      ['comp','My Pay',['Founder','Director','AccountabilityLeader','CommunityManager']],
+    ]},
+  ];
+  const EXTRA_LABEL = { Vet:'Veterinary Team', Systems:'CRM / Systems' };
+  function roleLabel(r){ return EXTRA_LABEL[r] || (r||''); }
+  const canSee = roles => (ME?.role==='Founder') || roles.includes(ME?.role);
+
+  function activateTab(name){
+    document.querySelectorAll('.side-item').forEach(x=>x.classList.toggle('active', x.dataset.tab===name));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.dataset.panel===name));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function buildSidebar(){
+    const nav=$('#sideNav'); if(!nav) return;
+    let html='', first=null;
+    NAV.forEach(g=>{
+      const items=g.items.filter(it=>canSee(it[2]));
+      if(!items.length) return;
+      html+=`<div class="side-group">${g.group}</div>`;
+      items.forEach(it=>{ if(!first) first=it[0];
+        html+=`<button class="side-item" data-tab="${it[0]}"><span class="side-dot"></span><span class="side-label">${it[1]}</span></button>`;
+      });
+    });
+    if(!first){ html=`<div class="side-empty"><h2>No sections yet</h2><p>Your login isn’t mapped to a role with views here. Ask Austin to set your role.</p></div>`; }
+    nav.innerHTML=html;
+    nav.querySelectorAll('.side-item').forEach(b=> b.onclick=()=>activateTab(b.dataset.tab));
+    if(first) activateTab(first);
+  }
+
+  /* ═══ MEMBER MODAL (add / edit / delete) ═══ */
+  let editingId=null;
+  function mnoteDate(ts){ if(!ts) return ''; const d=new Date(ts); return isNaN(d)?String(ts).slice(0,10):d.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}); }
+  function renderMemberNotes(memberId){
+    const list=$('#m_notes_list');
+    const notes=memberId?MEMBER_NOTES.filter(n=>n.member_id===memberId):[];
+    list.innerHTML = notes.length
+      ? notes.map(n=>`<div class="mnote">${esc(n.body)}<div class="meta">${esc(n.created_by||'—')} · ${mnoteDate(n.created_at)}</div></div>`).join('')
+      : '<div class="mnotes-empty">No notes yet — add the first below.</div>';
+  }
+  function openModal(m){
+    editingId = m?m.id:null;
+    $('#modalTitle').textContent = m?'Edit member':'Add member';
+    $('#modalDelete').style.display = m?'block':'none';
+    $('#modalErr').textContent='';
+    $('#f_pod').innerHTML = PODS.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
+    $('#f_name').value=m?m.name:''; $('#f_email').value=m?m.email:''; $('#f_phone').value=m?m.phone:'';
+    $('#f_program').value=m?m.program:'Academy'; $('#f_pod').value=m?m.pod:(PODS[0]?.id||'');
+    $('#f_payment').value=m?m.pay:'Good';
+    $('#f_calls').value=m?m.calls:0; $('#f_posts').value=m?m.posts:0; $('#f_homework').value=m?m.hw:0;
+    $('#f_nps').value=m&&m.nps!=null?m.nps:''; $('#f_upsell').value=m?m.upsell:0; $('#f_override').value=m?(m.override||''):'';
+    $('#f_activated').checked=m?m.activated:false; $('#f_new').checked=m?m.newThisMonth:false;
+    $('#f_churned').checked=m?m.churnedThisMonth:false; $('#f_failed').checked=m?m.failed30:false;
+    renderMemberNotes(m?m.id:null); $('#m_new_note').value='';
+    $('#modal').classList.add('open');
+  }
+  function closeModal(){ $('#modal').classList.remove('open'); }
+  $('#modalClose').onclick=closeModal;
+  $('#modal').onclick=e=>{ if(e.target.id==='modal') closeModal(); };
+  document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>openModal(null));
+  document.addEventListener('click',e=>{ const b=e.target.closest('[data-edit]'); if(b){ const m=MEMBERS.find(x=>x.id===b.dataset.edit); if(m) openModal(m); } });
+
+  $('#modalSave').onclick=async ()=>{
+    const name=$('#f_name').value.trim();
+    if(!name){ $('#modalErr').textContent='Name is required.'; return; }
+    const row={
+      name, email:$('#f_email').value.trim()||null, phone:$('#f_phone').value.trim()||null, program:$('#f_program').value, pod_id:$('#f_pod').value||null,
+      payment:$('#f_payment').value, calls:+$('#f_calls').value||0, posts:+$('#f_posts').value||0, homework:+$('#f_homework').value||0,
+      nps: $('#f_nps').value===''?null:+$('#f_nps').value, upsell:+$('#f_upsell').value||0, status_override:$('#f_override').value||null,
+      activated:$('#f_activated').checked, new_this_month:$('#f_new').checked, churned_this_month:$('#f_churned').checked, failed_30:$('#f_failed').checked,
+      updated_by: ME?.full_name||ME?.email||null
+    };
+    $('#modalSave').disabled=true;
+    let memberId=editingId, err=null;
+    if(editingId){ const res=await sb.from('members').update(row).eq('id',editingId); err=res.error; }
+    else { const res=await sb.from('members').insert(row).select('id').single(); err=res.error; memberId=res.data?.id; }
+    const newNote=$('#m_new_note').value.trim();
+    if(!err && newNote && memberId){ const nr=await sb.from('member_notes').insert({ member_id:memberId, body:newNote, created_by:ME?.full_name||ME?.email||null }); err=nr.error; }
+    $('#modalSave').disabled=false;
+    if(err){ $('#modalErr').textContent=err.message; return; }
+    closeModal(); await loadData(); renderAll(); toast(editingId?'Member updated':'Member added');
+  };
+  $('#modalDelete').onclick=async ()=>{
+    if(!editingId) return;
+    if(!confirm('Delete this member? This affects everyone’s view.')) return;
+    const res=await sb.from('members').delete().eq('id',editingId);
+    if(res.error){ $('#modalErr').textContent=res.error.message; return; }
+    closeModal(); await loadData(); renderAll(); toast('Member deleted');
+  };
+  function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
+
+  /* ═══ ISSUES LOG ═══ */
+  let issueFilter='open', editingIssue=null;
+  function renderIssues(){
+    const today=new Date().toISOString().slice(0,10);
+    const overdue=i=> i.status!=='resolved' && i.due_date && i.due_date < today;
+    const counts={ all:ISSUES.length, open:ISSUES.filter(i=>i.status!=='resolved').length, urgent:ISSUES.filter(i=>i.status!=='resolved'&&i.urgency==='urgent').length, overdue:ISSUES.filter(overdue).length, resolved:ISSUES.filter(i=>i.status==='resolved').length };
+    $('#issueKpis').innerHTML=[['Open',counts.open],['Urgent',counts.urgent],['Overdue',counts.overdue],['Resolved',counts.resolved]].map(([n,v])=>`<div class="kpi"><div class="kpi-name">${n}</div><div class="kpi-val" style="font-size:26px">${v}</div></div>`).join('');
+    const chips=[['open','Open'],['urgent','Urgent'],['overdue','Overdue'],['all','All'],['resolved','Resolved']];
+    $('#issueFilters').innerHTML=chips.map(([k,l])=>`<div class="tag" data-if="${k}" style="cursor:pointer;${issueFilter===k?'background:var(--ink);color:#fff;border-color:var(--ink)':''}">${l} ${counts[k]||0}</div>`).join('');
+    let rows=ISSUES.slice();
+    if(issueFilter==='open') rows=rows.filter(i=>i.status!=='resolved');
+    else if(issueFilter==='urgent') rows=rows.filter(i=>i.status!=='resolved'&&i.urgency==='urgent');
+    else if(issueFilter==='overdue') rows=rows.filter(overdue);
+    else if(issueFilter==='resolved') rows=rows.filter(i=>i.status==='resolved');
+    const urgRank={urgent:0,high:1,medium:2,low:3};
+    rows.sort((a,b)=>((overdue(b)?1:0)-(overdue(a)?1:0))||((urgRank[a.urgency]??9)-(urgRank[b.urgency]??9))||(String(a.due_date||'9999').localeCompare(String(b.due_date||'9999'))));
+    $('#issuesBody').innerHTML=rows.map(i=>{
+      const due=i.due_date?`<span class="${overdue(i)?'due-over':''}">${i.due_date}${overdue(i)?' · overdue':''}</span>`:'<span class="muted-cell">—</span>';
+      return `<tr>
+        <td><div class="m-name">${esc(i.title||'—')}</div>${i.details?`<div class="muted-cell" style="font-size:10.5px">${esc(i.details.slice(0,80))}${i.details.length>80?'…':''}</div>`:''}</td>
+        <td class="muted-cell">${esc(i.member_name||'—')}</td>
+        <td><span class="urg urg-${i.urgency||'medium'}">${i.urgency||'medium'}</span></td>
+        <td>${due}</td>
+        <td><span class="ist ist-${i.status||'open'}">${(i.status||'open').replace('_',' ')}</span></td>
+        <td class="hide-sm muted-cell">${esc(i.created_by||'—')}</td>
+        <td style="text-align:right;white-space:nowrap">${i.status!=='resolved'?`<button class="row-issue" data-resolve-issue="${i.id}">Resolve</button> `:''}<button class="row-issue" data-edit-issue="${i.id}">Edit</button></td>
+      </tr>`;
+    }).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:26px">No issues ${issueFilter!=='all'?'in this view':'logged yet'}.</td></tr>`;
+    $('#issueFilters').querySelectorAll('[data-if]').forEach(c=>c.onclick=()=>{issueFilter=c.dataset.if;renderIssues();});
+  }
+  function openIssue(it){
+    editingIssue=it?it.id:null;
+    $('#issueModalTitle').textContent=it?'Edit issue':'Log an issue';
+    $('#issueDelete').style.display=it?'block':'none'; $('#issueErr').textContent='';
+    $('#i_member').innerHTML='<option value="">— none / general —</option>'+MEMBERS.map(m=>`<option value="${esc(m.name)}">${esc(m.name)}</option>`).join('');
+    $('#i_title').value=it?it.title||'':''; $('#i_member').value=it?(it.member_name||''):'';
+    $('#i_urgency').value=it?it.urgency||'medium':'medium'; $('#i_due').value=it?(it.due_date||''):'';
+    $('#i_status').value=it?it.status||'open':'open'; $('#i_details').value=it?it.details||'':'';
+    $('#issueModal').classList.add('open');
+  }
+  function closeIssue(){ $('#issueModal').classList.remove('open'); }
+  $('#issueClose').onclick=closeIssue; $('#issueModal').onclick=e=>{ if(e.target.id==='issueModal') closeIssue(); };
+  document.querySelectorAll('[data-add-issue]').forEach(b=>b.onclick=()=>openIssue(null));
+  document.addEventListener('click',e=>{
+    const ed=e.target.closest('[data-edit-issue]'); if(ed){ const it=ISSUES.find(x=>x.id===ed.dataset.editIssue); if(it) openIssue(it); return; }
+    const rs=e.target.closest('[data-resolve-issue]'); if(rs){ resolveIssue(rs.dataset.resolveIssue); }
+  });
+  async function resolveIssue(id){
+    const res=await sb.from('issues').update({status:'resolved', resolved_at:new Date().toISOString()}).eq('id',id);
+    if(!res.error){ await loadData(); renderIssues(); toast('Issue resolved'); }
+  }
+  $('#issueSave').onclick=async ()=>{
+    const title=$('#i_title').value.trim(); if(!title){ $('#issueErr').textContent='Give the issue a short summary.'; return; }
+    const row={ title, member_name:$('#i_member').value||null, urgency:$('#i_urgency').value, due_date:$('#i_due').value||null, status:$('#i_status').value, details:$('#i_details').value.trim()||null };
+    if($('#i_status').value==='resolved') row.resolved_at=new Date().toISOString();
+    if(!editingIssue) row.created_by=ME?.full_name||ME?.email||null;
+    $('#issueSave').disabled=true;
+    let res; if(editingIssue) res=await sb.from('issues').update(row).eq('id',editingIssue); else res=await sb.from('issues').insert(row);
+    $('#issueSave').disabled=false;
+    if(res.error){ $('#issueErr').textContent=res.error.message; return; }
+    closeIssue(); await loadData(); renderIssues(); toast(editingIssue?'Issue updated':'Issue logged');
+  };
+  $('#issueDelete').onclick=async ()=>{ if(!editingIssue) return; if(!confirm('Delete this issue?')) return; const res=await sb.from('issues').delete().eq('id',editingIssue); if(res.error){ $('#issueErr').textContent=res.error.message; return; } closeIssue(); await loadData(); renderIssues(); toast('Issue deleted'); };
+
+  /* ═══ STRATEGY SESSIONS ═══ */
+  let ssFilter='upcoming', editingSS=null;
+  function ssDate(ts){ if(!ts) return 'TBD'; const d=new Date(ts); return isNaN(d)?String(ts).slice(0,16):d.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}); }
+  function tsLocal(ts){ if(!ts) return ''; const d=new Date(ts); if(isNaN(d)) return ''; const p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; }
+  function renderStrategy(){
+    const cards=[
+      ['Activation · upcoming', STRATEGY.filter(s=>s.session_type==='activation'&&s.status==='scheduled').length],
+      ['Activation · completed', STRATEGY.filter(s=>s.session_type==='activation'&&s.status==='completed').length],
+      ['Accelerator · upcoming', STRATEGY.filter(s=>s.session_type==='accelerator'&&s.status==='scheduled').length],
+      ['Accelerator · completed', STRATEGY.filter(s=>s.session_type==='accelerator'&&s.status==='completed').length],
+    ];
+    $('#ssKpis').innerHTML=cards.map(([n,v])=>`<div class="kpi"><div class="kpi-name">${n}</div><div class="kpi-val" style="font-size:26px">${v}</div></div>`).join('');
+    $('#ssExperts').innerHTML=EXPERTS.map(e=>{const all=STRATEGY.filter(s=>s.expert===e);const up=all.filter(s=>s.status==='scheduled').length;return `<div class="exp-row"><b>${esc(e)}</b><span class="ec">${all.length} total · <strong style="color:var(--gold-deep)">${up} upcoming</strong></span></div>`;}).join('');
+    const counts={all:STRATEGY.length, upcoming:STRATEGY.filter(s=>s.status==='scheduled').length, activation:STRATEGY.filter(s=>s.session_type==='activation').length, accelerator:STRATEGY.filter(s=>s.session_type==='accelerator').length, completed:STRATEGY.filter(s=>s.status==='completed').length};
+    const chips=[['upcoming','Upcoming'],['activation','Activation'],['accelerator','Accelerator'],['completed','Completed'],['all','All']];
+    $('#ssFilters').innerHTML=chips.map(([k,l])=>`<div class="tag" data-sf="${k}" style="cursor:pointer;${ssFilter===k?'background:var(--ink);color:#fff;border-color:var(--ink)':''}">${l} ${counts[k]||0}</div>`).join('');
+    let rows=STRATEGY.slice();
+    if(ssFilter==='upcoming') rows=rows.filter(s=>s.status==='scheduled');
+    else if(ssFilter==='activation') rows=rows.filter(s=>s.session_type==='activation');
+    else if(ssFilter==='accelerator') rows=rows.filter(s=>s.session_type==='accelerator');
+    else if(ssFilter==='completed') rows=rows.filter(s=>s.status==='completed');
+    rows.sort((a,b)=>String(a.scheduled_for||'9999').localeCompare(String(b.scheduled_for||'9999')));
+    $('#ssBody').innerHTML=rows.map(s=>`<tr>
+      <td class="m-name">${esc(s.member_name||'—')}</td>
+      <td><span class="stype stype-${s.session_type||'activation'}">${s.session_type||'activation'}</span></td>
+      <td class="muted-cell">${esc(s.expert||'—')}</td>
+      <td class="muted-cell">${ssDate(s.scheduled_for)}</td>
+      <td><span class="sst sst-${s.status||'scheduled'}">${(s.status||'scheduled').replace('_',' ')}</span></td>
+      <td style="text-align:right"><button class="row-issue" data-edit-ss="${s.id}">Edit</button></td>
+    </tr>`).join('')||`<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:26px">No sessions ${ssFilter!=='all'?'in this view':'yet'}.</td></tr>`;
+    $('#ssFilters').querySelectorAll('[data-sf]').forEach(c=>c.onclick=()=>{ssFilter=c.dataset.sf;renderStrategy();});
+  }
+  function openSS(s){
+    editingSS=s?s.id:null;
+    $('#ssModalTitle').textContent=s?'Edit session':'Schedule session';
+    $('#ssDelete').style.display=s?'block':'none'; $('#ssErr').textContent='';
+    $('#s_member').innerHTML='<option value="">— select member —</option>'+MEMBERS.map(m=>`<option value="${esc(m.name)}" data-id="${m.id}">${esc(m.name)}</option>`).join('');
+    $('#s_expert').innerHTML=EXPERTS.map(e=>`<option>${esc(e)}</option>`).join('');
+    $('#s_member').value=s?(s.member_name||''):''; $('#s_type').value=s?s.session_type||'activation':'activation';
+    $('#s_expert').value=s?s.expert||EXPERTS[0]:EXPERTS[0]; $('#s_when').value=s?tsLocal(s.scheduled_for):'';
+    $('#s_status').value=s?s.status||'scheduled':'scheduled'; $('#s_notes').value=s?s.notes||'':'';
+    $('#ssModal').classList.add('open');
+  }
+  function closeSS(){ $('#ssModal').classList.remove('open'); }
+  $('#ssClose').onclick=closeSS; $('#ssModal').onclick=e=>{ if(e.target.id==='ssModal') closeSS(); };
+  document.querySelectorAll('[data-add-ss]').forEach(b=>b.onclick=()=>openSS(null));
+  document.addEventListener('click',e=>{ const b=e.target.closest('[data-edit-ss]'); if(b){ const s=STRATEGY.find(x=>x.id===b.dataset.editSs); if(s) openSS(s); } });
+  $('#ssSave').onclick=async ()=>{
+    const member=$('#s_member').value; if(!member){ $('#ssErr').textContent='Pick a member.'; return; }
+    const opt=$('#s_member').selectedOptions[0];
+    const row={ member_name:member, member_id:opt?opt.dataset.id:null, expert:$('#s_expert').value, session_type:$('#s_type').value,
+      scheduled_for:$('#s_when').value?new Date($('#s_when').value).toISOString():null, status:$('#s_status').value, notes:$('#s_notes').value.trim()||null };
+    if(!editingSS) row.created_by=ME?.full_name||ME?.email||null;
+    $('#ssSave').disabled=true;
+    let res; if(editingSS) res=await sb.from('strategy_sessions').update(row).eq('id',editingSS); else res=await sb.from('strategy_sessions').insert(row);
+    $('#ssSave').disabled=false;
+    if(res.error){ $('#ssErr').textContent=res.error.message; return; }
+    closeSS(); await loadData(); renderStrategy(); toast(editingSS?'Session updated':'Session scheduled');
+  };
+  $('#ssDelete').onclick=async ()=>{ if(!editingSS) return; if(!confirm('Delete this session?')) return; const res=await sb.from('strategy_sessions').delete().eq('id',editingSS); if(res.error){ $('#ssErr').textContent=res.error.message; return; } closeSS(); await loadData(); renderStrategy(); toast('Session deleted'); };
+
+  /* ═══ DIRECTORY ═══ */
+  let directoryQ='';
+  function renderDirectory(){
+    let rows=MEMBERS.slice().sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+    if(directoryQ) rows=rows.filter(m=>((m.name||'')+' '+(m.email||'')+' '+(m.phone||'')).toLowerCase().includes(directoryQ));
+    $('#directoryBody').innerHTML=rows.map(m=>`<tr>
+      <td class="m-name">${esc(m.name)}</td>
+      <td>${m.email?`<a href="mailto:${esc(m.email)}" style="color:var(--gold-deep);text-decoration:none">${esc(m.email)}</a>`:'<span class="muted-cell">—</span>'}</td>
+      <td>${m.phone?`<a href="tel:${esc(m.phone)}" style="color:var(--gold-deep);text-decoration:none">${esc(m.phone)}</a>`:'<span class="muted-cell">—</span>'}</td>
+      <td class="hide-sm"><span class="prog-tag">${m.program||'—'}</span></td>
+      <td class="hide-sm muted-cell">${esc(podName(m.pod))}</td>
+    </tr>`).join('')||`<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:26px">No members.</td></tr>`;
+    const sbx=$('#directorySearch'); if(sbx){ sbx.value=directoryQ; sbx.oninput=e=>{directoryQ=e.target.value.toLowerCase();renderDirectory();}; }
+  }
+
+  boot();
+  </script>
+</body>
+</html>
