@@ -167,8 +167,10 @@
     .cmw-grid{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:14px;align-items:end;margin-top:16px}
     .cmw-grid .field input{width:100%}
     @media(max-width:640px){.cmw-grid{grid-template-columns:1fr 1fr}.cmw-grid button{grid-column:1/-1}}
-    #modal, #issueModal, #ssModal, #ccModal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
-    #modal.open, #issueModal.open, #ssModal.open, #ccModal.open { display: flex; }
+    #modal, #issueModal, #ssModal, #ccModal, #affModal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+    #modal.open, #issueModal.open, #ssModal.open, #ccModal.open, #affModal.open { display: flex; }
+    .aff-st{font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 8px;border-radius:4px}
+    .aff-active{background:var(--green);color:#fff}.aff-onboarded{background:var(--green-bg);color:var(--green)}.aff-signed{background:var(--gold-mid);color:var(--gold-deep)}.aff-prospect{background:var(--card);color:var(--mid)}.aff-inactive{background:var(--red-bg);color:var(--red)}
     .urg{font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap}
     .urg-low{background:#efece4;color:#86847d}.urg-medium{background:var(--yellow-bg);color:var(--yellow)}.urg-high{background:rgba(194,102,30,.14);color:#b5651d}.urg-urgent{background:var(--red);color:#fff}
     .ist{font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 8px;border-radius:4px}
@@ -523,6 +525,21 @@
         </table></div></div>
       </section>
 
+      <!-- AFFILIATES -->
+      <section class="panel" data-panel="affiliates">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Partner program</div>
+          <h1 class="view-title">Affiliates</h1>
+          <p class="view-sub">Your affiliate pipeline — signed, onboarded, and producing — against the Q3 target of 15 active affiliates.</p>
+        </div>
+        <button class="btn-save" id="affAdd" type="button">+ Add affiliate</button></div>
+        <div class="kpi-grid" id="affKpis"></div>
+        <div class="table-wrap" style="margin-top:22px"><div style="overflow-x:auto"><table>
+          <thead><tr><th>Affiliate</th><th>Email</th><th>Status</th><th>Sales</th><th>Leads</th><th>Joined</th><th></th></tr></thead>
+          <tbody id="affBody"></tbody>
+        </table></div></div>
+      </section>
+
       <!-- COMP (private) -->
       <section class="panel" data-panel="comp">
         <div class="view-head"><div>
@@ -749,6 +766,21 @@
       <div class="field full"><label>Notes</label><textarea id="c_notes" rows="2"></textarea></div>
     </div></div>
     <div class="modal-foot"><button class="btn-del" id="ccDelete" style="visibility:hidden">Delete</button><div style="display:flex;gap:10px;align-items:center"><span class="login-err" id="ccErr" style="margin:0"></span><button class="btn-save" id="ccSave">Save</button></div></div>
+  </div></div>
+
+  <!-- ═══ AFFILIATE MODAL ═══ -->
+  <div id="affModal"><div class="modal-box">
+    <div class="modal-head"><div class="modal-title" id="affTitle">Affiliate</div><button class="modal-close" id="affClose">&times;</button></div>
+    <div class="modal-body"><div class="fgrid">
+      <div class="field full"><label>Name</label><input id="a_name" type="text"></div>
+      <div class="field"><label>Email</label><input id="a_email" type="text"></div>
+      <div class="field"><label>Status</label><select id="a_status"><option value="prospect">Prospect</option><option value="signed">Signed</option><option value="onboarded">Onboarded</option><option value="active">Active / producing</option><option value="inactive">Inactive</option></select></div>
+      <div class="field"><label>Sales attributed</label><input id="a_sales" type="number" min="0" value="0"></div>
+      <div class="field"><label>Leads generated</label><input id="a_leads" type="number" min="0" value="0"></div>
+      <div class="field"><label>Joined date</label><input id="a_joined" type="date"></div>
+      <div class="field full"><label>Notes</label><textarea id="a_notes" rows="2"></textarea></div>
+    </div></div>
+    <div class="modal-foot"><button class="btn-del" id="affDelete">Delete</button><div style="display:flex;gap:10px;align-items:center"><span class="login-err" id="affErr" style="margin:0"></span><button class="btn-save" id="affSave">Save</button></div></div>
   </div></div>
 
   <!-- LEAD DETAIL DRAWER -->
@@ -1147,7 +1179,7 @@
   const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
   const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager', Founder:'Founder' };
 
-  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[];
+  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[];
   let SALES_MEMBER=false;  // true if this login maps to a sales_reps row (set after SalesOS.boot)
   const EXPERTS=['Dr. Emmanuel Fontaine','Dr. Angela Hughes','Austin Shanks','Dr. David Mahoney','Yasmin Omar'];
   function weekStartISO(){ const d=new Date(); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return d.toISOString().slice(0,10); }
@@ -1192,7 +1224,7 @@
   async function loadData(){
     const { data:{ session } } = await sb.auth.getSession();
     const myEmail = session?.user?.email || '';
-    const [mem, pods, comp, prof, iss, mnotes, cmw, ss, cc, wk] = await Promise.all([
+    const [mem, pods, comp, prof, iss, mnotes, cmw, ss, cc, wk, aff] = await Promise.all([
       sb.from('members').select('*').order('name'),
       sb.from('pods').select('*').order('name'),
       sb.from('comp').select('*'),       // RLS → only my row
@@ -1203,6 +1235,7 @@
       sb.from('strategy_sessions').select('*').order('scheduled_for',{ascending:true}),
       sb.from('community_calls').select('*').order('scheduled_for',{ascending:true}),
       sb.from('weekly_attendance').select('*').order('week_start',{ascending:true}),
+      sb.from('affiliates').select('*').order('name'),
     ]);
     MEMBERS = (mem.data||[]).map(norm);
     PODS = pods.data||[];
@@ -1213,6 +1246,7 @@
     STRATEGY = ss.data||[];
     COMMUNITY = cc.data||[];
     WEEKLY = wk.data||[];
+    AFFILIATES = aff.data||[];
     MYCOMP_ROWS = comp.data || [];
     MYCOMP = MYCOMP_ROWS[0] || null;
     ME = PROFILES.find(p=>p.email===myEmail) || { email:myEmail, full_name:myEmail, role:(MYCOMP&&MYCOMP.role)||'' };
@@ -1490,7 +1524,7 @@
     buildSidebar();
     renderKPIs('#dirKpis', directorKPIs());
     renderFunnel(); renderStatusMix(); renderDirTable();
-    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderAccelerator(); renderCalendar(); renderReports(); renderDirectory();
+    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderAccelerator(); renderCalendar(); renderReports(); renderAffiliates(); renderDirectory();
     const eb=$('#exportBtn'); if(eb) eb.onclick=buildExport;
   }
 
@@ -1516,6 +1550,9 @@
       ['issues','Issues',['Founder','Director','CommunityManager']],
       ['strategy','Strategy Sessions',['Founder','Director','Vet']],
       ['accelerator','Accelerator',['Founder','Director','CommunityManager']],
+    ]},
+    { group:'Affiliates', items:[
+      ['affiliates','Affiliates',['Founder','Director']],
     ]},
     { group:'Ops & Systems', items:[
       ['rules','Automation',['Founder','Director','Systems']],
@@ -1683,6 +1720,55 @@
   let ssFilter='upcoming', editingSS=null;
   function ssDate(ts){ if(!ts) return 'TBD'; const d=new Date(ts); return isNaN(d)?String(ts).slice(0,16):d.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}); }
   function tsLocal(ts){ if(!ts) return ''; const d=new Date(ts); if(isNaN(d)) return ''; const p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; }
+  /* ═══ AFFILIATES ═══ */
+  let editingAff=null;
+  function renderAffiliates(){
+    const A=AFFILIATES;
+    const signedPlus=A.filter(a=>['signed','onboarded','active'].includes(a.status)).length;
+    const onboardedPlus=A.filter(a=>['onboarded','active'].includes(a.status)).length;
+    const active=A.filter(a=>a.status==='active').length;
+    $('#affKpis').innerHTML=[
+      ['Total affiliates',A.length,''],
+      ['Signed',signedPlus,'signed or further'],
+      ['Onboarded',onboardedPlus,'onboarded or active'],
+      ['Active / producing',active+' / 15','Q3 target 15'],
+    ].map(([n,v,s])=>`<div class="kpi"><div class="kpi-name">${n}</div><div class="kpi-val" style="font-size:28px">${v}</div><div class="kpi-meta">${s}</div></div>`).join('');
+    const order={active:0,onboarded:1,signed:2,prospect:3,inactive:4};
+    const rows=A.slice().sort((a,b)=>(order[a.status]??9)-(order[b.status]??9)||(b.sales_count||0)-(a.sales_count||0));
+    $('#affBody').innerHTML=rows.map(a=>`<tr>
+      <td class="m-name">${esc(a.name)}</td>
+      <td>${a.email?`<a href="mailto:${esc(a.email)}" style="color:var(--gold-deep);text-decoration:none">${esc(a.email)}</a>`:'<span class="muted-cell">—</span>'}</td>
+      <td><span class="aff-st aff-${a.status||'prospect'}">${a.status||'prospect'}</span></td>
+      <td class="num">${a.sales_count||0}</td>
+      <td class="num">${a.leads_count||0}</td>
+      <td class="muted-cell">${a.joined_at||'—'}</td>
+      <td><button class="row-edit" data-edit-aff="${a.id}">Edit</button></td>
+    </tr>`).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:26px">No affiliates yet. Add your first.</td></tr>`;
+    const add=$('#affAdd'); if(add) add.onclick=()=>openAff(null);
+  }
+  function openAff(a){
+    editingAff=a?a.id:null; $('#affErr').textContent='';
+    $('#affTitle').textContent=a?'Edit affiliate':'Add affiliate';
+    $('#a_name').value=a?a.name||'':''; $('#a_email').value=a?a.email||'':''; $('#a_status').value=a?a.status||'prospect':'prospect';
+    $('#a_sales').value=a?a.sales_count||0:0; $('#a_leads').value=a?a.leads_count||0:0; $('#a_joined').value=a?(a.joined_at||''):'';
+    $('#a_notes').value=a?a.notes||'':'';
+    $('#affDelete').style.visibility=a?'visible':'hidden';
+    $('#affModal').classList.add('open');
+  }
+  function closeAff(){ $('#affModal').classList.remove('open'); }
+  $('#affClose').onclick=closeAff; $('#affModal').onclick=e=>{ if(e.target.id==='affModal') closeAff(); };
+  document.addEventListener('click',e=>{ const b=e.target.closest('[data-edit-aff]'); if(b){ const a=AFFILIATES.find(x=>x.id===b.dataset.editAff); if(a) openAff(a); } });
+  $('#affSave').onclick=async ()=>{
+    const name=$('#a_name').value.trim(); if(!name){ $('#affErr').textContent='Name required.'; return; }
+    const row={ name, email:$('#a_email').value.trim()||null, status:$('#a_status').value, sales_count:+$('#a_sales').value||0, leads_count:+$('#a_leads').value||0, joined_at:$('#a_joined').value||null, notes:$('#a_notes').value.trim()||null };
+    $('#affSave').disabled=true;
+    let res; if(editingAff) res=await sb.from('affiliates').update(row).eq('id',editingAff); else res=await sb.from('affiliates').insert(row);
+    $('#affSave').disabled=false;
+    if(res.error){ $('#affErr').textContent=res.error.message; return; }
+    closeAff(); await loadData(); renderAffiliates(); toast(editingAff?'Affiliate updated':'Affiliate added');
+  };
+  $('#affDelete').onclick=async ()=>{ if(!editingAff) return; if(!confirm('Delete this affiliate?')) return; const res=await sb.from('affiliates').delete().eq('id',editingAff); if(res.error){ $('#affErr').textContent=res.error.message; return; } closeAff(); await loadData(); renderAffiliates(); toast('Affiliate deleted'); };
+
   /* ═══ MONTHLY REPORTS (attendance) ═══ */
   let repY=null, repM=null;
   function renderReports(){
