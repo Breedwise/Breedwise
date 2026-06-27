@@ -167,8 +167,8 @@
     .cmw-grid{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:14px;align-items:end;margin-top:16px}
     .cmw-grid .field input{width:100%}
     @media(max-width:640px){.cmw-grid{grid-template-columns:1fr 1fr}.cmw-grid button{grid-column:1/-1}}
-    #modal, #issueModal, #ssModal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
-    #modal.open, #issueModal.open, #ssModal.open { display: flex; }
+    #modal, #issueModal, #ssModal, #ccModal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+    #modal.open, #issueModal.open, #ssModal.open, #ccModal.open { display: flex; }
     .urg{font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap}
     .urg-low{background:#efece4;color:#86847d}.urg-medium{background:var(--yellow-bg);color:var(--yellow)}.urg-high{background:rgba(194,102,30,.14);color:#b5651d}.urg-urgent{background:var(--red);color:#fff}
     .ist{font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 8px;border-radius:4px}
@@ -299,7 +299,7 @@
     .cal-up{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border-2)}
     .cal-up:last-child{border-bottom:none}.cal-up-t{font-size:13px;color:var(--ink);font-weight:600}
     .cal-up .cal-dot{margin-top:5px}
-    .exp-0{background:#3c6a8a}.exp-1{background:#3c7a52}.exp-2{background:#8a6420}.exp-3{background:#6a5a8a}.exp-4{background:#a3623a}.exp-5{background:#6a6458}
+    .exp-0{background:#3c6a8a}.exp-1{background:#3c7a52}.exp-2{background:#8a6420}.exp-3{background:#6a5a8a}.exp-4{background:#a3623a}.exp-5{background:#6a6458}.exp-comm{background:#5b6b7a}
   </style>
 </head>
 <body>
@@ -459,6 +459,7 @@
         <div class="cal-head">
           <div class="cal-nav"><button id="calPrev" type="button">‹</button><span id="calLabel" class="cal-label"></span><button id="calNext" type="button">›</button></div>
           <select class="search-box" id="calExpert" style="margin-left:auto;width:auto"></select>
+          <button class="btn-save" id="ccAdd" type="button">+ Community call</button>
         </div>
         <div id="calLegend" class="cal-legend"></div>
         <div class="cal-grid" id="calGrid"></div>
@@ -715,6 +716,21 @@
     </div></div>
     <div class="modal-foot"><button class="btn-del" id="ssDelete">Delete</button><div style="display:flex;gap:10px;align-items:center"><span class="login-err" id="ssErr" style="margin:0"></span><button class="btn-save" id="ssSave">Save</button></div></div>
   </div></div>
+
+  <!-- ═══ COMMUNITY CALL MODAL ═══ -->
+  <div id="ccModal"><div class="modal-box">
+    <div class="modal-head"><div class="modal-title">Community call</div><button class="modal-close" id="ccClose">&times;</button></div>
+    <div class="modal-body"><div class="fgrid">
+      <div class="field full"><label>Title</label><input id="c_title" type="text" placeholder="e.g. Weekly Community Call"></div>
+      <div class="field"><label>Host</label><input id="c_host" type="text" placeholder="e.g. Madison"></div>
+      <div class="field"><label>Type</label><select id="c_type"><option value="community">Community call</option><option value="masterclass">Masterclass</option><option value="other">Other</option></select></div>
+      <div class="field"><label>Date &amp; time</label><input id="c_when" type="datetime-local"></div>
+      <div class="field"><label>Duration (min)</label><input id="c_dur" type="number" min="0" value="60"></div>
+      <div class="field full"><label>Notes</label><textarea id="c_notes" rows="2"></textarea></div>
+    </div></div>
+    <div class="modal-foot"><button class="btn-del" id="ccDelete" style="visibility:hidden">Delete</button><div style="display:flex;gap:10px;align-items:center"><span class="login-err" id="ccErr" style="margin:0"></span><button class="btn-save" id="ccSave">Save</button></div></div>
+  </div></div>
+
   <!-- LEAD DETAIL DRAWER -->
   <div id="sl_detail"><div class="modal-box detail-box">
     <div class="modal-head">
@@ -1111,7 +1127,7 @@
   const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
   const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager', Founder:'Founder' };
 
-  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[];
+  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[];
   let SALES_MEMBER=false;  // true if this login maps to a sales_reps row (set after SalesOS.boot)
   const EXPERTS=['Dr. Emmanuel Fontaine','Dr. Angela Hughes','Austin Shanks','Dr. David Mahoney','Yasmin Omar'];
   function weekStartISO(){ const d=new Date(); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return d.toISOString().slice(0,10); }
@@ -1156,7 +1172,7 @@
   async function loadData(){
     const { data:{ session } } = await sb.auth.getSession();
     const myEmail = session?.user?.email || '';
-    const [mem, pods, comp, prof, iss, mnotes, cmw, ss] = await Promise.all([
+    const [mem, pods, comp, prof, iss, mnotes, cmw, ss, cc] = await Promise.all([
       sb.from('members').select('*').order('name'),
       sb.from('pods').select('*').order('name'),
       sb.from('comp').select('*'),       // RLS → only my row
@@ -1165,6 +1181,7 @@
       sb.from('member_notes').select('*').order('created_at',{ascending:false}),
       sb.from('cm_weekly').select('*').eq('week_start', weekStartISO()).maybeSingle(),
       sb.from('strategy_sessions').select('*').order('scheduled_for',{ascending:true}),
+      sb.from('community_calls').select('*').order('scheduled_for',{ascending:true}),
     ]);
     MEMBERS = (mem.data||[]).map(norm);
     PODS = pods.data||[];
@@ -1173,6 +1190,7 @@
     MEMBER_NOTES = mnotes.data||[];
     CM_WEEK = cmw.data || { calls_cohosted:0, recordings_due:0, recordings_on_time:0 };
     STRATEGY = ss.data||[];
+    COMMUNITY = cc.data||[];
     MYCOMP_ROWS = comp.data || [];
     MYCOMP = MYCOMP_ROWS[0] || null;
     ME = PROFILES.find(p=>p.email===myEmail) || { email:myEmail, full_name:myEmail, role:(MYCOMP&&MYCOMP.role)||'' };
@@ -1648,25 +1666,44 @@
     const first=new Date(calY,calM,1), startDow=first.getDay(), days=new Date(calY,calM+1,0).getDate();
     $('#calLabel').textContent=first.toLocaleString('en-US',{month:'long',year:'numeric'});
     $('#calExpert').innerHTML=['all',...EXPERTS].map(e=>`<option value="${e==='all'?'all':esc(e)}"${calExpert===e?' selected':''}>${e==='all'?'All experts':esc(e)}</option>`).join('');
-    $('#calLegend').innerHTML=EXPERTS.map((e,i)=>`<span class="cal-leg"><span class="cal-dot exp-${i%5}"></span>${esc(e)}</span>`).join('');
-    const sess=STRATEGY.filter(s=>{ if(!s.scheduled_for) return false; const d=new Date(s.scheduled_for); if(isNaN(d)||d.getFullYear()!==calY||d.getMonth()!==calM) return false; return calExpert==='all'||s.expert===calExpert; });
-    const byDay={}; sess.forEach(s=>{ const d=new Date(s.scheduled_for).getDate(); (byDay[d]=byDay[d]||[]).push(s); });
+    $('#calLegend').innerHTML=EXPERTS.map((e,i)=>`<span class="cal-leg"><span class="cal-dot exp-${i%5}"></span>${esc(e)}</span>`).join('')+`<span class="cal-leg"><span class="cal-dot exp-comm"></span>Community call</span>`;
+    const events=[];
+    STRATEGY.forEach(s=>{ if(!s.scheduled_for) return; if(calExpert!=='all'&&s.expert!==calExpert) return; events.push({ts:s.scheduled_for,color:'exp-'+expColor(s.expert),label:(s.member_name||'').split(' ')[0]||'Session',who:s.member_name||'—',sub:s.expert||''}); });
+    if(calExpert==='all') COMMUNITY.forEach(c=>{ if(!c.scheduled_for) return; events.push({ts:c.scheduled_for,color:'exp-comm',label:c.title||'Call',who:c.title||'Community call',sub:c.host||'Community'}); });
+    const inMo=e=>{ const d=new Date(e.ts); return !isNaN(d)&&d.getFullYear()===calY&&d.getMonth()===calM; };
+    const byDay={}; events.filter(inMo).forEach(e=>{ const d=new Date(e.ts).getDate(); (byDay[d]=byDay[d]||[]).push(e); });
     const td=new Date(), thisMo=td.getFullYear()===calY&&td.getMonth()===calM;
     let cells='';
     for(let i=0;i<startDow;i++) cells+=`<div class="cal-cell other"></div>`;
     for(let day=1;day<=days;day++){
-      const evs=(byDay[day]||[]).sort((a,b)=>String(a.scheduled_for).localeCompare(String(b.scheduled_for)));
+      const evs=(byDay[day]||[]).sort((a,b)=>String(a.ts).localeCompare(String(b.ts)));
       cells+=`<div class="cal-cell${thisMo&&td.getDate()===day?' cal-today':''}"><div class="cal-daynum">${day}</div>`+
-        evs.map(s=>{const t=new Date(s.scheduled_for);return `<div class="cal-ev exp-${expColor(s.expert)}" title="${esc(s.member_name||'')} · ${esc(s.expert||'')}">${t.toLocaleTimeString('en-US',{hour:'numeric'})} ${esc((s.member_name||'').split(' ')[0])}</div>`;}).join('')+`</div>`;
+        evs.map(e=>{const t=new Date(e.ts);return `<div class="cal-ev ${e.color}" title="${esc(e.who)} · ${esc(e.sub)}">${t.toLocaleTimeString('en-US',{hour:'numeric'})} ${esc(e.label)}</div>`;}).join('')+`</div>`;
     }
     $('#calGrid').innerHTML=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d=>`<div class="cal-dow">${d}</div>`).join('')+cells;
     const midnight=new Date(new Date().toDateString());
-    const up=STRATEGY.filter(s=>s.scheduled_for&&s.status==='scheduled'&&new Date(s.scheduled_for)>=midnight&&(calExpert==='all'||s.expert===calExpert)).sort((a,b)=>String(a.scheduled_for).localeCompare(String(b.scheduled_for))).slice(0,12);
-    $('#calUpcoming').innerHTML=up.length?up.map(s=>`<div class="cal-up"><span class="cal-dot exp-${expColor(s.expert)}"></span><div><div class="cal-up-t">${esc(s.member_name||'—')} <span class="muted-cell" style="font-weight:400">· ${esc(s.expert||'')}</span></div><div class="muted-cell" style="font-size:11px">${ssDate(s.scheduled_for)}</div></div></div>`).join(''):`<div class="card-sub" style="margin:0">No upcoming sessions${calExpert!=='all'?' for this expert':''}.</div>`;
+    const up=events.filter(e=>new Date(e.ts)>=midnight).sort((a,b)=>String(a.ts).localeCompare(String(b.ts))).slice(0,12);
+    $('#calUpcoming').innerHTML=up.length?up.map(e=>`<div class="cal-up"><span class="cal-dot ${e.color}"></span><div><div class="cal-up-t">${esc(e.who)} <span class="muted-cell" style="font-weight:400">· ${esc(e.sub)}</span></div><div class="muted-cell" style="font-size:11px">${ssDate(e.ts)}</div></div></div>`).join(''):`<div class="card-sub" style="margin:0">No upcoming events${calExpert!=='all'?' for this expert':''}.</div>`;
     $('#calExpert').onchange=e=>{ calExpert=e.target.value; renderCalendar(); };
     $('#calPrev').onclick=()=>{ calM--; if(calM<0){calM=11;calY--;} renderCalendar(); };
     $('#calNext').onclick=()=>{ calM++; if(calM>11){calM=0;calY++;} renderCalendar(); };
+    const add=$('#ccAdd'); if(add) add.onclick=openCC;
   }
+  /* community-call modal */
+  function openCC(){ $('#ccErr').textContent=''; $('#c_title').value=''; $('#c_host').value=''; $('#c_type').value='community'; $('#c_when').value=''; $('#c_dur').value=60; $('#c_notes').value=''; $('#ccModal').classList.add('open'); }
+  function closeCC(){ $('#ccModal').classList.remove('open'); }
+  $('#ccClose').onclick=closeCC; $('#ccModal').onclick=e=>{ if(e.target.id==='ccModal') closeCC(); };
+  $('#ccSave').onclick=async ()=>{
+    const title=$('#c_title').value.trim(); const when=$('#c_when').value;
+    if(!title){ $('#ccErr').textContent='Title required.'; return; }
+    if(!when){ $('#ccErr').textContent='Date & time required.'; return; }
+    const row={ title, host:$('#c_host').value.trim()||null, call_type:$('#c_type').value, scheduled_for:new Date(when).toISOString(), duration_min:Number($('#c_dur').value)||60, notes:$('#c_notes').value.trim()||null };
+    $('#ccSave').disabled=true;
+    const res=await sb.from('community_calls').insert(row);
+    $('#ccSave').disabled=false;
+    if(res.error){ $('#ccErr').textContent=res.error.message; return; }
+    closeCC(); await loadData(); renderCalendar(); toast('Community call added');
+  };
   function renderAccelerator(){
     const rank={Red:0,Yellow:1,Green:2};
     const accs=MEMBERS.filter(m=>m.program==='Accelerator'&&m.pay!=='Cancelled');
