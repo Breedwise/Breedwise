@@ -364,7 +364,7 @@
         <div class="table-wrap">
           <div class="table-tools" id="dirFilters"></div>
           <div style="overflow-x:auto"><table>
-            <thead><tr><th>Member</th><th>Program</th><th>Status</th><th>Calls 4w</th><th class="hide-sm">Posts 7d</th><th>HW%</th><th>Payment</th><th>NPS</th><th></th></tr></thead>
+            <thead><tr><th>Member</th><th>Program</th><th>Status</th><th>Calls 4w</th><th>Calls 1w</th><th class="hide-sm">Posts 7d</th><th>HW%</th><th>Payment</th><th>NPS</th><th></th></tr></thead>
             <tbody id="dirTable"></tbody>
           </table></div>
         </div>
@@ -404,7 +404,7 @@
         <div class="kpi-grid" id="alKpis"></div>
         <div class="section-label">Pod roster &amp; action queue</div>
         <div class="table-wrap"><div style="overflow-x:auto"><table>
-          <thead><tr><th>Member</th><th>Program</th><th>Status</th><th>Activation</th><th>Calls 4w</th><th class="hide-sm">Posts 7d</th><th>HW%</th><th>Pay</th><th>NPS</th><th>Next action</th><th></th></tr></thead>
+          <thead><tr><th>Member</th><th>Program</th><th>Status</th><th>Activation</th><th>Calls 4w</th><th>Calls 1w</th><th class="hide-sm">Posts 7d</th><th>HW%</th><th>Pay</th><th>NPS</th><th>Next action</th><th></th></tr></thead>
           <tbody id="alTable"></tbody>
         </table></div></div>
       </section>
@@ -499,7 +499,7 @@
         <div class="card" style="margin-top:22px"><div class="card-h">Upcoming accelerator sessions</div><div class="card-sub">Scheduled expert sessions for accelerator members.</div><div id="accSessions"></div></div>
         <div class="section-label">Members · risk first</div>
         <div class="table-wrap"><div style="overflow-x:auto"><table>
-          <thead><tr><th>Member</th><th>Status</th><th>Calls 4w</th><th>Sessions done</th><th>Next session</th></tr></thead>
+          <thead><tr><th>Member</th><th>Status</th><th>Calls 4w</th><th>Calls 1w</th><th>Sessions done</th><th>Next session</th></tr></thead>
           <tbody id="accBody"></tbody>
         </table></div></div>
       </section>
@@ -661,6 +661,7 @@
       <div class="field"><label>Pod</label><select id="f_pod"></select></div>
       <div class="field"><label>Payment</label><select id="f_payment"><option>Good</option><option>Failed</option><option>At risk</option><option>Cancelled</option></select></div>
       <div class="field"><label>Calls (4 wks)</label><input id="f_calls" type="number" min="0"></div>
+      <div class="field"><label>Calls (this week)</label><input id="f_calls_1w" type="number" min="0"></div>
       <div class="field"><label>Posts (7 days)</label><input id="f_posts" type="number" min="0"></div>
       <div class="field"><label>Homework %</label><input id="f_homework" type="number" min="0" max="100"></div>
       <div class="field"><label>NPS (0–10)</label><input id="f_nps" type="number" min="0" max="10"></div>
@@ -1137,7 +1138,7 @@
 
   function norm(r){ return {
     id:r.id, name:r.name, email:r.email||'', phone:r.phone||'', program:r.program, pod:r.pod_id,
-    calls:r.calls||0, posts:r.posts||0, hw:r.homework||0, pay:r.payment, nps:r.nps,
+    calls:r.calls||0, calls_1w:r.calls_1w||0, posts:r.posts||0, hw:r.homework||0, pay:r.payment, nps:r.nps,
     activated:!!r.activated, newThisMonth:!!r.new_this_month, churnedThisMonth:!!r.churned_this_month,
     failed30:!!r.failed_30, upsell:Number(r.upsell)||0, override:r.status_override||null, notes:r.notes||'' };
   }
@@ -1282,7 +1283,7 @@
     h+=`<td><span class="prog-tag">${m.program||'—'}</span></td>`;
     h+=`<td><span class="dot ${s}">${s}</span>${tags.length?`<div class="tags">${tags.slice(0,3).map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}</td>`;
     if (opts.activation) h+=`<td>${m.activated?'<span class="pay-good">Activated</span>':'<span class="pay-bad">In progress</span>'}</td>`;
-    h+=`<td class="num">${m.calls}</td><td class="num hide-sm">${m.posts}</td><td class="num">${m.hw}%</td>`;
+    h+=`<td class="num">${m.calls}</td><td class="num">${m.calls_1w}</td><td class="num hide-sm">${m.posts}</td><td class="num">${m.hw}%</td>`;
     h+=`<td class="${m.pay==='Good'?'pay-good':'pay-bad'}">${m.pay}</td><td class="num">${m.nps??'—'}</td>`;
     if (opts.action) h+=`<td style="font-size:11.5px;color:var(--mid)">${nextAction(m)}</td>`;
     h+=`<td><button class="row-edit" data-edit="${m.id}">Edit</button></td>`;
@@ -1548,7 +1549,7 @@
     $('#f_name').value=m?m.name:''; $('#f_email').value=m?m.email:''; $('#f_phone').value=m?m.phone:'';
     $('#f_program').value=m?m.program:'Academy'; $('#f_pod').value=m?m.pod:(PODS[0]?.id||'');
     $('#f_payment').value=m?m.pay:'Good';
-    $('#f_calls').value=m?m.calls:0; $('#f_posts').value=m?m.posts:0; $('#f_homework').value=m?m.hw:0;
+    $('#f_calls').value=m?m.calls:0; $('#f_calls_1w').value=m?m.calls_1w:0; $('#f_posts').value=m?m.posts:0; $('#f_homework').value=m?m.hw:0;
     $('#f_nps').value=m&&m.nps!=null?m.nps:''; $('#f_upsell').value=m?m.upsell:0; $('#f_override').value=m?(m.override||''):'';
     $('#f_activated').checked=m?m.activated:false; $('#f_new').checked=m?m.newThisMonth:false;
     $('#f_churned').checked=m?m.churnedThisMonth:false; $('#f_failed').checked=m?m.failed30:false;
@@ -1566,7 +1567,7 @@
     if(!name){ $('#modalErr').textContent='Name is required.'; return; }
     const row={
       name, email:$('#f_email').value.trim()||null, phone:$('#f_phone').value.trim()||null, program:$('#f_program').value, pod_id:$('#f_pod').value||null,
-      payment:$('#f_payment').value, calls:+$('#f_calls').value||0, posts:+$('#f_posts').value||0, homework:+$('#f_homework').value||0,
+      payment:$('#f_payment').value, calls:+$('#f_calls').value||0, calls_1w:+$('#f_calls_1w').value||0, posts:+$('#f_posts').value||0, homework:+$('#f_homework').value||0,
       nps: $('#f_nps').value===''?null:+$('#f_nps').value, upsell:+$('#f_upsell').value||0, status_override:$('#f_override').value||null,
       activated:$('#f_activated').checked, new_this_month:$('#f_new').checked, churned_this_month:$('#f_churned').checked, failed_30:$('#f_failed').checked,
       updated_by: ME?.full_name||ME?.email||null
@@ -1729,9 +1730,10 @@
       <td class="m-name">${esc(m.name)}</td>
       <td><span class="dot ${statusOf(m)}">${statusOf(m)}</span></td>
       <td class="num">${m.calls}</td>
+      <td class="num">${m.calls_1w}</td>
       <td class="num">${doneFor(m.id)}</td>
       <td class="muted-cell">${nx?esc(nx.expert||'')+' · '+(nx.scheduled_for||'').slice(0,10):'—'}</td>
-    </tr>`;}).join('')||`<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:26px">No accelerator members yet.</td></tr>`;
+    </tr>`;}).join('')||`<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:26px">No accelerator members yet.</td></tr>`;
   }
   function renderStrategy(){
     const cards=[
