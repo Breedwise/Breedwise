@@ -521,8 +521,21 @@
           <tbody id="permBody"></tbody>
         </table></div>
       </section>
-    </div>
 
+      <!-- EXPORT DATA -->
+      <section class="panel" data-panel="export">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Company data · month over month</div>
+          <h1 class="view-title">Export Data</h1>
+          <p class="view-sub">Download a full Excel snapshot of the OS — members, attendance, strategy sessions, issues, and (if you have sales access) leads, reps &amp; deals. Run it monthly to keep a company record.</p>
+        </div></div>
+        <div class="card">
+          <div class="card-h">Excel export</div>
+          <div class="card-sub">One file, one sheet per dataset. Filename is stamped with today's date.</div>
+          <button class="btn-save" id="exportBtn" style="margin-top:6px">⬇ Download Excel (.xlsx)</button>
+          <div id="exportMsg" class="kpi-meta" style="margin-top:12px"></div>
+        </div>
+      </section>
 
       <!-- ════════ SALES PANELS ════════ -->
       <section class="panel" data-panel="board">
@@ -594,6 +607,7 @@
           <tbody id="dailyTargets"></tbody>
         </table></div></div>
       </section>
+    </div>
     <div class="footer">Breedwise Operating System · live database · <a href="https://breedwise.io" target="_blank" rel="noopener">breedwise.io</a></div>
     </main>
   </div></div>
@@ -696,6 +710,7 @@
   <div class="toast" id="toast"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <!-- ════════ SALES OS MODULE (ported from sales.html, isolated) ════════ -->
   <script>
   (function(){
@@ -1040,6 +1055,7 @@
   window.SalesOS={
     boot:_bootId,
     render: async()=>{ if(!_loaded){ await loadData(); _loaded=true; } renderAll(); },
+    load: async()=>{ if(!_loaded){ await loadData(); _loaded=true; } return {reps:REPS,leads:LEADS,appts:APPTS,deals:DEALS,acts:ACTS}; },
     isMember:()=>!!(ME&&ME.rep_id),
     isFounder:()=>!!(ME&&ME.email&&FOUNDER_EMAILS.includes((ME.email||'').toLowerCase())),
     name:()=>ME&&ME.name,
@@ -1360,6 +1376,35 @@
     $('#permBody').innerHTML=PERMS.map(p=>`<tr><td>${p[0]}</td><td>${cell(p[1])}</td><td>${cell(p[2])}</td><td>${cell(p[3])}</td></tr>`).join('');
   }
 
+  /* ═══ EXPORT — full company snapshot to Excel ═══ */
+  async function buildExport(){
+    const msg=$('#exportMsg'); const btn=$('#exportBtn');
+    if(typeof XLSX==='undefined'){ if(msg) msg.textContent='Spreadsheet library still loading — try again in a moment.'; return; }
+    if(btn) btn.disabled=true; if(msg) msg.textContent='Gathering data…';
+    try{
+      const wb=XLSX.utils.book_new();
+      const add=(name,rows)=>XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows.length?rows:[{}]), name.slice(0,31));
+      add('Members', MEMBERS.map(m=>({Name:m.name,Email:m.email,Phone:m.phone,Program:m.program,Pod:podName(m.pod),Status:statusOf(m),'Calls 4w':m.calls,'Posts 7d':m.posts,'Homework %':m.hw,Payment:m.pay,NPS:m.nps,Activated:m.activated,'New this month':m.newThisMonth,'Churned this month':m.churnedThisMonth})));
+      add('Strategy Sessions', STRATEGY.map(s=>({Member:s.member_name,Type:s.session_type,Expert:s.expert,When:s.scheduled_for,Status:s.status,Notes:s.notes})));
+      add('Issues', ISSUES.map(i=>({Title:i.title,Member:i.member_name,Urgency:i.urgency,Status:i.status,Due:i.due_date,Created:i.created_at,Details:i.details})));
+      add('Member Notes', (MEMBER_NOTES||[]).map(n=>({Member:(MEMBERS.find(m=>m.id===n.member_id)||{}).name||n.member_id,Note:n.body,By:n.created_by,When:n.created_at})));
+      if(window.SalesOS && window.SalesOS.load){
+        try{ const d=await window.SalesOS.load();
+          const rn=id=>(d.reps.find(r=>r.rep_id===id)||{}).name||'';
+          add('Leads', (d.leads||[]).map(l=>({Name:l.name,Email:l.email,Phone:l.phone,Channel:l.channel,Source:l.first_source_system,Owner:rn(l.current_owner_id),Status:l.status,Tier:l.app_tier,Created:l.created_at})));
+          add('Sales Reps', (d.reps||[]).map(r=>({Name:r.name,Role:r.role,Email:r.email})));
+          add('Deals', (d.deals||[]).map(x=>({Lead:x.lead_id,Status:x.status,'Amount collected':x.amount_collected,Closer:rn(x.closer_id),Closed:x.closed_at})));
+          add('Appointments', (d.appts||[]).map(a=>({Lead:a.lead_id,Type:a.appt_type,'Scheduled for':a.scheduled_for,Status:a.status,Closer:rn(a.closer_id)})));
+        }catch(_){}
+      }
+      const dt=new Date(); const p=n=>String(n).padStart(2,'0');
+      const fn=`Breedwise-OS-${dt.getFullYear()}-${p(dt.getMonth()+1)}-${p(dt.getDate())}.xlsx`;
+      XLSX.writeFile(wb, fn);
+      if(msg) msg.textContent='Downloaded '+fn;
+    }catch(e){ if(msg) msg.textContent='Export failed: '+e.message; }
+    if(btn) btn.disabled=false;
+  }
+
   function renderAll(){
     const sName = window.SalesOS && window.SalesOS.name && window.SalesOS.name();
     const sRole = window.SalesOS && window.SalesOS.roleLabel && window.SalesOS.roleLabel();
@@ -1369,6 +1414,7 @@
     renderKPIs('#dirKpis', directorKPIs());
     renderFunnel(); renderStatusMix(); renderDirTable();
     renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderAccelerator(); renderDirectory();
+    const eb=$('#exportBtn'); if(eb) eb.onclick=buildExport;
   }
 
   /* ═══ SIDEBAR · role-gated navigation ═══ */
@@ -1395,6 +1441,7 @@
     { group:'Ops & Systems', items:[
       ['rules','Automation',['Founder','Director','Systems']],
       ['spec','System Spec',['Founder','Director','Systems']],
+      ['export','Export Data',['Founder','Director']],
     ]},
     { group:'Me', items:[
       ['comp','My Pay',['Founder','Director','AccountabilityLeader','CommunityManager']],
