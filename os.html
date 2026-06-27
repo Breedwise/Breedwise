@@ -1526,6 +1526,7 @@
     renderFunnel(); renderStatusMix(); renderDirTable();
     renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderAccelerator(); renderCalendar(); renderReports(); renderAffiliates(); renderDirectory();
     const eb=$('#exportBtn'); if(eb) eb.onclick=buildExport;
+    if(ME?.role==='Vet'){ document.querySelectorAll('[data-add-ss],#ccAdd,[data-edit-ss],[data-add]').forEach(b=>{ if(b) b.style.display='none'; }); }
   }
 
   /* ═══ SIDEBAR · role-gated navigation ═══ */
@@ -1533,7 +1534,7 @@
   const NAV = [
     { group:'Company', items:[
       ['director','Company Health',['Founder','Director']],
-      ['calendar','Calendar',['Founder','Director']],
+      ['calendar','Calendar',['Founder','Director','Vet']],
       ['reports','Reports',['Founder','Director']],
     ]},
     { group:'Sales', items:[
