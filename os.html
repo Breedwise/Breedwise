@@ -280,6 +280,26 @@
     .dv-body{font-size:12.5px;color:var(--mid);margin-top:4px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
     .dv-foot{font-size:11px;color:var(--muted);margin-top:5px}
     .dv-empty{text-align:center;color:var(--muted);font-size:13px;padding:28px 16px;line-height:1.6}
+    /* ══ Admin Calendar ══ */
+    .cal-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+    .cal-nav{display:flex;align-items:center;gap:10px}
+    .cal-nav button{font-size:16px;width:30px;height:30px;border:1px solid var(--border);background:var(--card);border-radius:6px;cursor:pointer;color:var(--mid)}
+    .cal-nav button:hover{border-color:var(--gold)}
+    .cal-label{font-family:var(--heading);font-size:18px;font-weight:600;min-width:160px;text-align:center}
+    .cal-legend{display:flex;flex-wrap:wrap;gap:13px;margin-bottom:12px}
+    .cal-leg{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--mid)}
+    .cal-dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0}
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+    .cal-dow{background:var(--card-2);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:7px;text-align:center}
+    .cal-cell{background:var(--bg);min-height:84px;padding:5px 6px}
+    .cal-cell.other{background:var(--surface)}
+    .cal-daynum{font-size:11px;color:var(--mid);font-weight:600;margin-bottom:2px}
+    .cal-today .cal-daynum{display:inline-flex;align-items:center;justify-content:center;background:var(--gold);color:#fff;width:20px;height:20px;border-radius:50%}
+    .cal-ev{font-size:9.5px;padding:2px 5px;border-radius:4px;margin-top:3px;color:#fff;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+    .cal-up{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border-2)}
+    .cal-up:last-child{border-bottom:none}.cal-up-t{font-size:13px;color:var(--ink);font-weight:600}
+    .cal-up .cal-dot{margin-top:5px}
+    .exp-0{background:#3c6a8a}.exp-1{background:#3c7a52}.exp-2{background:#8a6420}.exp-3{background:#6a5a8a}.exp-4{background:#a3623a}.exp-5{background:#6a6458}
   </style>
 </head>
 <body>
@@ -427,6 +447,23 @@
             <tbody id="issuesBody"></tbody>
           </table></div>
         </div>
+      </section>
+
+      <!-- ADMIN CALENDAR -->
+      <section class="panel" data-panel="calendar">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Admin calendar</div>
+          <h1 class="view-title">Calendar</h1>
+          <p class="view-sub">Strategy sessions across the team, color-coded by expert. Filter to one expert to see just their schedule. Internal community calls appear here once their schedule is connected.</p>
+        </div></div>
+        <div class="cal-head">
+          <div class="cal-nav"><button id="calPrev" type="button">‹</button><span id="calLabel" class="cal-label"></span><button id="calNext" type="button">›</button></div>
+          <select class="search-box" id="calExpert" style="margin-left:auto;width:auto"></select>
+        </div>
+        <div id="calLegend" class="cal-legend"></div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="section-label">Upcoming sessions</div>
+        <div id="calUpcoming"></div>
       </section>
 
       <!-- STRATEGY SESSIONS -->
@@ -1413,7 +1450,7 @@
     buildSidebar();
     renderKPIs('#dirKpis', directorKPIs());
     renderFunnel(); renderStatusMix(); renderDirTable();
-    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderAccelerator(); renderDirectory();
+    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderAccelerator(); renderCalendar(); renderDirectory();
     const eb=$('#exportBtn'); if(eb) eb.onclick=buildExport;
   }
 
@@ -1422,6 +1459,7 @@
   const NAV = [
     { group:'Company', items:[
       ['director','Company Health',['Founder','Director']],
+      ['calendar','Calendar',['Founder','Director']],
     ]},
     { group:'Sales', items:[
       ['board','Team Scoreboard',['Founder','SalesTeam']],
@@ -1602,6 +1640,33 @@
   let ssFilter='upcoming', editingSS=null;
   function ssDate(ts){ if(!ts) return 'TBD'; const d=new Date(ts); return isNaN(d)?String(ts).slice(0,16):d.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}); }
   function tsLocal(ts){ if(!ts) return ''; const d=new Date(ts); if(isNaN(d)) return ''; const p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; }
+  /* ═══ ADMIN CALENDAR ═══ */
+  let calY=null, calM=null, calExpert='all';
+  const expColor=name=>{ const i=EXPERTS.indexOf(name); return i>=0?(i%5):5; };
+  function renderCalendar(){
+    if(calY==null){ const d=new Date(); calY=d.getFullYear(); calM=d.getMonth(); }
+    const first=new Date(calY,calM,1), startDow=first.getDay(), days=new Date(calY,calM+1,0).getDate();
+    $('#calLabel').textContent=first.toLocaleString('en-US',{month:'long',year:'numeric'});
+    $('#calExpert').innerHTML=['all',...EXPERTS].map(e=>`<option value="${e==='all'?'all':esc(e)}"${calExpert===e?' selected':''}>${e==='all'?'All experts':esc(e)}</option>`).join('');
+    $('#calLegend').innerHTML=EXPERTS.map((e,i)=>`<span class="cal-leg"><span class="cal-dot exp-${i%5}"></span>${esc(e)}</span>`).join('');
+    const sess=STRATEGY.filter(s=>{ if(!s.scheduled_for) return false; const d=new Date(s.scheduled_for); if(isNaN(d)||d.getFullYear()!==calY||d.getMonth()!==calM) return false; return calExpert==='all'||s.expert===calExpert; });
+    const byDay={}; sess.forEach(s=>{ const d=new Date(s.scheduled_for).getDate(); (byDay[d]=byDay[d]||[]).push(s); });
+    const td=new Date(), thisMo=td.getFullYear()===calY&&td.getMonth()===calM;
+    let cells='';
+    for(let i=0;i<startDow;i++) cells+=`<div class="cal-cell other"></div>`;
+    for(let day=1;day<=days;day++){
+      const evs=(byDay[day]||[]).sort((a,b)=>String(a.scheduled_for).localeCompare(String(b.scheduled_for)));
+      cells+=`<div class="cal-cell${thisMo&&td.getDate()===day?' cal-today':''}"><div class="cal-daynum">${day}</div>`+
+        evs.map(s=>{const t=new Date(s.scheduled_for);return `<div class="cal-ev exp-${expColor(s.expert)}" title="${esc(s.member_name||'')} · ${esc(s.expert||'')}">${t.toLocaleTimeString('en-US',{hour:'numeric'})} ${esc((s.member_name||'').split(' ')[0])}</div>`;}).join('')+`</div>`;
+    }
+    $('#calGrid').innerHTML=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d=>`<div class="cal-dow">${d}</div>`).join('')+cells;
+    const midnight=new Date(new Date().toDateString());
+    const up=STRATEGY.filter(s=>s.scheduled_for&&s.status==='scheduled'&&new Date(s.scheduled_for)>=midnight&&(calExpert==='all'||s.expert===calExpert)).sort((a,b)=>String(a.scheduled_for).localeCompare(String(b.scheduled_for))).slice(0,12);
+    $('#calUpcoming').innerHTML=up.length?up.map(s=>`<div class="cal-up"><span class="cal-dot exp-${expColor(s.expert)}"></span><div><div class="cal-up-t">${esc(s.member_name||'—')} <span class="muted-cell" style="font-weight:400">· ${esc(s.expert||'')}</span></div><div class="muted-cell" style="font-size:11px">${ssDate(s.scheduled_for)}</div></div></div>`).join(''):`<div class="card-sub" style="margin:0">No upcoming sessions${calExpert!=='all'?' for this expert':''}.</div>`;
+    $('#calExpert').onchange=e=>{ calExpert=e.target.value; renderCalendar(); };
+    $('#calPrev').onclick=()=>{ calM--; if(calM<0){calM=11;calY--;} renderCalendar(); };
+    $('#calNext').onclick=()=>{ calM++; if(calM>11){calM=0;calY++;} renderCalendar(); };
+  }
   function renderAccelerator(){
     const rank={Red:0,Yellow:1,Green:2};
     const accs=MEMBERS.filter(m=>m.program==='Accelerator'&&m.pay!=='Cancelled');
