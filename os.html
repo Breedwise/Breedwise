@@ -467,6 +467,25 @@
         <div id="calUpcoming"></div>
       </section>
 
+      <!-- REPORTS -->
+      <section class="panel" data-panel="reports">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Attendance · month over month</div>
+          <h1 class="view-title">Reports</h1>
+          <p class="view-sub">Academy call attendance rolled up monthly from the weekly tracker. Update a member's "Calls (this week)" and it records to the monthly history automatically.</p>
+        </div></div>
+        <div class="cal-head">
+          <div class="cal-nav"><button id="repPrev" type="button">‹</button><span id="repLabel" class="cal-label"></span><button id="repNext" type="button">›</button></div>
+        </div>
+        <div class="kpi-grid" id="repKpis"></div>
+        <div class="card" style="margin-top:22px"><div class="card-h">Month over month</div><div class="card-sub">Total academy calls attended per month.</div><div id="repTrend"></div></div>
+        <div class="section-label">Per member · selected month</div>
+        <div class="table-wrap"><div style="overflow-x:auto"><table>
+          <thead><tr><th>Member</th><th>Program</th><th>Weeks logged</th><th>Calls attended</th><th>Avg / week</th></tr></thead>
+          <tbody id="repBody"></tbody>
+        </table></div></div>
+      </section>
+
       <!-- STRATEGY SESSIONS -->
       <section class="panel" data-panel="strategy">
         <div class="view-head">
@@ -1128,7 +1147,7 @@
   const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
   const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager', Founder:'Founder' };
 
-  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[];
+  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[];
   let SALES_MEMBER=false;  // true if this login maps to a sales_reps row (set after SalesOS.boot)
   const EXPERTS=['Dr. Emmanuel Fontaine','Dr. Angela Hughes','Austin Shanks','Dr. David Mahoney','Yasmin Omar'];
   function weekStartISO(){ const d=new Date(); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return d.toISOString().slice(0,10); }
@@ -1173,7 +1192,7 @@
   async function loadData(){
     const { data:{ session } } = await sb.auth.getSession();
     const myEmail = session?.user?.email || '';
-    const [mem, pods, comp, prof, iss, mnotes, cmw, ss, cc] = await Promise.all([
+    const [mem, pods, comp, prof, iss, mnotes, cmw, ss, cc, wk] = await Promise.all([
       sb.from('members').select('*').order('name'),
       sb.from('pods').select('*').order('name'),
       sb.from('comp').select('*'),       // RLS → only my row
@@ -1183,6 +1202,7 @@
       sb.from('cm_weekly').select('*').eq('week_start', weekStartISO()).maybeSingle(),
       sb.from('strategy_sessions').select('*').order('scheduled_for',{ascending:true}),
       sb.from('community_calls').select('*').order('scheduled_for',{ascending:true}),
+      sb.from('weekly_attendance').select('*').order('week_start',{ascending:true}),
     ]);
     MEMBERS = (mem.data||[]).map(norm);
     PODS = pods.data||[];
@@ -1192,6 +1212,7 @@
     CM_WEEK = cmw.data || { calls_cohosted:0, recordings_due:0, recordings_on_time:0 };
     STRATEGY = ss.data||[];
     COMMUNITY = cc.data||[];
+    WEEKLY = wk.data||[];
     MYCOMP_ROWS = comp.data || [];
     MYCOMP = MYCOMP_ROWS[0] || null;
     ME = PROFILES.find(p=>p.email===myEmail) || { email:myEmail, full_name:myEmail, role:(MYCOMP&&MYCOMP.role)||'' };
@@ -1469,7 +1490,7 @@
     buildSidebar();
     renderKPIs('#dirKpis', directorKPIs());
     renderFunnel(); renderStatusMix(); renderDirTable();
-    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderAccelerator(); renderCalendar(); renderDirectory();
+    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderAccelerator(); renderCalendar(); renderReports(); renderDirectory();
     const eb=$('#exportBtn'); if(eb) eb.onclick=buildExport;
   }
 
@@ -1479,6 +1500,7 @@
     { group:'Company', items:[
       ['director','Company Health',['Founder','Director']],
       ['calendar','Calendar',['Founder','Director']],
+      ['reports','Reports',['Founder','Director']],
     ]},
     { group:'Sales', items:[
       ['board','Team Scoreboard',['Founder','SalesTeam']],
@@ -1578,6 +1600,8 @@
     else { const res=await sb.from('members').insert(row).select('id').single(); err=res.error; memberId=res.data?.id; }
     const newNote=$('#m_new_note').value.trim();
     if(!err && newNote && memberId){ const nr=await sb.from('member_notes').insert({ member_id:memberId, body:newNote, created_by:ME?.full_name||ME?.email||null }); err=nr.error; }
+    // snapshot this week's attendance into the time-series for monthly reports
+    if(!err && memberId){ await sb.from('weekly_attendance').upsert({ member_id:memberId, week_start:weekStartISO(), attended:row.calls_1w }, { onConflict:'member_id,week_start' }); }
     $('#modalSave').disabled=false;
     if(err){ $('#modalErr').textContent=err.message; return; }
     closeModal(); await loadData(); renderAll(); toast(editingId?'Member updated':'Member added');
@@ -1659,6 +1683,37 @@
   let ssFilter='upcoming', editingSS=null;
   function ssDate(ts){ if(!ts) return 'TBD'; const d=new Date(ts); return isNaN(d)?String(ts).slice(0,16):d.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}); }
   function tsLocal(ts){ if(!ts) return ''; const d=new Date(ts); if(isNaN(d)) return ''; const p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; }
+  /* ═══ MONTHLY REPORTS (attendance) ═══ */
+  let repY=null, repM=null;
+  function renderReports(){
+    if(repY==null){ const d=new Date(); repY=d.getFullYear(); repM=d.getMonth(); }
+    $('#repLabel').textContent=new Date(repY,repM,1).toLocaleString('en-US',{month:'long',year:'numeric'});
+    const mk=`${repY}-${String(repM+1).padStart(2,'0')}`;
+    const mrows=WEEKLY.filter(r=>(r.week_start||'').slice(0,7)===mk);
+    const byMem={}; mrows.forEach(r=>{ const m=byMem[r.member_id]=byMem[r.member_id]||{weeks:0,att:0}; m.weeks++; m.att+=Number(r.attended)||0; });
+    const memName=id=>{const m=MEMBERS.find(x=>x.id===id);return m?m.name:'—';};
+    const memProg=id=>{const m=MEMBERS.find(x=>x.id===id);return m?m.program:'';};
+    const totalAtt=mrows.reduce((s,r)=>s+(Number(r.attended)||0),0);
+    const activeMems=Object.values(byMem).filter(m=>m.att>0).length;
+    const lm=new Date(repY,repM-1,1), lmk=`${lm.getFullYear()}-${String(lm.getMonth()+1).padStart(2,'0')}`;
+    const lastTotal=WEEKLY.filter(r=>(r.week_start||'').slice(0,7)===lmk).reduce((s,r)=>s+(Number(r.attended)||0),0);
+    const delta=totalAtt-lastTotal;
+    $('#repKpis').innerHTML=[
+      ['Calls attended',totalAtt,'this month'],
+      ['Members logged',Object.keys(byMem).length,'have weekly data'],
+      ['Active (≥1)',activeMems,'attended a call'],
+      ['vs last month',(delta>=0?'+':'')+delta,lastTotal+' last mo'],
+    ].map(([n,v,s])=>`<div class="kpi"><div class="kpi-name">${n}</div><div class="kpi-val" style="font-size:28px">${v}</div><div class="kpi-meta">${s}</div></div>`).join('');
+    const months=[]; for(let i=5;i>=0;i--){ const d=new Date(repY,repM-i,1); months.push({k:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`,label:d.toLocaleString('en-US',{month:'short'})}); }
+    const totals=months.map(mo=>WEEKLY.filter(r=>(r.week_start||'').slice(0,7)===mo.k).reduce((s,r)=>s+(Number(r.attended)||0),0));
+    const max=Math.max(1,...totals);
+    $('#repTrend').innerHTML=`<div style="display:flex;align-items:flex-end;gap:14px;height:150px;padding-top:10px">`+months.map((mo,i)=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end"><div style="font-size:12px;font-weight:600;color:var(--ink)">${totals[i]}</div><div style="width:100%;max-width:46px;background:${mo.k===mk?'var(--gold)':'var(--gold-mid)'};border-radius:5px 5px 0 0;height:${Math.round(totals[i]/max*100)}%;min-height:3px"></div><div style="font-size:11px;color:var(--muted)">${mo.label}</div></div>`).join('')+`</div>`;
+    const list=Object.entries(byMem).map(([id,m])=>({name:memName(id),prog:memProg(id),weeks:m.weeks,att:m.att})).sort((a,b)=>b.att-a.att);
+    $('#repBody').innerHTML=list.length?list.map(x=>`<tr><td class="m-name">${esc(x.name)}</td><td><span class="prog-tag">${x.prog||'—'}</span></td><td class="num">${x.weeks}</td><td class="num">${x.att}</td><td class="num">${(x.att/(x.weeks||1)).toFixed(1)}</td></tr>`).join(''):`<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:26px">No weekly attendance logged for this month yet. Update members' “Calls (this week)” to populate it.</td></tr>`;
+    $('#repPrev').onclick=()=>{ repM--; if(repM<0){repM=11;repY--;} renderReports(); };
+    $('#repNext').onclick=()=>{ repM++; if(repM>11){repM=0;repY++;} renderReports(); };
+  }
+
   /* ═══ ADMIN CALENDAR ═══ */
   let calY=null, calM=null, calExpert='all';
   const expColor=name=>{ const i=EXPERTS.indexOf(name); return i>=0?(i%5):5; };
