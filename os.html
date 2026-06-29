@@ -1451,6 +1451,15 @@
       [[`Week-1 ≥ ${t.week1??80}% (${Math.round(k[0].val)}%)`,k[0].val>=(t.week1??80)],[`Ongoing ≥ ${t.ongoing??70}% (${Math.round(k[1].val)}%)`,k[1].val>=(t.ongoing??70)],[`Engagement ≥ ${t.engage??1} (${k[2].val.toFixed(2)})`,k[2].val>=(t.engage??1)]].forEach(([l,ok])=>{ if(ok)total+=b; lines.push([l+(ok?' ✓':''),ok?money(b):'$0']); });
       return { person:c.person, role:ROLE_LABEL.CommunityManager, total, lines, note:`Base = ${money(c.base)}. Each KPI on target adds ${money(b)}. Issue triage is baseline (required, no bonus).` };
     }
+    if (c.role==='Vet'){
+      const rate=(cfg.rate!=null?cfg.rate:100);
+      const done=STRATEGY.filter(s=>s.expert===c.person && s.status==='completed').length;
+      const upcoming=STRATEGY.filter(s=>s.expert===c.person && s.status==='scheduled').length;
+      const total=done*rate;
+      return { person:c.person, role:'Veterinary Team', total,
+        lines:[[`Completed sessions · ${done} × $${rate}`, money(total)],[`Upcoming (not yet paid) · ${upcoming}`, '$0']],
+        note:`$${rate} per completed strategy session. Pay accrues as each session is marked completed.` };
+    }
     return null;
   }
   function renderComp(){
@@ -1549,7 +1558,7 @@
       ['al','Pod Command Center',['Founder','Director','AccountabilityLeader']],
       ['cm','Community Engine',['Founder','Director','CommunityManager']],
       ['issues','Issues',['Founder','Director','CommunityManager']],
-      ['strategy','Strategy Sessions',['Founder','Director','Vet']],
+      ['strategy','Strategy Sessions',['Founder','Director']],
       ['accelerator','Accelerator',['Founder','Director','CommunityManager']],
     ]},
     { group:'Affiliates', items:[
@@ -1561,7 +1570,7 @@
       ['export','Export Data',['Founder','Director']],
     ]},
     { group:'Me', items:[
-      ['comp','My Pay',['Founder','Director','AccountabilityLeader','CommunityManager']],
+      ['comp','My Pay',['Founder','Director','AccountabilityLeader','CommunityManager','Vet']],
     ]},
   ];
   const EXTRA_LABEL = { Vet:'Veterinary Team', Systems:'CRM / Systems' };
