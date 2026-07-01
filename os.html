@@ -400,7 +400,15 @@
         </div>
         <div style="display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap">
           <select class="search-box" id="podSelect" style="margin-left:0;width:auto"></select>
+          <select class="search-box" id="podHwFilter" style="margin-left:0;width:auto">
+            <option value="all">All homework %</option>
+            <option value="ge80">HW ≥ 80% (on track)</option>
+            <option value="ge60">HW ≥ 60% (at/above threshold)</option>
+            <option value="lt60">HW &lt; 60% (below threshold)</option>
+            <option value="lt40">HW &lt; 40% (critical)</option>
+          </select>
           <span class="kpi-meta" id="podStage"></span>
+          <span class="kpi-meta" id="podHwCount"></span>
         </div>
         <div class="section-label">Pod KPIs</div>
         <div class="kpi-grid" id="alKpis"></div>
@@ -1179,7 +1187,7 @@
   const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
   const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager', Founder:'Founder' };
 
-  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[];
+  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, podHw='all', ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[];
   let SALES_MEMBER=false;  // true if this login maps to a sales_reps row (set after SalesOS.boot)
   const EXPERTS=['Dr. Emmanuel Fontaine','Dr. Angela Hughes','Austin Shanks','Dr. David Mahoney','Yasmin Omar'];
   function weekStartISO(){ const d=new Date(); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return d.toISOString().slice(0,10); }
@@ -1382,9 +1390,14 @@
     const pod=PODS.find(p=>p.id===curPod)||{};
     $('#podStage').textContent= pod.stage==='ramp'?'Stage: Ramp (days 1–60)':'Stage: Ongoing (day 61+)';
     renderKPIs('#alKpis', podKPIs(curPod));
-    const pm=MEMBERS.filter(m=>m.pod===curPod); const ord={Red:0,Yellow:1,Green:2};
+    const all=MEMBERS.filter(m=>m.pod===curPod);
+    const hwOk=m=>{ switch(podHw){ case 'ge80': return m.hw>=80; case 'ge60': return m.hw>=60; case 'lt60': return m.hw<60; case 'lt40': return m.hw<40; default: return true; } };
+    const pm=all.filter(hwOk); const ord={Red:0,Yellow:1,Green:2};
     pm.sort((a,b)=>ord[statusOf(a)]-ord[statusOf(b)]);
-    $('#alTable').innerHTML=pm.map(m=>memberRow(m,{activation:true,action:true})).join('')||`<tr><td colspan="11" style="text-align:center;color:var(--muted);padding:26px">No members in this pod.</td></tr>`;
+    $('#podHwFilter').value=podHw;
+    $('#podHwFilter').onchange=e=>{podHw=e.target.value;renderAL();};
+    $('#podHwCount').textContent = podHw==='all' ? '' : `${pm.length} of ${all.length} members`;
+    $('#alTable').innerHTML=pm.map(m=>memberRow(m,{activation:true,action:true})).join('')||`<tr><td colspan="11" style="text-align:center;color:var(--muted);padding:26px">${all.length?'No members match this homework filter.':'No members in this pod.'}</td></tr>`;
   }
   function madisonKPIs(){
     const w=CM_WEEK||{};
