@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Breeder's Revenue Accelerator — Masterclass</title>
+  <meta name="description" content="Watch the full Breeder's Revenue Accelerator masterclass with Austin Shanks.">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Meta Pixel -->
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','1337266034525554');fbq('track','PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1337266034525554&ev=PageView&noscript=1"/></noscript>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#050608; --band:#101218; --card:#13161d;
+      --ink:#F5F5F7; --mid:rgba(245,245,247,.74); --muted:rgba(245,245,247,.52);
+      --gold:#c9ab6e; --gold-soft:rgba(201,171,110,.12); --gold-line:rgba(201,171,110,.30);
+      --cta:#c9ab6e; --cta-hover:#b89a5c; --cta-ink:#1a160c;
+      --line:rgba(245,245,247,.10);
+      --font:'Poppins',-apple-system,BlinkMacSystemFont,sans-serif;
+      --radius:12px; --ease:.18s ease;
+    }
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    .wrap{max-width:900px;margin:0 auto;padding:0 22px}
+    .narrow{max-width:760px}
+    .center{text-align:center}
+    .band{background:var(--band)}
+
+    header{padding:26px 0 6px;background:var(--bg)}
+    .brand{display:flex;align-items:center;justify-content:center}
+    .logo{height:58px;width:auto;display:block}
+
+    .hero{padding:24px 0 8px}
+    .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:14px}
+    .eyebrow .dot{opacity:.5;margin:0 8px}
+    h1{font-weight:800;font-size:38px;line-height:1.12;letter-spacing:-.01em;color:var(--ink);text-transform:uppercase}
+    h1 em{font-style:normal;color:var(--gold)}
+    .sub{font-size:15.5px;color:var(--mid);font-weight:300;margin:14px auto 0;max-width:640px;text-wrap:balance}
+
+    /* video */
+    .video-wrap{margin:26px auto 8px;border-radius:var(--radius);overflow:hidden;background:var(--band);padding:10px;border:1px solid var(--line)}
+    .video-frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:#000}
+    .video-frame iframe,.video-frame video{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:contain;background:#000}
+    .video-poster{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:radial-gradient(120% 120% at 50% 32%,#1b1d24 0%,#000 78%);cursor:pointer}
+    .play{width:80px;height:80px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;transition:transform var(--ease);box-shadow:0 12px 30px -8px rgba(201,171,110,.55)}
+    .video-poster:hover .play{transform:scale(1.06)}
+    .play svg{width:30px;height:30px;margin-left:5px}
+    .poster-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .video-poster .play,.poster-note{position:relative;z-index:1}
+    .poster-note{font-size:13px;letter-spacing:.06em;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.8)}
+
+    /* chapters / modules with timestamps */
+    section.blk{padding:44px 0}
+    .seclabel{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px;text-align:center}
+    .sectitle{font-size:27px;font-weight:700;color:var(--ink);text-align:center;letter-spacing:-.01em;line-height:1.2}
+    .secsub{font-size:15px;color:var(--mid);font-weight:300;text-align:center;max-width:600px;margin:12px auto 0;line-height:1.6}
+
+    .chapters{margin-top:30px;display:flex;flex-direction:column;gap:10px}
+    .chap{display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;text-align:left;width:100%;font-family:var(--font);cursor:pointer;transition:border-color var(--ease),background var(--ease)}
+    .chap:hover{border-color:var(--gold-line);background:#161a22}
+    .chap .ts{flex-shrink:0;font-size:12.5px;font-weight:700;color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:8px;padding:7px 10px;min-width:82px;text-align:center;letter-spacing:.02em}
+    .chap .body h3{font-size:16px;font-weight:600;color:var(--ink);line-height:1.35}
+    .chap .body p{font-size:13.5px;color:var(--mid);font-weight:300;line-height:1.55;margin-top:4px}
+
+    /* testimonials */
+    .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:32px}
+    .quote{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px;text-align:left;display:flex;flex-direction:column}
+    .stars{color:var(--gold);font-size:13px;letter-spacing:2px;margin-bottom:11px}
+    .quote p{font-size:14px;color:var(--mid);line-height:1.62;font-weight:300;flex:1}
+    .who{font-size:11.5px;letter-spacing:.04em;color:var(--gold);font-weight:600;text-transform:uppercase;margin-top:16px}
+    .who span{display:block;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;font-size:12px;margin-top:4px}
+
+    /* next step CTA */
+    .next{background:var(--card);border:1px solid var(--gold-line);border-radius:16px;padding:38px 30px;text-align:center;margin:12px auto 0;max-width:680px;box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
+    .next .seclabel{margin-bottom:12px}
+    .next h2{font-size:28px;font-weight:800;color:var(--ink);letter-spacing:-.01em;line-height:1.18;text-transform:uppercase}
+    .next h2 em{font-style:normal;color:var(--gold)}
+    .next p{color:var(--mid);font-weight:300;margin:14px auto 24px;max-width:520px;line-height:1.6}
+    .cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--cta);color:var(--cta-ink);
+      font-family:var(--font);font-size:16px;font-weight:700;letter-spacing:.005em;border:none;cursor:pointer;
+      padding:18px 40px;border-radius:10px;transition:transform var(--ease),background var(--ease);box-shadow:0 12px 30px -12px rgba(201,171,110,.5)}
+    .cta:hover{background:var(--cta-hover);transform:translateY(-1px)}
+    .cta svg{width:17px;height:17px}
+    .micro{font-size:13px;color:var(--muted);margin-top:14px}
+
+    footer{border-top:1px solid var(--line);padding:26px 0;text-align:center;font-size:12.5px;color:var(--muted);background:var(--bg)}
+    footer a{color:var(--gold);text-decoration:none}
+
+    /* booking overlay */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(3px);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:34px 16px;overflow-y:auto}
+    .overlay.open{display:flex}
+    .modal{background:var(--band);border:1px solid var(--gold-line);border-radius:16px;width:100%;max-width:660px;box-shadow:0 40px 90px -20px rgba(0,0,0,.85);overflow:hidden}
+    .modal-head{padding:24px 26px 8px;position:relative}
+    .modal-head .eyebrow{margin-bottom:8px}
+    .modal-head h3{font-size:22px;font-weight:700;color:var(--ink)}
+    .modal-head p{font-size:13.5px;color:var(--muted);font-weight:300;margin-top:5px}
+    .x{position:absolute;top:18px;right:20px;background:none;border:none;font-size:24px;color:var(--muted);cursor:pointer;line-height:1}
+    .x:hover{color:var(--ink)}
+    .cal-wrap{margin:6px 20px 22px;min-height:700px;border-radius:10px;overflow:hidden;background:#fff}
+    .cal-wrap iframe{width:100%;border:0;min-height:700px;display:block}
+
+    @media (max-width:640px){
+      h1{font-size:28px} .logo{height:50px} .sectitle{font-size:23px}
+      .next h2{font-size:23px} .tgrid{grid-template-columns:1fr} .cta{width:100%}
+      .chap{flex-direction:column;gap:10px} .chap .ts{min-width:0}
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <img class="logo" src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/68bdf2958301fad2278681fd.svg" alt="Breedwise Academy" />
+    </div>
+  </header>
+
+  <main>
+    <section class="hero wrap center">
+      <div class="eyebrow">You're in<span class="dot">•</span>Full Masterclass Unlocked</div>
+      <h1>The Breeder's <em>Revenue Accelerator</em></h1>
+      <p class="sub" id="greeting">Press play below. Watch it once, reference it forever — and use the chapter list to jump to what you need most.</p>
+
+      <div class="video-wrap">
+        <div class="video-frame" id="videoFrame">
+          <video id="vsl" playsinline preload="none" poster="/masterclass/masterclass-poster.jpg" src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a447bfc4c5c0069d27b8dab.mp4"></video>
+          <div class="video-poster" id="poster" role="button" aria-label="Play masterclass" tabindex="0">
+            <img class="poster-img" src="/masterclass/masterclass-poster.jpg" alt="The Breeder's Revenue Accelerator" onerror="this.style.display='none'">
+            <div class="play"><svg viewBox="0 0 24 24" fill="#1a160c" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/></svg></div>
+            <div class="poster-note">Play the masterclass · 63 min</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTERS / MODULES -->
+    <section class="blk wrap">
+      <div class="seclabel">Jump to a module</div>
+      <div class="sectitle">6 modules · 63 minutes</div>
+      <p class="secsub">Click a timestamp to skip straight to that module.</p>
+      <div class="chapters" id="chapters">
+        <button class="chap" data-t="225"><span class="ts">03:45</span><span class="body"><h3>1 · The Content System That Generates Leads</h3><p>The platform hierarchy, the format that outperforms polished video 5X, and a 30-day content calendar you can start tomorrow.</p></span></button>
+        <button class="chap" data-t="1071"><span class="ts">17:51</span><span class="body"><h3>2 · The Two-Call Close Sales System</h3><p>The exact process that closes qualified leads in 2 calls — and why your inquiry form is costing you sales.</p></span></button>
+        <button class="chap" data-t="1584"><span class="ts">26:24</span><span class="body"><h3>3 · The Content Blueprint Framework</h3><p>Find your micro-niches, craft the emotional story that attracts your ideal buyer, and turn one story into 3 formats.</p></span></button>
+        <button class="chap" data-t="1958"><span class="ts">32:38</span><span class="body"><h3>4 · The Partnership Vetting Playbook</h3><p>Vet breeders before co-ownership or stud exchanges — red flags, contract safeguards, and puppies-vs-studs.</p></span></button>
+        <button class="chap" data-t="2661"><span class="ts">44:21</span><span class="body"><h3>5 · The Puppy Waitlist Conversion System</h3><p>Structure payment terms, handle price objections, and use scarcity ethically to fill a waitlist that converts.</p></span></button>
+        <button class="chap" data-t="3232"><span class="ts">53:52</span><span class="body"><h3>6 · The Premium Pricing Strategy</h3><p>Justify premium pricing without sounding defensive — the "sizzle vs. steak" principle and the value buyers pay for.</p></span></button>
+      </div>
+    </section>
+
+    <!-- SOCIAL PROOF -->
+    <section class="band"><div class="blk wrap">
+      <div class="seclabel">What Breeders Are Saying</div>
+      <div class="sectitle">Breeders who ran the plays</div>
+      <div class="tgrid">
+        <div class="quote"><div class="stars">★★★★★</div><p>"After the content system, I went from 2–3 inquiries a week to daily inquiries. It changed everything."</p><div class="who">Megan<span>Blackfire Bullies · 3–5X more inquiries</span></div></div>
+        <div class="quote"><div class="stars">★★★★★</div><p>"The two-call close showed me the friction I was adding. Now qualified buyers move in 48 hours."</p><div class="who">Regina<span>Fluffy Frenchie Breeder · 4 weeks → 2 days</span></div></div>
+        <div class="quote"><div class="stars">★★★★★</div><p>"I finally understand how to justify my pricing. That shift raised my close rate 40%."</p><div class="who">Kendall<span>Presa Canario Breeder · commanding $5K+</span></div></div>
+      </div>
+    </div></section>
+
+    <!-- NEXT STEP -->
+    <section class="blk wrap">
+      <div class="next">
+        <div class="seclabel">Your next step</div>
+        <h2>Want us to build it <em>with you</em>?</h2>
+        <p>You've seen the system. If you want Austin and the Breedwise team to help you put it in place — the content, the sales process, the pricing — book a free strategy call. We only take on breeders we know we can help.</p>
+        <button class="cta" id="bookBtn">Book my free strategy call
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1a160c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <div class="micro">Free · No pressure · Straight answers on whether we're a fit.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>© <span id="yr"></span> Breedwise Academy · <a href="https://breedwise.io" target="_blank" rel="noopener">breedwise.io</a> · Questions? <a href="mailto:support@breedwise.io">support@breedwise.io</a></footer>
+
+  <!-- BOOKING MODAL -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <div class="modal-head">
+        <button class="x" id="closeBtn" aria-label="Close">&times;</button>
+        <div class="eyebrow">Strategy call</div>
+        <h3>Pick a time that works</h3>
+        <p>Grab a slot below — we'll review your program and map your next move.</p>
+      </div>
+      <div id="calWrap" class="cal-wrap"></div>
+    </div>
+  </div>
+
+  <script>
+    /* ─────────── CONFIG — swap before launch ─────────── */
+    const OPTIN_URL   = '/masterclass';                                              // gate: sent here if they haven't opted in
+    const BOOKING_URL = 'https://link.breedwise.io/widget/booking/Vf5YgCxLMJqdeAbYFOfB'; // GHL booking (reused from main funnel)
+    const REQUIRE_OPTIN = true;                                                      // set false to make the page publicly viewable
+    /* ─────────────────────────────────────────────────── */
+
+    const $ = s => document.querySelector(s);
+    $('#yr').textContent = new Date().getFullYear();
+
+    // Carry name/email from the opt-in (URL params or localStorage).
+    const qs = new URLSearchParams(location.search);
+    let lead = {}; try { lead = JSON.parse(localStorage.getItem('bw_ma_optin') || '{}'); } catch (_) {}
+    const name  = (qs.get('name')  || lead.name  || '').trim();
+    const email = (qs.get('email') || lead.email || '').trim();
+
+    // Soft gate: no opt-in on record → back to the opt-in page.
+    if (REQUIRE_OPTIN && !email && !qs.get('preview')) { location.replace(OPTIN_URL); }
+
+    if (name) { $('#greeting').textContent = "You're in, " + name.split(' ')[0] + " — press play below. Watch it once, reference it forever; use the chapter list to jump to what you need most."; }
+
+    // Click-to-play masterclass.
+    const vsl = $('#vsl'), poster = $('#poster');
+    function playVSL(){ if(!vsl) return; vsl.setAttribute('controls','controls'); if(poster) poster.style.display='none'; vsl.play().catch(()=>{}); if(window.fbq) fbq('trackCustom','MasterclassStart'); }
+    if (poster){ poster.addEventListener('click', playVSL); poster.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' ') playVSL(); }); }
+
+    // Chapter jump — plays and seeks to the timestamp.
+    document.querySelectorAll('.chap').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const t = parseInt(btn.dataset.t) || 0;
+        if (poster && poster.style.display !== 'none') playVSL();
+        const seek = ()=>{ try { vsl.currentTime = t; vsl.play().catch(()=>{}); } catch(_){} };
+        if (vsl.readyState >= 1) seek(); else vsl.addEventListener('loadedmetadata', seek, { once:true });
+        $('#videoFrame').scrollIntoView({ behavior:'smooth', block:'center' });
+      });
+    });
+
+    // Booking modal.
+    const overlay = $('#overlay');
+    function openBooking(){
+      overlay.classList.add('open'); document.body.style.overflow='hidden';
+      const parts=(name||'').trim().split(' '); const first=parts.shift()||name||''; const last=parts.join(' ');
+      const q=new URLSearchParams({ first_name:first, last_name:last, email:email||'' });
+      $('#calWrap').innerHTML='<iframe src="'+BOOKING_URL+'?'+q.toString()+'" scrolling="no" id="ma_booking"></iframe>';
+      if(!document.getElementById('ghl-embed')){ const s=document.createElement('script'); s.id='ghl-embed'; s.src='https://link.breedwise.io/js/form_embed.js'; document.body.appendChild(s); }
+      if(window.fbq) fbq('trackCustom','MasterclassBookClick');
+    }
+    function closeBooking(){ overlay.classList.remove('open'); document.body.style.overflow=''; }
+    $('#bookBtn').onclick = openBooking;
+    $('#closeBtn').onclick = closeBooking;
+    overlay.onclick = e => { if(e.target===overlay) closeBooking(); };
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeBooking(); });
+
+    // Fire Meta "Schedule" when the embedded calendar reports a booking.
+    window.addEventListener('message', e => { try{ const s=typeof e.data==='string'?e.data:JSON.stringify(e.data||''); if(window.fbq && /appointment|booking|booked/i.test(s)) fbq('track','Schedule'); }catch(_){} });
+  </script>
+</body>
+</html>
