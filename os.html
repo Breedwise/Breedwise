@@ -167,8 +167,8 @@
     .cmw-grid{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:14px;align-items:end;margin-top:16px}
     .cmw-grid .field input{width:100%}
     @media(max-width:640px){.cmw-grid{grid-template-columns:1fr 1fr}.cmw-grid button{grid-column:1/-1}}
-    #modal, #issueModal, #ssModal, #ccModal, #affModal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
-    #modal.open, #issueModal.open, #ssModal.open, #ccModal.open, #affModal.open { display: flex; }
+    #modal, #issueModal, #ssModal, #ccModal, #affModal, #planModal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+    #modal.open, #issueModal.open, #ssModal.open, #ccModal.open, #affModal.open, #planModal.open { display: flex; }
     .aff-st{font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 8px;border-radius:4px}
     .aff-active{background:var(--green);color:#fff}.aff-onboarded{background:var(--green-bg);color:var(--green)}.aff-signed{background:var(--gold-mid);color:var(--gold-deep)}.aff-prospect{background:var(--card);color:var(--mid)}.aff-inactive{background:var(--red-bg);color:var(--red)}
     .urg{font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap}
@@ -548,6 +548,54 @@
         </table></div></div>
       </section>
 
+      <!-- PAYMENT PLANS (private · Founder + Director only) -->
+      <section class="panel" data-panel="plans">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Private · Founder &amp; Director only</div>
+          <h1 class="view-title">Payment Plans</h1>
+          <p class="view-sub">Every member's plan, tied to their Stripe payments. Collected &amp; outstanding update as charges clear. Only you and Jennifer can see this.</p>
+        </div>
+        <button class="btn-save" id="planAdd" type="button">+ Add plan</button></div>
+        <div class="kpi-grid" id="planKpis"></div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:18px">
+          <input type="search" class="search-box" id="planSearch" placeholder="Search member / notes" style="width:auto">
+          <select class="search-box" id="planFilter" style="width:auto">
+            <option value="all">All plans</option>
+            <option value="plan">On payment plan</option>
+            <option value="pif">Paid in full</option>
+            <option value="atrisk">At risk (Late / Yellow / Red)</option>
+            <option value="unmatched">Not yet matched to Stripe</option>
+          </select>
+          <span class="kpi-meta" id="planCount"></span>
+        </div>
+        <div class="table-wrap" style="margin-top:14px"><div style="overflow-x:auto"><table>
+          <thead><tr><th>Member</th><th>Program</th><th>Type</th><th style="text-align:right">Contract</th><th style="text-align:right">Collected</th><th style="text-align:right">Outstanding</th><th>Paid</th><th>Next pmt</th><th>Status</th><th>Signal</th><th></th></tr></thead>
+          <tbody id="planBody"></tbody>
+        </table></div></div>
+      </section>
+
+      <!-- PAYMENTS (private · Founder + Director only) -->
+      <section class="panel" data-panel="payments">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Private · Founder &amp; Director only</div>
+          <h1 class="view-title">Payments</h1>
+          <p class="view-sub">Every Stripe payment as it comes in. The database is locked so only you and Jennifer can read this — no other teammate can.</p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <input type="search" class="search-box" id="paySearch" placeholder="Search name / email / description" style="width:auto">
+          <select class="search-box" id="payRange" style="width:auto">
+            <option value="mtd">This month</option>
+            <option value="30">Last 30 days</option>
+            <option value="all">All time</option>
+          </select>
+        </div></div>
+        <div class="kpi-grid" id="payKpis"></div>
+        <div class="table-wrap" style="margin-top:22px"><div style="overflow-x:auto"><table>
+          <thead><tr><th>Date</th><th>Customer</th><th>Email</th><th>Description</th><th>Status</th><th style="text-align:right">Amount</th></tr></thead>
+          <tbody id="payBody"></tbody>
+        </table></div></div>
+      </section>
+
       <!-- COMP (private) -->
       <section class="panel" data-panel="comp">
         <div class="view-head"><div>
@@ -789,6 +837,30 @@
       <div class="field full"><label>Notes</label><textarea id="a_notes" rows="2"></textarea></div>
     </div></div>
     <div class="modal-foot"><button class="btn-del" id="affDelete">Delete</button><div style="display:flex;gap:10px;align-items:center"><span class="login-err" id="affErr" style="margin:0"></span><button class="btn-save" id="affSave">Save</button></div></div>
+  </div></div>
+
+  <!-- PAYMENT PLAN MODAL -->
+  <div id="planModal"><div class="modal-box">
+    <div class="modal-head"><div class="modal-title" id="planTitle">Payment plan</div><button class="modal-close" id="planClose">&times;</button></div>
+    <div class="modal-body"><div class="fgrid">
+      <div class="field full"><label>Member name</label><input id="p_name" type="text"></div>
+      <div class="field"><label>Program</label><select id="p_program"><option value="">—</option><option>Academy</option><option>Accelerator</option><option>Elite</option></select></div>
+      <div class="field"><label>Pay type</label><select id="p_type"><option value="Plan">Plan</option><option value="PIF">PIF</option></select></div>
+      <div class="field"><label>Contract $</label><input id="p_contract" type="number" min="0" step="0.01" value="0"></div>
+      <div class="field"><label>Down payment $</label><input id="p_down" type="number" min="0" step="0.01" value="0"></div>
+      <div class="field"><label>Monthly $</label><input id="p_monthly" type="number" min="0" step="0.01" value="0"></div>
+      <div class="field"><label># Payments (total)</label><input id="p_npmts" type="number" min="0"></div>
+      <div class="field"><label>Enrolled</label><input id="p_enrolled" type="date"></div>
+      <div class="field"><label>Next payment date</label><input id="p_next" type="date"></div>
+      <div class="field"><label>Status</label><select id="p_status"><option value="">—</option><option>Current</option><option>Late</option><option>Defaulted</option><option>Completed</option><option>Paused</option></select></div>
+      <div class="field"><label>Signal</label><select id="p_signal"><option value="">—</option><option>Green</option><option>Yellow</option><option>Red</option></select></div>
+      <div class="field"><label>Match email (Stripe)</label><input id="p_email" type="text" placeholder="charges arrive under this email"></div>
+      <div class="field"><label>Stripe customer ID</label><input id="p_cus" type="text" placeholder="cus_…"></div>
+      <div class="field"><label>Collected before Stripe $</label><input id="p_cseed" type="number" min="0" step="0.01" value="0"></div>
+      <div class="field"><label>Payments made before Stripe</label><input id="p_pseed" type="number" min="0" value="0"></div>
+      <div class="field full"><label>Notes</label><textarea id="p_notes" rows="2"></textarea></div>
+    </div></div>
+    <div class="modal-foot"><button class="btn-del" id="planDelete">Delete</button><div style="display:flex;gap:10px;align-items:center"><span class="login-err" id="planErr" style="margin:0"></span><button class="btn-save" id="planSave">Save</button></div></div>
   </div></div>
 
   <!-- LEAD DETAIL DRAWER -->
@@ -1187,7 +1259,7 @@
   const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
   const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager', Founder:'Founder' };
 
-  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, podHw='all', ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[];
+  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, podHw='all', ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[], PAYMENTS=[], PLANS=[];
   let SALES_MEMBER=false;  // true if this login maps to a sales_reps row (set after SalesOS.boot)
   const EXPERTS=['Dr. Emmanuel Fontaine','Dr. Angela Hughes','Austin Shanks','Dr. David Mahoney','Yasmin Omar'];
   function weekStartISO(){ const d=new Date(); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return d.toISOString().slice(0,10); }
@@ -1232,7 +1304,7 @@
   async function loadData(){
     const { data:{ session } } = await sb.auth.getSession();
     const myEmail = session?.user?.email || '';
-    const [mem, pods, comp, prof, iss, mnotes, cmw, ss, cc, wk, aff] = await Promise.all([
+    const [mem, pods, comp, prof, iss, mnotes, cmw, ss, cc, wk, aff, pay, plans] = await Promise.all([
       sb.from('members').select('*').order('name'),
       sb.from('pods').select('*').order('name'),
       sb.from('comp').select('*'),       // RLS → only my row
@@ -1244,6 +1316,8 @@
       sb.from('community_calls').select('*').order('scheduled_for',{ascending:true}),
       sb.from('weekly_attendance').select('*').order('week_start',{ascending:true}),
       sb.from('affiliates').select('*').order('name'),
+      sb.from('payments').select('*').order('stripe_created',{ascending:false}),  // RLS → empty unless austin/jennifer
+      sb.from('payment_plans').select('*').order('member_name'),                   // RLS → empty unless austin/jennifer
     ]);
     MEMBERS = (mem.data||[]).map(norm);
     PODS = pods.data||[];
@@ -1255,6 +1329,8 @@
     COMMUNITY = cc.data||[];
     WEEKLY = wk.data||[];
     AFFILIATES = aff.data||[];
+    PAYMENTS = pay.data||[];
+    PLANS = plans.data||[];
     MYCOMP_ROWS = comp.data || [];
     MYCOMP = MYCOMP_ROWS[0] || null;
     ME = PROFILES.find(p=>p.email===myEmail) || { email:myEmail, full_name:myEmail, role:(MYCOMP&&MYCOMP.role)||'' };
@@ -1546,7 +1622,7 @@
     buildSidebar();
     renderKPIs('#dirKpis', directorKPIs());
     renderFunnel(); renderStatusMix(); renderDirTable();
-    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderAccelerator(); renderCalendar(); renderReports(); renderAffiliates(); renderDirectory();
+    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderAccelerator(); renderCalendar(); renderReports(); renderAffiliates(); renderPlans(); renderPayments(); renderDirectory();
     const eb=$('#exportBtn'); if(eb) eb.onclick=buildExport;
     if(ME?.role==='Vet'){ document.querySelectorAll('[data-add-ss],#ccAdd,[data-edit-ss],[data-add]').forEach(b=>{ if(b) b.style.display='none'; }); }
   }
@@ -1576,6 +1652,10 @@
     ]},
     { group:'Affiliates', items:[
       ['affiliates','Affiliates',['Founder','Director']],
+    ]},
+    { group:'Finance', items:[
+      ['plans','Payment Plans',['Founder','Director']],
+      ['payments','Payments',['Founder','Director']],
     ]},
     { group:'Ops & Systems', items:[
       ['rules','Automation',['Founder','Director','Systems']],
@@ -1791,6 +1871,131 @@
     closeAff(); await loadData(); renderAffiliates(); toast(editingAff?'Affiliate updated':'Affiliate added');
   };
   $('#affDelete').onclick=async ()=>{ if(!editingAff) return; if(!confirm('Delete this affiliate?')) return; const res=await sb.from('affiliates').delete().eq('id',editingAff); if(res.error){ $('#affErr').textContent=res.error.message; return; } closeAff(); await loadData(); renderAffiliates(); toast('Affiliate deleted'); };
+
+  /* ═══ PAYMENTS (Stripe · private to Founder + Director) ═══ */
+  let payQ='', payRange='mtd';
+  function payInRange(p){
+    const d=(p.stripe_created||p.created_at||'').slice(0,10); if(!d) return false;
+    if(payRange==='mtd') return (p.stripe_created||p.created_at||'').slice(0,7)===new Date().toISOString().slice(0,7);
+    if(payRange==='30'){ const cut=new Date(Date.now()-30*864e5).toISOString().slice(0,10); return d>=cut; }
+    return true;
+  }
+  function renderPayments(){
+    if(!$('#payBody')) return;
+    const ranged=PAYMENTS.filter(payInRange);
+    const collected=ranged.filter(p=>p.status==='succeeded'||p.status==='partial_refund').reduce((s,p)=>s+Number(p.amount||0),0);
+    const count=ranged.filter(p=>p.status==='succeeded').length;
+    const refunds=ranged.filter(p=>p.status==='refunded'||p.status==='partial_refund').length;
+    const avg=count?collected/count:0;
+    const rl=payRange==='mtd'?'this month':payRange==='30'?'last 30 days':'all time';
+    $('#payKpis').innerHTML=[
+      ['Collected',money(collected),rl],['Payments',String(count),`succeeded · ${rl}`],
+      ['Avg payment',money(avg),rl],['Refunds',String(refunds),rl],
+    ].map(([n,v,m])=>`<div class="kpi"><div class="kpi-top"><span class="kpi-name">${n}</span></div><div class="kpi-val">${v}</div><div class="kpi-meta">${m}</div></div>`).join('');
+    const q=payQ.trim().toLowerCase();
+    const list=ranged.filter(p=>!q||[p.customer_name,p.customer_email,p.description].some(x=>(x||'').toLowerCase().includes(q)));
+    const stCls=s=>s==='succeeded'?'pay-good':(s==='refunded'||s==='failed')?'pay-bad':'';
+    $('#payBody').innerHTML = list.length ? list.map(p=>{
+      const d=(p.stripe_created||p.created_at||'').slice(0,10);
+      return `<tr><td class="muted-cell">${d||'—'}</td><td class="m-name">${esc(p.customer_name||'—')}</td><td class="m-email">${esc(p.customer_email||'—')}</td><td class="muted-cell">${esc(p.description||'—')}</td><td class="${stCls(p.status)}">${esc(p.status||'—')}</td><td class="num" style="text-align:right">${money(p.amount)}</td></tr>`;
+    }).join('') : `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:26px">${PAYMENTS.length?'No payments in this range.':'No payments yet — they’ll appear here as Stripe sends them.'}</td></tr>`;
+    $('#paySearch').value=payQ; $('#payRange').value=payRange;
+    $('#paySearch').oninput=e=>{payQ=e.target.value;renderPayments();};
+    $('#payRange').onchange=e=>{payRange=e.target.value;renderPayments();};
+  }
+
+  /* ═══ PAYMENT PLANS (per-member · tied to Stripe) ═══ */
+  let planQ='', planFilter='all', editingPlan=null;
+  // live roll-up: seed + everything Stripe has matched to this plan
+  function planStats(pl){
+    const matched=PAYMENTS.filter(p=>p.plan_id===pl.id);
+    const succ=matched.filter(p=>p.status==='succeeded'||p.status==='partial_refund');
+    const collected=Number(pl.collected_seed||0)+succ.reduce((s,p)=>s+Number(p.amount||0),0);
+    const paid=Number(pl.paid_seed||0)+matched.filter(p=>p.status==='succeeded').length;
+    const outstanding=Math.max(0, Number(pl.contract_amount||0)-collected);
+    const remaining=(pl.num_payments!=null)?Math.max(0, pl.num_payments-paid):null;
+    return { collected, paid, outstanding, remaining, matchedCount:matched.length };
+  }
+  const planAtRisk=pl=> ['Late','Defaulted'].includes(pl.status) || ['Yellow','Red'].includes(pl.signal) || (Number(pl.days_late)>0);
+  function renderPlans(){
+    if(!$('#planBody')) return;
+    const rows=PLANS.map(pl=>({pl, st:planStats(pl)}));
+    const contractTotal=rows.reduce((s,r)=>s+Number(r.pl.contract_amount||0),0);
+    const collectedTotal=rows.reduce((s,r)=>s+r.st.collected,0);
+    const outstandingTotal=rows.reduce((s,r)=>s+r.st.outstanding,0);
+    const onPlan=rows.filter(r=>r.pl.pay_type==='Plan').length;
+    const atRisk=rows.filter(r=>planAtRisk(r.pl)).length;
+    $('#planKpis').innerHTML=[
+      ['Contract value',money(contractTotal),`${rows.length} members`],
+      ['Collected',money(collectedTotal),'seed + Stripe'],
+      ['Outstanding',money(outstandingTotal),'remaining'],
+      ['On payment plan',String(onPlan),`${rows.length-onPlan} PIF`],
+      ['At risk',String(atRisk),'late / yellow / red'],
+    ].map(([n,v,m])=>`<div class="kpi"><div class="kpi-top"><span class="kpi-name">${n}</span></div><div class="kpi-val">${v}</div><div class="kpi-meta">${m}</div></div>`).join('');
+    const q=planQ.trim().toLowerCase();
+    let list=rows.filter(r=>{
+      if(planFilter==='plan'&&r.pl.pay_type!=='Plan') return false;
+      if(planFilter==='pif'&&r.pl.pay_type!=='PIF') return false;
+      if(planFilter==='atrisk'&&!planAtRisk(r.pl)) return false;
+      if(planFilter==='unmatched'&&(r.pl.match_email||r.pl.stripe_customer_id)) return false;
+      if(q&&![r.pl.member_name,r.pl.notes].some(x=>(x||'').toLowerCase().includes(q))) return false;
+      return true;
+    });
+    const sig=s=>s?`<span class="dot ${s}">${s}</span>`:'—';
+    $('#planBody').innerHTML = list.length ? list.map(({pl,st})=>{
+      const matchWarn=(!pl.match_email&&!pl.stripe_customer_id)?' <span class="tag" title="No Stripe match key set — set a match email or customer ID so payments attach">unmatched</span>':'';
+      const paidTxt=pl.pay_type==='PIF'?(st.collected>=Number(pl.contract_amount||0)?'PIF ✓':'PIF'):`${st.paid}${pl.num_payments!=null?'/'+pl.num_payments:''}`;
+      return `<tr data-edit-plan="${pl.id}" style="cursor:pointer">
+        <td><div class="m-name">${esc(pl.member_name)}${matchWarn}</div>${pl.notes?`<div class="m-email">${esc(pl.notes)}</div>`:''}</td>
+        <td><span class="prog-tag">${pl.program||'—'}</span></td>
+        <td>${pl.pay_type||'—'}</td>
+        <td class="num" style="text-align:right">${money(pl.contract_amount)}</td>
+        <td class="num" style="text-align:right">${money(st.collected)}</td>
+        <td class="num" style="text-align:right;${st.outstanding>0?'color:var(--gold-deep);font-weight:600':''}">${money(st.outstanding)}</td>
+        <td class="num">${paidTxt}</td>
+        <td class="muted-cell">${pl.next_payment_date||'—'}</td>
+        <td>${pl.status?`<span class="${pl.status==='Current'||pl.status==='Completed'?'pay-good':pl.status==='Paused'?'':'pay-bad'}">${pl.status}</span>`:'—'}</td>
+        <td>${sig(pl.signal)}</td>
+        <td><button class="row-edit" data-edit-plan="${pl.id}">Edit</button></td>
+      </tr>`;
+    }).join('') : `<tr><td colspan="11" style="text-align:center;color:var(--muted);padding:26px">${PLANS.length?'No plans match this filter.':'No plans yet — run payment-plans-schema.sql to seed from the tracker.'}</td></tr>`;
+    $('#planCount').textContent = planFilter==='all'&&!q ? '' : `${list.length} of ${PLANS.length}`;
+    $('#planSearch').value=planQ; $('#planFilter').value=planFilter;
+    $('#planSearch').oninput=e=>{planQ=e.target.value;renderPlans();};
+    $('#planFilter').onchange=e=>{planFilter=e.target.value;renderPlans();};
+    const add=$('#planAdd'); if(add) add.onclick=()=>openPlan(null);
+  }
+  function openPlan(pl){
+    editingPlan = pl?pl.id:null;
+    $('#planTitle').textContent = pl?'Edit payment plan':'Add payment plan';
+    $('#planDelete').style.display = pl?'block':'none';
+    $('#planErr').textContent='';
+    const g=(id,v)=>$(id).value=(v??'');
+    g('#p_name',pl?.member_name); g('#p_program',pl?.program||''); g('#p_type',pl?.pay_type||'Plan');
+    g('#p_contract',pl?pl.contract_amount:0); g('#p_down',pl?pl.down_payment:0); g('#p_monthly',pl?pl.monthly_amount:0);
+    g('#p_npmts',pl?.num_payments); g('#p_enrolled',pl?.enrolled_on||''); g('#p_next',pl?.next_payment_date||'');
+    g('#p_status',pl?.status||''); g('#p_signal',pl?.signal||''); g('#p_email',pl?.match_email); g('#p_cus',pl?.stripe_customer_id);
+    g('#p_cseed',pl?pl.collected_seed:0); g('#p_pseed',pl?pl.paid_seed:0); g('#p_notes',pl?.notes);
+    $('#planModal').classList.add('open');
+  }
+  function closePlan(){ $('#planModal').classList.remove('open'); }
+  $('#planClose').onclick=closePlan; $('#planModal').onclick=e=>{ if(e.target.id==='planModal') closePlan(); };
+  document.addEventListener('click',e=>{ const b=e.target.closest('[data-edit-plan]'); if(b){ const pl=PLANS.find(x=>x.id===b.dataset.editPlan); if(pl) openPlan(pl); } });
+  $('#planSave').onclick=async ()=>{
+    const name=$('#p_name').value.trim(); if(!name){ $('#planErr').textContent='Member name required.'; return; }
+    const numOrNull=id=>$(id).value===''?null:+$(id).value;
+    const row={ member_name:name, program:$('#p_program').value||null, pay_type:$('#p_type').value,
+      contract_amount:+$('#p_contract').value||0, down_payment:+$('#p_down').value||0, monthly_amount:+$('#p_monthly').value||0,
+      num_payments:numOrNull('#p_npmts'), enrolled_on:$('#p_enrolled').value||null, next_payment_date:$('#p_next').value||null,
+      status:$('#p_status').value||null, signal:$('#p_signal').value||null,
+      match_email:$('#p_email').value.trim()||null, stripe_customer_id:$('#p_cus').value.trim()||null,
+      collected_seed:+$('#p_cseed').value||0, paid_seed:+$('#p_pseed').value||0,
+      notes:$('#p_notes').value.trim()||null, updated_by: ME?.full_name||ME?.email||null };
+    let res; if(editingPlan) res=await sb.from('payment_plans').update(row).eq('id',editingPlan); else res=await sb.from('payment_plans').insert(row);
+    if(res.error){ $('#planErr').textContent=res.error.message; return; }
+    closePlan(); await loadData(); renderPlans(); toast(editingPlan?'Plan updated':'Plan added');
+  };
+  $('#planDelete').onclick=async ()=>{ if(!editingPlan) return; if(!confirm('Delete this payment plan?')) return; const res=await sb.from('payment_plans').delete().eq('id',editingPlan); if(res.error){ $('#planErr').textContent=res.error.message; return; } closePlan(); await loadData(); renderPlans(); toast('Plan deleted'); };
 
   /* ═══ MONTHLY REPORTS (attendance) ═══ */
   let repY=null, repM=null;
