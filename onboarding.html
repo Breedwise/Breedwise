@@ -847,6 +847,9 @@
   const AT_KEY  = _cfg.airtableKey  || '';
   const AT_BASE = _cfg.academyBase  || 'appMsKA0k051A1IEr';
   const AT_TBL  = _cfg.academyTable || 'Clients';
+  // Notion dashboard creation goes through a Supabase Edge Function so the
+  // GitHub token stays server-side — never ship a PAT to the browser.
+  const NOTION_FN = 'https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/notion-dashboard';
 
   // Set today's date as default enrollment
   document.getElementById('a-date').value = new Date().toISOString().slice(0,10);
@@ -1016,6 +1019,46 @@
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error?.message || 'Airtable error');
+
+      // ── Trigger Notion dashboard via Edge Function (token stays server-side) ──
+      btn.textContent = 'Creating Notion dashboard…';
+      try {
+        await fetch(NOTION_FN, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            clientName:       name,
+            airtableRecordId: data.id,
+            airtableBase:     AT_BASE,
+            northStar:        val('ns-statement'),
+            vision10:         build10Year(),
+            picture3:         build3Year(),
+            plan1:            build1Year(),
+            targets90:        build90Day(),
+            advisor:          val('a-advisor'),
+            cohort:           val('a-cohort'),
+            enrollmentDate:   val('a-date'),
+            breed:            val('f-breed') || '',
+            email:            val('f-email') || '',
+            instagram:        val('s-ig'),
+            auditScore:       val('s-overall'),
+            scienceScore:     val('s-science'),
+            businessScore:    val('s-business'),
+            certLevel:        val('s-cert'),
+            weakCategory:     val('s-weak'),
+            revenueGoal:      val('v1-revenue'),
+            currentPrice:     val('s-price'),
+            currentLitters:   val('s-litters'),
+            currentFemales:   val('s-females'),
+            currentRevenue:   val('s-revenue'),
+            currentFollowers: val('s-followers'),
+            currentWaitlist:  val('s-waitlist'),
+          })
+        });
+        console.log('Notion dashboard dispatch sent — page will appear in ~30 seconds');
+      } catch (fnErr) {
+        console.warn('Notion dispatch failed (non-fatal):', fnErr.message);
+      }
 
       document.querySelector('.form-body').style.display = 'none';
       document.querySelector('.call-header').style.display = 'none';
