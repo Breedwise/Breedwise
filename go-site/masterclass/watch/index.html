@@ -59,6 +59,18 @@
     .video-poster .play,.poster-note{position:relative;z-index:1}
     .poster-note{font-size:13px;letter-spacing:.06em;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.8)}
 
+    /* VSL-style "tap for sound" overlay (muted autoplay) */
+    .unmute{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;border:0;cursor:pointer;font-family:var(--font);
+      background:linear-gradient(180deg,rgba(5,6,8,.32),rgba(5,6,8,.58));transition:opacity .3s ease}
+    .unmute.hide{opacity:0;pointer-events:none}
+    .unmute-inner{display:flex;flex-direction:column;align-items:center;gap:15px;text-align:center;padding:0 20px}
+    .unmute .spk{width:76px;height:76px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;
+      box-shadow:0 12px 34px -8px rgba(201,171,110,.6);animation:umpulse 2s ease-in-out infinite}
+    .unmute .spk svg{width:33px;height:33px}
+    .unmute .ut{color:#fff;font-size:14.5px;font-weight:400;line-height:1.5;text-shadow:0 1px 10px rgba(0,0,0,.85)}
+    .unmute .ut strong{display:block;font-size:20px;font-weight:700;letter-spacing:.005em;margin-bottom:2px}
+    @keyframes umpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+
     /* chapters / modules with timestamps */
     section.blk{padding:44px 0}
     .seclabel{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px;text-align:center}
@@ -128,16 +140,17 @@
     <section class="hero wrap center">
       <div class="eyebrow">You're in<span class="dot">•</span>Full Masterclass Unlocked</div>
       <h1>The Breeder's <em>Revenue Accelerator</em></h1>
-      <p class="sub" id="greeting">Press play below. Watch it once, reference it forever — and use the chapter list to jump to what you need most.</p>
+      <p class="sub" id="greeting">Your masterclass is playing below — tap the video for sound. Watch it once, reference it forever; use the chapter list to jump to what you need most.</p>
 
       <div class="video-wrap">
         <div class="video-frame" id="videoFrame">
-          <video id="vsl" playsinline preload="none" poster="/masterclass/masterclass-poster.jpg" src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a447bfc4c5c0069d27b8dab.mp4"></video>
-          <div class="video-poster" id="poster" role="button" aria-label="Play masterclass" tabindex="0">
-            <img class="poster-img" src="/masterclass/masterclass-poster.jpg" alt="The Breeder's Revenue Accelerator" onerror="this.style.display='none'">
-            <div class="play"><svg viewBox="0 0 24 24" fill="#1a160c" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/></svg></div>
-            <div class="poster-note">Play the masterclass · 63 min</div>
-          </div>
+          <video id="vsl" autoplay muted playsinline preload="auto" controls src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a447bfc4c5c0069d27b8dab.mp4"></video>
+          <button class="unmute" id="unmute" aria-label="Tap for sound">
+            <span class="unmute-inner">
+              <span class="spk"><svg viewBox="0 0 24 24" fill="none" stroke="#1a160c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg></span>
+              <span class="ut"><strong>Tap for sound</strong>Your masterclass is playing</span>
+            </span>
+          </button>
         </div>
       </div>
     </section>
@@ -216,20 +229,30 @@
     // Soft gate: no opt-in on record → back to the opt-in page.
     if (REQUIRE_OPTIN && !email && !qs.get('preview')) { location.replace(OPTIN_URL); }
 
-    if (name) { $('#greeting').textContent = "You're in, " + name.split(' ')[0] + " — press play below. Watch it once, reference it forever; use the chapter list to jump to what you need most."; }
+    if (name) { $('#greeting').textContent = "You're in, " + name.split(' ')[0] + " — your masterclass is playing below. Tap the video for sound; use the chapter list to jump to what you need most."; }
 
-    // Click-to-play masterclass.
-    const vsl = $('#vsl'), poster = $('#poster');
-    function playVSL(){ if(!vsl) return; vsl.setAttribute('controls','controls'); if(poster) poster.style.display='none'; vsl.play().catch(()=>{}); if(window.fbq) fbq('trackCustom','MasterclassStart'); }
-    if (poster){ poster.addEventListener('click', playVSL); poster.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' ') playVSL(); }); }
+    // VSL-style: muted autoplay on load, then "tap for sound".
+    const vsl = $('#vsl'), unmute = $('#unmute');
+    let unmuted = false;
+    if (vsl) {
+      vsl.addEventListener('playing', () => { if (window.fbq) fbq('trackCustom','MasterclassStart'); }, { once:true });
+      const p = vsl.play();                                  // muted autoplay (allowed by browsers)
+      if (p && p.catch) p.catch(() => { /* blocked → overlay tap still starts it */ });
+    }
+    function turnOnSound(seekTo){
+      if (!vsl) return;
+      vsl.muted = false;
+      if (typeof seekTo === 'number') { const seek=()=>{ try{ vsl.currentTime=seekTo; }catch(_){} }; if(vsl.readyState>=1) seek(); else vsl.addEventListener('loadedmetadata', seek, {once:true}); }
+      vsl.play().catch(()=>{});
+      if (unmute) unmute.classList.add('hide');
+      if (!unmuted) { unmuted = true; if (window.fbq) fbq('trackCustom','MasterclassUnmute'); }
+    }
+    if (unmute) unmute.addEventListener('click', () => turnOnSound());
 
-    // Chapter jump — plays and seeks to the timestamp.
+    // Chapter jump — turns sound on and seeks to the timestamp.
     document.querySelectorAll('.chap').forEach(btn=>{
       btn.addEventListener('click', ()=>{
-        const t = parseInt(btn.dataset.t) || 0;
-        if (poster && poster.style.display !== 'none') playVSL();
-        const seek = ()=>{ try { vsl.currentTime = t; vsl.play().catch(()=>{}); } catch(_){} };
-        if (vsl.readyState >= 1) seek(); else vsl.addEventListener('loadedmetadata', seek, { once:true });
+        turnOnSound(parseInt(btn.dataset.t) || 0);
         $('#videoFrame').scrollIntoView({ behavior:'smooth', block:'center' });
       });
     });
