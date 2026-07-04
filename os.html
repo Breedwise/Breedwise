@@ -167,8 +167,16 @@
     .cmw-grid{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:14px;align-items:end;margin-top:16px}
     .cmw-grid .field input{width:100%}
     @media(max-width:640px){.cmw-grid{grid-template-columns:1fr 1fr}.cmw-grid button{grid-column:1/-1}}
-    #modal, #issueModal, #ssModal, #ccModal, #affModal, #planModal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
-    #modal.open, #issueModal.open, #ssModal.open, #ccModal.open, #affModal.open, #planModal.open { display: flex; }
+    #modal, #issueModal, #ssModal, #ccModal, #affModal, #planModal, #taskModal { position: fixed; inset: 0; background: rgba(15,14,12,0.5); z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+    #modal.open, #issueModal.open, #ssModal.open, #ccModal.open, #affModal.open, #planModal.open, #taskModal.open { display: flex; }
+    .pri-pill{font-size:10px;font-weight:700;letter-spacing:.03em;padding:3px 7px;border-radius:4px}
+    .pri-P0{background:var(--red-bg);color:var(--red)} .pri-P1{background:rgba(194,102,30,.14);color:#b5651d}
+    .pri-P2{background:var(--gold-faint);color:var(--gold-deep)} .pri-P3{background:#efece4;color:#86847d}
+    .tst{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;padding:3px 8px;border-radius:4px;background:#efece4;color:#86847d}
+    .tst-Done{background:var(--green-bg);color:var(--green)} .tst-Blocked{background:var(--red-bg);color:var(--red)}
+    .tst-InProgress{background:var(--gold-faint);color:var(--gold-deep)} .tst-InReview{background:rgba(194,102,30,.14);color:#b5651d}
+    .task-filters{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 6px}
+    .task-filters select{padding:7px 10px;border:1px solid var(--line,#e7e3d9);border-radius:7px;background:var(--card,#fff);font-size:13px}
     .aff-st{font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 8px;border-radius:4px}
     .aff-active{background:var(--green);color:#fff}.aff-onboarded{background:var(--green-bg);color:var(--green)}.aff-signed{background:var(--gold-mid);color:var(--gold-deep)}.aff-prospect{background:var(--card);color:var(--mid)}.aff-inactive{background:var(--red-bg);color:var(--red)}
     .urg{font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap}
@@ -548,6 +556,31 @@
         </table></div></div>
       </section>
 
+      <!-- ═══ TASKS ═══ -->
+      <section class="panel" data-panel="tasks">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Team workflow</div>
+          <h1 class="view-title">Tasks</h1>
+          <p class="view-sub">Everything the team owns — open, due this week, overdue, done. Assignees get Slack + email nudges before and after deadlines.</p>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-save" id="taskReportBtn" type="button">Completion report</button>
+          <button class="btn-save" id="taskAdd" type="button">+ Add task</button>
+        </div></div>
+        <div class="kpi-grid" id="taskKpis"></div>
+        <div class="task-filters">
+          <select id="tf_status"><option value="">All statuses</option><option>Backlog</option><option>In Progress</option><option>Blocked</option><option>In Review</option><option>Done</option></select>
+          <select id="tf_assignee"><option value="">All assignees</option></select>
+          <select id="tf_project"><option value="">All projects</option></select>
+          <select id="tf_bucket"><option value="">Overdue &amp; on-track</option><option value="overdue">Overdue only</option><option value="ontrack">On track only</option></select>
+        </div>
+        <div class="table-wrap"><div style="overflow-x:auto"><table>
+          <thead><tr><th>Task</th><th>Assignee</th><th>Project</th><th>Priority</th><th>Status</th><th>Due</th><th></th></tr></thead>
+          <tbody id="taskBody"></tbody>
+        </table></div></div>
+        <div id="taskReport" style="display:none;margin-top:22px"></div>
+      </section>
+
       <!-- PAYMENT PLANS (private · Founder + Director only) -->
       <section class="panel" data-panel="plans">
         <div class="view-head"><div>
@@ -839,6 +872,21 @@
       <div class="field full"><label>Notes</label><textarea id="a_notes" rows="2"></textarea></div>
     </div></div>
     <div class="modal-foot"><button class="btn-del" id="affDelete">Delete</button><div style="display:flex;gap:10px;align-items:center"><span class="login-err" id="affErr" style="margin:0"></span><button class="btn-save" id="affSave">Save</button></div></div>
+  </div></div>
+
+  <!-- ═══ TASK MODAL ═══ -->
+  <div id="taskModal"><div class="modal-box">
+    <div class="modal-head"><div class="modal-title" id="taskTitle">Task</div><button class="modal-close" id="taskClose">&times;</button></div>
+    <div class="modal-body"><div class="fgrid">
+      <div class="field full"><label>Title</label><input id="t_title" type="text"></div>
+      <div class="field full"><label>Description</label><textarea id="t_desc" rows="2"></textarea></div>
+      <div class="field"><label>Assignee</label><select id="t_assignee"></select></div>
+      <div class="field"><label>Project</label><input id="t_project" type="text"></div>
+      <div class="field"><label>Priority</label><select id="t_priority"><option>P0</option><option>P1</option><option selected>P2</option><option>P3</option></select></div>
+      <div class="field"><label>Status</label><select id="t_status"><option>Backlog</option><option>In Progress</option><option>Blocked</option><option>In Review</option><option>Done</option></select></div>
+      <div class="field"><label>Due date</label><input id="t_due" type="datetime-local"></div>
+    </div></div>
+    <div class="modal-foot"><button class="btn-del" id="taskDelete">Delete</button><div style="display:flex;gap:10px;align-items:center"><span class="login-err" id="taskErr" style="margin:0"></span><button class="btn-save" id="taskSave">Save</button></div></div>
   </div></div>
 
   <!-- PAYMENT PLAN MODAL -->
@@ -1261,7 +1309,7 @@
   const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
   const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager', Founder:'Founder' };
 
-  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, podHw='all', ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[], PAYMENTS=[], PLANS=[];
+  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, podHw='all', ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[], PAYMENTS=[], PLANS=[], TASKS=[], TEAM=[];
   let SALES_MEMBER=false;  // true if this login maps to a sales_reps row (set after SalesOS.boot)
   const EXPERTS=['Dr. Emmanuel Fontaine','Dr. Angela Hughes','Austin Shanks','Dr. David Mahoney','Yasmin Omar'];
   function weekStartISO(){ const d=new Date(); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return d.toISOString().slice(0,10); }
@@ -1306,7 +1354,7 @@
   async function loadData(){
     const { data:{ session } } = await sb.auth.getSession();
     const myEmail = session?.user?.email || '';
-    const [mem, pods, comp, prof, iss, mnotes, cmw, ss, cc, wk, aff, pay, plans] = await Promise.all([
+    const [mem, pods, comp, prof, iss, mnotes, cmw, ss, cc, wk, aff, pay, plans, tsk, team] = await Promise.all([
       sb.from('members').select('*').order('name'),
       sb.from('pods').select('*').order('name'),
       sb.from('comp').select('*'),       // RLS → only my row
@@ -1320,6 +1368,8 @@
       sb.from('affiliates').select('*').order('name'),
       sb.from('payments').select('*').order('stripe_created',{ascending:false}),  // RLS → empty unless austin/jennifer
       sb.from('payment_plans').select('*').order('member_name'),                   // RLS → empty unless austin/jennifer
+      sb.from('tasks').select('*').order('due_date',{ascending:true}),
+      sb.from('team').select('*').order('full_name'),
     ]);
     MEMBERS = (mem.data||[]).map(norm);
     PODS = pods.data||[];
@@ -1333,6 +1383,8 @@
     AFFILIATES = aff.data||[];
     PAYMENTS = pay.data||[];
     PLANS = plans.data||[];
+    TASKS = tsk.data||[];
+    TEAM = team.data||[];
     MYCOMP_ROWS = comp.data || [];
     MYCOMP = MYCOMP_ROWS[0] || null;
     ME = PROFILES.find(p=>p.email===myEmail) || { email:myEmail, full_name:myEmail, role:(MYCOMP&&MYCOMP.role)||'' };
@@ -1624,7 +1676,7 @@
     buildSidebar();
     renderKPIs('#dirKpis', directorKPIs());
     renderFunnel(); renderStatusMix(); renderDirTable();
-    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderAccelerator(); renderCalendar(); renderReports(); renderAffiliates(); renderPlans(); renderPayments(); renderDirectory();
+    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderAccelerator(); renderCalendar(); renderReports(); renderAffiliates(); renderPlans(); renderPayments(); renderTasks(); renderDirectory();
     const eb=$('#exportBtn'); if(eb) eb.onclick=buildExport;
     if(ME?.role==='Vet'){ document.querySelectorAll('[data-add-ss],#ccAdd,[data-edit-ss],[data-add]').forEach(b=>{ if(b) b.style.display='none'; }); }
   }
@@ -1651,6 +1703,9 @@
       ['issues','Issues',['Founder','Director','CommunityManager']],
       ['strategy','Strategy Sessions',['Founder','Director']],
       ['accelerator','Accelerator',['Founder','Director','CommunityManager']],
+    ]},
+    { group:'Tasks', items:[
+      ['tasks','Tasks',['Founder','Director','AccountabilityLeader','CommunityManager','SalesTeam','Vet','Systems']],
     ]},
     { group:'Affiliates', items:[
       ['affiliates','Affiliates',['Founder','Director']],
@@ -1873,6 +1928,96 @@
     closeAff(); await loadData(); renderAffiliates(); toast(editingAff?'Affiliate updated':'Affiliate added');
   };
   $('#affDelete').onclick=async ()=>{ if(!editingAff) return; if(!confirm('Delete this affiliate?')) return; const res=await sb.from('affiliates').delete().eq('id',editingAff); if(res.error){ $('#affErr').textContent=res.error.message; return; } closeAff(); await loadData(); renderAffiliates(); toast('Affiliate deleted'); };
+
+  /* ═══ TASKS ═══ */
+  let taskEditId=null, tfStatus='', tfAssignee='', tfProject='', tfBucket='', taskReportOpen=false;
+  const taskName=email=>{ const m=TEAM.find(t=>t.email===email); return m?m.full_name:(email||'—'); };
+  const taskOverdue=t=>t.status!=='Done' && t.due_date && new Date(t.due_date) < new Date();
+  function renderTasks(){
+    if(!$('#taskBody')) return;
+    const T=TASKS, now=new Date(), wk=new Date(now.getTime()+7*864e5);
+    const open=T.filter(t=>t.status!=='Done').length;
+    const dueWk=T.filter(t=>t.status!=='Done'&&t.due_date&&new Date(t.due_date)>=now&&new Date(t.due_date)<=wk).length;
+    const overdue=T.filter(taskOverdue).length, done=T.filter(t=>t.status==='Done').length;
+    $('#taskKpis').innerHTML=[
+      ['Open',open,'not done'],['Due this week',dueWk,'next 7 days'],['Overdue',overdue,'past due'],['Done',done,'completed'],
+    ].map(([n,v,s])=>`<div class="kpi"><div class="kpi-name">${n}</div><div class="kpi-val" style="font-size:28px">${v}</div><div class="kpi-meta">${s}</div></div>`).join('');
+    $('#tf_assignee').innerHTML=`<option value="">All assignees</option>`+TEAM.map(m=>`<option value="${esc(m.email)}"${tfAssignee===m.email?' selected':''}>${esc(m.full_name)}</option>`).join('');
+    const projects=[...new Set(T.map(t=>t.project).filter(Boolean))].sort();
+    $('#tf_project').innerHTML=`<option value="">All projects</option>`+projects.map(p=>`<option${tfProject===p?' selected':''}>${esc(p)}</option>`).join('');
+    $('#tf_status').value=tfStatus; $('#tf_bucket').value=tfBucket;
+    const prank={P0:0,P1:1,P2:2,P3:3};
+    const rows=T.filter(t=>{
+      if(tfStatus&&t.status!==tfStatus) return false;
+      if(tfAssignee&&t.assignee_email!==tfAssignee) return false;
+      if(tfProject&&t.project!==tfProject) return false;
+      if(tfBucket==='overdue'&&!taskOverdue(t)) return false;
+      if(tfBucket==='ontrack'&&taskOverdue(t)) return false;
+      return true;
+    }).sort((a,b)=>{ const ao=taskOverdue(a),bo=taskOverdue(b); if(ao!==bo) return ao?-1:1; const dd=(a.due_date||'9999').localeCompare(b.due_date||'9999'); if(dd) return dd; return (prank[a.priority]??9)-(prank[b.priority]??9); });
+    $('#taskBody').innerHTML=rows.map(t=>`<tr>
+      <td class="m-name">${esc(t.title)}${taskOverdue(t)?' <span class="due-over">· overdue</span>':''}</td>
+      <td>${esc(taskName(t.assignee_email))}</td>
+      <td class="muted-cell">${esc(t.project||'—')}</td>
+      <td><span class="pri-pill pri-${t.priority}">${t.priority}</span></td>
+      <td><span class="tst tst-${(t.status||'').replace(/ /g,'')}">${esc(t.status)}</span></td>
+      <td class="muted-cell">${t.due_date?ssDate(t.due_date):'—'}</td>
+      <td><button class="row-edit" data-edit-task="${t.id}">Edit</button>${t.status!=='Done'?` <button class="row-edit" data-done-task="${t.id}">✓ Done</button>`:''}</td>
+    </tr>`).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:26px">No tasks match. Add one with “+ Add task”.</td></tr>`;
+    $('#taskAdd').onclick=()=>openTask(null);
+    $('#taskReportBtn').onclick=()=>{ taskReportOpen=!taskReportOpen; $('#taskReport').style.display=taskReportOpen?'block':'none'; if(taskReportOpen) renderTaskReport(); };
+    $('#tf_status').onchange=e=>{tfStatus=e.target.value;renderTasks();};
+    $('#tf_assignee').onchange=e=>{tfAssignee=e.target.value;renderTasks();};
+    $('#tf_project').onchange=e=>{tfProject=e.target.value;renderTasks();};
+    $('#tf_bucket').onchange=e=>{tfBucket=e.target.value;renderTasks();};
+    if(taskReportOpen) renderTaskReport();
+  }
+  function renderTaskReport(){
+    const pct=(d,t)=>t?Math.round(d/t*100):0;
+    const bar=(label,d,t)=>`<div style="display:grid;grid-template-columns:150px 1fr 96px;gap:12px;align-items:center;padding:4px 0"><span class="muted-cell">${esc(label)}</span><span class="kpi-bar" style="height:12px"><i style="width:${Math.max(2,pct(d,t))}%;background:var(--green)"></i></span><span class="num" style="text-align:right">${pct(d,t)}% <span class="muted-cell">(${d}/${t})</span></span></div>`;
+    const byProj={}, byPer={};
+    TASKS.forEach(t=>{ const p=t.project||'—'; (byProj[p]=byProj[p]||{d:0,t:0}); byProj[p].t++; if(t.status==='Done')byProj[p].d++;
+      const a=taskName(t.assignee_email); (byPer[a]=byPer[a]||{d:0,t:0}); byPer[a].t++; if(t.status==='Done')byPer[a].d++; });
+    const proj=Object.entries(byProj).sort((a,b)=>b[1].t-a[1].t).map(([k,v])=>bar(k,v.d,v.t)).join('');
+    const per=Object.entries(byPer).sort((a,b)=>b[1].t-a[1].t).map(([k,v])=>bar(k,v.d,v.t)).join('');
+    $('#taskReport').innerHTML=`<div class="card"><div class="card-h">Completion — by project</div>${proj||'<div class="card-sub">No tasks yet.</div>'}</div>
+      <div class="card" style="margin-top:16px"><div class="card-h">Completion — by person</div>${per||'<div class="card-sub">No tasks yet.</div>'}</div>`;
+  }
+  function openTask(t){
+    taskEditId=t?t.id:null; $('#taskErr').textContent='';
+    $('#taskTitle').textContent=t?'Edit task':'Add task';
+    $('#t_assignee').innerHTML=`<option value="">— unassigned —</option>`+TEAM.map(m=>`<option value="${esc(m.email)}">${esc(m.full_name)}</option>`).join('');
+    $('#t_title').value=t?t.title||'':''; $('#t_desc').value=t?t.description||'':'';
+    $('#t_assignee').value=t?t.assignee_email||'':''; $('#t_project').value=t?t.project||'':'';
+    $('#t_priority').value=t?t.priority||'P2':'P2'; $('#t_status').value=t?t.status||'Backlog':'Backlog';
+    $('#t_due').value=t?tsLocal(t.due_date):'';
+    $('#taskDelete').style.visibility=t?'visible':'hidden';
+    $('#taskModal').classList.add('open');
+  }
+  function closeTask(){ $('#taskModal').classList.remove('open'); }
+  $('#taskClose').onclick=closeTask; $('#taskModal').onclick=e=>{ if(e.target.id==='taskModal') closeTask(); };
+  document.addEventListener('click',e=>{
+    const ed=e.target.closest('[data-edit-task]'); if(ed){ const t=TASKS.find(x=>x.id===ed.dataset.editTask); if(t) openTask(t); return; }
+    const dn=e.target.closest('[data-done-task]'); if(dn) completeTask(dn.dataset.doneTask);
+  });
+  async function completeTask(id){
+    const res=await sb.from('tasks').update({status:'Done',completed_at:new Date().toISOString()}).eq('id',id);
+    if(res.error){ toast(res.error.message); return; }
+    await loadData(); renderTasks(); toast('Task completed');
+  }
+  $('#taskSave').onclick=async ()=>{
+    const title=$('#t_title').value.trim(); if(!title){ $('#taskErr').textContent='Title required.'; return; }
+    const status=$('#t_status').value;
+    const row={ title, description:$('#t_desc').value.trim()||null, assignee_email:$('#t_assignee').value||null, project:$('#t_project').value.trim()||null, priority:$('#t_priority').value, status, due_date:$('#t_due').value?new Date($('#t_due').value).toISOString():null, updated_by:ME?.full_name||ME?.email||null };
+    if(status==='Done') row.completed_at=new Date().toISOString();
+    $('#taskSave').disabled=true;
+    let res; if(taskEditId){ res=await sb.from('tasks').update(row).eq('id',taskEditId); }
+    else { row.created_by=ME?.full_name||ME?.email||null; row.notified_assigned=false; res=await sb.from('tasks').insert(row); }
+    $('#taskSave').disabled=false;
+    if(res.error){ $('#taskErr').textContent=res.error.message; return; }
+    closeTask(); await loadData(); renderTasks(); toast(taskEditId?'Task updated':'Task added');
+  };
+  $('#taskDelete').onclick=async ()=>{ if(!taskEditId) return; if(!confirm('Delete this task?')) return; const res=await sb.from('tasks').delete().eq('id',taskEditId); if(res.error){ $('#taskErr').textContent=res.error.message; return; } closeTask(); await loadData(); renderTasks(); toast('Task deleted'); };
 
   /* ═══ PAYMENTS (Stripe · private to Founder + Director) ═══ */
   let payQ='', payRange='mtd';
