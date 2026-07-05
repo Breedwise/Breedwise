@@ -267,7 +267,7 @@
     .st-new{background:var(--card);color:var(--mid)} .st-engaged{background:var(--gold-mid);color:var(--gold-deep)}
     .st-scheduled{background:var(--yellow-bg);color:var(--yellow)} .st-showed{background:var(--green-bg);color:var(--green)}
     .st-no_show{background:var(--red-bg);color:var(--red)} .st-closed_won{background:var(--green);color:#0e1c14}
-    .st-closed_lost{background:var(--red-bg);color:var(--red)}
+    .st-closed_lost{background:var(--red-bg);color:var(--red)} .st-nurture{background:#2a2a31;color:var(--muted)}
     .tierb{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 6px;border-radius:5px;margin-left:5px;white-space:nowrap}
     .tier-hot{background:var(--gold);color:var(--on-gold)} .tier-warm{background:var(--yellow-bg);color:var(--yellow)} .tier-disqualified{background:var(--card);color:var(--muted);border:1px solid var(--border)}
     .src{font-size:9.5px;font-weight:700;letter-spacing:.04em;padding:2px 6px;border-radius:5px}
@@ -1180,8 +1180,8 @@
   /* RENDER: leads */
   let leadFilter='all',leadQ='';
   function renderLeads(){
-    const counts={all:LEADS.length}; ['new','engaged','scheduled','showed','closed_won','closed_lost'].forEach(s=>counts[s]=LEADS.filter(l=>l.status===s).length);
-    const chips=[['all','All'],['new','New'],['engaged','Engaged'],['scheduled','Scheduled'],['showed','Showed'],['closed_won','Won']];
+    const counts={all:LEADS.length}; ['new','engaged','scheduled','showed','no_show','closed_won','closed_lost','nurture'].forEach(s=>counts[s]=LEADS.filter(l=>l.status===s).length);
+    const chips=[['all','All'],['new','New'],['engaged','Engaged'],['scheduled','Scheduled'],['showed','Showed'],['no_show','No Show'],['closed_won','Won'],['closed_lost','Lost'],['nurture','Nurture']];
     $('#leadFilters').innerHTML=chips.map(([k,lbl])=>`<div class="tag" data-f="${k}" style="cursor:pointer;${leadFilter===k?'background:var(--gold);color:var(--on-gold);border-color:var(--gold)':''}">${lbl} ${counts[k]||0}</div>`).join('')+`<input class="search-box" id="leadSearch" placeholder="Search…">`;
     let rows=LEADS.filter(l=>leadFilter==='all'||l.status===leadFilter);
     if(leadQ) rows=rows.filter(l=>(l.name||'').toLowerCase().includes(leadQ));
@@ -1190,7 +1190,7 @@
       <td><span class="tag">${l.channel||''}</span></td>
       <td><span class="src src-${l.first_source_system||'manual'}">${l.first_source_system||'manual'}</span></td>
       <td class="muted-cell">${repName(l.current_owner_id)}</td>
-      <td><span class="st st-${l.status}">${l.status}</span>${l.app_tier?`<span class="tierb tier-${l.app_tier}" title="Application score ${l.app_score||''} · urgency ${l.app_urgency||''}/10">${l.app_tier}${l.app_urgency?' '+l.app_urgency:''}</span>`:''}</td>
+      <td><span class="st st-${l.status}" title="OS status: ${l.status}">${esc(l.pipeline_stage||l.status||'—')}</span>${l.app_tier?`<span class="tierb tier-${l.app_tier}" title="Application score ${l.app_score||''} · urgency ${l.app_urgency||''}/10">${l.app_tier}${l.app_urgency?' '+l.app_urgency:''}</span>`:''}</td>
       <td class="hide-sm">${l.marketing_qualified?'<span class="tag">MQL</span> ':''}${l.sales_qualified?'<span class="tag">SQL</span>':''}</td>
       <td style="text-align:right;white-space:nowrap">${ct?`<span class="tag" style="border-color:var(--gold-mid);color:var(--gold-deep)">${ct} ✦</span> `:''}<button class="row-view" data-lead="${l.lead_id}">View</button> <button class="row-edit" data-edit-lead="${l.lead_id}">Edit</button></td>
       </tr>`;}).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:26px">No leads.</td></tr>`;
