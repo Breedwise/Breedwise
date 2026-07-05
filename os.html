@@ -557,14 +557,15 @@
         <div class="view-head"><div>
           <div class="view-eyebrow">Partner program</div>
           <h1 class="view-title">Affiliates</h1>
-          <p class="view-sub">Your affiliate pipeline — signed, onboarded, and producing — against the Q3 target of 15 active affiliates.</p>
+          <p class="view-sub">Every partner, their referred pipeline, and what they're owed — computed from the funnel, not typed. Hand each their <b>?ref=</b> link and leads tie back to them automatically.</p>
         </div>
         <button class="btn-save" id="affAdd" type="button">+ Add affiliate</button></div>
         <div class="kpi-grid" id="affKpis"></div>
         <div class="table-wrap" style="margin-top:22px"><div style="overflow-x:auto"><table>
-          <thead><tr><th>Affiliate</th><th>Email</th><th>Status</th><th>Sales</th><th>Leads</th><th>Joined</th><th></th></tr></thead>
+          <thead><tr><th>Affiliate</th><th>Code</th><th class="num">Referred</th><th class="num">Booked</th><th class="num">Closed</th><th class="num">Cash</th><th class="num">Owed</th><th>Status</th><th></th></tr></thead>
           <tbody id="affBody"></tbody>
         </table></div></div>
+        <div id="affDetail"></div>
       </section>
 
       <!-- ═══ TASKS ═══ -->
@@ -875,11 +876,17 @@
     <div class="modal-head"><div class="modal-title" id="affTitle">Affiliate</div><button class="modal-close" id="affClose">&times;</button></div>
     <div class="modal-body"><div class="fgrid">
       <div class="field full"><label>Name</label><input id="a_name" type="text"></div>
-      <div class="field"><label>Email</label><input id="a_email" type="text"></div>
+      <div class="field"><label>Contact email</label><input id="a_email" type="text"></div>
       <div class="field"><label>Status</label><select id="a_status"><option value="prospect">Prospect</option><option value="signed">Signed</option><option value="onboarded">Onboarded</option><option value="active">Active / producing</option><option value="inactive">Inactive</option></select></div>
-      <div class="field"><label>Sales attributed</label><input id="a_sales" type="number" min="0" value="0"></div>
-      <div class="field"><label>Leads generated</label><input id="a_leads" type="number" min="0" value="0"></div>
+      <div class="field"><label>Referral code</label><input id="a_refcode" type="text" placeholder="JANE20"></div>
       <div class="field"><label>Joined date</label><input id="a_joined" type="date"></div>
+      <div class="field full"><label>Referral link (share this)</label><input id="a_link" type="text" readonly style="color:var(--gold);font-size:12px"></div>
+      <div class="field"><label>Commission type</label><select id="a_ctype"><option value="percent">Percent (%)</option><option value="flat">Flat per sale ($)</option></select></div>
+      <div class="field"><label>Value</label><input id="a_cval" type="number" min="0" step="0.01" value="0"></div>
+      <div class="field"><label>Percent of…</label><select id="a_cbasis"><option value="cash_collected">Cash collected</option><option value="contract">Contract value</option></select></div>
+      <div class="field"><label>Recurring?</label><select id="a_recurring"><option value="false">One-time (first payment)</option><option value="true">Every rebill</option></select></div>
+      <div class="field"><label>Payout email</label><input id="a_payout" type="text"></div>
+      <div class="field"><label>Portal login email</label><input id="a_user" type="text" placeholder="their affiliate-portal login"></div>
       <div class="field full"><label>Notes</label><textarea id="a_notes" rows="2"></textarea></div>
     </div></div>
     <div class="modal-foot"><button class="btn-del" id="affDelete">Delete</button><div style="display:flex;gap:10px;align-items:center"><span class="login-err" id="affErr" style="margin:0"></span><button class="btn-save" id="affSave">Save</button></div></div>
@@ -1892,51 +1899,90 @@
   function ssDate(ts){ if(!ts) return 'TBD'; const d=new Date(ts); return isNaN(d)?String(ts).slice(0,16):d.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}); }
   function tsLocal(ts){ if(!ts) return ''; const d=new Date(ts); if(isNaN(d)) return ''; const p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; }
   /* ═══ AFFILIATES ═══ */
-  let editingAff=null;
-  function renderAffiliates(){
-    const A=AFFILIATES;
-    const signedPlus=A.filter(a=>['signed','onboarded','active'].includes(a.status)).length;
-    const onboardedPlus=A.filter(a=>['onboarded','active'].includes(a.status)).length;
+  const AFFILIATE_FUNNEL='https://www.breedwise.io/apply'; // base for ?ref= links — tell me the real funnel URL to swap in
+  let editingAff=null, AFF_LEADS=null, affOpenId=null;
+  const affLink=code=>code?`${AFFILIATE_FUNNEL}?ref=${encodeURIComponent(code)}`:'';
+  async function affLoadLeads(force){ if(AFF_LEADS&&!force) return AFF_LEADS; const r=await sb.from('leads').select('lead_id,name,status,created_at,affiliate_id'); AFF_LEADS=r.error?[]:(r.data||[]); return AFF_LEADS; }
+  function affRoll(a, leads){
+    const mine=leads.filter(l=>l.affiliate_id&&String(l.affiliate_id)===String(a.id));
+    const by=s=>mine.filter(l=>l.status===s).length;
+    const referred=mine.length, booked=by('scheduled'), closed=by('closed_won');
+    const cash=+(a._cash||0), contract=+(a._contract||0), v=+(a.commission_value||0);
+    let owed; if((a.commission_type||'percent')==='flat') owed=v*closed;
+    else owed=Math.round(v/100*((a.commission_basis==='contract')?contract:cash)*100)/100;
+    return {referred,booked,closed,cash,owed,mine};
+  }
+  async function renderAffiliates(){
+    if(!(ME&&(ME.role==='Founder'||ME.role==='Director'))) return; // matches tab gating; avoids leads fetch for others
+    const A=AFFILIATES, leads=await affLoadLeads();
+    try{ const rv=await sb.from('affiliate_rollup').select('*'); if(!rv.error&&rv.data){ const m={}; rv.data.forEach(r=>m[r.affiliate_id]=r); A.forEach(a=>{ const r=m[a.id]; if(r){ a._cash=r.cash_collected; a._contract=r.contract_total; } }); } }catch(_){}
+    const rolls=A.map(a=>({a,r:affRoll(a,leads)}));
     const active=A.filter(a=>a.status==='active').length;
+    const totRef=rolls.reduce((s,x)=>s+x.r.referred,0), totOwed=rolls.reduce((s,x)=>s+x.r.owed,0);
     $('#affKpis').innerHTML=[
-      ['Total affiliates',A.length,''],
-      ['Signed',signedPlus,'signed or further'],
-      ['Onboarded',onboardedPlus,'onboarded or active'],
       ['Active / producing',active+' / 15','Q3 target 15'],
+      ['Total affiliates',A.length,''],
+      ['Referred leads',totRef,'attributed via ?ref='],
+      ['Commission owed','$'+Math.round(totOwed).toLocaleString(),'across all partners'],
     ].map(([n,v,s])=>`<div class="kpi"><div class="kpi-name">${n}</div><div class="kpi-val" style="font-size:28px">${v}</div><div class="kpi-meta">${s}</div></div>`).join('');
     const order={active:0,onboarded:1,signed:2,prospect:3,inactive:4};
-    const rows=A.slice().sort((a,b)=>(order[a.status]??9)-(order[b.status]??9)||(b.sales_count||0)-(a.sales_count||0));
-    $('#affBody').innerHTML=rows.map(a=>`<tr>
+    rolls.sort((x,y)=>(order[x.a.status]??9)-(order[y.a.status]??9)||y.r.referred-x.r.referred);
+    $('#affBody').innerHTML=rolls.map(({a,r})=>`<tr>
       <td class="m-name">${esc(a.name)}</td>
-      <td>${a.email?`<a href="mailto:${esc(a.email)}" style="color:var(--gold-deep);text-decoration:none">${esc(a.email)}</a>`:'<span class="muted-cell">—</span>'}</td>
+      <td>${a.ref_code?`<span class="prog-tag">${esc(a.ref_code)}</span>`:'<span class="muted-cell">—</span>'}</td>
+      <td class="num">${r.referred}</td><td class="num">${r.booked}</td><td class="num">${r.closed}</td>
+      <td class="num">${r.cash?'$'+r.cash.toLocaleString():'<span class="muted-cell">—</span>'}</td>
+      <td class="num">${r.owed?`<b style="color:var(--gold)">$${Math.round(r.owed).toLocaleString()}</b>`:'<span class="muted-cell">—</span>'}</td>
       <td><span class="aff-st aff-${a.status||'prospect'}">${a.status||'prospect'}</span></td>
-      <td class="num">${a.sales_count||0}</td>
-      <td class="num">${a.leads_count||0}</td>
-      <td class="muted-cell">${a.joined_at||'—'}</td>
-      <td><button class="row-edit" data-edit-aff="${a.id}">Edit</button></td>
-    </tr>`).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:26px">No affiliates yet. Add your first.</td></tr>`;
+      <td style="white-space:nowrap"><button class="row-view" data-view-aff="${a.id}">Leads</button> <button class="row-edit" data-edit-aff="${a.id}">Edit</button></td>
+    </tr>`).join('')||`<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:26px">No affiliates yet. Add your first.</td></tr>`;
     const add=$('#affAdd'); if(add) add.onclick=()=>openAff(null);
+    if(affOpenId){ const a=A.find(x=>String(x.id)===String(affOpenId)); if(a) renderAffDetail(a,leads); }
+  }
+  function renderAffDetail(a,leads){
+    affOpenId=a.id;
+    const mine=leads.filter(l=>l.affiliate_id&&String(l.affiliate_id)===String(a.id)).sort((x,y)=>(y.created_at||'').localeCompare(x.created_at||''));
+    $('#affDetail').innerHTML=`<div class="card" style="margin-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <div class="card-h">${esc(a.name)} — everyone referred (${mine.length})</div>
+        <button class="row-edit" id="affDetClose">Close</button></div>
+      <div class="card-sub">Referral link: ${a.ref_code?`<span style="color:var(--gold)">${affLink(a.ref_code)}</span>`:'<i>set a referral code to generate one</i>'}</div>
+      <div style="overflow-x:auto"><table><thead><tr><th>Lead</th><th>Status</th><th>Referred on</th></tr></thead><tbody>
+      ${mine.map(l=>`<tr><td class="m-name">${esc(l.name||'—')}</td><td><span class="st st-${l.status||'new'}">${l.status||'new'}</span></td><td class="muted-cell">${(l.created_at||'').slice(0,10)}</td></tr>`).join('')||`<tr><td colspan="3" style="text-align:center;color:var(--muted);padding:20px">No referred leads yet — share their ?ref= link.</td></tr>`}
+      </tbody></table></div></div>`;
+    const c=$('#affDetClose'); if(c) c.onclick=()=>{ affOpenId=null; $('#affDetail').innerHTML=''; };
+    $('#affDetail').scrollIntoView({behavior:'smooth',block:'nearest'});
   }
   function openAff(a){
     editingAff=a?a.id:null; $('#affErr').textContent='';
     $('#affTitle').textContent=a?'Edit affiliate':'Add affiliate';
     $('#a_name').value=a?a.name||'':''; $('#a_email').value=a?a.email||'':''; $('#a_status').value=a?a.status||'prospect':'prospect';
-    $('#a_sales').value=a?a.sales_count||0:0; $('#a_leads').value=a?a.leads_count||0:0; $('#a_joined').value=a?(a.joined_at||''):'';
-    $('#a_notes').value=a?a.notes||'':'';
+    $('#a_refcode').value=a?a.ref_code||'':''; $('#a_joined').value=a?(a.joined_at||''):'';
+    $('#a_ctype').value=a?a.commission_type||'percent':'percent'; $('#a_cval').value=a?(a.commission_value??0):0;
+    $('#a_cbasis').value=a?a.commission_basis||'cash_collected':'cash_collected'; $('#a_recurring').value=a?String(!!a.recurring):'false';
+    $('#a_payout').value=a?a.payout_email||'':''; $('#a_user').value=a?a.user_email||'':''; $('#a_notes').value=a?a.notes||'':'';
+    const upd=()=>{ $('#a_link').value=affLink($('#a_refcode').value.trim()); };
+    $('#a_refcode').oninput=upd; upd();
     $('#affDelete').style.visibility=a?'visible':'hidden';
     $('#affModal').classList.add('open');
   }
   function closeAff(){ $('#affModal').classList.remove('open'); }
   $('#affClose').onclick=closeAff; $('#affModal').onclick=e=>{ if(e.target.id==='affModal') closeAff(); };
-  document.addEventListener('click',e=>{ const b=e.target.closest('[data-edit-aff]'); if(b){ const a=AFFILIATES.find(x=>x.id===b.dataset.editAff); if(a) openAff(a); } });
+  document.addEventListener('click',e=>{ const b=e.target.closest('[data-edit-aff]'); if(b){ const a=AFFILIATES.find(x=>String(x.id)===b.dataset.editAff); if(a) openAff(a); } });
+  document.addEventListener('click',e=>{ const b=e.target.closest('[data-view-aff]'); if(b){ const a=AFFILIATES.find(x=>String(x.id)===b.dataset.viewAff); if(a) affLoadLeads().then(ls=>renderAffDetail(a,ls)); } });
   $('#affSave').onclick=async ()=>{
     const name=$('#a_name').value.trim(); if(!name){ $('#affErr').textContent='Name required.'; return; }
-    const row={ name, email:$('#a_email').value.trim()||null, status:$('#a_status').value, sales_count:+$('#a_sales').value||0, leads_count:+$('#a_leads').value||0, joined_at:$('#a_joined').value||null, notes:$('#a_notes').value.trim()||null };
+    const row={ name, email:$('#a_email').value.trim()||null, status:$('#a_status').value,
+      ref_code:$('#a_refcode').value.trim()||null, joined_at:$('#a_joined').value||null,
+      commission_type:$('#a_ctype').value, commission_value:+$('#a_cval').value||0,
+      commission_basis:$('#a_cbasis').value, recurring:$('#a_recurring').value==='true',
+      payout_email:$('#a_payout').value.trim()||null, user_email:$('#a_user').value.trim()||null,
+      notes:$('#a_notes').value.trim()||null };
     $('#affSave').disabled=true;
     let res; if(editingAff) res=await sb.from('affiliates').update(row).eq('id',editingAff); else res=await sb.from('affiliates').insert(row);
     $('#affSave').disabled=false;
     if(res.error){ $('#affErr').textContent=res.error.message; return; }
-    closeAff(); await loadData(); renderAffiliates(); toast(editingAff?'Affiliate updated':'Affiliate added');
+    closeAff(); await loadData(); await affLoadLeads(true); renderAffiliates(); toast(editingAff?'Affiliate updated':'Affiliate added');
   };
   $('#affDelete').onclick=async ()=>{ if(!editingAff) return; if(!confirm('Delete this affiliate?')) return; const res=await sb.from('affiliates').delete().eq('id',editingAff); if(res.error){ $('#affErr').textContent=res.error.message; return; } closeAff(); await loadData(); renderAffiliates(); toast('Affiliate deleted'); };
 

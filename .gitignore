@@ -13,6 +13,7 @@
 !team.html
 !sales.html
 !os.html
+!affiliate.html
 !team-manual.html
 !sales-manual.html
 !sales-process.html
@@ -24,3 +25,15 @@
 !download.jpg
 !CNAME
 !.gitignore
+
+# --- Masterclass funnel pages (go.breedwise.io) — track go-site/masterclass/ only ---
+!/go-site/
+/go-site/*
+!/go-site/masterclass/
+
+# --- Masterclass opt-in edge function (source of truth; deploys via Supabase CLI) ---
+!/supabase/
+/supabase/*
+!/supabase/functions/
+/supabase/functions/*
+!/supabase/functions/masterclass-optin/
