@@ -1899,7 +1899,7 @@
   function ssDate(ts){ if(!ts) return 'TBD'; const d=new Date(ts); return isNaN(d)?String(ts).slice(0,16):d.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}); }
   function tsLocal(ts){ if(!ts) return ''; const d=new Date(ts); if(isNaN(d)) return ''; const p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; }
   /* ═══ AFFILIATES ═══ */
-  const AFFILIATE_FUNNEL='https://review.breedwise.io/affiliates'; // base for ?ref= referral links
+  const AFFILIATE_FUNNEL='https://review.breedwise.io/vsl'; // base for ?ref= referral links (opt-in funnel)
   let editingAff=null, AFF_LEADS=null, affOpenId=null;
   const affLink=code=>code?`${AFFILIATE_FUNNEL}?ref=${encodeURIComponent(code)}`:'';
   async function affLoadLeads(force){ if(AFF_LEADS&&!force) return AFF_LEADS; const r=await sb.from('leads').select('lead_id,name,status,created_at,affiliate_id'); AFF_LEADS=r.error?[]:(r.data||[]); return AFF_LEADS; }

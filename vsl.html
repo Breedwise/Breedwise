@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Training for Dog Breeders — Breedwise</title>
+<meta name="description" content="Free training for serious dog breeders: turn your program into predictable income. Watch now, then see if you qualify.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#050608; --band:#101218; --card:#13161d; --line:rgba(245,245,247,.12);
+    --ink:#F5F5F7; --mid:rgba(245,245,247,.74); --muted:rgba(245,245,247,.52);
+    --gold:#c9ab6e; --gold-soft:rgba(201,171,110,.12); --gold-line:rgba(201,171,110,.30);
+    --cta:#c9ab6e; --cta-hover:#b89a5c; --cta-ink:#1a160c;
+    --font:'Poppins',-apple-system,BlinkMacSystemFont,sans-serif;
+    --ease:.2s cubic-bezier(.2,.7,.2,1);
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px;margin:0 auto;padding:0 20px}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+
+  header{padding:22px 0 6px;text-align:center}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.02em;color:var(--gold)}
+  .logo span{color:var(--ink)}
+
+  .hero{padding:26px 0 8px;text-align:center}
+  .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:14px}
+  h1{font-weight:800;font-size:31px;line-height:1.18;letter-spacing:-.01em}
+  h1 .u{color:var(--gold)}
+  .sub{font-size:16px;color:var(--mid);font-weight:300;margin:14px auto 0;max-width:560px}
+
+  /* video */
+  .video{margin:22px 0 6px;border-radius:16px;overflow:hidden;border:1px solid var(--gold-line);box-shadow:0 30px 70px -30px rgba(0,0,0,.85);background:#000}
+  .ratio{position:relative;width:100%;padding-top:56.25%}
+  .ratio iframe,.ratio video{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .vph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:radial-gradient(120% 120% at 50% 0%,rgba(201,171,110,.14),#0a0b0e 70%);text-align:center;padding:20px}
+  .vph .play{width:74px;height:74px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 34px -8px rgba(201,171,110,.6)}
+  .vph .play svg{width:30px;height:30px;margin-left:4px}
+  .vph .cap{font-size:13px;color:var(--muted);letter-spacing:.04em}
+  .under{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:12px 0 0;font-size:12.5px;color:var(--muted)}
+  .under b{color:var(--gold);font-weight:700}
+
+  /* opt-in */
+  .optin{background:var(--card);border:1px solid var(--gold-line);border-radius:16px;padding:24px 24px 22px;box-shadow:0 30px 70px -30px rgba(0,0,0,.8);margin:22px 0 10px}
+  .optin .oh{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px;text-align:center}
+  .optin h2{font-size:23px;font-weight:700;line-height:1.22;text-align:center;margin-bottom:4px}
+  .optin .op{font-size:14px;color:var(--muted);font-weight:300;margin-bottom:18px;text-align:center}
+  .fld{margin-bottom:11px}
+  .fld input,.fld select{width:100%;font-family:var(--font);font-size:15px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px;outline:none;transition:border-color var(--ease),box-shadow var(--ease)}
+  .fld select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23c9ab6e' stroke-width='2'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+  .fld select.ph{color:var(--muted)}
+  .fld input::placeholder{color:var(--muted)}
+  .fld input:focus,.fld select:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+  .cta{width:100%;margin-top:6px;display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--cta);color:var(--cta-ink);
+    font-family:var(--font);font-size:16px;font-weight:700;border:none;cursor:pointer;padding:17px;border-radius:10px;
+    transition:transform var(--ease),background var(--ease);box-shadow:0 12px 30px -12px rgba(201,171,110,.5)}
+  .cta:hover{background:var(--cta-hover);transform:translateY(-1px)} .cta:active{transform:translateY(0)}
+  .cta:disabled{opacity:.55;cursor:default;transform:none}
+  .cta svg{width:20px;height:20px}
+  .err{color:#e88;font-size:13px;min-height:15px;text-align:center;margin-top:9px}
+  .micro{font-size:12.5px;color:var(--muted);margin-top:12px;text-align:center;line-height:1.5}
+  .micro strong{color:var(--mid);font-weight:600}
+  .trust{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:14px;color:var(--muted);font-size:12px}
+  .trust svg{width:14px;height:14px;stroke:var(--gold)}
+
+  /* success */
+  #done{display:none;text-align:center;background:var(--card);border:1px solid var(--gold-line);border-radius:16px;padding:34px 26px;margin:22px 0}
+  #done .ic{width:60px;height:60px;border-radius:50%;background:var(--gold-soft);border:1px solid var(--gold-line);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+  #done .ic svg{width:28px;height:28px;stroke:var(--gold)}
+  #done h2{font-size:26px;font-weight:800;text-transform:uppercase;margin-bottom:8px}
+  #done p{color:var(--mid);font-weight:300;max-width:440px;margin:0 auto 20px}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding:22px 0 40px;text-align:center;color:var(--muted);font-size:12px}
+  @media(max-width:520px){h1{font-size:25px}.optin{padding:20px}}
+</style>
+</head>
+<body>
+  <header><div class="wrap"><div class="logo">Breed<span>wise</span></div></div></header>
+
+  <main class="wrap">
+    <div class="hero">
+      <div class="eyebrow">Free Training · For Serious Breeders</div>
+      <h1>Build a Vet-Backed, Certified Program That Reaches <span class="u">Six-Figure, Predictable Income</span> With Healthier Litters</h1>
+      <p class="sub">Watch the free training below — then take 30 seconds to see if you qualify for the next step.</p>
+    </div>
+
+    <div class="video"><div class="ratio" id="video">
+      <div class="vph" id="vph">
+        <div class="play"><svg viewBox="0 0 24 24" fill="#1a160c"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="cap">Your training video loads here</div>
+      </div>
+    </div></div>
+    <div class="under"><span><b>Free</b> to watch</span><span><b>No</b> cost, no catch</span><span><b>Vet-backed</b> &amp; certified</span></div>
+
+    <div class="optin" id="optinCard">
+      <div class="oh">Get Instant Access — Free</div>
+      <h2>Where should we send your next step?</h2>
+      <p class="op">Enter your details to unlock the training and your invite.</p>
+      <form id="optinForm" autocomplete="on" novalidate>
+        <div class="fld"><input id="name" type="text" name="name" placeholder="Full name" autocomplete="name"></div>
+        <div class="fld"><input id="email" type="email" name="email" placeholder="Email address" autocomplete="email"></div>
+        <div class="fld"><input id="phone" type="tel" name="phone" placeholder="Phone number" autocomplete="tel"></div>
+        <div class="fld"><select id="breeding" class="ph">
+          <option value="" disabled selected>Are you actively breeding?</option>
+          <option value="Actively breeding">Yes — actively breeding now</option>
+          <option value="Planning first litter">Planning my first litter</option>
+          <option value="Between litters">Between litters / paused</option>
+          <option value="Researching">Just researching</option>
+        </select></div>
+        <input class="hp" type="text" id="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit" class="cta" id="optinBtn">Watch the free training
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1a160c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <div class="err" id="err"></div>
+        <div class="micro">Instant access. <strong>No cost.</strong> Your info stays private.</div>
+      </form>
+      <div class="trust"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Secure &amp; private — we never sell your data</div>
+    </div>
+
+    <div id="done">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h2>You're in!</h2>
+      <p id="doneMsg">Your training is unlocked above. Watch it now — your next step is waiting.</p>
+      <a class="cta" id="nextBtn" href="#" style="max-width:320px;margin:0 auto;text-decoration:none">Continue<svg viewBox="0 0 24 24" fill="none" stroke="#1a160c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </main>
+
+  <footer><div class="wrap">© <span id="yr"></span> Breedwise · This is a free educational training.</div></footer>
+
+  <script>
+    /* ─────────── CONFIG ─────────── */
+    const ENDPOINT = 'https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/masterclass-optin';
+    const DEFAULT_VIDEO = '';   // default YouTube ID (shared VSL). Per-affiliate override: ?vid=YOUTUBE_ID
+    const NEXT_URL = '';        // where the "Continue" button goes after opt-in (booking/app page). Blank = scroll to video.
+    /* ────────────────────────────── */
+    const $ = s => document.querySelector(s);
+    $('#yr').textContent = new Date().getFullYear();
+
+    const qs = new URLSearchParams(location.search);
+    const ref = (qs.get('ref') || qs.get('affiliate') || '').trim();
+    const vid = (qs.get('vid') || DEFAULT_VIDEO).trim();
+    const utm = { utm_source:'affiliate' }; if(ref) utm.utm_campaign = ref;
+    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(k=>{ if(qs.get(k)) utm[k]=qs.get(k); });
+
+    // Load the video (YouTube by id). No id yet → keep the branded placeholder.
+    if (vid) {
+      $('#video').innerHTML = '<iframe src="https://www.youtube.com/embed/'+encodeURIComponent(vid)+'?rel=0&modestbranding=1" title="Training" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+    }
+
+    const emailRe = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+    const sel = $('#breeding');
+    sel.addEventListener('change', ()=> sel.classList.toggle('ph', !sel.value));
+
+    $('#optinForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if ($('#company').value) return;                       // honeypot
+      const name = $('#name').value.trim();
+      const email = $('#email').value.trim().toLowerCase();
+      const phone = $('#phone').value.trim();
+      const breeding = $('#breeding').value;
+      if (!name) { $('#err').textContent = 'Please enter your name.'; return; }
+      if (!emailRe.test(email)) { $('#err').textContent = 'Please enter a valid email address.'; return; }
+      if (phone.replace(/\D/g,'').length < 7) { $('#err').textContent = 'Please enter a valid phone number.'; return; }
+      if (!breeding) { $('#err').textContent = 'Please select your breeding status.'; return; }
+
+      const btn = $('#optinBtn'); btn.disabled = true; btn.textContent = 'Unlocking…'; $('#err').textContent = '';
+      const payload = { name, email, phone, breeding, ref, source: 'Affiliate VSL', page: location.href, utm };
+      try {
+        await fetch(ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+      } catch (_) { /* non-fatal — still let them through */ }
+      if (window.fbq) { fbq('track','Lead'); fbq('trackCustom','AffiliateOptin'); }
+
+      $('#optinCard').style.display = 'none';
+      $('#done').style.display = 'block';
+      const next = $('#nextBtn');
+      if (NEXT_URL) { const f=new URLSearchParams({name,email}); if(ref) f.set('ref',ref); next.href = NEXT_URL + (NEXT_URL.includes('?')?'&':'?') + f.toString(); }
+      else { next.textContent = 'Watch the training ▲'; next.href = '#video'; }
+      window.scrollTo({ top:0, behavior:'smooth' });
+    });
+  </script>
+</body>
+</html>

@@ -3,184 +3,232 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Free Training for Dog Breeders — Breedwise</title>
-<meta name="description" content="Free training for serious dog breeders: turn your program into predictable income. Watch now, then see if you qualify.">
+<title>Breedwise — Affiliate OS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   :root{
-    --bg:#050608; --band:#101218; --card:#13161d; --line:rgba(245,245,247,.12);
-    --ink:#F5F5F7; --mid:rgba(245,245,247,.74); --muted:rgba(245,245,247,.52);
-    --gold:#c9ab6e; --gold-soft:rgba(201,171,110,.12); --gold-line:rgba(201,171,110,.30);
-    --cta:#c9ab6e; --cta-hover:#b89a5c; --cta-ink:#1a160c;
-    --font:'Poppins',-apple-system,BlinkMacSystemFont,sans-serif;
-    --ease:.2s cubic-bezier(.2,.7,.2,1);
+    --surface:#111114; --bg:#1b1b20; --card:#26262c; --card-2:#212127;
+    --border:#34343c; --border-2:#2b2b32; --gold:#d6ba76; --gold-deep:#b89c47;
+    --gold-faint:rgba(214,186,118,.10); --gold-mid:rgba(214,186,118,.20);
+    --gold-grad:linear-gradient(135deg,#e2cb86,#bfa050); --gold-soft:rgba(214,186,118,.30); --on-gold:#1a1509;
+    --ink:#f4f1ea; --muted:#8f8d85; --mid:#c4c1b8;
+    --green:#6dbf90; --green-bg:rgba(109,191,144,.14); --yellow:#d7a94e; --yellow-bg:rgba(215,169,78,.16);
+    --red:#e0807e; --red-bg:rgba(224,128,126,.16);
+    --heading:'Playfair Display',Georgia,serif; --body:'Inter',-apple-system,sans-serif;
+    --radius:11px; --radius-lg:16px;
+    --sh-sm:0 1px 3px rgba(0,0,0,.45); --sh-md:0 4px 12px rgba(0,0,0,.5),0 16px 40px rgba(0,0,0,.55); --sh-gold:0 6px 22px rgba(214,186,118,.28);
   }
-  html{scroll-behavior:smooth;color-scheme:dark}
-  body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:720px;margin:0 auto;padding:0 20px}
-  .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+  html{color-scheme:dark}
+  body{background:var(--surface);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 20px}
 
-  header{padding:22px 0 6px;text-align:center}
-  .logo{font-weight:800;font-size:20px;letter-spacing:.02em;color:var(--gold)}
-  .logo span{color:var(--ink)}
+  #login{position:fixed;inset:0;background:var(--surface);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}
+  .login-card{width:100%;max-width:380px;padding:44px 38px;background:radial-gradient(130% 90% at 50% 0%,rgba(214,186,118,.10),var(--bg) 64%);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--sh-md);text-align:center}
+  .brand{font-family:var(--heading);font-size:28px;font-weight:600;color:var(--gold)}
+  .brand-sub{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);display:block;margin:4px 0 30px}
+  .lbl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:block;text-align:left;margin-bottom:7px}
+  .inp{width:100%;background:#141417;border:1px solid var(--border);color:var(--ink);font-family:var(--body);font-size:14px;padding:13px 15px;border-radius:var(--radius);outline:none;margin-bottom:14px}
+  .inp:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+  .btn{width:100%;background:var(--gold-grad);color:var(--on-gold);border:none;font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:14px;border-radius:var(--radius);cursor:pointer;box-shadow:var(--sh-gold)}
+  .btn:disabled{opacity:.5;cursor:default}
+  .err{color:var(--red);font-size:13px;margin-top:10px;min-height:18px}
+  .hint{font-size:11px;color:var(--muted);margin-top:18px}
 
-  .hero{padding:26px 0 8px;text-align:center}
-  .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:14px}
-  h1{font-weight:800;font-size:31px;line-height:1.18;letter-spacing:-.01em}
-  h1 .u{color:var(--gold)}
-  .sub{font-size:16px;color:var(--mid);font-weight:300;margin:14px auto 0;max-width:560px}
+  #app{display:none;min-height:100vh}
+  nav{position:sticky;top:0;background:rgba(20,20,24,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);box-shadow:var(--sh-sm);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 20px}
+  .nav-logo{font-family:var(--heading);font-size:19px;font-weight:600;color:var(--gold)}
+  .nav-tag{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);border-left:1px solid var(--border);padding-left:11px;margin-left:11px}
+  .nav-out{font-size:11px;font-weight:600;color:var(--mid);background:var(--card);border:1px solid var(--border);border-radius:6px;padding:8px 12px;cursor:pointer}
+  .head{margin:34px 0 6px}
+  .eyebrow{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  .title{font-family:var(--heading);font-size:30px;font-weight:600;letter-spacing:-.01em}
+  .sub{font-size:13px;color:var(--muted);margin-top:7px}
 
-  /* video */
-  .video{margin:22px 0 6px;border-radius:16px;overflow:hidden;border:1px solid var(--gold-line);box-shadow:0 30px 70px -30px rgba(0,0,0,.85);background:#000}
-  .ratio{position:relative;width:100%;padding-top:56.25%}
-  .ratio iframe,.ratio video{position:absolute;inset:0;width:100%;height:100%;border:0}
-  .vph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:radial-gradient(120% 120% at 50% 0%,rgba(201,171,110,.14),#0a0b0e 70%);text-align:center;padding:20px}
-  .vph .play{width:74px;height:74px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 34px -8px rgba(201,171,110,.6)}
-  .vph .play svg{width:30px;height:30px;margin-left:4px}
-  .vph .cap{font-size:13px;color:var(--muted);letter-spacing:.04em}
-  .under{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:12px 0 0;font-size:12.5px;color:var(--muted)}
-  .under b{color:var(--gold);font-weight:700}
+  .card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px 24px;box-shadow:var(--sh-sm);margin-top:20px}
+  .card-h{font-family:var(--heading);font-size:16px;font-weight:600;margin-bottom:3px}
+  .card-sub{font-size:12px;color:var(--muted);margin-bottom:14px}
+  .reflink{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .reflink code{flex:1;min-width:220px;background:#141417;border:1px solid var(--gold-mid);border-radius:8px;padding:11px 13px;color:var(--gold);font-size:13px;font-family:ui-monospace,Menlo,monospace;overflow-x:auto;white-space:nowrap}
+  .copy{background:var(--gold-grad);color:var(--on-gold);border:none;font-weight:700;font-size:12px;letter-spacing:.04em;padding:11px 16px;border-radius:8px;cursor:pointer;box-shadow:var(--sh-gold)}
+  .terms{font-size:13px;color:var(--mid);margin-top:12px}.terms b{color:var(--gold)}
 
-  /* opt-in */
-  .optin{background:var(--card);border:1px solid var(--gold-line);border-radius:16px;padding:24px 24px 22px;box-shadow:0 30px 70px -30px rgba(0,0,0,.8);margin:22px 0 10px}
-  .optin .oh{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px;text-align:center}
-  .optin h2{font-size:23px;font-weight:700;line-height:1.22;text-align:center;margin-bottom:4px}
-  .optin .op{font-size:14px;color:var(--muted);font-weight:300;margin-bottom:18px;text-align:center}
-  .fld{margin-bottom:11px}
-  .fld input,.fld select{width:100%;font-family:var(--font);font-size:15px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px;outline:none;transition:border-color var(--ease),box-shadow var(--ease)}
-  .fld select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23c9ab6e' stroke-width='2'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
-  .fld select.ph{color:var(--muted)}
-  .fld input::placeholder{color:var(--muted)}
-  .fld input:focus,.fld select:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
-  .cta{width:100%;margin-top:6px;display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--cta);color:var(--cta-ink);
-    font-family:var(--font);font-size:16px;font-weight:700;border:none;cursor:pointer;padding:17px;border-radius:10px;
-    transition:transform var(--ease),background var(--ease);box-shadow:0 12px 30px -12px rgba(201,171,110,.5)}
-  .cta:hover{background:var(--cta-hover);transform:translateY(-1px)} .cta:active{transform:translateY(0)}
-  .cta:disabled{opacity:.55;cursor:default;transform:none}
-  .cta svg{width:20px;height:20px}
-  .err{color:#e88;font-size:13px;min-height:15px;text-align:center;margin-top:9px}
-  .micro{font-size:12.5px;color:var(--muted);margin-top:12px;text-align:center;line-height:1.5}
-  .micro strong{color:var(--mid);font-weight:600}
-  .trust{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:14px;color:var(--muted);font-size:12px}
-  .trust svg{width:14px;height:14px;stroke:var(--gold)}
-
-  /* success */
-  #done{display:none;text-align:center;background:var(--card);border:1px solid var(--gold-line);border-radius:16px;padding:34px 26px;margin:22px 0}
-  #done .ic{width:60px;height:60px;border-radius:50%;background:var(--gold-soft);border:1px solid var(--gold-line);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
-  #done .ic svg{width:28px;height:28px;stroke:var(--gold)}
-  #done h2{font-size:26px;font-weight:800;text-transform:uppercase;margin-bottom:8px}
-  #done p{color:var(--mid);font-weight:300;max-width:440px;margin:0 auto 20px}
-
-  footer{border-top:1px solid var(--line);margin-top:30px;padding:22px 0 40px;text-align:center;color:var(--muted);font-size:12px}
-  @media(max-width:520px){h1{font-size:25px}.optin{padding:20px}}
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:20px}
+  @media(max-width:760px){.kpis{grid-template-columns:1fr 1fr}}
+  .kpi{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--sh-sm)}
+  .kpi-n{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .kpi-v{font-family:var(--heading);font-size:29px;font-weight:600;margin-top:8px;line-height:1;letter-spacing:-.01em;font-feature-settings:"tnum" 1}
+  .kpi-v.gold{color:var(--gold)}
+  table{width:100%;border-collapse:collapse}
+  thead th{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;text-align:left;padding:12px;border-bottom:1px solid var(--gold-mid);background:var(--card-2);white-space:nowrap}
+  tbody td{padding:12px;border-bottom:1px solid var(--border-2);font-size:12.5px;vertical-align:middle}
+  tbody tr:last-child td{border-bottom:none}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  .m-name{font-weight:600}
+  .tag{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:5px;background:var(--gold-mid);color:var(--gold)}
+  .st{font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 8px;border-radius:5px}
+  .st-new{background:var(--card);color:var(--mid)}.st-engaged{background:var(--gold-mid);color:var(--gold)}
+  .st-scheduled{background:var(--yellow-bg);color:var(--yellow)}.st-closed_won{background:var(--green);color:#0e1c14}
+  .st-no_show{background:var(--red-bg);color:var(--red)}.st-closed_lost{background:var(--red-bg);color:var(--red)}
+  .aff-st{font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 8px;border-radius:5px}
+  .aff-active{background:var(--green);color:#0e1c14}.aff-onboarded{background:var(--green-bg);color:var(--green)}.aff-signed{background:var(--gold-mid);color:var(--gold)}.aff-prospect{background:var(--card);color:var(--mid)}.aff-inactive{background:var(--red-bg);color:var(--red)}
+  .empty{text-align:center;color:var(--muted);padding:26px;font-size:13px}
+  .foot{color:var(--muted);font-size:11px;text-align:center;padding:30px 0 50px}
+  .badge{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--on-gold);background:var(--gold);padding:3px 9px;border-radius:20px;margin-left:8px;vertical-align:middle}
 </style>
 </head>
 <body>
-  <header><div class="wrap"><div class="logo">Breed<span>wise</span></div></div></header>
 
-  <main class="wrap">
-    <div class="hero">
-      <div class="eyebrow">Free Training · For Serious Breeders</div>
-      <h1>Build a Vet-Backed, Certified Program That Reaches <span class="u">Six-Figure, Predictable Income</span> With Healthier Litters</h1>
-      <p class="sub">Watch the free training below — then take 30 seconds to see if you qualify for the next step.</p>
-    </div>
+  <div id="login">
+    <form class="login-card" id="loginForm" autocomplete="on">
+      <div class="brand">Breedwise</div>
+      <span class="brand-sub">Affiliate OS</span>
+      <span class="lbl">Email</span>
+      <input class="inp" id="email" type="email" autocomplete="username" placeholder="you@email.com" required>
+      <span class="lbl">Password</span>
+      <input class="inp" id="password" type="password" autocomplete="current-password" placeholder="••••••••" required>
+      <button class="btn" id="loginBtn" type="submit">Sign in</button>
+      <div class="err" id="loginErr"></div>
+      <div class="hint">Partners see their own referrals. Founders see everyone.</div>
+    </form>
+  </div>
 
-    <div class="video"><div class="ratio" id="video">
-      <div class="vph" id="vph">
-        <div class="play"><svg viewBox="0 0 24 24" fill="#1a160c"><path d="M8 5v14l11-7z"/></svg></div>
-        <div class="cap">Your training video loads here</div>
-      </div>
-    </div></div>
-    <div class="under"><span><b>Free</b> to watch</span><span><b>No</b> cost, no catch</span><span><b>Vet-backed</b> &amp; certified</span></div>
+  <div id="app">
+    <nav>
+      <div style="display:flex;align-items:center"><span class="nav-logo">Breedwise</span><span class="nav-tag">Affiliate OS</span></div>
+      <button class="nav-out" id="logoutBtn">Sign out</button>
+    </nav>
+    <div class="wrap" id="main"></div>
+    <div class="foot">Breedwise Affiliate Program</div>
+  </div>
 
-    <div class="optin" id="optinCard">
-      <div class="oh">Get Instant Access — Free</div>
-      <h2>Where should we send your next step?</h2>
-      <p class="op">Enter your details to unlock the training and your invite.</p>
-      <form id="optinForm" autocomplete="on" novalidate>
-        <div class="fld"><input id="name" type="text" name="name" placeholder="Full name" autocomplete="name"></div>
-        <div class="fld"><input id="email" type="email" name="email" placeholder="Email address" autocomplete="email"></div>
-        <div class="fld"><input id="phone" type="tel" name="phone" placeholder="Phone number" autocomplete="tel"></div>
-        <div class="fld"><select id="breeding" class="ph">
-          <option value="" disabled selected>Are you actively breeding?</option>
-          <option value="Actively breeding">Yes — actively breeding now</option>
-          <option value="Planning first litter">Planning my first litter</option>
-          <option value="Between litters">Between litters / paused</option>
-          <option value="Researching">Just researching</option>
-        </select></div>
-        <input class="hp" type="text" id="company" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <button type="submit" class="cta" id="optinBtn">Watch the free training
-          <svg viewBox="0 0 24 24" fill="none" stroke="#1a160c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
-        <div class="err" id="err"></div>
-        <div class="micro">Instant access. <strong>No cost.</strong> Your info stays private.</div>
-      </form>
-      <div class="trust"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Secure &amp; private — we never sell your data</div>
-    </div>
-
-    <div id="done">
-      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
-      <h2>You're in!</h2>
-      <p id="doneMsg">Your training is unlocked above. Watch it now — your next step is waiting.</p>
-      <a class="cta" id="nextBtn" href="#" style="max-width:320px;margin:0 auto;text-decoration:none">Continue<svg viewBox="0 0 24 24" fill="none" stroke="#1a160c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-    </div>
-  </main>
-
-  <footer><div class="wrap">© <span id="yr"></span> Breedwise · This is a free educational training.</div></footer>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    /* ─────────── CONFIG ─────────── */
-    const ENDPOINT = 'https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/masterclass-optin';
-    const DEFAULT_VIDEO = '';   // default YouTube ID (shared VSL). Per-affiliate override: ?vid=YOUTUBE_ID
-    const NEXT_URL = '';        // where the "Continue" button goes after opt-in (booking/app page). Blank = scroll to video.
-    /* ────────────────────────────── */
-    const $ = s => document.querySelector(s);
-    $('#yr').textContent = new Date().getFullYear();
+    const SUPABASE_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+    const SUPABASE_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+    const VSL_BASE='https://review.breedwise.io/vsl';                 // ?ref= referral link base (the opt-in funnel)
+    const FOUNDER_EMAILS=['austin@breedwise.io','support@breedwise.io'];
+    const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+    const $=s=>document.querySelector(s);
+    const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    const money=n=>'$'+Math.round(+n||0).toLocaleString();
+    const link=code=>code?`${VSL_BASE}?ref=${encodeURIComponent(code)}`:'';
 
-    const qs = new URLSearchParams(location.search);
-    const ref = (qs.get('ref') || qs.get('affiliate') || '').trim();
-    const vid = (qs.get('vid') || DEFAULT_VIDEO).trim();
-    const utm = { utm_source:'affiliate' }; if(ref) utm.utm_campaign = ref;
-    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(k=>{ if(qs.get(k)) utm[k]=qs.get(k); });
-
-    // Load the video (YouTube by id). No id yet → keep the branded placeholder.
-    if (vid) {
-      $('#video').innerHTML = '<iframe src="https://www.youtube.com/embed/'+encodeURIComponent(vid)+'?rel=0&modestbranding=1" title="Training" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+    function commissionOwed(a, closed, cash, contract){
+      const v=+(a.commission_value||0);
+      if((a.commission_type||'percent')==='flat') return v*(closed||0);
+      return Math.round(v/100*((a.commission_basis==='contract')?(contract||0):(cash||0))*100)/100;
+    }
+    function termsText(a){
+      if(!a) return '';
+      if(a.commission_type==='flat') return `${money(a.commission_value)} per closed sale${a.recurring?' (recurring)':''}`;
+      return `${+a.commission_value||0}% of ${a.commission_basis==='contract'?'contract value':'cash collected'}${a.recurring?', every rebill':''}`;
     }
 
-    const emailRe = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-    const sel = $('#breeding');
-    sel.addEventListener('change', ()=> sel.classList.toggle('ph', !sel.value));
+    async function boot(){
+      const { data:{ session } } = await sb.auth.getSession();
+      if(!session){ $('#login').style.display='flex'; $('#app').style.display='none'; return; }
+      const email=(session.user?.email||'').toLowerCase();
+      let founder=FOUNDER_EMAILS.includes(email);
+      if(!founder){
+        try{ const p=(await sb.from('profiles').select('role').eq('email',email).maybeSingle()).data; if(p&&['Founder','Director'].includes(p.role)) founder=true; }catch(_){}
+      }
+      $('#login').style.display='none'; $('#app').style.display='block';
+      if(founder) await renderAdmin(email); else await renderAffiliate();
+    }
 
-    $('#optinForm').addEventListener('submit', async (e) => {
+    // ── Founder / admin: every partner + totals ──
+    async function renderAdmin(email){
+      const A=(await sb.from('affiliates').select('*').order('name')).data||[];
+      const leads=(await sb.from('leads').select('lead_id,status,affiliate_id')).data||[];
+      let cashMap={};
+      try{ const rv=(await sb.from('affiliate_rollup').select('*')).data||[]; rv.forEach(r=>cashMap[r.affiliate_id]={cash:r.cash_collected,contract:r.contract_total}); }catch(_){}
+      const rows=A.map(a=>{
+        const mine=leads.filter(l=>l.affiliate_id&&String(l.affiliate_id)===String(a.id));
+        const by=s=>mine.filter(l=>l.status===s).length;
+        const referred=mine.length, booked=by('scheduled'), closed=by('closed_won');
+        const c=cashMap[a.id]||{}; const owed=commissionOwed(a,closed,c.cash,c.contract);
+        return {a,referred,booked,closed,cash:+(c.cash||0),owed};
+      }).sort((x,y)=>y.referred-x.referred);
+      const active=A.filter(a=>a.status==='active').length;
+      const totRef=rows.reduce((s,x)=>s+x.referred,0), totOwed=rows.reduce((s,x)=>s+x.owed,0), totCash=rows.reduce((s,x)=>s+x.cash,0);
+      $('#main').innerHTML=`
+        <div class="head"><div class="eyebrow">Founder view</div>
+          <div class="title">Affiliate OS <span class="badge">Admin</span></div>
+          <div class="sub">Every partner, their referred pipeline, and what they're owed — live from the funnel.</div></div>
+        <div class="kpis">
+          <div class="kpi"><div class="kpi-n">Affiliates</div><div class="kpi-v">${A.length}</div></div>
+          <div class="kpi"><div class="kpi-n">Active</div><div class="kpi-v">${active}</div></div>
+          <div class="kpi"><div class="kpi-n">Referred leads</div><div class="kpi-v">${totRef}</div></div>
+          <div class="kpi"><div class="kpi-n">Cash collected</div><div class="kpi-v">${money(totCash)}</div></div>
+          <div class="kpi"><div class="kpi-n">Commission owed</div><div class="kpi-v gold">${money(totOwed)}</div></div>
+        </div>
+        <div class="card"><div style="overflow-x:auto"><table>
+          <thead><tr><th>Affiliate</th><th>Code</th><th class="num">Referred</th><th class="num">Booked</th><th class="num">Closed</th><th class="num">Cash</th><th class="num">Owed</th><th>Terms</th><th>Status</th></tr></thead>
+          <tbody>${rows.map(({a,referred,booked,closed,cash,owed})=>`<tr>
+            <td class="m-name">${esc(a.name)}</td>
+            <td>${a.ref_code?`<span class="tag">${esc(a.ref_code)}</span>`:'<span style="color:var(--muted)">—</span>'}</td>
+            <td class="num">${referred}</td><td class="num">${booked}</td><td class="num">${closed}</td>
+            <td class="num">${cash?money(cash):'<span style="color:var(--muted)">—</span>'}</td>
+            <td class="num">${owed?`<b style="color:var(--gold)">${money(owed)}</b>`:'<span style="color:var(--muted)">—</span>'}</td>
+            <td style="color:var(--mid);font-size:11.5px">${esc(termsText(a))||'—'}</td>
+            <td><span class="aff-st aff-${a.status||'prospect'}">${a.status||'prospect'}</span></td>
+          </tr>`).join('')||`<tr><td colspan="9" class="empty">No affiliates yet — add them in the main OS → Affiliates.</td></tr>`}</tbody>
+        </table></div></div>
+        <div class="card"><div class="card-h">Referral link format</div>
+          <div class="card-sub">Each partner's link is the funnel with their code appended:</div>
+          <div class="reflink"><code>${VSL_BASE}?ref=THEIR_CODE</code></div></div>`;
+    }
+
+    // ── Affiliate: only their own ──
+    async function renderAffiliate(){
+      const me=(await sb.rpc('affiliate_me')).data;
+      const a=Array.isArray(me)?me[0]:me;
+      if(!a){
+        $('#main').innerHTML=`<div class="card" style="margin-top:40px;text-align:center"><div class="card-h">Not linked yet</div><div class="card-sub" style="margin:0">This login isn’t connected to an affiliate account. Contact Breedwise to get set up.</div></div>`;
+        return;
+      }
+      const sum=(await sb.rpc('affiliate_my_summary')).data;
+      const s=(Array.isArray(sum)?sum[0]:sum)||{};
+      const leads=(await sb.rpc('affiliate_my_leads')).data||[];
+      const ln=a.ref_code?link(a.ref_code):'';
+      $('#main').innerHTML=`
+        <div class="head"><div class="eyebrow">Your partnership</div>
+          <div class="title">${esc(a.name||'Welcome')}</div>
+          <div class="sub">${a.status?('Status: '+esc(a.status)):''}</div></div>
+        <div class="card"><div class="card-h">Your referral link</div>
+          <div class="card-sub">Send this everywhere — anyone who opts in through it is tied to you.</div>
+          <div class="reflink"><code id="refc">${ln||'Your referral code is being set up.'}</code>${ln?'<button class="copy" id="copyBtn">Copy</button>':''}</div>
+          <div class="terms">You earn <b>${esc(termsText(a))}</b>.</div></div>
+        <div class="kpis">
+          <div class="kpi"><div class="kpi-n">Referred</div><div class="kpi-v">${s.referred||0}</div></div>
+          <div class="kpi"><div class="kpi-n">Booked</div><div class="kpi-v">${s.booked||0}</div></div>
+          <div class="kpi"><div class="kpi-n">Closed</div><div class="kpi-v">${s.closed||0}</div></div>
+          <div class="kpi"><div class="kpi-n">Cash collected</div><div class="kpi-v">${money(s.cash_collected)}</div></div>
+          <div class="kpi"><div class="kpi-n">You’re owed</div><div class="kpi-v gold">${money(s.commission_owed)}</div></div>
+        </div>
+        <div class="card"><div class="card-h">Everyone you've referred</div>
+          <div class="card-sub">${leads.length?`${leads.length} through your link`:''}</div>
+          <div style="overflow-x:auto"><table>
+            <thead><tr><th>Name</th><th>Status</th><th>Referred on</th><th>Region</th></tr></thead>
+            <tbody>${leads.map(l=>`<tr><td class="m-name">${esc(l.name||'—')}</td><td><span class="st st-${l.status||'new'}">${esc(l.status||'new')}</span></td><td style="color:var(--muted)">${(l.referred_on||'').slice(0,10)||'—'}</td><td style="color:var(--muted)">${esc(l.region||'—')}</td></tr>`).join('')||`<tr><td colspan="4" class="empty">No referrals yet — share your link above.</td></tr>`}</tbody>
+          </table></div></div>`;
+      const cb=$('#copyBtn'); if(cb) cb.onclick=()=>{ navigator.clipboard.writeText(ln).then(()=>{ cb.textContent='Copied!'; setTimeout(()=>cb.textContent='Copy',1500); }); };
+    }
+
+    $('#loginForm').addEventListener('submit', async e=>{
       e.preventDefault();
-      if ($('#company').value) return;                       // honeypot
-      const name = $('#name').value.trim();
-      const email = $('#email').value.trim().toLowerCase();
-      const phone = $('#phone').value.trim();
-      const breeding = $('#breeding').value;
-      if (!name) { $('#err').textContent = 'Please enter your name.'; return; }
-      if (!emailRe.test(email)) { $('#err').textContent = 'Please enter a valid email address.'; return; }
-      if (phone.replace(/\D/g,'').length < 7) { $('#err').textContent = 'Please enter a valid phone number.'; return; }
-      if (!breeding) { $('#err').textContent = 'Please select your breeding status.'; return; }
-
-      const btn = $('#optinBtn'); btn.disabled = true; btn.textContent = 'Unlocking…'; $('#err').textContent = '';
-      const payload = { name, email, phone, breeding, ref, source: 'Affiliate VSL', page: location.href, utm };
-      try {
-        await fetch(ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-      } catch (_) { /* non-fatal — still let them through */ }
-      if (window.fbq) { fbq('track','Lead'); fbq('trackCustom','AffiliateOptin'); }
-
-      $('#optinCard').style.display = 'none';
-      $('#done').style.display = 'block';
-      const next = $('#nextBtn');
-      if (NEXT_URL) { const f=new URLSearchParams({name,email}); if(ref) f.set('ref',ref); next.href = NEXT_URL + (NEXT_URL.includes('?')?'&':'?') + f.toString(); }
-      else { next.textContent = 'Watch the training ▲'; next.href = '#video'; }
-      window.scrollTo({ top:0, behavior:'smooth' });
+      const btn=$('#loginBtn'); btn.disabled=true; $('#loginErr').textContent='';
+      const { error } = await sb.auth.signInWithPassword({ email:$('#email').value.trim(), password:$('#password').value });
+      btn.disabled=false;
+      if(error){ $('#loginErr').textContent=error.message; return; }
+      boot();
     });
+    $('#logoutBtn').onclick=async()=>{ await sb.auth.signOut(); location.reload(); };
+
+    boot();
   </script>
 </body>
 </html>
