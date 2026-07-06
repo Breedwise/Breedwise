@@ -254,6 +254,10 @@
   <script>
     /* ─────────── CONFIG ─────────── */
     const ENDPOINT = 'https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/vsl-apply';
+    // Attribution bridge: masterclass-optin carries the live ?ref→affiliate_id (first-touch) logic,
+    // so we create+attribute the lead here first, then vsl-apply scores it. (Remove once vsl-apply
+    // itself is redeployed with the attribution code.)
+    const OPTIN_ENDPOINT = 'https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/masterclass-optin';
     const DEFAULT_VIDEO = '';   // optional shared YouTube/Vimeo ID; if set it overrides the hosted video. Per-affiliate override: ?vid=ID
     const HOSTED_MP4    = 'https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a30a473998928ce1fd43d16.mp4';   // the real Breedwise VSL (from go.breedwise.io)
     const HOSTED_POSTER = 'https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a2e04128a3c98ce568172be.png';
@@ -328,6 +332,14 @@
         notes: val('notes'), goal: val('notes'),
         ref, source: 'Affiliate VSL Application', page: location.href, utm
       };
+      // 1) Attribution + capture — masterclass-optin ties this lead to the referring affiliate (first-touch).
+      //    Runs first (sequentially) so the lead exists & is attributed before vsl-apply scores it.
+      try {
+        await fetch(OPTIN_ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ name, email, phone, ref, breeding: payload.breeding_status, source: 'Affiliate VSL Application', page: location.href, utm }) });
+      } catch(_) { /* non-fatal — attribution is best-effort */ }
+
+      // 2) Application scoring — vsl-apply updates the now-existing lead with tier/score/owner.
       let tier = '';
       try {
         const res = await fetch(ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
