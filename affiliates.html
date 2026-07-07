@@ -25,7 +25,7 @@
   body{background:var(--surface);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
   .wrap{max-width:1000px;margin:0 auto;padding:0 20px}
 
-  #login{position:fixed;inset:0;background:var(--surface);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}
+  #login,#setpw{position:fixed;inset:0;background:var(--surface);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}
   .login-card{width:100%;max-width:380px;padding:44px 38px;background:radial-gradient(130% 90% at 50% 0%,rgba(214,186,118,.10),var(--bg) 64%);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--sh-md);text-align:center}
   .brand{font-family:var(--heading);font-size:28px;font-weight:600;color:var(--gold)}
   .brand-sub{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);display:block;margin:4px 0 30px}
@@ -95,6 +95,20 @@
     </form>
   </div>
 
+  <div id="setpw" style="display:none">
+    <form class="login-card" id="setpwForm" autocomplete="on">
+      <div class="brand">Breedwise</div>
+      <span class="brand-sub">Set your password</span>
+      <span class="lbl">New password</span>
+      <input class="inp" id="newpw" type="password" autocomplete="new-password" placeholder="••••••••" required>
+      <span class="lbl">Confirm password</span>
+      <input class="inp" id="newpw2" type="password" autocomplete="new-password" placeholder="••••••••" required>
+      <button class="btn" id="setpwBtn" type="submit">Save &amp; continue</button>
+      <div class="err" id="setpwErr"></div>
+      <div class="hint">Choose a password to finish setting up your affiliate login.</div>
+    </form>
+  </div>
+
   <div id="app">
     <nav>
       <div style="display:flex;align-items:center"><span class="nav-logo">Breedwise</span><span class="nav-tag">Affiliate OS</span></div>
@@ -127,7 +141,25 @@
       return `${+a.commission_value||0}% of ${a.commission_basis==='contract'?'contract value':'cash collected'}${a.recurring?', every rebill':''}`;
     }
 
+    // ── Password recovery (arriving from the reset email) — show a set-password screen ──
+    let recovering = /type=recovery/.test(location.hash);
+    function showSetPw(){ $('#login').style.display='none'; $('#app').style.display='none'; $('#setpw').style.display='flex'; setTimeout(()=>$('#newpw').focus(),80); }
+    sb.auth.onAuthStateChange((event)=>{ if(event==='PASSWORD_RECOVERY'){ recovering=true; showSetPw(); } });
+    $('#setpwForm').addEventListener('submit', async e=>{
+      e.preventDefault();
+      const pw=$('#newpw').value, pw2=$('#newpw2').value, err=$('#setpwErr'); err.textContent='';
+      if(pw.length<8){ err.textContent='Use at least 8 characters.'; return; }
+      if(pw!==pw2){ err.textContent='Passwords don’t match.'; return; }
+      const btn=$('#setpwBtn'); btn.disabled=true;
+      const { error } = await sb.auth.updateUser({ password: pw });
+      btn.disabled=false;
+      if(error){ err.textContent=error.message; return; }
+      recovering=false; history.replaceState(null,'',location.pathname);
+      $('#setpw').style.display='none'; boot();
+    });
+
     async function boot(){
+      if(recovering){ showSetPw(); return; }
       const { data:{ session } } = await sb.auth.getSession();
       if(!session){ $('#login').style.display='flex'; $('#app').style.display='none'; return; }
       const email=(session.user?.email||'').toLowerCase();

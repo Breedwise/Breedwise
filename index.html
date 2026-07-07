@@ -3,6 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    // Supabase auth email links (password recovery / magic link) land on the site
+    // root — forward them to the affiliate portal, preserving the token in the hash.
+    // Only fires when a token is present, so normal visitors are unaffected.
+    (function(){ var h = location.hash || ''; if (/(type=recovery|access_token=)/.test(h)) { location.replace('/affiliates' + location.search + h); } })();
+  </script>
   <title>Breedwise Standard Review — Find Out Exactly How Much Your Breeding Program Is Leaving on the Table</title>
   <meta name="description" content="One 60-minute, vet-backed review. Written scorecard, benchmark comparison against certified breeders, 90-day revenue impact calculation, and a 30-day action plan.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
