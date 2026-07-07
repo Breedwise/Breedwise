@@ -38,3 +38,4 @@
 !/supabase/functions/
 /supabase/functions/*
 !/supabase/functions/masterclass-optin/
+!optin.html
