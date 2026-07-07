@@ -34,11 +34,18 @@
   .hero{text-align:center;padding:46px 0 22px}
   .eyebrow{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:600}
   h1{font-size:clamp(30px,6.2vw,50px);margin-top:15px}
-  .sub{font-size:clamp(15px,2.4vw,17.5px);color:var(--mid);font-weight:300;margin:18px auto 0;max-width:30em}
+  .sub{font-size:clamp(15px,2.4vw,17.5px);color:var(--mid);font-weight:300;margin:22px auto 0;max-width:30em;text-align:center}
   .sub b{color:var(--ink);font-weight:600}
 
+  .video{margin:24px auto 2px;border-radius:16px;overflow:hidden;border:1px solid var(--gold-line);box-shadow:0 40px 90px -46px rgba(0,0,0,.9);background:#000}
+  .ratio{position:relative;width:100%;padding-top:56.25%}
+  .ratio iframe,.ratio video{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .vph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:radial-gradient(120% 120% at 50% 0%,rgba(205,174,114,.16),#0a0b0e 72%);text-align:center;padding:20px}
+  .playbtn{width:62px;height:62px;border-radius:50%;background:var(--grad);color:#1a1206;display:flex;align-items:center;justify-content:center;font-size:22px;padding-left:4px;box-shadow:0 16px 40px -16px rgba(205,174,114,.7)}
+  .vph-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:600}
+
   .card{background:linear-gradient(180deg,var(--card),var(--card-2));border:1px solid var(--gold-line);border-radius:16px;
-    padding:26px 22px 24px;box-shadow:0 40px 90px -50px rgba(0,0,0,.9);margin-bottom:36px}
+    padding:26px 22px 24px;box-shadow:0 40px 90px -50px rgba(0,0,0,.9);margin:22px 0 36px}
   .card-h{font-family:var(--display);text-transform:uppercase;font-size:17px;letter-spacing:.03em;text-align:center;margin-bottom:4px}
   .card-sub{text-align:center;color:var(--muted);font-size:12.5px;margin-bottom:20px}
 
@@ -72,10 +79,15 @@
 
   <main class="wrap">
     <section class="hero">
-      <p class="eyebrow">Free Vet-Backed Training</p>
-      <h1>Turn Your Dog Breeding Into An <span class="u">Ethical Six-Figure Program</span></h1>
-      <p class="sub">Enter your details to watch the free training — how ethical breeders <b>raise prices, sell out every litter with a waitlist, and stop losing puppies</b> in the next 12 months, without becoming a puppy mill.</p>
+      <p class="eyebrow">Free Training</p>
+      <h1>For Serious Dog Breeders: Build a Vet-Backed, Certified Program That Reaches <span class="u">Six-Figure, Predictable Income</span> With Healthier Litters</h1>
     </section>
+
+    <div class="video"><div class="ratio" id="video">
+      <div class="vph"><div class="playbtn">&#9654;</div><div class="vph-label">Affiliate video</div></div>
+    </div></div>
+
+    <p class="sub">Enter your details to watch the free training — how ethical breeders <b>raise prices, sell out every litter with a waitlist, and stop losing puppies</b> in the next 12 months, without becoming a puppy mill.</p>
 
     <section class="card">
       <div class="card-h">Watch the Free Training</div>
@@ -113,6 +125,7 @@
     /* ─────────── CONFIG ─────────── */
     const OPTIN_ENDPOINT = 'https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/masterclass-optin';
     const VSL_PATH       = '/vsl';   // where we send them after they opt in (carries ?ref through)
+    const DEFAULT_VIDEO  = '';       // shared opt-in video (YouTube ID). Per-affiliate override: ?vid=ID. Blank = show the 16:9 placeholder.
     /* ────────────────────────────── */
 
     const $ = s => document.querySelector(s);
@@ -128,6 +141,12 @@
     const utm = { utm_source:'affiliate' }; if(ref) utm.utm_campaign = ref;
     ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(k=>{ if(qs.get(k)) utm[k]=qs.get(k); });
     if (ref && !qs.get('ref')) { const u=new URL(location.href); u.searchParams.set('ref',ref); history.replaceState(null,'',u); }
+
+    // ── Video ── per-affiliate ?vid=YOUTUBE_ID wins; else the shared default; else the 16:9 placeholder stays.
+    const vid = (qs.get('vid') || DEFAULT_VIDEO).trim();
+    if (vid) {
+      $('#video').innerHTML = '<iframe src="https://www.youtube.com/embed/'+encodeURIComponent(vid)+'?rel=0&modestbranding=1" title="Free Training" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+    }
 
     const emailRe = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
     const val = id => (($('#'+id)||{}).value||'').trim();
