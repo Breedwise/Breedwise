@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>You're Booked | Breedwise</title>
+<meta name="description" content="You're booked for your Breeding Program & Enrollment Call. Watch the short welcome video and see how to get the most from our time together.">
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1337266034525554');fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1337266034525554&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0a0a0a; --band:#111114; --card:#15151a; --card-2:#1b1b21; --line:rgba(245,242,234,.10);
+    --ink:#f5f2ea; --mid:rgba(245,242,234,.74); --muted:rgba(245,242,234,.50);
+    --gold:#cdae72; --gold-2:#dcc185; --gold-soft:rgba(205,174,114,.12); --gold-line:rgba(205,174,114,.28);
+    --grad:linear-gradient(135deg,#e2cb86,#c3a35c);
+    --green:#6dbf90; --red:#e0807e;
+    --display:'Anton',Impact,sans-serif; --body:'Poppins',-apple-system,BlinkMacSystemFont,sans-serif;
+    --ease:.2s cubic-bezier(.2,.7,.2,1);
+  }
+  html{scroll-behavior:smooth;color-scheme:dark}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(120% 60% at 50% -8%,rgba(205,174,114,.10),transparent 60%);min-height:100vh}
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px}
+  h1,h2,.disp{font-family:var(--display);font-weight:400;letter-spacing:.005em;line-height:1.03;text-transform:uppercase}
+  .u{color:var(--gold)}
+  .eyebrow{font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600}
+
+  header{border-bottom:1px solid var(--line)}
+  .hd{max-width:1120px;margin:0 auto;padding:15px 22px;display:flex;align-items:center;justify-content:space-between}
+  .logo{display:flex;align-items:center}
+  .logo img{height:34px;width:auto;display:block}
+  @media(max-width:520px){.logo img{height:28px}}
+  .booked-pill{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:40px;padding:8px 14px}
+  .booked-pill svg{width:14px;height:14px;stroke:var(--gold)}
+
+  /* ── HERO ── */
+  .hero{text-align:center;padding:44px 0 6px}
+  .check{width:64px;height:64px;margin:0 auto 18px;border-radius:50%;background:var(--gold-soft);border:1px solid var(--gold-line);display:flex;align-items:center;justify-content:center}
+  .check svg{width:32px;height:32px;stroke:var(--gold)}
+  h1{font-family:var(--display);font-weight:400;text-transform:uppercase;letter-spacing:.005em;line-height:1.04;text-align:center;
+    font-size:clamp(28px,4.2vw,46px);margin:8px auto 0;max-width:15em}
+  .sub{font-size:clamp(15px,2.3vw,17.5px);color:var(--mid);font-weight:300;max-width:47em;margin:18px auto 0}
+  .sub b{color:var(--ink);font-weight:600}
+
+  /* ── VIDEO SLOT (placeholder-ready) ── */
+  .video{max-width:720px;margin:26px auto 4px;border-radius:16px;overflow:hidden;border:1px solid var(--gold-line);box-shadow:0 40px 90px -44px rgba(0,0,0,.9);background:#000}
+  .vslot{position:relative;width:100%;padding-top:56.25%;background:radial-gradient(120% 120% at 50% 0%,rgba(205,174,114,.14),#0a0b0e 72%)}
+  .vslot video,.vslot iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+  .vslot .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:16px}
+  .vslot .play{width:58px;height:58px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 34px -12px rgba(205,174,114,.6)}
+  .vslot .play svg{width:24px;height:24px;margin-left:3px}
+  .vslot .phlabel{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600}
+
+  /* ── SECTIONS ── */
+  .sec{margin:54px 0 0}
+  .sec-h{text-align:center;margin-bottom:24px}
+  .sec-h h2{font-size:clamp(22px,3.8vw,32px);margin-top:8px}
+  .sec-h p{max-width:40em;margin:12px auto 0;color:var(--mid);font-weight:300;font-size:15px;line-height:1.6}
+
+  /* ── CALL DETAILS ── */
+  .details{max-width:620px;margin:0 auto;background:linear-gradient(180deg,var(--card),var(--card-2));border:1px solid var(--gold-line);border-radius:16px;padding:24px 26px;box-shadow:0 40px 90px -55px rgba(0,0,0,.9)}
+  .details dl{display:grid;grid-template-columns:auto 1fr;gap:13px 20px;align-items:baseline}
+  .details dt{color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;white-space:nowrap}
+  .details dd{color:var(--ink);font-size:14.5px;font-weight:500}
+  .details dd b{color:var(--gold);font-weight:600}
+  .details .note{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.5;text-align:center}
+  .details .note a{color:var(--gold);text-decoration:none;font-weight:600}
+  .details .note a:hover{text-decoration:underline}
+  @media(max-width:620px){.details .note{font-size:12.5px}}
+
+  /* ── WHAT WE'LL DO (icon cards) ── */
+  .icards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:760px){.icards{grid-template-columns:1fr}}
+  .icard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 22px;transition:var(--ease)}
+  .icard:hover{border-color:var(--gold-line)}
+  .icard .ic{width:46px;height:46px;border-radius:12px;background:var(--gold-soft);border:1px solid var(--gold-line);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+  .icard .ic svg{width:23px;height:23px;stroke:var(--gold);fill:none}
+  .icard h3{font-family:var(--body);font-weight:700;font-size:16px;color:var(--ink);margin-bottom:8px}
+  .icard p{font-size:13.5px;color:var(--mid);font-weight:300;line-height:1.55}
+
+  /* ── PREP CHECKLIST ── */
+  .fortwo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:640px){.fortwo{grid-template-columns:1fr}}
+  .pbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 24px 22px}
+  .pbox h3{font-family:var(--body);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px;color:var(--gold)}
+  .pbox ul{list-style:none;display:grid;gap:13px}
+  .pbox li{position:relative;padding-left:28px;font-size:13.5px;color:var(--mid);font-weight:300;line-height:1.55}
+  .pbox li::before{content:"✓";position:absolute;left:0;top:0;color:var(--gold);font-size:14px;font-weight:700}
+
+  /* ── FAQ VIDEO GRID ── */
+  .fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
+  .fvid{display:flex;flex-direction:column;gap:12px}
+  .fvid .slotwrap{border-radius:14px;overflow:hidden;border:1px solid var(--gold-line);box-shadow:0 20px 50px -30px rgba(0,0,0,.85)}
+  .fvid h3{font-family:var(--body);font-weight:600;font-size:14.5px;color:var(--ink);line-height:1.35;text-align:center}
+  .fvid .q{color:var(--gold);font-weight:700}
+
+  /* ── SOCIAL STRIP ── */
+  .strip{margin:44px 0 0;background:var(--band);border:1px solid var(--line);border-radius:16px;padding:22px 24px;text-align:center;color:var(--mid);font-size:14px;font-weight:300;line-height:1.6;max-width:760px;margin-inline:auto}
+  .strip b{color:var(--gold);font-weight:600}
+
+  footer{border-top:1px solid var(--line);margin-top:54px;padding:30px 0 46px;text-align:center;color:var(--muted);font-size:11.5px;line-height:1.7}
+  footer .disc{max-width:760px;margin:0 auto 14px;font-size:10.5px;line-height:1.6;color:rgba(245,242,234,.38)}
+  footer a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+  footer a:hover{color:var(--gold)}
+</style>
+</head>
+<body>
+  <header><div class="hd">
+    <a class="logo" href="/" aria-label="Breedwise"><img src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/69190de2608ee72ac778fec3.png" alt="Breedwise"></a>
+    <span class="booked-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Booked</span>
+  </div></header>
+
+  <main class="wrap">
+
+    <!-- ══════ 1. HERO + THANK-YOU VIDEO ══════ -->
+    <section class="hero">
+      <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <div class="eyebrow">You're all set</div>
+      <h1>You're Booked for Your Breeding Program &amp; Enrollment Call</h1>
+      <p class="sub">Check your email for the <b>Google Meet link and calendar invite</b>. Watch this 60-second video now so you know exactly what to expect and how to get the most from our time together.</p>
+    </section>
+
+    <!-- ▼▼ THANK-YOU VIDEO: to go live, replace the whole .vslot block below with:
+         <div class="vslot"><video controls playsinline preload="metadata" poster="POSTER_URL"><source src="MP4_URL" type="video/mp4"></video></div>  ▼▼ -->
+    <div class="video">
+      <div class="vslot">
+        <div class="ph">
+          <div class="play"><svg viewBox="0 0 24 24" fill="#1a1509"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="phlabel">Watch: what to expect (60 sec)</div>
+        </div>
+      </div>
+    </div>
+    <!-- ▲▲ END THANK-YOU VIDEO ▲▲ -->
+
+    <!-- ══════ 2. CALL DETAILS ══════ -->
+    <section class="sec">
+      <div class="sec-h"><div class="eyebrow">Confirmed</div><h2>Your Call Details</h2></div>
+      <div class="details">
+        <dl>
+          <dt>Call type</dt><dd>Breeding Program &amp; Enrollment Call</dd>
+          <dt>Where</dt><dd>Google Meet <span style="color:var(--muted);font-weight:400">(link in your email)</span></dd>
+          <dt>Length</dt><dd>45&ndash;60 minutes</dd>
+          <dt>Who</dt><dd>You (and your spouse/partner if they help with decisions)</dd>
+          <dt>When</dt><dd><b id="when">Check your calendar invite for the exact time</b></dd>
+        </dl>
+        <div class="note">Don't see the confirmation email in 5&ndash;10 minutes? Check your spam or promotions folder. If you still don't see it, email <a href="mailto:support@breedwise.io">support@breedwise.io</a> and we'll resend it.</div>
+      </div>
+    </section>
+
+    <!-- ══════ 3. WHAT WE'LL DO ══════ -->
+    <section class="sec">
+      <div class="sec-h"><div class="eyebrow">The agenda</div><h2>What We'll Do On Your Call</h2></div>
+      <div class="icards">
+        <div class="icard">
+          <div class="ic"><svg viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+          <h3>Audit Your Program</h3>
+          <p>A quick look at your litters, pricing, demand, and systems so we see where money and opportunities are being left on the table.</p>
+        </div>
+        <div class="icard">
+          <div class="ic"><svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div>
+          <h3>Find Your #1 Bottleneck</h3>
+          <p>Whether it's leads, pricing, whelping confidence, or your sales process, we'll pinpoint the single biggest thing holding you back.</p>
+        </div>
+        <div class="icard">
+          <div class="ic"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M9 3L3 6v15l6-3 6 3 6-3V3l-6 3-6-3z"/><path d="M9 3v15M15 6v15"/></svg></div>
+          <h3>Map Your 12-Month Plan</h3>
+          <p>We'll sketch a realistic litter &amp; revenue plan that protects your dogs, your homes, and your reputation. If it's a fit, we'll show you how Breedwise Academy can help you install it.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════ 4. PREP CHECKLIST ══════ -->
+    <section class="sec">
+      <div class="sec-h"><div class="eyebrow">Come prepared</div><h2>How to Get the Most From This Call</h2></div>
+      <div class="fortwo">
+        <div class="pbox">
+          <h3>Bring this to the call</h3>
+          <ul>
+            <li>Rough numbers for the last 12 months: litters, puppy prices, and how fast they sold.</li>
+            <li>Any health or whelping issues you've been worried about.</li>
+            <li>Your goals for the next 12&ndash;18 months (income, litters, lifestyle).</li>
+          </ul>
+        </div>
+        <div class="pbox">
+          <h3>Set your environment</h3>
+          <ul>
+            <li>Join from a quiet place, not the car on speaker if you can avoid it.</li>
+            <li>Use a laptop or tablet if possible so you can see everything clearly.</li>
+            <li>Have your spouse/partner join if they help with dogs or money decisions.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════ 5. FAQ VIDEO GRID ══════ -->
+    <!-- ▼ For each FAQ video, replace its inner <div class="ph">…</div> with:
+         <video controls playsinline preload="none" poster="POSTER_URL"><source src="MP4_URL" type="video/mp4"></video>  ▼ -->
+    <section class="sec">
+      <div class="sec-h"><div class="eyebrow">Before we meet</div><h2>Common Questions Breeders Ask</h2></div>
+      <div class="fgrid">
+
+        <div class="fvid">
+          <div class="slotwrap"><div class="vslot" data-faq="1">
+            <div class="ph"><div class="play"><svg viewBox="0 0 24 24" fill="#1a1509"><path d="M8 5v14l11-7z"/></svg></div><div class="phlabel">45&ndash;75 sec</div></div>
+          </div></div>
+          <h3>What actually happens on <span class="q">this call?</span></h3>
+        </div>
+
+        <div class="fvid">
+          <div class="slotwrap"><div class="vslot" data-faq="2">
+            <div class="ph"><div class="play"><svg viewBox="0 0 24 24" fill="#1a1509"><path d="M8 5v14l11-7z"/></svg></div><div class="phlabel">45&ndash;75 sec</div></div>
+          </div></div>
+          <h3>Is this just a <span class="q">sales call?</span></h3>
+        </div>
+
+        <div class="fvid">
+          <div class="slotwrap"><div class="vslot" data-faq="3">
+            <div class="ph"><div class="play"><svg viewBox="0 0 24 24" fill="#1a1509"><path d="M8 5v14l11-7z"/></svg></div><div class="phlabel">45&ndash;75 sec</div></div>
+          </div></div>
+          <h3>Should my spouse or partner <span class="q">be on the call?</span></h3>
+        </div>
+
+        <div class="fvid">
+          <div class="slotwrap"><div class="vslot" data-faq="4">
+            <div class="ph"><div class="play"><svg viewBox="0 0 24 24" fill="#1a1509"><path d="M8 5v14l11-7z"/></svg></div><div class="phlabel">45&ndash;75 sec</div></div>
+          </div></div>
+          <h3>Am I <span class="q">&ldquo;experienced enough&rdquo;</span> for this?</h3>
+        </div>
+
+        <div class="fvid">
+          <div class="slotwrap"><div class="vslot" data-faq="5">
+            <div class="ph"><div class="play"><svg viewBox="0 0 24 24" fill="#1a1509"><path d="M8 5v14l11-7z"/></svg></div><div class="phlabel">45&ndash;75 sec</div></div>
+          </div></div>
+          <h3>How much does <span class="q">Breedwise cost?</span></h3>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════ 6. LIGHT SOCIAL PROOF ══════ -->
+    <div class="strip">
+      Used by <b>ethical breeders across the U.S.</b>, from first-time programs to kennels selling out litters at <b>$5K&ndash;$15K per puppy</b>.
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p class="disc">Breedwise Academy and its team&rsquo;s results are not typical and are not a guarantee of your success. We work with experienced, committed breeders; your results will vary based on your dogs, program quality, market, education, effort, application, experience, and background. We do not know or track the &ldquo;average&rdquo; results of our students and cannot guarantee that you will make money, place puppies, or achieve any specific outcome using our strategies. Any numbers, case studies, or breeder stories shared are for illustrative and educational purposes only.</p>
+      <p class="disc">Nothing on this site is veterinary, legal, tax, or investment advice. You should consult your own licensed professionals before making decisions that affect your dogs, business, or finances. All content, images, and materials on this website are the property of Breedwise Academy, LLC and may not be used, reproduced, or distributed without our express written consent.</p>
+      Copyright © <span id="yr"></span> Breedwise Academy, LLC. All rights reserved. · <a href="/freecasestudy/privacy/">Privacy Policy</a> · <a href="/freecasestudy/terms/">Terms of Service</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // ── Auto-fill the appointment time if the scheduler passes it on the redirect ──
+    // Configure the calendar's "redirect to URL" as e.g.  /thank-you?when=Tue,%20Jul%2015%20at%202:00%20PM%20ET
+    // (or ?date=&time=). Falls back to the calendar-invite line if nothing is passed.
+    (function(){
+      const qs = new URLSearchParams(location.search);
+      const when = qs.get('when') || [qs.get('date'), qs.get('time')].filter(Boolean).join(' · ')
+                 || qs.get('event_start_time') || qs.get('start_time') || '';
+      if (when) document.getElementById('when').textContent = decodeURIComponent(when);
+    })();
+
+    // ── Conversion signal for ad platforms (a booking happened) ──
+    if (window.fbq) { fbq('track','Schedule'); fbq('trackCustom','CallBooked'); }
+  </script>
+</body>
+</html>

@@ -32,6 +32,9 @@
 /go-site/*
 !/go-site/masterclass/
 
+# --- Case Study funnel pages (go.breedwise.io/freecasestudy) ---
+!/go-site/freecasestudy/
+
 # --- Masterclass opt-in edge function (source of truth; deploys via Supabase CLI) ---
 !/supabase/
 /supabase/*
