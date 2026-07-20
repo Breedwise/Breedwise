@@ -74,7 +74,7 @@ fbq('init','1337266034525554');fbq('track','PageView');
   input::placeholder{color:rgba(245,242,234,.34)}
   input:focus,select:focus{border-color:var(--gold-line);box-shadow:0 0 0 3px var(--gold-soft)}
   select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23cdae72' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:34px}
-  .err{color:var(--red);font-size:13px;text-align:center;margin-top:11px;min-height:1px}
+  .err{color:var(--red);font-size:14px;font-weight:600;text-align:center;margin-top:11px;min-height:1px}
   .next-note{color:var(--mid);font-size:12px;line-height:1.5;text-align:center;margin-top:12px}
   .next-note b{color:var(--ink);font-weight:600}
   .consent{color:var(--muted);font-size:11px;line-height:1.5;text-align:center;margin-top:14px}
@@ -204,7 +204,7 @@ fbq('init','1337266034525554');fbq('track','PageView');
             <option value="10+ litters (established)">10+ litters, established</option>
           </select>
         </div>
-        <input class="hp" type="text" id="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input class="hp" type="text" id="bw_hp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <button type="submit" class="cta block" id="submitBtn">Watch the 7-Minute Case Study →</button>
         <div class="err" id="err"></div>
         <div class="next-note">On the next page you'll get <b>instant access to the case study</b>. After that, you can apply for a free call if it's a fit.</div>
@@ -386,12 +386,14 @@ fbq('init','1337266034525554');fbq('track','PageView');
 
     $('#optinForm').addEventListener('submit', async (e)=>{
       e.preventDefault();
-      if ($('#company').value) return;                         // honeypot
+      if ($('#bw_hp').value) return;                         // honeypot
       const name = val('name'), email = val('email').toLowerCase(), phone = val('phone'), breeding = val('breeding');
       const setErr = m => { $('#err').textContent = m; };
-      if (!name) return setErr('Please enter your name.');
-      if (!emailRe.test(email)) return setErr('Please enter a valid email address.');
-      if (!breeding) return setErr('Please tell us where you are in breeding.');
+      const fail = (m, id) => { setErr(m); const f = $('#'+id); if (f) { f.style.borderColor = 'var(--red)'; f.scrollIntoView({behavior:'smooth', block:'center'}); try { f.focus({preventScroll:true}); } catch(_){} } };
+      ['name','email','breeding'].forEach(id => { const f = $('#'+id); if (f) f.style.borderColor = ''; });
+      if (!name) return fail('Please enter your name.', 'name');
+      if (!emailRe.test(email)) return fail('Please enter a valid email address.', 'email');
+      if (!breeding) return fail('Please tell us where you are in breeding.', 'breeding');
       setErr('');
 
       const btn = $('#submitBtn'); btn.disabled = true; btn.textContent = 'Loading your case study…';
