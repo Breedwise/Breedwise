@@ -260,15 +260,24 @@ fbq('init','1337266034525554');fbq('track','PageView');
     // ── Auto-fill the appointment time if the scheduler passes it on the redirect ──
     // Configure the calendar's "redirect to URL" as e.g.  /thank-you?when=Tue,%20Jul%2015%20at%202:00%20PM%20ET
     // (or ?date=&time=). Falls back to the calendar-invite line if nothing is passed.
-    (function(){
-      const qs = new URLSearchParams(location.search);
-      const when = qs.get('when') || [qs.get('date'), qs.get('time')].filter(Boolean).join(' · ')
-                 || qs.get('event_start_time') || qs.get('start_time') || '';
-      if (when) document.getElementById('when').textContent = decodeURIComponent(when);
-    })();
+    var qs = new URLSearchParams(location.search);
+    var when = qs.get('when') || [qs.get('date'), qs.get('time')].filter(Boolean).join(' · ')
+             || qs.get('event_start_time') || qs.get('start_time') || '';
+    if (when) document.getElementById('when').textContent = decodeURIComponent(when);
 
     // ── Conversion signal for ad platforms (a booking happened) ──
-    if (window.fbq) { fbq('track','Schedule'); fbq('trackCustom','CallBooked'); }
+    // Fire ONCE per booking. Guard against refreshes / back-button / revisits
+    // re-counting Schedule (keyed to the appointment time when available).
+    (function(){
+      if (!window.fbq) return;
+      var key = 'bw_sched_' + (when || 'once');
+      try {
+        if (localStorage.getItem(key)) return;   // this booking already counted
+        localStorage.setItem(key, '1');
+      } catch (e) { /* storage blocked (private mode) — fall through and fire */ }
+      fbq('track','Schedule');
+      fbq('trackCustom','CallBooked');
+    })();
   </script>
 </body>
 </html>
