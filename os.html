@@ -816,6 +816,9 @@
         <div class="mnotes" id="m_notes_list"></div>
         <textarea id="m_new_note" rows="2" placeholder="Add a note — saved with your name &amp; the date…"></textarea>
       </div>
+      <div class="field full"><label>Intake / Profile</label>
+        <div class="mnotes" id="m_intake_panel" style="max-height:none;padding:12px"></div>
+      </div>
     </div></div>
     <div class="modal-foot">
       <button class="btn-del" id="modalDelete">Delete</button>
@@ -1327,7 +1330,7 @@
   const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
   const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager', Founder:'Founder' };
 
-  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, podHw='all', ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[], PAYMENTS=[], PLANS=[], TASKS=[], TEAM=[];
+  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, podHw='all', ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[], PAYMENTS=[], PLANS=[], TASKS=[], TEAM=[], INTAKE_BY={};
   let SALES_MEMBER=false;  // true if this login maps to a sales_reps row (set after SalesOS.boot)
   const EXPERTS=['Dr. Emmanuel Fontaine','Dr. Angela Hughes','Austin Shanks','Dr. David Mahoney','Yasmin Omar'];
   function weekStartISO(){ const d=new Date(); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return d.toISOString().slice(0,10); }
@@ -1339,7 +1342,8 @@
     id:r.id, name:r.name, email:r.email||'', phone:r.phone||'', program:r.program, pod:r.pod_id,
     calls:r.calls||0, calls_1w:r.calls_1w||0, posts:r.posts||0, hw:r.homework||0, pay:r.payment, nps:r.nps,
     activated:!!r.activated, newThisMonth:!!r.new_this_month, churnedThisMonth:!!r.churned_this_month,
-    failed30:!!r.failed_30, upsell:Number(r.upsell)||0, override:r.status_override||null, notes:r.notes||'' };
+    failed30:!!r.failed_30, upsell:Number(r.upsell)||0, override:r.status_override||null, notes:r.notes||'',
+    support_tier:r.support_tier||null, red_flag:!!r.red_flag, next_breeding_date:r.next_breeding_date||null };
   }
 
   /* ═══ AUTH ═══ */
@@ -1372,7 +1376,7 @@
   async function loadData(){
     const { data:{ session } } = await sb.auth.getSession();
     const myEmail = session?.user?.email || '';
-    const [mem, pods, comp, prof, iss, mnotes, cmw, ss, cc, wk, aff, pay, plans, tsk, team] = await Promise.all([
+    const [mem, pods, comp, prof, iss, mnotes, cmw, ss, cc, wk, aff, pay, plans, tsk, team, intk] = await Promise.all([
       sb.from('members').select('*').order('name'),
       sb.from('pods').select('*').order('name'),
       sb.from('comp').select('*'),       // RLS → only my row
@@ -1388,8 +1392,10 @@
       sb.from('payment_plans').select('*').order('member_name'),                   // RLS → empty unless austin/jennifer
       sb.from('tasks').select('*').order('due_date',{ascending:true}),
       sb.from('team').select('*').order('full_name'),
+      sb.from('member_intake').select('*'),
     ]);
     MEMBERS = (mem.data||[]).map(norm);
+    INTAKE_BY = {}; (intk?.data||[]).forEach(r=>{ INTAKE_BY[r.member_id]=r; });
     PODS = pods.data||[];
     PROFILES = prof.data||[];
     ISSUES = iss.data||[];
@@ -1490,7 +1496,7 @@
 
   function memberRow(m, opts){
     const s=statusOf(m), tags=tagsOf(m);
-    let h=`<td><div class="m-name">${esc(m.name)}</div><div class="m-email">${esc(m.email)}</div></td>`;
+    let h=`<td><div class="m-name">${esc(m.name)}${tierBadge(m)}</div><div class="m-email">${esc(m.email)}</div>${breedLine(m)}</td>`;
     h+=`<td><span class="prog-tag">${m.program||'—'}</span></td>`;
     h+=`<td><span class="dot ${s}">${s}</span>${tags.length?`<div class="tags">${tags.slice(0,3).map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}</td>`;
     if (opts.activation) h+=`<td>${m.activated?'<span class="pay-good">Activated</span>':'<span class="pay-bad">In progress</span>'}</td>`;
@@ -1501,6 +1507,38 @@
     return `<tr>${h}</tr>`;
   }
   function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+  /* ═══ MEMBER INTAKE (onboarding profile) ═══ */
+  function tierColor(t){ return t==='High'?'var(--red)':t==='Light'?'var(--green)':'var(--yellow)'; }
+  function tierBadge(m){
+    let out='';
+    if(m.support_tier){ const c=tierColor(m.support_tier);
+      out+=` <span style="font-size:10px;font-weight:700;color:${c};border:1px solid ${c};border-radius:10px;padding:1px 6px;vertical-align:middle">${m.support_tier}</span>`; }
+    if(m.red_flag) out+=' <span title="Compliance / health red flag" style="font-size:11px">🔴</span>';
+    return out;
+  }
+  function breedLine(m){ return m.next_breeding_date?`<div style="font-size:11px;color:var(--gold-deep)">🐾 breeding ${esc(m.next_breeding_date)}</div>`:''; }
+  const iMoney=v=> v==null||v===''?'—':'$'+Number(v).toLocaleString();
+  function renderIntakePanel(id){
+    const wrap=$('#m_intake_panel'); if(!wrap) return;
+    const it=id?INTAKE_BY[id]:null;
+    const url=id?`member-intake.html?member=${id}`:'member-intake.html';
+    if(!it){ wrap.innerHTML=`<div style="color:var(--muted);font-size:13px">No intake on file. <a class="row-edit" style="text-decoration:none" href="${url}">Complete the onboarding intake ↗</a></div>`; return; }
+    const tier=it.support_tier||'—', c=tierColor(tier);
+    const focus=(it.focus_path||[]).map(f=>`<span class="tag">${esc(f)}</span>`).join(' ')||'—';
+    const rows=[
+      ['Support tier',`<b style="color:${c}">${esc(tier)}</b>`],
+      ['Focus path',focus],
+      ['Program · plan',`${esc(it.program||'—')} · ${esc(it.plan_type||'—')}`],
+      ['Balance owed',iMoney(it.balance)],
+      ['Rev 12mo → goal',`${iMoney(it.rev_12mo)} → ${iMoney(it.revenue_goal_12mo)}`],
+      ['Next breeding',esc(it.next_breeding_date||'—')],
+      ['Biggest bottleneck',esc(it.biggest_bottleneck||'—')],
+      ['Red flags',it.red_flag?('🔴 '+esc(it.red_flag_notes||'flagged')):'None'],
+    ];
+    wrap.innerHTML=rows.map(([k,v])=>`<div style="display:flex;gap:10px;padding:3px 0;font-size:13px"><span style="color:var(--muted);min-width:150px">${k}</span><span>${v}</span></div>`).join('')
+      +`<div style="margin-top:9px"><a class="row-edit" style="text-decoration:none" href="${url}">Edit full intake ↗</a></div>`;
+  }
 
   let dirFilter='Red', dirQ='';
   function renderDirTable(){
@@ -1791,6 +1829,7 @@
     $('#f_activated').checked=m?m.activated:false; $('#f_new').checked=m?m.newThisMonth:false;
     $('#f_churned').checked=m?m.churnedThisMonth:false; $('#f_failed').checked=m?m.failed30:false;
     renderMemberNotes(m?m.id:null); $('#m_new_note').value='';
+    renderIntakePanel(m?m.id:null);
     $('#modal').classList.add('open');
   }
   function closeModal(){ $('#modal').classList.remove('open'); }
