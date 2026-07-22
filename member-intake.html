@@ -97,9 +97,10 @@
 <div id="gate" class="center hide">
   <div class="card">
     <h2>Breedwise <em style="color:var(--gold);font-style:normal">OS</em> · Member Intake</h2>
-    <p>Sign in with your Breedwise email to load the onboarding intake. You'll get a one-time magic link.</p>
+    <p>Sign in with your Breedwise team login — the same email &amp; password you use for the OS.</p>
     <input id="loginEmail" type="email" placeholder="you@breedwise.io" autocomplete="email">
-    <button class="btn primary" id="loginBtn" style="width:100%">Send magic link</button>
+    <input id="loginPass" type="password" placeholder="Password" autocomplete="current-password">
+    <button class="btn primary" id="loginBtn" style="width:100%">Sign in</button>
     <div id="loginMsg" class="msg"></div>
   </div>
 </div>
@@ -412,16 +413,20 @@ async function boot(){
 sb.auth.onAuthStateChange((_e,s)=>{if(s&&document.getElementById('gate') && !document.getElementById('gate').classList.contains('hide')){location.reload();}});
 
 /* ═══ WIRE ═══ */
-document.getElementById('loginBtn').onclick=async()=>{
+async function doLogin(){
   const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+  const password=document.getElementById('loginPass').value;
   const msg=document.getElementById('loginMsg');
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){msg.className='msg err';msg.textContent='Enter a valid email.';return;}
-  document.getElementById('loginBtn').disabled=true;
-  const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.href}});
+  if(!password){msg.className='msg err';msg.textContent='Enter your password.';return;}
+  document.getElementById('loginBtn').disabled=true;msg.className='msg';msg.textContent='Signing in…';
+  const {error}=await sb.auth.signInWithPassword({email,password});
   document.getElementById('loginBtn').disabled=false;
-  msg.className='msg '+(error?'err':'ok');
-  msg.textContent=error?error.message:'Check your email for the magic link, then return here.';
-};
+  if(error){msg.className='msg err';msg.textContent=error.message;return;}
+  location.reload();
+}
+document.getElementById('loginBtn').onclick=doLogin;
+document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 document.getElementById('submitBtn').onclick=submit;
 document.getElementById('clearBtn').onclick=()=>{if(confirm('Clear this draft? Unsaved answers on this device will be removed.')){clearDraft();ALL.forEach(f=>{if(el(f.c))el(f.c).value=f.c==='red_flag'?'No':'';});updateProgress();status('Draft cleared.');}};
 document.getElementById('doneNew').onclick=()=>{location.href=location.pathname;};
