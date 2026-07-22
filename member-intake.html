@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Member Intake · Breedwise OS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#1b1b20;--surface:#111114;--card:#26262c;--card-2:#212127;
+    --border:#34343c;--border-2:#2b2b32;--gold:#d6ba76;--gold-deep:#b89c47;
+    --gold-faint:rgba(214,186,118,.10);--gold-mid:rgba(214,186,118,.20);
+    --gold-grad:linear-gradient(135deg,#e2cb86 0%,#bfa050 100%);--on-gold:#1a1509;
+    --ink:#f4f1ea;--muted:#8f8d85;--mid:#c4c1b8;
+    --green:#6dbf90;--green-bg:rgba(109,191,144,.14);
+    --yellow:#d7a94e;--yellow-bg:rgba(215,169,78,.16);
+    --red:#e0807e;--red-bg:rgba(224,128,126,.16);
+    --heading:'Playfair Display',Georgia,serif;--body:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    --ease:.22s cubic-bezier(.2,.7,.2,1);--radius:11px;--radius-lg:16px;
+    --sh-md:0 4px 12px rgba(0,0,0,.5),0 16px 40px rgba(0,0,0,.55);
+  }
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:var(--gold)}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+  /* top bar */
+  header.top{position:sticky;top:0;z-index:40;background:rgba(17,17,20,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+  .top .wrap{display:flex;align-items:center;gap:14px;height:60px}
+  .brand{font-family:var(--heading);font-weight:700;font-size:18px;letter-spacing:.2px}
+  .brand em{color:var(--gold);font-style:normal}
+  .top .who{margin-left:auto;color:var(--muted);font-size:13px;display:flex;align-items:center;gap:12px}
+  .pill{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;border:1px solid var(--border);color:var(--mid)}
+  .pill.edit{background:var(--gold-faint);border-color:var(--gold-mid);color:var(--gold)}
+  .btn{font-family:var(--body);font-weight:600;font-size:14px;border:0;border-radius:10px;padding:11px 18px;cursor:pointer;transition:var(--ease)}
+  .btn.primary{background:var(--gold-grad);color:var(--on-gold)}
+  .btn.primary:hover{filter:brightness(1.05)}
+  .btn.ghost{background:transparent;border:1px solid var(--border);color:var(--mid)}
+  .btn.ghost:hover{border-color:var(--gold-mid);color:var(--gold)}
+  .btn:disabled{opacity:.5;cursor:default}
+  /* progress */
+  .progress{height:3px;background:var(--border-2);position:sticky;top:60px;z-index:39}
+  .progress > i{display:block;height:100%;width:0;background:var(--gold-grad);transition:width .3s}
+  /* layout */
+  .layout{display:grid;grid-template-columns:210px 1fr;gap:34px;padding:30px 0 90px}
+  nav.rail{position:sticky;top:96px;align-self:start;display:flex;flex-direction:column;gap:2px;max-height:calc(100vh-120px);overflow:auto}
+  nav.rail a{display:flex;gap:10px;align-items:baseline;padding:9px 11px;border-radius:9px;color:var(--muted);text-decoration:none;font-size:13.5px;font-weight:500;border-left:2px solid transparent}
+  nav.rail a .n{font-variant-numeric:tabular-nums;color:var(--gold-deep);font-weight:700;font-size:12px;min-width:20px}
+  nav.rail a:hover{background:var(--card-2);color:var(--mid)}
+  nav.rail a.active{background:var(--gold-faint);color:var(--gold);border-left-color:var(--gold)}
+  .intro h1{font-family:var(--heading);font-size:30px;font-weight:700;letter-spacing:.2px}
+  .intro p{color:var(--muted);margin-top:6px;max-width:640px}
+  /* sections */
+  section.sec{margin-top:26px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px 22px 8px;scroll-margin-top:110px}
+  section.sec > h2{font-family:var(--heading);font-size:19px;font-weight:600;display:flex;align-items:center;gap:10px;margin-bottom:2px}
+  section.sec > h2 .n{font-family:var(--body);font-size:12px;font-weight:700;color:var(--on-gold);background:var(--gold);border-radius:6px;padding:2px 7px}
+  section.sec > .sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px}
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+  .field.wide{grid-column:1 / -1}
+  .field label{font-size:13px;font-weight:600;color:var(--mid)}
+  .field .req{color:var(--gold);margin-left:3px}
+  .field .help{font-size:12px;color:var(--muted);margin-top:-2px}
+  .field input,.field select,.field textarea{font-family:var(--body);font-size:14.5px;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:10px 12px;transition:var(--ease);width:100%}
+  .field textarea{resize:vertical;min-height:64px}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:0;border-color:var(--gold-mid);box-shadow:0 0 0 3px var(--gold-faint)}
+  .field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--red)}
+  /* footer save bar */
+  .savebar{position:fixed;bottom:0;left:0;right:0;z-index:41;background:rgba(17,17,20,.94);backdrop-filter:blur(10px);border-top:1px solid var(--border)}
+  .savebar .wrap{display:flex;align-items:center;gap:16px;height:70px}
+  .savebar .status{color:var(--muted);font-size:13px}
+  .savebar .spacer{margin-left:auto}
+  .draftnote{color:var(--muted);font-size:12px}
+  /* gates / overlays */
+  .center{min-height:70vh;display:flex;align-items:center;justify-content:center;padding:30px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--sh-md);padding:30px;max-width:440px;width:100%}
+  .card h2{font-family:var(--heading);font-size:22px;font-weight:600;margin-bottom:6px}
+  .card p{color:var(--muted);font-size:14px;margin-bottom:18px}
+  .card input{width:100%;font-size:15px;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 13px;margin-bottom:12px}
+  .msg{font-size:13px;margin-top:10px}
+  .msg.err{color:var(--red)}.msg.ok{color:var(--green)}
+  /* success */
+  .tier{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:13px;padding:5px 12px;border-radius:20px}
+  .tier.High{background:var(--red-bg);color:var(--red)}
+  .tier.Standard{background:var(--yellow-bg);color:var(--yellow)}
+  .tier.Light{background:var(--green-bg);color:var(--green)}
+  .chip{display:inline-block;font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px;background:var(--gold-faint);color:var(--gold);border:1px solid var(--gold-mid);margin:3px 4px 0 0}
+  .hide{display:none!important}
+  @media(max-width:820px){.layout{grid-template-columns:1fr}nav.rail{display:none}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ══ AUTH GATE ══ -->
+<div id="gate" class="center hide">
+  <div class="card">
+    <h2>Breedwise <em style="color:var(--gold);font-style:normal">OS</em> · Member Intake</h2>
+    <p>Sign in with your Breedwise email to load the onboarding intake. You'll get a one-time magic link.</p>
+    <input id="loginEmail" type="email" placeholder="you@breedwise.io" autocomplete="email">
+    <button class="btn primary" id="loginBtn" style="width:100%">Send magic link</button>
+    <div id="loginMsg" class="msg"></div>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="app" class="hide">
+  <header class="top"><div class="wrap">
+    <div class="brand">Breedwise <em>OS</em></div>
+    <span class="pill">Member Intake</span>
+    <span id="editPill" class="pill edit hide"></span>
+    <div class="who"><span id="whoName"></span> · <a href="os.html">Open OS ↗</a></div>
+  </div></header>
+  <div class="progress"><i id="progFill"></i></div>
+
+  <div class="wrap layout">
+    <nav class="rail" id="rail"></nav>
+    <main>
+      <div class="intro">
+        <h1>Academy Member Intake</h1>
+        <p>Complete on the onboarding call. Everything saves to the member's OS file and sets their support tier &amp; focus path. Your progress is auto-saved to this device as a draft.</p>
+      </div>
+      <form id="form" autocomplete="off"></form>
+    </main>
+  </div>
+
+  <div class="savebar"><div class="wrap">
+    <span class="status" id="saveStatus">Ready.</span>
+    <span class="draftnote" id="draftNote"></span>
+    <span class="spacer"></span>
+    <button type="button" class="btn ghost" id="clearBtn">Clear draft</button>
+    <button type="button" class="btn primary" id="submitBtn">Save to OS</button>
+  </div></div>
+</div>
+
+<!-- ══ SUCCESS ══ -->
+<div id="done" class="center hide">
+  <div class="card" style="max-width:520px;text-align:center">
+    <h2 id="doneName">Saved to the OS</h2>
+    <p id="doneSub" style="margin-bottom:14px"></p>
+    <div style="margin:8px 0 6px"><span id="doneTier" class="tier"></span></div>
+    <div id="doneFocus" style="margin:10px 0 20px"></div>
+    <a class="btn primary" id="doneOpen" href="os.html" style="text-decoration:none;display:inline-block">Open in the OS ↗</a>
+    <button class="btn ghost" id="doneNew" style="margin-left:8px">New intake</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ═══ CONFIG (same project + anon key as os.html) ═══ */
+const SUPABASE_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+const SUPABASE_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{detectSessionInUrl:true,persistSession:true}});
+
+/* ═══ FIELD SPEC — id `f_<col>`; `target:'member'` also writes to members ═══ */
+const SECTIONS=[
+ {n:'01',t:'Member & Business',sub:'Who they are and their kennel.',f:[
+   {c:'member_name',l:'Member full name',t:'text',req:1,target:'member'},
+   {c:'kennel_name',l:'Kennel / business name',t:'text',req:1},
+   {c:'email',l:'Email',t:'email',req:1,target:'member',wide:1,help:'Used to match / create their OS file.'},
+ ]},
+ {n:'02',t:'Program & Payment',sub:'Program tier and payment terms drive their support level.',f:[
+   {c:'program',l:'Program',t:'select',opts:['','Academy','Accelerator','Elite'],target:'member'},
+   {c:'plan_type',l:'Payment structure',t:'select',opts:['','PIF','Payment plan']},
+   {c:'price_total',l:'Program price ($)',t:'number'},
+   {c:'deposit',l:'Deposit paid ($)',t:'number'},
+   {c:'balance',l:'Balance remaining ($)',t:'number'},
+   {c:'num_payments',l:'# of payments',t:'int'},
+   {c:'contract_signed_date',l:'Contract signed',t:'date'},
+   {c:'program_start_date',l:'Program start',t:'date'},
+ ]},
+ {n:'03',t:'Baseline Financials',sub:'Where the business is today.',f:[
+   {c:'rev_12mo',l:'Gross revenue, last 12 months ($)',t:'number',req:1},
+   {c:'rev_90d',l:'Gross revenue, last 90 days ($)',t:'number'},
+   {c:'price_per_puppy',l:'Current price per puppy ($)',t:'number',req:1},
+   {c:'litters_per_year',l:'Litters per year (typical)',t:'number'},
+   {c:'avg_litter_size',l:'Average litter size',t:'number'},
+   {c:'revenue_tracking',l:'How is revenue currently tracked?',t:'text'},
+   {c:'other_revenue_streams',l:'Other revenue streams',t:'textarea',wide:1,help:'Stud fees, training, boarding, guardianship programs…'},
+ ]},
+ {n:'04',t:'Breeding Program & Genetics',sub:'The foundation stock and health testing.',f:[
+   {c:'breeding_females',l:'Breeding females',t:'int',req:1},
+   {c:'studs_owned',l:'Studs owned',t:'int'},
+   {c:'registry',l:'Registry',t:'text'},
+   {c:'outside_stud',l:'Outside stud services used?',t:'text'},
+   {c:'dna_testing',l:'DNA / genetic panel testing on breeding dogs?',t:'select',opts:['','All','Some','None','Unsure'],req:1},
+   {c:'testing_provider',l:'Testing provider used',t:'text'},
+   {c:'ofa_certs',l:'OFA / health certifications held',t:'text',wide:1},
+   {c:'known_genetic_issues',l:'Known genetic issues in current lines',t:'textarea',wide:1},
+   {c:'genetic_goals',l:'Genetic goals for the program',t:'textarea',wide:1,help:'Structure, temperament, color, health priorities.'},
+ ]},
+ {n:'05',t:'Reproductive Health',sub:'Repro maturity and the breeding calendar.',f:[
+   {c:'vet_relationship',l:'Current vet relationship',t:'text',req:1},
+   {c:'progesterone_testing',l:'Progesterone testing used?',t:'text'},
+   {c:'breeding_methods',l:'Breeding method(s) used',t:'text'},
+   {c:'whelps_attended',l:'Whelps personally attended',t:'text'},
+   {c:'emergency_protocol',l:'Written emergency / whelping protocol?',t:'select',opts:['','Written','Informal','None']},
+   {c:'next_breeding_date',l:'Next planned breeding / heat (date)',t:'date',help:'Drives the breeding calendar.'},
+   {c:'past_complications',l:'Past reproductive complications',t:'textarea',wide:1,help:'C-sections, lost litters, fading puppies, infertility.'},
+   {c:'upcoming_breedings_120d',l:'Upcoming heats / planned breedings — next 120 days',t:'textarea',req:1,wide:1},
+ ]},
+ {n:'06',t:'Sales',sub:'How puppies are sold today.',f:[
+   {c:'buyer_discovery',l:'How do most buyers find them today?',t:'text',req:1,wide:1},
+   {c:'waitlist_size',l:'Current waitlist size',t:'int'},
+   {c:'deposit_amount',l:'Deposit amount taken ($)',t:'number'},
+   {c:'puppy_contract',l:'Written puppy contract used?',t:'select',opts:['','Yes','No']},
+   {c:'inquiries_per_litter',l:'Typical inquiries per litter',t:'int'},
+   {c:'close_rate',l:'Close rate on serious inquiries (%)',t:'number'},
+   {c:'common_objection',l:'Most common buyer objection',t:'text',wide:1},
+   {c:'sales_process',l:'Current sales process (inquiry → deposit)',t:'textarea',wide:1},
+ ]},
+ {n:'07',t:'Marketing & Social',sub:'Audience and content engine (matters for the 90-day shoot).',f:[
+   {c:'instagram',l:'Instagram handle',t:'text'},
+   {c:'ig_followers',l:'Instagram followers',t:'int'},
+   {c:'facebook',l:'Facebook page / group',t:'text'},
+   {c:'tiktok_youtube',l:'TikTok / YouTube / other',t:'text'},
+   {c:'posting_frequency',l:'Current posting frequency',t:'text'},
+   {c:'email_list_size',l:'Email list size',t:'int'},
+   {c:'content_creator',l:'Who creates content today?',t:'text'},
+   {c:'camera_comfort',l:'Comfort on camera',t:'text'},
+   {c:'assets_available',l:'Photo / video assets already available',t:'textarea',wide:1},
+ ]},
+ {n:'08',t:'Goals & 90-Day Priorities',sub:'What winning looks like.',f:[
+   {c:'revenue_goal_12mo',l:'12-month revenue goal ($)',t:'number',req:1},
+   {c:'target_price_per_puppy',l:'Target price per puppy after program ($)',t:'number'},
+   {c:'primary_goals',l:'Primary goals for the next 12 months',t:'textarea',req:1,wide:1},
+   {c:'top3_outcomes',l:'Top 3 outcomes wanted from the first 90 days',t:'textarea',req:1,wide:1},
+   {c:'biggest_bottleneck',l:'Single biggest bottleneck right now',t:'textarea',req:1,wide:1},
+   {c:'hours_per_week',l:'Hours/week they can commit to implementation',t:'number'},
+ ]},
+ {n:'09',t:'Compliance & Consents',sub:'Anything the team must know before day one.',f:[
+   {c:'license_status',l:'Breeding license / kennel permit status',t:'text',req:1},
+   {c:'usda_applicable',l:'USDA registration applicable?',t:'text'},
+   {c:'red_flag',l:'Any health, legal, or compliance red flags?',t:'select',opts:['No','Yes'],req:1},
+   {c:'red_flag_notes',l:'Red flag notes / anything the team should know',t:'textarea',wide:1},
+   {c:'onboarding_call_date',l:'Onboarding call date',t:'date'},
+   {c:'completed_by',l:'Completed by',t:'text'},
+ ]},
+];
+const ALL=SECTIONS.flatMap(s=>s.f);
+const MEMBER_FIELDS=new Set(ALL.filter(f=>f.target==='member').map(f=>f.c)); // member_name,email,program
+const INT=new Set(ALL.filter(f=>f.t==='int').map(f=>f.c));
+const NUM=new Set(ALL.filter(f=>f.t==='number').map(f=>f.c));
+const DATE=new Set(ALL.filter(f=>f.t==='date').map(f=>f.c));
+const REQ=ALL.filter(f=>f.req).map(f=>f.c);
+
+/* ═══ STATE ═══ */
+const params=new URLSearchParams(location.search);
+let MEMBER_ID=params.get('member')||null;
+let PRESET_EMAIL=(params.get('email')||'').toLowerCase();
+let ME_EMAIL='',ME_NAME='';
+const DRAFT_KEY=()=>'bw_intake_draft_'+(MEMBER_ID||PRESET_EMAIL||'new');
+
+/* ═══ RENDER ═══ */
+function fieldHTML(f){
+  const id='f_'+f.c, req=f.req?'<span class="req">*</span>':'';
+  const ph=f.t==='number'||f.t==='int'?'inputmode="decimal"':'';
+  let ctrl;
+  if(f.t==='textarea') ctrl=`<textarea id="${id}" rows="3"></textarea>`;
+  else if(f.t==='select') ctrl=`<select id="${id}">`+f.opts.map(o=>`<option value="${o}">${o||'—'}</option>`).join('')+`</select>`;
+  else ctrl=`<input id="${id}" type="${f.t==='int'?'number':f.t}" ${f.t==='int'?'step="1"':''} ${ph}>`;
+  return `<div class="field ${f.wide?'wide':''}" data-fc="${f.c}"><label for="${id}">${f.l}${req}</label>${f.help?`<div class="help">${f.help}</div>`:''}${ctrl}</div>`;
+}
+function render(){
+  document.getElementById('form').innerHTML=SECTIONS.map(s=>
+    `<section class="sec" id="sec-${s.n}"><h2><span class="n">${s.n}</span>${s.t}</h2><div class="sub">${s.sub}</div><div class="grid">${s.f.map(fieldHTML).join('')}</div></section>`
+  ).join('');
+  document.getElementById('rail').innerHTML=SECTIONS.map(s=>
+    `<a href="#sec-${s.n}" data-sec="${s.n}"><span class="n">${s.n}</span>${s.t}</a>`).join('');
+  // rail scroll-spy
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.rail a').forEach(a=>a.classList.toggle('active',a.dataset.sec===e.target.id.slice(4)));}});},{rootMargin:'-45% 0px -50% 0px'});
+  SECTIONS.forEach(s=>io.observe(document.getElementById('sec-'+s.n)));
+  // input listeners → progress + draft
+  document.getElementById('form').addEventListener('input',()=>{updateProgress();saveDraft();});
+}
+function el(c){return document.getElementById('f_'+c);}
+function updateProgress(){
+  const done=REQ.filter(c=>String(el(c)?.value||'').trim()).length;
+  document.getElementById('progFill').style.width=Math.round(done/REQ.length*100)+'%';
+}
+
+/* ═══ DRAFT (localStorage) ═══ */
+let draftT;
+function saveDraft(){clearTimeout(draftT);draftT=setTimeout(()=>{
+  const d={};ALL.forEach(f=>{const v=el(f.c)?.value;if(v!==undefined&&v!=='')d[f.c]=v;});
+  try{localStorage.setItem(DRAFT_KEY(),JSON.stringify(d));document.getElementById('draftNote').textContent='Draft saved '+new Date().toLocaleTimeString();}catch(e){}
+},400);}
+function loadDraft(){try{const d=JSON.parse(localStorage.getItem(DRAFT_KEY())||'{}');Object.entries(d).forEach(([c,v])=>{if(el(c))el(c).value=v;});return Object.keys(d).length;}catch(e){return 0;}}
+function clearDraft(){try{localStorage.removeItem(DRAFT_KEY());}catch(e){}}
+
+/* ═══ COERCE / COLLECT ═══ */
+function coerce(c,v){
+  if(v===undefined||v===null||String(v).trim()==='')return null;
+  if(NUM.has(c)){const n=parseFloat(String(v).replace(/[^0-9.\-]/g,''));return isFinite(n)?n:null;}
+  if(INT.has(c)){const n=parseInt(String(v).replace(/[^0-9\-]/g,''),10);return isFinite(n)?n:null;}
+  return String(v);
+}
+function collect(){const d={};ALL.forEach(f=>{d[f.c]=coerce(f.c,el(f.c)?.value);});return d;}
+
+/* ═══ SUPPORT TIER + FOCUS PATH ═══ */
+const truthy=v=>v!=null&&String(v).trim()!=='';
+function computeTier(d){
+  const goal=+d.revenue_goal_12mo||0, cur=+d.rev_12mo||0;
+  const bigGap=goal>0&&cur>0&&goal>=2*cur;
+  const high=[d.red_flag==='Yes',d.emergency_protocol==='None',truthy(d.past_complications),bigGap].some(Boolean);
+  if(high)return'High';
+  const pos=[d.dna_testing==='All',d.emergency_protocol==='Written',(+d.close_rate||0)>=50,truthy(d.revenue_tracking)&&!/none|no\b|head|memory/i.test(d.revenue_tracking||''),d.puppy_contract==='Yes'].filter(Boolean).length;
+  return pos>=4?'Light':'Standard';
+}
+function computeFocus(d){
+  const f=[];
+  if(['None','Some','Unsure'].includes(d.dna_testing)||truthy(d.known_genetic_issues)||!truthy(d.ofa_certs))f.push('Science');
+  if(truthy(d.past_complications)||['None','Informal'].includes(d.emergency_protocol)||truthy(d.next_breeding_date))f.push('Repro');
+  if((+d.close_rate||0)<40||d.puppy_contract==='No'||!truthy(d.sales_process))f.push('Sales');
+  if((+d.email_list_size||0)<500||/rare|never|low|none|month/i.test(d.posting_frequency||'')||/no\b|low|nervous|uncomfortable/i.test(d.camera_comfort||''))f.push('Marketing');
+  if(!truthy(d.revenue_tracking)||/none|head|memory|no\b/i.test(d.revenue_tracking||'')||((+d.target_price_per_puppy||0)>(+d.price_per_puppy||0)))f.push('Finance');
+  return [...new Set(f)];
+}
+
+/* ═══ SUBMIT ═══ */
+async function submit(){
+  document.querySelectorAll('.field.invalid').forEach(x=>x.classList.remove('invalid'));
+  const missing=REQ.filter(c=>!String(el(c)?.value||'').trim());
+  if(missing.length){
+    missing.forEach(c=>document.querySelector(`[data-fc="${c}"]`)?.classList.add('invalid'));
+    const first=document.querySelector(`[data-fc="${missing[0]}"]`);
+    first?.scrollIntoView({behavior:'smooth',block:'center'});
+    status('Fill the '+missing.length+' required field'+(missing.length>1?'s':'')+' highlighted in red.',true);
+    return;
+  }
+  const btn=document.getElementById('submitBtn');btn.disabled=true;status('Saving…');
+  const d=collect();
+  const tier=computeTier(d), focus=computeFocus(d);
+  const redFlag=d.red_flag==='Yes';
+
+  // 1) ensure the member row
+  let memberId=MEMBER_ID;
+  if(!memberId&&d.email){
+    const {data}=await sb.from('members').select('id').eq('email',d.email).limit(1).maybeSingle();
+    if(data)memberId=data.id;
+  }
+  const memberPatch={name:d.member_name,email:d.email||null,support_tier:tier,red_flag:redFlag,next_breeding_date:d.next_breeding_date||null,updated_by:ME_NAME||ME_EMAIL};
+  if(d.program)memberPatch.program=d.program;
+  let err=null;
+  if(memberId){const r=await sb.from('members').update(memberPatch).eq('id',memberId);err=r.error;}
+  else{const r=await sb.from('members').insert(memberPatch).select('id').single();err=r.error;memberId=r.data?.id;}
+  if(err){btn.disabled=false;return status('Member save failed: '+err.message,true);}
+
+  // 2) upsert the intake (1:1 on member_id)
+  const intake={member_id:memberId,support_tier:tier,focus_path:focus,raw:d,updated_by:ME_NAME||ME_EMAIL};
+  ALL.forEach(f=>{if(MEMBER_FIELDS.has(f.c)&&f.c!=='program')return; // name/email live on members; program mirrored below
+    intake[f.c]= f.c==='red_flag'?redFlag : d[f.c];});
+  const ir=await sb.from('member_intake').upsert(intake,{onConflict:'member_id'});
+  if(ir.error){btn.disabled=false;return status('Intake save failed: '+ir.error.message,true);}
+
+  // 3) member note (best-effort)
+  try{await sb.from('member_notes').insert({member_id:memberId,body:`Onboarding intake completed by ${ME_NAME||ME_EMAIL}. Support tier: ${tier}. Focus: ${focus.join(', ')||'—'}.`,created_by:ME_NAME||ME_EMAIL});}catch(e){}
+
+  clearDraft();
+  showDone(d.member_name,tier,focus,memberId,!!MEMBER_ID);
+  btn.disabled=false;
+}
+function status(m,isErr){const s=document.getElementById('saveStatus');s.textContent=m;s.style.color=isErr?'var(--red)':'var(--muted)';}
+
+/* ═══ SUCCESS ═══ */
+function showDone(name,tier,focus,memberId,wasEdit){
+  document.getElementById('app').classList.add('hide');
+  const done=document.getElementById('done');done.classList.remove('hide');
+  document.getElementById('doneName').textContent=(name||'Member')+(wasEdit?' — updated':' — added to the OS');
+  document.getElementById('doneSub').textContent='Their intake profile is live in the Member Success OS.';
+  const t=document.getElementById('doneTier');t.className='tier '+tier;t.textContent=(tier==='High'?'🔴 ':tier==='Light'?'🟢 ':'🟡 ')+tier+' support';
+  document.getElementById('doneFocus').innerHTML=focus.length?('<div style="color:var(--muted);font-size:12px;margin-bottom:6px">Focus path</div>'+focus.map(x=>`<span class="chip">${x}</span>`).join('')):'';
+}
+
+/* ═══ PREFILL (edit / backfill mode) ═══ */
+async function prefill(){
+  let m=null, intake=null;
+  if(MEMBER_ID){const r=await sb.from('members').select('*').eq('id',MEMBER_ID).maybeSingle();m=r.data;}
+  else if(PRESET_EMAIL){const r=await sb.from('members').select('*').eq('email',PRESET_EMAIL).limit(1).maybeSingle();m=r.data;if(m)MEMBER_ID=m.id;}
+  if(m){const r=await sb.from('member_intake').select('*').eq('member_id',m.id).maybeSingle();intake=r.data;}
+  const setV=(c,v)=>{if(el(c)&&v!=null&&v!=='')el(c).value=(c==='red_flag'?(v===true?'Yes':'No'):v);};
+  if(m){setV('member_name',m.name);setV('email',m.email);setV('program',m.program);
+    document.getElementById('editPill').classList.remove('hide');
+    document.getElementById('editPill').textContent='Editing: '+(m.name||m.email||'member');}
+  if(intake){ALL.forEach(f=>{if(f.c in intake)setV(f.c,intake[f.c]);});}
+  // draft overrides saved values (unsaved edits from this device win)
+  const n=loadDraft();
+  updateProgress();
+  if(n)document.getElementById('draftNote').textContent='Restored an unsaved draft on this device.';
+}
+
+/* ═══ AUTH ═══ */
+async function whoami(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session)return false;
+  ME_EMAIL=(session.user.email||'').toLowerCase();
+  try{const r=await sb.from('profiles').select('full_name').eq('email',ME_EMAIL).maybeSingle();ME_NAME=r.data?.full_name||'';}catch(e){}
+  if(!ME_NAME){try{const r=await sb.from('team').select('full_name').eq('email',ME_EMAIL).maybeSingle();ME_NAME=r.data?.full_name||'';}catch(e){}}
+  return true;
+}
+async function boot(){
+  render();
+  const authed=await whoami();
+  if(!authed){document.getElementById('gate').classList.remove('hide');return;}
+  document.getElementById('app').classList.remove('hide');
+  document.getElementById('whoName').textContent=ME_NAME||ME_EMAIL;
+  if(!el('completed_by').value)el('completed_by').value=ME_NAME||ME_EMAIL;
+  if(!el('onboarding_call_date').value)el('onboarding_call_date').value=new Date().toISOString().slice(0,10);
+  await prefill();
+}
+sb.auth.onAuthStateChange((_e,s)=>{if(s&&document.getElementById('gate') && !document.getElementById('gate').classList.contains('hide')){location.reload();}});
+
+/* ═══ WIRE ═══ */
+document.getElementById('loginBtn').onclick=async()=>{
+  const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+  const msg=document.getElementById('loginMsg');
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){msg.className='msg err';msg.textContent='Enter a valid email.';return;}
+  document.getElementById('loginBtn').disabled=true;
+  const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.href}});
+  document.getElementById('loginBtn').disabled=false;
+  msg.className='msg '+(error?'err':'ok');
+  msg.textContent=error?error.message:'Check your email for the magic link, then return here.';
+};
+document.getElementById('submitBtn').onclick=submit;
+document.getElementById('clearBtn').onclick=()=>{if(confirm('Clear this draft? Unsaved answers on this device will be removed.')){clearDraft();ALL.forEach(f=>{if(el(f.c))el(f.c).value=f.c==='red_flag'?'No':'';});updateProgress();status('Draft cleared.');}};
+document.getElementById('doneNew').onclick=()=>{location.href=location.pathname;};
+document.getElementById('doneOpen').onclick=()=>{try{clearDraft();}catch(e){}};
+
+boot();
+</script>
+</body>
+</html>
