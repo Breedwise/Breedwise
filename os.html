@@ -385,7 +385,7 @@
         <div class="table-wrap">
           <div class="table-tools" id="dirFilters"></div>
           <div style="overflow-x:auto"><table>
-            <thead><tr><th>Member</th><th>Program</th><th>Status</th><th>Calls 4w</th><th>Calls 1w</th><th class="hide-sm">Posts 7d</th><th>HW%</th><th>Payment</th><th>NPS</th><th></th></tr></thead>
+            <thead><tr><th>Member</th><th>Program</th><th>Status</th><th>Calls 4w</th><th>Calls 1w</th><th class="hide-sm">Posts / Cmts 7d</th><th>HW%</th><th>Payment</th><th>NPS</th><th></th></tr></thead>
             <tbody id="dirTable"></tbody>
           </table></div>
         </div>
@@ -408,6 +408,17 @@
       </section>
 
       <!-- AL -->
+      <section class="panel" data-panel="handoff">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Sales → Roadmap → Accountability Leader</div>
+          <h1 class="view-title">Onboarding Handoff</h1>
+          <p class="view-sub">Every new member in one place: what sales closed, their intake / roadmap status, support tier, and which pod owns them. Assign the pod, open the intake, and mark the handoff done when the AL has everything.</p>
+        </div></div>
+        <div class="table-wrap"><div style="overflow-x:auto"><table>
+          <thead><tr><th>Member</th><th>Program</th><th>Payment</th><th>Intake / Roadmap</th><th>Support</th><th>Pod / AL</th><th>Handoff</th></tr></thead>
+          <tbody id="handoffBody"></tbody>
+        </table></div></div>
+      </section>
       <section class="panel" data-panel="al">
         <div class="view-head">
           <div>
@@ -433,7 +444,7 @@
         <div class="kpi-grid" id="alKpis"></div>
         <div class="section-label">Pod roster &amp; action queue</div>
         <div class="table-wrap"><div style="overflow-x:auto"><table>
-          <thead><tr><th>Member</th><th>Program</th><th>Status</th><th>Activation</th><th>Calls 4w</th><th>Calls 1w</th><th class="hide-sm">Posts 7d</th><th>HW%</th><th>Pay</th><th>NPS</th><th>Next action</th><th></th></tr></thead>
+          <thead><tr><th>Member</th><th>Program</th><th>Status</th><th>Activation</th><th>Calls 4w</th><th>Calls 1w</th><th class="hide-sm">Posts / Cmts 7d</th><th>HW%</th><th>Pay</th><th>NPS</th><th>Next action</th><th></th></tr></thead>
           <tbody id="alTable"></tbody>
         </table></div></div>
       </section>
@@ -802,6 +813,7 @@
       <div class="field"><label>Calls (4 wks)</label><input id="f_calls" type="number" min="0"></div>
       <div class="field"><label>Calls (this week)</label><input id="f_calls_1w" type="number" min="0"></div>
       <div class="field"><label>Posts (7 days)</label><input id="f_posts" type="number" min="0"></div>
+      <div class="field"><label>Comments (7 days)</label><input id="f_comments" type="number" min="0"></div>
       <div class="field"><label>Homework %</label><input id="f_homework" type="number" min="0" max="100"></div>
       <div class="field"><label>NPS (0–10)</label><input id="f_nps" type="number" min="0" max="10"></div>
       <div class="field"><label>Upsell revenue $</label><input id="f_upsell" type="number" min="0"></div>
@@ -1182,10 +1194,8 @@
 
   /* RENDER: leads */
   let leadFilter='all',leadQ='';
-  function renderLeads(){
-    const counts={all:LEADS.length}; ['new','engaged','scheduled','showed','no_show','closed_won','closed_lost','nurture'].forEach(s=>counts[s]=LEADS.filter(l=>l.status===s).length);
-    const chips=[['all','All'],['new','New'],['engaged','Engaged'],['scheduled','Scheduled'],['showed','Showed'],['no_show','No Show'],['closed_won','Won'],['closed_lost','Lost'],['nurture','Nurture']];
-    $('#leadFilters').innerHTML=chips.map(([k,lbl])=>`<div class="tag" data-f="${k}" style="cursor:pointer;${leadFilter===k?'background:var(--gold);color:var(--on-gold);border-color:var(--gold)':''}">${lbl} ${counts[k]||0}</div>`).join('')+`<input class="search-box" id="leadSearch" placeholder="Search…">`;
+  // Rows only — typing re-runs THIS so the search input is never rebuilt (keeps focus).
+  function renderLeadRows(){
     let rows=LEADS.filter(l=>leadFilter==='all'||l.status===leadFilter);
     if(leadQ) rows=rows.filter(l=>(l.name||'').toLowerCase().includes(leadQ));
     $('#leadsBody').innerHTML=rows.map(l=>{const ct=leadActivityCount(l.lead_id);return `<tr>
@@ -1197,8 +1207,14 @@
       <td class="hide-sm">${l.marketing_qualified?'<span class="tag">MQL</span> ':''}${l.sales_qualified?'<span class="tag">SQL</span>':''}</td>
       <td style="text-align:right;white-space:nowrap">${ct?`<span class="tag" style="border-color:var(--gold-mid);color:var(--gold-deep)">${ct} ✦</span> `:''}<button class="row-view" data-lead="${l.lead_id}">View</button> <button class="row-edit" data-edit-lead="${l.lead_id}">Edit</button></td>
       </tr>`;}).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:26px">No leads.</td></tr>`;
+  }
+  function renderLeads(){
+    const counts={all:LEADS.length}; ['new','engaged','scheduled','showed','no_show','closed_won','closed_lost','nurture'].forEach(s=>counts[s]=LEADS.filter(l=>l.status===s).length);
+    const chips=[['all','All'],['new','New'],['engaged','Engaged'],['scheduled','Scheduled'],['showed','Showed'],['no_show','No Show'],['closed_won','Won'],['closed_lost','Lost'],['nurture','Nurture']];
+    $('#leadFilters').innerHTML=chips.map(([k,lbl])=>`<div class="tag" data-f="${k}" style="cursor:pointer;${leadFilter===k?'background:var(--gold);color:var(--on-gold);border-color:var(--gold)':''}">${lbl} ${counts[k]||0}</div>`).join('')+`<input class="search-box" id="leadSearch" placeholder="Search…">`;
+    renderLeadRows();
     $('#leadFilters').querySelectorAll('[data-f]').forEach(c=>c.onclick=()=>{leadFilter=c.dataset.f;renderLeads();});
-    const sbx=$('#leadSearch'); sbx.value=leadQ; sbx.oninput=e=>{leadQ=e.target.value.toLowerCase();renderLeads();};
+    const sbx=$('#leadSearch'); sbx.value=leadQ; sbx.oninput=e=>{leadQ=e.target.value.toLowerCase();renderLeadRows();};
   }
 
   /* RENDER: targets */
@@ -1292,11 +1308,11 @@
     const res=await sb.from('leads').update(row).eq('lead_id',editingId);
     $('#editSave').disabled=false;
     if(res.error){ $('#editErr').textContent=res.error.message; return; }
-    closeEdit(); await loadData(); renderAll(); toast('Lead updated');
+    closeEdit(); await refreshKeepScroll(); toast('Lead updated');
   };
   $('#editDelete').onclick=async()=>{ if(!editingId) return; if(!confirm('Delete this lead from the OS?')) return;
     const res=await sb.from('leads').delete().eq('lead_id',editingId); if(res.error){ $('#editErr').textContent=res.error.message; return; }
-    closeEdit(); await loadData(); renderAll(); toast('Lead deleted'); };
+    closeEdit(); await refreshKeepScroll(); toast('Lead deleted'); };
   function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
 
 
@@ -1330,10 +1346,37 @@
   const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
   const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager', Founder:'Founder' };
 
-  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, podHw='all', ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[], PAYMENTS=[], PLANS=[], TASKS=[], TEAM=[], INTAKE_BY={};
+  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, podHw='all', ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[], PAYMENTS=[], PLANS=[], TASKS=[], TEAM=[], INTAKE_BY={}, NEW_COLS=false;
   let SALES_MEMBER=false;  // true if this login maps to a sales_reps row (set after SalesOS.boot)
   const EXPERTS=['Dr. Emmanuel Fontaine','Dr. Angela Hughes','Austin Shanks','Dr. David Mahoney','Yasmin Omar'];
   function weekStartISO(){ const d=new Date(); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return d.toISOString().slice(0,10); }
+  function lastWeekISO(){ const d=new Date(weekStartISO()); d.setUTCDate(d.getUTCDate()-7); return d.toISOString().slice(0,10); }
+
+  // ── Monday auto-rollover ──────────────────────────────────────────
+  // Replaces the manual "weekly refresh": archives every member's calls /
+  // posts / comments for LAST week into weekly_attendance (history is kept
+  // per member per week — nothing is lost on reset), zeroes this week's
+  // counters, and stamps the week in app_state so it runs exactly once.
+  async function maybeWeeklyRollover(){
+    try{
+      if(!NEW_COLS) return;                                   // schema not migrated yet
+      const wk=weekStartISO();
+      const st=await sb.from('app_state').select('v').eq('k','last_week_reset').maybeSingle();
+      const last=st.data?.v?.week||null;
+      if(last===wk) return;                                   // already rolled this week
+      const stale=MEMBERS.filter(m=>m.pay!=='Cancelled'&&(m.calls_1w>0||m.posts>0||m.comments>0));
+      if(!stale.length){ await sb.from('app_state').upsert({k:'last_week_reset',v:{week:wk}}); return; }
+      if(!confirm(`New week detected.\n\nArchive last week's calls / posts / comments for ${stale.length} member(s) and reset this week's counters to 0?\n\n(Nothing is lost — every week is saved to history.)`)) return;
+      const lw=lastWeekISO();
+      for(const m of stale){
+        await sb.from('weekly_attendance').upsert({member_id:m.id,week_start:lw,attended:m.calls_1w,posts:m.posts,comments:m.comments},{onConflict:'member_id,week_start'});
+      }
+      await sb.from('members').update({calls_1w:0,posts:0,comments:0}).in('id',stale.map(m=>m.id));
+      await sb.from('app_state').upsert({k:'last_week_reset',v:{week:wk,by:ME?.full_name||ME?.email||null,at:new Date().toISOString()}});
+      await loadData();
+      toast('New week started — last week archived, counters reset');
+    }catch(_){ /* non-fatal */ }
+  }
   const $ = s=>document.querySelector(s);
   const pct=(n,d)=>d?(n/d*100):0;
   const money=n=>'$'+Math.round(n).toLocaleString();
@@ -1343,7 +1386,8 @@
     calls:r.calls||0, calls_1w:r.calls_1w||0, posts:r.posts||0, hw:r.homework||0, pay:r.payment, nps:r.nps,
     activated:!!r.activated, newThisMonth:!!r.new_this_month, churnedThisMonth:!!r.churned_this_month,
     failed30:!!r.failed_30, upsell:Number(r.upsell)||0, override:r.status_override||null, notes:r.notes||'',
-    support_tier:r.support_tier||null, red_flag:!!r.red_flag, next_breeding_date:r.next_breeding_date||null };
+    support_tier:r.support_tier||null, red_flag:!!r.red_flag, next_breeding_date:r.next_breeding_date||null,
+    comments:r.comments||0, handoff:!!r.handoff_complete };
   }
 
   /* ═══ AUTH ═══ */
@@ -1365,12 +1409,22 @@
 
   async function enterApp(){
     await loadData();
+    await maybeWeeklyRollover();
     if (window.SalesOS){ try { const s=await window.SalesOS.boot(); SALES_MEMBER=!!s.isMember; } catch(_){} }
     $('#login').style.opacity=0;
     setTimeout(()=>{ $('#login').style.display='none'; },350);
     $('#app').style.display='block';
     renderAll();
     if (window.SalesOS && (SALES_MEMBER || ME?.role==='Founder')){ try { await window.SalesOS.render(); } catch(_){} }
+  }
+
+  // Reload + re-render WITHOUT losing the user's place (tab kept by buildSidebar,
+  // scroll restored here). Used by every save/delete path.
+  async function refreshKeepScroll(){
+    const y=window.scrollY;
+    await loadData();
+    renderAll();
+    requestAnimationFrame(()=>window.scrollTo(0,y));
   }
 
   async function loadData(){
@@ -1395,6 +1449,7 @@
       sb.from('member_intake').select('*'),
     ]);
     MEMBERS = (mem.data||[]).map(norm);
+    NEW_COLS = !!(mem.data && mem.data[0] && ('comments' in mem.data[0]));   // schema migrated?
     INTAKE_BY = {}; (intk?.data||[]).forEach(r=>{ INTAKE_BY[r.member_id]=r; });
     PODS = pods.data||[];
     PROFILES = prof.data||[];
@@ -1500,7 +1555,7 @@
     h+=`<td><span class="prog-tag">${m.program||'—'}</span></td>`;
     h+=`<td><span class="dot ${s}">${s}</span>${tags.length?`<div class="tags">${tags.slice(0,3).map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}</td>`;
     if (opts.activation) h+=`<td>${m.activated?'<span class="pay-good">Activated</span>':'<span class="pay-bad">In progress</span>'}</td>`;
-    h+=`<td class="num">${m.calls}</td><td class="num">${m.calls_1w}</td><td class="num hide-sm">${m.posts}</td><td class="num">${m.hw}%</td>`;
+    h+=`<td class="num">${m.calls}</td><td class="num">${m.calls_1w}</td><td class="num hide-sm">${m.posts} / ${m.comments||0}</td><td class="num">${m.hw}%</td>`;
     h+=`<td class="${m.pay==='Good'?'pay-good':'pay-bad'}">${m.pay}</td><td class="num">${m.nps??'—'}</td>`;
     if (opts.action) h+=`<td style="font-size:11.5px;color:var(--mid)">${nextAction(m)}</td>`;
     h+=`<td><button class="row-edit" data-edit="${m.id}">Edit</button></td>`;
@@ -1540,18 +1595,51 @@
       +`<div style="margin-top:9px"><a class="row-edit" style="text-decoration:none" href="${url}">Edit full intake ↗</a></div>`;
   }
 
+  /* ═══ ONBOARDING HANDOFF (sales → roadmap → AL) ═══ */
+  function renderHandoff(){
+    const body=$('#handoffBody'); if(!body) return;
+    // queue: members not yet handed off, plus the new-this-month cohort (even when done)
+    const rows=MEMBERS.filter(m=>m.pay!=='Cancelled'&&(!m.handoff||m.newThisMonth))
+      .sort((a,b)=>(a.handoff?1:0)-(b.handoff?1:0)||String(a.name).localeCompare(String(b.name)));
+    body.innerHTML=rows.map(m=>{
+      const it=INTAKE_BY[m.id];
+      const plan=(PLANS||[]).find(p=>String(p.member_name||'').toLowerCase()===String(m.name||'').toLowerCase());
+      const payCell=plan?`${esc(plan.plan_type||'Plan')} · $${Number(plan.amount_collected||plan.total||0).toLocaleString()}`:`<span class="${m.pay==='Good'?'pay-good':'pay-bad'}">${m.pay}</span>`;
+      const intake=`<a class="row-edit" style="text-decoration:none" href="member-intake.html?member=${m.id}">${it?(it.onboarding_call_date?'Intake · '+esc(it.onboarding_call_date):'Open intake'):'Start intake'} ↗</a>`;
+      const support=m.support_tier?`<span style="font-weight:700;color:${tierColor(m.support_tier)}">${m.support_tier}</span>${m.red_flag?' 🔴':''}`:'—';
+      const podSel=`<select class="search-box" style="margin-left:0;width:auto" data-handoff-pod="${m.id}"><option value="">— unassigned —</option>${PODS.map(p=>`<option value="${p.id}" ${m.pod===p.id?'selected':''}>${esc(p.name)}</option>`).join('')}</select>`;
+      const done=`<label class="check" style="white-space:nowrap"><input type="checkbox" data-handoff-done="${m.id}" ${m.handoff?'checked':''}> done</label>`;
+      return `<tr><td><div class="m-name">${esc(m.name)}</div><div class="m-email">${esc(m.email||'')}</div></td><td><span class="prog-tag">${m.program||'—'}</span></td><td>${payCell}</td><td>${intake}</td><td>${support}</td><td>${podSel}</td><td>${done}</td></tr>`;
+    }).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:26px">No members waiting on handoff.</td></tr>`;
+    body.querySelectorAll('[data-handoff-pod]').forEach(s=>s.onchange=async e=>{
+      await sb.from('members').update({pod_id:e.target.value||null}).eq('id',s.dataset.handoffPod);
+      toast('Pod updated'); await refreshKeepScroll();
+    });
+    body.querySelectorAll('[data-handoff-done]').forEach(c=>c.onchange=async e=>{
+      if(!NEW_COLS){ toast('Run the OS schema update first'); e.target.checked=false; return; }
+      await sb.from('members').update({handoff_complete:e.target.checked}).eq('id',c.dataset.handoffDone);
+      toast(e.target.checked?'Handoff complete':'Handoff reopened'); await refreshKeepScroll();
+    });
+  }
+
   let dirFilter='Red', dirQ='';
-  function renderDirTable(){
-    const act=activeMembers(), counts={All:act.length,Red:0,Yellow:0,Green:0};
-    act.forEach(m=>counts[statusOf(m)]++);
-    $('#dirFilters').innerHTML = ['Red','Yellow','Green','All'].map(c=>`<div class="filter-chip ${dirFilter===c?'active':''}" data-f="${c}">${c}<span class="ct">${counts[c]}</span></div>`).join('')+`<input class="search-box" id="dirSearch" placeholder="Search…">`;
+  // Rows only — typing in the search box re-runs THIS, never the filter bar,
+  // so the input element (and its focus/caret) is never destroyed.
+  function renderDirRows(){
+    const act=activeMembers();
     let rows=act.filter(m=>dirFilter==='All'||statusOf(m)===dirFilter);
     if (dirQ) rows=rows.filter(m=>m.name.toLowerCase().includes(dirQ));
     const ord={Red:0,Yellow:1,Green:2};
     rows.sort((a,b)=>ord[statusOf(a)]-ord[statusOf(b)]);
     $('#dirTable').innerHTML = rows.map(m=>memberRow(m,{})).join('')||`<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:26px">No members.</td></tr>`;
+  }
+  function renderDirTable(){
+    const act=activeMembers(), counts={All:act.length,Red:0,Yellow:0,Green:0};
+    act.forEach(m=>counts[statusOf(m)]++);
+    $('#dirFilters').innerHTML = ['Red','Yellow','Green','All'].map(c=>`<div class="filter-chip ${dirFilter===c?'active':''}" data-f="${c}">${c}<span class="ct">${counts[c]}</span></div>`).join('')+`<input class="search-box" id="dirSearch" placeholder="Search…">`;
+    renderDirRows();
     $('#dirFilters').querySelectorAll('.filter-chip').forEach(c=>c.onclick=()=>{dirFilter=c.dataset.f;renderDirTable();});
-    const sb2=$('#dirSearch'); sb2.value=dirQ; sb2.oninput=e=>{dirQ=e.target.value.toLowerCase();renderDirTable();};
+    const sb2=$('#dirSearch'); sb2.value=dirQ; sb2.oninput=e=>{dirQ=e.target.value.toLowerCase();renderDirRows();};
   }
   function renderStatusMix(){
     const act=activeMembers(); const c={Green:0,Yellow:0,Red:0}; act.forEach(m=>c[statusOf(m)]++);
@@ -1703,7 +1791,7 @@
     try{
       const wb=XLSX.utils.book_new();
       const add=(name,rows)=>XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows.length?rows:[{}]), name.slice(0,31));
-      add('Members', MEMBERS.map(m=>({Name:m.name,Email:m.email,Phone:m.phone,Program:m.program,Pod:podName(m.pod),Status:statusOf(m),'Calls 4w':m.calls,'Posts 7d':m.posts,'Homework %':m.hw,Payment:m.pay,NPS:m.nps,Activated:m.activated,'New this month':m.newThisMonth,'Churned this month':m.churnedThisMonth})));
+      add('Members', MEMBERS.map(m=>({Name:m.name,Email:m.email,Phone:m.phone,Program:m.program,Pod:podName(m.pod),Status:statusOf(m),'Calls 4w':m.calls,'Posts 7d':m.posts,'Comments 7d':m.comments||0,'Homework %':m.hw,Payment:m.pay,NPS:m.nps,Activated:m.activated,'New this month':m.newThisMonth,'Churned this month':m.churnedThisMonth})));
       add('Strategy Sessions', STRATEGY.map(s=>({Member:s.member_name,Type:s.session_type,Expert:s.expert,When:s.scheduled_for,Status:s.status,Notes:s.notes})));
       add('Issues', ISSUES.map(i=>({Title:i.title,Member:i.member_name,Urgency:i.urgency,Status:i.status,Due:i.due_date,Created:i.created_at,Details:i.details})));
       add('Member Notes', (MEMBER_NOTES||[]).map(n=>({Member:(MEMBERS.find(m=>m.id===n.member_id)||{}).name||n.member_id,Note:n.body,By:n.created_by,When:n.created_at})));
@@ -1731,7 +1819,7 @@
     $('#navRole').textContent = ROLE_LABEL[ME?.role] || roleLabel(ME?.role) || sRole || '';
     buildSidebar();
     renderKPIs('#dirKpis', directorKPIs());
-    renderFunnel(); renderStatusMix(); renderDirTable();
+    renderFunnel(); renderStatusMix(); renderDirTable(); renderHandoff();
     renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderAccelerator(); renderCalendar(); renderReports(); renderAffiliates(); renderPlans(); renderPayments(); renderTasks(); renderDirectory();
     const eb=$('#exportBtn'); if(eb) eb.onclick=buildExport;
     if(ME?.role==='Vet'){ document.querySelectorAll('[data-add-ss],#ccAdd,[data-edit-ss],[data-add]').forEach(b=>{ if(b) b.style.display='none'; }); }
@@ -1754,6 +1842,7 @@
     ]},
     { group:'Member Success', items:[
       ['directory','Directory',['Founder','Director','CommunityManager']],
+      ['handoff','Onboarding Handoff',['Founder','Director','AccountabilityLeader','CommunityManager']],
       ['al','Pod Command Center',['Founder','Director','AccountabilityLeader','CommunityManager']],
       ['cm','Community Engine',['Founder','Director','CommunityManager']],
       ['issues','Issues',['Founder','Director','CommunityManager']],
@@ -1783,13 +1872,16 @@
   function roleLabel(r){ return EXTRA_LABEL[r] || (r||''); }
   const canSee = roles => (ME?.role==='Founder') || roles.includes(ME?.role) || (roles.includes('SalesTeam') && SALES_MEMBER);
 
-  function activateTab(name){
+  function activateTab(name, keepScroll){
     document.querySelectorAll('.side-item').forEach(x=>x.classList.toggle('active', x.dataset.tab===name));
     document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.dataset.panel===name));
-    window.scrollTo({top:0,behavior:'smooth'});
+    if(!keepScroll) window.scrollTo({top:0,behavior:'smooth'});
   }
   function buildSidebar(){
     const nav=$('#sideNav'); if(!nav) return;
+    // remember where the user IS — a re-render (e.g. after saving a member) must
+    // NOT yank them back to the first tab + top of page (Madison's #1 complaint)
+    const cur=document.querySelector('.side-item.active')?.dataset.tab||null;
     let html='', first=null;
     NAV.forEach(g=>{
       const items=g.items.filter(it=>canSee(it[2]));
@@ -1802,7 +1894,8 @@
     if(!first){ html=`<div class="side-empty"><h2>No sections yet</h2><p>Your login isn’t mapped to a role with views here. Ask Austin to set your role.</p></div>`; }
     nav.innerHTML=html;
     nav.querySelectorAll('.side-item').forEach(b=> b.onclick=()=>activateTab(b.dataset.tab));
-    if(first) activateTab(first);
+    const target=(cur && [...nav.querySelectorAll('.side-item')].some(b=>b.dataset.tab===cur))?cur:first;
+    if(target) activateTab(target, target===cur);   // stay on the current tab, no scroll jump
   }
 
   /* ═══ MEMBER MODAL (add / edit / delete) ═══ */
@@ -1824,7 +1917,7 @@
     $('#f_name').value=m?m.name:''; $('#f_email').value=m?m.email:''; $('#f_phone').value=m?m.phone:'';
     $('#f_program').value=m?m.program:'Academy'; $('#f_pod').value=m?m.pod:(PODS[0]?.id||'');
     $('#f_payment').value=m?m.pay:'Good';
-    $('#f_calls').value=m?m.calls:0; $('#f_calls_1w').value=m?m.calls_1w:0; $('#f_posts').value=m?m.posts:0; $('#f_homework').value=m?m.hw:0;
+    $('#f_calls').value=m?m.calls:0; $('#f_calls_1w').value=m?m.calls_1w:0; $('#f_posts').value=m?m.posts:0; $('#f_comments').value=m?m.comments:0; $('#f_homework').value=m?m.hw:0;
     $('#f_nps').value=m&&m.nps!=null?m.nps:''; $('#f_upsell').value=m?m.upsell:0; $('#f_override').value=m?(m.override||''):'';
     $('#f_activated').checked=m?m.activated:false; $('#f_new').checked=m?m.newThisMonth:false;
     $('#f_churned').checked=m?m.churnedThisMonth:false; $('#f_failed').checked=m?m.failed30:false;
@@ -1843,11 +1936,12 @@
     if(!name){ $('#modalErr').textContent='Name is required.'; return; }
     const row={
       name, email:$('#f_email').value.trim()||null, phone:$('#f_phone').value.trim()||null, program:$('#f_program').value, pod_id:$('#f_pod').value||null,
-      payment:$('#f_payment').value, calls:+$('#f_calls').value||0, calls_1w:+$('#f_calls_1w').value||0, posts:+$('#f_posts').value||0, homework:+$('#f_homework').value||0,
+      payment:$('#f_payment').value, calls:+$('#f_calls').value||0, calls_1w:+$('#f_calls_1w').value||0, posts:+$('#f_posts').value||0, comments:+$('#f_comments').value||0, homework:+$('#f_homework').value||0,
       nps: $('#f_nps').value===''?null:+$('#f_nps').value, upsell:+$('#f_upsell').value||0, status_override:$('#f_override').value||null,
       activated:$('#f_activated').checked, new_this_month:$('#f_new').checked, churned_this_month:$('#f_churned').checked, failed_30:$('#f_failed').checked,
       updated_by: ME?.full_name||ME?.email||null
     };
+    if(!NEW_COLS) delete row.comments;   // schema not migrated yet — don't break saves
     $('#modalSave').disabled=true;
     let memberId=editingId, err=null;
     if(editingId){ const res=await sb.from('members').update(row).eq('id',editingId); err=res.error; }
@@ -1855,17 +1949,21 @@
     const newNote=$('#m_new_note').value.trim();
     if(!err && newNote && memberId){ const nr=await sb.from('member_notes').insert({ member_id:memberId, body:newNote, created_by:ME?.full_name||ME?.email||null }); err=nr.error; }
     // snapshot this week's attendance into the time-series for monthly reports
-    if(!err && memberId){ await sb.from('weekly_attendance').upsert({ member_id:memberId, week_start:weekStartISO(), attended:row.calls_1w }, { onConflict:'member_id,week_start' }); }
+    if(!err && memberId){
+      const snap={ member_id:memberId, week_start:weekStartISO(), attended:row.calls_1w };
+      if(NEW_COLS){ snap.posts=row.posts; snap.comments=row.comments||0; }   // weekly posts + comments history
+      await sb.from('weekly_attendance').upsert(snap, { onConflict:'member_id,week_start' });
+    }
     $('#modalSave').disabled=false;
     if(err){ $('#modalErr').textContent=err.message; return; }
-    closeModal(); await loadData(); renderAll(); toast(editingId?'Member updated':'Member added');
+    closeModal(); await refreshKeepScroll(); toast(editingId?'Member updated':'Member added');
   };
   $('#modalDelete').onclick=async ()=>{
     if(!editingId) return;
     if(!confirm('Delete this member? This affects everyone’s view.')) return;
     const res=await sb.from('members').delete().eq('id',editingId);
     if(res.error){ $('#modalErr').textContent=res.error.message; return; }
-    closeModal(); await loadData(); renderAll(); toast('Member deleted');
+    closeModal(); await refreshKeepScroll(); toast('Member deleted');
   };
   function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
 
