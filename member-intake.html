@@ -320,6 +320,9 @@ function computeFocus(d){
 }
 
 /* ═══ SUBMIT ═══ */
+// Detect "the DB migration hasn't been run" so we show a human message, not "column … does not exist".
+function schemaMissing(e){ const m=(e&&(e.message||''))+(e&&(e.code||'')); return /schema cache|does not exist|PGRST205|42703|42P01/i.test(m); }
+const MIGRATE_MSG='The OS database update for member intake hasn’t been run yet. Ask Austin to run the member-intake migration in Supabase, then try again — your answers are still saved as a draft on this device.';
 async function submit(){
   document.querySelectorAll('.field.invalid').forEach(x=>x.classList.remove('invalid'));
   const missing=REQ.filter(c=>!String(el(c)?.value||'').trim());
@@ -346,14 +349,14 @@ async function submit(){
   let err=null;
   if(memberId){const r=await sb.from('members').update(memberPatch).eq('id',memberId);err=r.error;}
   else{const r=await sb.from('members').insert(memberPatch).select('id').single();err=r.error;memberId=r.data?.id;}
-  if(err){btn.disabled=false;return status('Member save failed: '+err.message,true);}
+  if(err){btn.disabled=false;return status(schemaMissing(err)?MIGRATE_MSG:('Member save failed: '+err.message),true);}
 
   // 2) upsert the intake (1:1 on member_id)
   const intake={member_id:memberId,support_tier:tier,focus_path:focus,raw:d,updated_by:ME_NAME||ME_EMAIL};
   ALL.forEach(f=>{if(MEMBER_FIELDS.has(f.c)&&f.c!=='program')return; // name/email live on members; program mirrored below
     intake[f.c]= f.c==='red_flag'?redFlag : d[f.c];});
   const ir=await sb.from('member_intake').upsert(intake,{onConflict:'member_id'});
-  if(ir.error){btn.disabled=false;return status('Intake save failed: '+ir.error.message,true);}
+  if(ir.error){btn.disabled=false;return status(schemaMissing(ir.error)?MIGRATE_MSG:('Intake save failed: '+ir.error.message),true);}
 
   // 3) member note (best-effort)
   try{await sb.from('member_notes').insert({member_id:memberId,body:`Onboarding intake completed by ${ME_NAME||ME_EMAIL}. Support tier: ${tier}. Focus: ${focus.join(', ')||'—'}.`,created_by:ME_NAME||ME_EMAIL});}catch(e){}
