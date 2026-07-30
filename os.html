@@ -1409,7 +1409,9 @@
 
   async function enterApp(){
     await loadData();
-    await maybeWeeklyRollover();
+    // DISABLED 2026-07 — the client-side weekly rollover could archive current
+    // entries as "last week" and zero the live counters when it first ran mid-week.
+    // Weekly reset now handled safely server-side (Monday cron). See maybeWeeklyRollover (kept for reference, not called).
     if (window.SalesOS){ try { const s=await window.SalesOS.boot(); SALES_MEMBER=!!s.isMember; } catch(_){} }
     $('#login').style.opacity=0;
     setTimeout(()=>{ $('#login').style.display='none'; },350);
