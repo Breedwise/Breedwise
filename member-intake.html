@@ -160,6 +160,9 @@ const SECTIONS=[
    {c:'member_name',l:'Member full name',t:'text',req:1,target:'member'},
    {c:'kennel_name',l:'Kennel / business name',t:'text',req:1},
    {c:'email',l:'Email',t:'email',req:1,target:'member',wide:1,help:'Used to match / create their OS file.'},
+   {c:'location',l:'Location (city, state)',t:'text',raw_only:1},
+   {c:'breed',l:'Breed(s) raised',t:'text',raw_only:1},
+   {c:'years_experience',l:'Years of breeding experience',t:'number',raw_only:1},
  ]},
  {n:'02',t:'Program & Payment',sub:'Program tier and payment terms drive their support level.',f:[
    {c:'program',l:'Program',t:'select',opts:['','Academy','Accelerator','Elite'],target:'member'},
@@ -239,6 +242,8 @@ const SECTIONS=[
    {c:'completed_by',l:'Completed by',t:'text'},
  ]},
 ];
+// A free-text "other info" note at the end of every section (Madison's request; stored in raw jsonb).
+SECTIONS.forEach(s=>s.f.push({c:'note_'+s.n,l:'Additional notes / other info for this section',t:'textarea',raw_only:1}));
 const ALL=SECTIONS.flatMap(s=>s.f);
 const MEMBER_FIELDS=new Set(ALL.filter(f=>f.target==='member').map(f=>f.c)); // member_name,email,program
 const INT=new Set(ALL.filter(f=>f.t==='int').map(f=>f.c));
@@ -353,7 +358,8 @@ async function submit(){
 
   // 2) upsert the intake (1:1 on member_id)
   const intake={member_id:memberId,support_tier:tier,focus_path:focus,raw:d,updated_by:ME_NAME||ME_EMAIL};
-  ALL.forEach(f=>{if(MEMBER_FIELDS.has(f.c)&&f.c!=='program')return; // name/email live on members; program mirrored below
+  ALL.forEach(f=>{if(f.raw_only)return;                              // raw_only fields live in `raw` jsonb, not columns
+    if(MEMBER_FIELDS.has(f.c)&&f.c!=='program')return;             // name/email live on members; program mirrored below
     intake[f.c]= f.c==='red_flag'?redFlag : d[f.c];});
   const ir=await sb.from('member_intake').upsert(intake,{onConflict:'member_id'});
   if(ir.error){btn.disabled=false;return status(schemaMissing(ir.error)?MIGRATE_MSG:('Intake save failed: '+ir.error.message),true);}
@@ -387,7 +393,10 @@ async function prefill(){
   if(m){setV('member_name',m.name);setV('email',m.email);setV('program',m.program);
     document.getElementById('editPill').classList.remove('hide');
     document.getElementById('editPill').textContent='Editing: '+(m.name||m.email||'member');}
-  if(intake){ALL.forEach(f=>{if(f.c in intake)setV(f.c,intake[f.c]);});}
+  if(intake){
+    ALL.forEach(f=>{if(f.c in intake)setV(f.c,intake[f.c]);});
+    const rw=intake.raw||{}; ALL.forEach(f=>{if(f.raw_only && (f.c in rw))setV(f.c,rw[f.c]);});   // restore raw_only fields (location/breed/years/notes)
+  }
   // draft overrides saved values (unsaved edits from this device win)
   const n=loadDraft();
   updateProgress();
