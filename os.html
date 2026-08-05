@@ -450,6 +450,17 @@
       </section>
 
       <!-- CM -->
+      <section class="panel" data-panel="churned">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Inactive · moved out of the active pods</div>
+          <h1 class="view-title">Churned Members</h1>
+          <p class="view-sub">Members who cancelled or churned this month — kept here, out of the pod views, for win‑back and records.</p>
+        </div></div>
+        <div class="table-wrap"><div style="overflow-x:auto"><table>
+          <thead><tr><th>Member</th><th>Program</th><th>Former pod</th><th>Payment</th><th>NPS</th><th>Notes</th><th></th></tr></thead>
+          <tbody id="churnedBody"></tbody>
+        </table></div></div>
+      </section>
       <section class="panel" data-panel="cm">
         <div class="view-head"><div>
           <div class="view-eyebrow">Community · visible to the whole team</div>
@@ -1659,14 +1670,29 @@
     $('#actFunnel').innerHTML=steps.map(([l,n])=>{const p=Math.round(n/N*100);return `<div class="funnel-row"><div class="funnel-lbl">${l}</div><div class="funnel-track"><div class="funnel-fill" style="width:${Math.max(p,8)}%"><span>${n}</span></div></div><div class="funnel-pct">${p}%</div></div>`;}).join('');
   }
 
+  // A member is "churned" if cancelled or flagged churned-this-month — kept OUT of the pods.
+  function isChurned(m){ return m.pay==='Cancelled' || m.churnedThisMonth; }
+  function renderChurned(){
+    const body=$('#churnedBody'); if(!body) return;
+    const rows=MEMBERS.filter(isChurned).sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+    body.innerHTML=rows.map(m=>`<tr>
+      <td><div class="m-name">${esc(m.name)}</div><div class="m-email">${esc(m.email||'')}</div></td>
+      <td><span class="prog-tag">${m.program||'—'}</span></td>
+      <td class="muted-cell">${esc(podName(m.pod))}</td>
+      <td class="${m.pay==='Cancelled'?'pay-bad':''}">${esc(m.pay)}${m.churnedThisMonth?' <span class="tag">churned this mo</span>':''}</td>
+      <td class="num">${m.nps??'—'}</td>
+      <td class="muted-cell" style="font-size:11.5px">${esc((m.notes||'').slice(0,90))}</td>
+      <td><button class="row-edit" data-edit="${m.id}">Edit</button></td>
+    </tr>`).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:26px">No churned members. 🎉</td></tr>`;
+  }
   function renderAL(){
-    $('#podSelect').innerHTML=PODS.map(p=>`<option value="${p.id}">${esc(p.name)} · ${MEMBERS.filter(m=>m.pod===p.id&&m.pay!=='Cancelled').length} active</option>`).join('');
+    $('#podSelect').innerHTML=PODS.map(p=>`<option value="${p.id}">${esc(p.name)} · ${MEMBERS.filter(m=>m.pod===p.id&&!isChurned(m)).length} active</option>`).join('');
     $('#podSelect').value=curPod;
     $('#podSelect').onchange=e=>{curPod=e.target.value;renderAL();};
     const pod=PODS.find(p=>p.id===curPod)||{};
     $('#podStage').textContent= pod.stage==='ramp'?'Stage: Ramp (days 1–60)':'Stage: Ongoing (day 61+)';
     renderKPIs('#alKpis', podKPIs(curPod));
-    const all=MEMBERS.filter(m=>m.pod===curPod);
+    const all=MEMBERS.filter(m=>m.pod===curPod && !isChurned(m));   // churned members live in their own section
     const hwOk=m=>{ switch(podHw){ case 'ge80': return m.hw>=80; case 'ge60': return m.hw>=60; case 'lt60': return m.hw<60; case 'lt40': return m.hw<40; default: return true; } };
     const pm=all.filter(hwOk); const ord={Red:0,Yellow:1,Green:2};
     pm.sort((a,b)=>ord[statusOf(a)]-ord[statusOf(b)]);
@@ -1821,7 +1847,7 @@
     $('#navRole').textContent = ROLE_LABEL[ME?.role] || roleLabel(ME?.role) || sRole || '';
     buildSidebar();
     renderKPIs('#dirKpis', directorKPIs());
-    renderFunnel(); renderStatusMix(); renderDirTable(); renderHandoff();
+    renderFunnel(); renderStatusMix(); renderDirTable(); renderHandoff(); renderChurned();
     renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderAccelerator(); renderCalendar(); renderReports(); renderAffiliates(); renderPlans(); renderPayments(); renderTasks(); renderDirectory();
     const eb=$('#exportBtn'); if(eb) eb.onclick=buildExport;
     if(ME?.role==='Vet'){ document.querySelectorAll('[data-add-ss],#ccAdd,[data-edit-ss],[data-add]').forEach(b=>{ if(b) b.style.display='none'; }); }
@@ -1846,6 +1872,7 @@
       ['directory','Directory',['Founder','Director','CommunityManager']],
       ['handoff','Onboarding Handoff',['Founder','Director','AccountabilityLeader','CommunityManager']],
       ['al','Pod Command Center',['Founder','Director','AccountabilityLeader','CommunityManager']],
+      ['churned','Churned Members',['Founder','Director','AccountabilityLeader','CommunityManager']],
       ['cm','Community Engine',['Founder','Director','CommunityManager']],
       ['issues','Issues',['Founder','Director','CommunityManager']],
       ['strategy','Strategy Sessions',['Founder','Director']],
