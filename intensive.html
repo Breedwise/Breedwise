@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breedwise — The 90-Day Done-For-You Intensive</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #ffffff;
+      --surface:   #f7f6f3;
+      --card:      #f0eeea;
+      --border:    #e2dfd8;
+      --gold:      #b8922e;
+      --gold-lt:   #cda64a;
+      --gold-faint: rgba(184,146,46,0.07);
+      --gold-mid:  rgba(184,146,46,0.15);
+      --ink:       #0f0e0c;
+      --ink-soft:  #1c1a16;
+      --muted:     #86847d;
+      --mid:       #48463f;
+      --danger:    #8b3a3a;
+      --green:     #4a6b3f;
+      --heading:   'Playfair Display', Georgia, serif;
+      --body:      'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --ease:      0.18s ease;
+      --radius:    10px;
+      --maxw:      1120px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 15px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 40px; }
+
+    /* ═══ NAV ═════════════════════════════════════════════ */
+    nav {
+      position: sticky; top: 0;
+      background: rgba(255,255,255,0.94); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border); z-index: 100;
+      height: 62px; display: flex; align-items: center;
+    }
+    nav .wrap { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+    .nav-logo { font-family: var(--heading); font-size: 21px; font-weight: 600; color: var(--gold); text-decoration: none; letter-spacing: 0.01em; }
+    .nav-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+    .nav-links { display: flex; gap: 26px; }
+    .nav-links a { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mid); text-decoration: none; transition: color var(--ease); }
+    .nav-links a:hover { color: var(--gold); }
+    @media (max-width: 860px){ .nav-links { display: none; } }
+
+    /* ═══ HERO ════════════════════════════════════════════ */
+    .hero {
+      background: var(--ink);
+      color: #fff;
+      padding: 84px 0 78px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content:''; position:absolute; inset:0;
+      background:
+        radial-gradient(900px 420px at 78% -10%, rgba(184,146,46,0.16), transparent 60%),
+        radial-gradient(700px 400px at 8% 120%, rgba(184,146,46,0.08), transparent 55%);
+      pointer-events:none;
+    }
+    .hero .wrap { position: relative; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold-lt); margin-bottom: 24px;
+    }
+    .eyebrow::before, .eyebrow.center::after {
+      content: ''; width: 34px; height: 1px; background: rgba(184,146,46,0.45);
+    }
+    .hero h1 {
+      font-family: var(--heading); font-size: clamp(34px, 5.4vw, 60px);
+      font-weight: 600; line-height: 1.08; max-width: 15ch; margin-bottom: 22px;
+    }
+    .hero h1 em { color: var(--gold-lt); font-style: italic; }
+    .hero p.lede { font-size: clamp(16px,1.9vw,19px); color: rgba(255,255,255,0.62); max-width: 60ch; line-height: 1.6; }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: 14px; margin-top: 38px;
+    }
+    .meta-pill {
+      display: inline-flex; align-items: center; gap: 9px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 50px; padding: 9px 18px; font-size: 13px; color: rgba(255,255,255,0.82);
+    }
+    .meta-pill b { color: var(--gold-lt); font-weight: 600; }
+
+    /* ═══ SECTION SHELL ═══════════════════════════════════ */
+    section { padding: 78px 0; }
+    section.alt { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .sec-head { max-width: 62ch; margin-bottom: 46px; }
+    .sec-head.center { margin-left: auto; margin-right: auto; text-align: center; }
+    .kicker { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 600; display: block; margin-bottom: 14px; }
+    h2.sec-title { font-family: var(--heading); font-size: clamp(26px,3.4vw,40px); font-weight: 600; line-height: 1.14; color: var(--ink); }
+    h2.sec-title em { font-style: italic; color: var(--gold); }
+    .sec-sub { font-size: 16px; color: var(--mid); margin-top: 16px; line-height: 1.65; }
+
+    /* ═══ THE SHIFT (problem/solution) ════════════════════ */
+    .shift-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    @media (max-width: 780px){ .shift-grid { grid-template-columns: 1fr; } }
+    .shift-card {
+      border: 1px solid var(--border); border-radius: var(--radius); padding: 30px 30px 28px;
+      background: var(--bg);
+    }
+    .shift-card.problem { border-left: 3px solid var(--danger); }
+    .shift-card.solution { border-left: 3px solid var(--green); background: var(--gold-faint); }
+    .shift-tag { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; margin-bottom: 14px; display: inline-block; }
+    .shift-card.problem .shift-tag { color: var(--danger); }
+    .shift-card.solution .shift-tag { color: var(--green); }
+    .shift-card h3 { font-family: var(--heading); font-size: 21px; font-weight: 600; margin-bottom: 12px; line-height: 1.3; }
+    .shift-card p { color: var(--mid); font-size: 14.5px; }
+    .shift-list { list-style: none; margin-top: 16px; display: grid; gap: 10px; }
+    .shift-list li { position: relative; padding-left: 24px; font-size: 14px; color: var(--mid); }
+    .shift-list li::before { content: ''; position: absolute; left: 4px; top: 9px; width: 7px; height: 7px; border-radius: 50%; }
+    .shift-card.solution .shift-list li::before { background: var(--green); }
+    .shift-card.problem .shift-list li::before { background: var(--danger); }
+
+    /* ═══ PILLARS ═════════════════════════════════════════ */
+    .pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    @media (max-width: 900px){ .pillars { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 520px){ .pillars { grid-template-columns: 1fr; } }
+    .pillar {
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 28px 24px; transition: transform var(--ease), box-shadow var(--ease), border-color var(--ease);
+    }
+    .pillar:hover { transform: translateY(-3px); box-shadow: 0 14px 34px -20px rgba(15,14,12,0.28); border-color: var(--gold-mid); }
+    .pillar-num { font-family: var(--heading); font-size: 15px; color: var(--gold); font-weight: 600; letter-spacing: 0.08em; display: block; margin-bottom: 16px; }
+    .pillar h3 { font-family: var(--heading); font-size: 19px; font-weight: 600; margin-bottom: 10px; line-height: 1.28; }
+    .pillar p { font-size: 13.5px; color: var(--mid); }
+
+    /* ═══ ROADMAP / TIMELINE ══════════════════════════════ */
+    .phase { margin-bottom: 44px; }
+    .phase:last-child { margin-bottom: 0; }
+    .phase-head { display: flex; align-items: baseline; gap: 18px; margin-bottom: 22px; padding-bottom: 16px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .phase-badge {
+      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600;
+      color: var(--gold); background: var(--gold-faint); border: 1px solid var(--gold-mid);
+      padding: 5px 12px; border-radius: 50px; white-space: nowrap;
+    }
+    .phase-head h3 { font-family: var(--heading); font-size: clamp(20px,2.4vw,26px); font-weight: 600; }
+    .phase-head .phase-goal { font-size: 13.5px; color: var(--muted); margin-left: auto; font-style: italic; }
+    .weeks { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    @media (max-width: 820px){ .weeks { grid-template-columns: 1fr; } }
+    .week {
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 22px 22px 20px; position: relative;
+    }
+    .week-label { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .week-dot { width: 30px; height: 30px; border-radius: 50%; background: var(--ink); color: var(--gold-lt); font-family: var(--heading); font-size: 13px; font-weight: 600; display: grid; place-items: center; flex-shrink: 0; }
+    .week-num { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+    .week h4 { font-family: var(--heading); font-size: 16.5px; font-weight: 600; margin-bottom: 12px; line-height: 1.3; }
+    .drops { list-style: none; display: grid; gap: 8px; }
+    .drops li { position: relative; padding-left: 20px; font-size: 13px; color: var(--mid); line-height: 1.5; }
+    .drops li::before { content: '›'; position: absolute; left: 4px; top: -1px; color: var(--gold); font-weight: 700; }
+
+    /* parallel breeding rail */
+    .rail {
+      margin-top: 34px; border: 1px dashed var(--gold-mid); border-radius: var(--radius);
+      background: var(--gold-faint); padding: 24px 28px;
+      display: flex; gap: 26px; align-items: flex-start; flex-wrap: wrap;
+    }
+    .rail-tag { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-weight: 700; white-space: nowrap; }
+    .rail-body { flex: 1; min-width: 260px; }
+    .rail-body h4 { font-family: var(--heading); font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+    .rail-body p { font-size: 13.5px; color: var(--mid); }
+    .rail-items { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .rail-items span { font-size: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 50px; padding: 5px 13px; color: var(--mid); }
+
+    /* ═══ DELIVERABLES GRID ═══════════════════════════════ */
+    .track-tabs { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+    .track-head { display: flex; align-items: center; gap: 14px; margin: 40px 0 22px; }
+    .track-head:first-of-type { margin-top: 0; }
+    .track-head .tnum { font-family: var(--heading); font-size: 13px; font-weight: 600; color: var(--gold); border: 1px solid var(--gold-mid); border-radius: 50%; width: 30px; height: 30px; display: grid; place-items: center; }
+    .track-head h3 { font-family: var(--heading); font-size: 23px; font-weight: 600; }
+    .track-head .tcount { font-size: 12px; color: var(--muted); margin-left: auto; letter-spacing: 0.08em; text-transform: uppercase; }
+    .deliv-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    @media (max-width: 900px){ .deliv-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 560px){ .deliv-grid { grid-template-columns: 1fr; } }
+    .deliv {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 9px;
+      padding: 16px 18px; display: flex; gap: 13px; align-items: flex-start;
+      transition: border-color var(--ease), background var(--ease);
+    }
+    .deliv:hover { border-color: var(--gold-mid); background: var(--gold-faint); }
+    .deliv .check {
+      flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%;
+      background: var(--gold); color: #fff; display: grid; place-items: center;
+      font-size: 11px; margin-top: 2px;
+    }
+    .deliv b { font-weight: 600; font-size: 14px; display: block; line-height: 1.35; }
+    .deliv small { font-size: 12px; color: var(--muted); display: block; margin-top: 3px; line-height: 1.45; }
+
+    /* ═══ OWNERSHIP MAP (delegation) ══════════════════════ */
+    .own-intro { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 30px; align-items: end; margin-bottom: 40px; }
+    @media (max-width: 780px){ .own-intro { grid-template-columns: 1fr; } }
+    .own-note { background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: var(--radius); padding: 20px 22px; font-size: 13.5px; color: var(--mid); }
+    .own-note b { color: var(--ink); }
+    .owners { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    @media (max-width: 900px){ .owners { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 560px){ .owners { grid-template-columns: 1fr; } }
+    .owner {
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 22px; transition: transform var(--ease), box-shadow var(--ease);
+    }
+    .owner:hover { transform: translateY(-2px); box-shadow: 0 12px 30px -20px rgba(15,14,12,0.3); }
+    .owner-top { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--ink); color: var(--gold-lt); font-family: var(--heading); font-weight: 600; font-size: 16px; display: grid; place-items: center; flex-shrink: 0; }
+    .owner-top .who b { font-family: var(--heading); font-size: 17px; font-weight: 600; display: block; line-height: 1.2; }
+    .owner-top .who small { font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+    .owner ul { list-style: none; display: grid; gap: 7px; }
+    .owner li { position: relative; padding-left: 18px; font-size: 13px; color: var(--mid); line-height: 1.45; }
+    .owner li::before { content: ''; position: absolute; left: 3px; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+    /* ═══ CADENCE ═════════════════════════════════════════ */
+    .cadence { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+    @media (max-width: 820px){ .cadence { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 460px){ .cadence { grid-template-columns: 1fr; } }
+    .cad {
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 24px 22px; text-align: left;
+    }
+    .cad .day { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+    .cad h4 { font-family: var(--heading); font-size: 18px; font-weight: 600; margin: 8px 0 8px; }
+    .cad p { font-size: 13px; color: var(--mid); }
+    .cad .tag { display: inline-block; margin-top: 12px; font-size: 11px; background: var(--card); border-radius: 50px; padding: 4px 11px; color: var(--mid); }
+
+    /* ═══ OUTCOME / CTA ═══════════════════════════════════ */
+    .outcome { background: var(--ink); color: #fff; text-align: center; position: relative; overflow: hidden; }
+    .outcome::before { content:''; position:absolute; inset:0; background: radial-gradient(700px 380px at 50% -20%, rgba(184,146,46,0.18), transparent 60%); }
+    .outcome .wrap { position: relative; }
+    .outcome h2 { font-family: var(--heading); font-size: clamp(28px,4vw,46px); font-weight: 600; line-height: 1.12; margin-bottom: 18px; }
+    .outcome h2 em { color: var(--gold-lt); font-style: italic; }
+    .outcome p { color: rgba(255,255,255,0.62); font-size: 17px; max-width: 56ch; margin: 0 auto 34px; }
+    .outcome-stats { display: flex; justify-content: center; flex-wrap: wrap; gap: 46px; margin-top: 44px; }
+    .stat b { font-family: var(--heading); font-size: 40px; font-weight: 600; color: var(--gold-lt); display: block; line-height: 1; }
+    .stat span { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 10px; display: block; }
+
+    /* ═══ FOOTER ══════════════════════════════════════════ */
+    footer { padding: 40px 0; text-align: center; border-top: 1px solid var(--border); }
+    footer .fmark { font-family: var(--heading); font-size: 20px; color: var(--gold); font-weight: 600; }
+    footer p { font-size: 12px; color: var(--muted); margin-top: 8px; letter-spacing: 0.04em; }
+
+    @media print {
+      nav, .hero-meta { display: none; }
+      section, .hero { padding: 30px 0; }
+      .pillar:hover, .owner:hover, .deliv:hover { transform: none; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAV ═══ -->
+  <nav>
+    <div class="wrap">
+      <a href="#" class="nav-logo">Breedwise</a>
+      <div class="nav-links">
+        <a href="#shift">The Model</a>
+        <a href="#roadmap">90-Day Roadmap</a>
+        <a href="#deliverables">Deliverables</a>
+        <a href="#team">Delivery Team</a>
+      </div>
+      <span class="nav-label">Done-For-You Intensive</span>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <header class="hero">
+    <div class="wrap">
+      <span class="eyebrow">The Breedwise Intensive · 12 Weeks</span>
+      <h1>Build a <em>Six-Figure</em> Breeding Program in 90 Days.</h1>
+      <p class="lede">A done-for-you intensive where our team builds your business alongside you — every asset, system, and script delivered to the group, backed by weekly 1:1s to keep you on track. You implement with our recordings; we handle the heavy lifting.</p>
+      <div class="hero-meta">
+        <span class="meta-pill"><b>12</b> weeks of group training</span>
+        <span class="meta-pill"><b>2</b> delivery tracks — Business + Breeding</span>
+        <span class="meta-pill"><b>9</b> veterinary calls</span>
+        <span class="meta-pill"><b>Weekly</b> 1:1 stability check</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ THE SHIFT ═══ -->
+  <section id="shift">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">Why This Model</span>
+        <h2 class="sec-title">Consistency at scale — <em>without</em> the 1:1 bottleneck.</h2>
+        <p class="sec-sub">One-on-one delivery couldn't scale and created inconsistencies. So we rebuilt the program around group training, standardized deliverables, and reference recordings — with just enough targeted 1:1 to keep every member stable and moving.</p>
+      </div>
+      <div class="shift-grid">
+        <div class="shift-card problem">
+          <span class="shift-tag">The Old Way</span>
+          <h3>Pure 1:1 delivery</h3>
+          <p>Impossible to scale, exhausting to sustain, and inconsistent from member to member.</p>
+          <ul class="shift-list">
+            <li>Every asset rebuilt from scratch, every time</li>
+            <li>Quality drifted depending on who delivered</li>
+            <li>No reference library — members re-asked the same questions</li>
+            <li>Team stretched thin, results uneven</li>
+          </ul>
+        </div>
+        <div class="shift-card solution">
+          <span class="shift-tag">The Breedwise Way</span>
+          <h3>Group build + done-for-you assets</h3>
+          <p>Standardized, high-impact delivery for the whole cohort — with 1:1 reserved for what actually moves the needle.</p>
+          <ul class="shift-list">
+            <li><b>Group training</b> so every member gets the same proven playbook</li>
+            <li><b>Deliverables built for the group</b> — funnels, decks, content, systems</li>
+            <li><b>Recordings for reference</b> to implement on your own time</li>
+            <li><b>Limited, impactful weekly 1:1</b> to ensure stability</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PILLARS ═══ -->
+  <section class="alt">
+    <div class="wrap">
+      <div class="sec-head center">
+        <span class="kicker">How Delivery Works</span>
+        <h2 class="sec-title">Four ways we deliver every week.</h2>
+      </div>
+      <div class="pillars">
+        <div class="pillar">
+          <span class="pillar-num">01</span>
+          <h3>Group Training</h3>
+          <p>Live weekly sessions where the cohort learns the same system together — no member left behind, no inconsistency.</p>
+        </div>
+        <div class="pillar">
+          <span class="pillar-num">02</span>
+          <h3>Done-For-You Assets</h3>
+          <p>We build your funnel, deck, content, brand, and backend for you — delivered to the group, ready to deploy.</p>
+        </div>
+        <div class="pillar">
+          <span class="pillar-num">03</span>
+          <h3>Reference Recordings</h3>
+          <p>Every session and asset walkthrough is recorded, so you implement on your schedule and never lose a step.</p>
+        </div>
+        <div class="pillar">
+          <span class="pillar-num">04</span>
+          <h3>Weekly 1:1 Stability</h3>
+          <p>A focused, limited one-on-one each week to unblock you, tailor the system, and keep momentum steady.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ROADMAP ═══ -->
+  <section id="roadmap">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">The 90-Day Roadmap</span>
+        <h2 class="sec-title">What gets delivered, <em>and when.</em></h2>
+        <p class="sec-sub">Three phases over twelve weeks — Position, Build, then Launch &amp; Scale. Your business assets drop on schedule while the breeding track runs in parallel from day one.</p>
+      </div>
+
+      <!-- PHASE 1 -->
+      <div class="phase">
+        <div class="phase-head">
+          <span class="phase-badge">Phase 1 · Weeks 1–3</span>
+          <h3>Position &amp; Package</h3>
+          <span class="phase-goal">Foundation: who you serve, what you sell, how you get paid.</span>
+        </div>
+        <div class="weeks">
+          <div class="week">
+            <div class="week-label"><span class="week-dot">1</span><span class="week-num">Week One</span></div>
+            <h4>Niche &amp; Brand</h4>
+            <ul class="drops">
+              <li>Kickoff &amp; roadmap call</li>
+              <li>Niche Creation — ICP, marketing blueprint &amp; angle</li>
+              <li>Brand Elements — logo, colors, fonts</li>
+            </ul>
+          </div>
+          <div class="week">
+            <div class="week-label"><span class="week-dot">2</span><span class="week-num">Week Two</span></div>
+            <h4>Offer &amp; Entity</h4>
+            <ul class="drops">
+              <li>Pricing Framework &amp; Offer Stack</li>
+              <li>LLC Setup</li>
+              <li>Stripe Setup</li>
+            </ul>
+          </div>
+          <div class="week">
+            <div class="week-label"><span class="week-dot">3</span><span class="week-num">Week Three</span></div>
+            <h4>Pitch &amp; Backend</h4>
+            <ul class="drops">
+              <li>Sales Pitch Deck</li>
+              <li>CRM &amp; Backend Setup</li>
+              <li>Waitlist System foundation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 2 -->
+      <div class="phase">
+        <div class="phase-head">
+          <span class="phase-badge">Phase 2 · Weeks 4–7</span>
+          <h3>Build the Machine</h3>
+          <span class="phase-goal">Systems &amp; assets: your lead-gen and sales engine, done for you.</span>
+        </div>
+        <div class="weeks">
+          <div class="week">
+            <div class="week-label"><span class="week-dot">4</span><span class="week-num">Week Four</span></div>
+            <h4>Funnel &amp; Waitlist</h4>
+            <ul class="drops">
+              <li>Pre-built Funnel — lead gen &amp; sales</li>
+              <li>Waitlist System live</li>
+            </ul>
+          </div>
+          <div class="week">
+            <div class="week-label"><span class="week-dot">5</span><span class="week-num">Week Five</span></div>
+            <h4>Sales Mastery</h4>
+            <ul class="drops">
+              <li>Sales Scripts &amp; Objection Training</li>
+              <li>Sales Call Recordings library</li>
+            </ul>
+          </div>
+          <div class="week">
+            <div class="week-label"><span class="week-dot">6</span><span class="week-num">Week Six</span></div>
+            <h4>Content Engine</h4>
+            <ul class="drops">
+              <li>90 Days of Content delivered</li>
+              <li>Social Media Strategy</li>
+              <li>How to Film Yourself Training</li>
+            </ul>
+          </div>
+          <div class="week">
+            <div class="week-label"><span class="week-dot">7</span><span class="week-num">Week Seven</span></div>
+            <h4>Automation</h4>
+            <ul class="drops">
+              <li>ManyChat Automations</li>
+              <li>Backend workflows &amp; follow-up</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 3 -->
+      <div class="phase">
+        <div class="phase-head">
+          <span class="phase-badge">Phase 3 · Weeks 8–12</span>
+          <h3>Launch &amp; Scale</h3>
+          <span class="phase-goal">Traffic, sales &amp; profit: turn the machine on and hit the number.</span>
+        </div>
+        <div class="weeks">
+          <div class="week">
+            <div class="week-label"><span class="week-dot">8</span><span class="week-num">Week Eight</span></div>
+            <h4>Traffic On</h4>
+            <ul class="drops">
+              <li>Ads Playbook launch</li>
+              <li>First campaigns live</li>
+            </ul>
+          </div>
+          <div class="week">
+            <div class="week-label"><span class="week-dot">9</span><span class="week-num">Week Nine</span></div>
+            <h4>Measure</h4>
+            <ul class="drops">
+              <li>KPI Dashboard live</li>
+              <li>Tracking &amp; optimization cadence</li>
+            </ul>
+          </div>
+          <div class="week">
+            <div class="week-label"><span class="week-dot">10</span><span class="week-num">Week Ten</span></div>
+            <h4>Profit Plan</h4>
+            <ul class="drops">
+              <li>$100K Profit Plan mapped</li>
+              <li>Live sales execution &amp; review</li>
+            </ul>
+          </div>
+          <div class="week">
+            <div class="week-label"><span class="week-dot">11</span><span class="week-num">Week Eleven</span></div>
+            <h4>Optimize</h4>
+            <ul class="drops">
+              <li>Objection mastery — live reps</li>
+              <li>Funnel &amp; ad optimization</li>
+            </ul>
+          </div>
+          <div class="week">
+            <div class="week-label"><span class="week-dot">12</span><span class="week-num">Week Twelve</span></div>
+            <h4>Scale &amp; Sustain</h4>
+            <ul class="drops">
+              <li>System to hit $100K every year</li>
+              <li>Graduation &amp; handoff</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- PARALLEL BREEDING RAIL -->
+      <div class="rail">
+        <span class="rail-tag">Runs Weeks 1–12 ·<br>In Parallel</span>
+        <div class="rail-body">
+          <h4>The Breeding Mastery Track</h4>
+          <p>While your business is built, our veterinary team keeps your program healthy and compliant — scheduled across the full 90 days so your breeding side never stalls.</p>
+          <div class="rail-items">
+            <span>9 Veterinary Calls</span>
+            <span>Genetic Test Review</span>
+            <span>Whelping SOPs &amp; Templates</span>
+            <span>Reproductive Templates</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ DELIVERABLES ═══ -->
+  <section class="alt" id="deliverables">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">Everything You Get</span>
+        <h2 class="sec-title">Your complete deliverables stack.</h2>
+        <p class="sec-sub">Two tracks, delivered to the group and yours to keep. The business track builds the company; the breeding track keeps it healthy and credible.</p>
+      </div>
+
+      <!-- TRACK 1 -->
+      <div class="track-head">
+        <span class="tnum">A</span>
+        <h3>Business Build-Out</h3>
+        <span class="tcount">18 Deliverables</span>
+      </div>
+      <div class="deliv-grid">
+        <div class="deliv"><span class="check">✓</span><div><b>Sales Pitch Deck</b><small>Conversion-built presentation for closing</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>Sales Scripts &amp; Objection Training</b><small>Word-for-word frameworks that close</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>Sales Call Recordings</b><small>Real calls for reference &amp; training</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>Pre-Built Funnel</b><small>Lead generation &amp; sales, done for you</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>90 Days of Content</b><small>A full quarter, ready to post</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>Social Media Strategy + Content</b><small>Platform plan with the content to run it</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>Ads Playbook</b><small>Paid traffic system that scales</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>CRM &amp; Backend Setup</b><small>Customer relationship manager configured</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>Pricing Framework &amp; Offer Stack</b><small>What to charge and how to package it</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>KPI Dashboard</b><small>See the numbers that matter, live</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>$100K Profit Plan</b><small>The math and the milestones</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>Brand Elements</b><small>Logo, colors &amp; fonts</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>Niche Creation</b><small>ICP, marketing blueprint &amp; angle</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>LLC Setup</b><small>Your business, legally established</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>Stripe Setup</b><small>Get paid from day one</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>ManyChat Automations</b><small>Automated DM &amp; lead capture flows</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>Film-Yourself Training</b><small>How to record content that converts</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>Waitlist System + $100K/yr Engine</b><small>Demand &amp; the system to repeat it yearly</small></div></div>
+      </div>
+
+      <!-- TRACK 2 -->
+      <div class="track-head">
+        <span class="tnum">B</span>
+        <h3>Breeding Mastery</h3>
+        <span class="tcount">4 Deliverables</span>
+      </div>
+      <div class="deliv-grid">
+        <div class="deliv"><span class="check">✓</span><div><b>9 Veterinary Calls</b><small>Scheduled expert guidance across 90 days</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>Genetic Test Review</b><small>Breeding decisions backed by data</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>Whelping SOPs &amp; Templates</b><small>Standard operating procedures for whelping</small></div></div>
+        <div class="deliv"><span class="check">✓</span><div><b>Reproductive Templates</b><small>Repro protocols &amp; record-keeping</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ DELIVERY MODEL ═══ -->
+  <section id="team">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">A Full Team Behind You</span>
+        <h2 class="sec-title">Built by specialists — <em>not</em> a single bottleneck.</h2>
+        <p class="sec-sub">Every workstream is handled by a dedicated expert, so each deliverable is built right and arrives on schedule. You focus on implementing; the team carries the build.</p>
+      </div>
+
+      <div class="owners">
+        <div class="owner">
+          <div class="owner-top"><div class="avatar">◆</div><div class="who"><b>Sales &amp; Offer</b><small>Close with confidence</small></div></div>
+          <ul>
+            <li>Sales Pitch Deck</li>
+            <li>Sales Scripts &amp; Objection Training</li>
+            <li>Sales Call Recordings</li>
+            <li>Pricing Framework &amp; Offer Stack</li>
+          </ul>
+        </div>
+        <div class="owner">
+          <div class="owner-top"><div class="avatar">◆</div><div class="who"><b>Client Success</b><small>Your weekly stability</small></div></div>
+          <ul>
+            <li>Weekly 1:1 stability calls</li>
+            <li>Waitlist System</li>
+            <li>Onboarding &amp; roadmap</li>
+            <li>Recording library &amp; access</li>
+          </ul>
+        </div>
+        <div class="owner">
+          <div class="owner-top"><div class="avatar">◆</div><div class="who"><b>Brand &amp; Positioning</b><small>Stand out on sight</small></div></div>
+          <ul>
+            <li>Brand Elements — logo, colors, fonts</li>
+            <li>Niche Creation — ICP</li>
+            <li>Marketing Blueprint &amp; angle</li>
+          </ul>
+        </div>
+        <div class="owner">
+          <div class="owner-top"><div class="avatar">◆</div><div class="who"><b>Funnel &amp; Tech</b><small>The engine, built for you</small></div></div>
+          <ul>
+            <li>Pre-Built Funnel</li>
+            <li>CRM &amp; Backend Setup</li>
+            <li>Stripe &amp; LLC Setup</li>
+            <li>ManyChat Automations</li>
+          </ul>
+        </div>
+        <div class="owner">
+          <div class="owner-top"><div class="avatar">◆</div><div class="who"><b>Content &amp; Social</b><small>90 days, ready to post</small></div></div>
+          <ul>
+            <li>90 Days of Content</li>
+            <li>Social Media Strategy</li>
+            <li>Film-Yourself Training</li>
+          </ul>
+        </div>
+        <div class="owner">
+          <div class="owner-top"><div class="avatar">◆</div><div class="who"><b>Paid Traffic</b><small>Turn on demand</small></div></div>
+          <ul>
+            <li>Ads Playbook</li>
+            <li>Campaign launch &amp; scaling</li>
+            <li>Creative direction for ads</li>
+          </ul>
+        </div>
+        <div class="owner">
+          <div class="owner-top"><div class="avatar">◆</div><div class="who"><b>Data &amp; Profit</b><small>Hit the number</small></div></div>
+          <ul>
+            <li>KPI Dashboard</li>
+            <li>$100K Profit Plan</li>
+            <li>$100K/year sustaining system</li>
+          </ul>
+        </div>
+        <div class="owner">
+          <div class="owner-top"><div class="avatar">◆</div><div class="who"><b>Breeding &amp; Veterinary</b><small>Healthy &amp; credible</small></div></div>
+          <ul>
+            <li>9 Veterinary Calls</li>
+            <li>Genetic Test Review</li>
+            <li>Whelping SOPs &amp; Templates</li>
+            <li>Reproductive Templates</li>
+          </ul>
+        </div>
+        <div class="owner">
+          <div class="owner-top"><div class="avatar">★</div><div class="who"><b>Guest Speakers</b><small>Specialist masterclasses</small></div></div>
+          <ul>
+            <li>Repro &amp; genetics deep-dives</li>
+            <li>Advanced sales &amp; scaling sessions</li>
+            <li>Rotating expert Q&amp;A</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CADENCE ═══ -->
+  <section class="alt">
+    <div class="wrap">
+      <div class="sec-head center">
+        <span class="kicker">Your Weekly Rhythm</span>
+        <h2 class="sec-title">A predictable week, every week.</h2>
+      </div>
+      <div class="cadence">
+        <div class="cad">
+          <span class="day">Monday</span>
+          <h4>Group Training</h4>
+          <p>Live cohort session on that week's build. Recorded for reference.</p>
+          <span class="tag">Whole cohort</span>
+        </div>
+        <div class="cad">
+          <span class="day">Midweek</span>
+          <h4>Deliverable Drop</h4>
+          <p>That week's done-for-you asset lands in your portal, ready to deploy.</p>
+          <span class="tag">Delivered to group</span>
+        </div>
+        <div class="cad">
+          <span class="day">Your Slot</span>
+          <h4>1:1 Stability Call</h4>
+          <p>Focused, limited one-on-one to unblock and tailor the system to you.</p>
+          <span class="tag">Private</span>
+        </div>
+        <div class="cad">
+          <span class="day">As Scheduled</span>
+          <h4>Vet &amp; Guest Sessions</h4>
+          <p>Breeding calls and specialist masterclasses across the 90 days.</p>
+          <span class="tag">Breeding track</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ OUTCOME ═══ -->
+  <section class="outcome">
+    <div class="wrap">
+      <span class="eyebrow center" style="justify-content:center;">The Outcome</span>
+      <h2>In 90 days, a <em>six-figure</em> breeding program —<br>built, launched, and yours to run.</h2>
+      <p>A complete business machine, a healthy breeding operation, and the system to hit $100K every year. Delivered by a team, not a bottleneck.</p>
+      <div class="outcome-stats">
+        <div class="stat"><b>90</b><span>Days to Launch</span></div>
+        <div class="stat"><b>22</b><span>Core Deliverables</span></div>
+        <div class="stat"><b>$100K</b><span>Yearly System</span></div>
+        <div class="stat"><b>9</b><span>Vet Calls</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="fmark">Breedwise</div>
+      <p>The Done-For-You Intensive · Confidential — for enrolled members only</p>
+    </div>
+  </footer>
+
+</body>
+</html>

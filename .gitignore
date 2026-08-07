@@ -7,6 +7,7 @@
 
 # --- Published site files (root) ---
 !index.html
+!intensive.html
 !onboarding.html
 !audit.html
 !fontaine.html
