@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breedwise — Breeder Asset Intake</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#ffffff;--surface:#f7f6f3;--card:#f0eeea;--border:#e2dfd8;
+  --gold:#b8922e;--gold-lt:#cda64a;--gold-faint:rgba(184,146,46,0.07);--gold-mid:rgba(184,146,46,0.16);
+  --ink:#0f0e0c;--muted:#86847d;--mid:#48463f;
+  --heading:'Playfair Display',Georgia,serif;--body:'Inter',-apple-system,sans-serif;
+  --radius:9px;--ease:.18s ease;
+}
+html{scroll-behavior:smooth}
+body{background:var(--surface);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:88px}
+.wrap{max-width:860px;margin:0 auto;padding:0 26px}
+a{color:var(--gold)}
+
+/* nav */
+nav{background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-family:var(--heading);font-size:21px;font-weight:600;color:var(--gold)}
+.nav-lbl{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+/* hero */
+.hero{background:var(--ink);color:#fff;padding:52px 0 46px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(700px 300px at 85% -10%,rgba(184,146,46,.18),transparent 60%)}
+.hero .wrap{position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:16px}
+.eyebrow::before{content:"";width:30px;height:1px;background:var(--gold)}
+.hero h1{font-family:var(--heading);font-size:clamp(28px,4.6vw,42px);font-weight:600;line-height:1.12}
+.hero h1 em{font-style:italic;color:var(--gold-lt)}
+.hero p{color:rgba(255,255,255,.66);font-size:16px;margin-top:14px;max-width:60ch}
+.assets{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.assets span{font-size:11.5px;letter-spacing:.04em;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:50px;padding:6px 13px;color:rgba(255,255,255,.85)}
+
+/* intro */
+.intro{background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:var(--radius);padding:22px 24px;margin:26px 0}
+.intro h3{font-family:var(--heading);font-size:18px;font-weight:600;margin-bottom:8px}
+.intro p{font-size:14px;color:var(--mid)}
+.intro b{color:var(--ink)}
+
+/* section */
+.sec{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:26px 26px 20px;margin-bottom:18px}
+.sec-head{display:flex;align-items:flex-start;gap:14px;border-bottom:1px solid var(--border);padding-bottom:15px;margin-bottom:18px}
+.sec-num{font-family:var(--heading);font-style:italic;font-size:16px;color:var(--gold);flex:0 0 auto;margin-top:2px}
+.sec-head h2{font-family:var(--heading);font-size:22px;font-weight:600;line-height:1.15}
+.feeds{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:6px;font-weight:600}
+.feeds b{color:var(--gold)}
+
+.field{margin-bottom:16px}
+.field.half{display:inline-block;width:calc(50% - 7px)}
+.field.half:nth-of-type(odd){margin-right:12px}
+@media(max-width:560px){.field.half{width:100%;margin-right:0}}
+.flabel{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:6px}
+.flabel .opt{font-weight:400;color:var(--muted);font-size:11px}
+.hint{font-size:11.5px;color:var(--muted);margin:-2px 0 7px;line-height:1.45}
+input,textarea,select{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--ink);font-family:var(--body);font-size:14px;padding:11px 13px;transition:border-color var(--ease)}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gold)}
+textarea{min-height:78px;resize:vertical}
+input::placeholder,textarea::placeholder{color:#b3b0a8}
+.checks{display:flex;flex-wrap:wrap;gap:8px}
+.checks label{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--mid);background:var(--surface);border:1px solid var(--border);border-radius:50px;padding:8px 14px;cursor:pointer}
+.checks input{width:auto}
+.checks label:has(input:checked){border-color:var(--gold);background:var(--gold-faint);color:var(--ink)}
+
+/* footer bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:14px 0}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.bar .note{font-size:12px;color:var(--muted)}
+.btns{display:flex;gap:10px}
+.btn{font-family:var(--body);font-weight:600;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:12px 22px;border-radius:6px;border:1px solid var(--gold);cursor:pointer;transition:var(--ease)}
+.btn-gold{background:var(--gold);color:#fff;border-color:var(--gold)}.btn-gold:hover{background:var(--gold-lt)}
+.btn-ghost{background:transparent;color:var(--gold)}.btn-ghost:hover{background:var(--gold-faint)}
+.pick{font-size:11px;color:var(--gold);cursor:pointer;font-weight:600;margin-left:6px;white-space:nowrap}
+.done-ov{position:fixed;inset:0;z-index:200;background:rgba(15,14,12,.78);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:24px}
+.done-ov.on{display:flex}
+.done-card{background:var(--bg);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:14px;padding:40px 38px;max-width:440px;text-align:center}
+.done-card h3{font-family:var(--heading);font-size:26px;font-weight:600;color:var(--gold);margin-bottom:10px}
+.done-card p{color:var(--mid);font-size:14px}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap"><span class="logo">Breedwise</span><span class="nav-lbl">Breeder Asset Intake · Template</span></div></nav>
+
+<header class="hero"><div class="wrap">
+  <span class="eyebrow">Breedwise Accelerator · Asset Production</span>
+  <h1>The Breeder <em>Intake</em>.</h1>
+  <p>Complete this once and our team produces your entire branded asset suite — guide, funnel, content, and lead system — at the same standard, tailored to you. The more you give us, the sharper the result. Anything you leave blank, our team researches or writes for you.</p>
+  <div class="assets">
+    <span>📕 Breed Owner's Guide</span><span>🎯 Opt-in Funnel Page</span><span>🎬 10 Instagram Scripts</span>
+    <span>🎥 Filming Playbook</span><span>📊 Lead Tracker + Automation</span><span>🌐 Website</span>
+  </div>
+</div></header>
+
+<div class="wrap">
+  <div class="intro">
+    <h3>How to use this</h3>
+    <p>Fill in what you can — every field is labeled with the asset it powers. Use the <b>"choose / write for me"</b> links when you'd rather our team decide. When you're done, hit <b>Download my answers</b> at the bottom and send the file back to your Breedwise strategist (or it can post straight into your intake sheet). <b>Fields left blank won't be missed</b> — they become our research list.</p>
+  </div>
+
+  <form id="intake">
+
+  <!-- 0 -->
+  <div class="sec">
+    <div class="sec-head"><span class="sec-num">00</span><div><h2>Which assets do you want?</h2><span class="feeds">Feeds: <b>Scope</b></span></div></div>
+    <div class="field"><span class="flabel">Select everything you'd like built</span>
+      <div class="checks">
+        <label><input type="checkbox" name="asset" value="Breed Owner's Guide" checked> Breed Owner's Guide</label>
+        <label><input type="checkbox" name="asset" value="Opt-in Funnel Page" checked> Opt-in Funnel Page</label>
+        <label><input type="checkbox" name="asset" value="Instagram Scripts" checked> Instagram Scripts</label>
+        <label><input type="checkbox" name="asset" value="Filming Playbook" checked> Filming Playbook</label>
+        <label><input type="checkbox" name="asset" value="Lead Tracker" checked> Lead Tracker + Automation</label>
+        <label><input type="checkbox" name="asset" value="Website"> Full Website</label>
+      </div>
+    </div>
+    <div class="field half"><span class="flabel">Breed</span><input name="breed" placeholder="e.g., South African Boerboel"></div>
+    <div class="field half"><span class="flabel">Kennel / business name</span><input name="kennel_name" placeholder="e.g., W3 Gods Boerboels"></div>
+  </div>
+
+  <!-- 1 -->
+  <div class="sec">
+    <div class="sec-head"><span class="sec-num">01</span><div><h2>Brand Identity</h2><span class="feeds">Feeds: <b>Every asset</b></span></div></div>
+    <div class="field half"><span class="flabel">Full business name</span><input name="brand_full" placeholder="How it appears officially"></div>
+    <div class="field half"><span class="flabel">Abbreviation / short name <span class="opt">(optional)</span></span><input name="brand_abbr" placeholder="e.g., W3 / JBK"></div>
+    <div class="field"><span class="flabel">Tagline(s) / slogans <span class="opt">— up to 3</span></span><input name="taglines" placeholder="e.g., No Short Cuts · Only Quality  |  Power · Presence · Purpose"></div>
+    <div class="field"><span class="flabel">Logo <span class="pick" data-fill="logo" data-val="Design one for me">✎ design one for me</span></span><div class="hint">Have a logo? Note the file you'll send. No logo? Use the link.</div><input name="logo" placeholder="I'll send: logo.png  (or)  design one for me"></div>
+    <div class="field"><span class="flabel">Brand colors <span class="pick" data-fill="colors" data-val="Choose a palette for me">✎ choose for me</span></span><div class="hint">Primary, secondary, accent — hex codes if you have them, or describe the vibe.</div><input name="colors" placeholder="e.g., black + orange/gold, fire theme  (or)  #0c110e / #b0914f"></div>
+    <div class="field"><span class="flabel">Fonts <span class="pick" data-fill="fonts" data-val="Choose fonts for me">✎ choose for me</span></span><input name="fonts" placeholder="e.g., Anton + Barlow  (or)  choose for me"></div>
+    <div class="field"><span class="flabel">Brand feel / adjectives</span><input name="brand_feel" placeholder="e.g., powerful, premium, editorial, warm, luxury — pick 3–5"></div>
+  </div>
+
+  <!-- 2 -->
+  <div class="sec">
+    <div class="sec-head"><span class="sec-num">02</span><div><h2>Contact &amp; Reach</h2><span class="feeds">Feeds: <b>Guide · Opt-in · Website · Scripts</b></span></div></div>
+    <div class="field half"><span class="flabel">City, State, Country</span><input name="location" placeholder="Tracy, California, USA"></div>
+    <div class="field half"><span class="flabel">Website domain</span><input name="domain" placeholder="w3godsboerboels.com"></div>
+    <div class="field half"><span class="flabel">Public email</span><input name="email" placeholder="you@kennel.com"></div>
+    <div class="field half"><span class="flabel">Phone / text number</span><input name="phone" placeholder="(949) 678-1781"></div>
+    <div class="field half"><span class="flabel">Instagram</span><input name="instagram" placeholder="@handle"></div>
+    <div class="field half"><span class="flabel">TikTok / YouTube <span class="opt">(optional)</span></span><input name="tiktok_youtube" placeholder="@handles"></div>
+    <div class="field half"><span class="flabel">Approx. follower count <span class="opt">(for stats)</span></span><input name="followers" placeholder="e.g., 40K across platforms"></div>
+    <div class="field half"><span class="flabel">Worldwide shipping?</span><select name="shipping"><option value="">Select…</option><option>Yes</option><option>No</option><option>US only</option></select></div>
+  </div>
+
+  <!-- 3 -->
+  <div class="sec">
+    <div class="sec-head"><span class="sec-num">03</span><div><h2>The Breeder &amp; Program</h2><span class="feeds">Feeds: <b>Guide (About) · Scripts · Website</b></span></div></div>
+    <div class="field half"><span class="flabel">Founder name(s)</span><input name="founder" placeholder="e.g., Jonathan Duke"></div>
+    <div class="field half"><span class="flabel">Years breeding</span><input name="years" placeholder="e.g., 20+"></div>
+    <div class="field"><span class="flabel">Your story <span class="opt">— how you started, why this breed</span> <span class="pick" data-fill="founder_story" data-val="Interview / write for me">✎ write for me</span></span><textarea name="founder_story" placeholder="A few sentences in your own words — we'll polish it."></textarea></div>
+    <div class="field"><span class="flabel">Registries &amp; certifications</span><input name="registries" placeholder="e.g., SABBS, NABBR, WBBA, Breedwise Academy"></div>
+    <div class="field"><span class="flabel">Your breeding non-negotiables / philosophy</span><textarea name="philosophy" placeholder="e.g., Health first, correct structure, stable temperament — what you never compromise."></textarea></div>
+    <div class="field"><span class="flabel">What makes your program different</span><textarea name="differentiators" placeholder="What you do that most breeders don't."></textarea></div>
+    <div class="field"><span class="flabel">Notable dogs / foundation bloodlines <span class="opt">(optional)</span></span><input name="bloodlines" placeholder="e.g., King Henry, Venti, Lionspoint & Aisha lines"></div>
+  </div>
+
+  <!-- 4 -->
+  <div class="sec">
+    <div class="sec-head"><span class="sec-num">04</span><div><h2>Health &amp; Guarantee</h2><span class="feeds">Feeds: <b>Guide (Health) · Opt-in · Scripts</b></span></div></div>
+    <div class="field"><span class="flabel">Health testing you perform <span class="opt">+ where it's verifiable</span></span><textarea name="health_testing" placeholder="e.g., OFA hips & elbows, cardiac, CAER eyes, Embark DNA, SABBS appraisal — verifiable on OFA/SABBS."></textarea></div>
+    <div class="field half"><span class="flabel">Health guarantee — length</span><input name="guarantee_len" placeholder="e.g., 24-month written guarantee"></div>
+    <div class="field half"><span class="flabel">Vet-check window</span><input name="vet_window" placeholder="e.g., 72 hours"></div>
+    <div class="field"><span class="flabel">Guarantee coverage <span class="opt">— what it covers</span></span><textarea name="guarantee_cov" placeholder="e.g., life-threatening hereditary defects…"></textarea></div>
+    <div class="field"><span class="flabel">What each puppy goes home with</span><textarea name="go_home_kit" placeholder="e.g., scent blanket, starter food, vaccination & deworming records, microchip paperwork, pedigree."></textarea></div>
+    <div class="field"><span class="flabel">Ongoing support you provide</span><input name="support" placeholder="e.g., direct text access first 2 weeks, lifetime breeder support"></div>
+  </div>
+
+  <!-- 5 -->
+  <div class="sec">
+    <div class="sec-head"><span class="sec-num">05</span><div><h2>The Breed</h2><span class="feeds">Feeds: <b>Guide (education) · Scripts</b></span></div></div>
+    <div class="intro" style="margin:0 0 16px;border-left-color:var(--gold)"><p style="font-size:13px"><b>Don't know all of this?</b> Leave it blank — our team researches the full breed standard, health profile, and history for you. Fill in what's specific to <em>your</em> program.</p></div>
+    <div class="field half"><span class="flabel">Adult size — males</span><input name="size_m" placeholder="height & weight"></div>
+    <div class="field half"><span class="flabel">Adult size — females</span><input name="size_f" placeholder="height & weight"></div>
+    <div class="field half"><span class="flabel">Lifespan</span><input name="lifespan" placeholder="e.g., 9–11 years"></div>
+    <div class="field half"><span class="flabel">Age of full maturity</span><input name="maturity" placeholder="e.g., 24 months"></div>
+    <div class="field"><span class="flabel">Energy · grooming · trainability <span class="opt">(quick notes)</span></span><input name="egt" placeholder="e.g., moderate energy, low grooming, highly trainable but needs firm leadership"></div>
+    <div class="field"><span class="flabel">Good with kids / other dogs · ideal home · climate</span><input name="lifestyle" placeholder="short notes"></div>
+    <div class="field"><span class="flabel">The biggest myth about the breed</span><input name="myth" placeholder="e.g., 'naturally aggressive'"></div>
+    <div class="field"><span class="flabel">Breed standard notes <span class="opt">— head, coat & colors, movement, temperament</span></span><textarea name="standard" placeholder="What a correct one looks like."></textarea></div>
+    <div class="field"><span class="flabel">Growth / socialization notes specific to the breed</span><textarea name="growth_social" placeholder="e.g., critical window, guardian-breed neutrality…"></textarea></div>
+    <div class="field"><span class="flabel">Common health conditions in the breed</span><input name="breed_health" placeholder="e.g., hip/elbow dysplasia, cardiac, entropion, bloat/GDV"></div>
+    <div class="field"><span class="flabel">Nutrition / feeding notes</span><input name="nutrition" placeholder="e.g., large-breed formula, controlled growth, bloat precautions"></div>
+    <div class="field"><span class="flabel">Breed registries</span><input name="breed_registries" placeholder="e.g., SABBS, AKC, UKC"></div>
+  </div>
+
+  <!-- 6 -->
+  <div class="sec">
+    <div class="sec-head"><span class="sec-num">06</span><div><h2>Process, Pricing &amp; Offers</h2><span class="feeds">Feeds: <b>Guide · Website · Lead Tracker</b></span></div></div>
+    <div class="field"><span class="flabel">Your program process, step by step</span><textarea name="process" placeholder="e.g., Apply → Interview & reserve → Watch them grow → Homecoming."></textarea></div>
+    <div class="field"><span class="flabel">Pricing approach</span><input name="pricing" placeholder="e.g., 'provided during application'  (or)  share your range"></div>
+    <div class="field"><span class="flabel">Waitlist — how it works <span class="opt">(optional)</span></span><input name="waitlist" placeholder="e.g., deposit reserves pick order"></div>
+    <div class="field half"><span class="flabel">Offer stud services?</span><select name="stud"><option value="">Select…</option><option>Yes</option><option>No</option></select></div>
+    <div class="field half"><span class="flabel">Other offers <span class="opt">(optional)</span></span><input name="other_offers" placeholder="e.g., started/trained dogs, mentorship"></div>
+  </div>
+
+  <!-- 7 -->
+  <div class="sec">
+    <div class="sec-head"><span class="sec-num">07</span><div><h2>Lead Magnet &amp; Opt-in</h2><span class="feeds">Feeds: <b>Owner's Guide · Opt-in Page</b></span></div></div>
+    <div class="field"><span class="flabel">Guide title <span class="pick" data-fill="guide_title" data-val="Suggest one for me">✎ suggest one</span></span><input name="guide_title" placeholder="e.g., The Complete South African Boerboel Owner's Guide"></div>
+    <div class="field"><span class="flabel">Opt-in headline / hook <span class="pick" data-fill="optin_hook" data-val="Write one for me">✎ write one for me</span></span><input name="optin_hook" placeholder="e.g., Everything to know before you bring home a Boerboel."></div>
+    <div class="field half"><span class="flabel">Instagram comment keyword</span><input name="keyword" placeholder="e.g., GUIDE"></div>
+    <div class="field half"><span class="flabel">Deliver the guide from</span><input name="deliver_from" placeholder="e.g., domain.com/boerboel-guide"></div>
+  </div>
+
+  <!-- 8 -->
+  <div class="sec">
+    <div class="sec-head"><span class="sec-num">08</span><div><h2>Content &amp; Social</h2><span class="feeds">Feeds: <b>10 Instagram Scripts</b></span></div></div>
+    <div class="field"><span class="flabel">Top myths / misconceptions <span class="opt">— about your breed or program</span></span><textarea name="content_myths" placeholder="List as many as you can — these become reels."></textarea></div>
+    <div class="field"><span class="flabel">Most common questions buyers ask you</span><textarea name="content_questions" placeholder="The questions you answer every week."></textarea></div>
+    <div class="field"><span class="flabel">What do you want to be known for?</span><input name="known_for" placeholder="e.g., the most transparent, health-first program"></div>
+    <div class="field half"><span class="flabel">Your on-camera tone</span><input name="tone" placeholder="e.g., educational, blunt, warm, funny"></div>
+    <div class="field half"><span class="flabel">Topics you want to cover</span><input name="topics" placeholder="anything specific"></div>
+  </div>
+
+  <!-- 9 -->
+  <div class="sec">
+    <div class="sec-head"><span class="sec-num">09</span><div><h2>Lead Tracking</h2><span class="feeds">Feeds: <b>Google Sheet + Forms</b></span></div></div>
+    <div class="field"><span class="flabel">Which inquiry types do you take?</span>
+      <div class="checks">
+        <label><input type="checkbox" name="inquiry" value="Lead magnet (guide)" checked> Lead magnet (guide)</label>
+        <label><input type="checkbox" name="inquiry" value="Puppy inquiry" checked> Puppy inquiry</label>
+        <label><input type="checkbox" name="inquiry" value="Stud inquiry"> Stud inquiry</label>
+        <label><input type="checkbox" name="inquiry" value="General contact"> General contact</label>
+      </div>
+    </div>
+    <div class="field"><span class="flabel">Puppy application — what do you need to know from a buyer?</span><textarea name="puppy_questions" placeholder="e.g., household, children, current dogs, experience, sex preference, timeline, why our program."></textarea></div>
+    <div class="field"><span class="flabel">Stud inquiry — what info do you need? <span class="opt">(if applicable)</span></span><textarea name="stud_questions" placeholder="e.g., female's name, registry, health testing, season/timing."></textarea></div>
+  </div>
+
+  <!-- 10 -->
+  <div class="sec">
+    <div class="sec-head"><span class="sec-num">10</span><div><h2>Website <span class="opt" style="font-size:12px;color:var(--muted)">(if building the site)</span></h2><span class="feeds">Feeds: <b>Website Template</b></span></div></div>
+    <div class="field"><span class="flabel">Pages you need</span>
+      <div class="checks">
+        <label><input type="checkbox" name="page" value="Home" checked> Home</label>
+        <label><input type="checkbox" name="page" value="Our Dogs" checked> Our Dogs</label>
+        <label><input type="checkbox" name="page" value="Breedings/Litters" checked> Breedings/Litters</label>
+        <label><input type="checkbox" name="page" value="Productions" checked> Productions</label>
+        <label><input type="checkbox" name="page" value="About" checked> About</label>
+        <label><input type="checkbox" name="page" value="Apply" checked> Apply</label>
+        <label><input type="checkbox" name="page" value="Stud Services"> Stud Services</label>
+        <label><input type="checkbox" name="page" value="Journal/Blog"> Journal/Blog</label>
+        <label><input type="checkbox" name="page" value="Contact" checked> Contact</label>
+      </div>
+    </div>
+    <div class="field"><span class="flabel">Current dogs to feature <span class="opt">(names + role)</span></span><textarea name="current_dogs" placeholder="e.g., King Henry — foundation stud; Venti — production female…  (or) we'll add later"></textarea></div>
+    <div class="field"><span class="flabel">Productions / testimonials to feature <span class="opt">(optional)</span></span><textarea name="productions" placeholder="Adult dogs in homes, owner stories, reviews."></textarea></div>
+    <div class="field"><span class="flabel">Existing site URL <span class="opt">(for content + SEO migration)</span></span><input name="existing_site" placeholder="if any"></div>
+  </div>
+
+  <!-- 11 -->
+  <div class="sec">
+    <div class="sec-head"><span class="sec-num">11</span><div><h2>Filming &amp; Media</h2><span class="feeds">Feeds: <b>Filming Playbook · All visuals</b></span></div></div>
+    <div class="field half"><span class="flabel">Comfortable on camera?</span><select name="on_camera"><option value="">Select…</option><option>Yes</option><option>Learning</option><option>Prefer voiceover</option></select></div>
+    <div class="field half"><span class="flabel">Current gear <span class="opt">(phone/mic/lights)</span></span><input name="gear" placeholder="e.g., iPhone, no mic yet"></div>
+    <div class="field"><span class="flabel">Photos / videos you can provide</span><div class="hint">The assets are only as good as the media. Note what you have.</div><textarea name="media" placeholder="e.g., adult dog portraits, puppy photos, founder photo, structure/side-profile shots, at-home footage, show footage."></textarea></div>
+    <div class="field"><span class="flabel">Anything else we should know</span><textarea name="anything_else" placeholder="Goals, constraints, deadlines, style references…"></textarea></div>
+  </div>
+
+  </form>
+</div>
+
+<div class="bar"><div class="wrap">
+  <span class="note">Blank fields become our research &amp; copywriting list — nothing gets missed.</span>
+  <div class="btns">
+    <button type="button" class="btn btn-ghost" id="download">Download backup ↓</button>
+    <button type="button" class="btn btn-gold" id="submit">Submit to Breedwise ↗</button>
+  </div>
+</div></div>
+
+<div class="done-ov" id="done"><div class="done-card"><h3>Received &mdash; thank you.</h3><p>Your intake is in. Your Breedwise strategist now has everything needed to start building your asset suite. We&rsquo;ll be in touch shortly.</p></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  var SUPABASE_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+  var SUPABASE_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+  var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  document.querySelectorAll('.pick').forEach(function(p){
+    p.addEventListener('click',function(){var el=document.querySelector('[name="'+p.dataset.fill+'"]');if(el){el.value=p.dataset.val;el.focus();}});
+  });
+  function val(n){var e=document.querySelector('[name="'+n+'"]');return e?e.value.trim():'';}
+  function slugify(s){return (s||'breeder').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,48);}
+  function collectAll(){var o={};document.querySelectorAll('#intake [name]').forEach(function(el){var n=el.name;if(el.type==='checkbox'){if(el.checked){(o[n]=o[n]||[]).push(el.value);}}else if(el.value&&el.value.trim()){o[n]=el.value.trim();}});return o;}
+  function compile(){var out=[];out.push('BREEDWISE - BREEDER ASSET INTAKE');out.push(val('kennel_name')||'Breeder');
+    document.querySelectorAll('.sec').forEach(function(sec){var h=sec.querySelector('h2');if(!h)return;var lines=[];
+      sec.querySelectorAll('.field').forEach(function(fd){var lab=(fd.querySelector('.flabel')||{}).textContent||'';lab=lab.replace(/\u270e.*$/,'').trim();var vs=[];
+        fd.querySelectorAll('input,textarea,select').forEach(function(el){if(el.type==='checkbox'){if(el.checked)vs.push(el.value);}else if(el.value&&el.value.trim())vs.push(el.value.trim());});
+        if(vs.length)lines.push('  - '+lab+': '+vs.join(', '));});
+      if(lines.length){out.push('');out.push('-- '+h.textContent.trim().toUpperCase()+' --');out.push.apply(out,lines);}});
+    return out.join('\n');}
+
+  document.getElementById('download').addEventListener('click',function(){
+    var blob=new Blob([compile()],{type:'text/plain'});var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);a.download='breedwise-intake-'+slugify(val('kennel_name'))+'.txt';a.click();});
+
+  var submitBtn=document.getElementById('submit');
+  submitBtn.addEventListener('click',function(){
+    var name=val('kennel_name')||val('brand_full');
+    if(!name){alert('Please add your kennel / business name first.');var k=document.querySelector('[name=kennel_name]');if(k)k.focus();return;}
+    var full=collectAll();
+    var colors=(val('colors').match(/#[0-9a-fA-F]{3,8}/g))||null;
+    var rec={kennel_name:name,slug:slugify(name)+'-'+Math.random().toString(36).slice(2,6),
+      breed:val('breed')||null,founder:val('founder')||null,email:val('email')||null,phone:val('phone')||null,
+      instagram:val('instagram')||null,domain:val('domain')||null,location:val('location')||null,
+      brand_colors:colors,intake:full,status:'onboarding',onboarded_at:new Date().toISOString().slice(0,10)};
+    submitBtn.disabled=true;submitBtn.textContent='Submitting...';
+    sb.from('accelerator_clients').insert(rec).then(function(r){
+      if(r.error){throw r.error;}
+      document.getElementById('done').classList.add('on');
+    }).catch(function(err){
+      submitBtn.disabled=false;submitBtn.textContent='Submit to Breedwise \u2197';
+      alert('Could not submit ('+(err.message||err)+'). Your answers are safe - use "Download backup" and send the file to your strategist.');
+    });
+  });
+})();
+</script>
+</body>
+</html>

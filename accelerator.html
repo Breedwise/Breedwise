@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breedwise OS — Accelerator Clients</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#fff;--surface:#f7f6f3;--card:#f0eeea;--border:#e2dfd8;--gold:#b8922e;--gold-lt:#cda64a;--gold-faint:rgba(184,146,46,.07);--gold-mid:rgba(184,146,46,.16);--ink:#0f0e0c;--muted:#86847d;--mid:#48463f;--green:#4a6b3f;--amber:#b07d2e;--heading:'Playfair Display',Georgia,serif;--body:'Inter',sans-serif;--radius:10px}
+body{background:var(--surface);color:var(--ink);font-family:var(--body);font-size:14.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding:0 28px}
+a{color:var(--gold);text-decoration:none;cursor:pointer}
+button{font-family:var(--body);cursor:pointer}
+
+nav{background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:40}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
+.logo{font-family:var(--heading);font-size:20px;font-weight:600;color:var(--gold)}
+.logo span{color:var(--muted);font-family:var(--body);font-size:12px;font-weight:600;letter-spacing:.1em}
+.crumb{font-size:12px;letter-spacing:.05em;color:var(--muted)}.crumb b{color:var(--ink)}
+.nav-right{display:flex;align-items:center;gap:16px}
+.mini-btn{font-size:12px;color:var(--muted);background:none;border:0}.mini-btn:hover{color:var(--gold)}
+
+/* login */
+#login{min-height:78vh;display:none;align-items:center;justify-content:center;padding:24px}
+.login-card{background:var(--bg);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:14px;padding:38px;max-width:390px;width:100%}
+.login-card h2{font-family:var(--heading);font-size:24px;font-weight:600;margin-bottom:4px}
+.login-card p{font-size:13px;color:var(--muted);margin-bottom:22px}
+.login-card label{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:6px}
+.login-card input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:14px;margin-bottom:14px;color:var(--ink)}
+.login-card input:focus{outline:none;border-color:var(--gold)}
+.login-card button{width:100%;background:var(--gold);color:#fff;border:0;border-radius:7px;padding:13px;font-weight:600;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.login-card button:hover{background:var(--gold-lt)}
+.login-err{color:#8b3a3a;font-size:13px;min-height:18px;margin-top:6px}
+
+.loading{text-align:center;color:var(--muted);padding:60px 0;font-size:14px}
+
+/* list */
+.list-head{padding:30px 0 6px}
+.list-head h1{font-family:var(--heading);font-size:28px;font-weight:600}
+.list-head p{color:var(--muted);font-size:13.5px;margin-top:4px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;padding:20px 0 40px}
+.ccard{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:.18s}
+.ccard:hover{border-color:var(--gold);transform:translateY(-2px)}
+.ccard .top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.ccard .av{width:44px;height:44px;border-radius:11px;background:linear-gradient(135deg,#2a241a,#4a3f26);display:grid;place-items:center;font-family:var(--heading);font-size:17px;color:var(--gold-lt);flex:0 0 auto}
+.ccard h3{font-family:var(--heading);font-size:18px;font-weight:600;line-height:1.1}
+.ccard .sub{font-size:12px;color:var(--muted)}
+.ccard .row{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.sbadge{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;padding:3px 10px;border-radius:50px;background:var(--card);color:var(--muted)}
+.sbadge.active{background:rgba(74,107,63,.12);color:var(--green)}
+.sbadge.onboarding{background:var(--gold-faint);color:var(--gold)}
+.swatches{display:flex;gap:4px}.sw{width:13px;height:13px;border-radius:3px;border:1px solid var(--border)}
+.mini-prog{height:6px;background:var(--card);border-radius:50px;overflow:hidden;margin-top:14px}
+.mini-prog i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-lt))}
+.empty{text-align:center;padding:70px 20px;color:var(--muted)}
+.empty a{font-weight:600}
+
+/* client file (from prototype) */
+.chead{background:var(--ink);color:#fff;padding:30px 0 26px;position:relative;overflow:hidden}
+.chead::after{content:"";position:absolute;inset:0;background:radial-gradient(600px 240px at 88% -20%,rgba(184,146,46,.2),transparent 60%)}
+.chead .wrap{position:relative;display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+.avatar{width:60px;height:60px;border-radius:14px;background:linear-gradient(135deg,#2a241a,#4a3f26);display:grid;place-items:center;font-family:var(--heading);font-size:24px;color:var(--gold-lt);flex:0 0 auto;border:1px solid rgba(255,255,255,.14)}
+.chead h1{font-family:var(--heading);font-size:28px;font-weight:600}
+.chead .subx{color:rgba(255,255,255,.6);font-size:13px;margin-top:3px}
+.badges{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap}
+.b{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;padding:5px 12px;border-radius:50px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.85)}
+.b.active{color:#a9d39a;border-color:rgba(120,180,100,.4)}
+.chead .meta{margin-left:auto;text-align:right;font-size:12.5px;color:rgba(255,255,255,.7);display:flex;flex-direction:column;gap:2px}
+.chead .meta a{color:var(--gold-lt)}
+.chead .sws{display:flex;gap:5px;margin-top:7px;justify-content:flex-end}.chead .sws .sw{border-color:rgba(255,255,255,.2)}
+.back{color:var(--gold-lt);font-size:12.5px;margin-bottom:14px;display:inline-block}
+
+section{padding:26px 0}
+.sec-t{font-family:var(--heading);font-size:21px;font-weight:600}
+.sec-d{font-size:12.5px;color:var(--muted);margin:2px 0 16px}
+.card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.prog{display:flex;align-items:center;gap:20px;padding:18px 22px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:16px}
+.prog .pct{font-family:var(--heading);font-size:32px;font-weight:600;color:var(--gold);line-height:1}
+.prog .bar{flex:1}.prog .track{height:9px;background:var(--card);border-radius:50px;overflow:hidden}.prog .fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-lt))}
+.prog .lbl{font-size:12px;color:var(--muted);margin-top:7px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+thead th{background:var(--surface);text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:11px 16px;border-bottom:1px solid var(--border)}
+tbody td{padding:11px 16px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--mid)}
+tbody tr:last-child td{border-bottom:0}tbody td b{color:var(--ink);font-weight:600}
+.gcat{background:var(--surface);font-family:var(--heading);font-size:13px;color:var(--ink);padding:9px 16px}
+select.st{font-family:var(--body);font-size:12.5px;font-weight:600;border-radius:50px;padding:5px 10px;border:1px solid var(--border);background:var(--card);color:var(--mid);cursor:pointer}
+select.st.delivered{background:var(--gold-faint);color:var(--gold);border-color:var(--gold-mid)}
+select.st.live{background:rgba(74,107,63,.12);color:var(--green);border-color:rgba(74,107,63,.3)}
+select.st.in_progress{background:rgba(176,125,46,.1);color:var(--amber);border-color:rgba(176,125,46,.3)}
+.brief{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+@media(max-width:640px){.brief{grid-template-columns:1fr}}
+.bcell{background:var(--bg);padding:15px 17px}.bcell .k{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:5px}.bcell .v{font-size:13px;color:var(--mid);line-height:1.5}
+.notes textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:var(--radius);padding:15px 18px;font-family:var(--body);font-size:13.5px;color:var(--mid);min-height:80px;resize:vertical}
+.notes textarea:focus{outline:none;border-color:var(--gold)}
+footer{padding:28px 0;text-align:center;font-size:12px;color:var(--muted);border-top:1px solid var(--border);margin-top:20px}
+.del-btn{float:right;font-size:12px;color:#8b3a3a;background:none;border:1px solid #e2c9c9;border-radius:6px;padding:6px 12px;cursor:pointer}
+.del-btn:hover{background:#8b3a3a;color:#fff;border-color:#8b3a3a}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <span class="logo">Breedwise <span>OS</span></span>
+  <div class="nav-right">
+    <span class="crumb" id="crumb">Accelerator · Clients</span>
+    <button class="mini-btn hidden" id="signout">Sign out</button>
+  </div>
+</div></nav>
+
+<!-- LOGIN -->
+<div id="login"><div class="login-card">
+  <h2>Breedwise OS</h2>
+  <p>Team sign-in to view Accelerator client files.</p>
+  <label>Email</label><input id="email" type="email" autocomplete="email">
+  <label>Password</label><input id="password" type="password" autocomplete="current-password">
+  <button id="loginBtn">Sign in</button>
+  <div class="login-err" id="loginErr"></div>
+</div></div>
+
+<!-- APP -->
+<div id="app" class="hidden">
+  <div id="loadingWrap" class="loading">Loading clients…</div>
+
+  <!-- LIST -->
+  <div id="listView" class="hidden"><div class="wrap">
+    <div class="list-head"><h1>Accelerator Clients</h1><p>One file per breeder — intake, deliverables, and live assets. <a href="breedwise-breeder-intake.html">+ New intake</a></p></div>
+    <div class="cgrid" id="cgrid"></div>
+  </div></div>
+
+  <!-- FILE -->
+  <div id="fileView" class="hidden">
+    <div class="chead"><div class="wrap" id="fileHead"></div></div>
+    <div class="wrap">
+      <a class="back" id="back">← All clients</a><button class="del-btn" id="delBtn">Delete client</button>
+      <section>
+        <div class="sec-t">Deliverables</div><div class="sec-d">Update status inline — it saves instantly.</div>
+        <div class="prog" id="progWrap"></div>
+        <div class="card"><table><tbody id="delivBody"></tbody></table></div>
+      </section>
+      <section>
+        <div class="sec-t">Client Brief</div><div class="sec-d">From their intake — the source of truth every deliverable is built from.</div>
+        <div class="brief" id="briefWrap"></div>
+      </section>
+      <section class="notes">
+        <div class="sec-t">Notes &amp; Next Actions</div><div class="sec-d">Saves when you click away.</div>
+        <textarea id="notes" placeholder="Add notes, blockers, next actions…"></textarea>
+      </section>
+    </div>
+  </div>
+</div>
+
+<footer><div class="wrap">Breedwise OS · Accelerator Client Files · Confidential</div></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  var SUPABASE_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+  var SUPABASE_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+  var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,detectSessionInUrl:true}});
+  var $=function(s){return document.querySelector(s)};
+  var el={login:$('#login'),app:$('#app'),loading:$('#loadingWrap'),list:$('#listView'),file:$('#fileView'),
+    cgrid:$('#cgrid'),signout:$('#signout'),crumb:$('#crumb')};
+  var currentClientId=null;
+  var STATUS=[['todo','To do'],['in_progress','In progress'],['delivered','Delivered'],['live','Live']];
+  var CATS={marketing:'Marketing Asset Suite',business:'Business Build-Out',breeding:'Breeding Track'};
+  var esc=function(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+  var initials=function(n){return (n||'?').split(/\s+/).map(function(w){return w[0]}).join('').slice(0,2).toUpperCase()};
+
+  // ---- auth ----
+  async function boot(){
+    var s=(await sb.auth.getSession()).data.session;
+    if(!s){ el.login.style.display='flex'; el.app.classList.add('hidden'); return; }
+    el.login.style.display='none'; el.app.classList.remove('hidden'); el.signout.classList.remove('hidden');
+    loadClients();
+  }
+  $('#loginBtn').addEventListener('click',async function(){
+    var b=this; b.disabled=true; $('#loginErr').textContent='';
+    var {error}=await sb.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#password').value});
+    b.disabled=false;
+    if(error){ $('#loginErr').textContent=error.message; return; }
+    boot();
+  });
+  $('#password').addEventListener('keydown',function(e){if(e.key==='Enter')$('#loginBtn').click()});
+  el.signout.addEventListener('click',async function(){ await sb.auth.signOut(); location.reload(); });
+
+  // ---- list ----
+  async function loadClients(){
+    el.loading.classList.remove('hidden'); el.list.classList.add('hidden'); el.file.classList.add('hidden');
+    var {data,error}=await sb.from('accelerator_clients').select('*').order('created_at',{ascending:false});
+    el.loading.classList.add('hidden');
+    if(error){ el.cgrid.innerHTML=''; el.list.classList.remove('hidden'); el.cgrid.innerHTML='<div class="empty">Could not load ('+esc(error.message)+'). Make sure the schema is installed.</div>'; return; }
+    // fetch deliverable progress per client
+    var ids=(data||[]).map(function(c){return c.id});
+    var prog={};
+    if(ids.length){
+      var dr=await sb.from('client_deliverables').select('client_id,category,status').in('client_id',ids);
+      (dr.data||[]).forEach(function(d){ if(d.category!=='marketing')return; var p=prog[d.client_id]=prog[d.client_id]||{t:0,d:0}; p.t++; if(d.status==='delivered'||d.status==='live')p.d++; });
+    }
+    el.list.classList.remove('hidden');
+    if(!data||!data.length){ el.cgrid.innerHTML='<div class="empty">No clients yet.<br><a href="breedwise-breeder-intake.html">Send a breeder the intake →</a></div>'; return; }
+    el.cgrid.innerHTML=data.map(function(c){
+      var p=prog[c.id]||{t:0,d:0}; var pct=p.t?Math.round(p.d/p.t*100):0;
+      var sw=(c.brand_colors||[]).slice(0,3).map(function(x){return '<span class="sw" style="background:'+esc(x)+'"></span>'}).join('');
+      return '<div class="ccard" data-id="'+c.id+'">'
+        +'<div class="top"><div class="av">'+esc(initials(c.kennel_name))+'</div><div><h3>'+esc(c.kennel_name)+'</h3><div class="sub">'+esc(c.breed||'')+(c.founder?' · '+esc(c.founder):'')+'</div></div></div>'
+        +'<div class="row"><span class="sbadge '+esc(c.status)+'">'+esc(c.status||'')+'</span><span class="swatches">'+sw+'</span></div>'
+        +'<div class="mini-prog"><i style="width:'+pct+'%"></i></div>'
+        +'<div class="sub" style="margin-top:6px">'+p.d+'/'+p.t+' assets delivered</div></div>';
+    }).join('');
+    el.cgrid.querySelectorAll('.ccard').forEach(function(card){ card.addEventListener('click',function(){ openClient(card.dataset.id); }); });
+  }
+
+  // ---- detail ----
+  async function openClient(id){
+    el.list.classList.add('hidden'); el.file.classList.remove('hidden'); window.scrollTo(0,0);
+    el.crumb.innerHTML='Accelerator · Clients · <b>…</b>';
+    var cr=await sb.from('accelerator_clients').select('*').eq('id',id).maybeSingle();
+    var c=cr.data; if(!c){ alert('Not found'); backToList(); return; } currentClientId=c.id;
+    var dr=await sb.from('client_deliverables').select('*').eq('client_id',id).order('sort_order');
+    var dels=dr.data||[];
+    el.crumb.innerHTML='Accelerator · Clients · <b>'+esc(c.kennel_name)+'</b>';
+    renderHead(c); renderDeliv(dels); renderBrief(c); renderNotes(c);
+  }
+  function renderHead(c){
+    var sw=(c.brand_colors||[]).map(function(x){return '<span class="sw" style="background:'+esc(x)+'"></span>'}).join('');
+    $('#fileHead').innerHTML='<div class="avatar">'+esc(initials(c.kennel_name))+'</div>'
+      +'<div><h1>'+esc(c.kennel_name)+'</h1><div class="subx">'+[c.breed,c.founder,c.location].filter(Boolean).map(esc).join(' · ')+'</div>'
+      +'<div class="badges"><span class="b '+(c.status==='active'?'active':'')+'">● '+esc(c.status||'')+'</span><span class="b">Accelerator</span>'+(c.onboarded_at?'<span class="b">Onboarded '+esc(c.onboarded_at)+'</span>':'')+'</div></div>'
+      +'<div class="meta">'+(c.domain?'<a href="https://'+esc(c.domain.replace(/^https?:\/\//,''))+'" target="_blank">'+esc(c.domain)+'</a>':'')
+      +(c.email?'<span>'+esc(c.email)+'</span>':'')+(c.phone||c.instagram?'<span>'+[c.phone,c.instagram].filter(Boolean).map(esc).join(' · ')+'</span>':'')
+      +(sw?'<div class="sws">'+sw+'</div>':'')+'</div>';
+  }
+  function renderDeliv(dels){
+    var body=$('#delivBody'); body.innerHTML='';
+    var order=['marketing','business','breeding'];
+    order.forEach(function(cat){
+      var rows=dels.filter(function(d){return d.category===cat}); if(!rows.length)return;
+      body.insertAdjacentHTML('beforeend','<tr><td class="gcat" colspan="3">'+CATS[cat]+'</td></tr>');
+      rows.forEach(function(d){
+        var opts=STATUS.map(function(s){return '<option value="'+s[0]+'"'+(d.status===s[0]?' selected':'')+'>'+s[1]+'</option>'}).join('');
+        var link=d.link?'<a href="'+esc(d.link)+'" target="_blank">open ↗</a>':'<span style="color:var(--muted)">—</span>';
+        body.insertAdjacentHTML('beforeend','<tr><td><b>'+esc(d.name)+'</b>'+(d.owner?' <span style="color:var(--muted);font-size:12px">· '+esc(d.owner)+'</span>':'')+'</td>'
+          +'<td><select class="st '+esc(d.status)+'" data-id="'+d.id+'">'+opts+'</select></td><td>'+link+'</td></tr>');
+      });
+    });
+    body.querySelectorAll('select.st').forEach(function(sel){
+      sel.addEventListener('change',async function(){
+        sel.className='st '+sel.value;
+        await sb.from('client_deliverables').update({status:sel.value,updated_at:new Date().toISOString()}).eq('id',sel.dataset.id);
+        refreshProgress();
+      });
+    });
+    refreshProgress();
+  }
+  function refreshProgress(){
+    var sels=$('#delivBody').querySelectorAll('select.st'); var t=0,done=0;
+    // marketing = first group; count all shown deliverables for the bar, weight marketing for headline
+    var mkt=$('#delivBody').querySelectorAll('tr'); // fallback
+    sels.forEach(function(s){ t++; if(s.value==='delivered'||s.value==='live')done++; });
+    var pct=t?Math.round(done/t*100):0;
+    $('#progWrap').innerHTML='<div class="pct">'+pct+'%</div><div class="bar"><div class="track"><div class="fill" style="width:'+pct+'%"></div></div><div class="lbl">'+done+' of '+t+' deliverables complete</div></div>';
+  }
+  function renderBrief(c){
+    var m=c.intake||{};
+    var pick=[['Brand',[m.brand_full||m.kennel_name,m.brand_feel,m.colors,m.fonts].filter(Boolean).join(' · ')],
+      ['Taglines',m.taglines],['Founder',[m.founder,m.years?m.years+' yrs':'',m.registries].filter(Boolean).join(' · ')],
+      ['Philosophy',m.philosophy],['Differentiators',m.differentiators],
+      ['Health & Guarantee',[m.health_testing,m.guarantee_len,m.vet_window].filter(Boolean).join(' · ')],
+      ['Breed',[m.breed,m.size_m,m.lifespan,m.breed_health].filter(Boolean).join(' · ')],
+      ['Lead Magnet',[m.guide_title,m.keyword?'keyword '+m.keyword:''].filter(Boolean).join(' · ')],
+      ['Inquiry types',(m.inquiry||[]).join(', ')],['Content myths',m.content_myths],['Media available',m.media]];
+    var html=pick.filter(function(p){return p[1]}).map(function(p){return '<div class="bcell"><div class="k">'+esc(p[0])+'</div><div class="v">'+esc(p[1])+'</div></div>'}).join('');
+    $('#briefWrap').innerHTML=html||'<div class="bcell"><div class="v" style="color:var(--muted)">No intake details captured yet.</div></div>';
+    $('#briefWrap').insertAdjacentHTML('afterend','');
+  }
+  function renderNotes(c){
+    var t=$('#notes'); t.value=c.notes||'';
+    t.onblur=async function(){ await sb.from('accelerator_clients').update({notes:t.value}).eq('id',currentClientId); };
+  }
+  function backToList(){ el.file.classList.add('hidden'); el.crumb.innerHTML='Accelerator · Clients'; loadClients(); }
+  $('#back').addEventListener('click',backToList);
+  $('#delBtn').addEventListener('click',async function(){
+    if(!currentClientId)return;
+    if(!confirm('Delete this client file and all its deliverables? This cannot be undone.'))return;
+    var r=await sb.from('accelerator_clients').delete().eq('id',currentClientId);
+    if(r.error){alert('Could not delete: '+r.error.message);return;}
+    backToList();
+  });
+
+  boot();
+})();
+</script>
+</body>
+</html>
