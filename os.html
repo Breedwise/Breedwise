@@ -381,6 +381,7 @@
           <div class="card"><div class="card-h">Activation Funnel</div><div class="card-sub">New members must clear all 6 activation steps in their windows.</div><div id="actFunnel"></div></div>
           <div class="card"><div class="card-h">Status mix</div><div class="card-sub">Auto-computed health across active members.</div><div id="statusMix"></div></div>
         </div>
+        <div class="card" style="margin-top:22px;overflow-x:auto"><div class="card-h">Churn — month over month (company)</div><div class="card-sub">Company-wide monthly churn %. Current month is live; prior months archive automatically.</div><div id="companyChurnTrend" style="margin-top:12px"></div></div>
         <div class="section-label">Members · risk first</div>
         <div class="table-wrap">
           <div class="table-tools" id="dirFilters"></div>
@@ -1693,22 +1694,23 @@
       <td><button class="row-edit" data-edit="${m.id}">Edit</button></td>
     </tr>`).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:26px">No churned members. 🎉</td></tr>`;
   }
-  // Month-over-month churn for a pod: history from monthly_churn + the current month computed live.
-  function renderPodChurn(podId){
-    const el=$('#podChurnTrend'); if(!el) return;
+  // Month-over-month churn: history from monthly_churn + the current month computed live.
+  function churnRows(scopeKey, members){
     const curMo=new Date().toISOString().slice(0,7);
-    const pm=MEMBERS.filter(m=>m.pod===podId);
-    const startNow=pm.filter(m=>m.pay!=='Cancelled'||m.churnedThisMonth).length;
-    const churnedNow=pm.filter(m=>m.churnedThisMonth).length;
-    const live={ month:curMo+'-01', active_start:startNow, churned:churnedNow, churn_pct:startNow?Math.round(1000*churnedNow/startNow)/10:0, live:true };
-    const hist=MONTHLY_CHURN.filter(r=>r.pod_id===podId && String(r.month).slice(0,7)!==curMo)
-      .sort((a,b)=>String(a.month)<String(b.month)?1:-1);
-    const rows=[live,...hist].slice(0,6);
+    const start=members.filter(m=>m.pay!=='Cancelled'||m.churnedThisMonth).length;
+    const churned=members.filter(m=>m.churnedThisMonth).length;
+    const live={ month:curMo+'-01', active_start:start, churned, churn_pct:start?Math.round(1000*churned/start)/10:0, live:true };
+    const hist=MONTHLY_CHURN.filter(r=>r.pod_id===scopeKey && String(r.month).slice(0,7)!==curMo).sort((a,b)=>String(a.month)<String(b.month)?1:-1);
+    return [live,...hist].slice(0,6);
+  }
+  function churnTableHTML(rows){
     const fmt=d=>new Date(String(d).slice(0,10)+'T12:00').toLocaleDateString('en-US',{month:'short',year:'numeric'});
-    el.innerHTML = rows.length?(`<table><thead><tr><th>Month</th><th class="num">Active</th><th class="num">Churned</th><th class="num">Churn %</th></tr></thead><tbody>`+
+    return rows.length?(`<table><thead><tr><th>Month</th><th class="num">Active</th><th class="num">Churned</th><th class="num">Churn %</th></tr></thead><tbody>`+
       rows.map(r=>{const bad=(+r.churn_pct)>TARGETS.churn; return `<tr><td>${fmt(r.month)}${r.live?' <span class="tag">live</span>':''}</td><td class="num">${r.active_start}</td><td class="num">${r.churned}</td><td class="num ${bad?'pay-bad':'pay-good'}">${(+r.churn_pct).toFixed(1)}%</td></tr>`;}).join('')+
       `</tbody></table>`) : `<div class="card-sub">No churn history yet — it fills in each month.</div>`;
   }
+  function renderPodChurn(podId){ const el=$('#podChurnTrend'); if(el) el.innerHTML=churnTableHTML(churnRows(podId, MEMBERS.filter(m=>m.pod===podId))); }
+  function renderCompanyChurn(){ const el=$('#companyChurnTrend'); if(el) el.innerHTML=churnTableHTML(churnRows('ALL', MEMBERS)); }
   function renderAL(){
     $('#podSelect').innerHTML=PODS.map(p=>`<option value="${p.id}">${esc(p.name)} · ${MEMBERS.filter(m=>m.pod===p.id&&!isChurned(m)).length} active</option>`).join('');
     $('#podSelect').value=curPod;
@@ -1883,7 +1885,7 @@
     $('#navRole').textContent = ROLE_LABEL[ME?.role] || roleLabel(ME?.role) || sRole || '';
     buildSidebar();
     renderKPIs('#dirKpis', directorKPIs());
-    renderFunnel(); renderStatusMix(); renderDirTable(); renderHandoff(); renderChurned();
+    renderFunnel(); renderStatusMix(); renderDirTable(); renderHandoff(); renderChurned(); renderCompanyChurn();
     renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderAccelerator(); renderCalendar(); renderReports(); renderAffiliates(); renderPlans(); renderPayments(); renderTasks(); renderDirectory();
     const eb=$('#exportBtn'); if(eb) eb.onclick=buildExport;
     if(ME?.role==='Vet'){ document.querySelectorAll('[data-add-ss],#ccAdd,[data-edit-ss],[data-add]').forEach(b=>{ if(b) b.style.display='none'; }); }
