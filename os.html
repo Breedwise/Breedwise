@@ -477,13 +477,10 @@
             <div class="field"><label>Calls co-hosted</label><input id="cmw_calls" type="number" min="0"></div>
             <div class="field"><label>Recordings due</label><input id="cmw_due" type="number" min="0"></div>
             <div class="field"><label>Uploaded by 12pm</label><input id="cmw_ontime" type="number" min="0"></div>
-            <div class="field"><label>Support Call — attended</label><input id="cmw_sup_att" type="number" min="0"></div>
-            <div class="field"><label>Support Call — invited</label><input id="cmw_sup_exp" type="number" min="0"></div>
-            <div class="field"><label>Women's Circle — attended</label><input id="cmw_wom_att" type="number" min="0"></div>
-            <div class="field"><label>Women's Circle — invited</label><input id="cmw_wom_exp" type="number" min="0"></div>
             <button class="btn-save" id="cmwSave">Save week</button>
           </div>
         </div>
+        <div class="card" style="margin-top:22px"><div class="card-h">Call attendance · this week</div><div class="card-sub">Who attended each call — marked per member in their record (edit a member to check them off).</div><div id="callAttendance"></div></div>
         <div class="card" style="margin-top:22px"><div class="card-h">Needs attention</div><div class="card-sub">Auto-surfaced from attendance &amp; post activity.</div><div id="cmQueues"></div></div>
       </section>
 
@@ -832,6 +829,10 @@
       <div class="field"><label>Calls (this week)</label><input id="f_calls_1w" type="number" min="0"></div>
       <div class="field"><label>Posts (7 days)</label><input id="f_posts" type="number" min="0"></div>
       <div class="field"><label>Comments (7 days)</label><input id="f_comments" type="number" min="0"></div>
+      <div class="field full"><label>Call attendance (this week)</label><div class="checks">
+        <label class="check"><input type="checkbox" id="f_support"> Support Call</label>
+        <label class="check"><input type="checkbox" id="f_womens"> Women's Circle</label>
+      </div></div>
       <div class="field"><label>Homework %</label><input id="f_homework" type="number" min="0" max="100"></div>
       <div class="field"><label>NPS (0–10)</label><input id="f_nps" type="number" min="0" max="10"></div>
       <div class="field"><label>Upsell revenue $</label><input id="f_upsell" type="number" min="0"></div>
@@ -1364,7 +1365,7 @@
   const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
   const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager', Founder:'Founder' };
 
-  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, podHw='all', ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[], PAYMENTS=[], PLANS=[], TASKS=[], TEAM=[], INTAKE_BY={}, NEW_COLS=false, MONTHLY_CHURN=[];
+  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, podHw='all', ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[], PAYMENTS=[], PLANS=[], TASKS=[], TEAM=[], INTAKE_BY={}, NEW_COLS=false, MONTHLY_CHURN=[], ATTEND_COLS=false;
   let SALES_MEMBER=false;  // true if this login maps to a sales_reps row (set after SalesOS.boot)
   const EXPERTS=['Dr. Emmanuel Fontaine','Dr. Angela Hughes','Austin Shanks','Dr. David Mahoney','Yasmin Omar'];
   function weekStartISO(){ const d=new Date(); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return d.toISOString().slice(0,10); }
@@ -1405,7 +1406,8 @@
     activated:!!r.activated, newThisMonth:!!r.new_this_month, churnedThisMonth:!!r.churned_this_month,
     failed30:!!r.failed_30, upsell:Number(r.upsell)||0, override:r.status_override||null, notes:r.notes||'',
     support_tier:r.support_tier||null, red_flag:!!r.red_flag, next_breeding_date:r.next_breeding_date||null,
-    comments:r.comments||0, handoff:!!r.handoff_complete };
+    comments:r.comments||0, handoff:!!r.handoff_complete,
+    support1w:r.support_1w||0, womens1w:r.womens_1w||0 };
   }
 
   /* ═══ AUTH ═══ */
@@ -1471,6 +1473,7 @@
     ]);
     MEMBERS = (mem.data||[]).map(norm);
     NEW_COLS = !!(mem.data && mem.data[0] && ('comments' in mem.data[0]));   // schema migrated?
+    ATTEND_COLS = !!(mem.data && mem.data[0] && ('support_1w' in mem.data[0]));   // per-member call attendance migrated?
     INTAKE_BY = {}; (intk?.data||[]).forEach(r=>{ INTAKE_BY[r.member_id]=r; });
     MONTHLY_CHURN = mchurn?.data || [];
     PODS = pods.data||[];
@@ -1738,12 +1741,12 @@
     const overdue=ISSUES.filter(i=>i.status!=='resolved'&&i.due_date&&i.due_date<today).length;
     const handled=(open+resolved)?(resolved/(open+resolved)*100):100;
     const act=activeMembers(), engage=act.reduce((s,m)=>s+m.posts,0)/(act.length||1);
-    const supAtt=+w.support_attended||0, supExp=+w.support_expected||0, womAtt=+w.womens_attended||0, womExp=+w.womens_expected||0;
-    const supPct=supExp?(supAtt/supExp*100):0, womPct=womExp?(womAtt/womExp*100):0;
+    const supMembers=act.filter(m=>m.support1w>0), womMembers=act.filter(m=>m.womens1w>0);
+    const supPct=act.length?(supMembers.length/act.length*100):0, womPct=act.length?(womMembers.length/act.length*100):0;
     return [
       { name:'Calls Co-hosted (wk)', val:cohosted, unit:'', target:1, dir:'above', meta:'co-host ≥ 1 per week' },
-      { name:'Support Call Attendance', val:supPct, unit:'%', target:TARGETS.podAttend, dir:'above', meta:`${supAtt}/${supExp} attended`, dec:0 },
-      { name:"Women's Circle Attendance", val:womPct, unit:'%', target:TARGETS.podAttend, dir:'above', meta:`${womAtt}/${womExp} attended`, dec:0 },
+      { name:'Support Call Attendance', val:supPct, unit:'%', target:TARGETS.podAttend, dir:'above', meta:`${supMembers.length} of ${act.length} attended`, dec:0 },
+      { name:"Women's Circle Attendance", val:womPct, unit:'%', target:TARGETS.podAttend, dir:'above', meta:`${womMembers.length} of ${act.length} attended`, dec:0 },
       { name:'Recordings On Time', val:recPct, unit:'%', target:100, dir:'above', meta:`${ontime}/${due} uploaded by 12pm` },
       { name:'Issues Handled', val:handled, unit:'%', target:100, dir:'above', meta:`${open} open · ${overdue} overdue` },
       { name:'Posts / Member · wk', val:engage, unit:'/wk', target:TARGETS.engage, dir:'above', meta:'1 post per member per week', dec:2 },
@@ -1752,17 +1755,11 @@
   function renderCMWeek(){
     const w=CM_WEEK||{};
     $('#cmw_calls').value=w.calls_cohosted??0; $('#cmw_due').value=w.recordings_due??0; $('#cmw_ontime').value=w.recordings_on_time??0;
-    $('#cmw_sup_att').value=w.support_attended??0; $('#cmw_sup_exp').value=w.support_expected??0; $('#cmw_wom_att').value=w.womens_attended??0; $('#cmw_wom_exp').value=w.womens_expected??0;
     $('#cmwSave').onclick=async ()=>{
       const row={ week_start:weekStartISO(), calls_cohosted:+$('#cmw_calls').value||0, recordings_due:+$('#cmw_due').value||0, recordings_on_time:+$('#cmw_ontime').value||0,
-        support_attended:+$('#cmw_sup_att').value||0, support_expected:+$('#cmw_sup_exp').value||0, womens_attended:+$('#cmw_wom_att').value||0, womens_expected:+$('#cmw_wom_exp').value||0,
         updated_by:ME?.full_name||ME?.email||null, updated_at:new Date().toISOString() };
       $('#cmwSave').disabled=true;
       let res=await sb.from('cm_weekly').upsert(row,{onConflict:'week_start'});
-      if(res.error && /support_|womens_/.test(res.error.message||'')){   // migration not run yet → save the rest
-        const {support_attended,support_expected,womens_attended,womens_expected,...base}=row;
-        res=await sb.from('cm_weekly').upsert(base,{onConflict:'week_start'});
-      }
       $('#cmwSave').disabled=false;
       if(res.error){ toast(res.error.message); return; }
       await loadData(); renderCM(); toast('Week saved');
@@ -1774,6 +1771,10 @@
     const notOn=MEMBERS.filter(m=>m.newThisMonth&&m.calls<2), quiet=act.filter(m=>m.calls===0&&m.posts===0), wins=act.filter(m=>m.posts>=4);
     const q=(t,arr,empty)=>`<div style="margin-bottom:16px"><div class="rule-tag" style="margin-bottom:8px">${t} · ${arr.length}</div>${arr.length?arr.map(m=>`<div class="comp-line"><div class="lbl">${esc(m.name)} · <span class="muted-cell">${m.program}</span></div><span class="filter-chip" style="cursor:default">${m.calls} calls · ${m.posts} posts</span></div>`).join(''):`<div class="card-sub">${empty}</div>`}</div>`;
     $('#cmQueues').innerHTML=q('New — not on both week-1 calls',notOn,'All new members on track.')+q('Quiet 7+ days',quiet,'No silent members.')+q('High-potential wins to amplify',wins,'No standout posts yet.');
+    // individualized call attendance — exactly who attended each call this week
+    const supList=act.filter(m=>m.support1w>0), womList=act.filter(m=>m.womens1w>0);
+    const attRow=(title,arr)=>`<div style="margin-bottom:16px"><div class="rule-tag" style="margin-bottom:8px">${title} · ${arr.length} of ${act.length} active</div>${arr.length?arr.map(m=>`<span class="filter-chip" style="cursor:default;margin:2px 4px 2px 0">${esc(m.name)}</span>`).join(''):`<div class="card-sub">No one marked attended yet this week.</div>`}</div>`;
+    const ca=$('#callAttendance'); if(ca) ca.innerHTML=attRow('Support Call',supList)+attRow("Women's Circle",womList);
   }
 
   /* ═══ MY PAY (private, computed from my comp row + shared members) ═══ */
@@ -1985,6 +1986,7 @@
     $('#f_program').value=m?m.program:'Academy'; $('#f_pod').value=m?m.pod:(PODS[0]?.id||'');
     $('#f_payment').value=m?m.pay:'Good';
     $('#f_calls').value=m?m.calls:0; $('#f_calls_1w').value=m?m.calls_1w:0; $('#f_posts').value=m?m.posts:0; $('#f_comments').value=m?m.comments:0; $('#f_homework').value=m?m.hw:0;
+    $('#f_support').checked=m?m.support1w>0:false; $('#f_womens').checked=m?m.womens1w>0:false;
     $('#f_nps').value=m&&m.nps!=null?m.nps:''; $('#f_upsell').value=m?m.upsell:0; $('#f_override').value=m?(m.override||''):'';
     $('#f_activated').checked=m?m.activated:false; $('#f_new').checked=m?m.newThisMonth:false;
     $('#f_churned').checked=m?m.churnedThisMonth:false; $('#f_failed').checked=m?m.failed30:false;
@@ -2003,12 +2005,13 @@
     if(!name){ $('#modalErr').textContent='Name is required.'; return; }
     const row={
       name, email:$('#f_email').value.trim()||null, phone:$('#f_phone').value.trim()||null, program:$('#f_program').value, pod_id:$('#f_pod').value||null,
-      payment:$('#f_payment').value, calls:+$('#f_calls').value||0, calls_1w:+$('#f_calls_1w').value||0, posts:+$('#f_posts').value||0, comments:+$('#f_comments').value||0, homework:+$('#f_homework').value||0,
+      payment:$('#f_payment').value, calls:+$('#f_calls').value||0, calls_1w:+$('#f_calls_1w').value||0, posts:+$('#f_posts').value||0, comments:+$('#f_comments').value||0, support_1w:$('#f_support').checked?1:0, womens_1w:$('#f_womens').checked?1:0, homework:+$('#f_homework').value||0,
       nps: $('#f_nps').value===''?null:+$('#f_nps').value, upsell:+$('#f_upsell').value||0, status_override:$('#f_override').value||null,
       activated:$('#f_activated').checked, new_this_month:$('#f_new').checked, churned_this_month:$('#f_churned').checked, failed_30:$('#f_failed').checked,
       updated_by: ME?.full_name||ME?.email||null
     };
     if(!NEW_COLS) delete row.comments;   // schema not migrated yet — don't break saves
+    if(!ATTEND_COLS){ delete row.support_1w; delete row.womens_1w; }
     $('#modalSave').disabled=true;
     let memberId=editingId, err=null;
     if(editingId){ const res=await sb.from('members').update(row).eq('id',editingId); err=res.error; }
@@ -2019,6 +2022,7 @@
     if(!err && memberId){
       const snap={ member_id:memberId, week_start:weekStartISO(), attended:row.calls_1w };
       if(NEW_COLS){ snap.posts=row.posts; snap.comments=row.comments||0; }   // weekly posts + comments history
+      if(ATTEND_COLS){ snap.support_call=$('#f_support').checked?1:0; snap.womens_circle=$('#f_womens').checked?1:0; }
       await sb.from('weekly_attendance').upsert(snap, { onConflict:'member_id,week_start' });
     }
     $('#modalSave').disabled=false;
