@@ -172,6 +172,20 @@
   ul.clean{list-style:none} ul.clean li{padding:6px 0;font-size:14px;color:var(--mid);display:flex;gap:9px}
   ul.clean li::before{content:"›";color:var(--gold);font-weight:800}
 
+  /* auth gate */
+  .gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(1000px 600px at 70% -10%,rgba(214,186,118,.06),transparent 60%),#0c0c0f}
+  .gate.hide{display:none}
+  .gate-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--sh);padding:32px;max-width:400px;width:100%}
+  .gate-brand{font-family:var(--heading);font-weight:800;font-size:22px}
+  .gate-brand span{color:var(--gold)}
+  .gate-card p{color:var(--muted);font-size:13.5px;margin:8px 0 18px}
+  .gate-card input{width:100%;font-size:15px;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 13px;margin-bottom:11px}
+  .gate-card input:focus{outline:0;border-color:var(--gold-mid);box-shadow:0 0 0 3px var(--gold-faint)}
+  .gate-card button{width:100%;background:var(--gold-grad);color:var(--on-gold);border:0;border-radius:9px;padding:12px;font-weight:700;font-size:14px;cursor:pointer}
+  .gmsg{font-size:13px;margin-top:10px;color:var(--muted)} .gmsg.err{color:var(--red)}
+  .who2{font-size:11px;color:var(--muted);padding:0 10px}
+  .who2 a{cursor:pointer}
+  .syncnote{font-size:10.5px;color:var(--gold-deep);padding:2px 10px}
   @media(max-width:900px){
     .shell{grid-template-columns:1fr}
     nav.side{position:fixed;bottom:0;top:auto;left:0;right:0;height:auto;flex-direction:row;overflow-x:auto;z-index:50;padding:8px;gap:4px;border-right:0;border-top:1px solid var(--border)}
@@ -195,6 +209,19 @@
 </style>
 </head>
 <body>
+
+<!-- ══ SIGN-IN GATE ══ -->
+<div id="gate" class="gate hide">
+  <div class="gate-card">
+    <div class="gate-brand">Breedwise <span>·</span> Role HQ</div>
+    <p>Sign in with your Breedwise email &amp; password. Your inputs save to the cloud and follow you across devices.</p>
+    <input id="gEmail" type="email" placeholder="you@breedwise.io" autocomplete="email">
+    <input id="gPass" type="password" placeholder="Password" autocomplete="current-password">
+    <button id="gBtn">Sign in</button>
+    <div id="gMsg" class="gmsg"></div>
+  </div>
+</div>
+
 <div class="shell">
 
   <!-- ══ SIDEBAR ══ -->
@@ -215,6 +242,8 @@
     <a class="nav" href="#sops"><span class="ic">☰</span> SOPs</a>
     <a class="nav" href="#rights"><span class="ic">⚖</span> Decision Rights</a>
     <div class="foot no-print">
+      <div class="who2"><span id="whoEmail"></span> · <a id="gLogout">Sign out</a></div>
+      <div id="syncNote" class="syncnote">☁ Cloud sync on</div>
       <button class="btn" onclick="window.print()">🖨 Print</button>
       <button class="btn" id="resetBtn">↺ Reset dashboard</button>
     </div>
@@ -886,11 +915,37 @@
   </main>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /* ═══ persistence ═══ */
 const NS='jhq_';
 const store={get:k=>{try{return JSON.parse(localStorage.getItem(NS+k))}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(NS+k,JSON.stringify(v))}catch(e){}},del:k=>localStorage.removeItem(NS+k)};
 
+/* ═══ Supabase — cloud sync so inputs survive across devices / browser clears ═══ */
+const SUPABASE_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+const SUPABASE_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,detectSessionInUrl:true}});
+const DASH='director-member-success';
+let ME_EMAIL='';
+function collectState(){const o={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf(NS)===0)o[k]=localStorage.getItem(k);}return o;}
+let syncT;
+function syncToDB(){
+  if(!ME_EMAIL)return; clearTimeout(syncT);
+  syncT=setTimeout(async()=>{
+    const n=document.getElementById('syncNote');
+    try{ await sb.from('role_dashboard').upsert({email:ME_EMAIL,dashboard:DASH,data:collectState(),updated_at:new Date().toISOString()},{onConflict:'email,dashboard'});
+      if(n)n.textContent='☁ Saved '+new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
+    }catch(e){ if(n)n.textContent='⚠ Saved locally (cloud offline)'; }
+  },800);
+}
+function wireDbSync(){ document.body.addEventListener('input',syncToDB); document.body.addEventListener('change',syncToDB); }
+async function hydrateFromDB(){
+  try{ const {data}=await sb.from('role_dashboard').select('data').eq('email',ME_EMAIL).eq('dashboard',DASH).maybeSingle();
+    if(data&&data.data&&typeof data.data==='object'){ Object.keys(data.data).forEach(k=>{ if(k.indexOf(NS)===0) localStorage.setItem(k,data.data[k]); }); }
+  }catch(e){/* fall back to whatever is in localStorage */}
+}
+
+function initDashboard(){
 /* today's date */
 document.getElementById('todayDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
 
@@ -1011,14 +1066,43 @@ const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){docum
 document.querySelectorAll('section[id]').forEach(s=>io.observe(s));
 
 /* ═══ reset ═══ */
-document.getElementById('resetBtn').addEventListener('click',()=>{
-  if(confirm('Reset the entire dashboard? This clears all checkboxes, notes, KPI values, and calculator inputs on this device.')){
+document.getElementById('resetBtn').addEventListener('click',async()=>{
+  if(confirm('Reset the entire dashboard? This clears all checkboxes, notes, KPI values, and calculator inputs — on this device AND in the cloud.')){
     Object.keys(localStorage).filter(k=>k.startsWith(NS)).forEach(k=>localStorage.removeItem(k));
+    try{ if(ME_EMAIL) await sb.from('role_dashboard').delete().eq('email',ME_EMAIL).eq('dashboard',DASH); }catch(e){}
     location.reload();
   }
 });
 
-recompute(); refreshStreak();
+recompute(); refreshStreak(); wireDbSync();
+}  /* ═══ end initDashboard ═══ */
+
+/* ═══ auth boot ═══ */
+async function boot(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){ document.getElementById('gate').classList.remove('hide'); return; }
+  ME_EMAIL=(session.user.email||'').toLowerCase();
+  const we=document.getElementById('whoEmail'); if(we)we.textContent=ME_EMAIL;
+  await hydrateFromDB();               // pull cloud state → localStorage BEFORE the dashboard reads it
+  document.getElementById('gate').classList.add('hide');
+  initDashboard();
+}
+async function doLogin(){
+  const email=document.getElementById('gEmail').value.trim().toLowerCase();
+  const pw=document.getElementById('gPass').value;
+  const msg=document.getElementById('gMsg');
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){msg.className='gmsg err';msg.textContent='Enter a valid email.';return;}
+  if(!pw){msg.className='gmsg err';msg.textContent='Enter your password.';return;}
+  document.getElementById('gBtn').disabled=true; msg.className='gmsg'; msg.textContent='Signing in…';
+  const {error}=await sb.auth.signInWithPassword({email,password:pw});
+  document.getElementById('gBtn').disabled=false;
+  if(error){msg.className='gmsg err';msg.textContent=error.message;return;}
+  location.reload();
+}
+document.getElementById('gBtn').addEventListener('click',doLogin);
+document.getElementById('gPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.getElementById('gLogout').addEventListener('click',async()=>{await sb.auth.signOut();location.reload();});
+boot();
 </script>
 </body>
 </html>
