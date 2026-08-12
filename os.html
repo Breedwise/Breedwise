@@ -356,7 +356,6 @@
       <div class="side-foot">
         <div class="side-user"><div class="who" id="navWho">—</div><div class="role" id="navRole">—</div></div>
         <div class="side-links">
-          <a href="/accelerator.html" target="_blank">Accelerator</a>
           <a href="/accountability-chart" target="_blank">Org Chart</a>
           <a href="/team-manual" target="_blank">Manual</a>
         </div>
@@ -443,6 +442,8 @@
         </div>
         <div class="section-label">Pod KPIs</div>
         <div class="kpi-grid" id="alKpis"></div>
+        <div class="section-label">Churn — month over month</div>
+        <div class="card" id="podChurnTrend" style="overflow-x:auto"></div>
         <div class="section-label">Pod roster &amp; action queue</div>
         <div class="table-wrap"><div style="overflow-x:auto"><table>
           <thead><tr><th>Member</th><th>Program</th><th>Status</th><th>Activation</th><th>Calls 4w</th><th>Calls 1w</th><th class="hide-sm">Posts / Cmts 7d</th><th>HW%</th><th>Pay</th><th>NPS</th><th>Next action</th><th></th></tr></thead>
@@ -475,6 +476,10 @@
             <div class="field"><label>Calls co-hosted</label><input id="cmw_calls" type="number" min="0"></div>
             <div class="field"><label>Recordings due</label><input id="cmw_due" type="number" min="0"></div>
             <div class="field"><label>Uploaded by 12pm</label><input id="cmw_ontime" type="number" min="0"></div>
+            <div class="field"><label>Support Call — attended</label><input id="cmw_sup_att" type="number" min="0"></div>
+            <div class="field"><label>Support Call — invited</label><input id="cmw_sup_exp" type="number" min="0"></div>
+            <div class="field"><label>Women's Circle — attended</label><input id="cmw_wom_att" type="number" min="0"></div>
+            <div class="field"><label>Women's Circle — invited</label><input id="cmw_wom_exp" type="number" min="0"></div>
             <button class="btn-save" id="cmwSave">Save week</button>
           </div>
         </div>
@@ -1358,7 +1363,7 @@
   const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
   const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager', Founder:'Founder' };
 
-  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, podHw='all', ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[], PAYMENTS=[], PLANS=[], TASKS=[], TEAM=[], INTAKE_BY={}, NEW_COLS=false;
+  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, podHw='all', ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[], PAYMENTS=[], PLANS=[], TASKS=[], TEAM=[], INTAKE_BY={}, NEW_COLS=false, MONTHLY_CHURN=[];
   let SALES_MEMBER=false;  // true if this login maps to a sales_reps row (set after SalesOS.boot)
   const EXPERTS=['Dr. Emmanuel Fontaine','Dr. Angela Hughes','Austin Shanks','Dr. David Mahoney','Yasmin Omar'];
   function weekStartISO(){ const d=new Date(); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return d.toISOString().slice(0,10); }
@@ -1444,7 +1449,7 @@
   async function loadData(){
     const { data:{ session } } = await sb.auth.getSession();
     const myEmail = session?.user?.email || '';
-    const [mem, pods, comp, prof, iss, mnotes, cmw, ss, cc, wk, aff, pay, plans, tsk, team, intk] = await Promise.all([
+    const [mem, pods, comp, prof, iss, mnotes, cmw, ss, cc, wk, aff, pay, plans, tsk, team, intk, mchurn] = await Promise.all([
       sb.from('members').select('*').order('name'),
       sb.from('pods').select('*').order('name'),
       sb.from('comp').select('*'),       // RLS → only my row
@@ -1461,10 +1466,12 @@
       sb.from('tasks').select('*').order('due_date',{ascending:true}),
       sb.from('team').select('*').order('full_name'),
       sb.from('member_intake').select('*'),
+      sb.from('monthly_churn').select('*'),
     ]);
     MEMBERS = (mem.data||[]).map(norm);
     NEW_COLS = !!(mem.data && mem.data[0] && ('comments' in mem.data[0]));   // schema migrated?
     INTAKE_BY = {}; (intk?.data||[]).forEach(r=>{ INTAKE_BY[r.member_id]=r; });
+    MONTHLY_CHURN = mchurn?.data || [];
     PODS = pods.data||[];
     PROFILES = prof.data||[];
     ISSUES = iss.data||[];
@@ -1485,7 +1492,7 @@
   }
 
   /* ═══ DERIVED ═══ */
-  const activeMembers = ()=> MEMBERS.filter(m=>m.pay!=='Cancelled');
+  const activeMembers = ()=> MEMBERS.filter(m=>!isChurned(m));   // excludes cancelled AND churned-this-month so they don't skew community KPIs
   function statusOf(m){
     if (m.override) return m.override;
     if (m.pay==='Cancelled' || m.nps<=4 || (m.calls===0 && m.posts===0 && !m.newThisMonth)) return 'Red';
@@ -1686,6 +1693,22 @@
       <td><button class="row-edit" data-edit="${m.id}">Edit</button></td>
     </tr>`).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:26px">No churned members. 🎉</td></tr>`;
   }
+  // Month-over-month churn for a pod: history from monthly_churn + the current month computed live.
+  function renderPodChurn(podId){
+    const el=$('#podChurnTrend'); if(!el) return;
+    const curMo=new Date().toISOString().slice(0,7);
+    const pm=MEMBERS.filter(m=>m.pod===podId);
+    const startNow=pm.filter(m=>m.pay!=='Cancelled'||m.churnedThisMonth).length;
+    const churnedNow=pm.filter(m=>m.churnedThisMonth).length;
+    const live={ month:curMo+'-01', active_start:startNow, churned:churnedNow, churn_pct:startNow?Math.round(1000*churnedNow/startNow)/10:0, live:true };
+    const hist=MONTHLY_CHURN.filter(r=>r.pod_id===podId && String(r.month).slice(0,7)!==curMo)
+      .sort((a,b)=>String(a.month)<String(b.month)?1:-1);
+    const rows=[live,...hist].slice(0,6);
+    const fmt=d=>new Date(String(d).slice(0,10)+'T12:00').toLocaleDateString('en-US',{month:'short',year:'numeric'});
+    el.innerHTML = rows.length?(`<table><thead><tr><th>Month</th><th class="num">Active</th><th class="num">Churned</th><th class="num">Churn %</th></tr></thead><tbody>`+
+      rows.map(r=>{const bad=(+r.churn_pct)>TARGETS.churn; return `<tr><td>${fmt(r.month)}${r.live?' <span class="tag">live</span>':''}</td><td class="num">${r.active_start}</td><td class="num">${r.churned}</td><td class="num ${bad?'pay-bad':'pay-good'}">${(+r.churn_pct).toFixed(1)}%</td></tr>`;}).join('')+
+      `</tbody></table>`) : `<div class="card-sub">No churn history yet — it fills in each month.</div>`;
+  }
   function renderAL(){
     $('#podSelect').innerHTML=PODS.map(p=>`<option value="${p.id}">${esc(p.name)} · ${MEMBERS.filter(m=>m.pod===p.id&&!isChurned(m)).length} active</option>`).join('');
     $('#podSelect').value=curPod;
@@ -1701,6 +1724,7 @@
     $('#podHwFilter').onchange=e=>{podHw=e.target.value;renderAL();};
     $('#podHwCount').textContent = podHw==='all' ? '' : `${pm.length} of ${all.length} members`;
     $('#alTable').innerHTML=pm.map(m=>memberRow(m,{activation:true,action:true})).join('')||`<tr><td colspan="11" style="text-align:center;color:var(--muted);padding:26px">${all.length?'No members match this homework filter.':'No members in this pod.'}</td></tr>`;
+    renderPodChurn(curPod);
   }
   function madisonKPIs(){
     const w=CM_WEEK||{};
@@ -1712,8 +1736,12 @@
     const overdue=ISSUES.filter(i=>i.status!=='resolved'&&i.due_date&&i.due_date<today).length;
     const handled=(open+resolved)?(resolved/(open+resolved)*100):100;
     const act=activeMembers(), engage=act.reduce((s,m)=>s+m.posts,0)/(act.length||1);
+    const supAtt=+w.support_attended||0, supExp=+w.support_expected||0, womAtt=+w.womens_attended||0, womExp=+w.womens_expected||0;
+    const supPct=supExp?(supAtt/supExp*100):0, womPct=womExp?(womAtt/womExp*100):0;
     return [
       { name:'Calls Co-hosted (wk)', val:cohosted, unit:'', target:1, dir:'above', meta:'co-host ≥ 1 per week' },
+      { name:'Support Call Attendance', val:supPct, unit:'%', target:TARGETS.podAttend, dir:'above', meta:`${supAtt}/${supExp} attended`, dec:0 },
+      { name:"Women's Circle Attendance", val:womPct, unit:'%', target:TARGETS.podAttend, dir:'above', meta:`${womAtt}/${womExp} attended`, dec:0 },
       { name:'Recordings On Time', val:recPct, unit:'%', target:100, dir:'above', meta:`${ontime}/${due} uploaded by 12pm` },
       { name:'Issues Handled', val:handled, unit:'%', target:100, dir:'above', meta:`${open} open · ${overdue} overdue` },
       { name:'Posts / Member · wk', val:engage, unit:'/wk', target:TARGETS.engage, dir:'above', meta:'1 post per member per week', dec:2 },
@@ -1722,10 +1750,17 @@
   function renderCMWeek(){
     const w=CM_WEEK||{};
     $('#cmw_calls').value=w.calls_cohosted??0; $('#cmw_due').value=w.recordings_due??0; $('#cmw_ontime').value=w.recordings_on_time??0;
+    $('#cmw_sup_att').value=w.support_attended??0; $('#cmw_sup_exp').value=w.support_expected??0; $('#cmw_wom_att').value=w.womens_attended??0; $('#cmw_wom_exp').value=w.womens_expected??0;
     $('#cmwSave').onclick=async ()=>{
-      const row={ week_start:weekStartISO(), calls_cohosted:+$('#cmw_calls').value||0, recordings_due:+$('#cmw_due').value||0, recordings_on_time:+$('#cmw_ontime').value||0, updated_by:ME?.full_name||ME?.email||null, updated_at:new Date().toISOString() };
+      const row={ week_start:weekStartISO(), calls_cohosted:+$('#cmw_calls').value||0, recordings_due:+$('#cmw_due').value||0, recordings_on_time:+$('#cmw_ontime').value||0,
+        support_attended:+$('#cmw_sup_att').value||0, support_expected:+$('#cmw_sup_exp').value||0, womens_attended:+$('#cmw_wom_att').value||0, womens_expected:+$('#cmw_wom_exp').value||0,
+        updated_by:ME?.full_name||ME?.email||null, updated_at:new Date().toISOString() };
       $('#cmwSave').disabled=true;
-      const res=await sb.from('cm_weekly').upsert(row,{onConflict:'week_start'});
+      let res=await sb.from('cm_weekly').upsert(row,{onConflict:'week_start'});
+      if(res.error && /support_|womens_/.test(res.error.message||'')){   // migration not run yet → save the rest
+        const {support_attended,support_expected,womens_attended,womens_expected,...base}=row;
+        res=await sb.from('cm_weekly').upsert(base,{onConflict:'week_start'});
+      }
       $('#cmwSave').disabled=false;
       if(res.error){ toast(res.error.message); return; }
       await loadData(); renderCM(); toast('Week saved');
