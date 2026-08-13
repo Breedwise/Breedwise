@@ -398,17 +398,17 @@ fbq('init','1337266034525554');fbq('track','PageView');
 
       const btn = $('#submitBtn'); btn.disabled = true; btn.textContent = 'Loading your case study…';
 
-      // Capture + attribute the lead (first-touch ?ref → affiliate). Bounded so a slow
-      // network can never trap the visitor before the case study.
+      // Capture + attribute the lead (first-touch ?ref → affiliate). keepalive lets the POST
+      // finish even though we redirect to the case study a beat later; the short delay gives it
+      // (and the Meta pixel) time to dispatch. Previously a 6s abort + immediate redirect
+      // cancelled the edge function mid-fan-out, so CC360 landed but Close + Slack were killed.
       try {
-        const ctrl = new AbortController(); const to = setTimeout(()=>ctrl.abort(), 6000);
-        await fetch(OPTIN_ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, signal: ctrl.signal,
+        fetch(OPTIN_ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, keepalive:true,
           body: JSON.stringify({ name, email, phone, breeding, ref, source:'Case Study Opt-in', page: location.href, utm }) });
-        clearTimeout(to);
       } catch(_) { /* non-fatal: never trap a real lead */ }
       if (window.fbq) { fbq('track','Lead'); fbq('trackCustom','CaseStudyOptin'); }
 
-      toVSL();
+      setTimeout(toVSL, 250);
     });
   </script>
 </body>
