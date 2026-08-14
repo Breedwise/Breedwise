@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Weekly Operating Meeting · Breedwise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#131317;--surface:#0e0e11;--card:#1c1c22;--card2:#22222a;--border:#31313a;--border2:#282830;
+    --gold:#d6ba76;--gold-deep:#b89c47;--gold-faint:rgba(214,186,118,.09);--gold-mid:rgba(214,186,118,.22);
+    --gold-grad:linear-gradient(135deg,#e6cf8b,#bf9f4e);--on-gold:#1a1509;
+    --ink:#f5f2ea;--muted:#8d8b83;--mid:#c3c0b7;
+    --green:#6dbf90;--green-bg:rgba(109,191,144,.13);--yellow:#e0b352;--yellow-bg:rgba(224,179,82,.14);--red:#e0807e;--red-bg:rgba(224,128,126,.14);
+    --heading:'Playfair Display',Georgia,serif;--body:'Inter',-apple-system,sans-serif;--radius:14px;--sh:0 4px 16px rgba(0,0,0,.5),0 20px 48px rgba(0,0,0,.5);
+  }
+  body{background:radial-gradient(1100px 640px at 80% -10%,rgba(214,186,118,.05),transparent 60%),var(--bg);color:var(--ink);font-family:var(--body);line-height:1.5;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:var(--heading);font-weight:700}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px 120px}
+  .eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-deep)}
+  a{color:var(--gold)}
+  /* top */
+  header.top{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+  header.top .in{max-width:1080px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px}
+  header.top .ttl{font-family:var(--heading);font-weight:800;font-size:17px}
+  header.top .ttl em{color:var(--gold);font-style:normal}
+  header.top .date{color:var(--muted);font-size:13px}
+  header.top .sp{margin-left:auto;display:flex;align-items:center;gap:10px}
+  .timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:15px;background:var(--card);border:1px solid var(--border);border-radius:9px;padding:6px 12px;cursor:pointer;user-select:none}
+  .timer.run{border-color:var(--gold-mid);color:var(--gold)}
+  .who{font-size:12px;color:var(--muted)}
+  .btn{font-family:var(--body);font-weight:600;font-size:13px;border:1px solid var(--border);background:var(--card);color:var(--mid);border-radius:9px;padding:8px 13px;cursor:pointer;transition:.2s}
+  .btn:hover{border-color:var(--gold-mid);color:var(--gold)}
+  .btn.gold{background:var(--gold-grad);color:var(--on-gold);border:0}
+  /* constraint */
+  .constraint{background:linear-gradient(135deg,rgba(214,186,118,.12),transparent),var(--card);border:1px solid var(--gold-mid);border-radius:var(--radius);padding:18px 22px;margin:24px 0}
+  .constraint .q{font-family:var(--heading);font-size:20px;font-weight:700;line-height:1.3}
+  .constraint .q b{color:var(--gold)}
+  .constraint .b{margin-top:8px;color:var(--muted);font-size:13px}
+  /* sections */
+  section.s{margin-top:22px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--sh)}
+  section.s > .h{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
+  section.s > .h h2{font-size:20px}
+  section.s > .h .bud{margin-left:auto;font-size:11px;font-weight:700;color:var(--gold-deep);border:1px solid var(--border);border-radius:20px;padding:3px 10px}
+  section.s > .h .sub{font-size:12.5px;color:var(--muted)}
+  .grid{display:grid;gap:14px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}
+  label.fl{font-size:11.5px;font-weight:600;color:var(--mid);display:block;margin-bottom:5px}
+  input.f,textarea.f,select.f{font-family:var(--body);font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:9px 11px;width:100%}
+  input.f:focus,textarea.f:focus,select.f:focus{outline:0;border-color:var(--gold-mid);box-shadow:0 0 0 3px var(--gold-faint)}
+  textarea.f{resize:vertical;min-height:44px}
+  /* scoreboard */
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 14px}
+  .kpi .n{font-size:11.5px;color:var(--muted);font-weight:600;min-height:28px}
+  .kpi .row{display:flex;align-items:center;gap:8px;margin-top:6px}
+  .kpi input{width:88px;font-size:19px;font-weight:800;font-family:var(--heading);color:var(--ink);background:transparent;border:0;border-bottom:1px dashed var(--gold-mid);padding:2px 0}
+  .kpi input:focus{outline:0;border-bottom-style:solid}
+  .kpi .auto{font-size:22px;font-weight:800;font-family:var(--heading)}
+  .kpi .tgt{font-size:11px;color:var(--muted)}
+  .kpi .stat{margin-left:auto;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px}
+  .stat.g{background:var(--green-bg);color:var(--green)}.stat.y{background:var(--yellow-bg);color:var(--yellow)}.stat.r{background:var(--red-bg);color:var(--red)}.stat.n{background:var(--card2);color:var(--muted)}
+  .badge-auto{font-size:9.5px;font-weight:700;letter-spacing:.05em;color:var(--gold-deep);border:1px solid var(--gold-mid);border-radius:5px;padding:1px 5px;vertical-align:middle}
+  .divlabel{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-deep);margin:6px 0 2px}
+  /* rocks */
+  .rock{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}
+  .rock .rh{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .rock .rt{font-weight:700;font-size:15px}
+  .rock .rw{font-size:12px;color:var(--gold-deep)}
+  .rock .dod{font-size:12px;color:var(--muted);margin-top:4px}
+  .seg{display:inline-flex;border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-left:auto}
+  .seg button{background:transparent;border:0;color:var(--muted);font-family:var(--body);font-size:12px;font-weight:600;padding:6px 12px;cursor:pointer}
+  .seg button.on[data-v="on"]{background:var(--green-bg);color:var(--green)}
+  .seg button.on[data-v="off"]{background:var(--red-bg);color:var(--red)}
+  .seg button.on[data-v="done"]{background:var(--gold-grad);color:var(--on-gold)}
+  .rockdetail{margin-top:10px;display:none}.rock.show .rockdetail{display:block}
+  /* wins */
+  .winrow{display:grid;grid-template-columns:88px 1fr 1fr;gap:8px;align-items:center;margin-bottom:8px}
+  .winrow .nm{font-size:13px;font-weight:600}
+  /* decisions */
+  .declist>div{display:flex;gap:8px;margin-bottom:8px}
+  .declist input{flex:1}
+  /* rating */
+  .rate{display:flex;gap:6px;flex-wrap:wrap}
+  .rate button{width:38px;height:38px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--mid);font-weight:700;cursor:pointer}
+  .rate button.on{background:var(--gold-grad);color:var(--on-gold);border:0}
+  /* gate */
+  .gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(1000px 600px at 70% -10%,rgba(214,186,118,.06),transparent),#0c0c0f}
+  .gate.hide{display:none}
+  .gc{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--sh);padding:32px;max-width:400px;width:100%}
+  .gc h2{font-size:22px;font-weight:800}.gc p{color:var(--muted);font-size:13.5px;margin:8px 0 18px}
+  .gc input{width:100%;font-size:15px;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 13px;margin-bottom:11px}
+  .gc button{width:100%;background:var(--gold-grad);color:var(--on-gold);border:0;border-radius:9px;padding:12px;font-weight:700;cursor:pointer}
+  .gmsg{font-size:13px;margin-top:10px;color:var(--muted)}.gmsg.err{color:var(--red)}
+  .savenote{font-size:11px;color:var(--gold-deep)}
+  .hide{display:none!important}
+  #histBody .hr{border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px;background:var(--surface)}
+  @media(max-width:820px){.g2,.g3{grid-template-columns:1fr}.winrow{grid-template-columns:1fr}header.top .date{display:none}}
+  @media print{header.top,.btn,.timer,.no-print,.gate{display:none!important}body{background:#fff;color:#000}section.s,.kpi,.rock,.constraint{border-color:#ccc;box-shadow:none;break-inside:avoid}.rockdetail{display:block!important}}
+</style>
+</head>
+<body>
+
+<div id="gate" class="gate hide"><div class="gc">
+  <h2>Breedwise · Weekly Meeting</h2>
+  <p>Sign in with your Breedwise email &amp; password. Notes save to the cloud and everyone sees the same meeting.</p>
+  <input id="gEmail" type="email" placeholder="you@breedwise.io" autocomplete="email">
+  <input id="gPass" type="password" placeholder="Password" autocomplete="current-password">
+  <button id="gBtn">Sign in</button><div id="gMsg" class="gmsg"></div>
+</div></div>
+
+<header class="top no-print"><div class="in">
+  <div class="ttl">Breedwise <em>·</em> Weekly Operating Meeting</div>
+  <div class="date" id="wkDate">—</div>
+  <div class="sp">
+    <span class="savenote" id="saveNote">☁</span>
+    <span class="who" id="whoEmail"></span>
+    <div class="timer" id="timer" title="Click to start/pause · double-click to reset">00:00 / 45:00</div>
+    <button class="btn" id="histBtn">History</button>
+    <button class="btn" onclick="window.print()">Recap / Print</button>
+  </div>
+</div></header>
+
+<div class="wrap" id="app" style="display:none">
+
+  <!-- CONSTRAINT -->
+  <div class="constraint">
+    <div class="eyebrow">The one thing this quarter</div>
+    <div class="q">$30k → <b>$100k / month</b>. The bottleneck is <b>show‑rate · qualifying leads before the closing call · churn · delivery</b> — not more leads.</div>
+    <div class="b">Everything below earns its place by moving that. If it doesn't, it's backlog — not meeting time.</div>
+  </div>
+
+  <!-- 1. ENERGY & MINDSET -->
+  <section class="s" id="s-mind">
+    <div class="h"><h2>Energy &amp; Mindset</h2><span class="sub">Wins + clear one limiting belief before the work.</span><span class="bud">8 min</span></div>
+    <div class="divlabel">Wins · 1 personal + 1 professional</div>
+    <div id="winsWrap"></div>
+    <div class="divlabel" style="margin-top:14px">Limiting belief / pattern holding the team back this week</div>
+    <div class="grid g3">
+      <div><label class="fl">The belief / pattern</label><textarea class="f" data-mp="lb_belief" placeholder="e.g. 'We add tasks but don't finish them' · 'We chase leads instead of closing'"></textarea></div>
+      <div><label class="fl">Reframe → the empowering truth</label><textarea class="f" data-mp="lb_reframe" placeholder="e.g. 'We finish 3 things that matter, not 42 that don't'"></textarea></div>
+      <div><label class="fl">This week we focus on…</label><textarea class="f" data-mp="lb_focus" placeholder="The one behavior we commit to"></textarea></div>
+    </div>
+  </section>
+
+  <!-- 2. SCOREBOARD -->
+  <section class="s" id="s-score">
+    <div class="h"><h2>Scoreboard</h2><span class="sub">Sales = you enter · Community = live from the OS.</span><span class="bud">6 min</span></div>
+    <div class="divlabel">Sales &amp; conversion</div>
+    <div class="grid g3" id="salesKpis"></div>
+    <div class="divlabel" style="margin-top:14px">Cash &amp; delivery</div>
+    <div class="grid g3" id="cashKpis"></div>
+    <div class="divlabel" style="margin-top:14px">Community <span class="badge-auto">AUTO · OS</span></div>
+    <div class="grid g3" id="commKpis"></div>
+  </section>
+
+  <!-- 3. ROCKS -->
+  <section class="s" id="s-rocks">
+    <div class="h"><h2>The 4 Rocks</h2><span class="sub">on‑track / off‑track / done. If off‑track → one blocker + one ask.</span><span class="bud">15 min</span></div>
+    <div id="rocksWrap"></div>
+    <div class="kpi" style="border-color:var(--gold-mid);margin-top:4px"><div class="n" style="min-height:0">⚑ Parked big bet — needs a decision, not a rock (yet)</div><div style="font-size:13px;color:var(--mid);margin-top:6px"><b>Six‑Figure Breeder Summit + dog show (Oct).</b> Don't add it as a rock until something comes off. Decision goes in the log below.</div></div>
+  </section>
+
+  <!-- 4. DECISIONS -->
+  <section class="s" id="s-dec">
+    <div class="h"><h2>Decisions &amp; Issues</h2><span class="sub">The ≤3 that must be decided today. Rest → owner + date.</span><span class="bud">10 min</span></div>
+    <div class="declist" id="decList"></div>
+    <button class="btn no-print" id="addDec">+ Add decision / issue</button>
+  </section>
+
+  <!-- 5. CLOSE -->
+  <section class="s" id="s-close">
+    <div class="h"><h2>Close</h2><span class="sub">Confirm next actions, then rate the meeting.</span><span class="bud">5 min</span></div>
+    <label class="fl">Next actions confirmed (owner + due date per rock)</label>
+    <textarea class="f" data-mp="close_actions" rows="3" placeholder="Rock 1 → … (owner, due) · Rock 2 → …"></textarea>
+    <div class="divlabel" style="margin-top:14px">Meeting rating</div>
+    <div class="rate" id="rate"></div>
+  </section>
+</div>
+
+<!-- HISTORY -->
+<div id="histWrap" class="wrap hide"><section class="s"><div class="h"><h2>Meeting history</h2><span class="sub">Rocks &amp; ratings over past weeks.</span></div><div id="histBody"></div><button class="btn" id="histClose" style="margin-top:8px">← Back to this week</button></section></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co', SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+const sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,detectSessionInUrl:true}});
+const $=id=>document.getElementById(id);
+const ROSTER=['Austin','Jennifer','Madison','Yasmin','Derek','Jake','Regina'];
+const ROCKS=[
+ {t:'Convert the existing pipeline',who:'Austin · Jake · Yas',dod:'Nurture + no‑show + good‑fit follow‑up sequences live; qualified bookings & closes climbing.'},
+ {t:'Lock cash collection',who:'Jennifer',dod:'Every recurring member on auto‑Stripe; failed‑pay list worked weekly; failed‑pay <3%.'},
+ {t:'Make the funnel measurable',who:'Austin',dod:'Show rate + schedule rate on the scoreboard; Zoom↔OS attendance reconciled.'},
+ {t:'Automate onboarding intake → customized paths',who:'Austin · Jen',dod:'Transcript auto‑fills the intake; every member on a customized path.'},
+];
+// sales KPIs (manual). closes handled specially.
+const SALES=[
+ {k:'qb',n:'Qualified bookings / wk',t:25,dir:'above',u:''},
+ {k:'qualRate',n:'Qualification rate (qualified ÷ booked)',t:null,dir:'above',u:'%',hint:'raise it — ~50% now'},
+ {k:'showRate',n:'Show rate',t:75,dir:'above',u:'%'},
+];
+const CASH=[
+ {k:'cashMTD',n:'Cash collected (MTD)',t:40000,dir:'above',u:'$'},
+ {k:'failedPay',n:'Failed payments',t:3,dir:'below',u:'%'},
+ {k:'delivery',n:'Deliverables shipped on time',t:100,dir:'above',u:'%'},
+];
+
+let ME='', WK=mondayISO(), STATE={}, saveT;
+function mondayISO(){const d=new Date();const off=(d.getDay()+6)%7;d.setDate(d.getDate()-off);return d.toISOString().slice(0,10);}
+function money(n){return '$'+Math.round(n).toLocaleString();}
+
+/* ---- render scaffolding ---- */
+function kpiCard(o){
+  return `<div class="kpi" data-kpi="${o.k}"><div class="n">${o.n}${o.hint?` <span class="tgt">· ${o.hint}</span>`:''}</div>
+    <div class="row"><input type="number" data-mp="kpi_${o.k}" placeholder="0" inputmode="decimal">
+      <span class="tgt">${o.t==null?'track':(o.u==='$'?money(o.t):o.t+o.u)}${o.t!=null&&o.dir?(o.dir==='below'?' max':' goal'):''}</span>
+      <span class="stat n" id="st_${o.k}">—</span></div></div>`;
+}
+$('#salesKpis').innerHTML = SALES.map(kpiCard).join('') + `
+  <div class="kpi" data-kpi="closes"><div class="n">Closes / wk <span class="tgt">· 5 PIF or 12 plans (hybrid)</span></div>
+    <div class="row"><input type="number" data-mp="kpi_pif" placeholder="0" inputmode="decimal" style="width:56px"><span class="tgt">PIF</span>
+      <input type="number" data-mp="kpi_plan" placeholder="0" inputmode="decimal" style="width:56px"><span class="tgt">plan</span>
+      <span class="stat n" id="st_closes">—</span></div></div>`;
+$('#cashKpis').innerHTML = CASH.map(kpiCard).join('');
+$('#commKpis').innerHTML = `
+  <div class="kpi"><div class="n">Attendance <span class="badge-auto">AUTO</span></div><div class="row"><span class="auto" id="auto_att">—</span><span class="tgt">70% goal</span><span class="stat n" id="st_att">—</span></div></div>
+  <div class="kpi"><div class="n">Monthly churn <span class="badge-auto">AUTO</span></div><div class="row"><span class="auto" id="auto_churn">—</span><span class="tgt">3% max</span><span class="stat n" id="st_churn">—</span></div></div>
+  <div class="kpi"><div class="n">Active members <span class="badge-auto">AUTO</span></div><div class="row"><span class="auto" id="auto_active">—</span><span class="tgt">count</span></div></div>`;
+
+$('#winsWrap').innerHTML = ROSTER.map(p=>`<div class="winrow"><div class="nm">${p}</div>
+  <input class="f" data-mp="win_${p}_p" placeholder="Personal win"><input class="f" data-mp="win_${p}_pro" placeholder="Professional win"></div>`).join('');
+
+$('#rocksWrap').innerHTML = ROCKS.map((r,i)=>`<div class="rock" data-rock="${i}">
+  <div class="rh"><div><div class="rt">${i+1}. ${r.t}</div><div class="rw">${r.who}</div></div>
+    <div class="seg">
+      <button data-v="on" onclick="setRock(${i},'on')">On‑track</button>
+      <button data-v="off" onclick="setRock(${i},'off')">Off‑track</button>
+      <button data-v="done" onclick="setRock(${i},'done')">Done</button>
+    </div></div>
+  <div class="dod">DoD: ${r.dod}</div>
+  <div class="rockdetail"><div class="grid g2" style="margin-top:8px">
+    <div><label class="fl">Blocker (if off‑track)</label><input class="f" data-mp="rock${i}_blocker"></div>
+    <div><label class="fl">One ask / next action</label><input class="f" data-mp="rock${i}_next"></div>
+  </div></div></div>`).join('');
+
+$('#rate').innerHTML=[1,2,3,4,5,6,7,8,9,10].map(n=>`<button data-rate="${n}" onclick="setRate(${n})">${n}</button>`).join('');
+
+/* ---- state / persistence (shared, per week, via app_state) ---- */
+function collect(){const o={};document.querySelectorAll('[data-mp]').forEach(el=>{if(el.value!=='')o[el.dataset.mp]=el.value;});o.__rocks=STATE.__rocks||{};o.__rate=STATE.__rate;o.__decs=readDecs();return o;}
+function readDecs(){return [...document.querySelectorAll('#decList input')].map(i=>i.value).filter(Boolean);}
+function apply(d){
+  STATE=d||{};
+  document.querySelectorAll('[data-mp]').forEach(el=>{ if(d[el.dataset.mp]!=null) el.value=d[el.dataset.mp]; });
+  (d.__decs&&d.__decs.length?d.__decs:['']).forEach(v=>addDec(v));
+  Object.entries(d.__rocks||{}).forEach(([i,v])=>paintRock(+i,v));
+  if(d.__rate) paintRate(d.__rate);
+}
+let saving=false;
+function save(){ if(!ME)return; clearTimeout(saveT); saveT=setTimeout(async()=>{
+  const data=collect(); $('#saveNote').textContent='☁ saving…';
+  try{ await sb.from('app_state').upsert({k:'meeting_'+WK,v:data},{onConflict:'k'}); $('#saveNote').textContent='☁ saved '+new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}); }
+  catch(e){ $('#saveNote').textContent='⚠ offline'; }
+},700); }
+document.body.addEventListener('input',e=>{ if(e.target.dataset.mp!==undefined) save(); });
+
+function setRock(i,v){ STATE.__rocks=STATE.__rocks||{}; STATE.__rocks[i]=v; paintRock(i,v); save(); }
+function paintRock(i,v){ const rk=document.querySelector(`.rock[data-rock="${i}"]`); if(!rk)return; rk.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.v===v)); rk.classList.toggle('show', v==='off'); }
+function setRate(n){ STATE.__rate=n; paintRate(n); save(); }
+function paintRate(n){ document.querySelectorAll('#rate button').forEach(b=>b.classList.toggle('on',+b.dataset.rate===n)); }
+function addDec(v){ const w=document.createElement('div'); w.innerHTML=`<input class="f" placeholder="Decision or issue → owner + due date">`; w.querySelector('input').value=v||''; w.querySelector('input').addEventListener('input',save); $('#decList').appendChild(w); }
+$('#addDec').onclick=()=>{addDec('');};
+
+/* ---- scoreboard status coloring ---- */
+function statPill(id,val,t,dir){ const el=$(id); if(!el)return; if(t==null||val===''||val==null){el.className='stat n';el.textContent='—';return;}
+  const v=parseFloat(val); const ok = dir==='below'? v<=t : v>=t; const near = dir==='below'? v<=t*1.34 : v>=t*0.85;
+  el.className='stat '+(ok?'g':near?'y':'r'); el.textContent = ok?'on target':near?'close':'behind'; }
+function recolor(){
+  SALES.concat(CASH).forEach(o=>{ const inp=document.querySelector(`[data-mp="kpi_${o.k}"]`); statPill('#st_'+o.k, inp?inp.value:'', o.t, o.dir); });
+  // closes hybrid: pif/5 + plan/12 >= 1
+  const pif=+($('#salesKpis').querySelector('[data-mp="kpi_pif"]').value||0), plan=+($('#salesKpis').querySelector('[data-mp="kpi_plan"]').value||0);
+  const pct=pif/5+plan/12; const el=$('#st_closes'); if(pif||plan){el.className='stat '+(pct>=1?'g':pct>=.7?'y':'r');el.textContent=Math.round(pct*100)+'% of wk goal';}else{el.className='stat n';el.textContent='—';}
+}
+document.body.addEventListener('input',e=>{ if(e.target.dataset.mp&&e.target.dataset.mp.startsWith('kpi_')) recolor(); });
+
+/* ---- community numbers live from the OS ---- */
+async function pullCommunity(){
+  try{
+    const {data:mem}=await sb.from('members').select('payment,calls,calls_1w,churned_this_month');
+    const M=mem||[]; const active=M.filter(m=>m.payment!=='Cancelled'&&!m.churned_this_month);
+    const attended=active.filter(m=>(m.calls||0)>=1||(m.calls_1w||0)>=1).length;
+    const att=active.length?attended/active.length*100:0;
+    const churnedN=M.filter(m=>m.churned_this_month).length; const base=active.length+churnedN; const churn=base?churnedN/base*100:0;
+    $('#auto_att').textContent=att.toFixed(0)+'%'; $('#auto_churn').textContent=churn.toFixed(1)+'%'; $('#auto_active').textContent=active.length;
+    statPill('#st_att',att,70,'above'); statPill('#st_churn',churn,3,'below');
+  }catch(e){ $('#auto_att').textContent='—'; }
+}
+
+/* ---- history ---- */
+$('#histBtn').onclick=async()=>{
+  $('#app').style.display='none'; $('#histWrap').classList.remove('hide');
+  const {data}=await sb.from('app_state').select('k,v,updated_at').like('k','meeting_%').order('k',{ascending:false}).limit(12);
+  $('#histBody').innerHTML=(data||[]).map(r=>{ const wk=r.k.replace('meeting_',''); const rk=r.v.__rocks||{};
+    const chips=ROCKS.map((R,i)=>{const v=rk[i]; const c=v==='done'?'g':v==='off'?'r':v==='on'?'y':'n'; return `<span class="stat ${c}" style="margin:2px">${i+1}: ${v||'—'}</span>`;}).join('');
+    return `<div class="hr"><b>${new Date(wk+'T12:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</b> · rating ${r.v.__rate||'—'}/10<div style="margin-top:6px">${chips}</div>${r.v.lb_focus?`<div style="font-size:12px;color:var(--muted);margin-top:6px">Focus: ${r.v.lb_focus}</div>`:''}</div>`;
+  }).join('')||'<div class="sub">No past meetings yet.</div>';
+};
+$('#histClose').onclick=()=>{ $('#histWrap').classList.add('hide'); $('#app').style.display=''; };
+
+/* ---- timer ---- */
+let tRun=false, tSec=0, tInt;
+function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function tick(){ tSec++; $('#timer').textContent=fmt(tSec)+' / 45:00'; if(tSec>=45*60)$('#timer').style.color='var(--red)'; }
+$('#timer').onclick=()=>{ tRun=!tRun; $('#timer').classList.toggle('run',tRun); if(tRun)tInt=setInterval(tick,1000); else clearInterval(tInt); };
+$('#timer').ondblclick=()=>{ clearInterval(tInt); tRun=false; tSec=0; $('#timer').classList.remove('run'); $('#timer').style.color=''; $('#timer').textContent='00:00 / 45:00'; };
+
+/* ---- auth boot ---- */
+$('#wkDate').textContent='Week of '+new Date(WK+'T12:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+async function boot(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){ $('#gate').classList.remove('hide'); return; }
+  ME=(session.user.email||'').toLowerCase(); $('#whoEmail').textContent=ME;
+  const {data}=await sb.from('app_state').select('v').eq('k','meeting_'+WK).maybeSingle();
+  apply((data&&data.v)||{});
+  $('#app').style.display=''; recolor(); pullCommunity();
+}
+async function login(){ const em=$('#gEmail').value.trim().toLowerCase(),pw=$('#gPass').value,m=$('#gMsg');
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){m.className='gmsg err';m.textContent='Enter a valid email.';return;}
+  m.className='gmsg';m.textContent='Signing in…'; const {error}=await sb.auth.signInWithPassword({email:em,password:pw});
+  if(error){m.className='gmsg err';m.textContent=error.message;return;} location.reload(); }
+$('#gBtn').onclick=login; $('#gPass').addEventListener('keydown',e=>{if(e.key==='Enter')login();});
+boot();
+</script>
+</body>
+</html>
