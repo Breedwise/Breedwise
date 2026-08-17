@@ -1,0 +1,260 @@
+<title>Contributor Payouts · Breedwise</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --bg:#14110e; --panel:#1c1813; --panel2:#241f18; --line:#33291f;
+    --ink:#f4ede2; --mut:#a99a86; --gold:#c8a24a; --gold2:#e0c377;
+    --green:#4a9d6a; --red:#c46a5a; --yellow:#c99a3a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+  h1,h2,h3{font-family:'Playfair Display',Georgia,serif;font-weight:700;margin:0}
+  a{color:var(--gold2)}
+  .wrap{max-width:1040px;margin:0 auto;padding:26px 18px 80px}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:22px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:10px}
+  .dot{width:11px;height:11px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px rgba(200,162,74,.18)}
+  .ey{color:var(--gold);font-size:11px;letter-spacing:.22em;text-transform:uppercase}
+  .who{font-size:12px;color:var(--mut)}
+  .btn{background:var(--gold);color:#20180a;border:0;border-radius:9px;padding:9px 15px;font-weight:700;cursor:pointer;font-size:13px}
+  .btn.ghost{background:transparent;color:var(--gold2);border:1px solid var(--line)}
+  .btn:disabled{opacity:.5;cursor:default}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px}
+  .card .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+  .card .v{font-family:'Playfair Display',serif;font-size:27px;margin-top:5px}
+  .card .s{font-size:11px;color:var(--mut);margin-top:2px}
+  .sect{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:18px}
+  .sect h2{font-size:18px;margin-bottom:4px}
+  .sect .sub{color:var(--mut);font-size:12px;margin-bottom:14px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+  th{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);font-weight:600}
+  td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+  .pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700}
+  .pill.paid{background:rgba(74,157,106,.16);color:#8fd0a6}
+  .pill.pending{background:rgba(201,154,58,.16);color:#e0c377}
+  .pill.void{background:rgba(120,120,120,.16);color:#aaa}
+  input,select{background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:8px 10px;font-size:13px;font-family:inherit}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:12px}
+  .fld{display:flex;flex-direction:column;gap:4px}
+  .fld label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+  .note{font-size:12px;color:var(--mut)}
+  .hide{display:none!important}
+  /* gate */
+  .gate{max-width:380px;margin:9vh auto;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:30px}
+  .gate h1{font-size:23px;margin-bottom:6px}
+  .gate p{color:var(--mut);font-size:13px;margin:0 0 18px}
+  .gate input{width:100%;margin-bottom:11px}
+  .gate .btn{width:100%}
+  .err{color:var(--red);font-size:12px;min-height:16px;margin-top:8px}
+  .muted-row td{color:var(--mut)}
+  @media(prefers-color-scheme:light){
+    :root{--bg:#f7f3ec;--panel:#fff;--panel2:#f2ece1;--line:#e5dccc;--ink:#241d13;--mut:#7a6d59;--gold:#a9822f}
+  }
+</style>
+
+<!-- ══ SIGN-IN GATE ══ -->
+<div id="gate" class="gate hide">
+  <div class="brand" style="margin-bottom:16px"><span class="dot"></span><span class="ey">Breedwise</span></div>
+  <h1>Contributor Payouts</h1>
+  <p>Sign in to view your curriculum earnings.</p>
+  <input id="gEmail" type="email" placeholder="you@email.com" autocomplete="username">
+  <input id="gPass" type="password" placeholder="Password" autocomplete="current-password">
+  <button class="btn" id="gBtn">Sign in</button>
+  <div class="err" id="gErr"></div>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="app" class="wrap hide">
+  <div class="top">
+    <div class="brand"><span class="dot"></span>
+      <div><div class="ey">Breedwise</div><h1 style="font-size:21px" id="hTitle">Contributor Payouts</h1></div>
+    </div>
+    <div style="text-align:right"><div class="who" id="who"></div>
+      <button class="btn ghost" id="signout" style="margin-top:6px;padding:5px 11px">Sign out</button></div>
+  </div>
+  <div id="body"></div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+const SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+const FN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/contributor-payouts';
+const ADMINS=['austin@breedwise.io','jennifer@breedwise.io'];
+const sb=supabase.createClient(SB_URL,SB_KEY);
+const usd=n=>'$'+(Number(n||0)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let ME=null, isAdmin=false;
+
+// ── auth ──
+$('#gBtn').addEventListener('click',signIn);
+$('#gPass').addEventListener('keydown',e=>{if(e.key==='Enter')signIn();});
+$('#signout').addEventListener('click',async()=>{await sb.auth.signOut();location.reload();});
+async function signIn(){
+  const email=$('#gEmail').value.trim(), password=$('#gPass').value;
+  $('#gErr').textContent='';
+  if(!email||!password){$('#gErr').textContent='Enter your email and password.';return;}
+  $('#gBtn').disabled=true;$('#gBtn').textContent='Signing in…';
+  const {error}=await sb.auth.signInWithPassword({email,password});
+  $('#gBtn').disabled=false;$('#gBtn').textContent='Sign in';
+  if(error){$('#gErr').textContent=error.message;return;}
+  boot();
+}
+async function boot(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){$('#gate').classList.remove('hide');$('#app').classList.add('hide');return;}
+  ME=session.user.email;
+  isAdmin=ADMINS.includes((ME||'').toLowerCase());
+  $('#gate').classList.add('hide');$('#app').classList.remove('hide');
+  $('#who').textContent=ME+(isAdmin?' · Admin':'');
+  try{ isAdmin? await loadAdmin() : await loadContributor(); }
+  catch(e){ $('#body').innerHTML='<div class="sect"><div class="sub">Could not load: '+esc(e.message||e)+'</div></div>'; }
+}
+
+// ── CONTRIBUTOR VIEW ──
+async function loadContributor(){
+  $('#hTitle').textContent='My Curriculum Earnings';
+  const [me,sum,pays]=await Promise.all([
+    sb.rpc('contributor_me'), sb.rpc('contributor_my_summary'), sb.rpc('contributor_my_payouts')]);
+  const rec=(me.data&&me.data[0])||null;
+  const s=(sum.data&&sum.data[0])||{lifetime_net:0,paid_to_date:0,pending:0,holdback_reserve:0};
+  if(!rec){$('#body').innerHTML='<div class="sect"><h2>No contributor record</h2><div class="sub">Your login isn\'t linked to a contributor profile yet. Ask Austin to add you.</div></div>';return;}
+  const rows=(pays.data||[]);
+  $('#body').innerHTML=`
+    <div class="cards">
+      <div class="card"><div class="k">Paid to date</div><div class="v">${usd(s.paid_to_date)}</div></div>
+      <div class="card"><div class="k">Pending</div><div class="v" style="color:var(--yellow)">${usd(s.pending)}</div></div>
+      <div class="card"><div class="k">Holdback reserve</div><div class="v">${usd(s.holdback_reserve)}</div><div class="s">released after refund window</div></div>
+      <div class="card"><div class="k">Lifetime net</div><div class="v" style="color:var(--gold2)">${usd(s.lifetime_net)}</div></div>
+    </div>
+    <div class="sect">
+      <h2>Statements</h2>
+      <div class="sub">Paid monthly, in arrears, on cash actually collected — 1.25% per quarter of content you built.</div>
+      <table><thead><tr><th>Period</th><th class="n">Gross</th><th class="n">Holdback</th><th class="n">Net</th><th>Status</th><th>Paid</th></tr></thead>
+      <tbody>${rows.length?rows.map(r=>`<tr>
+        <td>${esc(r.period_label)}</td><td class="n">${usd(r.gross)}</td><td class="n">${usd(r.holdback)}</td>
+        <td class="n">${usd(r.net)}</td><td><span class="pill ${esc(r.status)}">${esc(r.status)}</span></td>
+        <td>${r.paid_at?esc(String(r.paid_at).slice(0,10)):'—'}</td></tr>`).join('')
+        :'<tr class="muted-row"><td colspan="6">No statements yet — your first one posts after the next monthly run.</td></tr>'}</tbody></table>
+    </div>`;
+}
+
+// ── ADMIN VIEW ──
+async function loadAdmin(){
+  $('#hTitle').textContent='Contributor Payouts — Admin';
+  const [contribs,payouts,offs]=await Promise.all([
+    sb.from('contributors').select('*').order('name'),
+    sb.from('contributor_payouts').select('*').order('period_label',{ascending:false}),
+    sb.from('offplatform_payments').select('*').order('paid_on',{ascending:false}).limit(50)]);
+  const C=contribs.data||[], P=payouts.data||[], O=offs.data||[];
+  const cName=Object.fromEntries(C.map(c=>[c.id,c.name]));
+  const periods=[...new Set(P.map(p=>p.period_label))];
+  const pending=P.filter(p=>p.status==='pending').reduce((a,p)=>a+Number(p.net||0),0);
+  const paid=P.filter(p=>p.status==='paid').reduce((a,p)=>a+Number(p.net||0),0);
+  const hold=P.filter(p=>p.status!=='void').reduce((a,p)=>a+Number(p.holdback||0),0);
+  const curP=window._period||(periods[0]||'');
+  const rowsP=P.filter(p=>p.period_label===curP);
+
+  $('#body').innerHTML=`
+    <div class="cards">
+      <div class="card"><div class="k">Owed now (pending)</div><div class="v" style="color:var(--yellow)">${usd(pending)}</div></div>
+      <div class="card"><div class="k">Paid to date</div><div class="v" style="color:var(--green)">${usd(paid)}</div></div>
+      <div class="card"><div class="k">Holdback reserve</div><div class="v">${usd(hold)}</div></div>
+      <div class="card"><div class="k">Contributors</div><div class="v">${C.filter(c=>c.active!==false).length}</div></div>
+    </div>
+
+    <div class="sect">
+      <h2>Generate statements</h2>
+      <div class="sub">Runs the calc on cash collected (Stripe + Zelle/cash). Never overwrites a statement already marked paid.</div>
+      <div class="row">
+        <div class="fld"><label>Preset</label>
+          <select id="preset">
+            <option value="prior">Prior month (default)</option>
+            <option value="thismonth">This month so far</option>
+            <option value="backlog">Backlog — all-time</option>
+          </select></div>
+        <button class="btn" id="genBtn">Generate</button>
+        <span class="note" id="genNote"></span>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h2>Statements ${periods.length?`· <select id="perSel" style="margin-left:6px">${periods.map(p=>`<option ${p===curP?'selected':''}>${esc(p)}</option>`).join('')}</select>`:''}</h2>
+      <div class="sub">Send the Zelle/check, then click “Mark paid.”</div>
+      <table><thead><tr><th>Contributor</th><th class="n">Collected base</th><th class="n">Gross</th><th class="n">Holdback</th><th class="n">Net owed</th><th>Status</th><th></th></tr></thead>
+      <tbody>${rowsP.length?rowsP.sort((a,b)=>Number(b.net)-Number(a.net)).map(p=>`<tr>
+        <td>${esc(cName[p.contributor_id]||'—')}</td>
+        <td class="n">${usd(p.collected_base)}</td><td class="n">${usd(p.gross)}</td>
+        <td class="n">${usd(p.holdback)}</td><td class="n"><b>${usd(p.net)}</b></td>
+        <td><span class="pill ${esc(p.status)}">${esc(p.status)}</span></td>
+        <td>${p.status==='pending'?`<button class="btn" data-paid="${p.id}" style="padding:5px 11px">Mark paid</button>`
+          :(p.paid_at?esc(String(p.paid_at).slice(0,10)):'')}</td></tr>`).join('')
+        :'<tr class="muted-row"><td colspan="7">No statements for this period yet — hit Generate above.</td></tr>'}</tbody></table>
+    </div>
+
+    <div class="sect">
+      <h2>Log an off-platform payment</h2>
+      <div class="sub">Zelle / cash / Venmo — Stripe can’t see these, so log them here to include in payouts (e.g. Jordan’s $3,000 Zelle).</div>
+      <div class="row">
+        <div class="fld"><label>Member name</label><input id="oName" placeholder="Jordan"></div>
+        <div class="fld"><label>Program</label><select id="oProg"><option>Academy</option><option>Accelerator</option><option>Elite</option></select></div>
+        <div class="fld"><label>Amount</label><input id="oAmt" type="number" step="0.01" placeholder="3000" style="width:110px"></div>
+        <div class="fld"><label>Method</label><select id="oMethod"><option>zelle</option><option>cash</option><option>venmo</option><option>check</option></select></div>
+        <div class="fld"><label>Date</label><input id="oDate" type="date"></div>
+        <button class="btn" id="oBtn">Add</button>
+        <span class="note" id="oNote"></span>
+      </div>
+      <table><thead><tr><th>Date</th><th>Member</th><th>Program</th><th>Method</th><th class="n">Amount</th></tr></thead>
+      <tbody>${O.length?O.map(o=>`<tr><td>${esc(String(o.paid_on))}</td><td>${esc(o.member_name||'—')}</td>
+        <td>${esc(o.program||'')}</td><td>${esc(o.method||'')}</td><td class="n">${usd(o.amount)}</td></tr>`).join('')
+        :'<tr class="muted-row"><td colspan="5">None logged yet.</td></tr>'}</tbody></table>
+    </div>`;
+
+  // wire admin controls
+  const perSel=$('#perSel'); if(perSel) perSel.addEventListener('change',e=>{window._period=e.target.value;loadAdmin();});
+  $('#genBtn').addEventListener('click',generate);
+  $('#oBtn').addEventListener('click',addOff);
+  document.querySelectorAll('[data-paid]').forEach(b=>b.addEventListener('click',()=>markPaid(b.getAttribute('data-paid'))));
+}
+
+async function generate(){
+  const preset=$('#preset').value;
+  const {data:{session}}=await sb.auth.getSession();
+  const now=new Date(); const y=now.getUTCFullYear(), m=now.getUTCMonth();
+  const iso=d=>d.toISOString().slice(0,10);
+  let qs='';
+  if(preset==='backlog'){ qs=`?start=2020-01-01&end=${iso(new Date(Date.UTC(y,m,1)))}&label=backlog`; }
+  else if(preset==='thismonth'){ const lbl=`${y}-${String(m+1).padStart(2,'0')}`; qs=`?start=${iso(new Date(Date.UTC(y,m,1)))}&end=${iso(new Date(Date.UTC(y,m+1,1)))}&label=${lbl}`; }
+  else { qs=''; } // default prior month
+  $('#genNote').textContent='Running…'; $('#genBtn').disabled=true;
+  try{
+    const r=await fetch(FN+qs,{headers:{'Authorization':'Bearer '+session.access_token,'apikey':SB_KEY}});
+    const d=await r.json();
+    if(!r.ok||d.error) throw new Error(d.error||('HTTP '+r.status));
+    $('#genNote').textContent=`Done — ${d.written} statement(s), ${d.contributors} contributor(s). Collected: ${usd(d.total_collected_in_period)}.`;
+    window._period=d.period.label;
+    setTimeout(loadAdmin,700);
+  }catch(e){ $('#genNote').textContent='Error: '+(e.message||e); $('#genBtn').disabled=false; }
+}
+async function markPaid(id){
+  const {error}=await sb.from('contributor_payouts').update({status:'paid',paid_at:new Date().toISOString(),paid_by:ME}).eq('id',id);
+  if(error){alert('Could not mark paid: '+error.message);return;}
+  loadAdmin();
+}
+async function addOff(){
+  const amount=parseFloat($('#oAmt').value); const paid_on=$('#oDate').value;
+  if(!amount||!paid_on){$('#oNote').textContent='Amount and date required.';return;}
+  const {error}=await sb.from('offplatform_payments').insert({
+    member_name:$('#oName').value.trim()||null, program:$('#oProg').value,
+    amount, method:$('#oMethod').value, paid_on, created_by:ME});
+  if(error){$('#oNote').textContent='Error: '+error.message;return;}
+  $('#oNote').textContent='Added.'; $('#oAmt').value=''; $('#oName').value='';
+  loadAdmin();
+}
+
+boot();
+</script>
