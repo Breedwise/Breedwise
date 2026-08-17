@@ -476,9 +476,10 @@
         </div></div>
         <div class="kpi-grid" id="lwKpis"></div>
         <div class="table-wrap" style="margin-top:18px"><div style="overflow-x:auto"><table>
-          <thead><tr><th>Member</th><th>Pod</th><th class="num">Calls</th><th class="num">Posts</th><th class="num">Comments</th><th class="num">Support Call</th><th class="num">Women's Circle</th></tr></thead>
+          <thead><tr><th>Member</th><th>Pod</th><th class="num">Calls</th><th class="num">Posts</th><th class="num">Comments</th><th class="num">Homework</th><th class="num">Support Call</th><th class="num">Women's Circle</th></tr></thead>
           <tbody id="lastWeekBody"></tbody>
         </table></div></div>
+        <p class="view-sub" id="lwFoot" style="display:none;margin-top:10px">* Homework shown as the member's current rolling % — weekly homework capture started 2026-08-17, so earlier weeks weren't recorded. From now on each week stores its own homework snapshot.</p>
       </section>
       <section class="panel" data-panel="cm">
         <div class="view-head"><div>
@@ -1719,30 +1720,39 @@
     const body=$('#lastWeekBody'); if(!body) return;
     const sel=$('#lwWeekSel'), kpi=$('#lwKpis');
     const weeks=[...new Set(WEEKLY.map(r=>r.week_start).filter(Boolean))].sort().reverse();
-    if(!weeks.length){ sel.innerHTML=''; kpi.innerHTML=''; body.innerHTML=`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:26px">No weekly history archived yet. Each Monday the OS files the week that just ended here.</td></tr>`; return; }
+    if(!weeks.length){ sel.innerHTML=''; kpi.innerHTML=''; body.innerHTML=`<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:26px">No weekly history archived yet. Each Monday the OS files the week that just ended here.</td></tr>`; return; }
     if(!lwSel||!weeks.includes(lwSel)) lwSel = weeks.includes(lastWeekISO())?lastWeekISO():weeks[0];
     const fmt=d=>new Date(String(d).slice(0,10)+'T12:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
     sel.innerHTML=weeks.map(w=>`<option value="${w}" ${w===lwSel?'selected':''}>${fmt(w)}${w===lastWeekISO()?' · last week':''}</option>`).join('');
     sel.onchange=e=>{ lwSel=e.target.value; renderLastWeek(); };
+    let anyHwFallback=false;
     const rows=WEEKLY.filter(r=>r.week_start===lwSel).map(r=>{
       const m=MEMBERS.find(x=>x.id===r.member_id);
+      const hwArch=(r.homework==null?null:+r.homework);        // captured that week (null = pre-capture)
+      const hwCur=m&&m.hw!=null?+m.hw:null;                    // rolling current % (fallback)
+      if(hwArch==null && hwCur!=null) anyHwFallback=true;
       return { name:m?m.name:'(former member)', pod:m?podName(m.pod):'—',
         calls:+r.attended||0, posts:+r.posts||0, comments:+r.comments||0,
-        support:+r.support_call||0, womens:+r.womens_circle||0 };
+        hwArch, hwCur, support:+r.support_call||0, womens:+r.womens_circle||0 };
     }).sort((a,b)=>String(a.name).localeCompare(String(b.name)));
     const yn=v=>v>0?'<span class="pay-good">✓</span>':'<span class="muted-cell">—</span>';
+    const hwCell=r=> r.hwArch!=null ? `${r.hwArch}%` : (r.hwCur!=null?`<span class="muted-cell" title="current rolling % — homework wasn't captured for this week">${r.hwCur}%*</span>`:'<span class="muted-cell">—</span>');
     body.innerHTML=rows.map(r=>`<tr>
       <td><div class="m-name">${esc(r.name)}</div></td>
       <td class="muted-cell">${esc(r.pod)}</td>
       <td class="num">${r.calls}</td><td class="num">${r.posts}</td><td class="num">${r.comments}</td>
+      <td class="num">${hwCell(r)}</td>
       <td class="num">${yn(r.support)}</td><td class="num">${yn(r.womens)}</td>
-    </tr>`).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:26px">No activity recorded for this week.</td></tr>`;
+    </tr>`).join('')||`<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:26px">No activity recorded for this week.</td></tr>`;
+    const hwVals=rows.map(r=>r.hwArch!=null?r.hwArch:r.hwCur).filter(v=>v!=null);
+    const hwAvg=hwVals.length?Math.round(hwVals.reduce((a,b)=>a+b,0)/hwVals.length):0;
     const T=rows.reduce((a,r)=>({c:a.c+r.calls,p:a.p+r.posts,cm:a.cm+r.comments,s:a.s+r.support,w:a.w+r.womens}),{c:0,p:0,cm:0,s:0,w:0});
     const tile=(l,v)=>`<div class="kpi"><div class="kpi-name">${l}</div><div class="kpi-val" style="font-size:26px">${v}</div></div>`;
-    kpi.innerHTML=tile('Members active',rows.length)+tile('Total calls',T.c)+tile('Posts',T.p)+tile('Comments',T.cm)+tile('Support Call',T.s)+tile("Women's Circle",T.w);
+    kpi.innerHTML=tile('Members active',rows.length)+tile('Total calls',T.c)+tile('Posts',T.p)+tile('Comments',T.cm)+tile('Avg homework',hwAvg+'%')+tile('Support Call',T.s)+tile("Women's Circle",T.w);
+    const foot=$('#lwFoot'); if(foot) foot.style.display=anyHwFallback?'block':'none';
     $('#lwCopy').onclick=()=>{
-      const head=['Member','Pod','Calls','Posts','Comments','Support Call',"Women's Circle"].join('\t');
-      const tsv=[head,...rows.map(r=>[r.name,r.pod,r.calls,r.posts,r.comments,r.support?'Yes':'No',r.womens?'Yes':'No'].join('\t'))].join('\n');
+      const head=['Member','Pod','Calls','Posts','Comments','Homework %','Support Call',"Women's Circle"].join('\t');
+      const tsv=[head,...rows.map(r=>[r.name,r.pod,r.calls,r.posts,r.comments,(r.hwArch!=null?r.hwArch:(r.hwCur!=null?r.hwCur:'')),r.support?'Yes':'No',r.womens?'Yes':'No'].join('\t'))].join('\n');
       navigator.clipboard.writeText(tsv).then(()=>toast('Copied — paste into Sheets or Excel')).catch(()=>toast('Copy failed'));
     };
   }
