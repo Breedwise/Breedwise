@@ -842,7 +842,7 @@
       <div class="field"><label>Program</label><select id="f_program"><option>Academy</option><option>Accelerator</option><option>Elite</option></select></div>
       <div class="field"><label>Pod</label><select id="f_pod"></select></div>
       <div class="field"><label>Payment</label><select id="f_payment"><option>Good</option><option>Failed</option><option>At risk</option><option>Cancelled</option></select></div>
-      <div class="field"><label>Calls (4 wks)</label><input id="f_calls" type="number" min="0"></div>
+      <div class="field"><label>Calls (4 wks) &middot; auto</label><input id="f_calls" type="number" min="0" readonly title="Auto from logged calls: this week plus the last 3 completed weeks. Edit Calls (this week) instead." style="opacity:.6;cursor:not-allowed"></div>
       <div class="field"><label>Calls (this week)</label><input id="f_calls_1w" type="number" min="0"></div>
       <div class="field"><label>Posts (7 days)</label><input id="f_posts" type="number" min="0"></div>
       <div class="field"><label>Comments (7 days)</label><input id="f_comments" type="number" min="0"></div>
@@ -1938,7 +1938,19 @@
     if(btn) btn.disabled=false;
   }
 
+  // Calls 4w is DERIVED from the weekly attendance logs (Madison enters Calls 1w
+  // each week -> archived to weekly_attendance). Sum this week's live count + the
+  // 3 most recent completed weeks = a true trailing-4-week number, so the column,
+  // the health status and the attendance KPIs all reflect real logged calls.
+  function recomputeCalls4w(){
+    const cur=weekStartISO();
+    const weeks=[...new Set(WEEKLY.map(r=>r.week_start).filter(w=>w&&w<cur))].sort().reverse().slice(0,3);
+    const inc=new Set(weeks), sum={};
+    WEEKLY.forEach(r=>{ if(inc.has(r.week_start)) sum[r.member_id]=(sum[r.member_id]||0)+(+r.attended||0); });
+    MEMBERS.forEach(m=>{ m.calls=(+m.calls_1w||0)+(sum[m.id]||0); });
+  }
   function renderAll(){
+    recomputeCalls4w();
     const sName = window.SalesOS && window.SalesOS.name && window.SalesOS.name();
     const sRole = window.SalesOS && window.SalesOS.roleLabel && window.SalesOS.roleLabel();
     $('#navWho').textContent = ME?.full_name || sName || 'Signed in';
