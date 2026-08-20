@@ -5,6 +5,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
@@ -284,9 +285,17 @@ main{padding:0 24px 80px}
 
 <script>
 /* =========================================================
-   1. CHANGE THE PASSCODE HERE
+   1. PASSCODE — shared centrally across all Accelerator tools.
+   Stored as a HASH in Supabase (access_config); rotate it from the
+   Vault's admin bar. This fallback (= "ACCELERATOR2026") keeps the
+   gate working if that fetch fails.
    ========================================================= */
-const PASSCODE = "BOOST2026";
+const FALLBACK_HASH = "25e7b557235afa23f4d1ae0ac108bfdfefa7ea58ea50bd986321cbd0034c52dc";
+let PASS_HASH = FALLBACK_HASH;
+const _sb = supabase.createClient('https://xhjdowbnqcsvhtcccuqx.supabase.co','sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2');
+async function sha256(s){ const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join(''); }
+_sb.from('access_config').select('passcode_hash').eq('key','member').maybeSingle()
+   .then(({data})=>{ if(data&&data.passcode_hash) PASS_HASH=data.passcode_hash; }).catch(()=>{});
 
 /* =========================================================
    2. CHECKLIST CONTENT
@@ -366,9 +375,9 @@ const app = document.getElementById("app");
 const err = document.getElementById("err");
 const codeInput = document.getElementById("code");
 
-function unlock(){
-  const val = codeInput.value.trim().toUpperCase();
-  if(val === PASSCODE.toUpperCase()){
+async function unlock(){
+  const h = await sha256(codeInput.value.trim().toUpperCase());
+  if(h === PASS_HASH){
     gate.classList.add("hidden");
     app.classList.add("visible");
     start();

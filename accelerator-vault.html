@@ -99,6 +99,7 @@ main{padding:34px 24px 90px}
   <div id="adminBar" class="hidden">
     <span class="who" id="adminWho"></span>
     <button class="btn ghost" id="addBtn" style="padding:7px 13px">+ Add tool</button>
+    <button class="btn ghost" id="rotateBtn" style="padding:7px 13px">Change passcode</button>
     <button class="link" id="signout">Sign out</button>
   </div>
   <header class="masthead">
@@ -122,8 +123,12 @@ main{padding:34px 24px 90px}
 
 <script>
 const $=s=>document.querySelector(s);
-/* ===== CHANGE THE MEMBER PASSCODE HERE ===== */
-const PASSCODE="ACCELERATOR2026";
+/* The shared member passcode lives centrally in Supabase (access_config) as a
+   HASH — never plaintext. This fallback (= "ACCELERATOR2026") keeps the gate
+   working if that fetch ever fails. Rotate the real code from the admin bar. */
+const FALLBACK_HASH="25e7b557235afa23f4d1ae0ac108bfdfefa7ea58ea50bd986321cbd0034c52dc";
+let PASS_HASH=FALLBACK_HASH;
+async function sha256(s){ const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join(''); }
 
 const SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
 const SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
@@ -136,8 +141,9 @@ let TOOLS=[], isAdmin=false, ME=null;
 /* ---- gate ---- */
 $('#enter').addEventListener('click',tryCode);
 $('#code').addEventListener('keydown',e=>{if(e.key==='Enter')tryCode();});
-function tryCode(){
-  if($('#code').value.trim().toUpperCase()===PASSCODE.toUpperCase()){
+async function tryCode(){
+  const h=await sha256($('#code').value.trim().toUpperCase());
+  if(h===PASS_HASH){
     try{localStorage.setItem(GATEKEY,'1');}catch(e){}
     openVault();
   } else { $('#gErr').textContent='That passcode did not match. Check your training for the current code.'; $('#code').value=''; $('#code').focus(); }
@@ -185,6 +191,26 @@ function cardHTML(t){
 $('#manage').addEventListener('click',signInPrompt);
 $('#signout').addEventListener('click',async()=>{await sb.auth.signOut();isAdmin=false;ME=null;$('#adminBar').classList.add('hidden');render();});
 $('#addBtn').addEventListener('click',()=>editTool(null));
+$('#rotateBtn').addEventListener('click',rotateCode);
+function rotateCode(){
+  $('#sheet').innerHTML=`<h3>Change member passcode</h3>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:14px">Updates the shared code for the vault and every tool at once. Members already inside keep access until they sign out; new opens need the new code.</p>
+    <div class="fld"><label>New passcode</label><input id="r_new" placeholder="NEWCODE2026"></div>
+    <div class="fld"><label>Confirm</label><input id="r_conf" placeholder="NEWCODE2026"></div>
+    <div class="err" id="r_err"></div>
+    <div class="sheet-actions"><button class="btn ghost" id="r_cancel">Cancel</button><button class="btn" id="r_save">Update code</button></div>`;
+  $('#modal').classList.remove('hidden');
+  $('#r_cancel').onclick=closeModal;
+  $('#r_save').onclick=async()=>{
+    const a=$('#r_new').value.trim().toUpperCase(), b=$('#r_conf').value.trim().toUpperCase();
+    if(!a){ $('#r_err').textContent='Enter a code.'; return; }
+    if(a!==b){ $('#r_err').textContent='The two codes do not match.'; return; }
+    const h=await sha256(a);
+    const {error}=await sb.from('access_config').upsert({key:'member',passcode_hash:h,label:'Accelerator shared passcode',updated_at:new Date().toISOString(),updated_by:ME},{onConflict:'key'});
+    if(error){ $('#r_err').textContent=error.message; return; }
+    PASS_HASH=h; closeModal(); alert('Passcode updated. The new shared code is: '+a);
+  };
+}
 function closeModal(){ $('#modal').classList.add('hidden'); }
 $('#modal').addEventListener('click',e=>{ if(e.target.id==='modal') closeModal(); });
 
@@ -246,6 +272,8 @@ async function delTool(id){
 
 /* ---- boot ---- */
 (async function boot(){
+  // load the central passcode hash (falls back to the built-in if unavailable)
+  try{ const {data}=await sb.from('access_config').select('passcode_hash').eq('key','member').maybeSingle(); if(data&&data.passcode_hash) PASS_HASH=data.passcode_hash; }catch(e){}
   // already an admin session? show controls immediately
   const {data:{session}}=await sb.auth.getSession();
   if(session && ADMINS.includes((session.user.email||'').toLowerCase())){
