@@ -1,0 +1,476 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Boost Checklist — Breedwise Accelerator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#1b1b20; --surface:#111114; --card:#26262c; --card-2:#212127;
+  --border:#34343c; --border-2:#2b2b32; --gold:#d6ba76; --gold-deep:#b89c47;
+  --gold-faint:rgba(214,186,118,0.10); --gold-mid:rgba(214,186,118,0.20);
+  --gold-grad:linear-gradient(135deg,#e2cb86 0%,#bfa050 100%);
+  --gold-soft:rgba(214,186,118,0.30); --on-gold:#1a1509;
+  --ink:#f4f1ea; --muted:#8f8d85; --mid:#c4c1b8;
+  --green:#6dbf90; --yellow:#d7a94e; --red:#e0807e; --red-bg:rgba(224,128,126,0.14);
+  --heading:'Playfair Display', Georgia, serif;
+  --body:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius:11px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:var(--body);
+  background:var(--bg);
+  color:var(--ink);
+  font-size:14px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- GATE ---------- */
+#gate{
+  position:fixed;inset:0;z-index:100;
+  background:var(--surface);
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+}
+#gate.hidden{display:none}
+
+.gate-inner{width:100%;max-width:420px;text-align:center}
+
+.gate-mark{
+  font-family:var(--body);font-size:11px;font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:28px;
+}
+
+.gate-inner h1{
+  font-family:var(--heading);
+  font-weight:600;
+  font-size:clamp(30px,7vw,42px);
+  line-height:1.08;
+  color:var(--ink);
+  margin-bottom:14px;
+}
+
+.gate-inner p{
+  font-size:14.5px;line-height:1.6;
+  color:var(--muted);margin-bottom:30px;
+}
+
+.gate-form{display:flex;flex-direction:column;gap:10px}
+
+#code{
+  width:100%;padding:15px 16px;
+  font-family:var(--body);font-size:16px;font-weight:500;
+  letter-spacing:.12em;text-align:center;text-transform:uppercase;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);color:var(--ink);
+  outline:none;transition:border-color .15s;
+}
+#code::placeholder{color:var(--muted);letter-spacing:.1em;text-transform:none}
+#code:focus{border-color:var(--gold)}
+
+.btn{
+  padding:15px 20px;
+  font-family:var(--body);font-size:12px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;
+  background:var(--gold-grad);color:var(--on-gold);
+  border:none;border-radius:var(--radius);cursor:pointer;
+  box-shadow:0 6px 22px rgba(214,186,118,.28);
+  transition:transform .15s;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn:focus-visible,#code:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+#err{
+  min-height:18px;margin-top:12px;
+  font-size:13px;color:var(--red);
+}
+
+/* ---------- APP ---------- */
+#app{display:none}
+#app.visible{display:block}
+
+header.masthead{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:36px 24px 30px;
+}
+.wrap{max-width:760px;margin:0 auto}
+
+.eyebrow{
+  font-size:10.5px;font-weight:600;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gold);
+}
+
+.masthead h1{
+  font-family:var(--heading);font-weight:600;
+  font-size:clamp(28px,6vw,40px);line-height:1.1;
+  color:var(--ink);margin:12px 0 10px;letter-spacing:-0.01em;
+}
+.masthead .sub{color:var(--muted);font-size:14.5px;line-height:1.6;max-width:52ch}
+
+/* readiness bar */
+.readiness{
+  position:sticky;top:0;z-index:20;
+  background:var(--card-2);
+  border-bottom:1px solid var(--border);
+  padding:14px 24px;
+}
+.rd-row{
+  max-width:760px;margin:0 auto;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.rd-status{
+  font-size:11px;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;white-space:nowrap;
+}
+.rd-status.locked{color:var(--red)}
+.rd-status.ready{color:var(--gold)}
+.rd-track{
+  flex:1;min-width:120px;height:5px;
+  background:rgba(255,255,255,.10);border-radius:3px;overflow:hidden;
+}
+.rd-fill{
+  height:100%;width:0;background:var(--gold-grad);
+  transition:width .35s ease;
+}
+.rd-count{
+  font-size:12px;font-weight:500;color:var(--muted);
+  font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+
+main{padding:0 24px 80px}
+
+/* phases */
+.phase{padding:38px 0 8px;border-top:1px solid var(--border)}
+.phase:first-of-type{border-top:none}
+
+.phase-head{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+.phase-num{
+  font-family:var(--heading);font-size:15px;font-weight:600;
+  color:var(--gold-deep);font-variant-numeric:tabular-nums;
+}
+.phase h2{
+  font-family:var(--heading);font-weight:600;
+  font-size:22px;line-height:1.2;color:var(--ink);
+}
+.phase-note{
+  font-size:13.5px;color:var(--muted);line-height:1.6;
+  margin-bottom:20px;max-width:56ch;
+}
+
+/* hard stop phase */
+.phase.hard{
+  background:var(--card);
+  margin:0 -24px;padding:34px 24px 14px;
+  border-top:2px solid var(--red);
+  border-radius:var(--radius);
+}
+.phase.hard .phase-num,.phase.hard h2{color:var(--red)}
+.hard-flag{
+  display:inline-block;margin-bottom:14px;
+  font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--red);border:1px solid var(--red);
+  padding:4px 9px;border-radius:2px;
+}
+
+/* items */
+.item{
+  display:flex;gap:13px;align-items:flex-start;
+  padding:13px 0;border-bottom:1px solid var(--border);
+  cursor:pointer;
+}
+.phase.hard .item{border-bottom-color:var(--border-2)}
+.item:last-child{border-bottom:none}
+
+.box{
+  flex-shrink:0;width:21px;height:21px;margin-top:1px;
+  border:1.5px solid var(--muted);border-radius:2px;
+  background:transparent;position:relative;
+  transition:background .12s,border-color .12s;
+}
+.item.done .box{background:var(--gold);border-color:var(--gold)}
+.phase.hard .item.done .box{background:var(--red);border-color:var(--red)}
+.item.done .box::after{
+  content:"";position:absolute;left:6.5px;top:2.5px;
+  width:5px;height:10px;
+  border:solid var(--on-gold);border-width:0 2px 2px 0;
+  transform:rotate(43deg);
+}
+.phase.hard .item.done .box::after{border-color:#fff}
+.item:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+.item-txt{flex:1}
+.item-txt b{
+  display:block;font-size:15px;font-weight:600;line-height:1.4;color:var(--ink);
+}
+.item.done .item-txt b{color:var(--muted);text-decoration:line-through}
+.item-txt span{
+  display:block;font-size:13px;color:var(--muted);
+  line-height:1.55;margin-top:3px;
+}
+
+/* footer */
+.foot{
+  margin-top:48px;padding-top:26px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  gap:16px;flex-wrap:wrap;
+}
+.foot p{font-family:var(--heading);font-size:15px;font-weight:600;color:var(--mid)}
+.reset{
+  background:none;border:1px solid var(--border);
+  padding:9px 15px;border-radius:2px;cursor:pointer;
+  font-family:var(--body);font-size:11px;font-weight:600;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
+}
+.reset:hover{border-color:var(--muted);color:var(--ink)}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+}
+@media (max-width:520px){
+  .phase.hard{margin:0 -24px}
+  .masthead{padding:28px 20px 24px}
+}
+</style>
+
+<!-- ================= GATE ================= -->
+<div id="gate">
+  <div class="gate-inner">
+    <div class="gate-mark">Breedwise Accelerator</div>
+    <h1>Member access only</h1>
+    <p>Enter the passcode from your training to open the Boost Checklist.</p>
+    <div class="gate-form">
+      <input id="code" type="password" placeholder="Passcode" autocomplete="off" spellcheck="false" aria-label="Passcode">
+      <button class="btn" id="enter">Open the checklist</button>
+    </div>
+    <div id="err" role="alert"></div>
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="app">
+  <header class="masthead">
+    <div class="wrap">
+      <div class="eyebrow">Breedwise Accelerator · Paid Traffic</div>
+      <h1>The Boost Checklist</h1>
+      <p class="sub">Work top to bottom. The four hard stops decide whether you are allowed to spend at all. Everything below them decides whether the spend works.</p>
+    </div>
+  </header>
+
+  <div class="readiness">
+    <div class="rd-row">
+      <span class="rd-status locked" id="rdStatus">Not ready to spend</span>
+      <span class="rd-track"><span class="rd-fill" id="rdFill"></span></span>
+      <span class="rd-count" id="rdCount">0 / 0</span>
+    </div>
+  </div>
+
+  <main>
+    <div class="wrap" id="phases"></div>
+
+    <div class="wrap foot">
+      <p>Not more breeders. Better breeders.</p>
+      <button class="reset" id="reset">Clear progress</button>
+    </div>
+  </main>
+</div>
+
+<script>
+/* =========================================================
+   1. CHANGE THE PASSCODE HERE
+   ========================================================= */
+const PASSCODE = "BOOST2026";
+
+/* =========================================================
+   2. CHECKLIST CONTENT
+   ========================================================= */
+const PHASES = [
+  {
+    id:"hard", num:"00", hard:true,
+    title:"Hard stops",
+    note:"Meta prohibits ads that promote the sale of a live animal, including posts where the sale is only implied. Break one of these and the ad gets rejected. Break them repeatedly and you lose the ad account, not just the ad.",
+    items:[
+      ["No price appears anywhere in the caption","A number turns the post into a listing, and listings get rejected."],
+      ["Caption has no sale language","No available now, no DM for price, no reserve yours, no taking deposits."],
+      ["The post shows the program, not a transaction","You are boosting authority. The profile, site and DM do the selling."],
+      ["Account is switched to Professional (Business)","You cannot boost from a personal account, and Business gives better analytics."]
+    ]
+  },
+  {
+    id:"before", num:"01", title:"Before you spend",
+    note:"Paid traffic magnifies whatever is already there. Send money to a weak profile and you bought a bounce.",
+    items:[
+      ["Bio names the breed, the location and your standard","A stranger should know what you do in one line."],
+      ["Your link goes to the application page, not the homepage","Send paid traffic to the page that captures name, email and phone."],
+      ["Your last nine posts look like a program","The grid is the second impression and it decides whether they click the link."],
+      ["You have decided where the lead lands","Website if you have an application. DM only if you can answer in minutes."],
+      ["Saved replies are loaded","Opener plus the two objection responses, so speed is a system not a mood."]
+    ]
+  },
+  {
+    id:"pick", num:"02", title:"Pick the post",
+    note:"Never boost something brand new. You have no idea if it is good yet, so you are guessing with money.",
+    items:[
+      ["Posted organically first","Let the audience vote before you pay for reach."],
+      ["Waited 24 to 48 hours","Enough time for real signal, not enough to go stale."],
+      ["Chose the winner on saves and shares","Not likes. A save means they wanted to come back. A share means they showed a spouse."],
+      ["The post features a grown dog or temperament in action","Puppies get likes. Adults get buyers. People are buying the ten year version."]
+    ]
+  },
+  {
+    id:"build", num:"03", title:"Build the boost",
+    note:"Two minutes of setup decides whether the budget reaches buyers or other breeders.",
+    items:[
+      ["Boosting from instagram.com on desktop","The iPhone app adds Apple's service fee on top of your spend. Same boost, less money."],
+      ["Goal selected: website visits if you have an application page","Messages only if you can respond fast. Skip profile visits for lead generation."],
+      ["Audience is Manual, not Automatic","Automatic targets people like your followers, and your followers are mostly other breeders."],
+      ["Location set to your drive radius or the metros you ship to",""],
+      ["Age range matches your buyer avatar","Usually 28 to 60 for a premium program."],
+      ["Interests set to your breed, related breeds and dog ownership","Broad enough to spend. Too narrow and cost per result climbs."],
+      ["Audience saved and named","You will reuse this every single time."],
+      ["Budget set to five to ten dollars a day",""],
+      ["Duration set to five to seven days","One day is not a test. The algorithm needs time to learn."],
+      ["Caption re-read one last time for listing language","Approval is not permanent. Meta re-reviews ads while they run."]
+    ]
+  },
+  {
+    id:"after", num:"04", title:"After it runs",
+    note:"Three numbers. Everything else on that results screen is noise.",
+    items:[
+      ["Tracking cost per result","Total spend divided by results that match your goal. This is the number."],
+      ["Tracking cost per thousand impressions","Roughly five to fifteen dollars is normal. Much higher means creative or audience is off."],
+      ["Tracking conversion to conversation","Of everyone who clicked or messaged, how many actually talked to you."],
+      ["Responding to new messages in under five minutes","Interest decays fast. The breeder who answers first usually wins."],
+      ["Capturing name, email and phone from every lead","A username is not a lead. You cannot follow up with someone who deletes the app."],
+      ["Booked calls confirmed same day, reminded before","An unconfirmed call shows up about half as often."]
+    ]
+  }
+];
+
+/* =========================================================
+   3. APP
+   ========================================================= */
+const KEY = "bw-accel-boost-checklist-v1";
+let state = {};
+let storageOK = true;
+
+const gate = document.getElementById("gate");
+const app = document.getElementById("app");
+const err = document.getElementById("err");
+const codeInput = document.getElementById("code");
+
+function unlock(){
+  const val = codeInput.value.trim().toUpperCase();
+  if(val === PASSCODE.toUpperCase()){
+    gate.classList.add("hidden");
+    app.classList.add("visible");
+    start();
+  } else {
+    err.textContent = "That passcode did not match. Check your training for the current code.";
+    codeInput.value = "";
+    codeInput.focus();
+  }
+}
+document.getElementById("enter").addEventListener("click", unlock);
+codeInput.addEventListener("keydown", e => { if(e.key === "Enter") unlock(); });
+codeInput.focus();
+
+function load(){
+  try{
+    const v = localStorage.getItem(KEY);
+    state = v ? JSON.parse(v) : {};
+  }catch(e){
+    state = {};
+  }
+}
+
+function save(){
+  if(!storageOK) return;
+  try{
+    localStorage.setItem(KEY, JSON.stringify(state));
+  }catch(e){
+    storageOK = false; // progress stays for this session only
+  }
+}
+
+function render(){
+  const host = document.getElementById("phases");
+  host.innerHTML = "";
+  PHASES.forEach(p => {
+    const sec = document.createElement("section");
+    sec.className = "phase" + (p.hard ? " hard" : "");
+
+    let head = "";
+    if(p.hard) head += '<span class="hard-flag">Do not spend until all four are true</span>';
+    head += '<div class="phase-head"><span class="phase-num">'+p.num+'</span><h2>'+p.title+'</h2></div>';
+    head += '<p class="phase-note">'+p.note+'</p>';
+    sec.innerHTML = head;
+
+    p.items.forEach((it, i) => {
+      const key = p.id + ":" + i;
+      const row = document.createElement("div");
+      row.className = "item" + (state[key] ? " done" : "");
+      row.tabIndex = 0;
+      row.setAttribute("role","checkbox");
+      row.setAttribute("aria-checked", state[key] ? "true" : "false");
+      row.innerHTML = '<span class="box"></span><span class="item-txt"><b>'+it[0]+'</b>'+
+        (it[1] ? '<span>'+it[1]+'</span>' : '')+'</span>';
+      const toggle = () => {
+        state[key] = !state[key];
+        row.classList.toggle("done", !!state[key]);
+        row.setAttribute("aria-checked", state[key] ? "true" : "false");
+        meter(); save();
+      };
+      row.addEventListener("click", toggle);
+      row.addEventListener("keydown", e => {
+        if(e.key === " " || e.key === "Enter"){ e.preventDefault(); toggle(); }
+      });
+      sec.appendChild(row);
+    });
+    host.appendChild(sec);
+  });
+}
+
+function meter(){
+  let total = 0, done = 0, hardTotal = 0, hardDone = 0;
+  PHASES.forEach(p => p.items.forEach((_, i) => {
+    const on = !!state[p.id + ":" + i];
+    total++; if(on) done++;
+    if(p.hard){ hardTotal++; if(on) hardDone++; }
+  }));
+
+  document.getElementById("rdFill").style.width = (total ? (done/total*100) : 0) + "%";
+  document.getElementById("rdCount").textContent = done + " / " + total;
+
+  const s = document.getElementById("rdStatus");
+  if(hardDone < hardTotal){
+    s.textContent = "Not ready to spend";
+    s.className = "rd-status locked";
+  } else if(done < total){
+    s.textContent = "Cleared to spend";
+    s.className = "rd-status ready";
+  } else {
+    s.textContent = "Boost is live and tracked";
+    s.className = "rd-status ready";
+  }
+}
+
+document.getElementById("reset").addEventListener("click", () => {
+  state = {};
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  render(); meter();
+});
+
+function start(){
+  load();
+  render();
+  meter();
+}
+</script>
