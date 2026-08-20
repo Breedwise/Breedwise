@@ -1,0 +1,259 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Accelerator Vault — Breedwise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#1b1b20; --surface:#111114; --card:#26262c; --card-2:#212127;
+  --border:#34343c; --border-2:#2b2b32; --gold:#d6ba76; --gold-deep:#b89c47;
+  --gold-faint:rgba(214,186,118,0.10); --gold-grad:linear-gradient(135deg,#e2cb86 0%,#bfa050 100%);
+  --on-gold:#1a1509; --ink:#f4f1ea; --muted:#8f8d85; --mid:#c4c1b8;
+  --green:#6dbf90; --yellow:#d7a94e; --red:#e0807e; --radius:11px;
+  --heading:'Playfair Display', Georgia, serif; --body:'Inter', -apple-system, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--gold)}
+.hidden{display:none!important}
+
+/* GATE */
+#gate{position:fixed;inset:0;z-index:100;background:var(--surface);display:flex;align-items:center;justify-content:center;padding:24px}
+.gate-inner{width:100%;max-width:420px;text-align:center}
+.gate-mark{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:26px}
+.gate-inner h1{font-family:var(--heading);font-weight:600;font-size:clamp(30px,7vw,42px);line-height:1.08;color:var(--ink);margin-bottom:14px}
+.gate-inner p{font-size:14.5px;color:var(--muted);margin-bottom:28px}
+.gate-form{display:flex;flex-direction:column;gap:10px}
+input,select,textarea{font-family:var(--body);font-size:15px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);color:var(--ink);padding:13px 15px;outline:none;transition:border-color .15s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+#code{text-align:center;letter-spacing:.12em;text-transform:uppercase}
+#code::placeholder{text-transform:none;letter-spacing:normal;color:var(--muted)}
+.btn{padding:14px 20px;font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;background:var(--gold-grad);color:var(--on-gold);border:none;border-radius:var(--radius);cursor:pointer;box-shadow:0 6px 22px rgba(214,186,118,.28);transition:transform .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--gold);border:1px solid var(--border);box-shadow:none;font-weight:600}
+.btn:disabled{opacity:.5;cursor:default;transform:none}
+.err{min-height:18px;margin-top:10px;font-size:13px;color:var(--red)}
+
+/* APP */
+#app{display:none} #app.on{display:block}
+.masthead{background:var(--surface);border-bottom:1px solid var(--border);padding:38px 24px 30px}
+.wrap{max-width:1000px;margin:0 auto}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.masthead h1{font-family:var(--heading);font-weight:600;font-size:clamp(28px,6vw,40px);line-height:1.1;color:var(--ink);margin:12px 0 10px;letter-spacing:-.01em}
+.masthead .sub{color:var(--muted);font-size:14.5px;max-width:56ch}
+main{padding:34px 24px 90px}
+.cat{font-family:var(--heading);font-size:19px;font-weight:600;color:var(--ink);margin:34px 0 4px}
+.cat:first-child{margin-top:0}
+.cat-line{height:1px;background:var(--border);margin:0 0 18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.tool{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:9px;position:relative;transition:border-color .15s,transform .15s;cursor:pointer;text-decoration:none;color:inherit}
+.tool:hover{border-color:var(--gold-deep);transform:translateY(-2px)}
+.tool.soon{opacity:.55;cursor:default}
+.tool.soon:hover{border-color:var(--border);transform:none}
+.tool .tt{font-family:var(--heading);font-size:18px;font-weight:600;color:var(--ink);line-height:1.25;padding-right:56px}
+.tool .td{font-size:13px;color:var(--muted);line-height:1.55;flex:1}
+.tool .open{font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);margin-top:4px}
+.badge{position:absolute;top:16px;right:16px;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:20px;background:var(--gold-faint);color:var(--gold)}
+.badge.soon{background:rgba(215,169,78,.14);color:var(--yellow)}
+.admin-tools{display:flex;gap:6px;margin-top:8px}
+.mini{font-size:11px;font-weight:600;padding:5px 10px;border-radius:7px;border:1px solid var(--border);background:var(--card-2);color:var(--muted);cursor:pointer}
+.mini:hover{color:var(--ink);border-color:var(--muted)}
+.mini.del:hover{color:var(--red);border-color:var(--red)}
+.foot{max-width:1000px;margin:60px auto 0;padding:22px 24px 0;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.foot p{font-family:var(--heading);font-size:15px;color:var(--mid)}
+.link{font-size:12px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:var(--body)}
+.link:hover{color:var(--gold)}
+.empty{color:var(--muted);font-size:14px;padding:30px 0}
+
+/* admin bar + modal */
+#adminBar{background:var(--card-2);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;gap:12px;justify-content:center}
+#adminBar .who{font-size:12px;color:var(--muted)}
+.modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:20px}
+.sheet{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;width:100%;max-width:460px;max-height:90vh;overflow:auto}
+.sheet h3{font-family:var(--heading);font-size:20px;margin-bottom:16px}
+.fld{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.fld label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.row2{display:flex;gap:10px}.row2>*{flex:1}
+.sheet-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
+</style>
+
+<!-- GATE -->
+<div id="gate">
+  <div class="gate-inner">
+    <div class="gate-mark">Breedwise Accelerator</div>
+    <h1>The Vault</h1>
+    <p>Enter your Accelerator passcode to open your tools.</p>
+    <div class="gate-form">
+      <input id="code" type="password" placeholder="Passcode" autocomplete="off" spellcheck="false" aria-label="Passcode">
+      <button class="btn" id="enter">Open the vault</button>
+    </div>
+    <div class="err" id="gErr"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div id="adminBar" class="hidden">
+    <span class="who" id="adminWho"></span>
+    <button class="btn ghost" id="addBtn" style="padding:7px 13px">+ Add tool</button>
+    <button class="link" id="signout">Sign out</button>
+  </div>
+  <header class="masthead">
+    <div class="wrap">
+      <div class="eyebrow">Breedwise Accelerator</div>
+      <h1>The Vault</h1>
+      <p class="sub">Every tool, template and playbook in your Accelerator — in one place. New drops appear here automatically.</p>
+    </div>
+  </header>
+  <main>
+    <div class="wrap" id="vault"></div>
+    <div class="foot">
+      <p>Not more breeders. Better breeders.</p>
+      <button class="link" id="manage">Manage tools</button>
+    </div>
+  </main>
+</div>
+
+<!-- ADMIN SIGN-IN / EDIT MODAL -->
+<div id="modal" class="modal hidden"><div class="sheet" id="sheet"></div></div>
+
+<script>
+const $=s=>document.querySelector(s);
+/* ===== CHANGE THE MEMBER PASSCODE HERE ===== */
+const PASSCODE="ACCELERATOR2026";
+
+const SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+const SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+const ADMINS=['austin@breedwise.io','jennifer@breedwise.io'];
+const sb=supabase.createClient(SB_URL,SB_KEY);
+const GATEKEY='bw-accel-vault-ok';
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let TOOLS=[], isAdmin=false, ME=null;
+
+/* ---- gate ---- */
+$('#enter').addEventListener('click',tryCode);
+$('#code').addEventListener('keydown',e=>{if(e.key==='Enter')tryCode();});
+function tryCode(){
+  if($('#code').value.trim().toUpperCase()===PASSCODE.toUpperCase()){
+    try{localStorage.setItem(GATEKEY,'1');}catch(e){}
+    openVault();
+  } else { $('#gErr').textContent='That passcode did not match. Check your training for the current code.'; $('#code').value=''; $('#code').focus(); }
+}
+function openVault(){ $('#gate').classList.add('hidden'); $('#app').classList.add('on'); loadTools(); }
+
+/* ---- load + render ---- */
+async function loadTools(){
+  const {data,error}=await sb.from('member_tools').select('*').order('sort').order('title');
+  if(error){ $('#vault').innerHTML=`<div class="empty">Couldn't load the vault (${esc(error.message)}). If this is the first run, the tools table may not be set up yet.</div>`; return; }
+  TOOLS=data||[]; render();
+}
+function render(){
+  const host=$('#vault');
+  const visible=isAdmin?TOOLS:TOOLS.filter(t=>t.status!=='hidden');
+  if(!visible.length){ host.innerHTML=`<div class="empty">No tools yet.${isAdmin?' Click “+ Add tool” to add the first.':''}</div>`; return; }
+  const cats=[...new Set(visible.map(t=>t.category||'Tools'))];
+  host.innerHTML=cats.map(cat=>{
+    const items=visible.filter(t=>(t.category||'Tools')===cat);
+    return `<div class="cat">${esc(cat)}</div><div class="cat-line"></div><div class="grid">${items.map(cardHTML).join('')}</div>`;
+  }).join('');
+  // wire cards
+  host.querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click',e=>{
+    if(e.target.closest('.mini')) return;              // don't open when hitting edit/delete
+    const t=TOOLS.find(x=>x.id===el.getAttribute('data-open'));
+    if(t&&t.status!=='soon'&&t.url) window.open(t.url,'_blank','noopener');
+  }));
+  host.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>editTool(b.getAttribute('data-edit'))));
+  host.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',()=>delTool(b.getAttribute('data-del'))));
+}
+function cardHTML(t){
+  const soon=t.status==='soon';
+  const badge = soon?'<span class="badge soon">Soon</span>' : (t.badge?`<span class="badge">${esc(t.badge)}</span>`:'') + (t.status==='hidden'?'<span class="badge soon">Hidden</span>':'');
+  const admin = isAdmin?`<div class="admin-tools"><button class="mini" data-edit="${t.id}">Edit</button><button class="mini del" data-del="${t.id}">Delete</button></div>`:'';
+  return `<div class="tool ${soon?'soon':''}" data-open="${t.id}">
+    ${badge}
+    <div class="tt">${esc(t.title)}</div>
+    <div class="td">${esc(t.description||'')}</div>
+    ${soon?'<div class="open" style="color:var(--yellow)">Coming soon</div>':'<div class="open">Open →</div>'}
+    ${admin}
+  </div>`;
+}
+
+/* ---- admin ---- */
+$('#manage').addEventListener('click',signInPrompt);
+$('#signout').addEventListener('click',async()=>{await sb.auth.signOut();isAdmin=false;ME=null;$('#adminBar').classList.add('hidden');render();});
+$('#addBtn').addEventListener('click',()=>editTool(null));
+function closeModal(){ $('#modal').classList.add('hidden'); }
+$('#modal').addEventListener('click',e=>{ if(e.target.id==='modal') closeModal(); });
+
+function signInPrompt(){
+  $('#sheet').innerHTML=`<h3>Manage tools</h3>
+    <div class="fld"><label>Email</label><input id="ai_email" type="email" placeholder="austin@breedwise.io"></div>
+    <div class="fld"><label>Password</label><input id="ai_pass" type="password"></div>
+    <div class="err" id="ai_err"></div>
+    <div class="sheet-actions"><button class="btn ghost" id="ai_cancel">Cancel</button><button class="btn" id="ai_go">Sign in</button></div>`;
+  $('#modal').classList.remove('hidden');
+  $('#ai_cancel').onclick=closeModal;
+  $('#ai_go').onclick=async()=>{
+    const {error}=await sb.auth.signInWithPassword({email:$('#ai_email').value.trim(),password:$('#ai_pass').value});
+    if(error){ $('#ai_err').textContent=error.message; return; }
+    const {data:{user}}=await sb.auth.getUser();
+    ME=user?.email||null;
+    if(!ADMINS.includes((ME||'').toLowerCase())){ $('#ai_err').textContent='That login can’t manage the vault.'; await sb.auth.signOut(); return; }
+    isAdmin=true; $('#adminWho').textContent=ME; $('#adminBar').classList.remove('hidden'); closeModal(); loadTools();
+  };
+}
+function editTool(id){
+  const t=id?TOOLS.find(x=>x.id===id):null;
+  $('#sheet').innerHTML=`<h3>${t?'Edit tool':'Add tool'}</h3>
+    <div class="fld"><label>Title</label><input id="e_title" value="${t?esc(t.title):''}"></div>
+    <div class="fld"><label>Description</label><textarea id="e_desc" rows="2">${t?esc(t.description||''):''}</textarea></div>
+    <div class="fld"><label>Link (URL)</label><input id="e_url" placeholder="https://review.breedwise.io/your-tool.html" value="${t?esc(t.url):''}"></div>
+    <div class="row2">
+      <div class="fld"><label>Category</label><input id="e_cat" list="cats" value="${t?esc(t.category||'Tools'):'Tools'}"><datalist id="cats"><option>Paid Traffic</option><option>Sales &amp; Conversion</option><option>Genetics &amp; Health</option><option>Templates &amp; Docs</option><option>Operations</option></datalist></div>
+      <div class="fld"><label>Badge</label><input id="e_badge" placeholder="New / Beta" value="${t&&t.badge?esc(t.badge):''}"></div>
+    </div>
+    <div class="row2">
+      <div class="fld"><label>Status</label><select id="e_status"><option value="live">Live</option><option value="soon">Coming soon</option><option value="hidden">Hidden</option></select></div>
+      <div class="fld"><label>Sort (low = top)</label><input id="e_sort" type="number" value="${t?(t.sort??100):100}"></div>
+    </div>
+    <div class="err" id="e_err"></div>
+    <div class="sheet-actions"><button class="btn ghost" id="e_cancel">Cancel</button><button class="btn" id="e_save">${t?'Save':'Add tool'}</button></div>`;
+  $('#modal').classList.remove('hidden');
+  if(t) $('#e_status').value=t.status||'live';
+  $('#e_cancel').onclick=closeModal;
+  $('#e_save').onclick=async()=>{
+    const row={ title:$('#e_title').value.trim(), description:$('#e_desc').value.trim()||null,
+      url:$('#e_url').value.trim(), category:$('#e_cat').value.trim()||'Tools',
+      badge:$('#e_badge').value.trim()||null, status:$('#e_status').value, sort:+$('#e_sort').value||100,
+      updated_at:new Date().toISOString(), updated_by:ME };
+    if(!row.title||!row.url){ $('#e_err').textContent='Title and link are required.'; return; }
+    const res=id? await sb.from('member_tools').update(row).eq('id',id)
+               : await sb.from('member_tools').insert(row);
+    if(res.error){ $('#e_err').textContent=res.error.message; return; }
+    closeModal(); loadTools();
+  };
+}
+async function delTool(id){
+  const t=TOOLS.find(x=>x.id===id); if(!t) return;
+  if(!confirm(`Delete “${t.title}” from the vault?`)) return;
+  const {error}=await sb.from('member_tools').delete().eq('id',id);
+  if(error){ alert('Could not delete: '+error.message); return; }
+  loadTools();
+}
+
+/* ---- boot ---- */
+(async function boot(){
+  // already an admin session? show controls immediately
+  const {data:{session}}=await sb.auth.getSession();
+  if(session && ADMINS.includes((session.user.email||'').toLowerCase())){
+    ME=session.user.email; isAdmin=true; $('#adminWho').textContent=ME; $('#adminBar').classList.remove('hidden');
+    $('#gate').classList.add('hidden'); $('#app').classList.add('on'); loadTools(); return;
+  }
+  // remembered passcode?
+  let ok=false; try{ ok=localStorage.getItem(GATEKEY)==='1'; }catch(e){}
+  if(ok) openVault(); else $('#code').focus();
+})();
+</script>
