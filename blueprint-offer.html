@@ -1,0 +1,219 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Breeder Program Niche Blueprint — Breedwise</title>
+<meta name="description" content="In 7 days, we design the most profitable, ethical, and sustainable niche for your breeding program — with a concrete income plan and marketing angle.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#161318; --surface:#0f0d11; --card:#211d24; --card-2:#1a171d;
+  --border:#332d38; --gold:#d6ba76; --gold-deep:#b89c47; --gold-faint:rgba(214,186,118,.09);
+  --gold-grad:linear-gradient(135deg,#e2cb86 0%,#bfa050 100%); --on-gold:#1a1509;
+  --ink:#f4f1ea; --muted:#948da0; --mid:#c9c3d0; --green:#6dbf90; --red:#e0807e;
+  --heading:'Playfair Display', Georgia, serif; --body:'Inter', -apple-system, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin:0 auto;padding:0 22px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--heading);font-weight:600;font-size:clamp(32px,6.2vw,54px);line-height:1.08;letter-spacing:-.015em;margin:16px 0}
+h2{font-family:var(--heading);font-weight:600;font-size:clamp(24px,4.4vw,34px);line-height:1.15;margin:0 0 8px}
+h3{font-family:var(--heading);font-weight:600;font-size:20px;margin:0 0 6px}
+p{color:var(--mid)}
+.btn{display:inline-block;background:var(--gold-grad);color:var(--on-gold);border:0;border-radius:12px;padding:17px 34px;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;text-decoration:none;box-shadow:0 10px 30px rgba(214,186,118,.28);transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.big{font-size:16px;padding:19px 40px}
+.sub{color:var(--muted);font-size:13px;margin-top:12px}
+/* hero */
+header{background:radial-gradient(120% 90% at 50% -10%, #241d2b 0%, var(--surface) 55%);border-bottom:1px solid var(--border);padding:64px 0 58px;text-align:center}
+header .promise{color:var(--mid);font-size:clamp(17px,2.6vw,20px);max-width:60ch;margin:0 auto 26px}
+.kick{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);background:var(--gold-faint);border:1px solid var(--gold-deep);border-radius:30px;padding:6px 15px;margin-bottom:6px}
+section{padding:52px 0;border-bottom:1px solid var(--border)}
+.lead{font-size:19px;color:var(--ink)}
+.money-box{background:linear-gradient(135deg,rgba(109,191,144,.12),rgba(214,186,118,.08));border:1px solid var(--green);border-radius:18px;padding:30px;margin-top:22px}
+.money-box .big{font-family:var(--heading);font-size:clamp(28px,5.5vw,42px);color:var(--ink);line-height:1.05}
+.money-box p{color:var(--mid);margin-top:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px}
+.card h3{color:var(--gold)}
+.card p{font-size:14.5px;margin-top:4px}
+.factors{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}
+.factor{background:var(--card-2);border:1px solid var(--border);border-radius:12px;padding:16px}
+.factor .n{font-weight:700;color:var(--ink);font-size:15px}
+.factor .d{font-size:13px;color:var(--muted);margin-top:3px}
+.steps{counter-reset:s;margin-top:22px}
+.step{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--border)}
+.step:last-child{border-bottom:0}
+.step .no{counter-increment:s;flex:0 0 auto;width:38px;height:38px;border-radius:50%;background:var(--gold-faint);border:1px solid var(--gold-deep);color:var(--gold);font-family:var(--heading);font-weight:600;display:flex;align-items:center;justify-content:center}
+.step .no:before{content:counter(s)}
+.step h3{font-size:17px;margin-bottom:2px}
+.step p{font-size:14.5px}
+.bonuses{list-style:none;margin-top:20px}
+.bonuses li{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border)}
+.bonuses li:last-child{border-bottom:0}
+.bonuses .chk{color:var(--gold);font-weight:700;flex:0 0 auto}
+.bonuses b{color:var(--ink)}
+.forwho{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+.forwho ul{list-style:none;margin-top:8px}
+.forwho li{padding:6px 0 6px 24px;position:relative;color:var(--mid);font-size:14.5px}
+.forwho li:before{position:absolute;left:0;top:6px}
+.forwho .yes li:before{content:'✓';color:var(--green)}
+.forwho .no li:before{content:'✕';color:var(--red)}
+.guarantee{background:var(--card);border:1px solid var(--gold-deep);border-radius:16px;padding:28px;margin-top:8px}
+.price-card{background:var(--card);border:1px solid var(--gold-deep);border-radius:18px;padding:34px;text-align:center;max-width:520px;margin:24px auto 0}
+.price-card .amt{font-family:var(--heading);font-size:52px;color:var(--ink);line-height:1}
+.price-card .amt small{font-size:18px;color:var(--muted)}
+.faq details{border-bottom:1px solid var(--border);padding:16px 0}
+.faq summary{cursor:pointer;font-weight:600;color:var(--ink);font-size:16px;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:before{content:'+ ';color:var(--gold)}
+.faq details[open] summary:before{content:'– '}
+.faq p{margin-top:8px;font-size:14.5px}
+.center{text-align:center}
+footer{padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
+@media(max-width:640px){.grid2,.factors,.forwho{grid-template-columns:1fr}}
+</style>
+
+<header>
+  <div class="wrap">
+    <span class="kick">Breedwise · 7-Day Program Diagnostic</span>
+    <h1>Stop guessing your niche.<br>Get the plan that pays.</h1>
+    <p class="promise">In 7 days, we design the most <b style="color:var(--ink)">profitable, ethical, and sustainable</b> niche for your breeding program — with a concrete income plan, your ideal buyer, the exact price to charge, and the marketing angle to reach them.</p>
+    <a href="#apply" class="btn big">Build my Blueprint</a>
+    <div class="sub">Delivered in 7 days · one 60–90 minute strategy call · your fee credited toward implementation</div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">The real problem</div>
+    <h2>You're not short on effort. You're short on a decision.</h2>
+    <p class="lead" style="margin-top:12px">Most breeders pour years into dogs, whelping, and health testing — then leave the biggest lever untouched: <b style="color:var(--ink)">who they're for and what they charge.</b> They copy the breeder down the road, price by "what feels normal," and compete on being a little cheaper. That's a race to the bottom in a market that rewards the opposite.</p>
+    <div class="money-box">
+      <div class="big">Underprice by $500/pup and it's already $6,000+ a year.</div>
+      <p>$500 under market × 2 litters × 6 pups = <b style="color:var(--ink)">$6,000 left on the table every year</b> — for the same dogs, the same work. Fixing that once is already <b style="color:var(--ink)">3× the cost of this Blueprint.</b> And the right niche doesn't add $500 — it can double your price for the same core program.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">What you walk away with</div>
+    <h2>A blueprint that makes the decision for you.</h2>
+    <div class="grid2">
+      <div class="card"><h3>Your niche — chosen, not guessed</h3><p>The single most profitable, ethical niche for your program, scored against the alternatives, with 1–2 backups.</p></div>
+      <div class="card"><h3>Your revenue plan by year</h3><p>Good / better / best scenarios: litters × pups × price → the number, grounded in your real capacity.</p></div>
+      <div class="card"><h3>Your ideal buyer + price</h3><p>A specific buyer avatar and the exact price band that buyer pays — never below $5,000.</p></div>
+      <div class="card"><h3>Your angle + what to stop</h3><p>The positioning and messaging to attract them — and the things you should stop doing today.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">The mechanism</div>
+    <h2>The Breeder Niche Scorecard.</h2>
+    <p style="margin-top:10px">We don't hand you an opinion. We score your options against the same six factors that decide whether a niche actually makes money — and whether it's one you can run ethically for years.</p>
+    <div class="factors">
+      <div class="factor"><div class="n">Pain / Demand</div><div class="d">Are buyers actively hunting this?</div></div>
+      <div class="factor"><div class="n">Payment Power</div><div class="d">What the niche pays, and who's paying.</div></div>
+      <div class="factor"><div class="n">Targetability</div><div class="d">Can we actually reach these buyers?</div></div>
+      <div class="factor"><div class="n">Ethical Fit</div><div class="d">Health, contracts, sane limits — the gate.</div></div>
+      <div class="factor"><div class="n">Lifestyle Fit</div><div class="d">Your property, time, and tolerance.</div></div>
+      <div class="factor"><div class="n">Differentiation</div><div class="d">How you stand out and stay out front.</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">How it works</div>
+    <h2>Seven days, start to plan.</h2>
+    <div class="steps">
+      <div class="step"><div class="no"></div><div><h3>Day 0 — You enroll & complete the intake</h3><p>A focused 30–45 minute intake about your program, values, goals, and constraints.</p></div></div>
+      <div class="step"><div class="no"></div><div><h3>Days 1–3 — We run the diagnostic</h3><p>Your options are scored, your revenue modeled, your blueprint drafted — then reviewed and refined by us.</p></div></div>
+      <div class="step"><div class="no"></div><div><h3>Days 4–5 — Your walkthrough</h3><p>A 20–30 minute recorded walkthrough of your blueprint, so you can watch it as many times as you need.</p></div></div>
+      <div class="step"><div class="no"></div><div><h3>Days 6–7 — Your strategy call</h3><p>A 60–90 minute live call to pressure-test the assumptions and lock your decisions for good.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Included</div>
+    <h2>The tools to actually execute it.</h2>
+    <ul class="bonuses">
+      <li><span class="chk">✓</span><div><b>Editable financial forecast sheet</b> — model litters, prices, and costs into a real yearly projection you keep and adjust.</div></li>
+      <li><span class="chk">✓</span><div><b>Ethical Breeder Standards Checklist</b> — the bar you must hold to earn premium positioning (and keep it).</div></li>
+      <li><span class="chk">✓</span><div><b>90-Day Implementation Checklist</b> — the exact first moves, sequenced, so momentum doesn't stall.</div></li>
+      <li><span class="chk">✓</span><div><b>Full fee credit toward implementation</b> — your Blueprint fee is credited toward your website, funnel, or marketing build with us.</div></li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Fit</div>
+    <h2>Who this is for.</h2>
+    <div class="forwho">
+      <div><h3 style="color:var(--green)">A fit if you…</h3><ul class="yes">
+        <li>Are breeding or about to, and serious about doing it right</li>
+        <li>Are confused about breed, price point, or buyer</li>
+        <li>Health-test and want ethics to be your advantage, not a cost</li>
+        <li>Want to charge what your program is worth</li>
+      </ul></div>
+      <div><h3 style="color:var(--red)">Not a fit if you…</h3><ul class="no">
+        <li>Want to cut corners or breed for volume</li>
+        <li>Refuse to health-test or stand behind your dogs</li>
+        <li>Want a magic hack instead of a real plan</li>
+        <li>Aren't willing to change how you price</li>
+      </ul></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="guarantee">
+      <h3 style="color:var(--gold)">Our promise</h3>
+      <p style="margin-top:6px">On your strategy call, if you don't leave with a niche, a price, and a revenue plan you're confident in, we keep working with you until you do — or we make it right. And because your full fee is credited toward implementation, the Blueprint effectively pays for itself the moment you move forward.</p>
+    </div>
+  </div>
+</section>
+
+<section id="apply">
+  <div class="wrap center">
+    <div class="eyebrow">Enroll</div>
+    <h2>Get your Blueprint.</h2>
+    <div class="price-card">
+      <div class="amt">$1,997</div>
+      <p style="margin:10px 0 0">Fully credited toward your implementation build.</p>
+      <a href="#" class="btn big" id="cta" style="margin-top:22px">Start my Blueprint</a>
+      <div class="sub">7-day delivery · 60–90 min strategy call · limited spots each month</div>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="wrap">
+    <div class="eyebrow">Questions</div>
+    <h2>Before you enroll.</h2>
+    <details><summary>Do you pick a niche I don't believe in?</summary><p>No. We score your options and the ones you're already considering, then recommend — you decide on the call. It's your program.</p></details>
+    <details><summary>What if I'm brand new and don't have a program yet?</summary><p>Even better. This is the decision you want to make <em>before</em> you build the wrong thing for three years.</p></details>
+    <details><summary>Is this just an AI report?</summary><p>The diagnostic engine does the scoring and modeling fast — then we review, refine, and walk you through it live. You get the speed of the tool and the judgment of a strategist.</p></details>
+    <details><summary>Will you make me lower my ethics to make more money?</summary><p>The opposite. Ethics is a scored gate — a niche that requires cutting corners can't be your recommendation. We build the profitable program that's also the one you're proud of.</p></details>
+    <div class="center" style="margin-top:30px"><a href="#apply" class="btn">Build my Blueprint</a></div>
+  </div>
+</section>
+
+<footer>Breedwise · Not more breeders. Better breeders.</footer>
+
+<script>
+/* Point both CTAs at your checkout / booking / application URL. */
+var CHECKOUT_URL = "";  // e.g. "https://your-stripe-or-calendly-link"
+(function(){
+  if(!CHECKOUT_URL) return;
+  document.querySelectorAll('a.btn, #cta').forEach(function(a){ if(a.getAttribute('href')!=='#apply') a.setAttribute('href',CHECKOUT_URL); });
+})();
+</script>
