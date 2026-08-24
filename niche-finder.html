@@ -139,15 +139,9 @@ const FIELDS=[
   ['breed','Breed(s) you raise','',false],
   ['location','Location','',false],
   ['currentPrice','Current price per dog','if any',false],
-  ['story','Your story & background','The big one — your journey, struggles, wins, career, what shaped you. This is where your blue ocean usually lives.',true],
+  ['story','Your story & background','The big one — your journey, struggles, wins, career, what shaped you. Write as much as you can; we\'ll dig into the rest next.',true],
   ['dogs','What makes your DOGS different','temperament, look, lineage, purpose',true],
   ['currentBuyers','Who already buys from you / resonates','gender, age, family status, interests — even a guess helps',true],
-  ['family','Your family / household','spouse, kids, the life around the dogs',true],
-  ['culture','Cultural background / heritage','',false],
-  ['values','What you value most','',false],
-  ['targetGoal','Who you WANT to reach','',false],
-  ['comfort','What you\'re comfortable showing','on camera? behind the scenes? just the dogs?',false],
-  ['extra','Anything else that makes you YOU','',true],
 ];
 function renderForm(prefill){
   const p=prefill||{};
@@ -158,7 +152,7 @@ function renderForm(prefill){
     <div class="section-label">Tell us about the breeder</div>
     <div class="grid">${FIELDS.map(x=>f(...x)).join('')}</div>
     <div class="actions">
-      <button class="btn" id="go">Find my niche</button>
+      <button class="btn" id="go">Next: sharpen it &rarr;</button>
       <span class="err" id="fErr"></span>
     </div>`;
   const vs=$('#viewSaved'); if(vs) vs.addEventListener('click',()=>{ try{ showResult(JSON.parse(savedRaw)); }catch(e){} });
@@ -166,21 +160,56 @@ function renderForm(prefill){
 }
 function collect(){ const o={}; FIELDS.forEach(([id])=>{ const el=$('#i_'+id); o[id]=el?el.value.trim():''; }); return o; }
 
-/* ---- submit ---- */
-const LOAD_MSGS=['Reading your story…','Finding the intersection only you own…','Naming your ideal buyer…','Writing your bio and pillars…','Setting your price…','Almost there…'];
+/* ---- loading view + API helper ---- */
+function loading(msgs,note){
+  let mi=0; $('#body').innerHTML=`<div id="loading"><div class="spinner"></div><div id="loadMsg">${esc(msgs[0])}</div><div style="color:var(--muted);font-size:12.5px;margin-top:12px">${esc(note||'')}</div></div>`;
+  return setInterval(()=>{ mi=(mi+1)%msgs.length; const el=$('#loadMsg'); if(el) el.textContent=msgs[mi]; },7000);
+}
+async function callFn(payload){
+  const r=await fetch(FN,{method:'POST',headers:{'content-type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({passcode:MEMBER_CODE,...payload})});
+  const d=await r.json(); return {ok:r.ok&&!d.error, status:r.status, d};
+}
+
+/* ---- PHASE 1: submit → get sharp follow-up questions ---- */
 async function submit(){
   const inputs=collect();
   if(!inputs.story && !inputs.breed){ $('#fErr').textContent='Tell us at least your breed and a bit of your story.'; return; }
-  let mi=0; $('#body').innerHTML=`<div id="loading"><div class="spinner"></div><div id="loadMsg">${LOAD_MSGS[0]}</div><div style="color:var(--muted);font-size:12.5px;margin-top:12px">This takes about a minute — we're thinking hard about your positioning.</div></div>`;
-  const tick=setInterval(()=>{ mi=(mi+1)%LOAD_MSGS.length; const el=$('#loadMsg'); if(el) el.textContent=LOAD_MSGS[mi]; },7000);
-  try{
-    const r=await fetch(FN,{method:'POST',headers:{'content-type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({passcode:MEMBER_CODE,inputs})});
-    const d=await r.json();
-    clearInterval(tick);
-    if(!r.ok||d.error){ renderForm(inputs); const fe=$('#fErr'); if(fe) fe.textContent=d.error||('Something went wrong ('+r.status+').'); return; }
-    try{ localStorage.setItem('bw-niche-result',JSON.stringify(d.result)); }catch(e){}
-    showResult(d.result);
-  }catch(e){ clearInterval(tick); renderForm(inputs); const fe=$('#fErr'); if(fe) fe.textContent='Could not reach the Niche Finder. Try again.'; }
+  const tick=loading(['Reading your story…','Finding where the real gold is hiding…','Getting curious about you…'],"We're pulling out the details that make you different — just like a coaching call.");
+  const {ok,status,d}=await callFn({mode:'probe',inputs});
+  clearInterval(tick);
+  if(!ok){ renderForm(inputs); const fe=$('#fErr'); if(fe) fe.textContent=d.error||('Something went wrong ('+status+').'); return; }
+  const qs=(d.questions&&d.questions.length)?d.questions:[];
+  if(!qs.length){ return generate(inputs,[]); }  // no questions? go straight to positioning
+  renderFollowups(inputs,qs);
+}
+
+/* ---- PHASE 1.5: answer the follow-ups ---- */
+function renderFollowups(inputs,questions){
+  $('#body').innerHTML=`
+    <div class="saved-banner" style="border-color:var(--gold-deep)"><span>Good — now let's go deeper. Answer what you can; skip anything that doesn't fit.</span></div>
+    <div class="section-label">A few sharp questions, just for you</div>
+    ${questions.map((q,i)=>`<div class="fld full"><label style="text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink);font-family:var(--heading)">${esc(q)}</label><textarea id="fu_${i}" rows="3"></textarea></div>`).join('')}
+    <div class="actions">
+      <button class="btn" id="build">Build my niche &rarr;</button>
+      <button class="btn ghost" id="backForm">Back</button>
+      <span class="err" id="fErr"></span>
+    </div>`;
+  $('#backForm').addEventListener('click',()=>renderForm(inputs));
+  $('#build').addEventListener('click',()=>{
+    const fu=questions.map((q,i)=>({q, a:($('#fu_'+i)?$('#fu_'+i).value.trim():'')}));
+    generate(inputs,fu);
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ---- PHASE 2: generate the positioning ---- */
+async function generate(inputs,followups){
+  const tick=loading(['Finding the intersection only you own…','Naming your ideal buyer…','Writing your bio and pillars…','Setting your price…','Making sure it\'s unmistakably YOURS…','Almost there…'],"This takes about a minute — we're building positioning no competitor could copy.");
+  const {ok,status,d}=await callFn({mode:'generate',inputs,followups});
+  clearInterval(tick);
+  if(!ok){ renderFollowups(inputs,followups.map(f=>f.q)); const fe=$('#fErr'); if(fe) fe.textContent=d.error||('Something went wrong ('+status+').'); return; }
+  try{ localStorage.setItem('bw-niche-result',JSON.stringify(d.result)); }catch(e){}
+  showResult(d.result);
 }
 
 /* ---- render result ---- */
