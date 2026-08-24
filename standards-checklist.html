@@ -1,0 +1,144 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Breeder Standards & 90-Day Launch — Breedwise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1b1b20; --surface:#111114; --card:#26262c; --card-2:#212127; --border:#34343c;
+  --gold:#d6ba76; --gold-deep:#b89c47; --gold-faint:rgba(214,186,118,.10); --gold-grad:linear-gradient(135deg,#e2cb86 0%,#bfa050 100%);
+  --on-gold:#1a1509; --ink:#f4f1ea; --muted:#8f8d85; --mid:#c4c1b8; --green:#6dbf90; --radius:11px;
+  --heading:'Playfair Display', Georgia, serif; --body:'Inter', -apple-system, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin:0 auto;padding:0 22px}
+.masthead{background:var(--surface);border-bottom:1px solid var(--border);padding:38px 0 30px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.masthead h1{font-family:var(--heading);font-weight:600;font-size:clamp(26px,5.5vw,38px);line-height:1.1;margin:12px 0 8px;letter-spacing:-.01em}
+.masthead p{color:var(--muted);max-width:60ch;font-size:14px}
+main{padding:30px 0 80px}
+.sect{margin-bottom:34px}
+.sect-h{font-family:var(--heading);font-size:22px;color:var(--gold);margin-bottom:4px}
+.sect-sub{color:var(--muted);font-size:13.5px;margin-bottom:14px}
+.phase{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mid);margin:18px 0 8px}
+.item{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.item:last-child{border-bottom:none}
+.box{flex:0 0 auto;width:20px;height:20px;margin-top:1px;border:1.5px solid var(--muted);border-radius:5px;position:relative;transition:.12s}
+.item.done .box{background:var(--gold);border-color:var(--gold)}
+.item.done .box:after{content:'';position:absolute;left:6px;top:2px;width:5px;height:10px;border:solid var(--on-gold);border-width:0 2px 2px 0;transform:rotate(43deg)}
+.item .t{flex:1}
+.item .t b{display:block;font-weight:600;color:var(--ink)}
+.item.done .t b{color:var(--muted);text-decoration:line-through}
+.item .t span{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+.bar{position:sticky;top:0;z-index:5;background:var(--card-2);border-bottom:1px solid var(--border);padding:12px 0}
+.bar .row{max-width:820px;margin:0 auto;padding:0 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.track{flex:1;min-width:120px;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--gold-grad);transition:width .35s}
+.count{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.btn{background:transparent;color:var(--gold);border:1px solid var(--border);border-radius:8px;padding:7px 13px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--body)}
+.btn:hover{border-color:var(--gold-deep)}
+.foot{border-top:1px solid var(--border);padding-top:22px;margin-top:20px;font-family:var(--heading);color:var(--mid);font-size:14px}
+@media print{.bar,.btn,.masthead p{display:none}body{background:#fff;color:#000}.item{border-color:#ddd}.box{border-color:#888}}
+</style>
+
+<header class="masthead"><div class="wrap">
+  <div class="eyebrow">Breedwise · Blueprint Toolkit</div>
+  <h1>Breeder Standards & 90-Day Launch</h1>
+  <p>Two checklists you keep. The first is the bar you hold to earn premium positioning. The second is the sequence that turns your Blueprint into deposits. Check items off — your progress saves automatically.</p>
+</div></header>
+
+<div class="bar"><div class="row">
+  <span class="count" id="count">0 / 0 complete</span>
+  <span class="track"><span class="fill" id="fill"></span></span>
+  <button class="btn" id="printBtn">Print / save PDF</button>
+  <button class="btn" id="reset">Reset</button>
+</div></div>
+
+<main><div class="wrap" id="body"></div>
+  <div class="wrap foot">Not more breeders. Better breeders.</div>
+</main>
+
+<script>
+const $=s=>document.querySelector(s);
+const KEY='bw-standards-v1';
+let state={}; try{state=JSON.parse(localStorage.getItem(KEY))||{};}catch(e){state={};}
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const DATA=[
+  {id:'ethics',title:'Ethical Breeder Standards',sub:'Meet every one of these and premium pricing is defensible — this is what separates you from volume breeders.',groups:[
+    {phase:'Health',items:[
+      ['Both parents health-tested for the breed','Hips/elbows (OFA or PennHIP), cardiac, eyes (CAER), and the breed-specific DNA panel.'],
+      ['Results are public and verifiable','A buyer can look them up — you don\'t just say "fully health tested."'],
+    ]},
+    {phase:'Standing behind your dogs',items:[
+      ['Written contract with a health guarantee','Clear terms, spay/neuter or breeding rights spelled out.'],
+      ['Lifetime take-back policy','You take any dog you bred back at any age — none ends up in a shelter.'],
+    ]},
+    {phase:'Sane breeding practices',items:[
+      ['Litter limits per dam','A responsible cap per lifetime, recovery time between litters, and a retirement age.'],
+      ['Pups stay until at least 8 weeks','With early socialization, a vet check, first vaccines, and a microchip.'],
+    ]},
+    {phase:'Placement & transparency',items:[
+      ['You screen buyers, not just take cash','An application and conversation — the right home over the fastest sale.'],
+      ['Honest about faults and fit','You tell buyers what the dog is and isn\'t suited for.'],
+      ['Clean, enriched environment','Dogs live as part of the program, not warehoused or overcrowded.'],
+      ['Lifetime support for your buyers','You\'re reachable after the sale — that\'s where referrals come from.'],
+    ]},
+  ]},
+  {id:'launch',title:'90-Day Launch Checklist',sub:'The sequence to turn your Blueprint into inquiries, applications, and deposits at your new price.',groups:[
+    {phase:'Weeks 1–2 · Foundation',items:[
+      ['Lock your niche and price from the Blueprint',''],
+      ['Rewrite your bio and profiles to the niche',''],
+      ['Stand up an application/waitlist page',''],
+      ['Write down your ideal-buyer avatar and pin it where you post',''],
+    ]},
+    {phase:'Weeks 3–4 · Proof',items:[
+      ['Publish your health-testing results',''],
+      ['Collect 2–3 placement stories or testimonials',''],
+      ['Batch-shoot content that fits the niche (adults + temperament, not just puppies)',''],
+    ]},
+    {phase:'Weeks 5–8 · Reach',items:[
+      ['Post consistently to the niche (3–5×/week)',''],
+      ['Engage in 3 communities or orgs where your buyer already is',''],
+      ['Open a waitlist and start capturing name, email, and phone',''],
+      ['Reach out to 3 relevant organizations or referral sources',''],
+    ]},
+    {phase:'Weeks 9–12 · Convert',items:[
+      ['Open applications and book discovery calls',''],
+      ['Run your first niche-targeted content push',''],
+      ['Take deposits at the new price',''],
+      ['Track inquiries → applications → deposits so you know what\'s working',''],
+    ]},
+  ]},
+];
+
+function render(){
+  let idx=0;
+  $('#body').innerHTML=DATA.map(sec=>{
+    const groups=sec.groups.map(g=>{
+      const items=g.items.map(it=>{
+        const k=sec.id+':'+(idx++); const done=state[k]?' done':'';
+        return `<div class="item${done}" data-k="${k}"><span class="box"></span><span class="t"><b>${esc(it[0])}</b>${it[1]?`<span>${esc(it[1])}</span>`:''}</span></div>`;
+      }).join('');
+      return `<div class="phase">${esc(g.phase)}</div>${items}`;
+    }).join('');
+    return `<div class="sect"><div class="sect-h">${esc(sec.title)}</div><div class="sect-sub">${esc(sec.sub)}</div>${groups}</div>`;
+  }).join('');
+  document.querySelectorAll('.item').forEach(el=>el.addEventListener('click',()=>{
+    const k=el.getAttribute('data-k'); state[k]=!state[k]; el.classList.toggle('done',!!state[k]);
+    try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){} meter();
+  }));
+  meter();
+}
+function meter(){
+  const items=document.querySelectorAll('.item'); const done=document.querySelectorAll('.item.done').length;
+  $('#count').textContent=done+' / '+items.length+' complete';
+  $('#fill').style.width=(items.length?done/items.length*100:0)+'%';
+}
+$('#printBtn').addEventListener('click',()=>window.print());
+$('#reset').addEventListener('click',()=>{ state={}; try{localStorage.removeItem(KEY);}catch(e){} render(); });
+render();
+</script>
