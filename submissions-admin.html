@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Niche Blueprints — Breedwise</title>
+<title>Tool Submissions — Breedwise</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -16,46 +16,44 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--body);background:var(--bg);color:var(--ink);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
-.hide{display:none!important}
-a{color:var(--gold)}
-.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.hide{display:none!important}a{color:var(--gold)}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
 input,select,textarea{font-family:var(--body);font-size:14px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--ink);padding:9px 11px;outline:none}
 input:focus,select:focus,textarea:focus{border-color:var(--gold)}
 .btn{background:var(--gold-grad);color:var(--on-gold);border:0;border-radius:9px;padding:11px 18px;font-weight:700;font-size:12px;letter-spacing:.05em;cursor:pointer}
 .btn.ghost{background:transparent;color:var(--gold);border:1px solid var(--border);font-weight:600}
 .btn:disabled{opacity:.5;cursor:default}
 .err{color:var(--fu);font-size:13px;min-height:16px}
-/* gate */
 .gate{max-width:380px;margin:9vh auto;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:30px}
 .gate .mk{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
 .gate h1{font-family:var(--heading);font-size:24px;margin-bottom:6px}
 .gate p{color:var(--muted);font-size:13px;margin:0 0 18px}
 .gate input{width:100%;margin-bottom:11px}.gate .btn{width:100%}
-/* app */
 #app{display:none}#app.on{display:block}
-.top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding:22px 0;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding:22px 0;margin-bottom:16px;flex-wrap:wrap;gap:10px}
 .top .mk{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
 .top h1{font-family:var(--heading);font-size:24px}
 .who{font-size:12px;color:var(--muted)}
-.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.tchip{font-size:12px;font-weight:600;padding:7px 13px;border-radius:9px;border:1px solid var(--border);background:var(--card-2);color:var(--muted);cursor:pointer}
+.tchip.on{background:var(--gold-faint);color:var(--gold);border-color:var(--gold-deep)}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
 .kpi{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:13px}
-.kpi .v{font-family:var(--heading);font-size:24px}
-.kpi .l{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.kpi .v{font-family:var(--heading);font-size:24px}.kpi .l{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:2px}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
 .chip{font-size:12px;font-weight:600;padding:6px 12px;border-radius:20px;border:1px solid var(--border);background:var(--card-2);color:var(--muted);cursor:pointer}
 .chip.on{background:var(--gold-faint);color:var(--gold);border-color:var(--gold-deep)}
-.search{margin-left:auto;min-width:180px}
+.search{margin-left:auto;min-width:190px}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th,td{text-align:left;padding:10px 9px;border-bottom:1px solid var(--border);vertical-align:middle}
 th{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
-td .nm{font-weight:600;color:var(--ink)}
-td .sub{font-size:11.5px;color:var(--muted)}
+td .nm{font-weight:600;color:var(--ink)}td .sub{font-size:11.5px;color:var(--muted)}
+.tooltag{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);background:var(--gold-faint);border-radius:20px;padding:3px 9px;white-space:nowrap}
 select.st,select.ow{font-size:12px;padding:5px 8px;border-radius:7px}
 .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
 .d-New{background:var(--new)}.d-Reviewed{background:var(--rev)}.d-Delivered{background:var(--del)}.d-Followup{background:var(--fu)}
 .open{font-size:11px;font-weight:700;color:var(--gold);cursor:pointer;background:none;border:1px solid var(--border);border-radius:7px;padding:5px 10px}
 .empty{color:var(--muted);padding:28px 0;text-align:center}
-/* modal */
 .modal{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.62);display:flex;align-items:flex-start;justify-content:center;padding:24px;overflow:auto}
 .sheet{background:var(--bg);border:1px solid var(--border);border-radius:16px;max-width:820px;width:100%;padding:26px;margin:auto}
 .sheet h2{font-family:var(--heading);font-size:24px;color:var(--ink)}
@@ -66,14 +64,14 @@ select.st,select.ow{font-size:12px;padding:5px 8px;border-radius:7px}
 .money{background:linear-gradient(135deg,rgba(109,191,144,.13),rgba(214,186,118,.09));border:1px solid var(--del);border-radius:12px;padding:16px;margin-top:12px}
 .money .big{font-family:var(--heading);font-size:22px;color:var(--ink)}
 .tblwrap{overflow-x:auto}
-table.sc{min-width:520px;font-size:12px}
-table.sc td.n{color:var(--ink);font-weight:600}
-table.sc tr.primary{background:var(--gold-faint)}
+table.sc{min-width:520px;font-size:12px}table.sc td.n{color:var(--ink);font-weight:600}table.sc tr.primary{background:var(--gold-faint)}
 .pill{display:inline-block;min-width:24px;text-align:center;padding:2px 6px;border-radius:6px;font-weight:700}
 .s-hi{background:rgba(109,191,144,.16);color:#8fd0a6}.s-md{background:var(--gold-faint);color:var(--gold)}.s-lo{background:rgba(224,128,126,.16);color:var(--fu)}
 ul.li{margin:4px 0 0 18px;color:var(--mid);font-size:13px}ul.li li{margin:3px 0}
 .scn{display:inline-block;background:var(--card-2);border:1px solid var(--border);border-radius:9px;padding:10px 12px;margin:6px 8px 0 0}
 .scn .l{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}.scn .g{font-family:var(--heading);font-size:18px}
+.kvrow{font-size:12.5px;color:var(--mid);padding:5px 0;border-bottom:1px solid var(--border-2,#2b2b32)}
+.kvrow b{color:var(--ink)}
 .mgmt{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
 .mgmt label{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
 .intake{font-size:12.5px;color:var(--mid);white-space:pre-wrap;background:var(--card-2);border:1px solid var(--border);border-radius:9px;padding:12px}
@@ -82,8 +80,8 @@ ul.li{margin:4px 0 0 18px;color:var(--mid);font-size:13px}ul.li li{margin:3px 0}
 
 <div id="gate" class="gate">
   <div class="mk">Breedwise · Admin</div>
-  <h1>Niche Blueprints</h1>
-  <p>Sign in to review and manage breeder blueprints.</p>
+  <h1>Tool Submissions</h1>
+  <p>Sign in to review and manage submissions from every Accelerator tool.</p>
   <input id="gEmail" type="email" placeholder="you@breedwise.io" autocomplete="username">
   <input id="gPass" type="password" placeholder="Password" autocomplete="current-password">
   <button class="btn" id="gBtn">Sign in</button>
@@ -92,12 +90,13 @@ ul.li{margin:4px 0 0 18px;color:var(--mid);font-size:13px}ul.li li{margin:3px 0}
 
 <div id="app"><div class="wrap">
   <div class="top">
-    <div><div class="mk">Breedwise · Program Diagnostic</div><h1>Niche Blueprints — Pipeline</h1></div>
+    <div><div class="mk">Breedwise · Accelerator</div><h1>Tool Submissions</h1></div>
     <div style="text-align:right"><div class="who" id="who"></div><button class="btn ghost" id="signout" style="margin-top:6px;padding:5px 11px">Sign out</button></div>
   </div>
+  <div class="toolbar" id="tools"></div>
   <div class="kpis" id="kpis"></div>
   <div class="chips" id="chips"></div>
-  <div class="tblwrap"><table><thead><tr><th>Date</th><th>Breeder</th><th>Breed</th><th>Primary niche</th><th>Target price</th><th>Owner</th><th>Status</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+  <div class="tblwrap"><table><thead><tr><th>Date</th><th>Tool</th><th>Member</th><th>Summary</th><th>Owner</th><th>Status</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
 </div></div>
 
 <div id="modal" class="modal hide"><div class="sheet" id="sheet"></div></div>
@@ -112,9 +111,8 @@ const OWNERS=['Unassigned','Austin','Jennifer','Madison','Yasmin','Derek','Jake'
 const usd=n=>'$'+Number(n||0).toLocaleString('en-US');
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const dcls=s=>'d-'+String(s||'New').replace('-','');
-let ROWS=[], filter='All', q='', ME=null;
+let ROWS=[], toolFilter='All', statusFilter='All', q='', ME=null;
 
-/* auth */
 $('#gBtn').addEventListener('click',signIn);
 $('#gPass').addEventListener('keydown',e=>{if(e.key==='Enter')signIn();});
 $('#signout').addEventListener('click',async()=>{await sb.auth.signOut();location.reload();});
@@ -131,42 +129,47 @@ async function boot(){
   const {data:{session}}=await sb.auth.getSession();
   if(!session){$('#gate').classList.remove('hide');$('#app').classList.remove('on');return;}
   ME=session.user.email; $('#who').textContent=ME;
-  $('#gate').classList.add('hide');$('#app').classList.add('on');
-  load();
+  $('#gate').classList.add('hide');$('#app').classList.add('on'); load();
 }
 async function load(){
-  const {data,error}=await sb.from('niche_profiles').select('*').order('created_at',{ascending:false});
-  if(error){ $('#rows').innerHTML=`<tr><td colspan="8" class="empty">Couldn't load (${esc(error.message)}).</td></tr>`; return; }
+  const {data,error}=await sb.from('tool_submissions').select('*').order('created_at',{ascending:false});
+  if(error){ $('#rows').innerHTML=`<tr><td colspan="7" class="empty">Couldn't load (${esc(error.message)}). If this is the first run, the submissions table may not be set up yet.</td></tr>`; return; }
   ROWS=data||[]; render();
 }
-function counts(){ const c={All:ROWS.length}; STATUSES.forEach(s=>c[s]=ROWS.filter(r=>(r.status||'New')===s).length); return c; }
+function toolsList(){ const m={}; ROWS.forEach(r=>{ m[r.tool]=r.tool_label||r.tool; }); return m; }
+function inTool(r){ return toolFilter==='All'||r.tool===toolFilter; }
+function counts(){ const base=ROWS.filter(inTool); const c={All:base.length}; STATUSES.forEach(s=>c[s]=base.filter(r=>(r.status||'New')===s).length); return c; }
 function render(){
+  const tl=toolsList();
+  $('#tools').innerHTML=`<span class="tchip ${toolFilter==='All'?'on':''}" data-t="All">All tools · ${ROWS.length}</span>`+
+    Object.entries(tl).map(([id,label])=>`<span class="tchip ${toolFilter===id?'on':''}" data-t="${esc(id)}">${esc(label)} · ${ROWS.filter(r=>r.tool===id).length}</span>`).join('');
+  $('#tools').querySelectorAll('[data-t]').forEach(el=>el.addEventListener('click',()=>{toolFilter=el.getAttribute('data-t');statusFilter='All';render();}));
+  drawKpis();
   const c=counts();
-  $('#kpis').innerHTML=[['Total',c.All]].concat(STATUSES.map(s=>[s,c[s]])).map(([l,v])=>`<div class="kpi"><div class="v">${v}</div><div class="l">${esc(l)}</div></div>`).join('');
-  $('#chips').innerHTML=['All',...STATUSES].map(s=>`<span class="chip ${filter===s?'on':''}" data-f="${s}">${esc(s)}${s!=='All'?` · ${c[s]}`:''}</span>`).join('')+`<input class="search" id="search" placeholder="Search breeder / breed / niche…" value="${esc(q)}">`;
-  $('#chips').querySelectorAll('[data-f]').forEach(el=>el.addEventListener('click',()=>{filter=el.getAttribute('data-f');render();}));
-  const se=$('#search'); se.addEventListener('input',e=>{q=e.target.value.toLowerCase();renderRows();});
+  $('#chips').innerHTML=['All',...STATUSES].map(s=>`<span class="chip ${statusFilter===s?'on':''}" data-f="${s}">${esc(s)}${s!=='All'?` · ${c[s]}`:''}</span>`).join('')+`<input class="search" id="search" placeholder="Search member / summary…" value="${esc(q)}">`;
+  $('#chips').querySelectorAll('[data-f]').forEach(el=>el.addEventListener('click',()=>{statusFilter=el.getAttribute('data-f');render();}));
+  $('#search').addEventListener('input',e=>{q=e.target.value.toLowerCase();renderRows();});
   renderRows();
 }
+function drawKpis(){ const c=counts(); $('#kpis').innerHTML=[['Total',c.All]].concat(STATUSES.map(s=>[s,c[s]])).map(([l,v])=>`<div class="kpi"><div class="v">${v}</div><div class="l">${esc(l)}</div></div>`).join(''); }
 function visible(){
   return ROWS.filter(r=>{
-    if(filter!=='All' && (r.status||'New')!==filter) return false;
-    if(q){ const hay=((r.breeder_name||'')+' '+(r.kennel||'')+' '+(r.breed||'')+' '+(r.niche_statement||'')).toLowerCase(); if(!hay.includes(q)) return false; }
+    if(!inTool(r)) return false;
+    if(statusFilter!=='All' && (r.status||'New')!==statusFilter) return false;
+    if(q){ const hay=((r.member_name||'')+' '+(r.member_email||'')+' '+(r.summary||'')+' '+(r.tool_label||'')).toLowerCase(); if(!hay.includes(q)) return false; }
     return true;
   });
 }
 function renderRows(){
   const rows=visible();
-  if(!rows.length){ $('#rows').innerHTML=`<tr><td colspan="8" class="empty">No blueprints${filter!=='All'?' in '+filter:''} yet.</td></tr>`; return; }
+  if(!rows.length){ $('#rows').innerHTML=`<tr><td colspan="7" class="empty">No submissions yet.</td></tr>`; return; }
   $('#rows').innerHTML=rows.map(r=>{
     const d=r.created_at?new Date(r.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'';
-    const price=(r.price_low?usd(r.price_low)+(r.price_high&&r.price_high!==r.price_low?'–'+usd(r.price_high):''):'—');
     return `<tr>
       <td class="sub">${esc(d)}</td>
-      <td><div class="nm">${esc(r.breeder_name||r.kennel||'—')}</div><div class="sub">${esc(r.email||'')}</div></td>
-      <td>${esc(r.breed||'—')}</td>
-      <td style="max-width:240px">${esc((r.niche_statement||'').slice(0,90))}</td>
-      <td>${price}</td>
+      <td><span class="tooltag">${esc(r.tool_label||r.tool)}</span></td>
+      <td><div class="nm">${esc(r.member_name||'—')}</div><div class="sub">${esc(r.member_email||'')}</div></td>
+      <td style="max-width:260px">${esc((r.summary||'').slice(0,100))}</td>
       <td><select class="ow" data-id="${r.id}">${OWNERS.map(o=>`<option ${((r.owner||'Unassigned')===o)?'selected':''}>${o}</option>`).join('')}</select></td>
       <td><span class="dot ${dcls(r.status)}"></span><select class="st" data-id="${r.id}">${STATUSES.map(s=>`<option ${((r.status||'New')===s)?'selected':''}>${s}</option>`).join('')}</select></td>
       <td><button class="open" data-open="${r.id}">Open</button></td>
@@ -174,41 +177,29 @@ function renderRows(){
   }).join('');
   $('#rows').querySelectorAll('.st').forEach(el=>el.addEventListener('change',()=>update(el.getAttribute('data-id'),{status:el.value})));
   $('#rows').querySelectorAll('.ow').forEach(el=>el.addEventListener('change',()=>update(el.getAttribute('data-id'),{owner:el.value})));
-  $('#rows').querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click',()=>openBlueprint(el.getAttribute('data-open'))));
+  $('#rows').querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click',()=>openSub(el.getAttribute('data-open'))));
 }
 async function update(id,patch){
   patch.updated_at=new Date().toISOString(); patch.updated_by=ME;
-  const {error}=await sb.from('niche_profiles').update(patch).eq('id',id);
+  const {error}=await sb.from('tool_submissions').update(patch).eq('id',id);
   if(error){ alert('Could not save: '+error.message); return; }
-  const r=ROWS.find(x=>x.id===id); if(r) Object.assign(r,patch);
-  const c=counts();
-  $('#kpis').innerHTML=[['Total',c.All]].concat(STATUSES.map(s=>[s,c[s]])).map(([l,v])=>`<div class="kpi"><div class="v">${v}</div><div class="l">${esc(l)}</div></div>`).join('');
+  const r=ROWS.find(x=>x.id===id); if(r) Object.assign(r,patch); drawKpis();
 }
 
-/* blueprint modal */
-function primaryIndex(sc,primary){
-  if(!sc||!sc.length) return -1;
-  const p=(primary||'').toLowerCase().slice(0,25);
-  let i=sc.findIndex(s=>(s.niche||'').toLowerCase().slice(0,25)===p);
-  if(i>=0) return i;
-  let mi=0; sc.forEach((s,j)=>{ if((Number(s.total)||0)>(Number(sc[mi].total)||0)) mi=j; }); return mi;
-}
+/* per-tool render */
+function primaryIndex(sc,primary){ if(!sc||!sc.length) return -1; const p=(primary||'').toLowerCase().slice(0,25); let i=sc.findIndex(s=>(s.niche||'').toLowerCase().slice(0,25)===p); if(i>=0) return i; let mi=0; sc.forEach((s,j)=>{ if((Number(s.total)||0)>(Number(sc[mi].total)||0)) mi=j; }); return mi; }
 function scoreCls(n){n=Number(n)||0;return n>=8?'s-hi':(n>=6?'s-md':'s-lo');}
 function cell(c){c=c||{};return `<td><span class="pill ${scoreCls(c.score)}" title="${esc(c.note||'')}">${c.score??'–'}</span></td>`;}
-function openBlueprint(id){
-  const r=ROWS.find(x=>x.id===id); if(!r) return;
-  const res=r.result||{}, mm=res.money_math||{}, pb=res.price_band||{}, inp=r.inputs||{}, fu=inp.followups||[];
+function li(a){return `<ul class="li">${(a||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;}
+function kv(obj){ return Object.entries(obj||{}).filter(([k,v])=>v!=null&&String(v).trim()&&k!=='followups').map(([k,v])=>`<div class="kvrow"><b>${esc(k)}:</b> ${esc(typeof v==='object'?JSON.stringify(v):v)}</div>`).join(''); }
+function renderBlueprint(res,inp){
+  const mm=res.money_math||{}, pb=res.price_band||{}, fu=inp.followups||[];
   const scArr=res.scorecard||[]; const pIdx=primaryIndex(scArr,res.primary_niche);
   const sc=scArr.map((s,i)=>`<tr class="${i===pIdx?'primary':''}"><td class="n">${esc(s.niche)}</td>${cell(s.pain)}${cell(s.payment)}${cell(s.targeting)}${cell(s.ethical)}${cell(s.lifestyle)}${cell(s.differentiation)}<td><b>${s.total!=null?Number(s.total).toFixed(1):'–'}</b></td></tr>`).join('');
   const scen=(res.revenue_plan||[]).map(s=>`<div class="scn"><div class="l">${esc(s.scenario)}</div><div class="g">${usd(s.gross)}</div></div>`).join('');
-  const li=(a)=>`<ul class="li">${(a||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
-  const intakeLines=Object.entries(inp).filter(([k,v])=>k!=='followups'&&v&&String(v).trim()).map(([k,v])=>`${k}: ${v}`).join('\n');
+  const intake=Object.entries(inp).filter(([k,v])=>k!=='followups'&&v&&String(v).trim()).map(([k,v])=>`${k}: ${v}`).join('\n');
   const fuLines=fu.map(p=>`Q: ${p.q}\nA: ${p.a||'(skipped)'}`).join('\n\n');
-  $('#sheet').innerHTML=`
-    <button class="close" id="mClose">×</button>
-    <h2>${esc(r.breeder_name||r.kennel||'Blueprint')}</h2>
-    <div class="who">${esc(r.breed||'')}${r.email?' · '+esc(r.email):''}</div>
-    ${mm.upside?`<div class="money"><div class="l" style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--del)">Money math</div><div class="big">+${usd(mm.upside)} / year</div><p style="color:var(--mid);font-size:13px;margin-top:6px">${esc(mm.summary)}</p></div>`:''}
+  return `${mm.upside?`<div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--del)">Money math</div><div class="big">+${usd(mm.upside)} / year</div><p style="color:var(--mid);font-size:13px;margin-top:6px">${esc(mm.summary)}</p></div>`:''}
     <div class="block"><h3>Primary niche</h3><p>${esc(res.primary_niche||'—')}</p>${res.why_primary?`<p style="margin-top:6px;color:var(--muted)">${esc(res.why_primary)}</p>`:''}</div>
     ${sc?`<div class="block"><h3>Scorecard</h3><div class="tblwrap"><table class="sc"><thead><tr><th>Niche</th><th>Pain</th><th>Pay</th><th>Tgt</th><th>Eth</th><th>Life</th><th>Diff</th><th>Tot</th></tr></thead><tbody>${sc}</tbody></table></div></div>`:''}
     <div class="block"><h3>Price & revenue</h3><p><b style="color:var(--ink)">${usd(pb.low)}${pb.high&&pb.high!==pb.low?'–'+usd(pb.high):''}</b> — ${esc(pb.rationale||'')}</p><div>${scen}</div></div>
@@ -217,7 +208,24 @@ function openBlueprint(id){
     <div class="block"><h3>Ethical checklist</h3>${li(res.ethical_checklist)}</div>
     <div class="block"><h3>Stop doing</h3>${li(res.stop_doing)}</div>
     <div class="block"><h3>First 90 days</h3>${li(res.first_90_days)}</div>
-    <div class="block"><h3>What the breeder submitted</h3><div class="intake">${esc(intakeLines)}${fuLines?'\n\n— Follow-ups —\n'+esc(fuLines):''}</div></div>
+    <div class="block"><h3>What the member submitted</h3><div class="intake">${esc(intake)}${fuLines?'\n\n— Follow-ups —\n'+esc(fuLines):''}</div></div>`;
+}
+function renderGeneric(r){
+  const inp=r.inputs, res=r.result;
+  let out='';
+  if(r.summary) out+=`<div class="block"><h3>Summary</h3><p>${esc(r.summary)}</p></div>`;
+  if(inp&&typeof inp==='object') out+=`<div class="block"><h3>Submitted</h3>${kv(inp)||'<p>—</p>'}</div>`;
+  if(res!=null){ const body=(typeof res==='object'&&!Array.isArray(res))?kv(res):`<pre style="white-space:pre-wrap;font-size:12px;color:var(--mid)">${esc(JSON.stringify(res,null,2))}</pre>`; out+=`<div class="block"><h3>Result</h3>${body}</div>`; }
+  return out||'<div class="block"><p>No detail recorded.</p></div>';
+}
+function openSub(id){
+  const r=ROWS.find(x=>x.id===id); if(!r) return;
+  const body=(r.tool==='niche-blueprint'&&r.result)?renderBlueprint(r.result,r.inputs||{}):renderGeneric(r);
+  $('#sheet').innerHTML=`
+    <button class="close" id="mClose">×</button>
+    <h2>${esc(r.member_name||r.tool_label||'Submission')}</h2>
+    <div class="who"><span class="tooltag">${esc(r.tool_label||r.tool)}</span>${r.member_email?' · '+esc(r.member_email):''}</div>
+    ${body}
     <div class="mgmt">
       <div><label>Status</label><select id="m_status">${STATUSES.map(s=>`<option ${((r.status||'New')===s)?'selected':''}>${s}</option>`).join('')}</select></div>
       <div><label>Owner</label><select id="m_owner">${OWNERS.map(o=>`<option ${((r.owner||'Unassigned')===o)?'selected':''}>${o}</option>`).join('')}</select></div>
@@ -227,12 +235,8 @@ function openBlueprint(id){
   $('#modal').classList.remove('hide');
   $('#mClose').onclick=closeModal; $('#mCancel').onclick=closeModal;
   $('#modal').onclick=e=>{if(e.target.id==='modal')closeModal();};
-  $('#mSave').onclick=async()=>{
-    await update(id,{status:$('#m_status').value,owner:$('#m_owner').value,notes:$('#m_notes').value.trim()||null});
-    closeModal(); renderRows();
-  };
+  $('#mSave').onclick=async()=>{ await update(id,{status:$('#m_status').value,owner:$('#m_owner').value,notes:$('#m_notes').value.trim()||null}); closeModal(); renderRows(); };
 }
 function closeModal(){ $('#modal').classList.add('hide'); }
-
 boot();
 </script>
