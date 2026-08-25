@@ -208,11 +208,19 @@ async function generate(inputs,followups){
 }
 
 /* ---- render the blueprint ---- */
+function primaryIndex(sc,primary){
+  if(!sc||!sc.length) return -1;
+  const p=(primary||'').toLowerCase().slice(0,25);
+  let i=sc.findIndex(s=>(s.niche||'').toLowerCase().slice(0,25)===p);
+  if(i>=0) return i;
+  let mi=0; sc.forEach((s,j)=>{ if((Number(s.total)||0)>(Number(sc[mi].total)||0)) mi=j; }); return mi;
+}
 function scoreCls(n){ n=Number(n)||0; return n>=8?'s-hi':(n>=6?'s-md':'s-lo'); }
 function cell(c){ c=c||{}; return `<td><span class="pill ${scoreCls(c.score)}" title="${esc(c.note||'')}">${c.score??'–'}</span></td>`; }
 function showResult(res){
   const mm=res.money_math||{}, pb=res.price_band||{};
-  const rows=(res.scorecard||[]).map(r=>`<tr class="${r.niche===res.primary_niche?'primary':''}"><td class="n">${esc(r.niche)}${r.source==='proposed'?'<span class="tag">proposed</span>':''}</td>${cell(r.pain)}${cell(r.payment)}${cell(r.targeting)}${cell(r.ethical)}${cell(r.lifestyle)}${cell(r.differentiation)}<td><b>${(r.total!=null?Number(r.total).toFixed(1):'–')}</b></td></tr>`).join('');
+  const sc=res.scorecard||[]; const pIdx=primaryIndex(sc,res.primary_niche);
+  const rows=sc.map((r,i)=>`<tr class="${i===pIdx?'primary':''}"><td class="n">${esc(r.niche)}${r.source==='proposed'?'<span class="tag">proposed</span>':''}</td>${cell(r.pain)}${cell(r.payment)}${cell(r.targeting)}${cell(r.ethical)}${cell(r.lifestyle)}${cell(r.differentiation)}<td><b>${(r.total!=null?Number(r.total).toFixed(1):'–')}</b></td></tr>`).join('');
   const scenarios=(res.revenue_plan||[]).map(s=>`<div class="scn"><div class="lbl">${esc(s.scenario)}</div><div class="g">${usd(s.gross)}</div><div class="m">${s.litters} litters × ${s.pups} pups × ${usd(s.price)}${s.note?' · '+esc(s.note):''}</div></div>`).join('');
   const msgs=(res.example_messaging||[]).map(m=>`<div class="msg">${esc(m)}</div>`).join('');
   const list=(arr,cls)=>`<ul class="${cls}">${(arr||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
