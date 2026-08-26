@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Profitable Breeder Summit™ — BreedWise</title>
+<meta name="description" content="A live 2-day online intensive where you build the plan, pricing and systems behind a profitable, ethical breeding business. With Austin Shanks & Dr. Emmanuel Fontaine. Sept 26–27, 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#0e0d0b; --purple-2:#141210; --purple-deep:#000000; --purple-soft:#1c1913;
+  --gold:#d9b968; --gold-2:#c9a049; --gold-deep:#9c7a26;
+  --gold-grad:linear-gradient(135deg,#efdca6 0%,#dcb96a 48%,#c69f4f 100%);
+  --ink:#141210; --card:#16130d; --white:#ffffff; --cream:#f7f5f0;
+  --text:#24202c; --muted:#6b6478; --muted-p:#cdc6b8; --muted-p2:#9a9284;
+  --line:#e7e2ee; --line-p:rgba(212,175,97,.18);
+  --font:'Poppins',system-ui,-apple-system,sans-serif;
+  --maxw:1080px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--white);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+.narrow{max-width:760px;margin:0 auto;padding:0 22px}
+h1,h2,h3{font-family:var(--font);line-height:1.06;letter-spacing:-.01em}
+a{text-decoration:none;color:inherit}
+.up{text-transform:uppercase}
+.center{text-align:center}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-weight:800;font-size:15px;letter-spacing:.03em;text-transform:uppercase;
+  padding:18px 34px;border-radius:9px;cursor:pointer;border:0;transition:.16s;line-height:1.1;text-align:center}
+.btn-gold{background:var(--gold-grad);color:#2b2109;box-shadow:0 14px 30px -12px rgba(217,185,104,.5)}
+.btn-gold:hover{filter:brightness(1.06);transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.4)}
+.btn-ghost:hover{border-color:#fff}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-dark:hover{background:#262019;transform:translateY(-2px)}
+.btn.block{width:100%}
+.btn.big{padding:20px 40px;font-size:16px}
+
+/* ribbon */
+.ribbon{background:var(--gold-grad);color:#2b2109;text-align:center;font-weight:700;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;padding:9px 16px}
+.ribbon .live{display:inline-flex;align-items:center;gap:6px;background:#2b2109;color:var(--gold);font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:5px;margin-right:8px}
+.ribbon .live .d{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.35}}
+
+/* purple sections */
+.p-band{background:linear-gradient(180deg,var(--purple-2),var(--purple-deep));color:#fff}
+.p-band h2{color:#fff}
+.w-band{background:var(--white);color:var(--text)}
+.cream-band{background:var(--cream)}
+section{padding:76px 0}
+
+/* hero */
+.hero{background:radial-gradient(120% 90% at 50% -10%,var(--purple-soft),var(--purple) 45%,var(--purple-deep));color:#fff;text-align:center;padding:40px 0 66px}
+.pill{display:inline-flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,.3);border-radius:999px;padding:8px 18px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#efe9dd}
+.pill b{color:var(--gold)}
+.hero h1{font-weight:900;font-size:clamp(2.3rem,6.2vw,4.3rem);text-transform:uppercase;color:#fff;margin:22px auto 0;max-width:15ch;letter-spacing:-.015em;text-shadow:0 2px 30px rgba(0,0,0,.2)}
+.hero .sub{color:var(--muted-p);font-size:clamp(1.05rem,2.2vw,1.35rem);margin:20px auto 0;max-width:56ch;font-weight:500}
+.hero .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+.hero .microtrust{margin-top:16px;color:var(--muted-p2);font-size:13px;font-weight:500}
+
+/* hero media card (VSL or image) */
+.herocard{max-width:760px;margin:36px auto 0;position:relative;border-radius:18px;overflow:hidden;background:var(--card);
+  border:1px solid var(--line-p);box-shadow:0 40px 90px -40px rgba(0,0,0,.7)}
+.herocard .frame{position:relative;aspect-ratio:16/9}
+.herocard .frame iframe,.herocard .frame video{position:absolute;inset:0;width:100%;height:100%;border:0}
+.herocard .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;cursor:pointer;
+  background:radial-gradient(120% 120% at 50% 0,rgba(217,185,104,.12),transparent 60%)}
+.herocard .ph .play{width:82px;height:82px;border-radius:50%;background:var(--gold-grad);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 34px -8px rgba(217,185,104,.5);transition:.2s}
+.herocard .ph:hover .play{transform:scale(1.06)}
+.herocard .ph .play:after{content:"";border-style:solid;border-width:15px 0 15px 25px;border-color:transparent transparent transparent #2b2109;margin-left:6px}
+.herocard .ph .t{color:#fff;font-weight:700;font-size:14px;letter-spacing:.12em;text-transform:uppercase}
+.herocard .ph .s{color:var(--muted-p);font-size:12.5px}
+.herocard .tag{position:absolute;top:14px;left:14px;z-index:3;background:rgba(0,0,0,.45);color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;border-radius:7px;border:1px solid var(--line-p)}
+.herocard .seats{position:absolute;bottom:14px;left:14px;z-index:3;color:#fff;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+
+/* section heads */
+.sh{text-align:center;max-width:760px;margin:0 auto 44px}
+.sh .eye{font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep)}
+.p-band .sh .eye{color:var(--gold)}
+.sh h2{font-weight:900;text-transform:uppercase;font-size:clamp(1.7rem,4.2vw,2.9rem);letter-spacing:-.01em;margin-top:8px}
+.sh p{margin-top:14px;font-size:1.06rem;color:var(--muted)}
+.p-band .sh p{color:var(--muted-p)}
+
+/* testimonials */
+.treviews{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:860px){.treviews{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.treviews{grid-template-columns:1fr}}
+.trev{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:0 20px 40px -30px rgba(0,0,0,.28)}
+.trev .stars{color:var(--gold-2);letter-spacing:.1em;font-size:15px;margin-bottom:12px}
+.trev p{font-size:.97rem;color:var(--text);line-height:1.55}
+.trev .who{display:flex;gap:12px;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.trev .who .av{width:42px;height:42px;border-radius:50%;flex:none;background:#efe9dd;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;overflow:hidden}
+.trev .who .av img{width:100%;height:100%;object-fit:cover}
+.trev .who b{display:block;font-size:.92rem;color:var(--ink)}
+.trev .who span{font-size:12px;color:var(--muted)}
+.ph-note{text-align:center;max-width:640px;margin:0 auto 22px;font-size:13px;color:var(--muted);font-style:italic}
+
+/* problem punch */
+.punch{max-width:680px;margin:0 auto;text-align:center}
+.punch .big{font-weight:800;font-size:clamp(1.3rem,2.8vw,1.9rem);line-height:1.35;color:#fff}
+.punch p{color:var(--muted-p);font-size:1.08rem;margin-top:18px}
+.punch .em{color:var(--gold)}
+
+/* what you get — numbered */
+.gets{display:grid;gap:20px;max-width:860px;margin:0 auto}
+.get{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px 30px;box-shadow:0 20px 40px -32px rgba(0,0,0,.28)}
+@media(max-width:560px){.get{grid-template-columns:1fr;gap:12px}}
+.get .no{font-weight:900;font-size:2.4rem;color:var(--gold-2);line-height:1;letter-spacing:-.02em}
+.get h3{font-weight:800;text-transform:uppercase;font-size:1.25rem;color:var(--ink);letter-spacing:-.01em}
+.get p{color:var(--muted);margin-top:9px;font-size:1rem}
+.get .who{color:var(--gold-deep);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-top:8px}
+
+/* pricing */
+.tiers{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:820px;margin:0 auto}
+@media(max-width:700px){.tiers{grid-template-columns:1fr}}
+.tier{background:#fff;color:var(--text);border-radius:16px;padding:30px;border:1px solid var(--line);display:flex;flex-direction:column}
+.tier.vip{border:2px solid var(--gold);position:relative;box-shadow:0 26px 60px -30px rgba(0,0,0,.5)}
+.tier.vip .flag{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--gold-grad);color:#2b2109;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:6px 15px;border-radius:999px;white-space:nowrap}
+.tier .tn{font-weight:800;text-transform:uppercase;letter-spacing:.14em;font-size:12px;color:var(--gold-deep)}
+.tier .pr{font-weight:900;font-size:3rem;color:var(--ink);line-height:1;margin:6px 0 4px}
+.tier .cap{font-size:12.5px;color:var(--muted);margin-bottom:16px}
+.tier ul{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
+.tier li{display:flex;gap:10px;font-size:.96rem;align-items:flex-start}
+.tier li .ck{flex:none;width:20px;height:20px;border-radius:50%;background:#f3ecd6;color:var(--gold-deep);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;margin-top:3px}
+.tier .btn{margin-top:auto}
+
+/* faq */
+.faq{max-width:760px;margin:0 auto}
+.qa{border-bottom:1px solid var(--line);padding:22px 0}
+.qa h3{font-weight:800;font-size:1.12rem;color:var(--ink);margin-bottom:8px}
+.qa p{color:var(--muted);font-size:1rem}
+.p-band .qa{border-color:var(--line-p)}
+.p-band .qa h3{color:#fff}.p-band .qa p{color:var(--muted-p)}
+
+/* photo band */
+.photoband{position:relative;width:100%;aspect-ratio:21/8;border-radius:16px;overflow:hidden;border:1px solid var(--line-p);background:linear-gradient(135deg,#201c13,#0b0a07)}
+@media(max-width:700px){.photoband{aspect-ratio:16/9}}
+.photoband img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
+.photoband .lab{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#c9bce6;text-align:center;padding:16px}
+.photoband .lab b{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:800}
+.photoband .lab span{font-size:12px;max-width:34ch}
+
+/* footer */
+footer{background:var(--purple-deep);color:#a89f8c;padding:44px 0 30px;text-align:center;border-top:1px solid var(--line-p)}
+footer .bw{font-weight:900;font-size:1.4rem;color:#fff;letter-spacing:.04em}
+footer .bw b{color:var(--gold)}
+footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;line-height:1.6}
+
+/* sticky mobile cta */
+.mob{position:fixed;left:0;right:0;bottom:0;z-index:90;display:none;background:var(--purple-deep);border-top:1px solid var(--line-p);padding:10px 14px;align-items:center;gap:12px}
+.mob .l{flex:1;color:#fff;font-size:12px;font-weight:600;line-height:1.25}
+.mob .l span{color:var(--muted-p);font-weight:500}
+.mob a{white-space:nowrap;padding:13px 20px;font-size:13px}
+@media(max-width:760px){.mob{display:flex}body{padding-bottom:66px}}
+
+.reveal{opacity:0;transform:translateY(16px);transition:.6s}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<!-- RIBBON -->
+<div class="ribbon"><span class="live"><span class="d"></span>Live</span> 2-Day Online Intensive · September 26–27, 2026 · Enrollment Open</div>
+
+<!-- HERO -->
+<header class="hero"><div class="wrap">
+  <span class="pill"><b>40 General Admission</b> · <b>10 VIP</b> · Enrollment Open</span>
+  <h1>Build the Business Behind Your Breeding Program</h1>
+  <p class="sub">A live 2-day intensive where you build the plan, pricing and systems behind a profitable, ethical breeding business — without lowering your standards.</p>
+
+  <!-- HERO MEDIA CARD — drop your VSL embed inside .frame (replace .ph). Examples:
+       <iframe src="https://player.vimeo.com/video/XXXX" allow="autoplay; fullscreen" allowfullscreen></iframe>
+       <video src="summit-vsl.mp4" poster="photos/vsl-poster.jpg" controls playsinline></video> -->
+  <div class="herocard">
+    <span class="tag">Online · Sept 26–27</span>
+    <span class="seats">40 GA · 10 VIP</span>
+    <div class="frame">
+      <div class="ph" onclick="var e=document.getElementById('reserve');if(e)e.scrollIntoView({behavior:'smooth'});">
+        <span class="play"></span>
+        <span class="t">Watch This First</span>
+        <span class="s">Your VSL goes here — a 2–3 min video from Austin &amp; Dr. Fontaine</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-row">
+    <a href="#reserve" class="btn btn-gold big">Reserve My Seat</a>
+  </div>
+  <div class="microtrust">With Austin Shanks &amp; Dr. Emmanuel Fontaine · 11:00 AM–2:00 PM ET both days</div>
+</div></header>
+
+<!-- RESERVE / PRICING -->
+<section id="reserve" class="p-band"><div class="wrap">
+  <div class="sh">
+    <div class="eye">Reserve Your Seat</div>
+    <h2>Two Ways to Attend</h2>
+    <p>General Admission gets you in the room. VIP gets you more help applying it — only 10 seats.</p>
+  </div>
+  <div class="tiers">
+    <div class="tier">
+      <div class="tn">General Admission</div>
+      <div class="pr">$500</div>
+      <div class="cap">40 seats · live attendance</div>
+      <ul>
+        <li><span class="ck">✓</span>Both live Summit days (6 hours)</li>
+        <li><span class="ck">✓</span>All working templates &amp; planners</li>
+        <li><span class="ck">✓</span>Live Q&amp;A with Austin &amp; Dr. Fontaine</li>
+      </ul>
+      <a class="btn btn-dark block" data-checkout="ga" href="#">Reserve My Seat — $500</a>
+    </div>
+    <div class="tier vip">
+      <span class="flag">Only 10 Seats</span>
+      <div class="tn">VIP</div>
+      <div class="pr">$1,000</div>
+      <div class="cap">10 seats · everything in GA, plus more help</div>
+      <ul>
+        <li><span class="ck">✓</span>Two 75-min implementation labs</li>
+        <li><span class="ck">✓</span>Private 30-min plan review with Austin</li>
+        <li><span class="ck">✓</span>Lifetime access to recordings</li>
+        <li><span class="ck">✓</span>Priority questions during the event</li>
+      </ul>
+      <a class="btn btn-gold block" data-checkout="vip" href="#">Claim VIP Access — $1,000</a>
+    </div>
+  </div>
+</div></section>
+
+<!-- TESTIMONIALS -->
+<section class="w-band"><div class="wrap">
+  <div class="sh">
+    <div class="eye">Proof</div>
+    <h2>What Breeders Say About Working With Us</h2>
+  </div>
+  <p class="ph-note">[ Placeholder reviews — replace each with a real, verifiable breeder result (name, program, specific outcome, photo) before launch. ]</p>
+  <div class="treviews">
+    <div class="trev"><div class="stars">★★★★★</div><p>“[ Specific result — e.g., ‘We rebuilt our pricing and pre-sold 6 of 7 puppies before they were born.’ ]”</p><div class="who"><span class="av"><img src="photos/review-1.jpg" alt="" onerror="this.parentNode.textContent='◍'"></span><div><b>[ Breeder Name ]</b><span>Verified · [ Program · State ]</span></div></div></div>
+    <div class="trev"><div class="stars">★★★★★</div><p>“[ Specific result — e.g., ‘Finally know what a litter actually makes. Raised prices with a waitlist.’ ]”</p><div class="who"><span class="av"><img src="photos/review-2.jpg" alt="" onerror="this.parentNode.textContent='◍'"></span><div><b>[ Breeder Name ]</b><span>Verified · [ Program · State ]</span></div></div></div>
+    <div class="trev"><div class="stars">★★★★★</div><p>“[ Specific result — e.g., ‘Our whelping prep and vet relationship are night-and-day better.’ ]”</p><div class="who"><span class="av"><img src="photos/review-3.jpg" alt="" onerror="this.parentNode.textContent='◍'"></span><div><b>[ Breeder Name ]</b><span>Verified · [ Program · State ]</span></div></div></div>
+  </div>
+</div></section>
+
+<!-- PHOTO BAND -->
+<section class="p-band" style="padding:0 0 76px"><div class="wrap">
+  <figure class="photoband"><img src="photos/summit-1.jpg" alt="" onerror="this.style.display='none'"><div class="lab"><b>Photo</b><span>Wide banner — Austin &amp; Dr. Fontaine, breeders at work, or your dogs. Drop an image at photos/summit-1.jpg</span></div></figure>
+</div></section>
+
+<!-- PROBLEM -->
+<section class="p-band" style="padding-top:0"><div class="wrap">
+  <div class="sh"><div class="eye">Read This First</div><h2>Right Now, You Might Be Running an Expensive Hobby</h2></div>
+  <div class="punch">
+    <p class="big">When your business barely covers what a litter costs, the only lever left is more litters — or a lower price.</p>
+    <p>So you breed more. You discount faster. Margins disappear. And little by little, the financial pressure starts making your decisions for you.</p>
+    <p>A profitable breeding business breaks that cycle. <span class="em">It gives you room</span> — to test, to use your vet, to prepare properly, and to say no when something isn’t right.</p>
+    <p>Profit and ethics aren’t opposites. Healthy margins are what protect your standards.</p>
+    <div style="margin-top:30px"><a href="#reserve" class="btn btn-gold big">Reserve My Seat</a></div>
+  </div>
+</div></section>
+
+<!-- WHAT YOU GET -->
+<section class="w-band"><div class="wrap">
+  <div class="sh"><div class="eye">The Two Days</div><h2>What You’ll Get at the Summit</h2></div>
+  <div class="gets">
+    <div class="get">
+      <div class="no">#1</div>
+      <div>
+        <h3>Business Advisory with Austin Shanks</h3>
+        <div class="who">Founder of BreedWise</div>
+        <p>Work directly on your numbers, pricing, value stack and sales process — the financial systems behind a breeding program that actually pays you, built from a six-figure program and the Jungle Bully Family brand.</p>
+      </div>
+    </div>
+    <div class="get">
+      <div class="no">#2</div>
+      <div>
+        <h3>Veterinary Frameworks with Dr. Emmanuel Fontaine</h3>
+        <div class="who">DVM · Dipl. ECAR · Scientific Architect of BreedWise</div>
+        <p>Veterinary-backed preparation for whelping, neonatal awareness, dam health and working with your vet as a partner — complex science turned into practical steps you can use.</p>
+      </div>
+    </div>
+    <div class="get">
+      <div class="no">#3</div>
+      <div>
+        <h3>Your Roadmap &amp; Next Steps</h3>
+        <div class="who">You leave with the plan</div>
+        <p>Build your 12-month profitability roadmap, a 90-day plan to create demand for your next litter, and a clear 30-day execution plan — worked through for your specific program.</p>
+      </div>
+    </div>
+  </div>
+  <div class="center" style="margin-top:36px"><a href="#reserve" class="btn btn-dark big">See the Seat Options</a></div>
+</div></section>
+
+<!-- PHOTO STRIP as band -->
+<section class="cream-band" style="padding:56px 0"><div class="wrap">
+  <div class="treviews">
+    <figure class="photoband" style="aspect-ratio:4/5;border-color:var(--line);background:linear-gradient(135deg,#efe9dd,#e3d9c6)"><img src="photos/summit-2.jpg" alt="" onerror="this.style.display='none'"><div class="lab" style="color:#9a8c6f"><b>Photo</b><span>Breeder &amp; dog</span></div></figure>
+    <figure class="photoband" style="aspect-ratio:4/5;border-color:var(--line);background:linear-gradient(135deg,#efe9dd,#e3d9c6)"><img src="photos/summit-3.jpg" alt="" onerror="this.style.display='none'"><div class="lab" style="color:#9a8c6f"><b>Photo</b><span>Working session</span></div></figure>
+    <figure class="photoband" style="aspect-ratio:4/5;border-color:var(--line);background:linear-gradient(135deg,#efe9dd,#e3d9c6)"><img src="photos/summit-4.jpg" alt="" onerror="this.style.display='none'"><div class="lab" style="color:#9a8c6f"><b>Photo</b><span>Puppies / results</span></div></figure>
+  </div>
+</div></section>
+
+<!-- FAQ -->
+<section class="w-band"><div class="wrap">
+  <div class="sh"><div class="eye">Details</div><h2>FAQ</h2></div>
+  <div class="faq">
+    <div class="qa"><h3>What actually happens during the 2 days?</h3><p>It’s a working intensive, not a talk. Day 1 you diagnose your real numbers and design your pricing, value and demand. Day 2 you build your 12-month roadmap, 90-day plan and a 30-day next step — with Austin and Dr. Fontaine.</p></div>
+    <div class="qa"><h3>Who is this for?</h3><p>Established breeders producing roughly 2–3+ litters per year who want stronger margins, qualified buyers and better systems. It’s not for first-litter breeders.</p></div>
+    <div class="qa"><h3>Is it live? Are recordings included?</h3><p>Yes — live online, 11:00 AM–2:00 PM ET on Sept 26 &amp; 27. Recordings are included with VIP only (lifetime access).</p></div>
+    <div class="qa"><h3>What’s the difference between GA and VIP?</h3><p>Both get the full 2 days, templates and live Q&amp;A. VIP adds two implementation labs, lifetime recordings, priority questions and a private 30-minute plan review with Austin — only 10 seats.</p></div>
+    <div class="qa"><h3>Is this veterinary training?</h3><p>Dr. Fontaine teaches veterinary-backed educational material. It does not replace advice from your own veterinarian.</p></div>
+    <div class="qa"><h3>Refunds &amp; transfers?</h3><p>Seats are transferable before the event. Full refund if you cancel 14+ days out; within 14 days your seat converts to credit toward a future BreedWise event. <em>[Confirm terms match your policy before launch.]</em></p></div>
+  </div>
+  <div class="center" style="margin-top:40px"><a href="#reserve" class="btn btn-gold big">Reserve My Seat</a></div>
+</div></section>
+
+<!-- FINAL -->
+<section class="p-band center"><div class="narrow">
+  <div class="eye" style="color:var(--gold);font-weight:800;letter-spacing:.2em;text-transform:uppercase;font-size:12px">Two Days Can Change How You Run Your Program</div>
+  <h2 style="font-weight:900;text-transform:uppercase;font-size:clamp(1.7rem,4vw,2.8rem);color:#fff;margin-top:12px">Build the business behind your breeding program</h2>
+  <p style="color:var(--muted-p);margin-top:14px;font-size:1.1rem">Without lowering your standards.</p>
+  <div style="margin-top:28px"><a href="#reserve" class="btn btn-gold big">Reserve My Seat</a></div>
+  <div style="margin-top:18px;color:var(--muted-p2);font-size:13px">Sept 26–27, 2026 · 11 AM–2 PM ET · 40 GA · 10 VIP · $500 / $1,000</div>
+</div></section>
+
+<footer>
+  <div class="bw">BREED<b>WISE</b></div>
+  <p style="margin-top:6px;color:#a89f8c;font-size:13px">The Profitable Breeder Summit™ · September 26–27, 2026</p>
+  <div class="disc">The Profitable Breeder Summit™ is an educational working intensive. You build your own plan during the event; business outcomes depend on your market, pricing and execution. Veterinary content is educational and does not replace care from your own veterinarian. © <span data-year>2026</span> BreedWise. All rights reserved.</div>
+</footer>
+
+<!-- STICKY MOBILE -->
+<div class="mob">
+  <div class="l">Profitable Breeder Summit™<br><span>Sept 26–27 · $500 / $1,000</span></div>
+  <a href="#reserve" class="btn btn-gold">Reserve</a>
+</div>
+
+<script>
+(function(){
+  var GA_URL='', VIP_URL='';
+  Array.prototype.forEach.call(document.querySelectorAll('[data-checkout]'),function(a){
+    var url=a.getAttribute('data-checkout')==='vip'?VIP_URL:GA_URL;
+    if(url){a.setAttribute('href',url);}
+    else{a.addEventListener('click',function(e){e.preventDefault();var el=document.getElementById('reserve');if(el)el.scrollIntoView({behavior:'smooth'});});}
+  });
+  var rev=document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.1});
+    Array.prototype.forEach.call(rev,function(r){io.observe(r);});}
+  else{Array.prototype.forEach.call(rev,function(r){r.classList.add('in');});}
+  Array.prototype.forEach.call(document.querySelectorAll('[data-year]'),function(e){e.textContent=new Date().getFullYear();});
+})();
+</script>
+</body>
+</html>
