@@ -1,0 +1,223 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Member Pathways — Breedwise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#1b1b20;--surface:#111114;--card:#26262c;--card-2:#212127;--border:#34343c;--border-2:#2b2b32;
+  --gold:#d6ba76;--gold-deep:#b89c47;--gold-faint:rgba(214,186,118,.10);--gold-grad:linear-gradient(135deg,#e2cb86 0%,#bfa050 100%);
+  --on-gold:#1a1509;--ink:#f4f1ea;--muted:#8f8d85;--mid:#c4c1b8;
+  --tool:#d6ba76;--loom:#8fa8d8;--circle:#6dbf90;--check:#d7a94e;--radius:11px;
+  --heading:'Playfair Display',Georgia,serif;--body:'Inter',-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.hide{display:none!important}a{color:var(--gold)}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+input{font-family:var(--body);font-size:15px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);color:var(--ink);padding:12px 14px;outline:none;width:100%}
+input:focus{border-color:var(--gold)}
+.btn{background:var(--gold-grad);color:var(--on-gold);border:0;border-radius:var(--radius);padding:13px 18px;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;box-shadow:0 6px 22px rgba(214,186,118,.28)}
+.err{color:#e0807e;font-size:13px;min-height:16px}
+/* gate */
+#gate{position:fixed;inset:0;z-index:100;background:var(--surface);display:flex;align-items:center;justify-content:center;padding:24px}
+.gate-inner{width:100%;max-width:420px;text-align:center}
+.gate-mk{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
+.gate-inner h1{font-family:var(--heading);font-weight:600;font-size:clamp(28px,6vw,40px);color:var(--ink);margin-bottom:14px}
+.gate-inner p{font-size:14px;color:var(--muted);margin-bottom:26px}
+.gate-inner input{text-align:center;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+.gate-inner input::placeholder{text-transform:none;letter-spacing:normal;color:var(--muted)}
+/* app */
+#app{display:none}#app.on{display:block}
+.masthead{background:var(--surface);border-bottom:1px solid var(--border);padding:34px 0 26px}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.masthead h1{font-family:var(--heading);font-weight:600;font-size:clamp(26px,5.5vw,38px);color:var(--ink);margin:12px 0 8px;letter-spacing:-.01em}
+.masthead p{color:var(--muted);font-size:14px;max-width:64ch}
+main{padding:22px 0 90px}
+.tabs{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.tab{font-family:var(--body);font-size:13px;font-weight:600;padding:9px 16px;border-radius:10px;border:1px solid var(--border);background:var(--card-2);color:var(--muted);cursor:pointer}
+.tab.on{background:var(--gold-faint);color:var(--gold);border-color:var(--gold-deep)}
+.leveltag{color:var(--mid);font-size:13.5px;margin:6px 0 20px;font-style:italic}
+/* timeline */
+.phase{position:relative;padding-left:28px;margin-bottom:4px}
+.phase:before{content:'';position:absolute;left:8px;top:6px;bottom:-4px;width:2px;background:var(--border)}
+.phase:last-of-type:before{display:none}
+.dot{position:absolute;left:2px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px rgba(214,186,118,.18)}
+.phase-h{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+.phase-h .wk{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-deep)}
+.phase-h .th{font-family:var(--heading);font-size:18px;color:var(--ink)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:6px 16px;margin-bottom:14px}
+.item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border-2);flex-wrap:wrap}
+.item:last-child{border-bottom:none}
+.rtag{flex:0 0 auto;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:20px}
+.r-tool{background:rgba(214,186,118,.14);color:var(--tool)}.r-loom{background:rgba(143,168,216,.14);color:var(--loom)}.r-circle{background:rgba(109,191,144,.14);color:var(--circle)}
+.iname{flex:1;min-width:140px;font-weight:600;color:var(--ink)}
+.iname small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.ilink{font-size:12px;font-weight:600;color:var(--gold);text-decoration:none;white-space:nowrap}
+.iedit{font-size:11.5px;color:var(--muted);cursor:pointer;background:none;border:1px solid var(--border);border-radius:7px;padding:5px 9px;white-space:nowrap}
+.iedit:hover{color:var(--gold);border-color:var(--gold-deep)}
+.check{position:relative;padding-left:28px;margin:2px 0 16px}
+.check .cdot{position:absolute;left:1px;top:2px;width:16px;height:16px;border-radius:50%;background:var(--check);display:flex;align-items:center;justify-content:center;color:#1a1509;font-size:10px;font-weight:800}
+.check .cbody{background:var(--card-2);border:1px dashed var(--check);border-radius:10px;padding:9px 14px;font-size:13px;color:var(--mid)}
+.check .cbody b{color:var(--ink)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:22px 0 6px;align-items:center}
+.legend .rtag{cursor:default}
+.note{background:var(--card-2);border:1px solid var(--border);border-radius:11px;padding:14px 16px;margin-bottom:20px;font-size:13px;color:var(--mid)}
+.who{font-size:12px;color:var(--muted);text-align:right}
+</style>
+
+<div id="gate">
+  <div class="gate-inner">
+    <div class="gate-mk">Breedwise · Team</div>
+    <h1>Member Pathways</h1>
+    <p>The 90-day onboarding conveyor belt. Enter the team passcode.</p>
+    <input id="code" type="password" placeholder="Passcode" autocomplete="off" spellcheck="false">
+    <button class="btn" id="enter" style="width:100%">Open pathways</button>
+    <div class="err" id="gErr"></div>
+  </div>
+</div>
+
+<div id="app">
+  <header class="masthead"><div class="wrap">
+    <div class="eyebrow">Breedwise · Accelerator onboarding</div>
+    <h1>Member Pathways</h1>
+    <p>Prescribe the right first 90 days by level. Each is a 6-week conveyor belt — foundation before tactics — with a check-in at weeks 2 and 4 and a Velocity Call at week 6. Paste your Circle / Loom links in and the whole team sees them.</p>
+  </div></header>
+  <main><div class="wrap">
+    <div class="note"><b style="color:var(--ink)">How to deliver:</b> a new member is placed on a level, gets the items below in sequence, and the team follows up on the cadence — <b style="color:var(--check)">Week 2 check-in → Week 4 check-in → Week 6 Velocity Call</b>. Real transformation in 90 days, without drowning the team.</div>
+    <div class="tabs" id="tabs"></div>
+    <div class="leveltag" id="leveltag"></div>
+    <div id="body"></div>
+    <div class="legend">
+      <span>Resource:</span>
+      <span class="rtag r-tool">Claude Tool</span>
+      <span class="rtag r-loom">Loom</span>
+      <span class="rtag r-circle">Circle</span>
+      <span style="margin-left:auto" class="who" id="who"></span>
+    </div>
+  </div></main>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+const SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+const FN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/pathway-config';
+const FALLBACK_HASH='25e7b557235afa23f4d1ae0ac108bfdfefa7ea58ea50bd986321cbd0034c52dc';
+const sb=supabase.createClient(SB_URL,SB_KEY);
+let PASS_HASH=FALLBACK_HASH, CODE='', LINKS={}, curLevel=0;
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const slug=s=>String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+
+const CHECKS=['Week 2 · Check-in','Week 4 · Check-in','Week 6 · Velocity Call'];
+const PATHWAYS=[
+ {level:'Beginner',tag:'Get who you are and how you show up right — identity before tactics.',phases:[
+   {wk:'Weeks 1–2',th:'Foundation & Identity',items:[
+     {n:'Branding & Niche',r:'tool',link:'niche-finder.html',note:'Run the Niche Blueprint'},
+     {n:'Logo Refinement',r:'loom'},
+     {n:'Business Setup & Structure',r:'circle'},
+   ]},
+   {wk:'Weeks 3–4',th:'Presence & Content',items:[
+     {n:'Social Media Strategy',r:'circle'},
+     {n:'Content Creation Training',r:'circle'},
+   ]},
+   {wk:'Weeks 5–6',th:'Dog Program Fundamentals',items:[
+     {n:'Genetic Basics',r:'circle'},
+     {n:'Nutrition Basics',r:'circle'},
+     {n:'Behavior Basics',r:'circle'},
+     {n:'Whelping Basics',r:'circle'},
+   ]},
+ ]},
+ {level:'Intermediate',tag:'Turn the foundation into revenue and repeatable systems.',phases:[
+   {wk:'Weeks 1–2',th:'Revenue Engine',items:[
+     {n:'Advertising Training',r:'circle'},
+     {n:'Sales Training',r:'circle'},
+     {n:'Sales Process',r:'circle'},
+   ]},
+   {wk:'Weeks 3–4',th:'Business Systems',items:[
+     {n:'Kennel Management Systems',r:'circle'},
+     {n:'Profit Systems',r:'circle'},
+     {n:'Contracts & Legal Guidance',r:'circle'},
+   ]},
+   {wk:'Weeks 5–6',th:'Craft & Depth',items:[
+     {n:'Whelping & Reproductive Systems',r:'circle'},
+     {n:'Advanced Behavior Training',r:'circle'},
+   ]},
+ ]},
+ {level:'Advanced',tag:'Scale, optimize, and buy back your time.',phases:[
+   {wk:'Weeks 1–2',th:'Sales at Scale',items:[
+     {n:'Sales Process / Scripts',r:'circle'},
+     {n:'Pricing Strategy',r:'circle'},
+   ]},
+   {wk:'Weeks 3–4',th:'Paid Growth',items:[
+     {n:'Ads Training',r:'circle'},
+     {n:'Boosts',r:'tool',link:'accelerator-boost-checklist.html',note:'The Boost Checklist'},
+   ]},
+   {wk:'Weeks 5–6',th:'Leverage',items:[
+     {n:'Time Management Training',r:'circle'},
+   ]},
+ ]},
+];
+
+/* gate */
+$('#enter').addEventListener('click',tryCode);
+$('#code').addEventListener('keydown',e=>{if(e.key==='Enter')tryCode();});
+async function tryCode(){
+  const raw=$('#code').value.trim().toUpperCase();
+  if(await sha256(raw)===PASS_HASH){ CODE=raw; try{localStorage.setItem('bw-pathways-code',raw);}catch(e){} open(); }
+  else { $('#gErr').textContent='That passcode did not match.'; $('#code').value=''; $('#code').focus(); }
+}
+async function open(){ $('#gate').classList.add('hide'); $('#app').classList.add('on'); await loadLinks(); render(); }
+async function loadLinks(){
+  try{ const {data}=await sb.from('pathway_links').select('item_key,url'); LINKS={}; (data||[]).forEach(r=>LINKS[r.item_key]=r.url); }catch(e){ LINKS={}; }
+}
+
+function keyFor(level,name){ return slug(level)+'::'+slug(name); }
+function render(){
+  $('#tabs').innerHTML=PATHWAYS.map((p,i)=>`<span class="tab ${i===curLevel?'on':''}" data-i="${i}">${esc(p.level)}</span>`).join('');
+  $('#tabs').querySelectorAll('[data-i]').forEach(el=>el.addEventListener('click',()=>{curLevel=+el.getAttribute('data-i');render();}));
+  const P=PATHWAYS[curLevel];
+  $('#leveltag').textContent=P.tag;
+  let html='';
+  P.phases.forEach((ph,pi)=>{
+    html+=`<div class="phase"><span class="dot"></span><div class="phase-h"><span class="wk">${esc(ph.wk)}</span><span class="th">${esc(ph.th)}</span></div><div class="card">`;
+    html+=ph.items.map(it=>{
+      const rc={tool:'r-tool',loom:'r-loom',circle:'r-circle'}[it.r];
+      const rl={tool:'Tool',loom:'Loom',circle:'Circle'}[it.r];
+      let right='';
+      if(it.r==='tool'){ right=`<a class="ilink" href="${esc(it.link)}" target="_blank">Open tool →</a>`; }
+      else { const k=keyFor(P.level,it.n); const u=LINKS[k];
+        right=u?`<a class="ilink" href="${esc(u)}" target="_blank">Open →</a> <button class="iedit" data-k="${k}" data-u="${esc(u)}">Edit</button>`
+               :`<button class="iedit" data-k="${k}" data-u="">+ Add link</button>`; }
+      return `<div class="item"><span class="rtag ${rc}">${rl}</span><span class="iname">${esc(it.n)}${it.note?`<small>${esc(it.note)}</small>`:''}</span>${right}</div>`;
+    }).join('');
+    html+=`</div>`;
+    if(CHECKS[pi]) html+=`<div class="check"><span class="cdot">✓</span><div class="cbody"><b>${esc(CHECKS[pi].split(' · ')[0])}</b> · ${esc(CHECKS[pi].split(' · ')[1])}</div></div>`;
+  });
+  $('#body').innerHTML=html;
+  $('#body').querySelectorAll('.iedit').forEach(el=>el.addEventListener('click',()=>editLink(el.getAttribute('data-k'),el.getAttribute('data-u'))));
+}
+
+async function editLink(key,current){
+  const url=window.prompt('Paste the Circle module or Loom URL for this item (leave blank to remove):', current||'');
+  if(url===null) return;
+  const clean=url.trim();
+  try{
+    const r=await fetch(FN,{method:'POST',headers:{'content-type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({passcode:CODE,item_key:key,url:clean})});
+    const d=await r.json();
+    if(!r.ok||d.error){ alert('Could not save: '+(d.error||r.status)); return; }
+    if(clean) LINKS[key]=clean; else delete LINKS[key];
+    render();
+  }catch(e){ alert('Could not reach the server. Try again.'); }
+}
+
+(async function(){
+  try{ const {data}=await sb.from('access_config').select('passcode_hash').eq('key','member').maybeSingle(); if(data&&data.passcode_hash) PASS_HASH=data.passcode_hash; }catch(e){}
+  let saved=''; try{ saved=localStorage.getItem('bw-pathways-code')||''; }catch(e){}
+  if(saved && await sha256(saved)===PASS_HASH){ CODE=saved; open(); } else $('#code').focus();
+})();
+</script>
