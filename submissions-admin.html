@@ -207,35 +207,26 @@ function csvExport(){
   const label=(toolFilter==='All'?'all':toolFilter)+(statusFilter==='All'?'':'-'+statusFilter);
   download('breedwise-submissions-'+label+'-'+new Date().toISOString().slice(0,10)+'.csv', lines.join('\n'), 'text/csv;charset=utf-8');
 }
-function subToText(r){
-  const L=[], res=r.result||{}, inp=r.inputs||{};
-  L.push('BREEDWISE — '+(r.tool_label||r.tool)); if(r.member_name) L.push(r.member_name); if(r.member_email) L.push(r.member_email);
-  L.push(r.created_at?('Submitted '+new Date(r.created_at).toLocaleDateString('en-US')):''); L.push('');
-  if(r.tool==='niche-blueprint'){
-    const mm=res.money_math||{}, pb=res.price_band||{};
-    if(mm.upside){ L.push('MONEY MATH: +$'+Number(mm.upside).toLocaleString()+' / year'); if(mm.summary) L.push(mm.summary); L.push(''); }
-    L.push('PRIMARY NICHE: '+(res.primary_niche||'')); if(res.why_primary) L.push(res.why_primary); L.push('');
-    L.push('PRICE: $'+Number(pb.low||0).toLocaleString()+(pb.high&&pb.high!==pb.low?'–$'+Number(pb.high).toLocaleString():'')); if(pb.rationale) L.push(pb.rationale); L.push('');
-    L.push('SCORECARD:'); (res.scorecard||[]).forEach(s=>L.push('  '+(s.total!=null?Number(s.total).toFixed(1):'-')+'  '+s.niche+(s.source?' ('+s.source+')':''))); L.push('');
-    L.push('IDEAL BUYER: '+(res.ideal_buyer||'')); L.push('');
-    L.push('REVENUE PLAN:'); (res.revenue_plan||[]).forEach(s=>L.push('  '+s.scenario+': $'+Number(s.gross||0).toLocaleString()+'  ('+s.litters+'×'+s.pups+'×$'+Number(s.price||0).toLocaleString()+')')); L.push('');
-    L.push('MARKETING ANGLE: '+(res.marketing_angle||'')); (res.example_messaging||[]).forEach(m=>L.push('  • '+m)); L.push('');
-    L.push('ETHICAL CHECKLIST:'); (res.ethical_checklist||[]).forEach(x=>L.push('  □ '+x)); L.push('');
-    L.push('STOP DOING:'); (res.stop_doing||[]).forEach(x=>L.push('  • '+x)); L.push('');
-    L.push('FIRST 90 DAYS:'); (res.first_90_days||[]).forEach(x=>L.push('  '+x)); L.push('');
-    const fu=inp.followups||[];
-    L.push('— SUBMITTED —'); Object.entries(inp).filter(([k,v])=>k!=='followups'&&v&&String(v).trim()).forEach(([k,v])=>L.push('  '+k+': '+v));
-    if(fu.length){ L.push(''); L.push('— FOLLOW-UPS —'); fu.forEach(p=>{L.push('  Q: '+p.q);L.push('  A: '+(p.a||'(skipped)'));}); }
-  } else {
-    if(r.summary){ L.push('SUMMARY: '+r.summary); L.push(''); }
-    L.push('SUBMITTED:'); Object.entries(inp||{}).filter(([k,v])=>v&&k!=='followups').forEach(([k,v])=>L.push('  '+k+': '+(typeof v==='object'?JSON.stringify(v):v)));
-    L.push(''); L.push('RESULT:'); L.push(typeof res==='object'?JSON.stringify(res,null,2):String(res));
-  }
-  return L.join('\n');
-}
+const FONTS='<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">';
 function downloadOne(r){
+  const body=(r.tool==='niche-blueprint'&&r.result)?renderBlueprint(r.result,r.inputs||{}):renderGeneric(r);
+  const css=(document.querySelector('style')||{}).textContent||'';
+  const title=esc(r.member_name||r.tool_label||'Submission');
+  const date=r.created_at?new Date(r.created_at).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}):'';
+  const html=`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title} — Breedwise</title>${FONTS}<style>${css}
+    .paper{max-width:820px;margin:0 auto;padding:40px 22px 56px}
+    .paper h2{font-family:var(--heading);font-size:28px;color:var(--ink);margin-top:4px}
+    @media print{body{background:#fff;color:#000}}
+  </style></head>
+  <body><div class="paper">
+    <div style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Breedwise · Accelerator</div>
+    <h2>${title}</h2>
+    <div class="who" style="margin:0 0 6px"><span class="tooltag">${esc(r.tool_label||r.tool)}</span>${r.member_email?' · '+esc(r.member_email):''}${date?' · '+esc(date):''}</div>
+    ${body}
+    ${r.notes?`<div class="block"><h3>Staff notes</h3><p>${esc(r.notes)}</p></div>`:''}
+  </div></body></html>`;
   const name=(r.member_name||r.tool_label||'submission').replace(/[^a-z0-9]+/gi,'-').replace(/(^-|-$)/g,'').toLowerCase();
-  download('breedwise-'+(r.tool||'submission')+'-'+name+'.txt', subToText(r), 'text/plain;charset=utf-8');
+  download('breedwise-'+(r.tool||'submission')+'-'+name+'.html', html, 'text/html;charset=utf-8');
 }
 
 /* per-tool render */
