@@ -91,7 +91,7 @@ ul.li{margin:4px 0 0 18px;color:var(--mid);font-size:13px}ul.li li{margin:3px 0}
 <div id="app"><div class="wrap">
   <div class="top">
     <div><div class="mk">Breedwise · Accelerator</div><h1>Tool Submissions</h1></div>
-    <div style="text-align:right"><div class="who" id="who"></div><button class="btn ghost" id="signout" style="margin-top:6px;padding:5px 11px">Sign out</button></div>
+    <div style="text-align:right"><div class="who" id="who"></div><button class="btn ghost" id="exportBtn" style="margin-top:6px;padding:5px 11px;margin-right:8px">Export CSV</button><button class="btn ghost" id="signout" style="margin-top:6px;padding:5px 11px">Sign out</button></div>
   </div>
   <div class="toolbar" id="tools"></div>
   <div class="kpis" id="kpis"></div>
@@ -116,6 +116,7 @@ let ROWS=[], toolFilter='All', statusFilter='All', q='', ME=null;
 $('#gBtn').addEventListener('click',signIn);
 $('#gPass').addEventListener('keydown',e=>{if(e.key==='Enter')signIn();});
 $('#signout').addEventListener('click',async()=>{await sb.auth.signOut();location.reload();});
+$('#exportBtn').addEventListener('click',csvExport);
 async function signIn(){
   const email=$('#gEmail').value.trim(), password=$('#gPass').value; $('#gErr').textContent='';
   if(!email||!password){$('#gErr').textContent='Enter your email and password.';return;}
@@ -186,6 +187,57 @@ async function update(id,patch){
   const r=ROWS.find(x=>x.id===id); if(r) Object.assign(r,patch); drawKpis();
 }
 
+/* downloads */
+function download(filename,text,mime){
+  const blob=new Blob([text],{type:mime||'text/plain;charset=utf-8'}); const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+function csvExport(){
+  const rows=visible();
+  if(!rows.length){ alert('Nothing to export in the current view.'); return; }
+  const cols=['Date','Tool','Member','Email','Summary','Price low','Price high','Status','Owner','Notes'];
+  const cq=v=>{ v=String(v==null?'':v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; };
+  const lines=[cols.join(',')];
+  rows.forEach(r=>{ const m=r.meta||{}; lines.push([
+    r.created_at?new Date(r.created_at).toISOString().slice(0,10):'',
+    r.tool_label||r.tool, r.member_name||'', r.member_email||'', r.summary||'',
+    m.price_low||'', m.price_high||'', r.status||'New', r.owner||'', r.notes||''
+  ].map(cq).join(',')); });
+  const label=(toolFilter==='All'?'all':toolFilter)+(statusFilter==='All'?'':'-'+statusFilter);
+  download('breedwise-submissions-'+label+'-'+new Date().toISOString().slice(0,10)+'.csv', lines.join('\n'), 'text/csv;charset=utf-8');
+}
+function subToText(r){
+  const L=[], res=r.result||{}, inp=r.inputs||{};
+  L.push('BREEDWISE — '+(r.tool_label||r.tool)); if(r.member_name) L.push(r.member_name); if(r.member_email) L.push(r.member_email);
+  L.push(r.created_at?('Submitted '+new Date(r.created_at).toLocaleDateString('en-US')):''); L.push('');
+  if(r.tool==='niche-blueprint'){
+    const mm=res.money_math||{}, pb=res.price_band||{};
+    if(mm.upside){ L.push('MONEY MATH: +$'+Number(mm.upside).toLocaleString()+' / year'); if(mm.summary) L.push(mm.summary); L.push(''); }
+    L.push('PRIMARY NICHE: '+(res.primary_niche||'')); if(res.why_primary) L.push(res.why_primary); L.push('');
+    L.push('PRICE: $'+Number(pb.low||0).toLocaleString()+(pb.high&&pb.high!==pb.low?'–$'+Number(pb.high).toLocaleString():'')); if(pb.rationale) L.push(pb.rationale); L.push('');
+    L.push('SCORECARD:'); (res.scorecard||[]).forEach(s=>L.push('  '+(s.total!=null?Number(s.total).toFixed(1):'-')+'  '+s.niche+(s.source?' ('+s.source+')':''))); L.push('');
+    L.push('IDEAL BUYER: '+(res.ideal_buyer||'')); L.push('');
+    L.push('REVENUE PLAN:'); (res.revenue_plan||[]).forEach(s=>L.push('  '+s.scenario+': $'+Number(s.gross||0).toLocaleString()+'  ('+s.litters+'×'+s.pups+'×$'+Number(s.price||0).toLocaleString()+')')); L.push('');
+    L.push('MARKETING ANGLE: '+(res.marketing_angle||'')); (res.example_messaging||[]).forEach(m=>L.push('  • '+m)); L.push('');
+    L.push('ETHICAL CHECKLIST:'); (res.ethical_checklist||[]).forEach(x=>L.push('  □ '+x)); L.push('');
+    L.push('STOP DOING:'); (res.stop_doing||[]).forEach(x=>L.push('  • '+x)); L.push('');
+    L.push('FIRST 90 DAYS:'); (res.first_90_days||[]).forEach(x=>L.push('  '+x)); L.push('');
+    const fu=inp.followups||[];
+    L.push('— SUBMITTED —'); Object.entries(inp).filter(([k,v])=>k!=='followups'&&v&&String(v).trim()).forEach(([k,v])=>L.push('  '+k+': '+v));
+    if(fu.length){ L.push(''); L.push('— FOLLOW-UPS —'); fu.forEach(p=>{L.push('  Q: '+p.q);L.push('  A: '+(p.a||'(skipped)'));}); }
+  } else {
+    if(r.summary){ L.push('SUMMARY: '+r.summary); L.push(''); }
+    L.push('SUBMITTED:'); Object.entries(inp||{}).filter(([k,v])=>v&&k!=='followups').forEach(([k,v])=>L.push('  '+k+': '+(typeof v==='object'?JSON.stringify(v):v)));
+    L.push(''); L.push('RESULT:'); L.push(typeof res==='object'?JSON.stringify(res,null,2):String(res));
+  }
+  return L.join('\n');
+}
+function downloadOne(r){
+  const name=(r.member_name||r.tool_label||'submission').replace(/[^a-z0-9]+/gi,'-').replace(/(^-|-$)/g,'').toLowerCase();
+  download('breedwise-'+(r.tool||'submission')+'-'+name+'.txt', subToText(r), 'text/plain;charset=utf-8');
+}
+
 /* per-tool render */
 function primaryIndex(sc,primary){ if(!sc||!sc.length) return -1; const p=(primary||'').toLowerCase().slice(0,25); let i=sc.findIndex(s=>(s.niche||'').toLowerCase().slice(0,25)===p); if(i>=0) return i; let mi=0; sc.forEach((s,j)=>{ if((Number(s.total)||0)>(Number(sc[mi].total)||0)) mi=j; }); return mi; }
 function scoreCls(n){n=Number(n)||0;return n>=8?'s-hi':(n>=6?'s-md':'s-lo');}
@@ -231,10 +283,11 @@ function openSub(id){
       <div><label>Owner</label><select id="m_owner">${OWNERS.map(o=>`<option ${((r.owner||'Unassigned')===o)?'selected':''}>${o}</option>`).join('')}</select></div>
     </div>
     <div style="margin-top:12px"><label style="font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px">Staff notes</label><textarea id="m_notes" rows="3" style="width:100%">${esc(r.notes||'')}</textarea></div>
-    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px"><button class="btn ghost" id="mCancel">Close</button><button class="btn" id="mSave">Save</button></div>`;
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px"><button class="btn ghost" id="mDownload" style="margin-right:auto">Download</button><button class="btn ghost" id="mCancel">Close</button><button class="btn" id="mSave">Save</button></div>`;
   $('#modal').classList.remove('hide');
   $('#mClose').onclick=closeModal; $('#mCancel').onclick=closeModal;
   $('#modal').onclick=e=>{if(e.target.id==='modal')closeModal();};
+  $('#mDownload').onclick=()=>downloadOne(r);
   $('#mSave').onclick=async()=>{ await update(id,{status:$('#m_status').value,owner:$('#m_owner').value,notes:$('#m_notes').value.trim()||null}); closeModal(); renderRows(); };
 }
 function closeModal(){ $('#modal').classList.add('hide'); }
