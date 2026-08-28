@@ -215,6 +215,24 @@ footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;lin
 .guarantee b{color:#fff}
 .guarantee p{color:var(--muted-p);font-size:.94rem;margin:0}
 
+/* standards checklist */
+.standards{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:15px 34px;max-width:840px;margin:0 auto}
+@media(max-width:640px){.standards{grid-template-columns:1fr}}
+.standards li{position:relative;padding-left:30px;font-size:1.02rem;color:var(--text);line-height:1.5}
+.standards li .ck{position:absolute;left:0;top:1px;color:var(--gold-deep);font-weight:800;font-size:1.05rem}
+/* application form */
+.applyform{max-width:720px;margin:36px auto 0;background:#fff;color:var(--text);border-radius:16px;padding:30px;box-shadow:0 30px 70px -34px rgba(0,0,0,.6);text-align:left}
+.applyform h3{font-weight:800;text-transform:uppercase;font-size:1.15rem;color:var(--ink);letter-spacing:-.01em}
+.applyform .intro{color:var(--muted);font-size:.95rem;margin:6px 0 18px}
+.applyform .grp{margin-bottom:13px}
+.applyform .grp2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+@media(max-width:520px){.applyform .grp2{grid-template-columns:1fr}}
+.applyform label{display:block;font-size:13px;font-weight:600;color:#3a3540;margin-bottom:6px}
+.applyform input,.applyform select,.applyform textarea{width:100%;background:#f5f4f1;border:1px solid var(--line);border-radius:9px;padding:13px 14px;font-family:var(--font);font-size:15px;color:var(--text)}
+.applyform textarea{min-height:78px;resize:vertical}
+.applyform input:focus,.applyform select:focus,.applyform textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,160,73,.18);background:#fff}
+.applyform .btn{margin-top:8px}
+.applyform .done{display:none;margin-top:14px;text-align:center;color:var(--gold-deep);font-weight:600;font-size:.95rem}
 /* video testimonial carousel */
 .vrail-wrap{position:relative;max-width:900px;margin:0 auto}
 .vrail{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -268,7 +286,7 @@ footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;lin
 <header class="hero"><div class="wrap">
   <span class="pill"><b>40 General Admission</b> · <b>10 VIP</b> · Enrollment Open</span>
   <h1 style="font-size:clamp(1.7rem,4.4vw,3rem)">Build a Profitable Breeding Program<br>Where Business Meets Science</h1>
-  <p class="sub">In 2 live days, build the pricing, sales, whelping and neonatal systems you need to create a stronger, more profitable breeding program.</p>
+  <p class="sub">In 2 live days, build a more profitable, science-backed breeding program, without compromising health, welfare, or responsible placement.</p>
 
   <!-- HERO MEDIA CARD. Drop your VSL embed inside .frame (replace .ph). Examples:
        <iframe src="https://player.vimeo.com/video/XXXX" allow="autoplay; fullscreen" allowfullscreen></iframe>
@@ -290,6 +308,14 @@ footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;lin
 
   <div class="microtrust">Live on Zoom · September 26–27, 2026 · 11:00 AM–2:00 PM ET · 40 GA seats · 10 VIP seats</div>
 </div></header>
+
+<!-- QUALIFIER BAND (immediately under hero) -->
+<section class="cream-band" style="padding:46px 0"><div class="wrap">
+  <div style="max-width:820px;margin:0 auto;text-align:center">
+    <h2 style="font-weight:900;text-transform:uppercase;font-size:clamp(1.1rem,2.5vw,1.55rem);color:var(--ink);letter-spacing:-.01em">Built for established breeders who want to grow responsibly</h2>
+    <p style="color:var(--muted);margin-top:14px;font-size:1.05rem">This Summit is for breeders already producing litters who are committed to health testing, veterinary collaboration, responsible placements, and improving their systems. It is not for anyone looking for shortcuts, higher volume at any cost, or a &ldquo;get rich quick&rdquo; breeding model.</p>
+  </div>
+</div></section>
 
 <!-- 2) IMMEDIATE PROBLEM -->
 <section class="p-band"><div class="wrap">
@@ -474,6 +500,19 @@ footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;lin
   <div class="center" style="margin-top:34px"><a href="#reserve" class="btn btn-gold big">See the Seat Options</a></div>
 </div></section>
 
+<!-- STANDARDS REQUIREMENT (qualifier before pricing) -->
+<section class="w-band"><div class="wrap">
+  <div class="sh"><div class="eye">Is This You?</div><h2 style="font-size:clamp(1.4rem,3.4vw,2.3rem)">You&rsquo;ll Be a Good Fit If You&rsquo;re Willing To</h2></div>
+  <ul class="standards">
+    <li><span class="ck">✓</span>Health test your breeding dogs appropriately</li>
+    <li><span class="ck">✓</span>Work with your veterinarian proactively</li>
+    <li><span class="ck">✓</span>Track your breeding, whelping, and neonatal outcomes</li>
+    <li><span class="ck">✓</span>Screen buyers and prioritize responsible homes</li>
+    <li><span class="ck">✓</span>Invest in proper care even when it reduces short-term margin</li>
+    <li><span class="ck">✓</span>Build a sustainable program instead of simply producing more puppies</li>
+  </ul>
+</div></section>
+
 <!-- 7) RESERVE / PRICING -->
 <section id="reserve" class="p-band"><div class="wrap">
   <div class="sh">
@@ -497,7 +536,7 @@ footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;lin
         <li><span class="ck">✓</span>Live Q&amp;A with Austin Shanks and Dr. Emmanuel Fontaine</li>
       </ul>
       <div class="valueline">A focused working session to clarify the numbers and systems behind your next litter.</div>
-      <a class="btn btn-dark block" data-checkout="ga" href="#">Reserve GA · $500</a>
+      <a class="btn btn-dark block" href="#apply" onclick="var s=document.querySelector('[name=tier]');if(s)s.value='GA'">Reserve GA · $500</a>
     </div>
     <div class="tier vip">
       <span class="flag">Only 10 Seats</span>
@@ -517,9 +556,28 @@ footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;lin
         <li><span class="ck">✓</span>Smaller-group support to help turn the training into an actionable plan</li>
       </ul>
       <div class="valueline">The closest thing to building your plan with us in the room.</div>
-      <a class="btn btn-gold block" data-checkout="vip" href="#">Claim VIP · $1,000</a>
+      <a class="btn btn-gold block" href="#apply" onclick="var s=document.querySelector('[name=tier]');if(s)s.value='VIP'">Claim VIP · $1,000</a>
       <div class="tnote">Only 10 private plan reviews are available. Once VIP is full, enrollment closes.</div>
     </div>
+  </div>
+  <div class="applyform" id="apply">
+    <h3>Reserve Your Seat</h3>
+    <p class="intro">Answer a few quick questions so we can confirm the Summit is the right fit. Your secure checkout comes on the next step.</p>
+    <form data-apply>
+      <div class="grp"><label>Full name</label><input name="name" required></div>
+      <div class="grp2">
+        <div class="grp"><label>Email</label><input type="email" name="email" required></div>
+        <div class="grp"><label>Phone</label><input type="tel" name="phone" required></div>
+      </div>
+      <div class="grp"><label>Which seat?</label><select name="tier"><option value="GA">General Admission ($500)</option><option value="VIP">VIP ($1,000)</option></select></div>
+      <div class="grp"><label>How many litters have you produced?</label><input name="litters" required></div>
+      <div class="grp"><label>What health testing do you currently complete?</label><input name="health_testing" required></div>
+      <div class="grp"><label>How do you work with your veterinarian?</label><input name="veterinarian"></div>
+      <div class="grp"><label>What is your biggest business constraint?</label><input name="constraint"></div>
+      <div class="grp"><label>What does responsible breeding mean to you?</label><textarea name="responsible"></textarea></div>
+      <button class="btn btn-gold block" type="submit">Reserve My Seat</button>
+      <div class="done" id="applyDone">Application received. We&rsquo;ll email your secure checkout link shortly.</div>
+    </form>
   </div>
   <div class="guarantee"><span class="ic">&#128737;&#65039;</span><p><b>Reserve risk-free.</b> Full refund up to 14 days before the Summit; within 14 days, your payment converts to a credit toward a future BreedWise event.</p></div>
   <p class="checkout-note">&#128274; Secure checkout by <b>Stripe</b> · You&rsquo;ll enter your details and complete payment on the next step. Your private Zoom link is emailed to you after you reserve. By reserving, you agree to our <a href="terms.html">Terms &amp; Conditions</a> and <a href="privacy.html">Privacy Policy</a>.</p>
@@ -577,6 +635,28 @@ footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;lin
     if(url){a.setAttribute('href',url);}
     else{a.addEventListener('click',function(e){e.preventDefault();var el=document.getElementById('reserve');if(el)el.scrollIntoView({behavior:'smooth'});});}
   });
+  var applyForm=document.querySelector('[data-apply]');
+  if(applyForm){
+    var LEAD_ENDPOINT=''; /* paste your CRM webhook / FormSubmit URL to capture applications */
+    applyForm.addEventListener('submit',function(e){
+      e.preventDefault();
+      var nm=applyForm.querySelector('[name=name]'), em=applyForm.querySelector('[name=email]'), ph=applyForm.querySelector('[name=phone]');
+      var ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if(nm&&!nm.value.trim()){nm.focus();return;}
+      if(!ok.test((em.value||'').trim())){em.focus();return;}
+      if((ph.value||'').replace(/\D/g,'').length<7){ph.focus();return;}
+      var tier=(applyForm.querySelector('[name=tier]')||{}).value||'GA';
+      if(LEAD_ENDPOINT.indexOf('http')===0){
+        var data={};Array.prototype.forEach.call(applyForm.querySelectorAll('[name]'),function(el){if(el.value&&el.value.trim())data[el.name]=el.value.trim();});
+        data._subject='New Summit application ('+tier+')';
+        try{fetch(LEAD_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});}catch(err){}
+      }
+      var url=tier==='VIP'?VIP_URL:GA_URL;
+      if(url&&url.indexOf('http')===0){window.location.href=url;return;}
+      var btn=applyForm.querySelector('button[type=submit]'); if(btn){btn.textContent='Application received';btn.disabled=true;}
+      var done=document.getElementById('applyDone'); if(done)done.style.display='block';
+    });
+  }
   var vcards=document.querySelectorAll('.vcard[data-src]');
   function vstop(ex){Array.prototype.forEach.call(vcards,function(c){var v=c.querySelector('video');if(v&&c!==ex){v.pause();c.classList.remove('playing');}});}
   Array.prototype.forEach.call(vcards,function(card){
