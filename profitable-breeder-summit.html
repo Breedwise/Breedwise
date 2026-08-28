@@ -247,7 +247,10 @@ footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;lin
 .vplay{position:absolute;inset:0;z-index:3;display:grid;place-items:center;border:0;cursor:pointer;background:radial-gradient(circle at 50% 46%,rgba(0,0,0,.12),rgba(0,0,0,.45))}
 .vplay span{width:54px;height:54px;border-radius:50%;background:var(--gold-grad);display:grid;place-items:center;box-shadow:0 10px 26px -6px rgba(217,185,104,.6)}
 .vplay span:after{content:"";border-style:solid;border-width:9px 0 9px 15px;border-color:transparent transparent transparent #2b2109;margin-left:4px}
-.vcard.playing .vplay,.vcard.playing .vposter,.vcard.playing .vph{opacity:0;pointer-events:none;transition:opacity .2s}
+.vcap{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:16px 12px 12px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.88));text-align:left;pointer-events:none}
+.vcap b{display:block;color:#fff;font-weight:700;font-size:13px;line-height:1.15}
+.vcap span{color:#cdc6b8;font-size:11px}
+.vcard.playing .vplay,.vcard.playing .vposter,.vcard.playing .vph,.vcard.playing .vcap{opacity:0;pointer-events:none;transition:opacity .2s}
 .vrail-nav{position:absolute;top:calc(50% - 22px);width:44px;height:44px;border-radius:50%;border:1px solid var(--line-p);background:rgba(255,255,255,.06);color:#fff;font-size:22px;cursor:pointer;z-index:5;display:flex;align-items:center;justify-content:center}
 .vrail-nav.prev{left:-10px}.vrail-nav.next{right:-10px}
 .vrail-nav:hover{background:var(--gold-grad);color:#2b2109}
@@ -363,49 +366,73 @@ footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;lin
         <figure class="vcard" data-src="videos/t1.mp4">
           <div class="vframe">
             <video preload="none" playsinline poster="videos/t1.jpg"></video>
-            <div class="vph"><b>Video Testimonial</b><span>Add a real clip</span></div>
-            <img class="vposter" src="videos/t1.jpg" alt="" onerror="this.style.display='none'">
+            <img class="vposter" src="videos/t1.jpg" alt="Michelle Cordova testimonial" onerror="this.style.display='none'">
             <button class="vplay" aria-label="Play testimonial"><span></span></button>
+            <figcaption class="vcap"><b>Michelle Cordova</b><span>Breeder · Utah</span></figcaption>
           </div>
         </figure>
         <figure class="vcard" data-src="videos/t2.mp4">
           <div class="vframe">
             <video preload="none" playsinline poster="videos/t2.jpg"></video>
-            <div class="vph"><b>Video Testimonial</b><span>Add a real clip</span></div>
-            <img class="vposter" src="videos/t2.jpg" alt="" onerror="this.style.display='none'">
+            <img class="vposter" src="videos/t2.jpg" alt="Catherine Sjuve testimonial" onerror="this.style.display='none'">
             <button class="vplay" aria-label="Play testimonial"><span></span></button>
+            <figcaption class="vcap"><b>Catherine Sjuve</b><span>Breeder · Florida</span></figcaption>
           </div>
         </figure>
         <figure class="vcard" data-src="videos/t3.mp4">
           <div class="vframe">
             <video preload="none" playsinline poster="videos/t3.jpg"></video>
-            <div class="vph"><b>Video Testimonial</b><span>Add a real clip</span></div>
-            <img class="vposter" src="videos/t3.jpg" alt="" onerror="this.style.display='none'">
+            <img class="vposter" src="videos/t3.jpg" alt="Jake Ayers testimonial" onerror="this.style.display='none'">
             <button class="vplay" aria-label="Play testimonial"><span></span></button>
+            <figcaption class="vcap"><b>Jake Ayers</b><span>Breeder · North Carolina</span></figcaption>
           </div>
         </figure>
         <figure class="vcard" data-src="videos/t4.mp4">
           <div class="vframe">
             <video preload="none" playsinline poster="videos/t4.jpg"></video>
-            <div class="vph"><b>Video Testimonial</b><span>Add a real clip</span></div>
-            <img class="vposter" src="videos/t4.jpg" alt="" onerror="this.style.display='none'">
+            <img class="vposter" src="videos/t4.jpg" alt="Jose Duarte testimonial" onerror="this.style.display='none'">
             <button class="vplay" aria-label="Play testimonial"><span></span></button>
+            <figcaption class="vcap"><b>Jose Duarte</b><span>Breeder · New Mexico</span></figcaption>
           </div>
         </figure>
         <figure class="vcard" data-src="videos/t5.mp4">
           <div class="vframe">
             <video preload="none" playsinline poster="videos/t5.jpg"></video>
-            <div class="vph"><b>Video Testimonial</b><span>Add a real clip</span></div>
-            <img class="vposter" src="videos/t5.jpg" alt="" onerror="this.style.display='none'">
+            <img class="vposter" src="videos/t5.jpg" alt="Lamont testimonial" onerror="this.style.display='none'">
             <button class="vplay" aria-label="Play testimonial"><span></span></button>
+            <figcaption class="vcap"><b>Lamont</b><span>Breeder · California</span></figcaption>
           </div>
         </figure>
         <figure class="vcard" data-src="videos/t6.mp4">
           <div class="vframe">
             <video preload="none" playsinline poster="videos/t6.jpg"></video>
-            <div class="vph"><b>Video Testimonial</b><span>Add a real clip</span></div>
-            <img class="vposter" src="videos/t6.jpg" alt="" onerror="this.style.display='none'">
+            <img class="vposter" src="videos/t6.jpg" alt="Paul &amp; Heather testimonial" onerror="this.style.display='none'">
             <button class="vplay" aria-label="Play testimonial"><span></span></button>
+            <figcaption class="vcap"><b>Paul &amp; Heather</b><span>Breeder · South Carolina</span></figcaption>
+          </div>
+        </figure>
+        <figure class="vcard" data-src="videos/t7.mp4">
+          <div class="vframe">
+            <video preload="none" playsinline poster="videos/t7.jpg"></video>
+            <img class="vposter" src="videos/t7.jpg" alt="Shaylee Griffin testimonial" onerror="this.style.display='none'">
+            <button class="vplay" aria-label="Play testimonial"><span></span></button>
+            <figcaption class="vcap"><b>Shaylee Griffin</b><span>Breeder · Utah</span></figcaption>
+          </div>
+        </figure>
+        <figure class="vcard" data-src="videos/t8.mp4">
+          <div class="vframe">
+            <video preload="none" playsinline poster="videos/t8.jpg"></video>
+            <img class="vposter" src="videos/t8.jpg" alt="Trina Francois testimonial" onerror="this.style.display='none'">
+            <button class="vplay" aria-label="Play testimonial"><span></span></button>
+            <figcaption class="vcap"><b>Trina Francois</b><span>Breeder · Texas</span></figcaption>
+          </div>
+        </figure>
+        <figure class="vcard" data-src="videos/t9.mp4">
+          <div class="vframe">
+            <video preload="none" playsinline poster="videos/t9.jpg"></video>
+            <img class="vposter" src="videos/t9.jpg" alt="Breedwise Member testimonial" onerror="this.style.display='none'">
+            <button class="vplay" aria-label="Play testimonial"><span></span></button>
+            <figcaption class="vcap"><b>Breedwise Member</b><span>Verified testimonial</span></figcaption>
           </div>
         </figure>
     </div>
