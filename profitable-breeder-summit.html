@@ -108,9 +108,10 @@ section{padding:76px 0}
 .decisions{text-align:center;max-width:700px;margin:14px auto 0;font-size:1.14rem;font-weight:700;color:#fff;text-wrap:balance}
 
 /* what you'll build (3 pillars) */
-.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px;margin:0 auto}
-@media(max-width:820px){.pillars{grid-template-columns:1fr;max-width:520px}}
-.pillar{background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px 26px;box-shadow:0 24px 44px -32px rgba(0,0,0,.28)}
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:1080px;margin:0 auto}
+@media(max-width:900px){.pillars{grid-template-columns:1fr 1fr;max-width:640px}}
+@media(max-width:520px){.pillars{grid-template-columns:1fr;max-width:520px}}
+.pillar{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 22px;box-shadow:0 24px 44px -32px rgba(0,0,0,.28)}
 .pillar .num{width:46px;height:46px;border-radius:12px;background:var(--gold-grad);color:#2b2109;font-weight:900;font-size:1.25rem;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
 .pillar h3{font-weight:800;text-transform:uppercase;font-size:1.15rem;color:var(--ink);letter-spacing:-.01em;margin-bottom:10px}
 .pillar p{color:var(--muted);font-size:.98rem}
@@ -214,6 +215,45 @@ footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;lin
 .guarantee b{color:#fff}
 .guarantee p{color:var(--muted-p);font-size:.94rem;margin:0}
 
+/* video testimonial carousel */
+.vrail-wrap{position:relative;max-width:900px;margin:0 auto}
+.vrail{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.vrail::-webkit-scrollbar{display:none}
+.vcard{flex:0 0 auto;width:220px;scroll-snap-align:center;border-radius:14px;overflow:hidden;background:#0e0d0b;border:1px solid var(--line-p);box-shadow:0 24px 44px -30px rgba(0,0,0,.5)}
+.vframe{position:relative;aspect-ratio:9/16;background:#0e0d0b;overflow:hidden}
+.vframe video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;background:#0e0d0b}
+.vph{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;text-align:center;padding:22px 14px;background:linear-gradient(160deg,#1c1913,#0b0a07)}
+.vph b{color:#fff;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.vph span{font-size:11px;color:var(--muted-p)}
+.vposter{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
+.vplay{position:absolute;inset:0;z-index:3;display:grid;place-items:center;border:0;cursor:pointer;background:radial-gradient(circle at 50% 46%,rgba(0,0,0,.12),rgba(0,0,0,.45))}
+.vplay span{width:54px;height:54px;border-radius:50%;background:var(--gold-grad);display:grid;place-items:center;box-shadow:0 10px 26px -6px rgba(217,185,104,.6)}
+.vplay span:after{content:"";border-style:solid;border-width:9px 0 9px 15px;border-color:transparent transparent transparent #2b2109;margin-left:4px}
+.vcard.playing .vplay,.vcard.playing .vposter,.vcard.playing .vph{opacity:0;pointer-events:none;transition:opacity .2s}
+.vrail-nav{position:absolute;top:calc(50% - 22px);width:44px;height:44px;border-radius:50%;border:1px solid var(--line-p);background:rgba(255,255,255,.06);color:#fff;font-size:22px;cursor:pointer;z-index:5;display:flex;align-items:center;justify-content:center}
+.vrail-nav.prev{left:-10px}.vrail-nav.next{right:-10px}
+.vrail-nav:hover{background:var(--gold-grad);color:#2b2109}
+@media(max-width:640px){.vrail-nav{display:none}}
+/* screenshot proof grid */
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:30px auto 0}
+@media(max-width:700px){.shots{grid-template-columns:1fr 1fr}}
+.shot{border-radius:12px;overflow:hidden;border:1px solid var(--line-p);background:linear-gradient(160deg,#1c1913,#0b0a07);aspect-ratio:4/3;position:relative}
+.shot .lab{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:12px}
+.shot .lab b{color:#fff;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.shot .lab span{font-size:11px;color:var(--muted-p)}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
+.proofsub{text-align:center;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:800;margin:52px 0 22px}
+/* AI callout + academy bridge */
+.callout{max-width:760px;margin:0 auto;background:rgba(255,255,255,.5);border:1px solid var(--line);border-radius:16px;padding:26px 30px;text-align:center;box-shadow:0 20px 40px -32px rgba(0,0,0,.2)}
+.callout h3{font-weight:800;text-transform:uppercase;font-size:1.1rem;letter-spacing:-.01em;margin-bottom:10px;color:var(--ink)}
+.callout p{color:var(--muted);font-size:1rem}
+.bridge{background:var(--purple-soft);border-top:1px solid var(--line-p);text-align:center;padding:44px 0}
+.bridge .in{max-width:720px;margin:0 auto;padding:0 22px}
+.bridge .eye{font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.bridge h3{color:#fff;font-weight:800;text-transform:uppercase;font-size:1.3rem;margin:8px 0 10px}
+.bridge p{color:var(--muted-p);font-size:1rem}
+.bridge b{color:#fff}
+
 .reveal{opacity:0;transform:translateY(16px);transition:.6s}
 .reveal.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
@@ -274,40 +314,96 @@ footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;lin
   <div class="center" style="margin-top:32px"><a href="#reserve" class="btn btn-gold big">Reserve My Seat</a></div>
 </div></section>
 
-<!-- 3) WHAT YOU'LL BUILD (3 pillars) -->
+<!-- 3) WHAT YOU WALK OUT WITH (completed decisions) -->
 <section class="cream-band"><div class="wrap">
-  <div class="sh"><div class="eye">What You&rsquo;ll Build</div><h2 style="font-size:clamp(1.3rem,3.3vw,2.2rem)">Three Things You&rsquo;ll Walk Out With</h2></div>
+  <div class="sh"><div class="eye">What You Leave With</div><h2 style="font-size:clamp(1.3rem,3.3vw,2.2rem)">Decisions Made, Not More Homework</h2><p>You don&rsquo;t leave with notes to implement later. You leave with the decisions already made.</p></div>
   <div class="pillars">
-    <div class="pillar">
-      <div class="num">1</div>
-      <h3>Build Your Numbers</h3>
-      <p>Know what each litter costs, what it needs to produce, and where your margin is disappearing.</p>
-    </div>
-    <div class="pillar">
-      <div class="num">2</div>
-      <h3>Build Your Demand</h3>
-      <p>Create a 90-day plan to attract, qualify, and convert serious puppy buyers before your next litter arrives.</p>
-    </div>
-    <div class="pillar">
-      <div class="num">3</div>
-      <h3>Build Better Systems</h3>
-      <p>Use veterinary-backed preparation and monitoring frameworks to make more informed decisions and work better with your veterinarian.</p>
-    </div>
+    <div class="pillar"><div class="num">1</div><h3>Your Numbers, Calculated</h3><p>Your real cost and true margin per litter, worked out on your actual figures.</p></div>
+    <div class="pillar"><div class="num">2</div><h3>Your Price, Set</h3><p>A new price you can defend, with the value story to justify it to buyers.</p></div>
+    <div class="pillar"><div class="num">3</div><h3>Your Demand Plan, Written</h3><p>A 90-day plan so your next litter has a waitlist before the puppies arrive.</p></div>
+    <div class="pillar"><div class="num">4</div><h3>Your Prep, Built</h3><p>A vet-backed whelping &amp; neonatal prep checklist, ready for your next whelp.</p></div>
   </div>
 </div></section>
 
-<!-- 4) PROOF: track record (real, attributed results). Add permission-approved testimonials below the stats when ready. -->
+<!-- 4) PROOF: real testimonials (video + screenshots) above the track-record numbers.
+     Replace placeholders with permission-approved content: videos/t1..t6.mp4 (+ .jpg posters) and photos/shot-1..6.jpg -->
 <section class="p-band"><div class="wrap">
-  <div class="sh"><div class="eye">The Track Record</div><h2 style="font-size:clamp(1.5rem,3.7vw,2.5rem)">Proof This Approach Works</h2><p>Real business results and real veterinary science behind the Summit.</p></div>
+  <div class="sh"><div class="eye">Proof</div><h2 style="font-size:clamp(1.5rem,3.7vw,2.5rem)">Real Breeders, Real Results</h2><p>Hear it from breeders who did the work, then see the track record behind it.</p></div>
+
+  <div class="vrail-wrap">
+    <button class="vrail-nav prev" data-vrail-prev aria-label="Previous">&lsaquo;</button>
+    <button class="vrail-nav next" data-vrail-next aria-label="Next">&rsaquo;</button>
+    <div class="vrail" data-vrail>
+        <figure class="vcard" data-src="videos/t1.mp4">
+          <div class="vframe">
+            <video preload="none" playsinline poster="videos/t1.jpg"></video>
+            <div class="vph"><b>Video Testimonial</b><span>Add a real clip</span></div>
+            <img class="vposter" src="videos/t1.jpg" alt="" onerror="this.style.display='none'">
+            <button class="vplay" aria-label="Play testimonial"><span></span></button>
+          </div>
+        </figure>
+        <figure class="vcard" data-src="videos/t2.mp4">
+          <div class="vframe">
+            <video preload="none" playsinline poster="videos/t2.jpg"></video>
+            <div class="vph"><b>Video Testimonial</b><span>Add a real clip</span></div>
+            <img class="vposter" src="videos/t2.jpg" alt="" onerror="this.style.display='none'">
+            <button class="vplay" aria-label="Play testimonial"><span></span></button>
+          </div>
+        </figure>
+        <figure class="vcard" data-src="videos/t3.mp4">
+          <div class="vframe">
+            <video preload="none" playsinline poster="videos/t3.jpg"></video>
+            <div class="vph"><b>Video Testimonial</b><span>Add a real clip</span></div>
+            <img class="vposter" src="videos/t3.jpg" alt="" onerror="this.style.display='none'">
+            <button class="vplay" aria-label="Play testimonial"><span></span></button>
+          </div>
+        </figure>
+        <figure class="vcard" data-src="videos/t4.mp4">
+          <div class="vframe">
+            <video preload="none" playsinline poster="videos/t4.jpg"></video>
+            <div class="vph"><b>Video Testimonial</b><span>Add a real clip</span></div>
+            <img class="vposter" src="videos/t4.jpg" alt="" onerror="this.style.display='none'">
+            <button class="vplay" aria-label="Play testimonial"><span></span></button>
+          </div>
+        </figure>
+        <figure class="vcard" data-src="videos/t5.mp4">
+          <div class="vframe">
+            <video preload="none" playsinline poster="videos/t5.jpg"></video>
+            <div class="vph"><b>Video Testimonial</b><span>Add a real clip</span></div>
+            <img class="vposter" src="videos/t5.jpg" alt="" onerror="this.style.display='none'">
+            <button class="vplay" aria-label="Play testimonial"><span></span></button>
+          </div>
+        </figure>
+        <figure class="vcard" data-src="videos/t6.mp4">
+          <div class="vframe">
+            <video preload="none" playsinline poster="videos/t6.jpg"></video>
+            <div class="vph"><b>Video Testimonial</b><span>Add a real clip</span></div>
+            <img class="vposter" src="videos/t6.jpg" alt="" onerror="this.style.display='none'">
+            <button class="vplay" aria-label="Play testimonial"><span></span></button>
+          </div>
+        </figure>
+    </div>
+  </div>
+
+  <div class="shots">
+    <div class="shot"><div class="lab"><b>Screenshot</b><span>Add result / message</span></div><img src="photos/shot-1.jpg" alt="" onerror="this.style.display='none'"></div>
+    <div class="shot"><div class="lab"><b>Screenshot</b><span>Add result / message</span></div><img src="photos/shot-2.jpg" alt="" onerror="this.style.display='none'"></div>
+    <div class="shot"><div class="lab"><b>Screenshot</b><span>Add result / message</span></div><img src="photos/shot-3.jpg" alt="" onerror="this.style.display='none'"></div>
+    <div class="shot"><div class="lab"><b>Screenshot</b><span>Add result / message</span></div><img src="photos/shot-4.jpg" alt="" onerror="this.style.display='none'"></div>
+    <div class="shot"><div class="lab"><b>Screenshot</b><span>Add result / message</span></div><img src="photos/shot-5.jpg" alt="" onerror="this.style.display='none'"></div>
+    <div class="shot"><div class="lab"><b>Screenshot</b><span>Add result / message</span></div><img src="photos/shot-6.jpg" alt="" onerror="this.style.display='none'"></div>
+  </div>
+
+  <div class="proofsub">The Track Record</div>
   <div class="stats">
-    <div class="stat"><div class="n">250M+</div><div class="l">Views generated for BreedWise breeders</div></div>
+    <div class="stat"><div class="n">100M+</div><div class="l">Views generated for BreedWise breeders</div></div>
     <div class="stat"><div class="n">$5,000+</div><div class="l">Puppy prices our breeders reach</div></div>
     <div class="stat"><div class="n">7 Figures</div><div class="l">Collective breeder revenue generated</div></div>
     <div class="stat"><div class="n">10,000+</div><div class="l">Breeders educated worldwide by our veterinarians</div></div>
     <div class="stat"><div class="n">35</div><div class="l">Countries reached</div></div>
     <div class="stat"><div class="n">50+ Years</div><div class="l">Veterinary experience on our team</div></div>
   </div>
-  <p class="proofnote">Results are not typical and are not a guarantee of your outcome. Your results depend on your dogs, market, pricing and execution. <!-- When you have permission-approved breeder testimonials (name, program, measurable outcome), add a .treviews grid here. --></p>
+  <p class="proofnote">Results are not typical and are not a guarantee of your outcome. Your results depend on your dogs, market, pricing and execution.</p>
 </div></section>
 
 <!-- 5) YOUR HOSTS -->
@@ -371,7 +467,11 @@ footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;lin
       </ul>
     </div>
   </div>
-  <div class="center" style="margin-top:40px"><a href="#reserve" class="btn btn-gold big">See the Seat Options</a></div>
+  <div class="callout" style="margin-top:44px">
+    <h3>Why not just ask AI?</h3>
+    <p>AI can hand you a generic checklist. It can&rsquo;t tell you whether $4,500 is the right price for your program, calculate your real margins, or catch the neonatal risk in your whelping setup. That&rsquo;s what two live days with Austin and Dr. Fontaine, working on your real numbers, is for.</p>
+  </div>
+  <div class="center" style="margin-top:34px"><a href="#reserve" class="btn btn-gold big">See the Seat Options</a></div>
 </div></section>
 
 <!-- 7) RESERVE / PRICING -->
@@ -425,6 +525,13 @@ footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;lin
   <p class="checkout-note">&#128274; Secure checkout by <b>Stripe</b> · You&rsquo;ll enter your details and complete payment on the next step. Your private Zoom link is emailed to you after you reserve. By reserving, you agree to our <a href="terms.html">Terms &amp; Conditions</a> and <a href="privacy.html">Privacy Policy</a>.</p>
 </div></section>
 
+<!-- ACADEMY BRIDGE -->
+<div class="bridge"><div class="in">
+  <div class="eye">After the Summit</div>
+  <h3>The Plan, Then the Execution</h3>
+  <p>The Summit gives you the plan. <b>BreedWise Academy</b> is where you run it, with coaching, accountability, and systems to execute over the next 12 months. Academy is optional, and the Summit stands on its own.</p>
+</div></div>
+
 <!-- 8) FAQ -->
 <section class="w-band"><div class="wrap">
   <div class="sh"><div class="eye">Details</div><h2>FAQ</h2></div>
@@ -469,6 +576,25 @@ footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;lin
     var url=a.getAttribute('data-checkout')==='vip'?VIP_URL:GA_URL;
     if(url){a.setAttribute('href',url);}
     else{a.addEventListener('click',function(e){e.preventDefault();var el=document.getElementById('reserve');if(el)el.scrollIntoView({behavior:'smooth'});});}
+  });
+  var vcards=document.querySelectorAll('.vcard[data-src]');
+  function vstop(ex){Array.prototype.forEach.call(vcards,function(c){var v=c.querySelector('video');if(v&&c!==ex){v.pause();c.classList.remove('playing');}});}
+  Array.prototype.forEach.call(vcards,function(card){
+    var b=card.querySelector('.vplay'), v=card.querySelector('video'); if(!b||!v)return;
+    b.addEventListener('click',function(){
+      vstop(card);
+      if(!v.getAttribute('src')){var src=card.getAttribute('data-src');if(src)v.setAttribute('src',src);}
+      v.setAttribute('controls','');card.classList.add('playing');
+      var p=v.play(); if(p&&p.catch)p.catch(function(){});
+    });
+    v.addEventListener('ended',function(){card.classList.remove('playing');v.removeAttribute('controls');});
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-vrail]'),function(rail){
+    var wrap=rail.closest('.vrail-wrap'); if(!wrap)return;
+    var pv=wrap.querySelector('[data-vrail-prev]'), nx=wrap.querySelector('[data-vrail-next]');
+    function step(d){rail.scrollBy({left:d*rail.clientWidth*0.8,behavior:'smooth'});}
+    if(pv)pv.addEventListener('click',function(){step(-1);});
+    if(nx)nx.addEventListener('click',function(){step(1);});
   });
   var rev=document.querySelectorAll('.reveal');
   if('IntersectionObserver' in window){var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.1});
