@@ -633,7 +633,7 @@ footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;lin
 <script>
 (function(){
   /* Paste your Stripe Payment Link URLs here to make checkout live. Until then, buttons scroll to the pricing section. */
-  var GA_URL='', VIP_URL='';
+  var GA_URL='https://buy.stripe.com/8x26oJ9SIfYH1sk5CP4F20i', VIP_URL='https://buy.stripe.com/bJe5kFaWMh2L4Ew9T54F20j';
   Array.prototype.forEach.call(document.querySelectorAll('[data-checkout]'),function(a){
     var url=a.getAttribute('data-checkout')==='vip'?VIP_URL:GA_URL;
     if(url){a.setAttribute('href',url);}
