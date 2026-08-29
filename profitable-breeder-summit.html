@@ -258,11 +258,11 @@ footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;lin
 /* screenshot proof grid */
 .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:30px auto 0}
 @media(max-width:700px){.shots{grid-template-columns:1fr 1fr}}
-.shot{border-radius:12px;overflow:hidden;border:1px solid var(--line-p);background:linear-gradient(160deg,#1c1913,#0b0a07);aspect-ratio:4/3;position:relative}
+.shot{border-radius:12px;overflow:hidden;border:1px solid var(--line-p);background:#f5f3ee;aspect-ratio:4/3;position:relative}
 .shot .lab{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:12px}
-.shot .lab b{color:#fff;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
-.shot .lab span{font-size:11px;color:var(--muted-p)}
-.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
+.shot .lab b{color:#6b6478;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.shot .lab span{font-size:11px;color:#9a9284}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:2}
 .proofsub{text-align:center;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:800;margin:52px 0 22px}
 /* AI callout + academy bridge */
 .callout{max-width:760px;margin:0 auto;background:rgba(255,255,255,.5);border:1px solid var(--line);border-radius:16px;padding:26px 30px;text-align:center;box-shadow:0 20px 40px -32px rgba(0,0,0,.2)}
@@ -438,8 +438,15 @@ footer .disc{max-width:760px;margin:16px auto 0;font-size:11px;color:#8a8272;lin
     </div>
   </div>
 
+  <div class="treviews" style="grid-template-columns:1fr 1fr;max-width:900px;margin:40px auto 0">
+    <div class="trev"><div class="stars">★★★★★</div><p>&ldquo;Before BreedWise I was a complete mess with sales. After a few months I understand my market, how to position myself, and how to communicate my program&rsquo;s value in a way that converts. The best part is the community.&rdquo;</p><div class="who"><span class="av">MG</span><div><b>Madison Garruso</b><span>BreedWise Academy member</span></div></div></div>
+    <div class="trev"><div class="stars">★★★★★</div><p>&ldquo;We&rsquo;ve bred for over 7 years and knew we were undervaluing our program. Less than a month after joining, we sold a puppy for the highest price in our program&rsquo;s history.&rdquo;</p><div class="who"><span class="av">TD</span><div><b>Trina &amp; Dion</b><span>Breeding 7+ years · Accelerator</span></div></div></div>
+    <div class="trev"><div class="stars">★★★★★</div><p>&ldquo;I started breeding 13 years ago, and the information I learned through BreedWise in 3 months would have saved me years had I known it sooner.&rdquo;</p><div class="who"><span class="av">MP</span><div><b>Michael Page</b><span>Breeding 13 years</span></div></div></div>
+    <div class="trev"><div class="stars">★★★★★</div><p>&ldquo;I&rsquo;ve bred for 7 years and never learned anything like what BreedWise offers. I started OFA testing, I&rsquo;m improving my breed, and my clients are paying me three times more than I&rsquo;ve ever charged.&rdquo;</p><div class="who"><span class="av">JG</span><div><b>Jasmin Garcia</b><span>Breeding 7 years</span></div></div></div>
+  </div>
+
   <div class="shots">
-    <div class="shot"><div class="lab"><b>Screenshot</b><span>Add result / message</span></div><img src="photos/shot-1.jpg" alt="" onerror="this.style.display='none'"></div>
+    <div class="shot"><img src="photos/shot-1.jpg" alt="Breeder deposit message"></div>
     <div class="shot"><div class="lab"><b>Screenshot</b><span>Add result / message</span></div><img src="photos/shot-2.jpg" alt="" onerror="this.style.display='none'"></div>
     <div class="shot"><div class="lab"><b>Screenshot</b><span>Add result / message</span></div><img src="photos/shot-3.jpg" alt="" onerror="this.style.display='none'"></div>
     <div class="shot"><div class="lab"><b>Screenshot</b><span>Add result / message</span></div><img src="photos/shot-4.jpg" alt="" onerror="this.style.display='none'"></div>
