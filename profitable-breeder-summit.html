@@ -297,7 +297,9 @@ section{padding:84px 0}
 /* hero outcome chips: 4-up desktop, 2-up tablet, 1-up phone */
 .chips{display:flex;flex-wrap:wrap;justify-content:center;max-width:1060px}
 .chip{display:inline-flex;justify-content:center;white-space:nowrap;font-size:11.5px;padding:9px 14px}
-@media(max-width:560px){.chips{flex-direction:column;align-items:stretch;max-width:380px}.chip{white-space:normal}}
+@media(max-width:560px){.chips{flex-direction:column;align-items:stretch;max-width:400px;gap:9px}.chip{white-space:normal;justify-content:flex-start;font-size:13px;padding:12px 16px}}
+/* trim pre-VSL reading on mobile: keep the punchy sub, drop the dense supporting paragraph (desktop keeps both) */
+@media(max-width:767px){.hero .watchline{display:none}}
 /* decisions: equal title real-estate so descriptions/deliverables line up */
 .pillar h3{min-height:2.5em;display:flex;align-items:flex-end}
 @media(max-width:640px){.pillars{grid-template-columns:1fr;max-width:520px}}
@@ -322,9 +324,9 @@ section{padding:84px 0}
 <!-- 2) HERO -->
 <header class="hero"><div class="wrap">
   <span class="pill">For Established Breeders Producing Litters</span>
-  <h1>Build the Business Behind<br class="hbr">Your Breeding Program</h1>
+  <h1>Build the Business Behind <br class="hbr">Your Breeding Program</h1>
   <p class="sub">Know your numbers. Strengthen your pricing. Build demand before your next litter arrives. And improve the systems protecting your dam and puppies.</p>
-  <p class="watchline" style="max-width:860px;margin:18px auto 0">In two live working days with BreedWise founder Austin Shanks and reproduction specialist Dr. Emmanuel Fontaine, build a more profitable, professionally run breeding program, without increasing litter volume or compromising your standards.</p>
+  <p class="watchline" style="max-width:1040px;margin:18px auto 0">In two live working days with BreedWise founder Austin Shanks and reproduction specialist Dr. Emmanuel Fontaine, build a more profitable, professionally run breeding program, without increasing litter volume or compromising your standards.</p>
 
   <div class="herocard">
     <span class="tag">Live on Zoom · Sept 26–27</span>
