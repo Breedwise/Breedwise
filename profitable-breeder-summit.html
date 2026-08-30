@@ -142,6 +142,16 @@ section{padding:76px 0}
 .roadmapbar{max-width:720px;margin:34px auto 0;text-align:center;background:#fff;border:1px solid var(--gold);border-radius:14px;padding:22px 26px}
 .roadmapbar b{display:block;font-weight:800;text-transform:uppercase;font-size:1rem;color:var(--ink);letter-spacing:.02em;margin-bottom:4px}
 .roadmapbar span{color:var(--muted);font-size:.95rem}
+.cycle{max-width:620px;margin:6px auto 4px}
+.cyc-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cyc-node{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 14px;text-align:center;box-shadow:0 12px 28px -20px rgba(0,0,0,.3)}
+.cyc-node b{display:block;font-weight:900;letter-spacing:.05em;text-transform:uppercase;color:var(--gold-deep);font-size:.98rem}
+.cyc-node span{display:block;margin-top:5px;font-size:12px;color:var(--muted);line-height:1.35}
+.cyc-core{margin:14px auto;max-width:280px;background:var(--gold-grad);color:#2b2109;border-radius:999px;padding:15px 22px;text-align:center;font-weight:900;text-transform:uppercase;letter-spacing:.05em;font-size:14px;box-shadow:0 16px 34px -14px rgba(217,185,104,.6)}
+@media(max-width:560px){.cyc-row{grid-template-columns:1fr;gap:11px}.cyc-core{margin:11px auto}}
+.ee-item{flex:1;min-width:160px;text-align:center;background:#fff;border:1px solid var(--gold);border-radius:13px;padding:15px 14px}
+.ee-item b{display:block;text-transform:uppercase;letter-spacing:.05em;font-size:12.5px;color:var(--gold-deep);font-weight:800}
+.ee-item span{display:block;margin-top:5px;font-size:12.5px;color:var(--muted)}
 
 /* business + science halves */
 .halves{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:920px;margin:0 auto}
@@ -388,31 +398,22 @@ section{padding:84px 0}
   <div class="center" style="margin-top:32px"><a href="#reserve" class="btn btn-gold big">Reserve My Seat for the Intensive</a></div>
 </div></section>
 
-<!-- 5) PAIN / DIAGNOSIS -->
+<!-- 5) PAIN / DIAGNOSIS (merged) -->
 <section class="w-band"><div class="wrap">
   <div class="sh"><div class="eye">Revenue Is Not Profit</div><h2>Selling the Litter Doesn&rsquo;t Automatically Mean the Litter Was Profitable.</h2></div>
   <div class="bodycopy">
-    <p>Money coming in feels like success. But revenue and profit are not the same thing, and most programs have never worked out the difference on their own numbers. Every litter carries real costs:</p>
+    <p>Money coming in feels like success. But revenue and profit are not the same thing. Every litter carries real costs:</p>
   </div>
   <div class="costtags">
     <span>Stud &amp; service fees</span><span>Progesterone &amp; reproductive care</span><span>Travel &amp; shipping</span><span>Health testing</span><span>Veterinary care</span><span>C-section &amp; emergency care</span><span>Whelping supplies</span><span>Food</span><span>Registration</span><span>Marketing</span><span>Your time &amp; labor</span><span>Puppy care</span><span>Unexpected complications</span>
   </div>
   <div class="bodycopy" style="margin-top:26px">
-    <p>If you&rsquo;re pricing primarily by looking at what other breeders charge, you may have no idea whether your current pricing actually supports your standards.</p>
-    <p>And profitability isn&rsquo;t only a pricing problem. If puppies arrive before demand exists, your leverage changes. Now you&rsquo;re posting harder, answering more messages, entertaining lower-quality inquiries, hearing &ldquo;what&rsquo;s your lowest?&rdquo;, watching puppies get older, and questioning whether you should discount.</p>
-    <p class="em">That is not a marketing problem in isolation. It&rsquo;s a system problem.</p>
-    <p>The Intensive connects your economics, pricing, demand, buyer process and veterinary preparation into one breeding program strategy.</p>
+    <p>If your pricing is primarily based on what other breeders charge, you may have no idea whether that price actually supports the standards you&rsquo;re trying to maintain.</p>
+    <p>And profitability isn&rsquo;t only a pricing problem. If puppies arrive before qualified demand exists, your leverage changes. Now you&rsquo;re posting harder, answering more messages, entertaining lower-quality inquiries, hearing &ldquo;what&rsquo;s your lowest?&rdquo;, watching puppies get older, and wondering whether you should discount.</p>
+    <p>A pricing mistake can affect every puppy in the litter. A demand problem becomes obvious when puppies are already on the ground. A preparation gap often becomes visible when the pressure is highest.</p>
   </div>
-</div></section>
-
-<!-- 6) COST OF INACTION -->
-<section class="p-band" style="padding:64px 0"><div class="wrap">
-  <div class="sh" style="margin-bottom:26px"><div class="eye">The Cost of Guessing</div><h2>Another Litter Is an Expensive Place to Keep Guessing.</h2></div>
-  <div class="bodycopy">
-    <p>You do not need dozens of additional litters to discover what works through trial and error. You need to identify the gaps before the next litter exposes them.</p>
-    <p>A pricing mistake can follow every puppy in a litter. A demand problem becomes obvious when puppies are already on the ground. A preparation gap often becomes visible when the pressure is highest.</p>
-    <p class="em">The goal of this Intensive is to find those gaps before they become another expensive lesson.</p>
-  </div>
+  <p style="text-align:center;max-width:760px;margin:34px auto 0;font-weight:900;text-transform:uppercase;font-size:clamp(1.2rem,2.8vw,1.6rem);color:var(--ink);letter-spacing:-.01em;text-wrap:balance">Another Litter Is an Expensive Place to Keep Guessing.</p>
+  <p style="text-align:center;max-width:700px;margin:14px auto 0;color:var(--muted);font-size:1.05rem">The Profitable Breeder Intensive is designed to help you identify those gaps before your next litter exposes them.</p>
 </div></section>
 
 <!-- 6.5) THE PROFITABLE BREEDING CYCLE -->
@@ -421,20 +422,29 @@ section{padding:84px 0}
     <div class="eye">The Profitable Breeding Cycle&trade;</div>
     <h2 style="font-size:clamp(1.4rem,3.4vw,2.2rem)">One Real Litter. One Connected Plan.</h2>
   </div>
-  <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 14px;margin:0 auto 28px;letter-spacing:.14em;text-transform:uppercase;font-size:13px">
-    <span style="font-weight:900;color:var(--gold-deep)">PLAN</span><span style="color:var(--gold)">&middot;</span><span style="font-weight:900;color:var(--gold-deep)">PRODUCE</span><span style="color:var(--gold)">&middot;</span><span style="font-weight:900;color:var(--gold-deep)">PROTECT</span><span style="color:var(--gold)">&middot;</span><span style="font-weight:900;color:var(--gold-deep)">PRE-SELL</span>
+  <div style="text-align:center;font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:12.5px;color:var(--gold-deep);margin-bottom:18px">Plan &middot; Produce &middot; Protect &middot; Pre-Sell</div>
+  <div class="cycle">
+    <div class="cyc-row">
+      <div class="cyc-node"><b>Plan</b><span>Your economics &amp; reproductive plan</span></div>
+      <div class="cyc-node"><b>Produce</b><span>Your standards &amp; value</span></div>
+    </div>
+    <div class="cyc-core">Your Working Litter</div>
+    <div class="cyc-row">
+      <div class="cyc-node"><b>Protect</b><span>Whelping &amp; neonatal preparation</span></div>
+      <div class="cyc-node"><b>Pre-Sell</b><span>Qualified demand before homes</span></div>
+    </div>
   </div>
-  <div class="bodycopy" style="text-align:center;max-width:760px;margin:0 auto">
-    <p>Your economics, reproductive plan, preparation, standards, demand and buyer process do not operate independently.</p>
-    <p>At the beginning of the Intensive, you&rsquo;ll choose one upcoming litter as your <b style="color:var(--ink)">Working Litter</b>.</p>
-    <p>Every calculation, decision, worksheet and exercise across both days will be applied to that actual breeding, not a hypothetical example.</p>
-    <p class="em">By the end of the weekend, the pieces come together into one operating plan for the program you&rsquo;re actually running.</p>
+  <div class="bodycopy" style="text-align:center;max-width:760px;margin:28px auto 0">
+    <p>Your economics, reproductive plan, preparation, standards, demand and buyer process do not operate independently. That&rsquo;s why we don&rsquo;t teach them independently.</p>
+    <p>At the beginning of the Intensive, you&rsquo;ll choose one upcoming litter as your <b style="color:var(--ink)">Working Litter</b>. Every calculation, decision, worksheet and exercise across both days will be applied to that actual breeding, not a hypothetical example.</p>
+    <p>Your numbers affect your pricing. Your reproductive assumptions affect your numbers. Your standards affect your value. Your preparation protects the dogs and the program. And your demand strategy begins before puppies need homes.</p>
+    <p class="em">By the end of the weekend, those pieces come together into one operating plan for the breeding program you&rsquo;re actually running.</p>
   </div>
 </div></section>
 
 <!-- 7) DECISIONS MADE -->
 <section class="cream-band"><div class="wrap">
-  <div class="sh"><div class="eye">What You Leave With</div><h2 style="font-size:clamp(1.35rem,3.3vw,2.1rem)">Decisions Made. Not More Homework.</h2><p>Bring your real breeding program into the room. Across both days you&rsquo;ll use your <b style="color:var(--ink)">Working Litter</b> to calculate, diagnose, decide and build the systems behind your program. Each exercise becomes part of your completed <b style="color:var(--ink)">Profitable Breeder Plan&trade;</b>, so you leave with more than information. You leave knowing what needs to happen next.</p></div>
+  <div class="sh"><div class="eye">What You Leave With</div><h2 style="font-size:clamp(1.35rem,3.3vw,2.1rem)">Decisions Made. Not More Homework.</h2><p>Bring your real breeding program into the room. Across both days you&rsquo;ll use your <b style="color:var(--ink)">Working Litter</b> to calculate, diagnose, decide and build the systems behind your program. Each exercise becomes part of your completed <b style="color:var(--ink)">Profitable Breeder Plan&trade;</b>. You don&rsquo;t leave with more information to eventually organize. You leave knowing what needs to happen next.</p></div>
   <div class="pillars">
     <div class="pillar"><div class="num">1</div><h3>Your Numbers, Calculated</h3><p>Work through your actual litter economics so you understand what your program costs to operate and what remains after the real expenses.</p><div class="deliv">Breeder Profit Calculator + completed litter economics</div></div>
     <div class="pillar"><div class="num">2</div><h3>Your Pricing, Built</h3><p>Stop pulling your price from the market around you. Build pricing around your economics, positioning and value, then clarify how you communicate that value to buyers.</p><div class="deliv">Pricing framework + value stack</div></div>
@@ -447,7 +457,7 @@ section{padding:84px 0}
     <h3 style="text-align:center;font-weight:900;text-transform:uppercase;font-size:clamp(1.2rem,2.8vw,1.6rem);color:var(--ink);letter-spacing:-.01em;margin-bottom:20px">One Plan. Built Across Two Days.</h3>
     <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:9px 10px;margin-bottom:22px"><span style="display:inline-block;background:#fff;border:1px solid var(--gold);border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:700;color:var(--ink)">Your litter economics</span><span style="display:inline-block;background:#fff;border:1px solid var(--gold);border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:700;color:var(--ink)">Your reproductive assumptions</span><span style="display:inline-block;background:#fff;border:1px solid var(--gold);border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:700;color:var(--ink)">Your pricing and value</span><span style="display:inline-block;background:#fff;border:1px solid var(--gold);border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:700;color:var(--ink)">Your whelping and neonatal preparation</span><span style="display:inline-block;background:#fff;border:1px solid var(--gold);border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:700;color:var(--ink)">Your 90-day demand plan</span><span style="display:inline-block;background:#fff;border:1px solid var(--gold);border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:700;color:var(--ink)">Your buyer process</span><span style="display:inline-block;background:#fff;border:1px solid var(--gold);border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:700;color:var(--ink)">Your next 12 months</span></div>
     <p style="text-align:center;color:var(--muted);font-size:1.02rem;margin-bottom:10px">These are not disconnected worksheets you&rsquo;ll download and forget about.</p>
-    <p style="text-align:center;color:var(--ink);font-weight:700;font-size:1.08rem;text-wrap:balance">By 2 PM Sunday, they come together inside your <span style="color:var(--gold-deep)">Profitable Breeder Plan&trade;</span>, built around your actual program and your actual next litter.</p>
+    <p style="text-align:center;color:var(--ink);font-weight:700;font-size:1.08rem;text-wrap:balance">By 2 PM Sunday, they come together inside your <span style="color:var(--gold-deep)">Profitable Breeder Plan&trade;</span>, built around your actual program and your actual Working Litter.</p>
   </div>
 </div></section>
 
@@ -529,11 +539,10 @@ section{padding:84px 0}
         <div class="ph"><img src="austin.jpg" alt="" onerror="this.remove()">AS</div>
         <div><div class="nm">Austin Shanks</div><div class="rl">Founder of BreedWise · Breeder &amp; Business Builder</div></div>
       </div>
-      <p class="fc">Austin helps breeders build the systems most programs were never built with: economics, pricing, positioning, demand, buyer qualification and sales.</p>
+      <p class="fc">Austin helps breeders build the systems most programs were never formally built with: economics, pricing, positioning, demand, buyer qualification, sales and operations.</p>
       <ul>
-        <li><span class="ck">✓</span>Helped breeders raise their minimum puppy price from <b>~$2,500 to $5,000+</b></li>
-        <li><span class="ck">✓</span>Operates a breeding program with an average puppy price of <b>$10,000+</b></li>
-        <li><span class="ck">✓</span>Creator of the BreedWise framework connecting economics, pricing, positioning, demand and sales</li>
+        <li><span class="ck">✓</span>Founder of BreedWise and creator of its business framework across economics, pricing, positioning, demand, qualification and sales</li>
+        <li><span class="ck">✓</span>Operates his own premium breeding program and coaches established breeders on the business behind it</li>
       </ul>
     </div>
     <div class="host">
@@ -542,9 +551,8 @@ section{padding:84px 0}
         <div class="ph"><img src="Fontaine.jpg" alt="" onerror="this.remove()">EF</div>
         <div><div class="nm">Dr. Emmanuel Fontaine</div><div class="rl">DVM · Dipl. ECAR · Reproduction &amp; Neonatology</div></div>
       </div>
-      <p class="fc">Dr. Fontaine translates reproductive and neonatal science into frameworks breeders can use to prepare better, track outcomes and collaborate with their own veterinarians.</p>
+      <p class="fc">Dr. Fontaine translates reproductive and neonatal science into practical frameworks breeders can use to prepare more effectively, monitor outcomes and collaborate more effectively with their own veterinarian.</p>
       <ul>
-        <li><span class="ck">✓</span>DVM · Board-certified by the European College of Animal Reproduction (Dipl. ECAR)</li>
         <li><span class="ck">✓</span>Decades advancing canine fertility, pregnancy &amp; neonatal care</li>
         <li><span class="ck">✓</span>Scientific Architect of BreedWise, translating veterinary science into practical breeder systems</li>
       </ul>
@@ -581,12 +589,12 @@ section{padding:84px 0}
         <li><span class="ck">✓</span>Your Whelping Readiness Plan</li>
         <li><span class="ck">✓</span>90-day next-litter demand planning</li>
         <li><span class="ck">✓</span>Buyer qualification &amp; sales process</li>
-        <li><span class="ck">✓</span>Your 12-Month Profitable Breeder Plan</li>
+        <li><span class="ck">✓</span>Your 12-Month Profitable Breeder Plan&trade;</li>
       </ul>
       <div class="dayend">By the end of Day Two: &ldquo;I know how I&rsquo;m preparing for the litter, how I&rsquo;m building qualified demand before puppies need homes, and exactly what my program needs to execute over the next 12 months.&rdquo;</div>
     </div>
   </div>
-  <div class="roadmapbar"><b>Then both days connect into your plan</b><span>Your 12-Month Profitable Breeder Plan&trade; + 30-Day Execution Priorities.</span></div>
+  <div class="roadmapbar"><b>Two Days. One Connected Plan.</b><span>Everything you calculate, diagnose and build feeds back into the same Working Litter and ultimately into your completed Profitable Breeder Plan&trade;.</span></div>
 </div></section>
 
 <!-- 12) WHAT THE INTENSIVE IS / IS NOT -->
@@ -596,25 +604,19 @@ section{padding:84px 0}
     <div class="col no">
       <h3>What it is not</h3>
       <ul>
-        <li>Breeding basics or breed selection</li>
-        <li>&ldquo;How to breed your first litter&rdquo;</li>
+        <li>Breeding basics or &ldquo;how to breed your first litter&rdquo;</li>
         <li>Six hours of passive lectures</li>
         <li>Generic motivational business advice</li>
-        <li>A shortcut to producing more puppies</li>
         <li>A replacement for your veterinarian</li>
-        <li>A two-day pitch that withholds the useful information</li>
       </ul>
     </div>
     <div class="col yes">
       <h3>What it is</h3>
       <ul>
-        <li>Business analysis using your real program</li>
-        <li>Pricing and profitability decisions</li>
-        <li>Demand planning</li>
-        <li>Buyer-process strategy</li>
+        <li>Business analysis using your actual program</li>
+        <li>Pricing, profitability, demand and buyer decisions</li>
         <li>Veterinary-backed preparation frameworks</li>
-        <li>Live Q&amp;A, working templates and expert feedback</li>
-        <li>A completed 12-Month Profitable Breeder Plan&trade; you build in the room</li>
+        <li>A completed plan you build in the room</li>
       </ul>
     </div>
   </div>
@@ -623,7 +625,13 @@ section{padding:84px 0}
 
 <!-- PRE-EVENT ACCESS -->
 <section class="cream-band" style="padding:62px 0"><div class="wrap">
-  <div class="sh" style="margin-bottom:0"><div class="eye">Enroll Early</div><h2 style="font-size:clamp(1.4rem,3.4vw,2.2rem)">Your Intensive Starts Before September 26</h2><p>Once you reserve your seat, you&rsquo;ll enter the private attendee room where we&rsquo;ll help you prepare your program, numbers and questions, so you can spend the live sessions making decisions, not searching for information.</p></div>
+  <div class="sh" style="margin-bottom:0"><div class="eye">Enroll Early</div><h2 style="font-size:clamp(1.4rem,3.4vw,2.2rem)">Your Intensive Starts Before September 26</h2></div>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;max-width:680px;margin:24px auto 0">
+    <div class="ee-item"><b>Prepare Your Numbers</b><span>Come in with your litter economics</span></div>
+    <div class="ee-item"><b>Meet the Room</b><span>Get to know the other breeders</span></div>
+    <div class="ee-item"><b>Bring Your Questions</b><span>Have your program&rsquo;s questions ready</span></div>
+  </div>
+  <p style="text-align:center;max-width:720px;margin:20px auto 0;color:var(--muted);font-size:1.05rem">Once you reserve your seat, you&rsquo;ll enter the private attendee room where we&rsquo;ll help you prepare your program, numbers and questions so you can spend the live sessions making decisions, not searching for information.</p>
 </div></section>
 
 <!-- 13) PRICING -->
@@ -662,7 +670,7 @@ section{padding:84px 0}
       <span class="flag">Only 10 Seats</span>
       <div class="tn">VIP</div>
       <div class="pr">$1,000</div>
-      <div class="cap">Only 10 VIP seats, because of the additional individualized support.</div>
+      <div class="cap">Only 10 VIP seats are available because of the individualized support.</div>
       <div class="tagline">For the breeder who wants more eyes on their program.</div>
       <div class="incl">Everything in General Admission, plus:</div>
       <ul>
@@ -673,9 +681,9 @@ section{padding:84px 0}
         <li><span class="ck">✓</span>Personalized feedback on your next-litter strategy</li>
         <li><span class="ck">✓</span>Private 30-Minute Plan Review with Austin</li>
         <li><span class="ck">✓</span>Priority Q&amp;A</li>
-        <li><span class="ck">✓</span><b>VIP-only implementation space</b> inside the attendee community</li>
         <li><span class="ck">✓</span>Smaller-group implementation support</li>
-        <li><span class="ck">✓</span><b>Lifetime access</b> to Intensive recordings</li>
+        <li><span class="ck">✓</span><b>VIP-only implementation space</b> inside the attendee community</li>
+        <li><span class="ck">✓</span><b>Lifetime Intensive Recordings</b></li>
       </ul>
       <a class="btn btn-gold block" data-checkout="vip" href="#">Claim a VIP Seat · $1,000</a>
       <div class="tnote">Only 10 VIP seats.</div>
@@ -730,20 +738,14 @@ section{padding:84px 0}
 <section class="w-band"><div class="wrap">
   <div class="sh"><div class="eye">Details</div><h2>Questions, Answered</h2></div>
   <div class="faq">
-    <details class="qa"><summary>Who is this for?</summary><div class="qa-a"><p>Established breeders already producing litters, generally around 2–3+ per year, who want stronger economics, pricing, demand, buyer systems and veterinary-backed preparation. This is not designed as a first-litter course.</p></div></details>
-    <details class="qa"><summary>I&rsquo;ve been breeding for years. Will this be too basic?</summary><div class="qa-a"><p>No. Breeders with 7–13 years of experience have reported meaningful changes to how they price, sell and prepare after working with BreedWise. The Intensive assumes breeding experience and focuses on the business and preparation systems many experienced breeders never formally built.</p></div></details>
-    <details class="qa"><summary>Does this teach me how to breed dogs?</summary><div class="qa-a"><p>No. This is not Breeding 101. It works on the business behind your program (economics, pricing, demand, buyer process) and veterinary-backed preparation systems (dam, whelping, neonatal), not the fundamentals of how to breed.</p></div></details>
-    <details class="qa"><summary>Can this actually help me make more money?</summary><div class="qa-a"><p>We don&rsquo;t guarantee outcomes. The Intensive helps you understand your economics, pricing, positioning, demand and sales, all of which influence business performance. Results depend on your market, program, breed, pricing and execution.</p></div></details>
-    <details class="qa"><summary>Why does veterinary education belong in a profitability event?</summary><div class="qa-a"><p>Because profitability without standards is not the BreedWise philosophy. A professional breeding program needs both sustainable economics and systems designed around responsible care. That is the whole point of pairing Austin with Dr. Fontaine.</p></div></details>
-    <details class="qa"><summary>Is Dr. Fontaine replacing my veterinarian?</summary><div class="qa-a"><p>Absolutely not. His material is educational frameworks only, designed to help you prepare better and collaborate more effectively with your own veterinarian.</p></div></details>
-    <details class="qa"><summary>What if my breed has different pricing?</summary><div class="qa-a"><p>This isn&rsquo;t about imposing a universal puppy price. It&rsquo;s about understanding your own economics, market, positioning and value, so your pricing fits your program rather than someone else&rsquo;s.</p></div></details>
-    <details class="qa"><summary>What if I&rsquo;m not good at sales?</summary><div class="qa-a"><p>You don&rsquo;t need to become a pushy salesperson. The focus is qualification, communicating value, structured follow-up, and helping the right buyer make a confident decision.</p></div></details>
-    <details class="qa"><summary>Do I need a large social media following?</summary><div class="qa-a"><p>No. The demand system is not built to depend entirely on follower count. It&rsquo;s about creating and converting qualified interest before your next litter needs homes.</p></div></details>
-    <details class="qa"><summary>What happens if I miss part of the live event?</summary><div class="qa-a"><p>General Admission includes 14-day replay access, and VIP includes lifetime recordings. Dogs don&rsquo;t care about your calendar, so we built in a cushion.</p></div></details>
-    <details class="qa"><summary>What&rsquo;s the difference between GA and VIP?</summary><div class="qa-a"><p>General Admission gives you the system, frameworks and working event. VIP adds additional personalized implementation support and expert review of your own program, business and breeding audits, implementation labs, a private plan review, and lifetime recordings.</p></div></details>
-    <details class="qa"><summary>What do I actually leave with?</summary><div class="qa-a"><p>Your completed litter economics, a pricing framework and value stack, a 90-Day Next-Litter Demand Plan, a clearer buyer process, a whelping &amp; neonatal preparation checklist, and your 12-Month Profitable Breeder Plan&trade; with 30-day priorities, all built during the event.</p></div></details>
-    <details class="qa"><summary>What happens after the Intensive?</summary><div class="qa-a"><p>You leave with a plan you can run on your own. For breeders who want ongoing coaching and accountability, BreedWise Academy is an optional next step, not a requirement.</p></div></details>
-    <details class="qa"><summary>What is the refund policy?</summary><div class="qa-a"><p>Full refund up to 14 days before the Intensive. Inside 14 days, your payment converts to credit toward a future BreedWise event. Seats may also be transferred to another breeder before the event.</p></div></details>
+    <details class="qa"><summary>Who is this for?</summary><div class="qa-a"><p>Established breeders already producing litters, generally around 2&ndash;3+ per year, who want stronger economics, pricing, demand, buyer systems and veterinary-backed preparation. This is not designed as a first-litter course.</p></div></details>
+    <details class="qa"><summary>I&rsquo;ve been breeding for years. Will this be too basic?</summary><div class="qa-a"><p>No. Breeders with 7&ndash;13 years of experience have reported meaningful changes after working with BreedWise. The Intensive assumes breeding experience and focuses on the business and preparation systems many experienced breeders never formally built.</p></div></details>
+    <details class="qa"><summary>Can this actually help me make more money?</summary><div class="qa-a"><p>We do not guarantee financial outcomes. The Intensive helps you understand and improve the systems that influence business performance, including economics, pricing, positioning, demand, qualification and sales. Your results depend on your program, breed, market, pricing and execution.</p></div></details>
+    <details class="qa"><summary>Why does veterinary education belong in a profitability event?</summary><div class="qa-a"><p>Because profitability without standards is not the BreedWise philosophy. A professional breeding program needs both sustainable economics and systems designed around responsible care. That is why Austin and Dr. Fontaine teach the Intensive together.</p></div></details>
+    <details class="qa"><summary>Is Dr. Fontaine replacing my veterinarian?</summary><div class="qa-a"><p>Absolutely not. His teaching is educational and designed to help you prepare more effectively and collaborate more effectively with your own veterinarian.</p></div></details>
+    <details class="qa"><summary>What happens if I miss part of the live event?</summary><div class="qa-a"><p>General Admission includes 14-day replay access. VIP includes lifetime access to the recordings. Dogs do not care about your calendar, so we built in a cushion.</p></div></details>
+    <details class="qa"><summary>What&rsquo;s the difference between General Admission and VIP?</summary><div class="qa-a"><p>General Admission gives you the system, frameworks, tools, working sessions and completed plan. VIP adds more personalized implementation support and individual expert review of your program.</p></div></details>
+    <details class="qa"><summary>What do I actually leave with?</summary><div class="qa-a"><p>You leave with your completed Profitable Breeder Plan&trade;, built around your own Working Litter. It includes your litter economics, pricing and value stack, reproductive planning considerations, whelping and neonatal readiness, 90-day demand plan, buyer process, 12-month roadmap and next 30-day priorities.</p></div></details>
   </div>
 </div></section>
 
@@ -752,12 +754,16 @@ section{padding:84px 0}
   <div class="eye" style="color:var(--gold);font-weight:800;letter-spacing:.2em;text-transform:uppercase;font-size:12px">Your Next Litter Will Come</div>
   <h2 style="font-weight:900;text-transform:uppercase;font-size:clamp(1.5rem,3.8vw,2.5rem);color:#fff;margin-top:12px">The Question Is Whether You&rsquo;ll Run It With the Same Systems, or Better Ones.</h2>
   <div class="bodycopy" style="margin-top:20px">
-    <p>You can keep piecing together profitability, pricing, marketing, sales and breeding systems one lesson at a time. Or you can spend two focused days putting the pieces together.</p>
-    <p style="color:#fff;font-weight:600">Know your numbers. Clarify your pricing. Build the demand plan. Strengthen your preparation. Map the next 12 months. And walk away knowing exactly what your breeding program needs next.</p>
+    <p>You can keep piecing together profitability, pricing, marketing, sales and breeding systems one lesson at a time. Or spend two focused days putting the pieces together around the breeding program you already have.</p>
+    <p style="color:#fff;font-weight:600">Know your numbers. Clarify your pricing. Strengthen your preparation. Build qualified demand. Create your buyer process. Map the next 12 months. And leave holding the plan for what happens next.</p>
   </div>
-  <div style="margin-top:26px;color:var(--muted-p2);font-size:13px;letter-spacing:.05em;text-transform:uppercase">The Profitable Breeder Intensive™ · September 26–27, 2026 · 11 AM–2 PM ET · Live on Zoom · 40 GA · 10 VIP · $500 / $1,000</div>
-  <div style="margin-top:24px"><a href="#reserve" class="btn btn-gold big">Reserve My Seat for the Intensive</a></div>
-  <p style="margin-top:16px;color:var(--muted-p);font-size:14px">50 breeders. Two days. One clearer plan for the business behind your breeding program.</p>
+  <div style="margin-top:28px;color:var(--muted-p);font-size:13.5px;line-height:1.9;letter-spacing:.03em;text-transform:uppercase">
+    <div style="color:var(--gold);font-weight:800;letter-spacing:.14em">The Profitable Breeder Intensive&trade;</div>
+    September 26&ndash;27, 2026 &middot; 11 AM&ndash;2 PM ET &middot; Live on Zoom<br>
+    40 General Admission &middot; 10 VIP &middot; $500 / $1,000
+  </div>
+  <div style="margin-top:24px"><a href="#reserve" class="btn btn-gold big">Build My Breeding Plan</a></div>
+  <p style="margin-top:16px;color:var(--muted-p);font-size:14px">50 breeders. Two days. One connected plan.</p>
 </div></section>
 
 <footer>
