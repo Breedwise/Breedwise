@@ -232,6 +232,12 @@ section{padding:76px 0}
 .opshot{max-width:340px;margin:32px auto 0;text-align:center}
 .opshot img{width:100%;border-radius:16px;border:1px solid var(--gold);box-shadow:0 26px 52px -24px rgba(0,0,0,.75);display:block}
 .opshot figcaption{margin-top:12px;color:var(--muted-p);font-size:12.5px;font-style:italic;max-width:300px;margin-left:auto;margin-right:auto}
+.bothpix{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:600px;margin:4px auto 34px}
+.bothpix figure{margin:0;text-align:center}
+.bothpix img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center top;border-radius:16px;border:1px solid var(--gold);box-shadow:0 26px 52px -26px rgba(0,0,0,.7);display:block}
+.bothpix figcaption{margin-top:11px;font-size:12px;color:var(--muted-p);text-transform:uppercase;letter-spacing:.06em}
+.bothpix figcaption b{display:block;color:#fff;font-weight:800;font-size:13.5px;letter-spacing:.02em;margin-bottom:2px}
+@media(max-width:560px){.bothpix{grid-template-columns:1fr;max-width:320px;gap:16px}}
 .host .nm{font-weight:800;font-size:1.22rem;color:var(--ink);text-transform:uppercase;letter-spacing:-.01em;line-height:1.05}
 .host .rl{color:var(--gold-deep);font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:700;margin-top:6px}
 .host .fc{color:var(--muted);font-size:.96rem;margin-bottom:14px}
@@ -511,6 +517,10 @@ section{padding:84px 0}
 <!-- 9) BUSINESS + SCIENCE MECHANISM -->
 <section class="p-band"><div class="wrap">
   <div class="sh"><div class="eye">The BreedWise Difference</div><h2>A Professional Breeding Program Needs Both Halves.</h2></div>
+  <div class="bothpix">
+    <figure><img src="photos/austin-business.jpg" alt="Austin Shanks, the business side" loading="lazy"><figcaption><b>Austin Shanks</b>The Business</figcaption></figure>
+    <figure><img src="photos/fontaine-speaking.jpg" alt="Dr. Emmanuel Fontaine, the science side" loading="lazy"><figcaption><b>Dr. Emmanuel Fontaine</b>The Science</figcaption></figure>
+  </div>
   <div class="halves">
     <div class="half"><div class="h">The Business</div><ul>
       <li><span class="ck">✓</span>Numbers &amp; margins</li>
