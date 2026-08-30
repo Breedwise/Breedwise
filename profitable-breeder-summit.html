@@ -67,8 +67,10 @@ section{padding:76px 0}
   border:1px solid var(--line-p);box-shadow:0 40px 90px -40px rgba(0,0,0,.7)}
 .herocard .frame{position:relative;aspect-ratio:16/9}
 .herocard .frame iframe,.herocard .frame video{position:absolute;inset:0;width:100%;height:100%;border:0}
+.herocard .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .herocard .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;cursor:pointer;
-  background:radial-gradient(120% 120% at 50% 0,rgba(217,185,104,.12),transparent 60%)}
+  background:transparent;transition:background .2s}
+.herocard .ph:hover{background:rgba(0,0,0,.14)}
 .herocard .ph .play{width:82px;height:82px;border-radius:50%;background:var(--gold-grad);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 34px -8px rgba(217,185,104,.5);transition:.2s}
 .herocard .ph:hover .play{transform:scale(1.06)}
 .herocard .ph .play:after{content:"";border-style:solid;border-width:15px 0 15px 25px;border-color:transparent transparent transparent #2b2109;margin-left:6px}
@@ -345,12 +347,9 @@ section{padding:84px 0}
   <div class="herocard">
     <span class="tag">Live on Zoom · Sept 26–27</span>
     <div class="frame">
-      <!-- [BREEDWISE: EMBED VSL HERE. Replace this .ph block with your video, e.g. <video src="intensive-vsl.mp4" poster="photos/vsl-poster.jpg" controls playsinline></video> or a Vimeo/YouTube <iframe>. Recommended length 2-4 minutes.] -->
-      <div class="ph" onclick="var e=document.getElementById('reserve');if(e)e.scrollIntoView({behavior:'smooth'});">
-        <span class="play"></span>
-        <span class="t">Watch This First</span>
-        <span class="s">A short message from Austin &amp; Dr. Fontaine</span>
-      </div>
+      <!-- [BREEDWISE: EMBED VSL HERE. Replace the poster <img> + .ph overlay with your video, e.g. <video src="intensive-vsl.mp4" poster="photos/vsl-thumbnail.jpg" controls playsinline></video> or a Vimeo/YouTube <iframe>. Recommended length 2-4 minutes.] -->
+      <img class="poster" src="photos/vsl-thumbnail.jpg" alt="The Profitable Breeder Intensive - Business + Science. Watch the VSL.">
+      <div class="ph" onclick="var e=document.getElementById('reserve');if(e)e.scrollIntoView({behavior:'smooth'});" aria-label="Watch the VSL" role="button"></div>
     </div>
   </div>
 
