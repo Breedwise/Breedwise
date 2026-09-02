@@ -278,11 +278,11 @@ function showResult(res){
       <div class="ring" style="--p:${pctP}"><div class="inner"><div><div class="n">${pctP}</div><div class="of">/ 100</div></div></div></div>
       <div style="flex:1;min-width:220px"><div class="k">Price Readiness Score${pr.band?' · '+esc(pr.band):''}</div><h2>${esc(pr.summary||'')}</h2></div>
     </div>
-    <div class="block"><h3>What your price should be</h3>
+    <div class="block"><h3>Defending &amp; raising your price</h3>
       <div class="triad">
-        <div class="pcard"><div class="lbl">Market reference</div><div class="num">${usd(pc.market_reference)}</div></div>
+        <div class="pcard"><div class="lbl">Your price now</div><div class="num">${usd(pc.current_price)}</div></div>
         <div class="pcard"><div class="lbl">Defensible today</div><div class="num">${usd(pc.defensible_current)}</div></div>
-        <div class="pcard rec"><div class="lbl">Recommended premium</div><div class="num">${usd(pc.recommended_premium)}</div></div>
+        <div class="pcard rec"><div class="lbl">Recommended target</div><div class="num">${usd(pc.recommended_premium)}</div></div>
       </div>
       <p style="margin-top:12px">${esc(pc.gap_explanation)}</p>
       ${upg?`<div style="font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);margin-top:12px;font-weight:700">To earn the premium</div><ul class="upg">${upg}</ul>`:''}</div>
