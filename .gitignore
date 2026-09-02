@@ -7,7 +7,6 @@
 
 # --- Published site files (root) ---
 !index.html
-!intensive.html
 !onboarding.html
 !audit.html
 !fontaine.html
@@ -18,19 +17,21 @@
 !director-dashboard.html
 !weekly-meeting.html
 !contributor-payouts.html
+!accelerator-boost-checklist.html
+!accelerator-vault.html
+!niche-finder.html
+!value-architect.html
+!member-pathways.html
+!submissions-admin.html
+!standards-checklist.html
 !affiliates.html
 !vsl.html
+!optin.html
 !team-manual.html
 !sales-manual.html
 !sales-process.html
 !accountability-chart.html
 !landing-page.html
-!profitable-breeder-summit.html
-!terms.html
-!privacy.html
-!social-media-management-plan.html
-!/freecasestudy/
-!/summit/
 !favicon.svg
 !breedwise-logo.png
 !Fontaine.jpg
@@ -43,6 +44,11 @@
 /go-site/*
 !/go-site/masterclass/
 
+# --- Case Study funnel pages (go.breedwise.io/freecasestudy) ---
+!/go-site/freecasestudy/
+
+# --- Six Figure Breeder Summit page (mirror of root /summit) ---
+!/go-site/summit/
 
 # --- Masterclass opt-in edge function (source of truth; deploys via Supabase CLI) ---
 !/supabase/
@@ -50,14 +56,4 @@
 !/supabase/functions/
 /supabase/functions/*
 !/supabase/functions/masterclass-optin/
-!optin.html
-
-!founders-week.html
-!accelerator.html
-!breedwise-breeder-intake.html
-!accelerator-boost-checklist.html
-!accelerator-vault.html
-!niche-finder.html
-!member-pathways.html
-!submissions-admin.html
-!standards-checklist.html
+!/supabase/functions/booking-notify/

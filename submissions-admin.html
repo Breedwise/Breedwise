@@ -209,7 +209,7 @@ function csvExport(){
 }
 const FONTS='<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">';
 function downloadOne(r){
-  const body=(r.tool==='niche-blueprint'&&r.result)?renderBlueprint(r.result,r.inputs||{}):renderGeneric(r);
+  const body=renderBody(r);
   const css=(document.querySelector('style')||{}).textContent||'';
   const title=esc(r.member_name||r.tool_label||'Submission');
   const date=r.created_at?new Date(r.created_at).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}):'';
@@ -253,6 +253,36 @@ function renderBlueprint(res,inp){
     <div class="block"><h3>First 90 days</h3>${li(res.first_90_days)}</div>
     <div class="block"><h3>What the member submitted</h3><div class="intake">${esc(intake)}${fuLines?'\n\n— Follow-ups —\n'+esc(fuLines):''}</div></div>`;
 }
+function vrate(n){n=Number(n)||0;return `<span class="pill ${n>=4?'s-hi':(n>=3?'s-md':'s-lo')}">${n||'–'}</span>`;}
+function renderValueArchitect(res,inp){
+  const pr=res.price_readiness||{},pc=res.pricing||{},pos=res.positioning||{};
+  const ledger=(res.value_ledger||[]).map(x=>`<tr><td class="n">${esc(x.action)}<div style="font-size:11px;color:var(--muted)">${esc(x.category)} · <b style="color:var(--mid)">${esc(x.value_type)}</b></div></td><td>${vrate(x.evidence_strength)}</td><td>${vrate(x.buyer_importance)}</td><td>${vrate(x.differentiation)}</td></tr>`).join('');
+  const stack=(res.offer_stack||[]).map(s=>`<div class="kvrow"><b>${esc(s.item)}</b> — ${usd(s.perceived_value)}<div style="color:var(--muted);font-size:11.5px">${esc(s.what)}</div></div>`).join('');
+  const gaps=(res.proof_gaps||[]).map(g=>`<li><b style="color:var(--ink)">${esc(g.claim)}</b> — need: ${esc(g.evidence_needed)}</li>`).join('');
+  const obj=(res.objections||[]).map(o=>`<div class="kvrow"><b>${esc(o.objection)}</b><div style="color:var(--mid)">${esc(o.response)}</div></div>`).join('');
+  const plan=(res.proof_plan_30||[]).map(p=>`<li><b style="color:var(--ink)">${esc(p.window)}:</b> ${esc(p.action)} — ${esc(p.produces)}</li>`).join('');
+  const upg=(pc.upgrades_required||[]).map(x=>`<li>${esc(x)}</li>`).join('');
+  const intake=Object.entries(inp||{}).filter(([k,v])=>k!=='followups'&&v&&String(v).trim()).map(([k,v])=>`${k}: ${v}`).join('\n');
+  return `
+    <div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--del)">Price readiness</div><div class="big">${pr.score??'–'}/100${pr.band?' · '+esc(pr.band):''}</div><p style="color:var(--mid);font-size:13px;margin-top:6px">${esc(pr.summary||'')}</p></div>
+    <div class="block"><h3>Price triad</h3><p><b style="color:var(--ink)">Market ${usd(pc.market_reference)}</b> · Defensible ${usd(pc.defensible_current)} · <b style="color:var(--gold)">Recommended ${usd(pc.recommended_premium)}</b></p><p style="margin-top:6px">${esc(pc.gap_explanation)}</p>${upg?`<ul class="li">${upg}</ul>`:''}</div>
+    <div class="block"><h3>Positioning</h3><p>${esc(pos.statement)}</p><p style="margin-top:6px;color:var(--muted)"><b style="color:var(--ink)">Built for:</b> ${esc(pos.built_for_buyer)} · <b style="color:var(--ink)">Reject:</b> ${esc(pos.reject_buyer)}</p></div>
+    ${ledger?`<div class="block"><h3>Value ledger</h3><div class="tblwrap"><table class="sc"><thead><tr><th>Value</th><th>Ev</th><th>Imp</th><th>Diff</th></tr></thead><tbody>${ledger}</tbody></table></div></div>`:''}
+    <div class="block"><h3>Offer stack — ${usd(res.stack_total_perceived)} total value</h3>${stack}<p style="margin-top:8px;color:var(--muted)">${esc(res.price_feels_like||'')}</p></div>
+    ${gaps?`<div class="block"><h3>Proof gaps</h3><ul class="li">${gaps}</ul></div>`:''}
+    <div class="block"><h3>How to explain the price</h3><p>${esc(res.buyer_explanation||'')}</p></div>
+    ${res.website_copy?`<div class="block"><h3>Website copy</h3><div class="intake">${esc(res.website_copy)}</div></div>`:''}
+    ${res.listing_copy?`<div class="block"><h3>Listing copy</h3><div class="intake">${esc(res.listing_copy)}</div></div>`:''}
+    ${(res.sales_script||[]).length?`<div class="block"><h3>Sales script</h3><ul class="li">${res.sales_script.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></div>`:''}
+    ${obj?`<div class="block"><h3>Objections</h3>${obj}</div>`:''}
+    ${plan?`<div class="block"><h3>30-day proof plan</h3><ul class="li">${plan}</ul></div>`:''}
+    <div class="block"><h3>What the member submitted</h3><div class="intake">${esc(intake)}</div></div>`;
+}
+function renderBody(r){
+  if(r.tool==='niche-blueprint'&&r.result) return renderBlueprint(r.result,r.inputs||{});
+  if(r.tool==='value-architect'&&r.result) return renderValueArchitect(r.result,r.inputs||{});
+  return renderGeneric(r);
+}
 function renderGeneric(r){
   const inp=r.inputs, res=r.result;
   let out='';
@@ -263,7 +293,7 @@ function renderGeneric(r){
 }
 function openSub(id){
   const r=ROWS.find(x=>x.id===id); if(!r) return;
-  const body=(r.tool==='niche-blueprint'&&r.result)?renderBlueprint(r.result,r.inputs||{}):renderGeneric(r);
+  const body=renderBody(r);
   $('#sheet').innerHTML=`
     <button class="close" id="mClose">×</button>
     <h2>${esc(r.member_name||r.tool_label||'Submission')}</h2>

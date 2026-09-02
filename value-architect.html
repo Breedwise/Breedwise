@@ -1,0 +1,318 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Value Architect — Breedwise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#1b1b20; --surface:#111114; --card:#26262c; --card-2:#212127;
+  --border:#34343c; --border-2:#2b2b32; --gold:#d6ba76; --gold-deep:#b89c47;
+  --gold-faint:rgba(214,186,118,0.10); --gold-grad:linear-gradient(135deg,#e2cb86 0%,#bfa050 100%);
+  --on-gold:#1a1509; --ink:#f4f1ea; --muted:#8f8d85; --mid:#c4c1b8;
+  --green:#6dbf90; --green-bg:rgba(109,191,144,.14); --yellow:#d7a94e; --red:#e0807e; --radius:11px;
+  --heading:'Playfair Display', Georgia, serif; --body:'Inter', -apple-system, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.hide{display:none!important}
+a{color:var(--gold)}
+#gate{position:fixed;inset:0;z-index:100;background:var(--surface);display:flex;align-items:center;justify-content:center;padding:24px}
+.gate-inner{width:100%;max-width:460px;text-align:center}
+.gate-mark{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:26px}
+.gate-inner h1{font-family:var(--heading);font-weight:600;font-size:clamp(28px,6.5vw,40px);line-height:1.08;color:var(--ink);margin-bottom:14px}
+.gate-inner p{font-size:14.5px;color:var(--muted);margin-bottom:28px}
+input,select,textarea{font-family:var(--body);font-size:15px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);color:var(--ink);padding:12px 14px;outline:none;transition:border-color .15s;width:100%}
+input:focus,textarea:focus,select:focus{border-color:var(--gold)}
+textarea{resize:vertical;min-height:80px;line-height:1.55}
+#code{text-align:center;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+#code::placeholder{text-transform:none;letter-spacing:normal;color:var(--muted)}
+.btn{padding:13px 20px;font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--gold-grad);color:var(--on-gold);border:none;border-radius:var(--radius);cursor:pointer;box-shadow:0 6px 22px rgba(214,186,118,.28);transition:transform .15s}
+.btn:hover{transform:translateY(-1px)} .btn:disabled{opacity:.5;cursor:default;transform:none}
+.btn.ghost{background:transparent;color:var(--gold);border:1px solid var(--border);box-shadow:none;font-weight:600}
+.err{min-height:18px;margin-top:10px;font-size:13px;color:var(--red)}
+#app{display:none} #app.on{display:block}
+.masthead{background:var(--surface);border-bottom:1px solid var(--border);padding:34px 24px 28px}
+.wrap{max-width:880px;margin:0 auto}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.masthead h1{font-family:var(--heading);font-weight:600;font-size:clamp(26px,5.5vw,38px);line-height:1.1;color:var(--ink);margin:12px 0 10px;letter-spacing:-.01em}
+.masthead .sub{color:var(--muted);font-size:14px;max-width:64ch}
+main{padding:26px 24px 90px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fld{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.fld.full{grid-column:1/-1}
+.fld label{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--mid);font-weight:600}
+.fld .hint{font-size:11px;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0}
+.section-label{font-family:var(--heading);font-size:17px;color:var(--gold);margin:24px 0 12px;padding-bottom:7px;border-bottom:1px solid var(--border)}
+.actions{display:flex;gap:12px;align-items:center;margin-top:14px;flex-wrap:wrap}
+#loading{text-align:center;padding:60px 20px}
+.spinner{width:44px;height:44px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--gold);margin:0 auto 22px;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#loadMsg{color:var(--mid);font-size:15px;font-family:var(--heading)}
+/* passport */
+.block{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px}
+.block h3{font-family:var(--heading);font-size:16px;color:var(--gold);margin-bottom:8px}
+.block p{color:var(--mid);white-space:pre-wrap}
+.score-hero{display:flex;gap:22px;align-items:center;background:var(--gold-faint);border:1px solid var(--gold-deep);border-radius:16px;padding:22px 24px;margin-bottom:16px;flex-wrap:wrap}
+.ring{--p:0;flex:0 0 auto;width:108px;height:108px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--gold) calc(var(--p)*1%), var(--border) 0);}
+.ring .inner{width:86px;height:86px;border-radius:50%;background:var(--bg);display:grid;place-items:center;text-align:center}
+.ring .n{font-family:var(--heading);font-size:30px;color:var(--ink);line-height:1}
+.ring .of{font-size:10px;color:var(--muted);letter-spacing:.1em}
+.score-hero .k{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.score-hero h2{font-family:var(--heading);font-size:clamp(20px,4vw,26px);color:var(--ink);line-height:1.15}
+.score-hero .sm{color:var(--mid);margin-top:8px;font-size:13.5px}
+.triad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px}
+.pcard{background:var(--card-2);border:1px solid var(--border);border-radius:12px;padding:15px;text-align:center}
+.pcard.rec{border-color:var(--green);background:linear-gradient(135deg,rgba(109,191,144,.12),rgba(214,186,118,.08))}
+.pcard .lbl{font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.pcard.rec .lbl{color:var(--green)}
+.pcard .num{font-family:var(--heading);font-size:clamp(20px,4.4vw,27px);color:var(--ink)}
+.hero2{background:var(--gold-faint);border:1px solid var(--gold-deep);border-radius:16px;padding:22px 24px;margin-bottom:14px}
+.hero2 .k{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.hero2 .stmt{font-family:var(--heading);font-size:clamp(18px,3.6vw,23px);line-height:1.32;color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.mini{background:var(--card-2);border:1px solid var(--border);border-radius:10px;padding:13px 15px}
+.mini .h{font-size:10px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;margin-bottom:5px}
+.mini.good .h{color:var(--green)} .mini.bad .h{color:var(--red)}
+.mini p{color:var(--mid);font-size:13px;white-space:normal}
+.cat-head{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);margin:16px 0 8px}
+.cat-head:first-child{margin-top:2px}
+.ledger{background:var(--card-2);border:1px solid var(--border);border-radius:11px;padding:14px 15px;margin-bottom:9px}
+.ledger .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.ledger .act{font-weight:600;color:var(--ink);font-size:14px;flex:1;min-width:180px}
+.ledger .rates{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.rate{display:flex;flex-direction:column;align-items:center;font-size:8.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);gap:2px}
+.pill{display:inline-block;min-width:24px;padding:2px 6px;border-radius:6px;font-weight:700;font-variant-numeric:tabular-nums;text-align:center}
+.s-hi{background:var(--green-bg);color:#8fd0a6}.s-md{background:var(--gold-faint);color:var(--gold)}.s-lo{background:rgba(224,128,126,.16);color:var(--red)}
+.vtype{font-size:8.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:12px}
+.vt-hard{background:var(--green-bg);color:#8fd0a6}.vt-estimated{background:var(--gold-faint);color:var(--gold)}.vt-strategic{background:var(--card);color:var(--mid);border:1px solid var(--border)}
+.ledger .detail{margin-top:9px;display:grid;gap:4px;font-size:12.5px;color:var(--mid)}
+.ledger .detail b{color:var(--ink);font-weight:600}
+.stack-card{background:var(--card-2);border:1px solid var(--border);border-radius:11px;padding:15px 16px;margin-bottom:9px}
+.stack-card .sh{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.stack-card .si{font-family:var(--heading);font-size:16px;color:var(--ink)}
+.stack-card .pv{font-family:var(--heading);font-size:18px;color:var(--gold);white-space:nowrap}
+.stack-card .sw{color:var(--mid);font-size:13px;margin-top:4px}
+.vchips{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.vchip{font-size:11px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:5px 9px;color:var(--mid)}
+.vchip b{color:var(--ink);font-weight:600}
+.stack-total{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:linear-gradient(135deg,rgba(109,191,144,.14),rgba(214,186,118,.10));border:1px solid var(--green);border-radius:12px;padding:16px 18px;margin-top:4px}
+.stack-total .tv{font-family:var(--heading);font-size:clamp(22px,5vw,30px);color:var(--ink)}
+.stack-total .fl{color:var(--mid);font-size:13px;max-width:46ch}
+.gap-card{background:var(--card-2);border:1px solid var(--border);border-left:3px solid var(--yellow);border-radius:9px;padding:14px 16px;margin-bottom:9px}
+.gap-card .claim{font-weight:600;color:var(--ink);margin-bottom:8px}
+.gap-card .row{font-size:12.5px;color:var(--mid);margin:4px 0}
+.gap-card .row b{color:var(--gold);font-weight:600;text-transform:uppercase;font-size:9.5px;letter-spacing:.06em;display:block;margin-bottom:1px}
+.copybox{position:relative}
+.copybox pre{white-space:pre-wrap;font-family:var(--body);color:var(--mid);font-size:13.5px;line-height:1.6;background:var(--card-2);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.copybtn{position:absolute;top:9px;right:9px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);background:var(--card);border:1px solid var(--border);border-radius:7px;padding:5px 9px;cursor:pointer}
+ol.script{margin:6px 0 0;padding-left:20px;color:var(--mid)} ol.script li{margin:7px 0}
+ul.list{margin:6px 0 0;padding-left:18px;color:var(--mid)} ul.list li{margin:5px 0}
+.obj{margin:9px 0}.obj .q{font-weight:600;color:var(--ink)}.obj .a{color:var(--mid);margin-top:3px}
+.plan-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.plan-item:last-child{border-bottom:none}
+.plan-item .w{flex:0 0 92px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--gold)}
+.plan-item .b{flex:1;color:var(--mid);font-size:13px}.plan-item .b b{color:var(--ink);font-weight:600}
+.upg{list-style:none;margin:8px 0 0;padding:0}.upg li{position:relative;padding-left:24px;margin:7px 0;color:var(--mid);font-size:13.5px}
+.upg li:before{content:'→';position:absolute;left:0;top:0;color:var(--gold-deep);font-weight:700}
+.saved-banner{background:var(--card-2);border:1px solid var(--border);border-radius:10px;padding:12px 15px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--mid)}
+.foot{max-width:880px;margin:30px auto 0;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.link{font-size:12px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:var(--body)}.link:hover{color:var(--gold)}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.triad{grid-template-columns:1fr}.two{grid-template-columns:1fr}.score-hero{gap:16px}}
+@media print{#gate,.masthead,.foot,.actions,.link,.copybtn{display:none!important}body{background:#fff;color:#000}.block,.hero2,.score-hero,.pcard,.ledger,.stack-card,.gap-card,.stack-total{border-color:#ccc;background:#fff}}
+</style>
+
+<div id="gate">
+  <div class="gate-inner">
+    <div class="gate-mark">Breedwise</div>
+    <h1>Value Architect</h1>
+    <p>Enter your access passcode. We'll turn everything you do into buyer-facing proof — and the defensible price it supports.</p>
+    <input id="code" type="password" placeholder="Passcode" autocomplete="off" spellcheck="false" aria-label="Passcode">
+    <button class="btn" id="enter" style="width:100%">Build my Value Proof Passport</button>
+    <div class="err" id="gErr"></div>
+  </div>
+</div>
+
+<div id="app">
+  <header class="masthead"><div class="wrap">
+    <div class="eyebrow">Breedwise · Value Architect</div>
+    <h1>Your Value Proof Passport</h1>
+    <p class="sub">Most breeders under-charge because buyers can't see the work. We'll inventory what you actually do, prove it, price it, and hand you the exact words to explain your price without apologizing for it.</p>
+  </div></header>
+  <main><div class="wrap" id="body"></div>
+    <div class="foot"><span class="link" id="startOver">Start a new passport</span><span style="font-family:var(--heading);color:var(--mid);font-size:14px">Price on proof, not adjectives.</span></div>
+  </main>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+const SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+const FN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/value-architect';
+const FALLBACK_HASH='25e7b557235afa23f4d1ae0ac108bfdfefa7ea58ea50bd986321cbd0034c52dc';
+const sb=supabase.createClient(SB_URL,SB_KEY);
+let PASS_HASH=FALLBACK_HASH, MEMBER_CODE='';
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const usd=n=>'$'+Number(n||0).toLocaleString('en-US');
+async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+
+$('#enter').addEventListener('click',tryCode);
+$('#code').addEventListener('keydown',e=>{if(e.key==='Enter')tryCode();});
+async function tryCode(){
+  const raw=$('#code').value.trim().toUpperCase();
+  if(await sha256(raw)===PASS_HASH){ MEMBER_CODE=raw; try{localStorage.setItem('bw-value-code',raw);}catch(e){} openApp(); }
+  else { $('#gErr').textContent='That passcode did not match. Check your training for the current code.'; $('#code').value=''; $('#code').focus(); }
+}
+function openApp(){ $('#gate').classList.add('hide'); $('#app').classList.add('on'); renderForm(); }
+
+/* ---- diagnostic intake (grouped) ---- */
+const GROUPS=[
+  ['Your program',[
+    ['kennel','Kennel / program name','',false],['name','Your name(s)','',false],['email','Email','so we can save your passport',false],
+    ['breed','Breed(s) you raise','',false],['region','Region','',false],['currentPrice','Current price per pup','',false],
+    ['litters','Litters per year','',false],['buyerType','Buyer type & the outcome they want','who buys, and what a great result looks like for them',true],
+  ]],
+  ['Health & genetics',[
+    ['healthTests','Health testing you perform','OFA, PennHIP, cardiac, DNA panels, CERF…',true],
+    ['vet','Veterinary involvement','repro vet, exams, vaccines, microchip…',false],
+    ['genetics','Genetic & reproductive protocols','pairings, COI, progesterone timing, semen analysis…',true],
+  ]],
+  ['Raising the puppies',[
+    ['whelping','Whelping & neonatal systems','supervision, ENS/ESI, weight logs, warming…',true],
+    ['socialization','Socialization & enrichment','Puppy Culture, sound/surface exposure, handling…',true],
+  ]],
+  ['The buyer relationship',[
+    ['screening','Buyer screening process','application, interview, vet reference, home check…',true],
+    ['contracts','Contracts & guarantees','health guarantee, spay/neuter, take-back…',false],
+    ['support','Lifetime breeder support','training help, group, 24/7 questions, rehoming safety net…',true],
+  ]],
+  ['Proof & positioning',[
+    ['proofAssets','Proof you already have','test certificates, photos/video, references, results, reviews…',true],
+    ['differentiators','What you believe makes you different','',true],
+    ['objections','Objections you hear & who you lose to','"why so expensive?", cheaper breeders, etc.',true],
+  ]],
+  ['Willingness',[
+    ['willing','Are you willing to document proof going forward?','the passport only works if claims can be shown',false],
+  ]],
+];
+const FIELDS=GROUPS.flatMap(g=>g[1]);
+function renderForm(prefill){
+  const p=prefill||{};
+  const savedRaw=(()=>{try{return localStorage.getItem('bw-value-result');}catch(e){return null;}})();
+  const banner=savedRaw?`<div class="saved-banner"><span>You have a saved passport from a previous session.</span><button class="btn ghost" id="viewSaved" style="padding:7px 13px">View it</button></div>`:'';
+  const f=(id,label,hint,big)=>`<div class="fld ${big?'full':''}"><label>${label}${hint?` <span class="hint">· ${esc(hint)}</span>`:''}</label>${big?`<textarea id="i_${id}" rows="3">${esc(p[id]||'')}</textarea>`:`<input id="i_${id}" value="${esc(p[id]||'')}">`}</div>`;
+  $('#body').innerHTML=banner+GROUPS.map(g=>`<div class="section-label">${esc(g[0])}</div><div class="grid">${g[1].map(x=>f(...x)).join('')}</div>`).join('')+
+    `<div class="actions"><button class="btn" id="go">Next: sharpen it &rarr;</button><span class="err" id="fErr"></span></div>`;
+  const vs=$('#viewSaved'); if(vs) vs.addEventListener('click',()=>{ try{ showResult(JSON.parse(savedRaw)); }catch(e){} });
+  $('#go').addEventListener('click',submit);
+}
+function collect(){ const o={}; FIELDS.forEach(([id])=>{ const el=$('#i_'+id); o[id]=el?el.value.trim():''; }); return o; }
+
+function loading(msgs,note){
+  let mi=0; $('#body').innerHTML=`<div id="loading"><div class="spinner"></div><div id="loadMsg">${esc(msgs[0])}</div><div style="color:var(--muted);font-size:12.5px;margin-top:12px">${esc(note||'')}</div></div>`;
+  return setInterval(()=>{ mi=(mi+1)%msgs.length; const el=$('#loadMsg'); if(el) el.textContent=msgs[mi]; },7000);
+}
+async function callFn(payload){
+  const r=await fetch(FN,{method:'POST',headers:{'content-type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({passcode:MEMBER_CODE,...payload})});
+  const d=await r.json(); return {ok:r.ok&&!d.error,status:r.status,d};
+}
+async function submit(){
+  const inputs=collect();
+  if(!inputs.breed && !inputs.healthTests && !inputs.differentiators){ $('#fErr').textContent='Tell us at least your breed and a bit about how you raise your puppies.'; return; }
+  const tick=loading(['Reading how you raise your dogs…','Looking for the proof buyers never see…','Finding what makes you un-comparable…'],"We're pulling the details we need — like a paid discovery call before we price anything.");
+  const {ok,status,d}=await callFn({mode:'probe',inputs}); clearInterval(tick);
+  if(!ok){ renderForm(inputs); const fe=$('#fErr'); if(fe) fe.textContent=d.error||('Something went wrong ('+status+').'); return; }
+  const qs=(d.questions&&d.questions.length)?d.questions:[];
+  if(!qs.length) return generate(inputs,[]);
+  renderFollowups(inputs,qs);
+}
+function renderFollowups(inputs,questions){
+  $('#body').innerHTML=`<div class="saved-banner" style="border-color:var(--gold-deep)"><span>Good. A few sharp questions before we build the proof — answer what you can.</span></div>
+    <div class="section-label">Proof questions</div>
+    ${questions.map((q,i)=>`<div class="fld full"><label style="text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink);font-family:var(--heading)">${esc(q)}</label><textarea id="fu_${i}" rows="3"></textarea></div>`).join('')}
+    <div class="actions"><button class="btn" id="build">Build my Passport &rarr;</button><button class="btn ghost" id="backForm">Back</button><span class="err" id="fErr"></span></div>`;
+  $('#backForm').addEventListener('click',()=>renderForm(inputs));
+  $('#build').addEventListener('click',()=>generate(inputs,questions.map((q,i)=>({q,a:($('#fu_'+i)?$('#fu_'+i).value.trim():'')}))));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+async function generate(inputs,followups){
+  const tick=loading(['Inventorying everything you do…','Sorting hard proof from strategic value…','Building your value ledger…','Pricing on certainty, not cost…','Assembling your offer stack…','Writing your buyer-facing copy…','Scoring your price readiness…'],"This takes about a minute — we're building the full passport.");
+  const {ok,status,d}=await callFn({mode:'generate',inputs,followups}); clearInterval(tick);
+  if(!ok){ renderFollowups(inputs,followups.map(f=>f.q)); const fe=$('#fErr'); if(fe) fe.textContent=d.error||('Something went wrong ('+status+').'); return; }
+  try{ localStorage.setItem('bw-value-result',JSON.stringify(d.result)); }catch(e){}
+  showResult(d.result);
+}
+
+/* ---- render the passport ---- */
+function rcls(n){ n=Number(n)||0; return n>=4?'s-hi':(n>=3?'s-md':'s-lo'); }
+function rate(lbl,n){ return `<div class="rate">${esc(lbl)}<span class="pill ${rcls(n)}">${n??'–'}</span></div>`; }
+function copybox(id,text){ return `<div class="copybox"><button class="copybtn" data-copy="${id}">Copy</button><pre id="${id}">${esc(text||'')}</pre></div>`; }
+function showResult(res){
+  const pr=res.price_readiness||{}, pc=res.pricing||{}, pos=res.positioning||{};
+  const ledger=res.value_ledger||[]; const cats=[...new Set(ledger.map(x=>x.category))];
+  const ledgerHtml=cats.map(cat=>`<div class="cat-head">${esc(cat)}</div>`+ledger.filter(x=>x.category===cat).map(x=>`
+    <div class="ledger"><div class="top"><div class="act">${esc(x.action)}</div>
+      <div class="rates">${rate('Ev',x.evidence_strength)}${rate('Imp',x.buyer_importance)}${rate('Diff',x.differentiation)}<span class="vtype vt-${esc(x.value_type)}">${esc(x.value_type)}</span></div></div>
+      <div class="detail"><div><b>Prevents:</b> ${esc(x.prevents)}</div><div><b>Buyer gets:</b> ${esc(x.buyer_outcome)}</div><div><b>Proof:</b> ${esc(x.evidence)}</div></div></div>`).join('')).join('');
+  const stackHtml=(res.offer_stack||[]).map(s=>`
+    <div class="stack-card"><div class="sh"><div class="si">${esc(s.item)}</div><div class="pv">${usd(s.perceived_value)}</div></div>
+      <div class="sw">${esc(s.what)}</div>
+      <div class="vchips">${s.hard_dollar?`<span class="vchip"><b>Hard $:</b> ${usd(s.hard_dollar)}</span>`:''}${s.cost_avoided?`<span class="vchip"><b>Cost avoided:</b> ${usd(s.cost_avoided)}</span>`:''}${s.emotional_value?`<span class="vchip"><b>Emotional:</b> ${esc(s.emotional_value)}</span>`:''}${s.strategic_value?`<span class="vchip"><b>Strategic:</b> ${esc(s.strategic_value)}</span>`:''}</div></div>`).join('');
+  const gapsHtml=(res.proof_gaps||[]).map(g=>`
+    <div class="gap-card"><div class="claim">${esc(g.claim)}</div>
+      <div class="row"><b>Why it raises value</b>${esc(g.why_it_increases_value)}</div>
+      <div class="row"><b>Evidence needed</b>${esc(g.evidence_needed)}</div>
+      <div class="row"><b>Show buyers by</b>${esc(g.how_to_show_buyers)}</div>
+      <div class="row"><b>Must be true first</b>${esc(g.must_be_true)}</div></div>`).join('');
+  const objHtml=(res.objections||[]).map(o=>`<div class="obj"><div class="q">${esc(o.objection)}</div><div class="a">${esc(o.response)}</div></div>`).join('');
+  const planHtml=(res.proof_plan_30||[]).map(p=>`<div class="plan-item"><div class="w">${esc(p.window)}</div><div class="b"><b>${esc(p.action)}</b> — ${esc(p.produces)}</div></div>`).join('');
+  const scriptHtml=`<ol class="script">${(res.sales_script||[]).map(s=>`<li>${esc(s)}</li>`).join('')}</ol>`;
+  const notCmp=(pos.not_comparable||[]).map(x=>`<li>${esc(x)}</li>`).join('');
+  const upg=(pc.upgrades_required||[]).map(x=>`<li>${esc(x)}</li>`).join('');
+  const pctP=Math.max(0,Math.min(100,Number(pr.score)||0));
+
+  $('#body').innerHTML=`
+    <div class="score-hero">
+      <div class="ring" style="--p:${pctP}"><div class="inner"><div><div class="n">${pctP}</div><div class="of">/ 100</div></div></div></div>
+      <div style="flex:1;min-width:220px"><div class="k">Price Readiness Score${pr.band?' · '+esc(pr.band):''}</div><h2>${esc(pr.summary||'')}</h2></div>
+    </div>
+    <div class="block"><h3>What your price should be</h3>
+      <div class="triad">
+        <div class="pcard"><div class="lbl">Market reference</div><div class="num">${usd(pc.market_reference)}</div></div>
+        <div class="pcard"><div class="lbl">Defensible today</div><div class="num">${usd(pc.defensible_current)}</div></div>
+        <div class="pcard rec"><div class="lbl">Recommended premium</div><div class="num">${usd(pc.recommended_premium)}</div></div>
+      </div>
+      <p style="margin-top:12px">${esc(pc.gap_explanation)}</p>
+      ${upg?`<div style="font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);margin-top:12px;font-weight:700">To earn the premium</div><ul class="upg">${upg}</ul>`:''}</div>
+    <div class="hero2"><div class="k">Your positioning</div><div class="stmt">${esc(pos.statement)}</div>
+      <div class="two"><div class="mini good"><div class="h">Built for</div><p>${esc(pos.built_for_buyer)}</p></div><div class="mini bad"><div class="h">Not your buyer</div><p>${esc(pos.reject_buyer)}</p></div></div></div>
+    ${notCmp?`<div class="block"><h3>Why you're not comparable to low-cost breeders</h3><ul class="list">${notCmp}</ul></div>`:''}
+    <div class="block"><h3>Your value ledger</h3><p style="margin-bottom:6px;font-size:12.5px">Every real thing you do — rated on evidence, buyer importance, and differentiation (1–5). <b style="color:var(--ink)">Hard</b> = receipts, <b style="color:var(--ink)">estimated</b> = defensible estimate, <b style="color:var(--ink)">strategic</b> = positioning value.</p>${ledgerHtml}</div>
+    <div class="block"><h3>Your offer stack</h3>${stackHtml}
+      <div class="stack-total"><div><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--green)">Total value delivered</div><div class="tv">${usd(res.stack_total_perceived)}</div></div><div class="fl">${esc(res.price_feels_like)}</div></div></div>
+    <div class="block"><h3>Proof gaps to close</h3><p style="margin-bottom:8px;font-size:12.5px">These would justify your premium — but you can't claim them until they're provable.</p>${gapsHtml}</div>
+    <div class="block"><h3>How to explain your price</h3><p>${esc(res.buyer_explanation)}</p></div>
+    <div class="block"><h3>Website copy</h3>${copybox('cp_web',res.website_copy)}</div>
+    <div class="block"><h3>Puppy listing copy</h3>${copybox('cp_list',res.listing_copy)}</div>
+    <div class="block"><h3>Sales-call script</h3>${scriptHtml}</div>
+    <div class="block"><h3>Objection responses</h3>${objHtml}</div>
+    <div class="block"><h3>Your 30-day proof plan</h3>${planHtml}</div>
+    <div class="actions"><button class="btn" id="printBtn">Save / print this passport</button><button class="btn ghost" id="again">Start over</button></div>`;
+  $('#printBtn').addEventListener('click',()=>window.print());
+  $('#again').addEventListener('click',()=>renderForm());
+  document.querySelectorAll('.copybtn').forEach(b=>b.addEventListener('click',()=>{
+    const el=$('#'+b.getAttribute('data-copy')); if(!el) return;
+    navigator.clipboard.writeText(el.textContent).then(()=>{ const t=b.textContent; b.textContent='Copied'; setTimeout(()=>b.textContent=t,1400); }).catch(()=>{});
+  }));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+$('#startOver').addEventListener('click',()=>renderForm());
+
+(async function(){
+  try{ const {data}=await sb.from('access_config').select('passcode_hash').eq('key','member').maybeSingle(); if(data&&data.passcode_hash) PASS_HASH=data.passcode_hash; }catch(e){}
+  let saved=''; try{ saved=localStorage.getItem('bw-value-code')||''; }catch(e){}
+  if(saved && await sha256(saved)===PASS_HASH){ MEMBER_CODE=saved; openApp(); } else $('#code').focus();
+})();
+</script>
