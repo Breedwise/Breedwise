@@ -476,7 +476,7 @@
         </div></div>
         <div class="kpi-grid" id="lwKpis"></div>
         <div class="table-wrap" style="margin-top:18px"><div style="overflow-x:auto"><table>
-          <thead><tr><th>Member</th><th>Pod</th><th class="num">Calls</th><th class="num">Posts</th><th class="num">Comments</th><th class="num">Homework</th><th class="num">Support Call</th><th class="num">Women's Circle</th></tr></thead>
+          <thead><tr><th>Member</th><th>Pod</th><th class="num">Calls</th><th class="num">Posts</th><th class="num">Comments</th><th class="num">Homework</th><th class="num">Support Call</th><th class="num">Women's Circle</th><th class="num">Accelerator Call</th></tr></thead>
           <tbody id="lastWeekBody"></tbody>
         </table></div></div>
         <p class="view-sub" id="lwFoot" style="display:none;margin-top:10px">* Homework shown as the member's current rolling % — weekly homework capture started 2026-08-17, so earlier weeks weren't recorded. From now on each week stores its own homework snapshot.</p>
@@ -849,6 +849,7 @@
       <div class="field full"><label>Call attendance (this week)</label><div class="checks">
         <label class="check"><input type="checkbox" id="f_support"> Support Call</label>
         <label class="check"><input type="checkbox" id="f_womens"> Women's Circle</label>
+        <label class="check"><input type="checkbox" id="f_accel"> Accelerator Call</label>
       </div></div>
       <div class="field"><label>Homework %</label><input id="f_homework" type="number" min="0" max="100"></div>
       <div class="field"><label>NPS (0–10)</label><input id="f_nps" type="number" min="0" max="10"></div>
@@ -1382,7 +1383,7 @@
   const TARGETS = { churn:3, activation:80, nps:80, failedPay:3, week1:80, ongoing:70, engage:1, triage:100, podAttend:70 };
   const ROLE_LABEL = { Director:'Director of Member Success', AccountabilityLeader:'Accountability Leader', CommunityManager:'Community Manager', Founder:'Founder' };
 
-  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, podHw='all', ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[], PAYMENTS=[], PLANS=[], TASKS=[], TEAM=[], INTAKE_BY={}, NEW_COLS=false, MONTHLY_CHURN=[], ATTEND_COLS=false;
+  let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, podHw='all', ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[], PAYMENTS=[], PLANS=[], TASKS=[], TEAM=[], INTAKE_BY={}, NEW_COLS=false, MONTHLY_CHURN=[], ATTEND_COLS=false, ACCEL_COLS=false;
   let SALES_MEMBER=false;  // true if this login maps to a sales_reps row (set after SalesOS.boot)
   const EXPERTS=['Dr. Emmanuel Fontaine','Dr. Angela Hughes','Austin Shanks','Dr. David Mahoney','Yasmin Omar'];
   function weekStartISO(){ const d=new Date(); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return d.toISOString().slice(0,10); }
@@ -1424,7 +1425,7 @@
     failed30:!!r.failed_30, upsell:Number(r.upsell)||0, override:r.status_override||null, notes:r.notes||'',
     support_tier:r.support_tier||null, red_flag:!!r.red_flag, next_breeding_date:r.next_breeding_date||null,
     comments:r.comments||0, handoff:!!r.handoff_complete,
-    support1w:r.support_1w||0, womens1w:r.womens_1w||0 };
+    support1w:r.support_1w||0, womens1w:r.womens_1w||0, accel1w:r.accel_1w||0 };
   }
 
   /* ═══ AUTH ═══ */
@@ -1491,6 +1492,7 @@
     MEMBERS = (mem.data||[]).map(norm);
     NEW_COLS = !!(mem.data && mem.data[0] && ('comments' in mem.data[0]));   // schema migrated?
     ATTEND_COLS = !!(mem.data && mem.data[0] && ('support_1w' in mem.data[0]));   // per-member call attendance migrated?
+    ACCEL_COLS = !!(mem.data && mem.data[0] && ('accel_1w' in mem.data[0]));   // accelerator-call attendance migrated?
     INTAKE_BY = {}; (intk?.data||[]).forEach(r=>{ INTAKE_BY[r.member_id]=r; });
     MONTHLY_CHURN = mchurn?.data || [];
     PODS = pods.data||[];
@@ -1720,7 +1722,7 @@
     const body=$('#lastWeekBody'); if(!body) return;
     const sel=$('#lwWeekSel'), kpi=$('#lwKpis');
     const weeks=[...new Set(WEEKLY.map(r=>r.week_start).filter(Boolean))].sort().reverse();
-    if(!weeks.length){ sel.innerHTML=''; kpi.innerHTML=''; body.innerHTML=`<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:26px">No weekly history archived yet. Each Monday the OS files the week that just ended here.</td></tr>`; return; }
+    if(!weeks.length){ sel.innerHTML=''; kpi.innerHTML=''; body.innerHTML=`<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:26px">No weekly history archived yet. Each Monday the OS files the week that just ended here.</td></tr>`; return; }
     if(!lwSel||!weeks.includes(lwSel)) lwSel = weeks.includes(lastWeekISO())?lastWeekISO():weeks[0];
     const fmt=d=>new Date(String(d).slice(0,10)+'T12:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
     sel.innerHTML=weeks.map(w=>`<option value="${w}" ${w===lwSel?'selected':''}>${fmt(w)}${w===lastWeekISO()?' · last week':''}</option>`).join('');
@@ -1733,7 +1735,7 @@
       if(hwArch==null && hwCur!=null) anyHwFallback=true;
       return { name:m?m.name:'(former member)', pod:m?podName(m.pod):'—',
         calls:+r.attended||0, posts:+r.posts||0, comments:+r.comments||0,
-        hwArch, hwCur, support:+r.support_call||0, womens:+r.womens_circle||0 };
+        hwArch, hwCur, support:+r.support_call||0, womens:+r.womens_circle||0, accel:+r.accel_call||0 };
     }).sort((a,b)=>String(a.name).localeCompare(String(b.name)));
     const yn=v=>v>0?'<span class="pay-good">✓</span>':'<span class="muted-cell">—</span>';
     const hwCell=r=> r.hwArch!=null ? `${r.hwArch}%` : (r.hwCur!=null?`<span class="muted-cell" title="current rolling % — homework wasn't captured for this week">${r.hwCur}%*</span>`:'<span class="muted-cell">—</span>');
@@ -1742,17 +1744,17 @@
       <td class="muted-cell">${esc(r.pod)}</td>
       <td class="num">${r.calls}</td><td class="num">${r.posts}</td><td class="num">${r.comments}</td>
       <td class="num">${hwCell(r)}</td>
-      <td class="num">${yn(r.support)}</td><td class="num">${yn(r.womens)}</td>
-    </tr>`).join('')||`<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:26px">No activity recorded for this week.</td></tr>`;
+      <td class="num">${yn(r.support)}</td><td class="num">${yn(r.womens)}</td><td class="num">${yn(r.accel)}</td>
+    </tr>`).join('')||`<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:26px">No activity recorded for this week.</td></tr>`;
     const hwVals=rows.map(r=>r.hwArch!=null?r.hwArch:r.hwCur).filter(v=>v!=null);
     const hwAvg=hwVals.length?Math.round(hwVals.reduce((a,b)=>a+b,0)/hwVals.length):0;
-    const T=rows.reduce((a,r)=>({c:a.c+r.calls,p:a.p+r.posts,cm:a.cm+r.comments,s:a.s+r.support,w:a.w+r.womens}),{c:0,p:0,cm:0,s:0,w:0});
+    const T=rows.reduce((a,r)=>({c:a.c+r.calls,p:a.p+r.posts,cm:a.cm+r.comments,s:a.s+r.support,w:a.w+r.womens,a:a.a+r.accel}),{c:0,p:0,cm:0,s:0,w:0,a:0});
     const tile=(l,v)=>`<div class="kpi"><div class="kpi-name">${l}</div><div class="kpi-val" style="font-size:26px">${v}</div></div>`;
-    kpi.innerHTML=tile('Members active',rows.length)+tile('Total calls',T.c)+tile('Posts',T.p)+tile('Comments',T.cm)+tile('Avg homework',hwAvg+'%')+tile('Support Call',T.s)+tile("Women's Circle",T.w);
+    kpi.innerHTML=tile('Members active',rows.length)+tile('Total calls',T.c)+tile('Posts',T.p)+tile('Comments',T.cm)+tile('Avg homework',hwAvg+'%')+tile('Support Call',T.s)+tile("Women's Circle",T.w)+tile('Accelerator Call',T.a);
     const foot=$('#lwFoot'); if(foot) foot.style.display=anyHwFallback?'block':'none';
     $('#lwCopy').onclick=()=>{
-      const head=['Member','Pod','Calls','Posts','Comments','Homework %','Support Call',"Women's Circle"].join('\t');
-      const tsv=[head,...rows.map(r=>[r.name,r.pod,r.calls,r.posts,r.comments,(r.hwArch!=null?r.hwArch:(r.hwCur!=null?r.hwCur:'')),r.support?'Yes':'No',r.womens?'Yes':'No'].join('\t'))].join('\n');
+      const head=['Member','Pod','Calls','Posts','Comments','Homework %','Support Call',"Women's Circle",'Accelerator Call'].join('\t');
+      const tsv=[head,...rows.map(r=>[r.name,r.pod,r.calls,r.posts,r.comments,(r.hwArch!=null?r.hwArch:(r.hwCur!=null?r.hwCur:'')),r.support?'Yes':'No',r.womens?'Yes':'No',r.accel?'Yes':'No'].join('\t'))].join('\n');
       navigator.clipboard.writeText(tsv).then(()=>toast('Copied — paste into Sheets or Excel')).catch(()=>toast('Copy failed'));
     };
   }
@@ -1800,12 +1802,13 @@
     const overdue=ISSUES.filter(i=>i.status!=='resolved'&&i.due_date&&i.due_date<today).length;
     const handled=(open+resolved)?(resolved/(open+resolved)*100):100;
     const act=activeMembers(), engage=act.reduce((s,m)=>s+m.posts,0)/(act.length||1);
-    const supMembers=act.filter(m=>m.support1w>0), womMembers=act.filter(m=>m.womens1w>0);
-    const supPct=act.length?(supMembers.length/act.length*100):0, womPct=act.length?(womMembers.length/act.length*100):0;
+    const supMembers=act.filter(m=>m.support1w>0), womMembers=act.filter(m=>m.womens1w>0), accelMembers=act.filter(m=>m.accel1w>0);
+    const supPct=act.length?(supMembers.length/act.length*100):0, womPct=act.length?(womMembers.length/act.length*100):0, accelPct=act.length?(accelMembers.length/act.length*100):0;
     return [
       { name:'Calls Co-hosted (wk)', val:cohosted, unit:'', target:1, dir:'above', meta:'co-host ≥ 1 per week' },
       { name:'Support Call Attendance', val:supPct, unit:'%', target:TARGETS.podAttend, dir:'above', meta:`${supMembers.length} of ${act.length} attended`, dec:0 },
       { name:"Women's Circle Attendance", val:womPct, unit:'%', target:TARGETS.podAttend, dir:'above', meta:`${womMembers.length} of ${act.length} attended`, dec:0 },
+      { name:'Accelerator Call Attendance', val:accelPct, unit:'%', target:TARGETS.podAttend, dir:'above', meta:`${accelMembers.length} of ${act.length} attended`, dec:0 },
       { name:'Recordings On Time', val:recPct, unit:'%', target:100, dir:'above', meta:`${ontime}/${due} uploaded by 12pm` },
       { name:'Issues Handled', val:handled, unit:'%', target:100, dir:'above', meta:`${open} open · ${overdue} overdue` },
       { name:'Posts / Member · wk', val:engage, unit:'/wk', target:TARGETS.engage, dir:'above', meta:'1 post per member per week', dec:2 },
@@ -1831,9 +1834,9 @@
     const q=(t,arr,empty)=>`<div style="margin-bottom:16px"><div class="rule-tag" style="margin-bottom:8px">${t} · ${arr.length}</div>${arr.length?arr.map(m=>`<div class="comp-line"><div class="lbl">${esc(m.name)} · <span class="muted-cell">${m.program}</span></div><span class="filter-chip" style="cursor:default">${m.calls} calls · ${m.posts} posts</span></div>`).join(''):`<div class="card-sub">${empty}</div>`}</div>`;
     $('#cmQueues').innerHTML=q('New — not on both week-1 calls',notOn,'All new members on track.')+q('Quiet 7+ days',quiet,'No silent members.')+q('High-potential wins to amplify',wins,'No standout posts yet.');
     // individualized call attendance — exactly who attended each call this week
-    const supList=act.filter(m=>m.support1w>0), womList=act.filter(m=>m.womens1w>0);
+    const supList=act.filter(m=>m.support1w>0), womList=act.filter(m=>m.womens1w>0), accelList=act.filter(m=>m.accel1w>0);
     const attRow=(title,arr)=>`<div style="margin-bottom:16px"><div class="rule-tag" style="margin-bottom:8px">${title} · ${arr.length} of ${act.length} active</div>${arr.length?arr.map(m=>`<span class="filter-chip" style="cursor:default;margin:2px 4px 2px 0">${esc(m.name)}</span>`).join(''):`<div class="card-sub">No one marked attended yet this week.</div>`}</div>`;
-    const ca=$('#callAttendance'); if(ca) ca.innerHTML=attRow('Support Call',supList)+attRow("Women's Circle",womList);
+    const ca=$('#callAttendance'); if(ca) ca.innerHTML=attRow('Support Call',supList)+attRow("Women's Circle",womList)+attRow('Accelerator Call',accelList);
   }
 
   /* ═══ MY PAY (private, computed from my comp row + shared members) ═══ */
@@ -2058,7 +2061,7 @@
     $('#f_program').value=m?m.program:'Academy'; $('#f_pod').value=m?m.pod:(PODS[0]?.id||'');
     $('#f_payment').value=m?m.pay:'Good';
     $('#f_calls').value=m?m.calls:0; $('#f_calls_1w').value=m?m.calls_1w:0; $('#f_posts').value=m?m.posts:0; $('#f_comments').value=m?m.comments:0; $('#f_homework').value=m?m.hw:0;
-    $('#f_support').checked=m?m.support1w>0:false; $('#f_womens').checked=m?m.womens1w>0:false;
+    $('#f_support').checked=m?m.support1w>0:false; $('#f_womens').checked=m?m.womens1w>0:false; $('#f_accel').checked=m?m.accel1w>0:false;
     $('#f_nps').value=m&&m.nps!=null?m.nps:''; $('#f_upsell').value=m?m.upsell:0; $('#f_override').value=m?(m.override||''):'';
     $('#f_activated').checked=m?m.activated:false; $('#f_new').checked=m?m.newThisMonth:false;
     $('#f_churned').checked=m?m.churnedThisMonth:false; $('#f_failed').checked=m?m.failed30:false;
@@ -2077,13 +2080,14 @@
     if(!name){ $('#modalErr').textContent='Name is required.'; return; }
     const row={
       name, email:$('#f_email').value.trim()||null, phone:$('#f_phone').value.trim()||null, program:$('#f_program').value, pod_id:$('#f_pod').value||null,
-      payment:$('#f_payment').value, calls:+$('#f_calls').value||0, calls_1w:+$('#f_calls_1w').value||0, posts:+$('#f_posts').value||0, comments:+$('#f_comments').value||0, support_1w:$('#f_support').checked?1:0, womens_1w:$('#f_womens').checked?1:0, homework:+$('#f_homework').value||0,
+      payment:$('#f_payment').value, calls:+$('#f_calls').value||0, calls_1w:+$('#f_calls_1w').value||0, posts:+$('#f_posts').value||0, comments:+$('#f_comments').value||0, support_1w:$('#f_support').checked?1:0, womens_1w:$('#f_womens').checked?1:0, accel_1w:$('#f_accel').checked?1:0, homework:+$('#f_homework').value||0,
       nps: $('#f_nps').value===''?null:+$('#f_nps').value, upsell:+$('#f_upsell').value||0, status_override:$('#f_override').value||null,
       activated:$('#f_activated').checked, new_this_month:$('#f_new').checked, churned_this_month:$('#f_churned').checked, failed_30:$('#f_failed').checked,
       updated_by: ME?.full_name||ME?.email||null
     };
     if(!NEW_COLS) delete row.comments;   // schema not migrated yet — don't break saves
     if(!ATTEND_COLS){ delete row.support_1w; delete row.womens_1w; }
+    if(!ACCEL_COLS){ delete row.accel_1w; }
     $('#modalSave').disabled=true;
     let memberId=editingId, err=null;
     if(editingId){ const res=await sb.from('members').update(row).eq('id',editingId); err=res.error; }
