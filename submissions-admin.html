@@ -278,9 +278,30 @@ function renderValueArchitect(res,inp){
     ${plan?`<div class="block"><h3>30-day proof plan</h3><ul class="li">${plan}</ul></div>`:''}
     <div class="block"><h3>What the member submitted</h3><div class="intake">${esc(intake)}</div></div>`;
 }
+function npsCls(n){ n=Number(n); return n>=9?'s-hi':(n>=7?'s-md':'s-lo'); }
+function renderFeedback(r){
+  const inp=r.inputs||{}, m=r.meta||{};
+  const sat=inp.satisfaction||m.satisfaction;
+  const satLabel=inp.satisfaction_label||m.satisfaction_label||'';
+  const nps=(inp.nps!=null?inp.nps:m.nps);
+  const sup=(inp.support!=null?inp.support:m.support);
+  const val=inp.most_valuable||[];
+  const stars=sat?'★'.repeat(sat)+'☆'.repeat(5-sat):'';
+  const t=(lbl,v)=> v&&String(v).trim()?`<div class="block"><h3>${lbl}</h3><p>${esc(v)}</p></div>`:'';
+  return `
+    <div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--del)">Anonymous feedback</div>
+      <div class="big" style="letter-spacing:2px">${stars}</div>
+      <p style="color:var(--mid);font-size:13px;margin-top:8px">${satLabel?esc(satLabel)+' · ':''}NPS <span class="pill ${npsCls(nps)}">${nps??'–'}</span>${sup?` · Feels supported <span class="pill ${sup>=4?'s-hi':(sup>=3?'s-md':'s-lo')}">${sup}/5</span>`:''}</p></div>
+    ${val.length?`<div class="block"><h3>Most valuable</h3><p>${val.map(esc).join(' · ')}</p></div>`:''}
+    ${t('Doing really well',inp.doing_well)}
+    ${t('Could improve',inp.improve)}
+    ${t('Topics to add',inp.add_topics)}
+    ${t('Anything else',inp.anything_else)}`;
+}
 function renderBody(r){
   if(r.tool==='niche-blueprint'&&r.result) return renderBlueprint(r.result,r.inputs||{});
   if(r.tool==='value-architect'&&r.result) return renderValueArchitect(r.result,r.inputs||{});
+  if(r.tool==='feedback') return renderFeedback(r);
   return renderGeneric(r);
 }
 function renderGeneric(r){

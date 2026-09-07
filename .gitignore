@@ -13,6 +13,9 @@
 !team.html
 !sales.html
 !os.html
+!kennel-os.html
+!kennel-os-sw.js
+!kennel-os.webmanifest
 !member-intake.html
 !director-dashboard.html
 !weekly-meeting.html
@@ -21,6 +24,7 @@
 !accelerator-vault.html
 !niche-finder.html
 !value-architect.html
+!feedback.html
 !member-pathways.html
 !submissions-admin.html
 !standards-checklist.html

@@ -1,0 +1,175 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Academy Feedback — Breedwise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1b1b20; --surface:#111114; --card:#26262c; --card-2:#212127;
+  --border:#34343c; --gold:#d6ba76; --gold-deep:#b89c47; --gold-faint:rgba(214,186,118,0.10);
+  --gold-grad:linear-gradient(135deg,#e2cb86 0%,#bfa050 100%); --on-gold:#1a1509;
+  --ink:#f4f1ea; --muted:#8f8d85; --mid:#c4c1b8; --green:#6dbf90; --red:#e0807e; --radius:11px;
+  --heading:'Playfair Display', Georgia, serif; --body:'Inter', -apple-system, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.hide{display:none!important}
+.masthead{background:var(--surface);border-bottom:1px solid var(--border);padding:34px 22px 26px;text-align:center}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.masthead h1{font-family:var(--heading);font-weight:600;font-size:clamp(24px,5.5vw,34px);line-height:1.12;color:var(--ink);margin:11px 0 8px}
+.masthead p{color:var(--muted);font-size:13.5px;max-width:52ch;margin:0 auto}
+.wrap{max-width:640px;margin:0 auto;padding:26px 22px 90px}
+.q{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 20px;margin-bottom:14px}
+.q .num{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.q .label{font-family:var(--heading);font-size:17px;color:var(--ink);line-height:1.3;margin-bottom:4px}
+.q .sub{font-size:12.5px;color:var(--muted);margin-bottom:13px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:center;gap:11px;border:1px solid var(--border);background:var(--card-2);border-radius:10px;padding:12px 14px;cursor:pointer;transition:border-color .12s,background .12s;font-size:14px;color:var(--mid)}
+.opt:hover{border-color:var(--gold-deep)}
+.opt.on{border-color:var(--gold);background:var(--gold-faint);color:var(--ink)}
+.opt .box{flex:0 0 18px;width:18px;height:18px;border:1.6px solid var(--border);border-radius:50%;display:grid;place-items:center}
+.opt.multi .box{border-radius:5px}
+.opt.on .box{border-color:var(--gold);background:var(--gold)}
+.opt.on .box:after{content:'';width:8px;height:8px;border-radius:inherit;background:var(--on-gold)}
+.opt.multi.on .box:after{content:'✓';width:auto;height:auto;background:none;color:var(--on-gold);font-size:12px;font-weight:800;line-height:1}
+.stars{font-size:15px;letter-spacing:1px}
+.scale{display:flex;gap:6px;flex-wrap:wrap}
+.sbtn{flex:1;min-width:34px;border:1px solid var(--border);background:var(--card-2);color:var(--mid);border-radius:9px;padding:11px 0;font-size:15px;font-weight:600;cursor:pointer;text-align:center;transition:all .12s;font-family:var(--body)}
+.sbtn:hover{border-color:var(--gold-deep)}
+.sbtn.on{background:var(--gold-grad);color:var(--on-gold);border-color:var(--gold)}
+.anchors{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:8px}
+input[type=text],textarea{width:100%;font-family:var(--body);font-size:14.5px;background:var(--card-2);border:1px solid var(--border);border-radius:10px;color:var(--ink);padding:12px 14px;outline:none;transition:border-color .15s}
+input[type=text]:focus,textarea:focus{border-color:var(--gold)}
+textarea{resize:vertical;min-height:76px;line-height:1.55}
+.other-wrap{margin-top:8px}
+.btn{width:100%;padding:15px 20px;font-family:var(--body);font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--gold-grad);color:var(--on-gold);border:none;border-radius:var(--radius);cursor:pointer;box-shadow:0 6px 22px rgba(214,186,118,.26);transition:transform .15s}
+.btn:hover{transform:translateY(-1px)} .btn:disabled{opacity:.55;cursor:default;transform:none}
+.err{min-height:18px;margin:10px 0 0;font-size:13px;color:var(--red);text-align:center}
+.priv{text-align:center;font-size:11.5px;color:var(--muted);margin-top:16px}
+.done{text-align:center;padding:64px 22px}
+.done .mk{font-size:44px;margin-bottom:14px}
+.done h2{font-family:var(--heading);font-size:26px;color:var(--ink);margin-bottom:8px}
+.done p{color:var(--mid);max-width:44ch;margin:0 auto}
+@media(max-width:520px){.sbtn{min-width:28px;padding:10px 0;font-size:14px}}
+</style>
+
+<header class="masthead">
+  <div class="eyebrow">Breedwise Academy</div>
+  <h1>Anonymous Feedback Survey</h1>
+  <p>Two minutes, completely anonymous. Your honest answers help us make Breedwise better for the whole community.</p>
+</header>
+
+<div class="wrap" id="form"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+const FN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/log-submission';
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const SAT=[
+  ['5','★★★★★','Extremely satisfied'],['4','★★★★','Very satisfied'],['3','★★★','Somewhat satisfied'],
+  ['2','★★','Not very satisfied'],['1','★','Not satisfied'],
+];
+const VALUABLE=['Education & curriculum','Expert Masterclasses','Expert Q&A sessions','Community & networking','Accountability & support','Business education','Veterinary / reproduction education','Genetics education','Social media / marketing education','Dog handling / behaviour education'];
+
+const A={ satisfaction:null, nps:null, valuable:[], valuable_other:'', doing_well:'', improve:'', add_topics:'', support:null, anything_else:'' };
+
+function render(){
+  $('#form').innerHTML=`
+  <div class="q">
+    <div class="num">Question 1</div>
+    <div class="label">Overall, how satisfied are you with your Breedwise Academy experience?</div>
+    <div class="opts" id="q_sat">${SAT.map(([v,st,lab])=>`<div class="opt" data-sat="${v}"><span class="box"></span><span><span class="stars">${st}</span> &nbsp;${esc(lab)}</span></div>`).join('')}</div>
+  </div>
+
+  <div class="q">
+    <div class="num">Question 2</div>
+    <div class="label">How likely are you to recommend Breedwise Academy to another breeder?</div>
+    <div class="sub">0 = Not at all likely · 10 = Extremely likely</div>
+    <div class="scale" id="q_nps">${Array.from({length:11},(_,i)=>`<button type="button" class="sbtn" data-nps="${i}">${i}</button>`).join('')}</div>
+    <div class="anchors"><span>Not at all likely</span><span>Extremely likely</span></div>
+  </div>
+
+  <div class="q">
+    <div class="num">Question 3</div>
+    <div class="label">What has been the most valuable part of Breedwise Academy for you?</div>
+    <div class="sub">Select all that apply</div>
+    <div class="opts" id="q_val">${VALUABLE.map(v=>`<div class="opt multi" data-val="${esc(v)}"><span class="box"></span><span>${esc(v)}</span></div>`).join('')}
+      <div class="opt multi" data-val="__other"><span class="box"></span><span>Other</span></div>
+    </div>
+    <div class="other-wrap hide" id="otherWrap"><input type="text" id="q_val_other" placeholder="Tell us what else…"></div>
+  </div>
+
+  <div class="q"><div class="num">Question 4</div><div class="label">What is one thing Breedwise Academy is doing really well?</div><textarea id="q_well" rows="2"></textarea></div>
+  <div class="q"><div class="num">Question 5</div><div class="label">What is one thing we could improve?</div><textarea id="q_improve" rows="2"></textarea></div>
+  <div class="q"><div class="num">Question 6</div><div class="label">What topics, resources, or training would you like to see added?</div><textarea id="q_add" rows="2"></textarea></div>
+
+  <div class="q">
+    <div class="num">Question 7</div>
+    <div class="label">How supported do you feel as a Breedwise member?</div>
+    <div class="sub">1 = Not supported · 5 = Extremely supported</div>
+    <div class="scale" id="q_support">${[1,2,3,4,5].map(i=>`<button type="button" class="sbtn" data-sup="${i}">${i}</button>`).join('')}</div>
+    <div class="anchors"><span>Not supported</span><span>Extremely supported</span></div>
+  </div>
+
+  <div class="q"><div class="num">Question 8</div><div class="label">Anything else you'd like the Breedwise team to know?</div><div class="sub">Optional</div><textarea id="q_else" rows="3"></textarea></div>
+
+  <button class="btn" id="submit">Submit anonymous feedback</button>
+  <div class="err" id="err"></div>
+  <div class="priv">🔒 Anonymous — we don't collect your name, email, or any identifying details.</div>`;
+
+  // single-select: satisfaction
+  document.querySelectorAll('#q_sat .opt').forEach(el=>el.addEventListener('click',()=>{
+    document.querySelectorAll('#q_sat .opt').forEach(x=>x.classList.remove('on')); el.classList.add('on'); A.satisfaction=el.dataset.sat;
+  }));
+  // NPS scale
+  document.querySelectorAll('#q_nps .sbtn').forEach(el=>el.addEventListener('click',()=>{
+    document.querySelectorAll('#q_nps .sbtn').forEach(x=>x.classList.remove('on')); el.classList.add('on'); A.nps=+el.dataset.nps;
+  }));
+  // support scale
+  document.querySelectorAll('#q_support .sbtn').forEach(el=>el.addEventListener('click',()=>{
+    document.querySelectorAll('#q_support .sbtn').forEach(x=>x.classList.remove('on')); el.classList.add('on'); A.support=+el.dataset.sup;
+  }));
+  // multi-select valuable
+  document.querySelectorAll('#q_val .opt').forEach(el=>el.addEventListener('click',()=>{
+    el.classList.toggle('on');
+    const v=el.dataset.val;
+    if(v==='__other'){ $('#otherWrap').classList.toggle('hide',!el.classList.contains('on')); if(!el.classList.contains('on')) $('#q_val_other').value=''; }
+    else { const on=el.classList.contains('on'); A.valuable=A.valuable.filter(x=>x!==v); if(on) A.valuable.push(v); }
+  }));
+  $('#submit').addEventListener('click',submit);
+}
+
+async function submit(){
+  A.valuable_other=($('#q_val_other')&&$('#q_val_other').value.trim())||'';
+  A.doing_well=$('#q_well').value.trim(); A.improve=$('#q_improve').value.trim();
+  A.add_topics=$('#q_add').value.trim(); A.anything_else=$('#q_else').value.trim();
+  if(!A.satisfaction){ err('Please answer question 1 (overall satisfaction).'); scrollTo(0,0); return; }
+  if(A.nps==null){ err('Please answer question 2 (how likely to recommend).'); return; }
+  const satLabel=(SAT.find(s=>s[0]===A.satisfaction)||[])[2]||'';
+  const valuable=A.valuable.slice(); if(A.valuable_other) valuable.push('Other: '+A.valuable_other);
+  const btn=$('#submit'); btn.disabled=true; btn.textContent='Sending…'; err('');
+  const payload={
+    tool:'feedback', tool_label:'Academy Feedback',
+    summary:`${satLabel} · NPS ${A.nps}${A.support?` · Support ${A.support}/5`:''}`,
+    meta:{ satisfaction:+A.satisfaction, satisfaction_label:satLabel, nps:A.nps, support:A.support, valuable_count:valuable.length },
+    inputs:{ satisfaction:+A.satisfaction, satisfaction_label:satLabel, nps:A.nps, support:A.support,
+      most_valuable:valuable, doing_well:A.doing_well, improve:A.improve, add_topics:A.add_topics, anything_else:A.anything_else },
+  };
+  try{
+    const r=await fetch(FN,{method:'POST',headers:{'content-type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify(payload)});
+    const d=await r.json();
+    if(!r.ok||d.error) throw new Error(d.error||('Error '+r.status));
+    done();
+  }catch(e){ btn.disabled=false; btn.textContent='Submit anonymous feedback'; err('Could not send: '+e.message+' — please try again.'); }
+}
+function err(m){ const e=$('#err'); if(e) e.textContent=m; }
+function done(){
+  $('#form').innerHTML=`<div class="done"><div class="mk">🐾</div><h2>Thank you</h2><p>Your feedback is in — completely anonymous, and it genuinely helps us make Breedwise better for the whole community.</p></div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+render();
+</script>
