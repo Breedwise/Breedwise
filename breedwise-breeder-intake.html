@@ -96,6 +96,12 @@ input::placeholder,textarea::placeholder{color:#b3b0a8}
 .fitem .rm{position:absolute;top:3px;right:3px;width:19px;height:19px;border-radius:50%;background:rgba(15,14,12,.72);color:#fff;font-size:13px;line-height:18px;text-align:center;cursor:pointer;border:none}
 .fitem .rm:hover{background:#c0392b}
 .fbadge{position:absolute;bottom:0;left:0;right:0;background:rgba(15,14,12,.62);color:#fff;font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;padding:2px 0}
+.dogcard{border:1px solid var(--border);border-radius:10px;padding:18px 18px 8px;margin-bottom:14px;background:var(--surface);position:relative}
+.dogcard .dogrm{position:absolute;top:10px;right:10px;width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:#fff;color:var(--muted);font-size:16px;line-height:1;cursor:pointer}
+.dogcard .dogrm:hover{border-color:#c0392b;color:#c0392b}
+.dogcard .drop{padding:15px}
+.dogcard .checks label{font-size:12px;padding:6px 11px}
+#addDog{margin-top:2px}
 </style>
 </head>
 <body>
@@ -177,9 +183,17 @@ input::placeholder,textarea::placeholder{color:#b3b0a8}
     <div class="field"><span class="flabel">Notable dogs / foundation bloodlines <span class="opt">(optional)</span></span><input name="bloodlines" placeholder="e.g., King Henry, Venti, Lionspoint & Aisha lines"></div>
   </div>
 
+  <!-- Dogs -->
+  <div class="sec">
+    <div class="sec-head"><span class="sec-num">04</span><div><h2>Your Dogs</h2><span class="feeds">Feeds: <b>Website (Our Dogs) &middot; Guide &middot; Scripts</b></span></div></div>
+    <div class="intro" style="margin:0 0 16px;border-left-color:var(--gold)"><p style="font-size:13px">Add each dog you&rsquo;d like featured &mdash; sires, dams, foundation dogs. Drop their photos and label their details. <b>Add as many as you like.</b></p></div>
+    <div id="dogsWrap"></div>
+    <button type="button" class="btn btn-ghost" id="addDog">+ Add a dog</button>
+  </div>
+
   <!-- 4 -->
   <div class="sec">
-    <div class="sec-head"><span class="sec-num">04</span><div><h2>Health &amp; Guarantee</h2><span class="feeds">Feeds: <b>Guide (Health) · Opt-in · Scripts</b></span></div></div>
+    <div class="sec-head"><span class="sec-num">05</span><div><h2>Health &amp; Guarantee</h2><span class="feeds">Feeds: <b>Guide (Health) · Opt-in · Scripts</b></span></div></div>
     <div class="field"><span class="flabel">Health testing you perform <span class="opt">+ where it's verifiable</span></span><textarea name="health_testing" placeholder="e.g., OFA hips & elbows, cardiac, CAER eyes, Embark DNA, SABBS appraisal — verifiable on OFA/SABBS."></textarea></div>
     <div class="field half"><span class="flabel">Health guarantee — length</span><input name="guarantee_len" placeholder="e.g., 24-month written guarantee"></div>
     <div class="field half"><span class="flabel">Vet-check window</span><input name="vet_window" placeholder="e.g., 72 hours"></div>
@@ -190,7 +204,7 @@ input::placeholder,textarea::placeholder{color:#b3b0a8}
 
   <!-- 5 -->
   <div class="sec">
-    <div class="sec-head"><span class="sec-num">05</span><div><h2>The Breed</h2><span class="feeds">Feeds: <b>Guide (education) · Scripts</b></span></div></div>
+    <div class="sec-head"><span class="sec-num">06</span><div><h2>The Breed</h2><span class="feeds">Feeds: <b>Guide (education) · Scripts</b></span></div></div>
     <div class="intro" style="margin:0 0 16px;border-left-color:var(--gold)"><p style="font-size:13px"><b>Don't know all of this?</b> Leave it blank — our team researches the full breed standard, health profile, and history for you. Fill in what's specific to <em>your</em> program.</p></div>
     <div class="field half"><span class="flabel">Adult size — males</span><input name="size_m" placeholder="height & weight"></div>
     <div class="field half"><span class="flabel">Adult size — females</span><input name="size_f" placeholder="height & weight"></div>
@@ -208,7 +222,7 @@ input::placeholder,textarea::placeholder{color:#b3b0a8}
 
   <!-- 6 -->
   <div class="sec">
-    <div class="sec-head"><span class="sec-num">06</span><div><h2>Process, Pricing &amp; Offers</h2><span class="feeds">Feeds: <b>Guide · Website · Lead Tracker</b></span></div></div>
+    <div class="sec-head"><span class="sec-num">07</span><div><h2>Process, Pricing &amp; Offers</h2><span class="feeds">Feeds: <b>Guide · Website · Lead Tracker</b></span></div></div>
     <div class="field"><span class="flabel">Your program process, step by step</span><textarea name="process" placeholder="e.g., Apply → Interview & reserve → Watch them grow → Homecoming."></textarea></div>
     <div class="field"><span class="flabel">Pricing approach</span><input name="pricing" placeholder="e.g., 'provided during application'  (or)  share your range"></div>
     <div class="field"><span class="flabel">Waitlist — how it works <span class="opt">(optional)</span></span><input name="waitlist" placeholder="e.g., deposit reserves pick order"></div>
@@ -218,7 +232,7 @@ input::placeholder,textarea::placeholder{color:#b3b0a8}
 
   <!-- 7 -->
   <div class="sec">
-    <div class="sec-head"><span class="sec-num">07</span><div><h2>Lead Magnet &amp; Opt-in</h2><span class="feeds">Feeds: <b>Owner's Guide · Opt-in Page</b></span></div></div>
+    <div class="sec-head"><span class="sec-num">08</span><div><h2>Lead Magnet &amp; Opt-in</h2><span class="feeds">Feeds: <b>Owner's Guide · Opt-in Page</b></span></div></div>
     <div class="field"><span class="flabel">Guide title <span class="pick" data-fill="guide_title" data-val="Suggest one for me">✎ suggest one</span></span><input name="guide_title" placeholder="e.g., The Complete South African Boerboel Owner's Guide"></div>
     <div class="field"><span class="flabel">Opt-in headline / hook <span class="pick" data-fill="optin_hook" data-val="Write one for me">✎ write one for me</span></span><input name="optin_hook" placeholder="e.g., Everything to know before you bring home a Boerboel."></div>
     <div class="field half"><span class="flabel">Instagram comment keyword</span><input name="keyword" placeholder="e.g., GUIDE"></div>
@@ -227,7 +241,7 @@ input::placeholder,textarea::placeholder{color:#b3b0a8}
 
   <!-- 8 -->
   <div class="sec">
-    <div class="sec-head"><span class="sec-num">08</span><div><h2>Content &amp; Social</h2><span class="feeds">Feeds: <b>10 Instagram Scripts</b></span></div></div>
+    <div class="sec-head"><span class="sec-num">09</span><div><h2>Content &amp; Social</h2><span class="feeds">Feeds: <b>10 Instagram Scripts</b></span></div></div>
     <div class="field"><span class="flabel">Top myths / misconceptions <span class="opt">— about your breed or program</span></span><textarea name="content_myths" placeholder="List as many as you can — these become reels."></textarea></div>
     <div class="field"><span class="flabel">Most common questions buyers ask you</span><textarea name="content_questions" placeholder="The questions you answer every week."></textarea></div>
     <div class="field"><span class="flabel">What do you want to be known for?</span><input name="known_for" placeholder="e.g., the most transparent, health-first program"></div>
@@ -237,7 +251,7 @@ input::placeholder,textarea::placeholder{color:#b3b0a8}
 
   <!-- 9 -->
   <div class="sec">
-    <div class="sec-head"><span class="sec-num">09</span><div><h2>Lead Tracking</h2><span class="feeds">Feeds: <b>Google Sheet + Forms</b></span></div></div>
+    <div class="sec-head"><span class="sec-num">10</span><div><h2>Lead Tracking</h2><span class="feeds">Feeds: <b>Google Sheet + Forms</b></span></div></div>
     <div class="field"><span class="flabel">Which inquiry types do you take?</span>
       <div class="checks">
         <label><input type="checkbox" name="inquiry" value="Lead magnet (guide)" checked> Lead magnet (guide)</label>
@@ -252,7 +266,7 @@ input::placeholder,textarea::placeholder{color:#b3b0a8}
 
   <!-- 10 -->
   <div class="sec">
-    <div class="sec-head"><span class="sec-num">10</span><div><h2>Website <span class="opt" style="font-size:12px;color:var(--muted)">(if building the site)</span></h2><span class="feeds">Feeds: <b>Website Template</b></span></div></div>
+    <div class="sec-head"><span class="sec-num">11</span><div><h2>Website <span class="opt" style="font-size:12px;color:var(--muted)">(if building the site)</span></h2><span class="feeds">Feeds: <b>Website Template</b></span></div></div>
     <div class="field"><span class="flabel">Pages you need</span>
       <div class="checks">
         <label><input type="checkbox" name="page" value="Home" checked> Home</label>
@@ -273,7 +287,7 @@ input::placeholder,textarea::placeholder{color:#b3b0a8}
 
   <!-- 11 -->
   <div class="sec">
-    <div class="sec-head"><span class="sec-num">11</span><div><h2>Filming &amp; Media</h2><span class="feeds">Feeds: <b>Filming Playbook · All visuals</b></span></div></div>
+    <div class="sec-head"><span class="sec-num">12</span><div><h2>Filming &amp; Media</h2><span class="feeds">Feeds: <b>Filming Playbook · All visuals</b></span></div></div>
     <div class="field half"><span class="flabel">Comfortable on camera?</span><select name="on_camera"><option value="">Select…</option><option>Yes</option><option>Learning</option><option>Prefer voiceover</option></select></div>
     <div class="field half"><span class="flabel">Current gear <span class="opt">(phone/mic/lights)</span></span><input name="gear" placeholder="e.g., iPhone, no mic yet"></div>
     <div class="field"><span class="flabel">Drop your photos &amp; videos</span><div class="hint">Dogs, puppies, your family, your facility, founder photo, side-profile / structure shots, at-home footage. Drop as many as you like — this is what we build your site and content from.</div>
@@ -351,23 +365,89 @@ input::placeholder,textarea::placeholder{color:#b3b0a8}
   wireDrop('logoDrop','logoInput',false);
   wireDrop('mediaDrop','mediaInput',true);
 
+  // ---- Your Dogs (repeatable: photos + labeled info) ----
+  var TESTS=['Hips (OFA/PennHIP)','Elbows','Cardiac','Eyes (CAER)','Patella','Thyroid','DNA / genetic panel','Full breed DNA','None yet'];
+  var ROLES=['Sire','Dam','Foundation','Up & Coming','Retired','External Stud','Producing Female'];
+  var LEVELS=['Not started yet','In progress','DNA only','OFA preliminary','Fully health-tested & certified'];
+  var dogFiles={}, dogSeq=0;
+  function optlist(list){return '<option value=\"\"></option>'+list.map(function(x){return '<option>'+x+'</option>';}).join('');}
+  function dogCard(){
+    var id='d'+(dogSeq++); dogFiles[id]=[];
+    var checks=TESTS.map(function(t){return '<label><input type=\"checkbox\" data-test value=\"'+t+'\"> '+t+'</label>';}).join('');
+    var el=document.createElement('div'); el.className='dogcard'; el.setAttribute('data-dog',id);
+    el.innerHTML=
+      '<button type=\"button\" class=\"dogrm\" title=\"Remove this dog\">&times;</button>'+
+      '<div class=\"field half\"><span class=\"flabel\">Registered name</span><input data-f=\"reg_name\" placeholder=\"Full registered name\"></div>'+
+      '<div class=\"field half\"><span class=\"flabel\">Call name <span class=\"opt\">(optional)</span></span><input data-f=\"call_name\" placeholder=\"Barn / call name\"></div>'+
+      '<div class=\"field half\"><span class=\"flabel\">Role</span><select data-f=\"role\">'+optlist(ROLES)+'</select></div>'+
+      '<div class=\"field half\"><span class=\"flabel\">Sex</span><select data-f=\"sex\"><option value=\"\"></option><option>Male</option><option>Female</option></select></div>'+
+      '<div class=\"field half\"><span class=\"flabel\">Registry &amp; reg #</span><input data-f=\"registry\" placeholder=\"e.g., AKC SR12345678 / SABBS / ABKC\"></div>'+
+      '<div class=\"field half\"><span class=\"flabel\">Color / markings</span><input data-f=\"color\" placeholder=\"e.g., tri-color merle\"></div>'+
+      '<div class=\"field half\"><span class=\"flabel\">Height</span><input data-f=\"height\" placeholder=\"e.g., 25 in\"></div>'+
+      '<div class=\"field half\"><span class=\"flabel\">Weight</span><input data-f=\"weight\" placeholder=\"e.g., 45 lbs\"></div>'+
+      '<div class=\"field half\"><span class=\"flabel\">Date of birth / age <span class=\"opt\">(optional)</span></span><input data-f=\"dob\" placeholder=\"e.g., 01/2023\"></div>'+
+      '<div class=\"field half\"><span class=\"flabel\">Titles / achievements <span class=\"opt\">(optional)</span></span><input data-f=\"titles\" placeholder=\"e.g., GRCH, top-producer\"></div>'+
+      '<div class=\"field\"><span class=\"flabel\">Health testing done <span class=\"opt\">— check all that apply</span></span><div class=\"checks\">'+checks+'</div></div>'+
+      '<div class=\"field half\"><span class=\"flabel\">Overall testing status</span><select data-f=\"testing_level\">'+optlist(LEVELS)+'</select></div>'+
+      '<div class=\"field half\"><span class=\"flabel\">Other testing <span class=\"opt\">(optional)</span></span><input data-f=\"testing_other\" placeholder=\"anything not listed\"></div>'+
+      '<div class=\"field\"><span class=\"flabel\">Description / bio <span class=\"opt\">(optional)</span></span><textarea data-f=\"description\" placeholder=\"Temperament, structure, bloodline — what makes this dog special.\"></textarea></div>'+
+      '<div class=\"field\"><span class=\"flabel\">Photos of this dog</span><div class=\"hint\">Side-profile / structure shots and head shots are ideal.</div>'+
+        '<div class=\"drop dogdrop\"><div class=\"di\">&#128062;</div><div class=\"dt\">Upload this dog&rsquo;s photos</div><div class=\"ds\">JPG &middot; PNG &middot; HEIC &middot; MP4</div><input type=\"file\" class=\"dogInput\" accept=\"image/*,video/*\" multiple></div>'+
+        '<div class=\"files dogfiles\"></div></div>';
+    el.querySelector('.dogrm').addEventListener('click',function(){ delete dogFiles[id]; el.remove(); });
+    var drop=el.querySelector('.dogdrop'), input=el.querySelector('.dogInput'), filesEl=el.querySelector('.dogfiles');
+    function render(){ renderList(filesEl, dogFiles[id]||[], function(i){dogFiles[id].splice(i,1);render();}); }
+    function add(fl){ dogFiles[id]=(dogFiles[id]||[]).concat([].slice.call(fl)); render(); }
+    drop.addEventListener('click',function(){input.click();});
+    input.addEventListener('change',function(){add(input.files);input.value='';});
+    ['dragenter','dragover'].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.add('drag');});});
+    drop.addEventListener('dragleave',function(e){e.preventDefault();drop.classList.remove('drag');});
+    drop.addEventListener('drop',function(e){e.preventDefault();drop.classList.remove('drag');if(e.dataTransfer&&e.dataTransfer.files)add(e.dataTransfer.files);});
+    return el;
+  }
+  function collectDogs(strip){
+    var arr=[];
+    document.querySelectorAll('.dogcard').forEach(function(card){
+      var id=card.getAttribute('data-dog');
+      function f(n){var e=card.querySelector('[data-f=\"'+n+'\"]');return e&&e.value.trim()?e.value.trim():null;}
+      var tests=[]; card.querySelectorAll('[data-test]:checked').forEach(function(c){tests.push(c.value);});
+      var hasFiles=dogFiles[id]&&dogFiles[id].length;
+      if(!(f('reg_name')||f('call_name')) && !tests.length && !hasFiles) return;
+      var o={_id:id, registered_name:f('reg_name'), call_name:f('call_name'), role:f('role'), sex:f('sex'),
+        registry:f('registry'), height:f('height'), weight:f('weight'), color:f('color'), dob:f('dob'),
+        titles:f('titles'), testing:tests, testing_level:f('testing_level'), testing_other:f('testing_other'),
+        description:f('description'), photo_count:(dogFiles[id]||[]).length};
+      if(strip) delete o._id;
+      arr.push(o);
+    });
+    return arr;
+  }
+  document.getElementById('addDog').addEventListener('click',function(){document.getElementById('dogsWrap').appendChild(dogCard());});
+  document.getElementById('dogsWrap').appendChild(dogCard());
+
   async function uploadAll(slug, setStatus){
-    var assets={logo:null, media:[], count:0, uploaded_at:new Date().toISOString().slice(0,10)};
-    var jobs=[]; if(logoFile) jobs.push(['logo',logoFile]); mediaFiles.forEach(function(f){jobs.push(['media',f]);});
-    var mi=0, failed=0;
-    for(var i=0;i<jobs.length;i++){
-      var kind=jobs[i][0], f=jobs[i][1];
-      var path = kind==='logo' ? slug+'/logo/'+safeName(f.name)
-                                : slug+'/media/'+String(mi++).padStart(2,'0')+'-'+safeName(f.name);
-      setStatus('Uploading '+(i+1)+' of '+jobs.length+'\u2026');
+    var assets={logo:null, media:[], dogs:[], count:0, uploaded_at:new Date().toISOString().slice(0,10)};
+    var jobs=[];
+    if(logoFile) jobs.push({kind:'logo',f:logoFile});
+    mediaFiles.forEach(function(f){jobs.push({kind:'media',f:f});});
+    var dogs=collectDogs(false);
+    dogs.forEach(function(dg){ dg.photos=[]; dg.dslug=slugify(dg.registered_name||dg.call_name||'dog'); (dogFiles[dg._id]||[]).forEach(function(f){jobs.push({kind:'dog',f:f,dog:dg});}); });
+    var mi=0, di={}, failed=0, total=jobs.length;
+    for(var i=0;i<total;i++){
+      var jb=jobs[i]; setStatus('Uploading '+(i+1)+' of '+total+' file(s)\u2026');
+      var path;
+      if(jb.kind==='logo') path=slug+'/logo/'+safeName(jb.f.name);
+      else if(jb.kind==='media') path=slug+'/media/'+String(mi++).padStart(2,'0')+'-'+safeName(jb.f.name);
+      else { var k=jb.dog.dslug; di[k]=(di[k]||0); path=slug+'/dogs/'+k+'/'+String(di[k]++).padStart(2,'0')+'-'+safeName(jb.f.name); }
       try{
-        var res=await sb.storage.from(BUCKET).upload(path, f, {cacheControl:'3600',upsert:true,contentType:f.type||undefined});
+        var res=await sb.storage.from(BUCKET).upload(path, jb.f, {cacheControl:'3600',upsert:true,contentType:jb.f.type||undefined});
         if(res.error) throw res.error;
-        if(kind==='logo') assets.logo=path; else assets.media.push(path);
+        if(jb.kind==='logo') assets.logo=path; else if(jb.kind==='media') assets.media.push(path); else jb.dog.photos.push(path);
       }catch(e){ failed++; }
     }
-    assets.count=(assets.logo?1:0)+assets.media.length;
-    return {assets:assets, failed:failed, total:jobs.length};
+    assets.dogs=dogs.map(function(d){return {registered_name:d.registered_name,call_name:d.call_name,role:d.role,sex:d.sex,registry:d.registry,height:d.height,weight:d.weight,color:d.color,dob:d.dob,titles:d.titles,testing:d.testing,testing_level:d.testing_level,testing_other:d.testing_other,description:d.description,photos:d.photos};});
+    assets.count=(assets.logo?1:0)+assets.media.length+assets.dogs.reduce(function(n,d){return n+(d.photos?d.photos.length:0);},0);
+    return {assets:assets, failed:failed, total:total};
   }
 
   var submitBtn=document.getElementById('submit');
@@ -375,6 +455,7 @@ input::placeholder,textarea::placeholder{color:#b3b0a8}
     var name=val('kennel_name')||val('brand_full');
     if(!name){alert('Please add your kennel / business name first.');var k=document.querySelector('[name=kennel_name]');if(k)k.focus();return;}
     var full=collectAll();
+    full.dogs=collectDogs(true);
     var colors=(val('colors').match(/#[0-9a-fA-F]{3,8}/g))||null;
     var slug=slugify(name)+'-'+Math.random().toString(36).slice(2,6);
     var rec={kennel_name:name,slug:slug,
@@ -384,7 +465,7 @@ input::placeholder,textarea::placeholder{color:#b3b0a8}
     submitBtn.disabled=true;submitBtn.textContent='Submitting\u2026';
     var up={assets:{count:0,media:[]},failed:0,total:0};
     try{
-      if(logoFile||mediaFiles.length){ up=await uploadAll(slug,function(s){submitBtn.textContent=s;}); }
+      up=await uploadAll(slug,function(s){submitBtn.textContent=s;});
       rec.assets=up.assets;
       submitBtn.textContent='Saving\u2026';
       var r=await sb.from('accelerator_clients').insert(rec);
