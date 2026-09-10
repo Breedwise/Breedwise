@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breedwise — Breeder Asset Review</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@0,500;0,600;0,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f7f6f3;--card:#ffffff;--border:#e2dfd8;--gold:#b8922e;--gold-lt:#cda64a;--gold-faint:rgba(184,146,46,.08);--ink:#0f0e0c;--muted:#86847d;--mid:#48463f;--head:'Playfair Display',Georgia,serif;--body:'Inter',-apple-system,sans-serif}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+a{color:var(--gold)}
+/* gate */
+.gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.gate.hide{display:none}
+.gcard{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:14px;padding:34px 32px;max-width:380px;width:100%}
+.gcard h1{font-family:var(--head);font-size:24px;font-weight:600;margin-bottom:4px}
+.gcard p{color:var(--muted);font-size:13px;margin-bottom:20px}
+.gcard label{display:block;font-size:12px;font-weight:600;margin:12px 0 5px}
+.gcard input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px 13px;font-size:14px;font-family:var(--body)}
+.gcard input:focus{outline:none;border-color:var(--gold)}
+.gerr{color:#c0392b;font-size:12.5px;min-height:16px;margin-top:8px}
+.btn{font-family:var(--body);font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:11px 18px;border-radius:7px;border:1px solid var(--gold);cursor:pointer;background:var(--gold);color:#fff;transition:.15s}
+.btn:hover{background:var(--gold-lt)}
+.btn.ghost{background:transparent;color:var(--gold)}.btn.ghost:hover{background:var(--gold-faint)}
+.btn:disabled{opacity:.6;cursor:default}
+.gcard .btn{width:100%;margin-top:18px}
+/* app */
+#app{display:none}#app.on{display:block}
+.topbar{background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:30}
+.topbar .wrap{display:flex;align-items:center;gap:16px;height:62px}
+.brand{font-family:var(--head);font-weight:600;font-size:19px;color:var(--gold)}
+.tlbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.spacer{flex:1}
+.who{font-size:12px;color:var(--muted)}
+.search{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:var(--body);width:230px}
+.search:focus{outline:none;border-color:var(--gold)}
+.mini{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);background:transparent;border:1px solid var(--border);border-radius:6px;padding:8px 12px;cursor:pointer;font-weight:600}
+.mini:hover{border-color:var(--gold)}
+.summary{color:var(--muted);font-size:13px;margin:22px 0 6px}
+/* client card */
+.client{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 24px 22px;margin-bottom:20px}
+.chead{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.chead h2{font-family:var(--head);font-size:23px;font-weight:600;line-height:1.1}
+.chead .sub{font-size:12.5px;color:var(--muted);margin-top:3px}
+.badge{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:5px 11px;border-radius:50px;background:var(--gold-faint);color:var(--gold);border:1px solid var(--gold-lt)}
+.swrow{display:flex;gap:5px;align-items:center;margin-top:8px}
+.sw{width:20px;height:20px;border-radius:5px;border:1px solid var(--border)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:10px;font-size:12.5px;color:var(--mid)}
+.meta b{color:var(--muted);font-weight:600}
+.blk{margin-top:20px}
+.blk-h{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);font-weight:700;border-bottom:1px solid var(--border);padding-bottom:7px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.blk-h .n{color:var(--muted);font-weight:600;letter-spacing:.04em}
+/* thumbs */
+.gal{display:flex;flex-wrap:wrap;gap:10px}
+.thumb{position:relative;width:110px;height:110px;border-radius:9px;overflow:hidden;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;text-align:center;font-size:10px;color:var(--muted);padding:6px;cursor:pointer}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb.vid{background:#1a1815;color:#e9dcb6}
+.thumb .dl{position:absolute;bottom:5px;right:5px;width:24px;height:24px;border-radius:6px;background:rgba(15,14,12,.72);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;text-decoration:none;opacity:0;transition:.15s}
+.thumb:hover .dl{opacity:1}
+.thumb.logo{width:150px;height:110px;background:#0f0e0c}
+.thumb.logo img{object-fit:contain}
+/* dogs */
+.dog{border:1px solid var(--border);border-radius:11px;padding:16px;margin-bottom:12px;background:var(--bg)}
+.dog h3{font-family:var(--head);font-size:17px;font-weight:600}
+.dog .call{font-size:12px;color:var(--muted);font-weight:400;font-style:italic}
+.dchips{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0}
+.dchip{font-size:11px;background:var(--card);border:1px solid var(--border);border-radius:50px;padding:4px 10px;color:var(--mid)}
+.dchip b{color:var(--muted);font-weight:600}
+.tests{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0}
+.test{font-size:10.5px;background:var(--gold-faint);border:1px solid var(--gold-lt);color:var(--gold);border-radius:5px;padding:3px 8px;font-weight:600}
+.test.none{background:#f3e9e9;border-color:#e3c9c9;color:#b04a4a}
+.dbio{font-size:12.5px;color:var(--mid);margin:6px 0 10px}
+.lvl{font-size:11px;color:var(--muted);margin-bottom:8px}
+.lvl b{color:var(--gold)}
+/* intake toggle */
+details.raw{margin-top:16px;border:1px solid var(--border);border-radius:9px;background:var(--bg)}
+details.raw summary{cursor:pointer;padding:11px 14px;font-size:12px;font-weight:600;color:var(--mid);list-style:none}
+details.raw summary::-webkit-details-marker{display:none}
+details.raw pre{padding:0 14px 14px;font-size:11px;color:var(--mid);white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,monospace}
+.kv{font-size:12.5px;color:var(--mid);margin:5px 0}
+.kv b{color:var(--ink)}
+.empty{color:var(--muted);text-align:center;padding:50px 20px;font-size:14px}
+.nofiles{font-size:12px;color:var(--muted);font-style:italic}
+</style>
+</head>
+<body>
+
+<!-- LOGIN GATE -->
+<div class="gate" id="gate">
+  <div class="gcard">
+    <h1>Breeder Asset Review</h1>
+    <p>Team sign-in. Review breeder intakes, dogs & uploaded assets.</p>
+    <label>Email</label><input id="gEmail" type="email" placeholder="you@breedwise.io" autocomplete="username">
+    <label>Password</label><input id="gPass" type="password" placeholder="••••••••" autocomplete="current-password">
+    <div class="gerr" id="gErr"></div>
+    <button class="btn" id="gBtn">Sign in</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar"><div class="wrap">
+    <span class="brand">Breedwise</span><span class="tlbl">Breeder Asset Review</span>
+    <span class="spacer"></span>
+    <input class="search" id="search" placeholder="Search kennel / breed / founder…">
+    <button class="mini" id="refresh">Refresh</button>
+    <span class="who" id="who"></span>
+    <button class="mini" id="signout">Sign out</button>
+  </div></div>
+  <div class="wrap">
+    <div class="summary" id="summary"></div>
+    <div id="list"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const $=s=>document.querySelector(s);
+const SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+const SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+const BUCKET='breeder-assets';
+const sb=supabase.createClient(SB_URL,SB_KEY);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const isVid=p=>/\.(mp4|mov|webm|m4v)$/i.test(p||'');
+const fname=p=>String(p||'').split('/').pop();
+let CLIENTS=[], q='';
+
+$('#gBtn').addEventListener('click',signIn);
+$('#gPass').addEventListener('keydown',e=>{if(e.key==='Enter')signIn();});
+$('#gEmail').addEventListener('keydown',e=>{if(e.key==='Enter')$('#gPass').focus();});
+$('#signout').addEventListener('click',async()=>{await sb.auth.signOut();location.reload();});
+$('#refresh').addEventListener('click',load);
+$('#search').addEventListener('input',e=>{q=e.target.value.toLowerCase();render();});
+
+async function signIn(){
+  const email=$('#gEmail').value.trim(), password=$('#gPass').value; $('#gErr').textContent='';
+  if(!email||!password){$('#gErr').textContent='Enter your email and password.';return;}
+  $('#gBtn').disabled=true;$('#gBtn').textContent='Signing in…';
+  const {error}=await sb.auth.signInWithPassword({email,password});
+  $('#gBtn').disabled=false;$('#gBtn').textContent='Sign in';
+  if(error){$('#gErr').textContent=error.message;return;}
+  boot();
+}
+async function boot(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){$('#gate').classList.remove('hide');$('#app').classList.remove('on');return;}
+  $('#who').textContent=session.user.email;
+  $('#gate').classList.add('hide');$('#app').classList.add('on');
+  load();
+}
+async function load(){
+  $('#list').innerHTML='<div class="empty">Loading…</div>';
+  const {data,error}=await sb.from('accelerator_clients')
+    .select('id,kennel_name,slug,breed,founder,email,phone,instagram,domain,location,brand_colors,intake,assets,status,created_at')
+    .order('created_at',{ascending:false});
+  if(error){ $('#list').innerHTML='<div class="empty">Couldn’t load ('+esc(error.message)+').</div>'; return; }
+  CLIENTS=data||[]; render();
+}
+function match(c){
+  if(!q) return true;
+  const hay=((c.kennel_name||'')+' '+(c.breed||'')+' '+(c.founder||'')+' '+(c.location||'')+' '+(c.email||'')).toLowerCase();
+  return hay.includes(q);
+}
+function render(){
+  const list=CLIENTS.filter(match);
+  $('#summary').textContent = CLIENTS.length+' submission'+(CLIENTS.length===1?'':'s')+(q?(' · '+list.length+' matching'):'');
+  if(!list.length){ $('#list').innerHTML='<div class="empty">'+(CLIENTS.length?'No matches.':'No submissions yet. As breeders complete the intake, they appear here.')+'</div>'; return; }
+  $('#list').innerHTML=list.map(card).join('');
+  resolveThumbs();
+}
+function chip(label,val){ return val?('<span class="dchip"><b>'+esc(label)+'</b> '+esc(val)+'</span>'):''; }
+function photoTiles(paths){
+  if(!paths||!paths.length) return '<span class="nofiles">No photos uploaded.</span>';
+  return '<div class="gal">'+paths.map(p=>{
+    const nm=esc(fname(p));
+    if(isVid(p)) return '<div class="thumb vid" data-open="'+esc(p)+'">▶ '+nm+'<a class="dl" data-path="'+esc(p)+'" data-name="'+nm+'" title="Download">↓</a></div>';
+    return '<div class="thumb" data-open="'+esc(p)+'"><img data-path="'+esc(p)+'" alt="'+nm+'"><a class="dl" data-path="'+esc(p)+'" data-name="'+nm+'" title="Download">↓</a></div>';
+  }).join('')+'</div>';
+}
+function dogBlock(dogs){
+  if(!dogs||!dogs.length) return '';
+  return '<div class="blk"><div class="blk-h">Dogs <span class="n">'+dogs.length+'</span></div>'+dogs.map(d=>{
+    const testing=(d.testing||[]).map(t=>'<span class="test'+(/none/i.test(t)?' none':'')+'">'+esc(t)+'</span>').join('');
+    return '<div class="dog">'+
+      '<h3>'+esc(d.registered_name||d.call_name||'Unnamed dog')+(d.call_name&&d.registered_name?' <span class="call">“'+esc(d.call_name)+'”</span>':'')+'</h3>'+
+      '<div class="dchips">'+chip('Role',d.role)+chip('Sex',d.sex)+chip('Registry',d.registry)+chip('Height',d.height)+chip('Weight',d.weight)+chip('Color',d.color)+chip('DOB',d.dob)+chip('Titles',d.titles)+'</div>'+
+      (d.testing_level?'<div class="lvl">Testing status: <b>'+esc(d.testing_level)+'</b></div>':'')+
+      (testing?'<div class="tests">'+testing+'</div>':'')+
+      (d.testing_other?'<div class="kv"><b>Other testing:</b> '+esc(d.testing_other)+'</div>':'')+
+      (d.description?'<div class="dbio">'+esc(d.description)+'</div>':'')+
+      photoTiles(d.photos)+
+    '</div>';
+  }).join('')+'</div>';
+}
+function intakeBlock(intake){
+  if(!intake) return '';
+  const F=[['differentiators','What makes them different'],['philosophy','Breeding philosophy'],['founder_story','Story'],['taglines','Taglines'],['fonts','Fonts'],['brand_feel','Brand feel'],['health_testing','Health testing'],['guarantee_len','Guarantee'],['go_home_kit','Go-home kit'],['process','Process'],['pricing','Pricing'],['known_for','Known for'],['existing_site','Existing site']];
+  const rows=F.filter(([k])=>intake[k]).map(([k,l])=>'<div class="kv"><b>'+esc(l)+':</b> '+esc(Array.isArray(intake[k])?intake[k].join(', '):intake[k])+'</div>').join('');
+  const pages=Array.isArray(intake.page)?intake.page.join(', '):'';
+  const scope=Array.isArray(intake.asset)?intake.asset.join(', '):'';
+  return '<div class="blk"><div class="blk-h">Brand &amp; Program</div>'+
+    (scope?'<div class="kv"><b>Wants built:</b> '+esc(scope)+'</div>':'')+
+    (pages?'<div class="kv"><b>Website pages:</b> '+esc(pages)+'</div>':'')+
+    rows+
+    '<details class="raw"><summary>View full intake (all fields)</summary><pre>'+esc(JSON.stringify(intake,null,2))+'</pre></details></div>';
+}
+function card(c){
+  const a=c.assets||{}, intake=c.intake||{};
+  const cols=(c.brand_colors||[]).map(h=>'<span class="sw" style="background:'+esc(h)+'" title="'+esc(h)+'"></span>').join('');
+  const dt=c.created_at?new Date(c.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
+  const contact=[c.email,c.phone,c.instagram,c.domain,c.location].filter(Boolean).map(esc).join(' · ');
+  const logo=a.logo?('<div class="blk"><div class="blk-h">Logo</div><div class="gal"><div class="thumb logo" data-open="'+esc(a.logo)+'"><img data-path="'+esc(a.logo)+'" alt="logo"><a class="dl" data-path="'+esc(a.logo)+'" data-name="'+esc(fname(a.logo))+'">↓</a></div></div></div>'):'';
+  const media=(a.media&&a.media.length)?('<div class="blk"><div class="blk-h">Photos &amp; Video <span class="n">'+a.media.length+'</span></div>'+photoTiles(a.media)+'</div>'):'';
+  const nfiles=a.count||0;
+  return '<div class="client">'+
+    '<div class="chead"><div style="flex:1;min-width:240px"><h2>'+esc(c.kennel_name||'Untitled')+'</h2>'+
+      '<div class="sub">'+[esc(c.breed||''),esc(c.founder?('Founder: '+c.founder):'')].filter(Boolean).join(' · ')+'</div>'+
+      (contact?'<div class="meta">'+contact+'</div>':'')+(cols?'<div class="swrow">'+cols+'</div>':'')+
+    '</div><div style="text-align:right"><span class="badge">'+esc(c.status||'onboarding')+'</span><div class="sub" style="margin-top:6px">'+esc(dt)+'</div><div class="sub">'+nfiles+' file'+(nfiles===1?'':'s')+'</div></div></div>'+
+    logo+dogBlock(a.dogs)+media+intakeBlock(intake)+
+  '</div>';
+}
+async function resolveThumbs(){
+  // open-in-new-tab on thumb click
+  document.querySelectorAll('[data-open]').forEach(el=>{
+    el.addEventListener('click',async e=>{ if(e.target.closest('.dl'))return; const {data}=await sb.storage.from(BUCKET).createSignedUrl(el.getAttribute('data-open'),3600); if(data&&data.signedUrl) window.open(data.signedUrl,'_blank'); });
+  });
+  const els=[...document.querySelectorAll('[data-path]')];
+  const paths=[...new Set(els.map(e=>e.getAttribute('data-path')))];
+  const map={};
+  for(let i=0;i<paths.length;i+=90){
+    const chunk=paths.slice(i,i+90);
+    const {data}=await sb.storage.from(BUCKET).createSignedUrls(chunk,3600);
+    (data||[]).forEach(d=>{ if(d.signedUrl) map[d.path]=d.signedUrl; });
+  }
+  els.forEach(e=>{
+    const u=map[e.getAttribute('data-path')]; if(!u) return;
+    if(e.tagName==='IMG'){ e.src=u; }
+    else if(e.tagName==='A'){ e.href=u+(u.includes('?')?'&':'?')+'download='+encodeURIComponent(e.getAttribute('data-name')||'file'); e.setAttribute('target','_blank'); }
+  });
+}
+boot();
+</script>
+</body>
+</html>
