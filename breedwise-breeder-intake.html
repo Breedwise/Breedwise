@@ -83,6 +83,19 @@ input::placeholder,textarea::placeholder{color:#b3b0a8}
 .done-card{background:var(--bg);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:14px;padding:40px 38px;max-width:440px;text-align:center}
 .done-card h3{font-family:var(--heading);font-size:26px;font-weight:600;color:var(--gold);margin-bottom:10px}
 .done-card p{color:var(--mid);font-size:14px}
+/* upload drop zones */
+.drop{border:1.5px dashed var(--border);border-radius:10px;background:var(--surface);padding:22px 18px;text-align:center;cursor:pointer;transition:var(--ease)}
+.drop:hover,.drop.drag{border-color:var(--gold);background:var(--gold-faint)}
+.drop .di{font-size:24px;line-height:1}
+.drop .dt{font-size:13.5px;color:var(--ink);margin-top:8px;font-weight:600}
+.drop .ds{font-size:11px;color:var(--muted);margin-top:3px;letter-spacing:.02em}
+.drop input[type=file]{display:none}
+.files{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.fitem{position:relative;width:78px;height:78px;border-radius:8px;overflow:hidden;border:1px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;font-size:9.5px;color:var(--muted);text-align:center;padding:5px;word-break:break-word}
+.fitem img{width:100%;height:100%;object-fit:cover}
+.fitem .rm{position:absolute;top:3px;right:3px;width:19px;height:19px;border-radius:50%;background:rgba(15,14,12,.72);color:#fff;font-size:13px;line-height:18px;text-align:center;cursor:pointer;border:none}
+.fitem .rm:hover{background:#c0392b}
+.fbadge{position:absolute;bottom:0;left:0;right:0;background:rgba(15,14,12,.62);color:#fff;font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;padding:2px 0}
 </style>
 </head>
 <body>
@@ -130,7 +143,10 @@ input::placeholder,textarea::placeholder{color:#b3b0a8}
     <div class="field half"><span class="flabel">Full business name</span><input name="brand_full" placeholder="How it appears officially"></div>
     <div class="field half"><span class="flabel">Abbreviation / short name <span class="opt">(optional)</span></span><input name="brand_abbr" placeholder="e.g., W3 / JBK"></div>
     <div class="field"><span class="flabel">Tagline(s) / slogans <span class="opt">— up to 3</span></span><input name="taglines" placeholder="e.g., No Short Cuts · Only Quality  |  Power · Presence · Purpose"></div>
-    <div class="field"><span class="flabel">Logo <span class="pick" data-fill="logo" data-val="Design one for me">✎ design one for me</span></span><div class="hint">Have a logo? Note the file you'll send. No logo? Use the link.</div><input name="logo" placeholder="I'll send: logo.png  (or)  design one for me"></div>
+    <div class="field"><span class="flabel">Logo <span class="pick" data-fill="logo" data-val="Design one for me">✎ design one for me</span></span><div class="hint">Drop your logo here — a PNG with a transparent background is best. No logo? Use the note field and we&rsquo;ll design one.</div>
+      <div class="drop" id="logoDrop"><div class="di">&uArr;</div><div class="dt">Upload your logo</div><div class="ds">PNG &middot; JPG &middot; SVG &middot; PDF</div><input type="file" id="logoInput" accept="image/*,.svg,application/pdf"></div>
+      <div class="files" id="logoFiles"></div>
+      <input name="logo" placeholder="Or a note / link — e.g., &lsquo;design one for me&rsquo;" style="margin-top:9px"></div>
     <div class="field"><span class="flabel">Brand colors <span class="pick" data-fill="colors" data-val="Choose a palette for me">✎ choose for me</span></span><div class="hint">Primary, secondary, accent — hex codes if you have them, or describe the vibe.</div><input name="colors" placeholder="e.g., black + orange/gold, fire theme  (or)  #0c110e / #b0914f"></div>
     <div class="field"><span class="flabel">Fonts <span class="pick" data-fill="fonts" data-val="Choose fonts for me">✎ choose for me</span></span><input name="fonts" placeholder="e.g., Anton + Barlow  (or)  choose for me"></div>
     <div class="field"><span class="flabel">Brand feel / adjectives</span><input name="brand_feel" placeholder="e.g., powerful, premium, editorial, warm, luxury — pick 3–5"></div>
@@ -260,7 +276,10 @@ input::placeholder,textarea::placeholder{color:#b3b0a8}
     <div class="sec-head"><span class="sec-num">11</span><div><h2>Filming &amp; Media</h2><span class="feeds">Feeds: <b>Filming Playbook · All visuals</b></span></div></div>
     <div class="field half"><span class="flabel">Comfortable on camera?</span><select name="on_camera"><option value="">Select…</option><option>Yes</option><option>Learning</option><option>Prefer voiceover</option></select></div>
     <div class="field half"><span class="flabel">Current gear <span class="opt">(phone/mic/lights)</span></span><input name="gear" placeholder="e.g., iPhone, no mic yet"></div>
-    <div class="field"><span class="flabel">Photos / videos you can provide</span><div class="hint">The assets are only as good as the media. Note what you have.</div><textarea name="media" placeholder="e.g., adult dog portraits, puppy photos, founder photo, structure/side-profile shots, at-home footage, show footage."></textarea></div>
+    <div class="field"><span class="flabel">Drop your photos &amp; videos</span><div class="hint">Dogs, puppies, your family, your facility, founder photo, side-profile / structure shots, at-home footage. Drop as many as you like — this is what we build your site and content from.</div>
+      <div class="drop" id="mediaDrop"><div class="di">&#128247;</div><div class="dt">Upload photos &amp; videos — or drag &amp; drop</div><div class="ds">JPG &middot; PNG &middot; HEIC &middot; MP4 &middot; MOV — up to 100MB each</div><input type="file" id="mediaInput" accept="image/*,video/*" multiple></div>
+      <div class="files" id="mediaFiles"></div></div>
+    <div class="field"><span class="flabel">Notes on your media <span class="opt">(optional)</span></span><div class="hint">Anything we should know about the files, or media you&rsquo;ll send separately.</div><textarea name="media" placeholder="e.g., 'the tri-color pup is our pick male', or 'more show footage coming next week'."></textarea></div>
     <div class="field"><span class="flabel">Anything else we should know</span><textarea name="anything_else" placeholder="Goals, constraints, deadlines, style references…"></textarea></div>
   </div>
 
@@ -302,24 +321,83 @@ input::placeholder,textarea::placeholder{color:#b3b0a8}
     var blob=new Blob([compile()],{type:'text/plain'});var a=document.createElement('a');
     a.href=URL.createObjectURL(blob);a.download='breedwise-intake-'+slugify(val('kennel_name'))+'.txt';a.click();});
 
+  // ---- file uploads (logo + photos/videos) ----
+  var BUCKET='breeder-assets';
+  var logoFile=null, mediaFiles=[];
+  function safeName(n){return (n||'file').toLowerCase().replace(/[^a-z0-9.\-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60)||'file';}
+  function isImg(f){return /^image\//.test(f.type)&&!/svg/.test(f.type);}
+  function renderList(box, files, onRemove){
+    box.innerHTML='';
+    files.forEach(function(f,i){
+      var d=document.createElement('div');d.className='fitem';
+      if(isImg(f)){var im=document.createElement('img');im.src=URL.createObjectURL(f);d.appendChild(im);}
+      else{d.appendChild(document.createTextNode(f.name.slice(0,20)));var b=document.createElement('div');b.className='fbadge';b.textContent=((f.type.split('/')[1])||'file').slice(0,8);d.appendChild(b);}
+      var rm=document.createElement('button');rm.className='rm';rm.type='button';rm.innerHTML='&times;';
+      rm.addEventListener('click',function(e){e.stopPropagation();onRemove(i);});
+      d.appendChild(rm);box.appendChild(d);
+    });
+  }
+  function renderLogo(){renderList(document.getElementById('logoFiles'), logoFile?[logoFile]:[], function(){logoFile=null;renderLogo();});}
+  function renderMedia(){renderList(document.getElementById('mediaFiles'), mediaFiles, function(i){mediaFiles.splice(i,1);renderMedia();});}
+  function wireDrop(dropId, inputId, multi){
+    var drop=document.getElementById(dropId), input=document.getElementById(inputId);
+    function add(fl){ var arr=[].slice.call(fl); if(!multi){ if(arr[0]){logoFile=arr[0];renderLogo();} } else { mediaFiles=mediaFiles.concat(arr); renderMedia(); } }
+    drop.addEventListener('click',function(){input.click();});
+    input.addEventListener('change',function(){add(input.files);input.value='';});
+    ['dragenter','dragover'].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.add('drag');});});
+    ['dragleave'].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.remove('drag');});});
+    drop.addEventListener('drop',function(e){e.preventDefault();drop.classList.remove('drag');if(e.dataTransfer&&e.dataTransfer.files)add(e.dataTransfer.files);});
+  }
+  wireDrop('logoDrop','logoInput',false);
+  wireDrop('mediaDrop','mediaInput',true);
+
+  async function uploadAll(slug, setStatus){
+    var assets={logo:null, media:[], count:0, uploaded_at:new Date().toISOString().slice(0,10)};
+    var jobs=[]; if(logoFile) jobs.push(['logo',logoFile]); mediaFiles.forEach(function(f){jobs.push(['media',f]);});
+    var mi=0, failed=0;
+    for(var i=0;i<jobs.length;i++){
+      var kind=jobs[i][0], f=jobs[i][1];
+      var path = kind==='logo' ? slug+'/logo/'+safeName(f.name)
+                                : slug+'/media/'+String(mi++).padStart(2,'0')+'-'+safeName(f.name);
+      setStatus('Uploading '+(i+1)+' of '+jobs.length+'\u2026');
+      try{
+        var res=await sb.storage.from(BUCKET).upload(path, f, {cacheControl:'3600',upsert:true,contentType:f.type||undefined});
+        if(res.error) throw res.error;
+        if(kind==='logo') assets.logo=path; else assets.media.push(path);
+      }catch(e){ failed++; }
+    }
+    assets.count=(assets.logo?1:0)+assets.media.length;
+    return {assets:assets, failed:failed, total:jobs.length};
+  }
+
   var submitBtn=document.getElementById('submit');
-  submitBtn.addEventListener('click',function(){
+  submitBtn.addEventListener('click',async function(){
     var name=val('kennel_name')||val('brand_full');
     if(!name){alert('Please add your kennel / business name first.');var k=document.querySelector('[name=kennel_name]');if(k)k.focus();return;}
     var full=collectAll();
     var colors=(val('colors').match(/#[0-9a-fA-F]{3,8}/g))||null;
-    var rec={kennel_name:name,slug:slugify(name)+'-'+Math.random().toString(36).slice(2,6),
+    var slug=slugify(name)+'-'+Math.random().toString(36).slice(2,6);
+    var rec={kennel_name:name,slug:slug,
       breed:val('breed')||null,founder:val('founder')||null,email:val('email')||null,phone:val('phone')||null,
       instagram:val('instagram')||null,domain:val('domain')||null,location:val('location')||null,
       brand_colors:colors,intake:full,status:'onboarding',onboarded_at:new Date().toISOString().slice(0,10)};
-    submitBtn.disabled=true;submitBtn.textContent='Submitting...';
-    sb.from('accelerator_clients').insert(rec).then(function(r){
-      if(r.error){throw r.error;}
+    submitBtn.disabled=true;submitBtn.textContent='Submitting\u2026';
+    var up={assets:{count:0,media:[]},failed:0,total:0};
+    try{
+      if(logoFile||mediaFiles.length){ up=await uploadAll(slug,function(s){submitBtn.textContent=s;}); }
+      rec.assets=up.assets;
+      submitBtn.textContent='Saving\u2026';
+      var r=await sb.from('accelerator_clients').insert(rec);
+      if(r.error) throw r.error;
+      var msg=document.querySelector('#done .done-card p');
+      if(msg && up.total){ msg.textContent = up.failed
+        ? ((up.total-up.failed)+' of '+up.total+' files uploaded. The rest of your intake is saved \u2014 please use \u201cDownload backup\u201d and send any files that didn\u2019t upload to your strategist.')
+        : ('Your intake and '+up.assets.count+' file(s) are in. Your Breedwise strategist now has everything to start building your site, CRM & backend \u2014 we\u2019ll be in touch shortly.'); }
       document.getElementById('done').classList.add('on');
-    }).catch(function(err){
+    }catch(err){
       submitBtn.disabled=false;submitBtn.textContent='Submit to Breedwise \u2197';
-      alert('Could not submit ('+(err.message||err)+'). Your answers are safe - use "Download backup" and send the file to your strategist.');
-    });
+      alert('Could not submit ('+(err.message||err)+'). Your answers are safe \u2014 use "Download backup" and send the file (and your photos) to your strategist.');
+    }
   });
 })();
 </script>
