@@ -558,6 +558,23 @@
         </table></div></div>
       </section>
 
+      <!-- MY SESSIONS (expert view) -->
+      <section class="panel" data-panel="mysessions">
+        <div class="view-head"><div>
+          <div class="view-eyebrow">Your sessions</div>
+          <h1 class="view-title">My Sessions</h1>
+          <p class="view-sub">Your scheduled strategy sessions, the members you're working with, and what you're owed. Mark each session done when you complete it — your balance holds until Austin marks you paid.</p>
+        </div></div>
+        <div class="kpi-grid" id="mysKpis"></div>
+        <div class="card" style="margin-top:22px"><div class="card-h">Members you're working with</div><div class="card-sub">Everyone with a session assigned to you.</div><div id="mysMembers" style="margin-top:8px"></div></div>
+        <div class="table-wrap" style="margin-top:22px"><div class="card-h" style="margin-bottom:10px">Scheduled sessions</div>
+          <div style="overflow-x:auto"><table><thead><tr><th>Member</th><th>Type</th><th>When</th><th></th></tr></thead><tbody id="mysScheduled"></tbody></table></div>
+        </div>
+        <div class="table-wrap" style="margin-top:22px"><div class="card-h" style="margin-bottom:10px">Completed — awaiting payout</div>
+          <div style="overflow-x:auto"><table><thead><tr><th>Member</th><th>When</th><th style="text-align:right">Payout</th></tr></thead><tbody id="mysDone"></tbody></table></div>
+        </div>
+      </section>
+
       <!-- STRATEGY SESSIONS -->
       <section class="panel" data-panel="strategy">
         <div class="view-head">
@@ -570,6 +587,7 @@
         </div>
         <div class="kpi-grid" id="ssKpis"></div>
         <div class="card" style="margin-top:22px"><div class="card-h">Sessions by expert</div><div class="card-sub">Upcoming &amp; total per expert.</div><div id="ssExperts"></div></div>
+        <div class="card" id="ssPayouts" style="margin-top:22px;display:none"></div>
         <div class="table-wrap" style="margin-top:22px">
           <div class="table-tools" id="ssFilters"></div>
           <div style="overflow-x:auto"><table>
@@ -1386,6 +1404,9 @@
   let MEMBERS=[], PODS=[], PROFILES=[], MYCOMP=null, MYCOMP_ROWS=[], ME=null, curPod=null, podHw='all', ISSUES=[], MEMBER_NOTES=[], CM_WEEK=null, STRATEGY=[], COMMUNITY=[], WEEKLY=[], AFFILIATES=[], PAYMENTS=[], PLANS=[], TASKS=[], TEAM=[], INTAKE_BY={}, NEW_COLS=false, MONTHLY_CHURN=[], ATTEND_COLS=false, ACCEL_COLS=false;
   let SALES_MEMBER=false;  // true if this login maps to a sales_reps row (set after SalesOS.boot)
   const EXPERTS=['Dr. Emmanuel Fontaine','Dr. Angela Hughes','Austin Shanks','Dr. David Mahoney','Yasmin Omar'];
+  const EXPERT_EMAIL={'Dr. Emmanuel Fontaine':'emmanuel@breedwise.io','Dr. Angela Hughes':'angela@breedwise.io','Austin Shanks':'austin@breedwise.io','Dr. David Mahoney':'david@breedwise.io','Yasmin Omar':'yasmin@breedwise.io'};
+  const EXPERT_BY_EMAIL=Object.fromEntries(Object.entries(EXPERT_EMAIL).map(([n,e])=>[e,n]));
+  let PAID_COL=false;   // strategy_sessions.paid / expert_email migrated?
   function weekStartISO(){ const d=new Date(); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return d.toISOString().slice(0,10); }
   function lastWeekISO(){ const d=new Date(weekStartISO()); d.setUTCDate(d.getUTCDate()-7); return d.toISOString().slice(0,10); }
 
@@ -1501,6 +1522,7 @@
     MEMBER_NOTES = mnotes.data||[];
     CM_WEEK = cmw.data || { calls_cohosted:0, recordings_due:0, recordings_on_time:0 };
     STRATEGY = ss.data||[];
+    PAID_COL = !!(ss.data && ss.data[0] && ('paid' in ss.data[0]));   // payout reset columns migrated?
     COMMUNITY = cc.data||[];
     WEEKLY = wk.data||[];
     AFFILIATES = aff.data||[];
@@ -1869,12 +1891,12 @@
     }
     if (c.role==='Vet'){
       const rate=(cfg.rate!=null?cfg.rate:100);
-      const done=STRATEGY.filter(s=>s.expert===c.person && s.status==='completed').length;
+      const done=STRATEGY.filter(s=>s.expert===c.person && s.status==='completed' && !s.paid).length;
       const upcoming=STRATEGY.filter(s=>s.expert===c.person && s.status==='scheduled').length;
       const total=done*rate;
       return { person:c.person, role:'Veterinary Team', total,
-        lines:[[`Completed sessions · ${done} × $${rate}`, money(total)],[`Upcoming (not yet paid) · ${upcoming}`, '$0']],
-        note:`$${rate} per completed strategy session. Pay accrues as each session is marked completed.` };
+        lines:[[`Owed (unpaid) sessions · ${done} × $${rate}`, money(total)],[`Upcoming · ${upcoming}`, '$0']],
+        note:`$${rate} per completed strategy session. Your balance holds until Austin marks you paid, then it resets.` };
     }
     return null;
   }
@@ -1961,7 +1983,7 @@
     buildSidebar();
     renderKPIs('#dirKpis', directorKPIs());
     renderFunnel(); renderStatusMix(); renderDirTable(); renderHandoff(); renderChurned(); renderLastWeek(); renderCompanyChurn();
-    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderAccelerator(); renderCalendar(); renderReports(); renderAffiliates(); renderPlans(); renderPayments(); renderTasks(); renderDirectory();
+    renderAL(); renderCM(); renderComp(); renderStatic(); renderIssues(); renderStrategy(); renderMySessions(); renderAccelerator(); renderCalendar(); renderReports(); renderAffiliates(); renderPlans(); renderPayments(); renderTasks(); renderDirectory();
     const eb=$('#exportBtn'); if(eb) eb.onclick=buildExport;
     if(ME?.role==='Vet'){ document.querySelectorAll('[data-add-ss],#ccAdd,[data-edit-ss],[data-add]').forEach(b=>{ if(b) b.style.display='none'; }); }
   }
@@ -2008,6 +2030,7 @@
       ['export','Export Data',['Founder','Director']],
     ]},
     { group:'Me', items:[
+      ['mysessions','My Sessions',['Founder','Vet']],
       ['comp','My Pay',['Founder','Director','AccountabilityLeader','CommunityManager','Vet']],
     ]},
   ];
@@ -2639,6 +2662,38 @@
       <td style="text-align:right"><button class="row-issue" data-edit-ss="${s.id}">Edit</button></td>
     </tr>`).join('')||`<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:26px">No sessions ${ssFilter!=='all'?'in this view':'yet'}.</td></tr>`;
     $('#ssFilters').querySelectorAll('[data-sf]').forEach(c=>c.onclick=()=>{ssFilter=c.dataset.sf;renderStrategy();});
+    // Founder payout view — owed per expert, reset after paying
+    const pe=$('#ssPayouts');
+    if(pe){
+      if(ME&&ME.role==='Founder'){
+        pe.style.display='block';
+        const rateFor=name=>{ const c=(MYCOMP_ROWS||[]).find(x=>x.person===name&&x.role==='Vet'); return c&&c.rate!=null?c.rate:100; };
+        const prow=EXPERTS.map(e=>{ const unpaid=STRATEGY.filter(s=>s.expert===e&&s.status==='completed'&&!s.paid); return {e,n:unpaid.length,owed:unpaid.length*rateFor(e)}; }).filter(x=>x.n>0);
+        pe.innerHTML=`<div class="card-h">Expert payouts owed</div><div class="card-sub">Completed sessions not yet paid. Mark paid after you pay them — it resets their balance to $0.</div>`+
+          (prow.length?`<div style="overflow-x:auto;margin-top:12px"><table><thead><tr><th>Expert</th><th class="num">Unpaid sessions</th><th class="num">Owed</th><th></th></tr></thead><tbody>`+
+          prow.map(({e,n,owed})=>`<tr><td class="m-name">${esc(e)}</td><td class="num">${n}</td><td class="num"><b style="color:var(--gold)">${money(owed)}</b></td><td style="text-align:right">${PAID_COL?`<button class="row-edit" data-pay-expert="${esc(e)}">Mark paid &amp; reset</button>`:'<span class="muted-cell">run migration</span>'}</td></tr>`).join('')+
+          `</tbody></table></div>`:`<div class="card-sub" style="margin-top:10px">No payouts owed right now.</div>`);
+      } else { pe.style.display='none'; }
+    }
+  }
+  function renderMySessions(){
+    if(!$('#mysKpis')) return;
+    const me=EXPERT_BY_EMAIL[ME&&ME.email]||(MYCOMP&&MYCOMP.person)||null;
+    const rate=(MYCOMP&&MYCOMP.rate!=null)?MYCOMP.rate:100;
+    const mine=STRATEGY.filter(s=>s.expert===me);
+    const scheduled=mine.filter(s=>s.status==='scheduled').sort((a,b)=>String(a.scheduled_for||'').localeCompare(String(b.scheduled_for||'')));
+    const doneUnpaid=mine.filter(s=>s.status==='completed'&&!s.paid);
+    const owed=doneUnpaid.length*rate;
+    $('#mysKpis').innerHTML=[
+      ['Upcoming',scheduled.length,'scheduled'],
+      ['Awaiting payout',doneUnpaid.length,'completed, unpaid'],
+      ['Balance owed',money(owed),`${doneUnpaid.length} × $${rate}`],
+      ['Rate',money(rate),'per session'],
+    ].map(([n,v,s])=>`<div class="kpi"><div class="kpi-name">${n}</div><div class="kpi-val" style="font-size:28px">${v}</div><div class="kpi-meta">${esc(s)}</div></div>`).join('');
+    const members=[...new Set(mine.map(s=>s.member_name).filter(Boolean))];
+    $('#mysMembers').innerHTML=members.length?members.map(m=>`<span class="filter-chip" style="cursor:default;margin:2px 4px 2px 0">${esc(m)}</span>`).join(''):`<div class="card-sub" style="margin:0">No members assigned to you yet.</div>`;
+    $('#mysScheduled').innerHTML=scheduled.map(s=>`<tr><td class="m-name">${esc(s.member_name||'—')}</td><td><span class="stype stype-${s.session_type||'activation'}">${s.session_type||'activation'}</span></td><td class="muted-cell">${ssDate(s.scheduled_for)}</td><td style="text-align:right"><button class="btn-save" style="padding:7px 14px" data-done-ss="${s.id}">Mark done</button></td></tr>`).join('')||`<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:22px">No scheduled sessions right now.</td></tr>`;
+    $('#mysDone').innerHTML=doneUnpaid.map(s=>`<tr><td class="m-name">${esc(s.member_name||'—')}</td><td class="muted-cell">${ssDate(s.scheduled_for)}</td><td style="text-align:right;color:var(--gold)"><b>${money(rate)}</b></td></tr>`).join('')||`<tr><td colspan="3" style="text-align:center;color:var(--muted);padding:22px">Nothing awaiting payout.</td></tr>`;
   }
   function openSS(s){
     editingSS=s?s.id:null;
@@ -2655,11 +2710,31 @@
   $('#ssClose').onclick=closeSS; $('#ssModal').onclick=e=>{ if(e.target.id==='ssModal') closeSS(); };
   document.querySelectorAll('[data-add-ss]').forEach(b=>b.onclick=()=>openSS(null));
   document.addEventListener('click',e=>{ const b=e.target.closest('[data-edit-ss]'); if(b){ const s=STRATEGY.find(x=>x.id===b.dataset.editSs); if(s) openSS(s); } });
+  // Vet marks their own session complete → accrues to their payout balance
+  document.addEventListener('click',async e=>{ const b=e.target.closest('[data-done-ss]'); if(!b) return;
+    if(!confirm('Mark this session complete? It will be added to your payout balance.')) return;
+    b.disabled=true;
+    const res=await sb.from('strategy_sessions').update({status:'completed'}).eq('id',b.dataset.doneSs);
+    if(res.error){ toast(res.error.message); b.disabled=false; return; }
+    await refreshKeepScroll(); toast('Session marked complete');
+  });
+  // Founder marks an expert paid → resets their balance
+  document.addEventListener('click',async e=>{ const b=e.target.closest('[data-pay-expert]'); if(!b) return;
+    const name=b.dataset.payExpert;
+    const ids=STRATEGY.filter(s=>s.expert===name&&s.status==='completed'&&!s.paid).map(s=>s.id);
+    if(!ids.length){ toast('Nothing to pay for '+name+'.'); return; }
+    if(!confirm(`Mark ${ids.length} completed session(s) paid for ${name}? This resets their balance to $0.`)) return;
+    b.disabled=true;
+    const res=await sb.from('strategy_sessions').update({paid:true,paid_at:new Date().toISOString()}).in('id',ids);
+    if(res.error){ toast(res.error.message); b.disabled=false; return; }
+    await refreshKeepScroll(); toast(name+' marked paid — balance reset');
+  });
   $('#ssSave').onclick=async ()=>{
     const member=$('#s_member').value; if(!member){ $('#ssErr').textContent='Pick a member.'; return; }
     const opt=$('#s_member').selectedOptions[0];
     const row={ member_name:member, member_id:opt?opt.dataset.id:null, expert:$('#s_expert').value, session_type:$('#s_type').value,
       scheduled_for:$('#s_when').value?new Date($('#s_when').value).toISOString():null, status:$('#s_status').value, notes:$('#s_notes').value.trim()||null };
+    if(PAID_COL) row.expert_email=EXPERT_EMAIL[$('#s_expert').value]||null;   // so the expert's login can see/mark it
     if(!editingSS) row.created_by=ME?.full_name||ME?.email||null;
     $('#ssSave').disabled=true;
     let res; if(editingSS) res=await sb.from('strategy_sessions').update(row).eq('id',editingSS); else res=await sb.from('strategy_sessions').insert(row);
