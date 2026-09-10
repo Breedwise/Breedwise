@@ -2667,7 +2667,7 @@
     if(pe){
       if(ME&&ME.role==='Founder'){
         pe.style.display='block';
-        const rateFor=name=>{ const c=(MYCOMP_ROWS||[]).find(x=>x.person===name&&x.role==='Vet'); return c&&c.rate!=null?c.rate:100; };
+        const rateFor=name=>{ const c=(MYCOMP_ROWS||[]).find(x=>x.person===name&&x.role==='Vet'); return c&&c.config&&c.config.rate!=null?c.config.rate:100; };
         const prow=EXPERTS.map(e=>{ const unpaid=STRATEGY.filter(s=>s.expert===e&&s.status==='completed'&&!s.paid); return {e,n:unpaid.length,owed:unpaid.length*rateFor(e)}; }).filter(x=>x.n>0);
         pe.innerHTML=`<div class="card-h">Expert payouts owed</div><div class="card-sub">Completed sessions not yet paid. Mark paid after you pay them — it resets their balance to $0.</div>`+
           (prow.length?`<div style="overflow-x:auto;margin-top:12px"><table><thead><tr><th>Expert</th><th class="num">Unpaid sessions</th><th class="num">Owed</th><th></th></tr></thead><tbody>`+
@@ -2679,7 +2679,7 @@
   function renderMySessions(){
     if(!$('#mysKpis')) return;
     const me=EXPERT_BY_EMAIL[ME&&ME.email]||(MYCOMP&&MYCOMP.person)||null;
-    const rate=(MYCOMP&&MYCOMP.rate!=null)?MYCOMP.rate:100;
+    const rate=(MYCOMP&&MYCOMP.config&&MYCOMP.config.rate!=null)?MYCOMP.config.rate:100;
     const mine=STRATEGY.filter(s=>s.expert===me);
     const scheduled=mine.filter(s=>s.status==='scheduled').sort((a,b)=>String(a.scheduled_for||'').localeCompare(String(b.scheduled_for||'')));
     const doneUnpaid=mine.filter(s=>s.status==='completed'&&!s.paid);
