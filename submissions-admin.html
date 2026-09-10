@@ -357,6 +357,39 @@ function renderVetRelations(r){
     ${t('What the right match makes possible',i.outcome)}
     ${t('Anything else',i.anything)}`;
 }
+function renderSocialMedia(r){
+  const i=r.inputs||{}, m=r.meta||{};
+  const t=(lbl,v)=> v&&String(v).trim()?`<div class="block"><h3>${lbl}</h3><p>${esc(v)}</p></div>`:'';
+  const kv=(l,v)=> v&&String(v).trim()?`<p style="margin-top:4px"><b style="color:var(--ink)">${l}:</b> ${esc(v)}</p>`:'';
+  const plats=(i.platforms&&i.platforms.length)?i.platforms.map(esc).join(' · '):'';
+  return `
+    <div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--del)">Social media strategy · 30-min session prep</div>
+      <div class="big" style="font-size:19px">${esc(i.goal||'Social media')}</div>
+      <p style="color:var(--mid);font-size:12.5px;margin-top:6px">${esc(i.breed||m.breed||'')}${i.kennel?' · '+esc(i.kennel):''}${plats?' · '+plats:''}</p></div>
+    <div class="block"><h3>Biggest challenge</h3><p>${esc(i.challenge||'')}</p></div>
+    <div class="block"><h3>Their presence</h3>${kv('Handles',i.handles)}${kv('Following / reach',i.following)}${kv('Profile',i.profile_link)}${kv('Posting cadence',i.cadence)}${kv('Ads',i.ads)}</div>
+    ${t("Tried that didn't work",i.tried)}
+    ${t('What a win looks like',i.win)}
+    ${t('Anything else',i.anything)}`;
+}
+function renderBusiness(r){
+  const i=r.inputs||{}, m=r.meta||{}, n=i.numbers||{};
+  const t=(lbl,v)=> v&&String(v).trim()?`<div class="block"><h3>${lbl}</h3><p>${esc(v)}</p></div>`:'';
+  const nums=[['Avg price',n.avg_price],['Litters/yr',n.litters_per_year],['Monthly revenue',n.monthly_revenue],['Leads/mo',n.leads_per_month],['Close rate',n.close_rate]].filter(x=>x[1]&&String(x[1]).trim()).map(x=>`<div class="kvrow"><b>${x[0]}:</b> ${esc(x[1])}</div>`).join('');
+  const focus=(i.focus_areas&&i.focus_areas.length)?`<div class="block"><h3>Focus areas</h3><ul class="li">${i.focus_areas.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:'';
+  return `
+    <div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--del)">Business & sales strategy · 30-min session prep</div>
+      <div class="big" style="font-size:19px">${esc((i.focus_areas&&i.focus_areas[0])||m.focus||'Business')}</div>
+      <p style="color:var(--mid);font-size:12.5px;margin-top:6px">${esc(i.breed||m.breed||'')}${i.kennel?' · '+esc(i.kennel):''}${i.years?' · '+esc(i.years)+' yrs':''}</p></div>
+    <div class="block"><h3>Biggest challenge</h3><p>${esc(i.challenge||'')}</p></div>
+    ${focus}
+    ${nums?`<div class="block"><h3>Their numbers</h3>${nums}</div>`:''}
+    ${t("Tried that didn't work",i.tried)}
+    ${t('Current sales process',i.sales_process)}
+    <div class="block"><h3>Success looks like</h3><p>${esc(i.goal||'')}</p></div>
+    ${t('Upcoming decision',i.upcoming)}
+    ${t('Anything else',i.anything)}`;
+}
 function renderBody(r){
   if(r.tool==='niche-blueprint'&&r.result) return renderBlueprint(r.result,r.inputs||{});
   if(r.tool==='value-architect'&&r.result) return renderValueArchitect(r.result,r.inputs||{});
@@ -364,6 +397,8 @@ function renderBody(r){
   if(r.tool==='genetics-consult') return renderGeneticsConsult(r);
   if(r.tool==='repro-coaching') return renderReproCoaching(r);
   if(r.tool==='vet-relations') return renderVetRelations(r);
+  if(r.tool==='social-media') return renderSocialMedia(r);
+  if(r.tool==='business') return renderBusiness(r);
   return renderGeneric(r);
 }
 function renderGeneric(r){

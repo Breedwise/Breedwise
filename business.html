@@ -1,0 +1,249 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Business & Sales Strategy Session — Breedwise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#1b1b20; --surface:#111114; --card:#26262c; --card-2:#212127;
+  --border:#34343c; --gold:#d6ba76; --gold-deep:#b89c47; --gold-faint:rgba(214,186,118,0.10);
+  --gold-grad:linear-gradient(135deg,#e2cb86 0%,#bfa050 100%); --on-gold:#1a1509;
+  --ink:#f4f1ea; --muted:#8f8d85; --mid:#c4c1b8; --green:#6dbf90; --red:#e0807e; --radius:11px;
+  --heading:'Playfair Display', Georgia, serif; --body:'Inter', -apple-system, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.hide{display:none!important}
+#gate{position:fixed;inset:0;z-index:100;background:var(--surface);display:flex;align-items:center;justify-content:center;padding:24px}
+.gate-inner{width:100%;max-width:450px;text-align:center}
+.gate-mark{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
+.gate-inner h1{font-family:var(--heading);font-weight:600;font-size:clamp(25px,5.6vw,34px);line-height:1.12;color:var(--ink);margin-bottom:12px}
+.gate-inner p{font-size:14px;color:var(--muted);margin-bottom:24px}
+#code{width:100%;text-align:center;letter-spacing:.12em;text-transform:uppercase;font-family:var(--body);font-size:15px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);color:var(--ink);padding:13px 14px;outline:none;margin-bottom:10px}
+#code::placeholder{text-transform:none;letter-spacing:normal;color:var(--muted)}
+#code:focus{border-color:var(--gold)}
+#app{display:none} #app.on{display:block}
+.masthead{background:var(--surface);border-bottom:1px solid var(--border);padding:34px 22px 26px;text-align:center}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.masthead h1{font-family:var(--heading);font-weight:600;font-size:clamp(23px,5vw,33px);line-height:1.14;color:var(--ink);margin:11px 0 8px}
+.masthead p{color:var(--muted);font-size:13.5px;max-width:60ch;margin:0 auto}
+.wrap{max-width:680px;margin:0 auto;padding:24px 22px 90px}
+.q{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px}
+.q .num{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.q .label{font-family:var(--heading);font-size:17px;color:var(--ink);line-height:1.3;margin-bottom:4px}
+.q .req{color:var(--gold-deep)}
+.q .sub{font-size:12.5px;color:var(--muted);margin:2px 0 13px}
+.section-label{font-family:var(--heading);font-size:15px;color:var(--gold);letter-spacing:.02em;margin:26px 2px 10px;padding-bottom:7px;border-bottom:1px solid var(--border)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:center;gap:11px;border:1px solid var(--border);background:var(--card-2);border-radius:10px;padding:12px 14px;cursor:pointer;transition:border-color .12s,background .12s;font-size:14px;color:var(--mid)}
+.opt:hover{border-color:var(--gold-deep)}
+.opt.on{border-color:var(--gold);background:var(--gold-faint);color:var(--ink)}
+.opt .box{flex:0 0 18px;width:18px;height:18px;border:1.6px solid var(--border);border-radius:50%;display:grid;place-items:center}
+.opt.multi .box{border-radius:5px}
+.opt.on .box{border-color:var(--gold);background:var(--gold)}
+.opt.on .box:after{content:'';width:8px;height:8px;border-radius:inherit;background:var(--on-gold)}
+.opt.multi.on .box:after{content:'✓';width:auto;height:auto;background:none;color:var(--on-gold);font-size:12px;font-weight:800;line-height:1}
+label.fld{display:block;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--mid);font-weight:600;margin-bottom:6px}
+label.fld .opt2{text-transform:none;letter-spacing:0;color:var(--muted);font-weight:400}
+input[type=text],input[type=email],textarea{width:100%;font-family:var(--body);font-size:14.5px;background:var(--card-2);border:1px solid var(--border);border-radius:10px;color:var(--ink);padding:12px 14px;outline:none;transition:border-color .15s}
+input:focus,textarea:focus{border-color:var(--gold)}
+textarea{resize:vertical;min-height:80px;line-height:1.55}
+.other-wrap{margin-top:8px}
+.btn{width:100%;padding:15px 20px;font-family:var(--body);font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--gold-grad);color:var(--on-gold);border:none;border-radius:var(--radius);cursor:pointer;box-shadow:0 6px 22px rgba(214,186,118,.26);transition:transform .15s}
+.btn:hover{transform:translateY(-1px)} .btn:disabled{opacity:.55;cursor:default;transform:none}
+.err{min-height:18px;margin:10px 0 0;font-size:13px;color:var(--red);text-align:center}
+.priv{text-align:center;font-size:11.5px;color:var(--muted);margin-top:16px}
+.done{text-align:center;padding:64px 22px}
+.done .mk{font-size:44px;margin-bottom:14px}
+.done h2{font-family:var(--heading);font-size:26px;color:var(--ink);margin-bottom:8px}
+.done p{color:var(--mid);max-width:46ch;margin:0 auto}
+@media(max-width:520px){.two{grid-template-columns:1fr}}
+</style>
+
+<div id="gate">
+  <div class="gate-inner">
+    <div class="gate-mark">Breedwise · Members</div>
+    <h1>Business & Sales Strategy</h1>
+    <p>Enter your access passcode to prep for your 30-minute business & sales strategy session.</p>
+    <input id="code" type="password" placeholder="Passcode" autocomplete="off" spellcheck="false" aria-label="Passcode">
+    <button class="btn" id="enter">Start my session prep</button>
+    <div class="err" id="gErr"></div>
+  </div>
+</div>
+
+<div id="app">
+  <header class="masthead">
+    <div class="eyebrow">Breedwise · Strategy Session</div>
+    <h1>Business &amp; Sales Strategy Session</h1>
+    <p>Tell us how your breeding business runs today and where you're stuck — pricing, sales, leads, systems, profit. Return this before your 30-minute session so we come in ready to help.</p>
+  </header>
+  <div class="wrap" id="body"></div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+const SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+const FN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/log-submission';
+const FALLBACK_HASH='ef4b8742ce9b7c94e505a273604e4c837a2b5c89e5d6c7cbdd802e35aca136a3'; // sha256("BUSINESS2026") — separate from the accelerator member code
+const sb=supabase.createClient(SB_URL,SB_KEY);
+let PASS_HASH=FALLBACK_HASH, MEMBER_CODE='';
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+
+$('#enter').addEventListener('click',tryCode);
+$('#code').addEventListener('keydown',e=>{if(e.key==='Enter')tryCode();});
+async function tryCode(){
+  const raw=$('#code').value.trim().toUpperCase();
+  if(await sha256(raw)===PASS_HASH){ MEMBER_CODE=raw; try{localStorage.setItem('bw-business-code',raw);}catch(e){} openApp(); }
+  else { $('#gErr').textContent='That passcode did not match. Check your member training for the current code.'; $('#code').value=''; $('#code').focus(); }
+}
+function openApp(){ $('#gate').classList.add('hide'); $('#app').classList.add('on'); renderForm(); }
+
+const FOCUS=['Pricing & positioning','Sales process / closing more buyers','Lead generation & marketing','Operations & systems','Finances & profit','Scaling / hiring / team','Contracts & legal','Buyer experience & retention'];
+
+const A={ name:'', email:'', kennel:'', breed:'', years:'', focus:[], focus_other:'', challenge:'',
+  price:'', litters:'', revenue:'', leads:'', close_rate:'', tried:'', sales_process:'',
+  goal:'', upcoming:'', anything:'' };
+
+const single=(g,v)=>`<div class="opt" data-single="${g}" data-v="${esc(v)}"><span class="box"></span><span>${esc(v)}</span></div>`;
+const multi=(g,v)=>`<div class="opt multi" data-multi="${g}" data-v="${esc(v)}"><span class="box"></span><span>${esc(v)}</span></div>`;
+
+function renderForm(){
+  $('#body').innerHTML=`
+  <div class="section-label">About your business</div>
+  <div class="q" id="w_name">
+    <div class="label">Your details <span class="req">*</span></div>
+    <input type="text" id="f_name" placeholder="Your name">
+    <div class="two" style="margin-top:12px">
+      <div><label class="fld">Email <span class="opt2">· optional</span></label><input type="email" id="f_email" placeholder="you@email.com"></div>
+      <div><label class="fld">Kennel / business name</label><input type="text" id="f_kennel" placeholder="Your kennel"></div>
+    </div>
+    <div class="two" style="margin-top:12px">
+      <div><label class="fld">Breed(s) <span class="req">*</span></label><input type="text" id="f_breed" placeholder="What you raise"></div>
+      <div><label class="fld">Years in business</label><input type="text" id="f_years" placeholder="e.g. 3"></div>
+    </div>
+  </div>
+
+  <div class="section-label">Where you need help</div>
+  <div class="q" id="w_focus">
+    <div class="label">What areas do you want to work on?</div>
+    <div class="sub">Check all that apply — sales included</div>
+    <div class="opts">${FOCUS.map(f=>multi('focus',f)).join('')}<div class="opt multi" data-multi="focus" data-v="__other"><span class="box"></span><span>Other</span></div></div>
+    <div class="other-wrap hide" id="focusOtherWrap"><input type="text" id="f_focus_other" placeholder="Something else…"></div>
+  </div>
+
+  <div class="q" id="w_challenge">
+    <div class="label">What's the single biggest business or sales challenge you want to solve? <span class="req">*</span></div>
+    <textarea id="f_challenge" rows="4" placeholder="Be specific — what's actually costing you money or momentum?"></textarea>
+  </div>
+
+  <div class="section-label">Your numbers <span style="font-family:var(--body);font-size:11px;text-transform:none;letter-spacing:0;color:var(--muted)">· optional, but powerful context</span></div>
+  <div class="q" id="w_numbers">
+    <div class="sub" style="margin-top:0">Even rough figures help us give you sharper advice.</div>
+    <div class="two">
+      <div><label class="fld">Average puppy price</label><input type="text" id="f_price" placeholder="e.g. $3,000"></div>
+      <div><label class="fld">Litters per year</label><input type="text" id="f_litters" placeholder="e.g. 4"></div>
+    </div>
+    <div class="two" style="margin-top:12px">
+      <div><label class="fld">Monthly revenue</label><input type="text" id="f_revenue" placeholder="e.g. ~$8k"></div>
+      <div><label class="fld">Leads / inquiries per month</label><input type="text" id="f_leads" placeholder="e.g. ~30"></div>
+    </div>
+    <div style="margin-top:12px"><label class="fld">Roughly what % of inquiries become buyers?</label><input type="text" id="f_close" placeholder="e.g. ~1 in 5"></div>
+  </div>
+
+  <div class="section-label">How you operate today</div>
+  <div class="q" id="w_tried">
+    <div class="label">What have you already tried that didn't work?</div>
+    <textarea id="f_tried" rows="3" placeholder="Strategies, tools, pricing changes, ad spend…"></textarea>
+  </div>
+
+  <div class="q" id="w_process">
+    <div class="label">Walk us through your current sales process.</div>
+    <div class="sub">From a new inquiry → to a deposit → to placement. Where do people drop off?</div>
+    <textarea id="f_process" rows="3" placeholder="How you handle inquiries, screening, deposits, waitlist…"></textarea>
+  </div>
+
+  <div class="section-label">What success looks like</div>
+  <div class="q" id="w_goal">
+    <div class="label">If this session is a success, what's different in your business? <span class="req">*</span></div>
+    <textarea id="f_goal" rows="4" placeholder="Paint the picture — what changes?"></textarea>
+  </div>
+
+  <div class="q" id="w_upcoming">
+    <div class="label">Any upcoming decision this session should inform?</div>
+    <input type="text" id="f_upcoming" placeholder="e.g. raising prices next litter, hiring help, launching a waitlist…">
+  </div>
+
+  <div class="q" id="w_anything">
+    <div class="label">Anything else we should know?</div>
+    <div class="sub">Optional</div>
+    <textarea id="f_anything" rows="2"></textarea>
+  </div>
+
+  <button class="btn" id="submit">Submit session prep</button>
+  <div class="err" id="err"></div>
+  <div class="priv">Your answers go to the Breedwise team to prepare for your business & sales strategy session.</div>`;
+
+  document.querySelectorAll('[data-single]').forEach(el=>el.addEventListener('click',()=>{
+    const g=el.dataset.single, v=el.dataset.v;
+    document.querySelectorAll(`[data-single="${g}"]`).forEach(x=>x.classList.remove('on')); el.classList.add('on'); A[g]=v;
+  }));
+  document.querySelectorAll('[data-multi]').forEach(el=>el.addEventListener('click',()=>{
+    el.classList.toggle('on'); const g=el.dataset.multi, v=el.dataset.v, on=el.classList.contains('on');
+    if(v==='__other'){ $('#focusOtherWrap').classList.toggle('hide',!on); if(!on) $('#f_focus_other').value=''; return; }
+    A[g]=A[g].filter(x=>x!==v); if(on) A[g].push(v);
+  }));
+  $('#submit').addEventListener('click',submit);
+}
+function err(m){ const e=$('#err'); if(e) e.textContent=m; }
+function need(id,msg){ const w=$('#'+id); if(w) w.scrollIntoView({behavior:'smooth',block:'center'}); err(msg); }
+
+async function submit(){
+  A.name=$('#f_name').value.trim(); A.email=$('#f_email').value.trim(); A.kennel=$('#f_kennel').value.trim(); A.breed=$('#f_breed').value.trim(); A.years=$('#f_years').value.trim();
+  A.focus_other=($('#f_focus_other')&&$('#f_focus_other').value.trim())||'';
+  A.challenge=$('#f_challenge').value.trim();
+  A.price=$('#f_price').value.trim(); A.litters=$('#f_litters').value.trim(); A.revenue=$('#f_revenue').value.trim();
+  A.leads=$('#f_leads').value.trim(); A.close_rate=$('#f_close').value.trim();
+  A.tried=$('#f_tried').value.trim(); A.sales_process=$('#f_process').value.trim();
+  A.goal=$('#f_goal').value.trim(); A.upcoming=$('#f_upcoming').value.trim(); A.anything=$('#f_anything').value.trim();
+
+  if(!A.name){ return need('w_name','Please enter your name.'); }
+  if(!A.breed){ return need('w_name','Please enter your breed(s).'); }
+  if(!A.challenge){ return need('w_challenge','Please tell us your biggest business or sales challenge.'); }
+  if(!A.goal){ return need('w_goal','Please tell us what success looks like.'); }
+
+  const focus=A.focus.slice(); if(A.focus_other) focus.push('Other: '+A.focus_other);
+  const btn=$('#submit'); btn.disabled=true; btn.textContent='Sending…'; err('');
+  const payload={
+    passcode:MEMBER_CODE, tool:'business', tool_label:'Business & Sales Strategy',
+    member_name:A.name, member_email:A.email||null,
+    summary:`${focus[0]||'Business'} — ${A.challenge.slice(0,80)}`,
+    meta:{ breed:A.breed, focus:focus[0]||null, revenue:A.revenue||null },
+    inputs:{ name:A.name, email:A.email||null, kennel:A.kennel, breed:A.breed, years:A.years,
+      focus_areas:focus, challenge:A.challenge,
+      numbers:{ avg_price:A.price, litters_per_year:A.litters, monthly_revenue:A.revenue, leads_per_month:A.leads, close_rate:A.close_rate },
+      tried:A.tried, sales_process:A.sales_process, goal:A.goal, upcoming:A.upcoming, anything:A.anything },
+  };
+  try{
+    const r=await fetch(FN,{method:'POST',headers:{'content-type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify(payload)});
+    const d=await r.json();
+    if(!r.ok||d.error) throw new Error(d.error||('Error '+r.status));
+    done();
+  }catch(e){ btn.disabled=false; btn.textContent='Submit session prep'; err('Could not send: '+e.message+' — please try again.'); }
+}
+function done(){
+  $('#body').innerHTML=`<div class="done"><div class="mk">📈</div><h2>Prep received</h2><p>Thank you — your answers are in. We'll review them before your session so we can go straight to what will grow your business.</p></div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+(async function(){
+  try{ const {data}=await sb.from('access_config').select('passcode_hash').eq('key','business').maybeSingle(); if(data&&data.passcode_hash) PASS_HASH=data.passcode_hash; }catch(e){}
+  let saved=''; try{ saved=localStorage.getItem('bw-business-code')||''; }catch(e){}
+  if(saved && await sha256(saved)===PASS_HASH){ MEMBER_CODE=saved; openApp(); } else $('#code').focus();
+})();
+</script>
