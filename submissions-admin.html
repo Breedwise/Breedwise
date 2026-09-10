@@ -107,7 +107,7 @@ const SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
 const SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
 const sb=supabase.createClient(SB_URL,SB_KEY);
 const STATUSES=['New','Reviewed','Delivered','Follow-up'];
-const OWNERS=['Unassigned','Austin','Jennifer','Madison','Yasmin','Derek','Jake','Regina'];
+const OWNERS=['Unassigned','Austin','Jennifer','Madison','Yasmin','Derek','Jake','Regina','Angela Hughes','Dr. Fontaine'];
 const usd=n=>'$'+Number(n||0).toLocaleString('en-US');
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const dcls=s=>'d-'+String(s||'New').replace('-','');
@@ -298,10 +298,55 @@ function renderFeedback(r){
     ${t('Topics to add',inp.add_topics)}
     ${t('Anything else',inp.anything_else)}`;
 }
+function renderGeneticsConsult(r){
+  const i=r.inputs||{}, m=r.meta||{};
+  const yn=v=>v==='Yes'?'<span style="color:var(--del)">Yes</span>':(v==='No'?'<span style="color:var(--muted)">No</span>':'—');
+  const list=a=>(a&&a.length)?`<ul class="li">${a.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p style="color:var(--muted)">—</p>';
+  const rows=(i.screening_details||[]).filter(x=>x.dog||x.test||x.results||x.lab);
+  const screenTbl=rows.length?`<div class="tblwrap"><table class="sc"><thead><tr><th>Dog</th><th>Test</th><th>Results</th><th>Lab / org</th></tr></thead><tbody>${rows.map(x=>`<tr><td class="n">${esc(x.dog)}</td><td>${esc(x.test)}</td><td>${esc(x.results)}</td><td>${esc(x.lab)}</td></tr>`).join('')}</tbody></table></div>`:'';
+  return `
+    <div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--del)">Genetics consult · brief for Angela Hughes</div>
+      <div class="big" style="font-size:19px">${esc(i.breed||m.breed||'')}</div>
+      <p style="color:var(--mid);font-size:12.5px;margin-top:6px">${esc(i.breeding_stage||m.stage||'')}${i.num_dogs?' · '+esc(i.num_dogs):''}</p></div>
+    <div class="block"><h3>Genetics question</h3><p>${esc(i.questions||'')}</p></div>
+    ${i.decision?`<div class="block"><h3>Decision they want to reach</h3><p>${esc(i.decision)}</p></div>`:''}
+    ${i.concern?`<div class="block"><h3>Their concern / hypothesis</h3><p>${esc(i.concern)}</p></div>`:''}
+    ${(i.conditions||i.dogs_involved)?`<div class="block"><h3>Focus</h3>${i.conditions?`<p><b style="color:var(--ink)">Conditions / genes:</b> ${esc(i.conditions)}</p>`:''}${i.dogs_involved?`<p style="margin-top:4px"><b style="color:var(--ink)">Dogs involved:</b> ${esc(i.dogs_involved)}</p>`:''}</div>`:''}
+    <div class="block"><h3>Prior genetic testing</h3><p>${yn(i.prior_testing)}</p>${(i.prior_types&&i.prior_types.length)?list(i.prior_types):''}${i.prior_specific?`<p style="margin-top:6px"><b style="color:var(--ink)">Specific tests:</b> ${esc(i.prior_specific)}</p>`:''}</div>
+    <div class="block"><h3>Screening / phenotype tests</h3><p>${yn(i.screening)}</p>${screenTbl}</div>
+    <div class="block"><h3>Breeding goals</h3>${list(i.breeding_goals)}</div>
+    <div class="block"><h3>Pedigree available</h3><p>${yn(i.pedigree_available)}${i.pedigree_note?' — '+esc(i.pedigree_note):''}</p></div>
+    <div class="block"><h3>Close relatives tested</h3><p>${yn(i.relatives_tested)}${i.relatives_description?' — '+esc(i.relatives_description):''}</p></div>
+    ${(i.timeline||i.vet_input||i.comfort_level)?`<div class="block"><h3>For the consult</h3>${i.timeline?`<p><b style="color:var(--ink)">Timeline:</b> ${esc(i.timeline)}</p>`:''}${i.vet_input?`<p style="margin-top:4px"><b style="color:var(--ink)">Vet / expert input:</b> ${esc(i.vet_input)}</p>`:''}${i.comfort_level?`<p style="margin-top:4px"><b style="color:var(--ink)">Comfort reading results:</b> ${esc(i.comfort_level)}</p>`:''}</div>`:''}`;
+}
+function renderReproCoaching(r){
+  const i=r.inputs||{}, m=r.meta||{}, n=i.numbers||{};
+  const conf=i.confidence||m.confidence;
+  const kv=(l,v)=> v&&String(v).trim()?`<p style="margin-top:4px"><b style="color:var(--ink)">${l}:</b> ${esc(v)}</p>`:'';
+  const t=(lbl,v)=> v&&String(v).trim()?`<div class="block"><h3>${lbl}</h3><p>${esc(v)}</p></div>`:'';
+  const nums=[['Litter size',n.litter_size],['Conception rate',n.conception_rate],['Neonatal survival',n.neonatal_survival],['Other',n.other_metric]].filter(x=>x[1]&&String(x[1]).trim()).map(x=>`<div class="kvrow"><b>${x[0]}:</b> ${esc(x[1])}</div>`).join('');
+  const others=(i.other_areas&&i.other_areas.length)?' · also: '+i.other_areas.map(esc).join(', '):'';
+  return `
+    <div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--del)">Repro coaching · brief for Dr. Fontaine</div>
+      <div class="big" style="font-size:19px">${esc(i.primary_area||m.primary_area||'')}</div>
+      <p style="color:var(--mid);font-size:12.5px;margin-top:6px">${esc(i.breed||m.breed||'')}${conf?` · confidence ${conf}/5`:''}${others}</p></div>
+    <div class="block"><h3>Program</h3>${kv('Breed',i.breed)}${kv('Years breeding',i.years_breeding)}${kv('Litters / yr',i.litters_per_year)}${kv('Dams / studs',i.dams_studs)}${kv('Vet setup',i.vet_setup)}</div>
+    <div class="block"><h3>Biggest challenge</h3><p>${esc(i.biggest_challenge||'')}</p></div>
+    ${t('Recent case',i.recent_case)}
+    ${t("Tried that didn't work",i.tried_didnt_work)}
+    ${t('Current protocols',i.current_protocols)}
+    ${t('Monitoring systems',i.monitoring_systems)}
+    ${nums?`<div class="block"><h3>Their numbers</h3>${nums}</div>`:''}
+    ${t('Upcoming breedings / whelps',i.upcoming)}
+    <div class="block"><h3>Success in 3 months</h3><p>${esc(i.success_in_3_months||'')}</p></div>
+    ${t('Wants to walk away able to',i.walk_away_able_to)}`;
+}
 function renderBody(r){
   if(r.tool==='niche-blueprint'&&r.result) return renderBlueprint(r.result,r.inputs||{});
   if(r.tool==='value-architect'&&r.result) return renderValueArchitect(r.result,r.inputs||{});
   if(r.tool==='feedback') return renderFeedback(r);
+  if(r.tool==='genetics-consult') return renderGeneticsConsult(r);
+  if(r.tool==='repro-coaching') return renderReproCoaching(r);
   return renderGeneric(r);
 }
 function renderGeneric(r){

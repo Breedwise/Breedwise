@@ -1,0 +1,331 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Genetics Pre-Consultation — Breedwise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#1b1b20; --surface:#111114; --card:#26262c; --card-2:#212127;
+  --border:#34343c; --gold:#d6ba76; --gold-deep:#b89c47; --gold-faint:rgba(214,186,118,0.10);
+  --gold-grad:linear-gradient(135deg,#e2cb86 0%,#bfa050 100%); --on-gold:#1a1509;
+  --ink:#f4f1ea; --muted:#8f8d85; --mid:#c4c1b8; --green:#6dbf90; --red:#e0807e; --radius:11px;
+  --heading:'Playfair Display', Georgia, serif; --body:'Inter', -apple-system, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.hide{display:none!important}
+#gate{position:fixed;inset:0;z-index:100;background:var(--surface);display:flex;align-items:center;justify-content:center;padding:24px}
+.gate-inner{width:100%;max-width:440px;text-align:center}
+.gate-mark{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
+.gate-inner h1{font-family:var(--heading);font-weight:600;font-size:clamp(26px,6vw,36px);line-height:1.1;color:var(--ink);margin-bottom:12px}
+.gate-inner p{font-size:14px;color:var(--muted);margin-bottom:24px}
+#code{width:100%;text-align:center;letter-spacing:.12em;text-transform:uppercase;font-family:var(--body);font-size:15px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);color:var(--ink);padding:13px 14px;outline:none;margin-bottom:10px}
+#code::placeholder{text-transform:none;letter-spacing:normal;color:var(--muted)}
+#code:focus{border-color:var(--gold)}
+#app{display:none} #app.on{display:block}
+.masthead{background:var(--surface);border-bottom:1px solid var(--border);padding:34px 22px 26px;text-align:center}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.masthead h1{font-family:var(--heading);font-weight:600;font-size:clamp(24px,5.5vw,34px);line-height:1.12;color:var(--ink);margin:11px 0 8px}
+.masthead p{color:var(--muted);font-size:13.5px;max-width:56ch;margin:0 auto}
+.wrap{max-width:660px;margin:0 auto;padding:26px 22px 90px}
+.q{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px}
+.q .num{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.q .label{font-family:var(--heading);font-size:17px;color:var(--ink);line-height:1.3;margin-bottom:4px}
+.q .req{color:var(--gold-deep)}
+.q .sub{font-size:12.5px;color:var(--muted);margin:2px 0 13px}
+.section-label{font-family:var(--heading);font-size:15px;color:var(--gold);letter-spacing:.02em;margin:26px 2px 10px;padding-bottom:7px;border-bottom:1px solid var(--border)}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opts.row{flex-direction:row;flex-wrap:wrap}
+.opts.row .opt{flex:1;min-width:120px}
+.opt{display:flex;align-items:center;gap:11px;border:1px solid var(--border);background:var(--card-2);border-radius:10px;padding:12px 14px;cursor:pointer;transition:border-color .12s,background .12s;font-size:14px;color:var(--mid)}
+.opt:hover{border-color:var(--gold-deep)}
+.opt.on{border-color:var(--gold);background:var(--gold-faint);color:var(--ink)}
+.opt .box{flex:0 0 18px;width:18px;height:18px;border:1.6px solid var(--border);border-radius:50%;display:grid;place-items:center}
+.opt.multi .box{border-radius:5px}
+.opt.on .box{border-color:var(--gold);background:var(--gold)}
+.opt.on .box:after{content:'';width:8px;height:8px;border-radius:inherit;background:var(--on-gold)}
+.opt.multi.on .box:after{content:'✓';width:auto;height:auto;background:none;color:var(--on-gold);font-size:12px;font-weight:800;line-height:1}
+label.fld{display:block;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--mid);font-weight:600;margin-bottom:6px}
+input[type=text],input[type=email],textarea{width:100%;font-family:var(--body);font-size:14.5px;background:var(--card-2);border:1px solid var(--border);border-radius:10px;color:var(--ink);padding:12px 14px;outline:none;transition:border-color .15s}
+input:focus,textarea:focus{border-color:var(--gold)}
+textarea{resize:vertical;min-height:80px;line-height:1.55}
+.reveal{margin-top:12px;padding-top:14px;border-top:1px dashed var(--border)}
+.mini-label{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--mid);font-weight:600;margin:12px 0 7px}
+.other-wrap{margin-top:8px}
+.tbl{display:flex;flex-direction:column;gap:8px}
+.trow{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px}
+.trow.thead span{font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:0 2px}
+.trow input{padding:10px 11px;font-size:13.5px}
+.addrow{margin-top:10px;background:transparent;border:1px dashed var(--gold-deep);color:var(--gold);border-radius:9px;padding:9px 14px;font-family:var(--body);font-size:12px;font-weight:600;cursor:pointer}
+.btn{width:100%;padding:15px 20px;font-family:var(--body);font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--gold-grad);color:var(--on-gold);border:none;border-radius:var(--radius);cursor:pointer;box-shadow:0 6px 22px rgba(214,186,118,.26);transition:transform .15s}
+.btn:hover{transform:translateY(-1px)} .btn:disabled{opacity:.55;cursor:default;transform:none}
+.err{min-height:18px;margin:10px 0 0;font-size:13px;color:var(--red);text-align:center}
+.priv{text-align:center;font-size:11.5px;color:var(--muted);margin-top:16px}
+.done{text-align:center;padding:64px 22px}
+.done .mk{font-size:44px;margin-bottom:14px}
+.done h2{font-family:var(--heading);font-size:26px;color:var(--ink);margin-bottom:8px}
+.done p{color:var(--mid);max-width:46ch;margin:0 auto}
+@media(max-width:560px){.trow{grid-template-columns:1fr 1fr}}
+</style>
+
+<div id="gate">
+  <div class="gate-inner">
+    <div class="gate-mark">Breedwise · Members</div>
+    <h1>Genetics Pre-Consultation</h1>
+    <p>Enter your access passcode to request a genetics consult. We'll prep your answers for our expert before your session.</p>
+    <input id="code" type="password" placeholder="Passcode" autocomplete="off" spellcheck="false" aria-label="Passcode">
+    <button class="btn" id="enter">Start my consult request</button>
+    <div class="err" id="gErr"></div>
+  </div>
+</div>
+
+<div id="app">
+  <header class="masthead">
+    <div class="eyebrow">Breedwise · Genetics</div>
+    <h1>Genetics Pre-Consultation</h1>
+    <p>Tell us about your dogs and your genetics question. Your answers go straight to our team, who'll brief our genetics expert before your consult.</p>
+  </header>
+  <div class="wrap" id="body"></div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+const SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+const FN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/log-submission';
+const FALLBACK_HASH='bbb53b03cd0709c715e9323bed9b2e6a53634427d38aeab1ce89aa55d5dc7d33'; // sha256("GENETICS2026") — separate from the accelerator member code
+const sb=supabase.createClient(SB_URL,SB_KEY);
+let PASS_HASH=FALLBACK_HASH, MEMBER_CODE='';
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+
+$('#enter').addEventListener('click',tryCode);
+$('#code').addEventListener('keydown',e=>{if(e.key==='Enter')tryCode();});
+async function tryCode(){
+  const raw=$('#code').value.trim().toUpperCase();
+  if(await sha256(raw)===PASS_HASH){ MEMBER_CODE=raw; try{localStorage.setItem('bw-genetics-code',raw);}catch(e){} openApp(); }
+  else { $('#gErr').textContent='That passcode did not match. Check your member training for the current code.'; $('#code').value=''; $('#code').focus(); }
+}
+function openApp(){ $('#gate').classList.add('hide'); $('#app').classList.add('on'); renderForm(); }
+
+const TEST_TYPES=['Parentage / identity verification','Traits (e.g., coat color)','Health (e.g., MDR1, PRA, other inherited conditions)','Ancestry / relatedness','Genetic diversity'];
+const GOALS=['Health and longevity','Conformation / show','Performance / sport','Working (search, guide, assistance, scent, other)','Temperament / behavior','Genetic diversity management'];
+const NUM_DOGS=['Single dog','Planned litter','Multiple dogs in my breeding program'];
+const STAGES=['Planning a breeding','Evaluating breeding stock','Reviewing results from a litter'];
+
+const A={ name:'', email:'', prior:null, prior_types:[], prior_other:'', prior_specific:'',
+  questions:'', decision:'', concern:'', breed:'', conditions:'', dogs:'',
+  screening:null, goals:[], goals_other:'', num_dogs:null,
+  pedigree:null, pedigree_note:'', relatives:null, relatives_desc:'', stage:null, stage_other:'',
+  timeline:'', vet:'', comfort:null };
+
+const single=(g,v)=>`<div class="opt" data-single="${g}" data-v="${esc(v)}"><span class="box"></span><span>${esc(v)}</span></div>`;
+const multi=(g,v)=>`<div class="opt multi" data-multi="${g}" data-v="${esc(v)}"><span class="box"></span><span>${esc(v)}</span></div>`;
+
+function renderForm(){
+  $('#body').innerHTML=`
+  <div class="q" id="w_name">
+    <div class="num">Your details</div>
+    <div class="label">Name <span class="req">*</span></div>
+    <input type="text" id="f_name" placeholder="Your name">
+    <div style="margin-top:12px"><label class="fld">Email <span style="text-transform:none;letter-spacing:0;color:var(--muted);font-weight:400">· optional, so we can schedule your consult</span></label><input type="email" id="f_email" placeholder="you@email.com"></div>
+  </div>
+
+  <div class="q" id="w_prior">
+    <div class="label">Have you done any genetic testing previously?</div>
+    <div class="opts row">${single('prior','No')}${single('prior','Yes')}</div>
+    <div class="reveal hide" id="priorReveal">
+      <div class="mini-label">Check all that apply</div>
+      <div class="opts">${TEST_TYPES.map(t=>multi('prior_types',t)).join('')}<div class="opt multi" data-multi="prior_types" data-v="__other"><span class="box"></span><span>Other</span></div></div>
+      <div class="other-wrap hide" id="priorOtherWrap"><input type="text" id="f_prior_other" placeholder="Other test type…"></div>
+      <div class="mini-label">List the specific tests you ran</div>
+      <textarea id="f_prior_specific" rows="2" placeholder="e.g., Embark full panel, OFA DNA…"></textarea>
+    </div>
+  </div>
+
+  <div class="q" id="w_questions">
+    <div class="label">What genetics question(s) or topic(s) would you like to discuss? <span class="req">*</span></div>
+    <textarea id="f_questions" rows="4" placeholder="Tell us what you're trying to figure out…"></textarea>
+  </div>
+
+  <div class="q" id="w_decision">
+    <div class="label">What decision or outcome are you hoping to reach from this consult?</div>
+    <div class="sub">e.g. go / no-go on a specific pairing, how to interpret a result, what to test next.</div>
+    <textarea id="f_decision" rows="3" placeholder="What would make this consult a win for you?"></textarea>
+  </div>
+
+  <div class="q" id="w_concern">
+    <div class="label">What's your current concern, hunch, or hypothesis?</div>
+    <div class="sub">Even if you're not sure — it tells our expert how you're thinking about it.</div>
+    <textarea id="f_concern" rows="3" placeholder="Your read on the situation so far…"></textarea>
+  </div>
+
+  <div class="q" id="w_breed">
+    <div class="label">What breed does this question / topic relate to? <span class="req">*</span></div>
+    <input type="text" id="f_breed" placeholder="Breed(s)">
+  </div>
+
+  <div class="q" id="w_conditions">
+    <div class="label">Any specific conditions, traits, or genes you're focused on?</div>
+    <input type="text" id="f_conditions" placeholder="e.g. DM, PRA, EIC, MDR1, coat color, COI…">
+  </div>
+
+  <div class="q" id="w_dogs">
+    <div class="label">Which specific dogs are involved?</div>
+    <div class="sub">Names + registration / IDs help our expert prepare.</div>
+    <textarea id="f_dogs" rows="2" placeholder="e.g. Sire: Cedar's Atlas (AKC SR123), Dam: Willow (AKC SR456)…"></textarea>
+  </div>
+
+  <div class="q" id="w_screen">
+    <div class="label">Have you completed any genetic or phenotypic / health screening related to this topic?</div>
+    <div class="sub">Examples of phenotype testing: OFA or PennHIP evaluations, eye exams, thyroid testing, other health screenings.</div>
+    <div class="opts row">${single('screening','No')}${single('screening','Yes')}</div>
+    <div class="reveal hide" id="screenReveal">
+      <div class="mini-label">Provide details</div>
+      <div class="tbl"><div class="trow thead"><span>Dog's name</span><span>Test performed</span><span>Results</span><span>Laboratory / org</span></div><div id="screenRows"></div></div>
+      <button type="button" class="addrow" id="addScreen">+ Add another test</button>
+    </div>
+  </div>
+
+  <div class="section-label">Breeding program context</div>
+
+  <div class="q" id="w_goals">
+    <div class="label">Breeding goals</div>
+    <div class="sub">Check all that apply</div>
+    <div class="opts">${GOALS.map(g=>multi('goals',g)).join('')}<div class="opt multi" data-multi="goals" data-v="__other"><span class="box"></span><span>Other</span></div></div>
+    <div class="other-wrap hide" id="goalsOtherWrap"><input type="text" id="f_goals_other" placeholder="Other goal…"></div>
+  </div>
+
+  <div class="q" id="w_num">
+    <div class="label">Number of dogs relevant to this consultation</div>
+    <div class="opts">${NUM_DOGS.map(n=>single('num_dogs',n)).join('')}</div>
+  </div>
+
+  <div class="q" id="w_ped">
+    <div class="label">Pedigree information available?</div>
+    <div class="opts row">${single('pedigree','Yes')}${single('pedigree','No')}</div>
+    <div class="other-wrap hide" id="pedNoteWrap"><div class="mini-label">Anything to note (you can share PDF pedigrees during your consult)</div><textarea id="f_ped_note" rows="2" placeholder="e.g., 5-generation pedigree available, link, or notes…"></textarea></div>
+  </div>
+
+  <div class="q" id="w_rel">
+    <div class="label">Have close relatives (parents, siblings, offspring) undergone genetic or health testing related to this topic?</div>
+    <div class="opts row">${single('relatives','No')}${single('relatives','Yes')}</div>
+    <div class="reveal hide" id="relReveal"><div class="mini-label">Please describe</div><textarea id="f_rel_desc" rows="3" placeholder="Who was tested, what for, and results…"></textarea></div>
+  </div>
+
+  <div class="q" id="w_stage">
+    <div class="label">Current breeding stage</div>
+    <div class="opts">${STAGES.map(s=>single('stage',s)).join('')}<div class="opt" data-single="stage" data-v="__other"><span class="box"></span><span>Other</span></div></div>
+    <div class="other-wrap hide" id="stageOtherWrap"><input type="text" id="f_stage_other" placeholder="Other stage…"></div>
+  </div>
+
+  <div class="section-label">For your consult</div>
+
+  <div class="q" id="w_timeline">
+    <div class="label">Is a breeding date or deadline driving this?</div>
+    <input type="text" id="f_timeline" placeholder="e.g. planning to breed next heat (~Nov), or no rush">
+  </div>
+
+  <div class="q" id="w_vet">
+    <div class="label">Have you discussed this with your vet or another expert? What did they say?</div>
+    <textarea id="f_vet" rows="3" placeholder="What you've been told so far — or 'not yet'."></textarea>
+  </div>
+
+  <div class="q" id="w_comfort">
+    <div class="label">How comfortable are you interpreting genetic test results?</div>
+    <div class="sub">So our expert can pitch the session at the right level.</div>
+    <div class="opts">${['New to this','Somewhat comfortable','Very comfortable'].map(v=>single('comfort',v)).join('')}</div>
+  </div>
+
+  <button class="btn" id="submit">Submit consult request</button>
+  <div class="err" id="err"></div>
+  <div class="priv">Your answers go to the Breedwise team and are shared with our genetics expert to prepare for your consult.</div>`;
+
+  addScreenRow(); addScreenRow();
+
+  document.querySelectorAll('[data-single]').forEach(el=>el.addEventListener('click',()=>{
+    const g=el.dataset.single, v=el.dataset.v;
+    document.querySelectorAll(`[data-single="${g}"]`).forEach(x=>x.classList.remove('on')); el.classList.add('on'); A[g]=v;
+    if(g==='prior') $('#priorReveal').classList.toggle('hide', v!=='Yes');
+    if(g==='screening') $('#screenReveal').classList.toggle('hide', v!=='Yes');
+    if(g==='pedigree') $('#pedNoteWrap').classList.toggle('hide', v!=='Yes');
+    if(g==='relatives') $('#relReveal').classList.toggle('hide', v!=='Yes');
+    if(g==='stage') $('#stageOtherWrap').classList.toggle('hide', v!=='__other');
+  }));
+  document.querySelectorAll('[data-multi]').forEach(el=>el.addEventListener('click',()=>{
+    el.classList.toggle('on'); const g=el.dataset.multi, v=el.dataset.v, on=el.classList.contains('on');
+    if(v==='__other'){ const w=g==='goals'?'#goalsOtherWrap':'#priorOtherWrap'; $(w).classList.toggle('hide',!on); if(!on){const inp=$(w).querySelector('input'); if(inp) inp.value='';} return; }
+    A[g]=A[g].filter(x=>x!==v); if(on) A[g].push(v);
+  }));
+  $('#addScreen').addEventListener('click',addScreenRow);
+  $('#submit').addEventListener('click',submit);
+}
+function addScreenRow(){
+  const c=$('#screenRows'); if(!c) return;
+  const row=document.createElement('div'); row.className='trow';
+  row.innerHTML=`<input type="text" placeholder="Dog's name"><input type="text" placeholder="Test performed"><input type="text" placeholder="Results"><input type="text" placeholder="Lab / org">`;
+  c.appendChild(row);
+}
+function err(m){ const e=$('#err'); if(e) e.textContent=m; }
+function need(id,msg){ const w=$('#'+id); if(w){ w.scrollIntoView({behavior:'smooth',block:'center'}); } err(msg); }
+
+async function submit(){
+  A.name=$('#f_name').value.trim(); A.email=$('#f_email').value.trim();
+  A.questions=$('#f_questions').value.trim(); A.breed=$('#f_breed').value.trim();
+  A.decision=$('#f_decision').value.trim(); A.concern=$('#f_concern').value.trim();
+  A.conditions=$('#f_conditions').value.trim(); A.dogs=$('#f_dogs').value.trim();
+  A.timeline=$('#f_timeline').value.trim(); A.vet=$('#f_vet').value.trim();
+  A.prior_other=($('#f_prior_other')&&$('#f_prior_other').value.trim())||'';
+  A.prior_specific=($('#f_prior_specific')&&$('#f_prior_specific').value.trim())||'';
+  A.goals_other=($('#f_goals_other')&&$('#f_goals_other').value.trim())||'';
+  A.pedigree_note=($('#f_ped_note')&&$('#f_ped_note').value.trim())||'';
+  A.relatives_desc=($('#f_rel_desc')&&$('#f_rel_desc').value.trim())||'';
+  A.stage_other=($('#f_stage_other')&&$('#f_stage_other').value.trim())||'';
+  const rows=[...document.querySelectorAll('#screenRows .trow')].map(r=>{
+    const [dog,test,res,lab]=[...r.querySelectorAll('input')].map(i=>i.value.trim());
+    return {dog,test,results:res,lab};
+  }).filter(r=>r.dog||r.test||r.results||r.lab);
+
+  if(!A.name){ return need('w_name','Please enter your name.'); }
+  if(!A.questions){ return need('w_questions','Please tell us your genetics question.'); }
+  if(!A.breed){ return need('w_breed','Please tell us the breed.'); }
+
+  const priorTypes=A.prior_types.slice(); if(A.prior_other) priorTypes.push('Other: '+A.prior_other);
+  const goals=A.goals.slice(); if(A.goals_other) goals.push('Other: '+A.goals_other);
+  const stage=A.stage==='__other'?('Other: '+A.stage_other):A.stage;
+
+  const btn=$('#submit'); btn.disabled=true; btn.textContent='Sending…'; err('');
+  const payload={
+    passcode:MEMBER_CODE, tool:'genetics-consult', tool_label:'Genetics Consult',
+    member_name:A.name, member_email:A.email||null,
+    summary:`${A.breed} — ${A.questions.slice(0,90)}`,
+    meta:{ breed:A.breed, stage:stage||null, num_dogs:A.num_dogs||null, prior_testing:A.prior||null, screening:A.screening||null },
+    inputs:{ name:A.name, email:A.email||null, breed:A.breed, questions:A.questions,
+      decision:A.decision, concern:A.concern, conditions:A.conditions, dogs_involved:A.dogs,
+      prior_testing:A.prior, prior_types:priorTypes, prior_specific:A.prior_specific,
+      screening:A.screening, screening_details:rows,
+      breeding_goals:goals, num_dogs:A.num_dogs, pedigree_available:A.pedigree, pedigree_note:A.pedigree_note,
+      relatives_tested:A.relatives, relatives_description:A.relatives_desc, breeding_stage:stage,
+      timeline:A.timeline, vet_input:A.vet, comfort_level:A.comfort },
+  };
+  try{
+    const r=await fetch(FN,{method:'POST',headers:{'content-type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify(payload)});
+    const d=await r.json();
+    if(!r.ok||d.error) throw new Error(d.error||('Error '+r.status));
+    done();
+  }catch(e){ btn.disabled=false; btn.textContent='Submit consult request'; err('Could not send: '+e.message+' — please try again.'); }
+}
+function done(){
+  $('#body').innerHTML=`<div class="done"><div class="mk">🧬</div><h2>Request received</h2><p>Thank you — your genetics pre-consultation is in. Our team will review it and brief our expert before your session.</p></div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+(async function(){
+  try{ const {data}=await sb.from('access_config').select('passcode_hash').eq('key','genetics').maybeSingle(); if(data&&data.passcode_hash) PASS_HASH=data.passcode_hash; }catch(e){}
+  let saved=''; try{ saved=localStorage.getItem('bw-genetics-code')||''; }catch(e){}
+  if(saved && await sha256(saved)===PASS_HASH){ MEMBER_CODE=saved; openApp(); } else $('#code').focus();
+})();
+</script>

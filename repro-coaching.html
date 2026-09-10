@@ -1,0 +1,292 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Coaching Session with Dr. Fontaine — Breedwise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#1b1b20; --surface:#111114; --card:#26262c; --card-2:#212127;
+  --border:#34343c; --gold:#d6ba76; --gold-deep:#b89c47; --gold-faint:rgba(214,186,118,0.10);
+  --gold-grad:linear-gradient(135deg,#e2cb86 0%,#bfa050 100%); --on-gold:#1a1509;
+  --ink:#f4f1ea; --muted:#8f8d85; --mid:#c4c1b8; --green:#6dbf90; --red:#e0807e; --radius:11px;
+  --heading:'Playfair Display', Georgia, serif; --body:'Inter', -apple-system, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.hide{display:none!important}
+#gate{position:fixed;inset:0;z-index:100;background:var(--surface);display:flex;align-items:center;justify-content:center;padding:24px}
+.gate-inner{width:100%;max-width:450px;text-align:center}
+.gate-mark{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
+.gate-inner h1{font-family:var(--heading);font-weight:600;font-size:clamp(25px,5.6vw,34px);line-height:1.12;color:var(--ink);margin-bottom:12px}
+.gate-inner p{font-size:14px;color:var(--muted);margin-bottom:24px}
+#code{width:100%;text-align:center;letter-spacing:.12em;text-transform:uppercase;font-family:var(--body);font-size:15px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);color:var(--ink);padding:13px 14px;outline:none;margin-bottom:10px}
+#code::placeholder{text-transform:none;letter-spacing:normal;color:var(--muted)}
+#code:focus{border-color:var(--gold)}
+#app{display:none} #app.on{display:block}
+.masthead{background:var(--surface);border-bottom:1px solid var(--border);padding:34px 22px 26px;text-align:center}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.masthead h1{font-family:var(--heading);font-weight:600;font-size:clamp(23px,5vw,33px);line-height:1.14;color:var(--ink);margin:11px 0 8px}
+.masthead p{color:var(--muted);font-size:13.5px;max-width:60ch;margin:0 auto}
+.wrap{max-width:680px;margin:0 auto;padding:24px 22px 90px}
+.note{background:var(--card-2);border:1px solid var(--border);border-left:3px solid var(--gold-deep);border-radius:10px;padding:14px 16px;margin-bottom:18px;font-size:13px;color:var(--mid)}
+.note b{color:var(--ink)}
+.q{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px}
+.q .num{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.q .label{font-family:var(--heading);font-size:17px;color:var(--ink);line-height:1.3;margin-bottom:4px}
+.q .req{color:var(--gold-deep)}
+.q .sub{font-size:12.5px;color:var(--muted);margin:2px 0 13px}
+.section-label{font-family:var(--heading);font-size:15px;color:var(--gold);letter-spacing:.02em;margin:26px 2px 10px;padding-bottom:7px;border-bottom:1px solid var(--border)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:center;gap:11px;border:1px solid var(--border);background:var(--card-2);border-radius:10px;padding:12px 14px;cursor:pointer;transition:border-color .12s,background .12s;font-size:14px;color:var(--mid)}
+.opt:hover{border-color:var(--gold-deep)}
+.opt.on{border-color:var(--gold);background:var(--gold-faint);color:var(--ink)}
+.opt .box{flex:0 0 18px;width:18px;height:18px;border:1.6px solid var(--border);border-radius:50%;display:grid;place-items:center}
+.opt.multi .box{border-radius:5px}
+.opt.on .box{border-color:var(--gold);background:var(--gold)}
+.opt.on .box:after{content:'';width:8px;height:8px;border-radius:inherit;background:var(--on-gold)}
+.opt.multi.on .box:after{content:'✓';width:auto;height:auto;background:none;color:var(--on-gold);font-size:12px;font-weight:800;line-height:1}
+label.fld{display:block;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--mid);font-weight:600;margin-bottom:6px}
+label.fld .opt2{text-transform:none;letter-spacing:0;color:var(--muted);font-weight:400}
+input[type=text],input[type=email],textarea{width:100%;font-family:var(--body);font-size:14.5px;background:var(--card-2);border:1px solid var(--border);border-radius:10px;color:var(--ink);padding:12px 14px;outline:none;transition:border-color .15s}
+input:focus,textarea:focus{border-color:var(--gold)}
+textarea{resize:vertical;min-height:80px;line-height:1.55}
+.scale{display:flex;gap:6px;flex-wrap:wrap}
+.sbtn{flex:1;min-width:40px;border:1px solid var(--border);background:var(--card-2);color:var(--mid);border-radius:9px;padding:11px 0;font-size:15px;font-weight:600;cursor:pointer;text-align:center;transition:all .12s;font-family:var(--body)}
+.sbtn:hover{border-color:var(--gold-deep)}
+.sbtn.on{background:var(--gold-grad);color:var(--on-gold);border-color:var(--gold)}
+.anchors{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:8px}
+.other-wrap{margin-top:8px}
+.btn{width:100%;padding:15px 20px;font-family:var(--body);font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--gold-grad);color:var(--on-gold);border:none;border-radius:var(--radius);cursor:pointer;box-shadow:0 6px 22px rgba(214,186,118,.26);transition:transform .15s}
+.btn:hover{transform:translateY(-1px)} .btn:disabled{opacity:.55;cursor:default;transform:none}
+.err{min-height:18px;margin:10px 0 0;font-size:13px;color:var(--red);text-align:center}
+.priv{text-align:center;font-size:11.5px;color:var(--muted);margin-top:16px}
+.done{text-align:center;padding:64px 22px}
+.done .mk{font-size:44px;margin-bottom:14px}
+.done h2{font-family:var(--heading);font-size:26px;color:var(--ink);margin-bottom:8px}
+.done p{color:var(--mid);max-width:46ch;margin:0 auto}
+@media(max-width:520px){.two{grid-template-columns:1fr}}
+</style>
+
+<div id="gate">
+  <div class="gate-inner">
+    <div class="gate-mark">Breedwise · Members</div>
+    <h1>Coaching with Dr. Fontaine</h1>
+    <p>Enter your access passcode to prepare for your reproductive & pediatric coaching session.</p>
+    <input id="code" type="password" placeholder="Passcode" autocomplete="off" spellcheck="false" aria-label="Passcode">
+    <button class="btn" id="enter">Start my pre-session</button>
+    <div class="err" id="gErr"></div>
+  </div>
+</div>
+
+<div id="app">
+  <header class="masthead">
+    <div class="eyebrow">Breedwise · Coaching</div>
+    <h1>Your Coaching Session with Dr. Emmanuel Fontaine</h1>
+    <p>Coaching covers seven areas across the reproductive & pediatric timeline: breeding, gestation, lactation, whelping, newborn care, weaning, and pediatrics. Return these answers 48 hours before your call so Dr. Fontaine can come in ready to coach.</p>
+  </header>
+  <div class="wrap" id="body"></div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+const SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+const FN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/log-submission';
+const FALLBACK_HASH='730aa0bb372d0a93535f957b360b07e7393d8f46433d5ddb43c5effa2f67158f'; // sha256("FONTAINE2026") — separate from the accelerator member code
+const sb=supabase.createClient(SB_URL,SB_KEY);
+let PASS_HASH=FALLBACK_HASH, MEMBER_CODE='';
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+
+$('#enter').addEventListener('click',tryCode);
+$('#code').addEventListener('keydown',e=>{if(e.key==='Enter')tryCode();});
+async function tryCode(){
+  const raw=$('#code').value.trim().toUpperCase();
+  if(await sha256(raw)===PASS_HASH){ MEMBER_CODE=raw; try{localStorage.setItem('bw-repro-code',raw);}catch(e){} openApp(); }
+  else { $('#gErr').textContent='That passcode did not match. Check your member training for the current code.'; $('#code').value=''; $('#code').focus(); }
+}
+function openApp(){ $('#gate').classList.add('hide'); $('#app').classList.add('on'); renderForm(); }
+
+const AREAS=['Breeding (male & female)','Gestation','Lactation','Whelping','Newborn care','Weaning','Pediatrics'];
+const VET=['Dedicated reproduction / theriogenology vet','General-practice vet who is repro-friendly','General vet, minimal repro involvement','Mostly handling repro on my own'];
+
+const A={ name:'', email:'', breed:'', years:'', litters:'', dams_studs:'', vet:null,
+  primary_area:null, other_areas:[], challenge:'', recent_case:'',
+  tried:'', protocols:'', systems:'',
+  litter_size:'', conception:'', survival:'', other_metric:'',
+  upcoming:'', success_3mo:'', walk_away:'', confidence:null };
+
+const single=(g,v)=>`<div class="opt" data-single="${g}" data-v="${esc(v)}"><span class="box"></span><span>${esc(v)}</span></div>`;
+const multi=(g,v)=>`<div class="opt multi" data-multi="${g}" data-v="${esc(v)}"><span class="box"></span><span>${esc(v)}</span></div>`;
+
+function renderForm(){
+  $('#body').innerHTML=`
+  <div class="note"><b>How coaching works:</b> Dr. Fontaine helps you build sharper questions for your vet, design protocols that fit your program, and spot patterns across your operation. Coaching does not diagnose individual animals, prescribe treatments, or replace your veterinarian — your vet remains your partner for medical decisions.</div>
+
+  <div class="section-label">About you & your program</div>
+  <div class="q" id="w_name">
+    <div class="label">Your details <span class="req">*</span></div>
+    <input type="text" id="f_name" placeholder="Your name">
+    <div class="two" style="margin-top:12px">
+      <div><label class="fld">Email <span class="opt2">· optional</span></label><input type="email" id="f_email" placeholder="you@email.com"></div>
+      <div><label class="fld">Breed(s) <span class="req">*</span></label><input type="text" id="f_breed" placeholder="What you raise"></div>
+    </div>
+    <div class="two" style="margin-top:12px">
+      <div><label class="fld">Years breeding</label><input type="text" id="f_years" placeholder="e.g. 4"></div>
+      <div><label class="fld">Litters per year</label><input type="text" id="f_litters" placeholder="e.g. 3"></div>
+    </div>
+    <div class="two" style="margin-top:12px">
+      <div><label class="fld">Dams / studs in your program</label><input type="text" id="f_dams" placeholder="e.g. 3 dams, 1 stud"></div>
+      <div></div>
+    </div>
+    <div style="margin-top:12px"><label class="fld">Your reproductive-vet setup</label>
+      <div class="opts">${VET.map(v=>single('vet',v)).join('')}</div>
+    </div>
+  </div>
+
+  <div class="section-label">Where the friction is</div>
+  <div class="q" id="w_primary">
+    <div class="num">Question 1</div>
+    <div class="label">Which of the seven areas is the biggest source of friction in your program right now? <span class="req">*</span></div>
+    <div class="opts">${AREAS.map(a=>single('primary_area',a)).join('')}</div>
+    <div class="mini" style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--mid);font-weight:600;margin:14px 0 7px">Any other areas also giving you trouble? <span style="text-transform:none;letter-spacing:0;color:var(--muted);font-weight:400">(optional)</span></div>
+    <div class="opts">${AREAS.map(a=>multi('other_areas',a)).join('')}</div>
+  </div>
+
+  <div class="q" id="w_challenge">
+    <div class="num">Question 2</div>
+    <div class="label">What is the single biggest challenge you want to improve in that area? <span class="req">*</span></div>
+    <textarea id="f_challenge" rows="4" placeholder="Be specific — what's actually going wrong or costing you?"></textarea>
+  </div>
+
+  <div class="q" id="w_recent">
+    <div class="label">Is there a recent litter or case that brought this to a head?</div>
+    <div class="sub">A concrete example gives Dr. Fontaine something real to work from.</div>
+    <textarea id="f_recent" rows="3" placeholder="What happened, and what did it cost you?"></textarea>
+  </div>
+
+  <div class="section-label">What you've tried & how you run it</div>
+  <div class="q" id="w_tried">
+    <div class="num">Question 3</div>
+    <div class="label">What have you already tried that did not work?</div>
+    <textarea id="f_tried" rows="3" placeholder="Approaches, products, protocols, advice you've applied…"></textarea>
+  </div>
+
+  <div class="q" id="w_protocols">
+    <div class="label">What protocols do you currently follow in that area?</div>
+    <div class="sub">e.g. progesterone timing, whelping watch, supplemental feeding, weaning schedule.</div>
+    <textarea id="f_protocols" rows="3" placeholder="Walk us through your current process."></textarea>
+  </div>
+
+  <div class="q" id="w_systems">
+    <div class="num">Question 4</div>
+    <div class="label">What systems do you currently use to monitor your litters or breeding decisions?</div>
+    <textarea id="f_systems" rows="3" placeholder="Whelping charts, weight logs, spreadsheets, apps, records you keep…"></textarea>
+  </div>
+
+  <div class="section-label">Your numbers <span style="font-family:var(--body);font-size:11px;text-transform:none;letter-spacing:0;color:var(--muted)">· optional, but powerful context</span></div>
+  <div class="q" id="w_numbers">
+    <div class="sub" style="margin-top:0">Share whatever you track — even rough figures help Dr. Fontaine spot patterns.</div>
+    <div class="two">
+      <div><label class="fld">Typical litter size</label><input type="text" id="f_littersize" placeholder="e.g. 7"></div>
+      <div><label class="fld">Conception / take rate</label><input type="text" id="f_conception" placeholder="e.g. ~80%"></div>
+    </div>
+    <div class="two" style="margin-top:12px">
+      <div><label class="fld">Neonatal survival (or loss) rate</label><input type="text" id="f_survival" placeholder="e.g. lose ~1 per litter"></div>
+      <div><label class="fld">Any other metric you track</label><input type="text" id="f_metric" placeholder="e.g. weaning weights, days to…"></div>
+    </div>
+  </div>
+
+  <div class="section-label">What success looks like</div>
+  <div class="q" id="w_upcoming">
+    <div class="label">Any upcoming breedings or whelps this session should inform?</div>
+    <input type="text" id="f_upcoming" placeholder="e.g. breeding due to whelp mid-Nov">
+  </div>
+
+  <div class="q" id="w_success">
+    <div class="num">Question 5</div>
+    <div class="label">If this session is a success, what will be different in your operation three months from now? <span class="req">*</span></div>
+    <textarea id="f_success" rows="4" placeholder="Paint the picture — what changes?"></textarea>
+  </div>
+
+  <div class="q" id="w_walk">
+    <div class="label">What do you most want to walk away able to DO?</div>
+    <textarea id="f_walk" rows="2" placeholder="A protocol, a decision framework, a way to read something…"></textarea>
+  </div>
+
+  <div class="q" id="w_conf">
+    <div class="label">How confident do you feel in this area right now?</div>
+    <div class="sub">1 = lost · 5 = very confident</div>
+    <div class="scale" id="q_conf">${[1,2,3,4,5].map(i=>`<button type="button" class="sbtn" data-conf="${i}">${i}</button>`).join('')}</div>
+    <div class="anchors"><span>Lost</span><span>Very confident</span></div>
+  </div>
+
+  <button class="btn" id="submit">Submit my pre-session</button>
+  <div class="err" id="err"></div>
+  <div class="priv">Your answers go to the Breedwise team and Dr. Fontaine to prepare for your coaching session.</div>`;
+
+  document.querySelectorAll('[data-single]').forEach(el=>el.addEventListener('click',()=>{
+    const g=el.dataset.single, v=el.dataset.v;
+    document.querySelectorAll(`[data-single="${g}"]`).forEach(x=>x.classList.remove('on')); el.classList.add('on'); A[g]=v;
+  }));
+  document.querySelectorAll('[data-multi]').forEach(el=>el.addEventListener('click',()=>{
+    el.classList.toggle('on'); const g=el.dataset.multi, v=el.dataset.v, on=el.classList.contains('on');
+    A[g]=A[g].filter(x=>x!==v); if(on) A[g].push(v);
+  }));
+  document.querySelectorAll('#q_conf .sbtn').forEach(el=>el.addEventListener('click',()=>{
+    document.querySelectorAll('#q_conf .sbtn').forEach(x=>x.classList.remove('on')); el.classList.add('on'); A.confidence=+el.dataset.conf;
+  }));
+  $('#submit').addEventListener('click',submit);
+}
+function err(m){ const e=$('#err'); if(e) e.textContent=m; }
+function need(id,msg){ const w=$('#'+id); if(w) w.scrollIntoView({behavior:'smooth',block:'center'}); err(msg); }
+
+async function submit(){
+  A.name=$('#f_name').value.trim(); A.email=$('#f_email').value.trim(); A.breed=$('#f_breed').value.trim();
+  A.years=$('#f_years').value.trim(); A.litters=$('#f_litters').value.trim(); A.dams_studs=$('#f_dams').value.trim();
+  A.challenge=$('#f_challenge').value.trim(); A.recent_case=$('#f_recent').value.trim();
+  A.tried=$('#f_tried').value.trim(); A.protocols=$('#f_protocols').value.trim(); A.systems=$('#f_systems').value.trim();
+  A.litter_size=$('#f_littersize').value.trim(); A.conception=$('#f_conception').value.trim();
+  A.survival=$('#f_survival').value.trim(); A.other_metric=$('#f_metric').value.trim();
+  A.upcoming=$('#f_upcoming').value.trim(); A.success_3mo=$('#f_success').value.trim(); A.walk_away=$('#f_walk').value.trim();
+
+  if(!A.name){ return need('w_name','Please enter your name.'); }
+  if(!A.breed){ return need('w_name','Please enter your breed(s).'); }
+  if(!A.primary_area){ return need('w_primary','Please pick your biggest friction area.'); }
+  if(!A.challenge){ return need('w_challenge','Please tell us your biggest challenge.'); }
+  if(!A.success_3mo){ return need('w_success','Please tell us what success looks like in 3 months.'); }
+
+  const btn=$('#submit'); btn.disabled=true; btn.textContent='Sending…'; err('');
+  const payload={
+    passcode:MEMBER_CODE, tool:'repro-coaching', tool_label:'Repro Coaching (Dr. Fontaine)',
+    member_name:A.name, member_email:A.email||null,
+    summary:`${A.primary_area} — ${A.challenge.slice(0,80)}`,
+    meta:{ breed:A.breed, primary_area:A.primary_area, litters_per_year:A.litters||null, confidence:A.confidence },
+    inputs:{ name:A.name, email:A.email||null, breed:A.breed, years_breeding:A.years, litters_per_year:A.litters, dams_studs:A.dams_studs, vet_setup:A.vet,
+      primary_area:A.primary_area, other_areas:A.other_areas, biggest_challenge:A.challenge, recent_case:A.recent_case,
+      tried_didnt_work:A.tried, current_protocols:A.protocols, monitoring_systems:A.systems,
+      numbers:{ litter_size:A.litter_size, conception_rate:A.conception, neonatal_survival:A.survival, other_metric:A.other_metric },
+      upcoming:A.upcoming, success_in_3_months:A.success_3mo, walk_away_able_to:A.walk_away, confidence:A.confidence },
+  };
+  try{
+    const r=await fetch(FN,{method:'POST',headers:{'content-type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify(payload)});
+    const d=await r.json();
+    if(!r.ok||d.error) throw new Error(d.error||('Error '+r.status));
+    done();
+  }catch(e){ btn.disabled=false; btn.textContent='Submit my pre-session'; err('Could not send: '+e.message+' — please try again.'); }
+}
+function done(){
+  $('#body').innerHTML=`<div class="done"><div class="mk">🩺</div><h2>Pre-session received</h2><p>Thank you — your answers are in. Dr. Fontaine will review them before your call so your time together goes straight to what matters.</p></div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+(async function(){
+  try{ const {data}=await sb.from('access_config').select('passcode_hash').eq('key','repro').maybeSingle(); if(data&&data.passcode_hash) PASS_HASH=data.passcode_hash; }catch(e){}
+  let saved=''; try{ saved=localStorage.getItem('bw-repro-code')||''; }catch(e){}
+  if(saved && await sha256(saved)===PASS_HASH){ MEMBER_CODE=saved; openApp(); } else $('#code').focus();
+})();
+</script>
