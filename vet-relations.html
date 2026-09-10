@@ -1,0 +1,251 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Veterinary Relations — Breedwise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#1b1b20; --surface:#111114; --card:#26262c; --card-2:#212127;
+  --border:#34343c; --gold:#d6ba76; --gold-deep:#b89c47; --gold-faint:rgba(214,186,118,0.10);
+  --gold-grad:linear-gradient(135deg,#e2cb86 0%,#bfa050 100%); --on-gold:#1a1509;
+  --ink:#f4f1ea; --muted:#8f8d85; --mid:#c4c1b8; --green:#6dbf90; --red:#e0807e; --radius:11px;
+  --heading:'Playfair Display', Georgia, serif; --body:'Inter', -apple-system, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.hide{display:none!important}
+#gate{position:fixed;inset:0;z-index:100;background:var(--surface);display:flex;align-items:center;justify-content:center;padding:24px}
+.gate-inner{width:100%;max-width:450px;text-align:center}
+.gate-mark{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
+.gate-inner h1{font-family:var(--heading);font-weight:600;font-size:clamp(25px,5.6vw,34px);line-height:1.12;color:var(--ink);margin-bottom:12px}
+.gate-inner p{font-size:14px;color:var(--muted);margin-bottom:24px}
+#code{width:100%;text-align:center;letter-spacing:.12em;text-transform:uppercase;font-family:var(--body);font-size:15px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);color:var(--ink);padding:13px 14px;outline:none;margin-bottom:10px}
+#code::placeholder{text-transform:none;letter-spacing:normal;color:var(--muted)}
+#code:focus{border-color:var(--gold)}
+#app{display:none} #app.on{display:block}
+.masthead{background:var(--surface);border-bottom:1px solid var(--border);padding:34px 22px 26px;text-align:center}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.masthead h1{font-family:var(--heading);font-weight:600;font-size:clamp(23px,5vw,33px);line-height:1.14;color:var(--ink);margin:11px 0 8px}
+.masthead p{color:var(--muted);font-size:13.5px;max-width:60ch;margin:0 auto}
+.wrap{max-width:680px;margin:0 auto;padding:24px 22px 90px}
+.note{background:var(--card-2);border:1px solid var(--border);border-left:3px solid var(--gold-deep);border-radius:10px;padding:14px 16px;margin-bottom:18px;font-size:13px;color:var(--mid)}
+.note b{color:var(--ink)}
+.q{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px}
+.q .num{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.q .label{font-family:var(--heading);font-size:17px;color:var(--ink);line-height:1.3;margin-bottom:4px}
+.q .req{color:var(--gold-deep)}
+.q .sub{font-size:12.5px;color:var(--muted);margin:2px 0 13px}
+.section-label{font-family:var(--heading);font-size:15px;color:var(--gold);letter-spacing:.02em;margin:26px 2px 10px;padding-bottom:7px;border-bottom:1px solid var(--border)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:center;gap:11px;border:1px solid var(--border);background:var(--card-2);border-radius:10px;padding:12px 14px;cursor:pointer;transition:border-color .12s,background .12s;font-size:14px;color:var(--mid)}
+.opt:hover{border-color:var(--gold-deep)}
+.opt.on{border-color:var(--gold);background:var(--gold-faint);color:var(--ink)}
+.opt .box{flex:0 0 18px;width:18px;height:18px;border:1.6px solid var(--border);border-radius:50%;display:grid;place-items:center}
+.opt.multi .box{border-radius:5px}
+.opt.on .box{border-color:var(--gold);background:var(--gold)}
+.opt.on .box:after{content:'';width:8px;height:8px;border-radius:inherit;background:var(--on-gold)}
+.opt.multi.on .box:after{content:'✓';width:auto;height:auto;background:none;color:var(--on-gold);font-size:12px;font-weight:800;line-height:1}
+label.fld{display:block;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--mid);font-weight:600;margin-bottom:6px}
+label.fld .opt2{text-transform:none;letter-spacing:0;color:var(--muted);font-weight:400}
+input[type=text],input[type=email],textarea{width:100%;font-family:var(--body);font-size:14.5px;background:var(--card-2);border:1px solid var(--border);border-radius:10px;color:var(--ink);padding:12px 14px;outline:none;transition:border-color .15s}
+input:focus,textarea:focus{border-color:var(--gold)}
+textarea{resize:vertical;min-height:80px;line-height:1.55}
+.reveal{margin-top:12px;padding-top:14px;border-top:1px dashed var(--border)}
+.mini-label{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--mid);font-weight:600;margin:12px 0 7px}
+.other-wrap{margin-top:8px}
+.btn{width:100%;padding:15px 20px;font-family:var(--body);font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--gold-grad);color:var(--on-gold);border:none;border-radius:var(--radius);cursor:pointer;box-shadow:0 6px 22px rgba(214,186,118,.26);transition:transform .15s}
+.btn:hover{transform:translateY(-1px)} .btn:disabled{opacity:.55;cursor:default;transform:none}
+.err{min-height:18px;margin:10px 0 0;font-size:13px;color:var(--red);text-align:center}
+.priv{text-align:center;font-size:11.5px;color:var(--muted);margin-top:16px}
+.done{text-align:center;padding:64px 22px}
+.done .mk{font-size:44px;margin-bottom:14px}
+.done h2{font-family:var(--heading);font-size:26px;color:var(--ink);margin-bottom:8px}
+.done p{color:var(--mid);max-width:46ch;margin:0 auto}
+@media(max-width:520px){.two{grid-template-columns:1fr}}
+</style>
+
+<div id="gate">
+  <div class="gate-inner">
+    <div class="gate-mark">Breedwise · Members</div>
+    <h1>Veterinary Relations</h1>
+    <p>Enter your access passcode to get matched with a veterinarian who'll support your breeding program.</p>
+    <input id="code" type="password" placeholder="Passcode" autocomplete="off" spellcheck="false" aria-label="Passcode">
+    <button class="btn" id="enter">Start my vet request</button>
+    <div class="err" id="gErr"></div>
+  </div>
+</div>
+
+<div id="app">
+  <header class="masthead">
+    <div class="eyebrow">Breedwise · Veterinary Relations</div>
+    <h1>Find a Vet for Your Breeding Program</h1>
+    <p>Tell us about your program and what you need from a veterinarian. Dr. David Mahoney and our team will help you find — and build a relationship with — a repro-friendly vet in your area.</p>
+  </header>
+  <div class="wrap" id="body"></div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+const SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+const FN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/log-submission';
+const FALLBACK_HASH='df4bee3d733d6da299f87552fcd5cfd20ee39f529a8d25bba5aeb60361a42caf'; // sha256("VETRELATIONS2026") — separate from the accelerator member code
+const sb=supabase.createClient(SB_URL,SB_KEY);
+let PASS_HASH=FALLBACK_HASH, MEMBER_CODE='';
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+
+$('#enter').addEventListener('click',tryCode);
+$('#code').addEventListener('keydown',e=>{if(e.key==='Enter')tryCode();});
+async function tryCode(){
+  const raw=$('#code').value.trim().toUpperCase();
+  if(await sha256(raw)===PASS_HASH){ MEMBER_CODE=raw; try{localStorage.setItem('bw-vet-code',raw);}catch(e){} openApp(); }
+  else { $('#gErr').textContent='That passcode did not match. Check your member training for the current code.'; $('#code').value=''; $('#code').focus(); }
+}
+function openApp(){ $('#gate').classList.add('hide'); $('#app').classList.add('on'); renderForm(); }
+
+const SCOPE=['Single dog','Planned litter','Active breeding program'];
+const HAS_VET=['No vet yet','Yes — a general vet, but not repro-savvy',"Yes — but I've outgrown them",'Yes — good vet, but I need backup or more repro help'];
+const NEEDS=['Progesterone timing / ovulation testing','Artificial insemination (fresh / chilled / frozen)','Semen collection & analysis','Ultrasound / pregnancy confirmation','C-sections','Whelping support','Neonatal / pediatric care','Health testing & certifications (OFA, etc.)','Reproductive surgery','General breeding guidance'];
+const TRAVEL=['Within 30 minutes','Within 1 hour','Within 2 hours',"I'll travel for repro procedures",'Telemedicine is fine for guidance'];
+
+const A={ name:'', email:'', location:'', breed:'', scope:null, has_vet:null, vet_describe:'',
+  needs:[], needs_other:'', gap:'', travel:null, timeline:'', specifics:'', outcome:'', anything:'' };
+
+const single=(g,v)=>`<div class="opt" data-single="${g}" data-v="${esc(v)}"><span class="box"></span><span>${esc(v)}</span></div>`;
+const multi=(g,v)=>`<div class="opt multi" data-multi="${g}" data-v="${esc(v)}"><span class="box"></span><span>${esc(v)}</span></div>`;
+
+function renderForm(){
+  $('#body').innerHTML=`
+  <div class="note"><b>How this works:</b> we'll help you identify, reach out to, and build a working relationship with a veterinarian who understands breeding. The more specific you are about your location and needs, the better the match.</div>
+
+  <div class="section-label">About you & your program</div>
+  <div class="q" id="w_name">
+    <div class="label">Your details <span class="req">*</span></div>
+    <input type="text" id="f_name" placeholder="Your name">
+    <div class="two" style="margin-top:12px">
+      <div><label class="fld">Email <span class="opt2">· optional</span></label><input type="email" id="f_email" placeholder="you@email.com"></div>
+      <div><label class="fld">Breed(s) <span class="req">*</span></label><input type="text" id="f_breed" placeholder="What you raise"></div>
+    </div>
+    <div style="margin-top:12px"><label class="fld">Your location <span class="req">*</span> <span class="opt2">· city + state / region — so we can find someone near you</span></label><input type="text" id="f_location" placeholder="e.g. Columbus, OH"></div>
+  </div>
+
+  <div class="q" id="w_scope">
+    <div class="label">What's the scope of your program right now?</div>
+    <div class="opts">${SCOPE.map(s=>single('scope',s)).join('')}</div>
+  </div>
+
+  <div class="section-label">Your current vet situation</div>
+  <div class="q" id="w_hasvet">
+    <div class="label">Do you have a veterinarian now? <span class="req">*</span></div>
+    <div class="opts">${HAS_VET.map(v=>single('has_vet',v)).join('')}</div>
+    <div class="reveal hide" id="vetReveal"><div class="mini-label">Tell us about your current vet situation</div><textarea id="f_vet_describe" rows="3" placeholder="Who you see now, what works, what doesn't…"></textarea></div>
+  </div>
+
+  <div class="q" id="w_needs">
+    <div class="label">What do you need a veterinarian to help with?</div>
+    <div class="sub">Check all that apply</div>
+    <div class="opts">${NEEDS.map(n=>multi('needs',n)).join('')}<div class="opt multi" data-multi="needs" data-v="__other"><span class="box"></span><span>Other</span></div></div>
+    <div class="other-wrap hide" id="needsOtherWrap"><input type="text" id="f_needs_other" placeholder="Something else you need…"></div>
+  </div>
+
+  <div class="q" id="w_gap">
+    <div class="label">What's been the gap or frustration with vets so far?</div>
+    <div class="sub">What are you struggling to get, or why isn't your current setup working?</div>
+    <textarea id="f_gap" rows="3" placeholder="e.g. no one nearby does frozen AI, my vet won't do repro, long waits for C-sections…"></textarea>
+  </div>
+
+  <div class="section-label">Logistics</div>
+  <div class="q" id="w_travel">
+    <div class="label">How far are you willing to travel for the right vet?</div>
+    <div class="opts">${TRAVEL.map(t=>single('travel',t)).join('')}</div>
+  </div>
+
+  <div class="q" id="w_timeline">
+    <div class="label">Is there a breeding or whelp coming up that's driving this?</div>
+    <input type="text" id="f_timeline" placeholder="e.g. planning to breed next heat (~Nov), or just building my bench">
+  </div>
+
+  <div class="q" id="w_specifics">
+    <div class="label">Anything a vet must be able to handle for you?</div>
+    <div class="sub">Breed-specific needs, procedures, equipment, etc.</div>
+    <input type="text" id="f_specifics" placeholder="e.g. brachycephalic C-sections, frozen semen storage…">
+  </div>
+
+  <div class="section-label">What a great match looks like</div>
+  <div class="q" id="w_outcome">
+    <div class="label">If we find you the right vet, what does that make possible?</div>
+    <textarea id="f_outcome" rows="3" placeholder="What changes for your program with the right vet in your corner?"></textarea>
+  </div>
+
+  <div class="q" id="w_anything">
+    <div class="label">Anything else we should know?</div>
+    <div class="sub">Optional</div>
+    <textarea id="f_anything" rows="2"></textarea>
+  </div>
+
+  <button class="btn" id="submit">Submit vet request</button>
+  <div class="err" id="err"></div>
+  <div class="priv">Your answers go to the Breedwise team and Dr. David Mahoney to help match you with a veterinarian.</div>`;
+
+  document.querySelectorAll('[data-single]').forEach(el=>el.addEventListener('click',()=>{
+    const g=el.dataset.single, v=el.dataset.v;
+    document.querySelectorAll(`[data-single="${g}"]`).forEach(x=>x.classList.remove('on')); el.classList.add('on'); A[g]=v;
+    if(g==='has_vet') $('#vetReveal').classList.toggle('hide', v==='No vet yet');
+  }));
+  document.querySelectorAll('[data-multi]').forEach(el=>el.addEventListener('click',()=>{
+    el.classList.toggle('on'); const g=el.dataset.multi, v=el.dataset.v, on=el.classList.contains('on');
+    if(v==='__other'){ $('#needsOtherWrap').classList.toggle('hide',!on); if(!on) $('#f_needs_other').value=''; return; }
+    A[g]=A[g].filter(x=>x!==v); if(on) A[g].push(v);
+  }));
+  $('#submit').addEventListener('click',submit);
+}
+function err(m){ const e=$('#err'); if(e) e.textContent=m; }
+function need(id,msg){ const w=$('#'+id); if(w) w.scrollIntoView({behavior:'smooth',block:'center'}); err(msg); }
+
+async function submit(){
+  A.name=$('#f_name').value.trim(); A.email=$('#f_email').value.trim();
+  A.location=$('#f_location').value.trim(); A.breed=$('#f_breed').value.trim();
+  A.vet_describe=($('#f_vet_describe')&&$('#f_vet_describe').value.trim())||'';
+  A.needs_other=($('#f_needs_other')&&$('#f_needs_other').value.trim())||'';
+  A.gap=$('#f_gap').value.trim(); A.timeline=$('#f_timeline').value.trim();
+  A.specifics=$('#f_specifics').value.trim(); A.outcome=$('#f_outcome').value.trim(); A.anything=$('#f_anything').value.trim();
+
+  if(!A.name){ return need('w_name','Please enter your name.'); }
+  if(!A.breed){ return need('w_name','Please enter your breed(s).'); }
+  if(!A.location){ return need('w_name','Please enter your location so we can find someone near you.'); }
+  if(!A.has_vet){ return need('w_hasvet','Please tell us your current vet situation.'); }
+
+  const needs=A.needs.slice(); if(A.needs_other) needs.push('Other: '+A.needs_other);
+  const btn=$('#submit'); btn.disabled=true; btn.textContent='Sending…'; err('');
+  const payload={
+    passcode:MEMBER_CODE, tool:'vet-relations', tool_label:'Veterinary Relations',
+    member_name:A.name, member_email:A.email||null,
+    summary:`${A.location} · ${A.breed} — ${A.has_vet}`,
+    meta:{ location:A.location, breed:A.breed, has_vet:A.has_vet, travel:A.travel||null, scope:A.scope||null },
+    inputs:{ name:A.name, email:A.email||null, location:A.location, breed:A.breed, scope:A.scope,
+      has_vet:A.has_vet, vet_describe:A.vet_describe, needs:needs, gap:A.gap,
+      travel:A.travel, timeline:A.timeline, specifics:A.specifics, outcome:A.outcome, anything:A.anything },
+  };
+  try{
+    const r=await fetch(FN,{method:'POST',headers:{'content-type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify(payload)});
+    const d=await r.json();
+    if(!r.ok||d.error) throw new Error(d.error||('Error '+r.status));
+    done();
+  }catch(e){ btn.disabled=false; btn.textContent='Submit vet request'; err('Could not send: '+e.message+' — please try again.'); }
+}
+function done(){
+  $('#body').innerHTML=`<div class="done"><div class="mk">🩺</div><h2>Request received</h2><p>Thank you — your vet request is in. Dr. Mahoney and our team will work on matching you with a veterinarian who fits your program and your area.</p></div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+(async function(){
+  try{ const {data}=await sb.from('access_config').select('passcode_hash').eq('key','vet').maybeSingle(); if(data&&data.passcode_hash) PASS_HASH=data.passcode_hash; }catch(e){}
+  let saved=''; try{ saved=localStorage.getItem('bw-vet-code')||''; }catch(e){}
+  if(saved && await sha256(saved)===PASS_HASH){ MEMBER_CODE=saved; openApp(); } else $('#code').focus();
+})();
+</script>

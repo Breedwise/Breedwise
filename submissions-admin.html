@@ -107,7 +107,7 @@ const SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
 const SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
 const sb=supabase.createClient(SB_URL,SB_KEY);
 const STATUSES=['New','Reviewed','Delivered','Follow-up'];
-const OWNERS=['Unassigned','Austin','Jennifer','Madison','Yasmin','Derek','Jake','Regina','Angela Hughes','Dr. Fontaine'];
+const OWNERS=['Unassigned','Austin','Jennifer','Madison','Yasmin','Derek','Jake','Regina','Angela Hughes','Dr. Fontaine','Dr. Mahoney'];
 const usd=n=>'$'+Number(n||0).toLocaleString('en-US');
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const dcls=s=>'d-'+String(s||'New').replace('-','');
@@ -341,12 +341,29 @@ function renderReproCoaching(r){
     <div class="block"><h3>Success in 3 months</h3><p>${esc(i.success_in_3_months||'')}</p></div>
     ${t('Wants to walk away able to',i.walk_away_able_to)}`;
 }
+function renderVetRelations(r){
+  const i=r.inputs||{}, m=r.meta||{};
+  const t=(lbl,v)=> v&&String(v).trim()?`<div class="block"><h3>${lbl}</h3><p>${esc(v)}</p></div>`:'';
+  const kv=(l,v)=> v&&String(v).trim()?`<p style="margin-top:4px"><b style="color:var(--ink)">${l}:</b> ${esc(v)}</p>`:'';
+  const needs=(i.needs&&i.needs.length)?`<div class="block"><h3>Needs a vet for</h3><ul class="li">${i.needs.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:'';
+  return `
+    <div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--del)">Veterinary relations · brief for Dr. Mahoney</div>
+      <div class="big" style="font-size:19px">${esc(i.location||m.location||'')}</div>
+      <p style="color:var(--mid);font-size:12.5px;margin-top:6px">${esc(i.breed||m.breed||'')}${i.scope?' · '+esc(i.scope):''}${i.travel?' · travels: '+esc(i.travel):''}</p></div>
+    <div class="block"><h3>Current vet situation</h3><p>${esc(i.has_vet||'')}</p>${i.vet_describe?`<p style="margin-top:6px">${esc(i.vet_describe)}</p>`:''}</div>
+    ${needs}
+    ${t('Gap / frustration so far',i.gap)}
+    <div class="block"><h3>Logistics</h3>${kv('Location',i.location)}${kv('Willing to travel',i.travel)}${kv('Timeline',i.timeline)}${kv('Must handle',i.specifics)}</div>
+    ${t('What the right match makes possible',i.outcome)}
+    ${t('Anything else',i.anything)}`;
+}
 function renderBody(r){
   if(r.tool==='niche-blueprint'&&r.result) return renderBlueprint(r.result,r.inputs||{});
   if(r.tool==='value-architect'&&r.result) return renderValueArchitect(r.result,r.inputs||{});
   if(r.tool==='feedback') return renderFeedback(r);
   if(r.tool==='genetics-consult') return renderGeneticsConsult(r);
   if(r.tool==='repro-coaching') return renderReproCoaching(r);
+  if(r.tool==='vet-relations') return renderVetRelations(r);
   return renderGeneric(r);
 }
 function renderGeneric(r){
