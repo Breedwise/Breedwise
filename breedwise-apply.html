@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BreedWise Academy — Application</title>
+<meta name="description" content="Apply for BreedWise Academy — for established breeders ready to build the business and veterinary systems behind a professional, profitable breeding program.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0b0a07;--bg2:#100e0a;--card:#15120c;--line:rgba(217,185,104,.16);--line2:rgba(255,255,255,.08);
+  --gold:#d9b968;--gold2:#c9a24b;--gold-deep:#a67c2e;--cream:#f3ead2;--muted:#a9a08a;--mute2:#7c745f;
+  --head:'Playfair Display',Georgia,serif;--body:'Inter',-apple-system,sans-serif;--r:12px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--cream);font-family:var(--body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+a{color:var(--gold)}
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);border:1px solid var(--line);border-radius:50px;padding:7px 15px;background:rgba(217,185,104,.05)}
+.pill .d{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
+.eyebrow{font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600}
+h1,h2,h3{font-family:var(--head);font-weight:600;line-height:1.14}
+.section{padding:64px 0;position:relative}
+.section-t{font-size:clamp(24px,3.4vw,34px);text-align:center;margin-bottom:8px}
+.section-s{text-align:center;color:var(--muted);max-width:640px;margin:0 auto 40px;font-size:14.5px}
+
+/* nav */
+nav{position:sticky;top:0;z-index:40;background:rgba(11,10,7,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line2)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
+.brand{font-family:var(--head);font-weight:700;font-size:19px;color:var(--gold);letter-spacing:.02em}
+
+/* hero */
+.hero{position:relative;overflow:hidden;text-align:center;padding:76px 0 40px}
+.hero::before{content:"";position:absolute;top:-160px;left:50%;transform:translateX(-50%);width:900px;height:520px;background:radial-gradient(closest-side,rgba(217,185,104,.16),transparent 70%);pointer-events:none}
+.hero .inner{position:relative}
+.hero h1{font-size:clamp(32px,6vw,60px);margin:26px auto 18px;max-width:14ch}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero p{color:var(--muted);font-size:clamp(15px,2vw,18px);max-width:60ch;margin:0 auto}
+.hr{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:8px 0}
+
+/* know */
+.know{max-width:760px;margin:0 auto;text-align:center}
+.know p{font-size:16.5px;color:#e6dcc0;margin-bottom:18px}
+.know .lead{font-family:var(--head);font-size:21px;font-style:italic;color:var(--cream)}
+
+/* results grid */
+.disc{font-size:12px;color:var(--mute2);text-align:center;margin-bottom:26px;font-style:italic}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.grid{grid-template-columns:1fr}}
+.rc{background:var(--card);border:1px solid var(--line2);border-radius:11px;padding:16px 16px 15px;transition:.18s}
+.rc:hover{border-color:var(--line);transform:translateY(-2px)}
+.rc .nm{font-weight:600;font-size:14px;color:var(--cream)}
+.rc .mt{font-size:11.5px;color:var(--mute2);margin-top:2px}
+.rc .rz{margin-top:12px;padding-top:11px;border-top:1px solid var(--line2);font-size:13px;color:var(--gold);font-weight:600}
+
+/* provide */
+.prov{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+@media(max-width:900px){.prov{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.prov{grid-template-columns:1fr}}
+.pc{background:linear-gradient(180deg,rgba(217,185,104,.06),rgba(0,0,0,.14));border:1px solid var(--line);border-radius:12px;padding:22px 18px;text-align:center}
+.pc .ic{width:46px;height:46px;margin:0 auto 14px;border:1px solid var(--gold-deep);border-radius:11px;display:flex;align-items:center;justify-content:center}
+.pc .ic svg{width:24px;height:24px;stroke:var(--gold);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.pc h3{font-size:15px;color:var(--cream);font-family:var(--body);font-weight:600;line-height:1.3}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:0 auto}
+@media(max-width:720px){.steps{grid-template-columns:1fr}}
+.step{background:var(--card);border:1px solid var(--line2);border-radius:12px;padding:24px}
+.step .no{font-family:var(--head);font-style:italic;font-size:30px;color:var(--gold);opacity:.85}
+.step h3{font-size:17px;font-family:var(--body);font-weight:600;color:var(--cream);margin:8px 0 6px}
+.step p{font-size:13.5px;color:var(--muted)}
+
+/* form */
+.formsec{background:var(--bg2);border-top:1px solid var(--line2)}
+.note{font-size:13px;color:var(--muted);text-align:center;max-width:60ch;margin:0 auto 28px}
+.form{max-width:680px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.f{margin-bottom:16px;grid-column:1 / -1}
+.f.half{grid-column:auto}
+.submit,.ferr{grid-column:1 / -1}
+@media(max-width:560px){.f.half{grid-column:1 / -1}}
+.f label{display:block;font-size:12.5px;font-weight:600;margin-bottom:6px;color:var(--cream)}
+.f label .req{color:var(--gold-deep)}
+.f input,.f textarea,.f select{width:100%;background:#0c0b08;border:1px solid var(--line);border-radius:9px;color:var(--cream);font-family:var(--body);font-size:14.5px;padding:12px 14px;transition:.15s}
+.f input::placeholder,.f textarea::placeholder{color:#5f5946}
+.f input:focus,.f textarea:focus,.f select:focus{outline:none;border-color:var(--gold)}
+.f textarea{min-height:96px;resize:vertical}
+.f select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a67c2e' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.submit{width:100%;margin-top:10px;font-family:var(--body);font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:16px;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(135deg,#efdca6,#dcb96a 48%,#c69f4f);color:#2b2109;box-shadow:0 14px 34px -12px rgba(217,185,104,.5);transition:.15s}
+.submit:hover{filter:brightness(1.04)}
+.submit:disabled{opacity:.6;cursor:default}
+.ferr{color:#e0a4a4;font-size:13px;text-align:center;min-height:18px;margin-top:10px}
+
+/* done */
+.done{position:fixed;inset:0;z-index:100;background:rgba(8,7,5,.9);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:24px}
+.done.on{display:flex}
+.done-card{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:16px;padding:44px 40px;max-width:460px;text-align:center}
+.done-card h3{font-size:27px;color:var(--gold);margin-bottom:12px}
+.done-card p{color:var(--muted);font-size:14.5px}
+
+footer{border-top:1px solid var(--line2);padding:34px 0;text-align:center;color:var(--mute2);font-size:12.5px}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <span class="brand">BreedWise</span>
+  <span class="pill"><span class="d"></span>Application Only</span>
+</div></nav>
+
+<!-- HERO -->
+<header class="hero"><div class="wrap inner">
+  <span class="pill"><span class="d"></span>Invite / Application Only</span>
+  <h1>The BreedWise <em>Academy</em> Application</h1>
+  <p>For established breeders ready to build the business and veterinary systems behind a professional, profitable breeding program — with our team and community guiding you.</p>
+</div></header>
+
+<!-- WHAT YOU NEED TO KNOW -->
+<section class="section"><div class="wrap know">
+  <span class="eyebrow">What you need to know</span>
+  <div style="height:22px"></div>
+  <p>BreedWise was built to give serious breeders the business and veterinary systems most programs were never built with — pricing, demand, buyer process, and the health-first standards behind them. It's led by founder <b style="color:var(--cream)">Austin Shanks</b> and reproduction specialist <b style="color:var(--cream)">Dr. Emmanuel Fontaine</b>.</p>
+  <p>Our members have raised their pricing, built qualified waitlists, and started running their programs like real businesses — several moving their minimum puppy price from roughly $2,500 toward $5,000+, and others selling at their program's highest price ever within weeks of joining.</p>
+  <p class="lead">Now we're looking for a few more established breeders — already producing litters — who are ready to do the same.</p>
+</div></section>
+
+<div class="wrap"><div class="hr"></div></div>
+
+<!-- RESULTS -->
+<section class="section"><div class="wrap">
+  <h2 class="section-t">Results from breeders we've worked with</h2>
+  <p class="disc">Results shown are not typical. Individual outcomes are not guaranteed.</p>
+  <div class="grid" id="grid"></div>
+</div></section>
+
+<!-- WHAT YOU GET -->
+<section class="section" style="background:var(--bg2);border-top:1px solid var(--line2);border-bottom:1px solid var(--line2)"><div class="wrap">
+  <h2 class="section-t">What you get inside the Academy</h2>
+  <div class="section-s">The full system, the tools, and the people to build a program that runs like a professional business.</div>
+  <div class="prov">
+    <div class="pc"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 5h16v12H4z"/><path d="M4 9h16M8 17v3M16 17v3M7 20h10"/></svg></div><h3>The Full BreedWise Curriculum</h3></div>
+    <div class="pc"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-4 3v-3H4Z"/><path d="M8 10h8M8 13h5"/></svg></div><h3>Weekly Live Coaching Calls</h3></div>
+    <div class="pc"><div class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 3v4M16 3v4M4 10h16M8 14h4"/></svg></div><h3>The Member Toolkit &amp; Templates</h3></div>
+    <div class="pc"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0M16 6a3 3 0 0 1 0 6M21 20a6 6 0 0 0-4-5.6"/></svg></div><h3>A Private Room of Serious Breeders</h3></div>
+    <div class="pc"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6Z"/><path d="M9 12l2 2 4-4"/></svg></div><h3>BreedWise Certification</h3></div>
+  </div>
+</div></section>
+
+<!-- HOW IT WORKS -->
+<section class="section"><div class="wrap">
+  <h2 class="section-t">How the application works</h2>
+  <div class="section-s">We personally review every application and only move forward with breeders who are the right fit.</div>
+  <div class="steps">
+    <div class="step"><div class="no">1</div><h3>Fill out the form below</h3><p>Tell us about your program and where you want to take it. Every field is required.</p></div>
+    <div class="step"><div class="no">2</div><h3>We reach out</h3><p>If it looks like a strong fit, we'll contact you to schedule a call and learn more.</p></div>
+    <div class="step"><div class="no">3</div><h3>You get to work</h3><p>If approved, you get the curriculum, the tools, the coaching, and the community to build a more profitable, professional program.</p></div>
+  </div>
+</div></section>
+
+<!-- APPLY -->
+<section class="section formsec"><div class="wrap">
+  <h2 class="section-t">Apply here</h2>
+  <p class="note">Every field is required. We personally review each submission and only move forward with applicants who meet our criteria. Please complete your application carefully and accurately.</p>
+  <form class="form" id="app" autocomplete="on">
+    <div class="f half"><label>Full name <span class="req">*</span></label><input name="name" placeholder="First &amp; last" required></div>
+    <div class="f half"><label>Email <span class="req">*</span></label><input name="email" type="email" placeholder="you@email.com" required></div>
+    <div class="f half"><label>Phone / text number <span class="req">*</span></label><input name="phone" placeholder="(555) 123-4567" required></div>
+    <div class="f half"><label>Kennel / program name <span class="req">*</span></label><input name="kennel" placeholder="Your program's name" required></div>
+    <div class="f half"><label>Breed(s) you raise <span class="req">*</span></label><input name="breed" placeholder="e.g., Mini Bernedoodle, Boerboel" required></div>
+    <div class="f half"><label>Years breeding <span class="req">*</span></label><input name="years" placeholder="e.g., 6" required></div>
+    <div class="f half"><label>Website or main social <span class="req">*</span></label><input name="online" placeholder="URL or @handle" required></div>
+    <div class="f half"><label>Litters per year (approx) <span class="req">*</span></label><input name="litters" placeholder="e.g., 3" required></div>
+    <div class="f"><label>Where is your program right now, and what&rsquo;s your biggest challenge? <span class="req">*</span></label><textarea name="challenge" placeholder="Pricing, demand, buyers, systems, preparation — what&rsquo;s holding you back?" required></textarea></div>
+    <div class="f"><label>What do you want from the Academy? <span class="req">*</span></label><textarea name="goal" placeholder="What would a win look like 12 months from now?" required></textarea></div>
+    <div class="f"><label>This is a paid program. Are you ready to invest in building your program? <span class="req">*</span></label>
+      <select name="ready" required><option value="">Select…</option><option>Yes — I&rsquo;m ready to invest</option><option>I&rsquo;d like to learn more first</option></select></div>
+    <button type="submit" class="submit" id="submit">Submit my application</button>
+    <div class="ferr" id="ferr"></div>
+  </form>
+</div></section>
+
+<footer><div class="wrap">© <span id="yr"></span> BreedWise · Application reviewed personally by our team · <a href="terms.html">Terms</a> &nbsp;·&nbsp; <a href="privacy.html">Privacy</a></div></footer>
+
+<div class="done" id="done"><div class="done-card"><h3>Application received.</h3><p>Thank you — our team personally reviews every application. If it looks like a strong fit, we&rsquo;ll reach out to schedule a call. Keep an eye on your email and phone.</p></div></div>
+
+<script>
+const FN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/log-submission';
+const SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+document.getElementById('yr').textContent=new Date().getFullYear();
+
+// Real BreedWise member results (approved testimonials). Team: add more verified results here.
+const RESULTS=[
+  {nm:'Trina & Dion', mt:'Breeding 7+ years', rz:'Highest price in program history'},
+  {nm:'Jasmin Garcia', mt:'Breeding 7 years', rz:'~3× previous puppy pricing'},
+  {nm:'Michael Page', mt:'Breeding 13 years', rz:'“Would have saved me years”'},
+  {nm:'Austin Shanks', mt:'Founder · own program', rz:'$10,000+ average puppy price'},
+  {nm:'Multiple members', mt:'Pricing shift', rz:'$2,500 → $5,000+ minimum'},
+  {nm:'Jake Ayers', mt:'Breeder · North Carolina', rz:'Verified member result'},
+  {nm:'Michelle Cordova', mt:'Breeder · Utah', rz:'Verified member result'},
+  {nm:'Shaylee Griffin', mt:'Breeder · Utah', rz:'Verified member result'},
+  {nm:'Catherine Sjuve', mt:'Breeder · Florida', rz:'Verified member result'},
+  {nm:'Madison Gorruso', mt:'Academy member', rz:'Stronger sales & community'},
+  {nm:'Paul & Heather', mt:'Breeder · South Carolina', rz:'Verified member result'},
+  {nm:'Jose Duarte', mt:'Breeder · New Mexico', rz:'Verified member result'}
+];
+document.getElementById('grid').innerHTML=RESULTS.map(r=>
+  '<div class="rc"><div class="nm">'+esc(r.nm)+'</div><div class="mt">'+esc(r.mt)+'</div><div class="rz">'+esc(r.rz)+'</div></div>').join('');
+
+const form=document.getElementById('app'), btn=document.getElementById('submit'), ferr=document.getElementById('ferr');
+form.addEventListener('submit',async function(e){
+  e.preventDefault(); ferr.textContent='';
+  const d={}; new FormData(form).forEach((v,k)=>d[k]=String(v).trim());
+  const required=['name','email','phone','kennel','breed','years','online','litters','challenge','goal','ready'];
+  for(const k of required){ if(!d[k]){ ferr.textContent='Please complete every field.'; const el=form.querySelector('[name="'+k+'"]'); if(el)el.focus(); return; } }
+  btn.disabled=true; btn.textContent='Submitting…';
+  try{
+    const r=await fetch(FN,{method:'POST',headers:{'content-type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},
+      body:JSON.stringify({
+        tool:'academy-application', tool_label:'Academy Application',
+        member_name:d.name, member_email:d.email,
+        summary:d.kennel+' · '+d.breed,
+        meta:{breed:d.breed, years:d.years, litters:d.litters, phone:d.phone, online:d.online, ready:d.ready},
+        inputs:d
+      })});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok){ throw new Error(j.error||('Error '+r.status)); }
+    document.getElementById('done').classList.add('on');
+  }catch(err){
+    btn.disabled=false; btn.textContent='Submit my application';
+    ferr.textContent='Could not submit ('+(err.message||err)+'). Please try again, or email support@breedwise.io.';
+  }
+});
+</script>
+</body>
+</html>
