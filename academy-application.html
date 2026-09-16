@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Apply to BreedWise Academy | Build a More Profitable, Predictable Breeding Program</title>
-<meta name="description" content="BreedWise Academy combines proven business strategy, veterinary education, and personalized implementation to help serious breeders build stronger demand, better economics, and healthier systems. By application.">
+<title>Apply to BreedWise Academy | Build a Waitlisted, Premium Breeding Program</title>
+<meta name="description" content="For established ethical breeders: fill your waitlist, charge what your program is worth, produce healthier litters, and stop leaving money on the table — with a clear 12-month plan and a veterinary-backed team. Apply to see if you qualify.">
 <!-- Meta Pixel -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
@@ -52,7 +52,7 @@ fbq('init','1337266034525554');fbq('track','PageView');
   .sub{font-size:clamp(15px,2.3vw,18.5px);color:var(--mid);font-weight:300;max-width:42em;margin:20px auto 0}
   .sub b{color:var(--ink);font-weight:600}
   .hero .cta-wrap{margin-top:28px}
-  .triad{margin-top:18px;font-size:12.5px;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+  .triad{margin-top:18px;font-size:12.5px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;font-weight:600}
   .triad span{color:var(--muted);margin:0 6px}
 
   /* ── CTA ── */
@@ -63,6 +63,7 @@ fbq('init','1337266034525554');fbq('track','PageView');
   .cta:disabled{opacity:.7;cursor:default;transform:none}
   .cta.block{display:flex;width:100%;white-space:normal}
   .cta-wrap{text-align:center;margin:32px 0}
+  .cta-sub{font-size:12px;color:var(--muted);margin-top:12px}
 
   /* ── SECTION HEADS ── */
   .sec{margin:64px 0 0}
@@ -73,12 +74,33 @@ fbq('init','1337266034525554');fbq('track','PageView');
   .leadline{text-align:center;max-width:46em;margin:24px auto 0;font-size:16.5px;color:var(--ink);font-weight:600;line-height:1.5}
   .mutedlead{text-align:center;max-width:48em;margin:10px auto 0;color:var(--mid);font-weight:300;font-size:15px;line-height:1.65}
 
-  /* ── ROI LOSS LIST ── */
+  /* ── PROBLEM / ROI LOSS LIST ── */
   .roilist{max-width:640px;margin:0 auto;display:grid;gap:9px}
   .roilist li{list-style:none;position:relative;padding:13px 16px 13px 44px;background:var(--card);border:1px solid var(--line);border-radius:12px;font-size:14px;color:var(--mid);font-weight:300;line-height:1.5}
   .roilist li::before{content:"✕";position:absolute;left:17px;top:13px;color:var(--red);font-weight:700}
-  .prelist{text-align:center;max-width:44em;margin:0 auto 22px;color:var(--mid);font-weight:300;font-size:15px}
+  .prelist{text-align:center;max-width:46em;margin:0 auto 22px;color:var(--mid);font-weight:300;font-size:15.5px;line-height:1.6}
   .prelist b{color:var(--ink);font-weight:600}
+
+  /* ── PROOF STRIP ── */
+  .proofstrip{background:var(--band);border:1px solid var(--line);border-radius:16px;margin:0 auto;max-width:820px;padding:24px 20px;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center}
+  .proofstrip .cell + .cell{border-left:1px solid var(--line)}
+  .proofstrip .big{font-family:var(--display);font-size:26px;color:var(--gold);line-height:1}
+  .proofstrip .lbl{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.4}
+  @media(max-width:680px){.proofstrip{grid-template-columns:1fr}.proofstrip .cell + .cell{border-left:none;border-top:1px solid var(--line);padding-top:16px}}
+
+  /* ── 9:16 VIDEO TESTIMONIALS ── */
+  .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:720px;margin:26px auto 0}
+  @media(max-width:640px){.vgrid{grid-template-columns:1fr 1fr;max-width:420px}}
+  @media(max-width:400px){.vgrid{grid-template-columns:1fr;max-width:260px}}
+  .vcard{display:flex;flex-direction:column;gap:10px}
+  .vwrap{position:relative;width:100%;padding-top:177.78%;border-radius:14px;overflow:hidden;border:1px solid var(--gold-line);
+    background:radial-gradient(120% 120% at 50% 0%,rgba(205,174,114,.14),#0a0b0e 72%);box-shadow:0 20px 50px -24px rgba(0,0,0,.85)}
+  .vwrap video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .vcap{text-align:center}
+  .vcap .n{font-family:var(--body);font-weight:700;color:var(--gold);font-size:14px}
+  .vcap .o{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.4}
+  .disc-mini{text-align:center;color:var(--muted);font-size:11.5px;margin-top:16px}
 
   /* ── ENGINES ── */
   .engines{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -156,19 +178,6 @@ fbq('init','1337266034525554');fbq('track','PageView');
   .vetteam .lbl{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
   .vetteam .names{font-family:var(--body);font-weight:600;color:var(--gold);font-size:15px;margin-top:8px}
 
-  /* ── 9:16 VIDEO TESTIMONIALS ── */
-  .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:720px;margin:0 auto}
-  @media(max-width:640px){.vgrid{grid-template-columns:1fr 1fr;max-width:420px}}
-  @media(max-width:400px){.vgrid{grid-template-columns:1fr;max-width:260px}}
-  .vcard{display:flex;flex-direction:column;gap:10px}
-  .vwrap{position:relative;width:100%;padding-top:177.78%;border-radius:14px;overflow:hidden;border:1px solid var(--gold-line);
-    background:radial-gradient(120% 120% at 50% 0%,rgba(205,174,114,.14),#0a0b0e 72%);box-shadow:0 20px 50px -24px rgba(0,0,0,.85)}
-  .vwrap video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .vcap{text-align:center}
-  .vcap .n{font-family:var(--body);font-weight:700;color:var(--gold);font-size:14px}
-  .vcap .o{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.4}
-  .disc-mini{text-align:center;color:var(--muted);font-size:11.5px;margin-top:16px}
-
   /* ── INVESTED CHIPS ── */
   .invested{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;max-width:660px;margin:0 auto 22px}
   .invested .c{font-size:13px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:8px 15px}
@@ -192,7 +201,7 @@ fbq('init','1337266034525554');fbq('track','PageView');
   .clean span{display:inline-flex;align-items:center;gap:7px}
   .clean svg{width:14px;height:14px;color:var(--gold)}
 
-  /* ── WHO IT'S FOR ── */
+  /* ── WHO GETS ACCEPTED ── */
   .fortwo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   @media(max-width:640px){.fortwo{grid-template-columns:1fr}}
   .fbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 22px 20px}
@@ -203,6 +212,7 @@ fbq('init','1337266034525554');fbq('track','PageView');
   .fbox li{position:relative;padding-left:26px;font-size:13.5px;color:var(--mid);font-weight:300;line-height:1.5}
   .fbox li::before{position:absolute;left:0;top:0;font-size:14px;font-weight:700}
   .fbox.yes li::before{content:"✓";color:var(--gold)} .fbox.no li::before{content:"✕";color:var(--red);opacity:.75}
+  .downnote{max-width:48em;margin:22px auto 0;text-align:center;color:var(--muted);font-size:13px;font-weight:300;line-height:1.6}
 
   /* ── APPLICATION FORM ── */
   .apply{background:linear-gradient(180deg,var(--card),var(--card-2));border:1px solid var(--gold-line);border-radius:20px;
@@ -225,15 +235,33 @@ fbq('init','1337266034525554');fbq('track','PageView');
   .err{color:var(--red);font-size:13px;text-align:center;margin-top:12px;min-height:1px}
   .consent{color:var(--muted);font-size:11px;line-height:1.5;text-align:center;margin-top:14px}
 
-  /* ── SUCCESS OVERLAY ── */
-  .ok{position:fixed;inset:0;z-index:80;background:rgba(8,8,8,.9);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:24px}
-  .ok.show{display:flex}
-  .ok-card{max-width:460px;text-align:center;background:linear-gradient(180deg,var(--card),var(--card-2));border:1px solid var(--gold-line);border-radius:20px;padding:38px 30px;box-shadow:0 40px 100px -40px #000}
-  .ok-badge{width:66px;height:66px;margin:0 auto 18px;border-radius:50%;background:var(--gold-soft);border:1px solid var(--gold-line);display:flex;align-items:center;justify-content:center}
-  .ok-badge svg{width:32px;height:32px;color:var(--gold)}
-  .ok-card h3{font-family:var(--display);text-transform:uppercase;font-size:26px;margin-bottom:10px}
-  .ok-card p{color:var(--mid);font-weight:300;font-size:14.5px;line-height:1.65}
-  .ok-card p b{color:var(--ink);font-weight:600}
+  /* ── SUCCESS EXPERIENCE (show-rate) ── */
+  .ok{position:fixed;inset:0;z-index:80;background:rgba(8,8,8,.94);backdrop-filter:blur(8px);display:none;overflow-y:auto;padding:32px 20px}
+  .ok.show{display:block}
+  .ok-card{max-width:640px;margin:0 auto;background:linear-gradient(180deg,var(--card),var(--card-2));border:1px solid var(--gold-line);border-radius:20px;padding:36px 30px 34px;box-shadow:0 40px 100px -40px #000}
+  .ok-badge{width:64px;height:64px;margin:0 auto 18px;border-radius:50%;background:var(--gold-soft);border:1px solid var(--gold-line);display:flex;align-items:center;justify-content:center}
+  .ok-badge svg{width:31px;height:31px;color:var(--gold)}
+  .ok-card h3{font-family:var(--display);text-transform:uppercase;font-size:28px;text-align:center;margin-bottom:12px}
+  .ok-lead{color:var(--mid);font-weight:300;font-size:15px;line-height:1.65;text-align:center;max-width:36em;margin:0 auto}
+  .ok-lead b{color:var(--ink);font-weight:600}
+  .ok-callout{display:flex;align-items:center;gap:10px;justify-content:center;margin:18px auto 0;max-width:34em;background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:12px;padding:12px 16px;color:var(--gold);font-size:13px;font-weight:600;text-align:center;line-height:1.4}
+  .ok-callout svg{width:18px;height:18px;flex:none}
+  .ok-block{margin-top:24px;border-top:1px solid var(--line);padding-top:24px}
+  .ok-block .k{font-family:var(--body);font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;text-align:center}
+  .ok-next{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:560px){.ok-next{grid-template-columns:1fr}}
+  .ok-next .n{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px 14px;text-align:center}
+  .ok-next .n .num{width:32px;height:32px;margin:0 auto 9px;border-radius:50%;background:var(--gold-soft);border:1px solid var(--gold-line);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:15px;color:var(--gold)}
+  .ok-next .n h4{font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:4px}
+  .ok-next .n p{font-size:11.5px;color:var(--muted);font-weight:300;line-height:1.45}
+  .ok-prep ul{list-style:none;display:grid;gap:9px;max-width:36em;margin:0 auto}
+  .ok-prep li{position:relative;padding-left:26px;font-size:13.5px;color:var(--mid);font-weight:300;line-height:1.5}
+  .ok-prep li::before{content:"✓";position:absolute;left:0;color:var(--gold);font-weight:700}
+  .ok-prep li b{color:var(--ink);font-weight:600}
+  .ok-case{background:var(--bg);border:1px solid var(--gold-line);border-radius:12px;padding:16px 18px;text-align:center;font-size:13.5px;color:var(--mid);font-weight:300;line-height:1.55;max-width:40em;margin:0 auto}
+  .ok-case b{color:var(--gold);font-weight:700}
+  .ok-vet{text-align:center;color:var(--muted);font-size:12px;margin-top:22px;line-height:1.6}
+  .ok-vet b{color:var(--gold)}
 
   /* ── VET BOUNDARY ── */
   .vetbound{max-width:680px;margin:0 auto;background:var(--card);border:1px solid var(--gold-line);border-radius:16px;padding:26px 26px}
@@ -276,19 +304,19 @@ fbq('init','1337266034525554');fbq('track','PageView');
 
   <main class="wrap">
 
-    <!-- ══════ HERO ══════ -->
+    <!-- ══════ HERO (OUTCOME / PROMISE) ══════ -->
     <section class="hero">
-      <span class="pill">BreedWise Academy · By Application</span>
-      <h1>Build a More Profitable, <span class="u">Predictable</span> Breeding Program.</h1>
-      <p class="sub">Combine proven business strategy, veterinary education, and personalized implementation to strengthen demand, improve your economics, make better breeding decisions, and reduce preventable risks and losses.</p>
-      <div class="cta-wrap"><button class="cta" data-scroll>Apply to BreedWise Academy →</button></div>
-      <div class="triad">Business Strategy <span>•</span> Veterinary Education <span>•</span> Personalized Implementation</div>
+      <span class="pill">For Established Ethical Breeders · By Application</span>
+      <h1>Build a Waitlisted, Premium Breeding Program — <span class="u">Without Compromising Your Ethics.</span></h1>
+      <p class="sub">BreedWise helps active, ethical breeders <b>fill their waitlist, charge what their program is truly worth, produce healthier litters, and stop leaving money on the table</b> — with a clear 12-month plan and a veterinary-backed team behind you.</p>
+      <div class="cta-wrap"><button class="cta" data-scroll>Apply to See If Your Program Qualifies →</button><div class="cta-sub">Free to apply · We personally review every application</div></div>
+      <div class="triad">Healthier Litters <span>•</span> Stronger Demand <span>•</span> Premium Pricing</div>
     </section>
 
-    <!-- ══════ MORE THAN ONE KIND OF ROI ══════ -->
+    <!-- ══════ PROBLEM ══════ -->
     <section class="sec">
-      <div class="sec-h"><div class="eyebrow">The real math</div><h2>Your Breeding Program Has More Than One Kind of ROI</h2></div>
-      <p class="prelist">You can lose profitability because puppies don't sell. But you can also lose profitability because&hellip;</p>
+      <div class="sec-h"><div class="eyebrow">The problem</div><h2>You're Doing the Hard Work. You're Still Underpaid For It.</h2></div>
+      <p class="prelist">Ethical breeders pour everything into their dogs — and still end up <b>underpriced, underbooked, and unsupported during the moments that matter most.</b> You can lose money because puppies don't sell. But you can also lose it because&hellip;</p>
       <ul class="roilist">
         <li>Your pricing doesn't reflect your true costs</li>
         <li>You don't have enough qualified buyers</li>
@@ -300,118 +328,99 @@ fbq('init','1337266034525554');fbq('track','PageView');
         <li>Poor records make patterns harder to identify</li>
         <li>Your program depends on you remembering everything</li>
       </ul>
-      <p class="leadline">A stronger breeding program improves both sides of that equation.</p>
+      <p class="leadline">A stronger program improves both sides of that equation — health and economics.</p>
     </section>
 
-    <!-- ══════ TWO ENGINES ══════ -->
+    <!-- ══════ PROOF (EARLY) ══════ -->
     <section class="sec">
-      <div class="sec-h"><div class="eyebrow">How it fits together</div><h2>Two Engines. One Breeding Program.</h2></div>
+      <div class="sec-h"><div class="eyebrow">Proof</div><h2>Breeders Are Already Doing It</h2></div>
+      <div class="proofstrip">
+        <div class="cell"><div class="big">$56,500</div><div class="lbl">from a single litter he &ldquo;couldn't sell&rdquo; — in 90 days</div></div>
+        <div class="cell"><div class="big" style="font-size:19px">Sold-Out Litters</div><div class="lbl">premium pricing &amp; full waitlists, without compromising ethics</div></div>
+        <div class="cell"><div class="big" style="font-size:19px">Vet-Backed</div><div class="lbl">Dr. Fontaine · Dr. Hughes · Dr. Mahoney</div></div>
+      </div>
+      <div class="vgrid">
+        <div class="vcard">
+          <div class="vwrap"><video controls playsinline preload="none" poster="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a2e0412e650055aa22bc975.png"><source src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a2aa063c53e51acc07b32d4.mov"></video></div>
+          <div class="vcap"><div class="n">Shaylee</div><div class="o">New breeder to 100K followers &amp; premium pricing in under 2 years</div></div>
+        </div>
+        <div class="vcard">
+          <div class="vwrap"><video controls playsinline preload="none" poster="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a2e0412e650055aa22bc971.png"><source src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/68bec3fbdd1b2c3d47e6172e.mov"></video></div>
+          <div class="vcap"><div class="n">Jake</div><div class="o">Sold-out litter &amp; $50K in 90 days with a premium waitlist</div></div>
+        </div>
+        <div class="vcard">
+          <div class="vwrap"><video controls playsinline preload="none" poster="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a532218c8fd689c35dd506e.png"><source src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a531b0a9c9b37b5fd9839aa.mov"></video></div>
+          <div class="vcap"><div class="n">Regina</div><div class="o">First litter fully booked before it hit the ground at $5K a puppy</div></div>
+        </div>
+      </div>
+      <div class="disc-mini">Results shown are documented member outcomes, are not typical, and are not a guarantee of your results.</div>
+      <div class="cta-wrap"><button class="cta" data-scroll>Apply to See If Your Program Qualifies →</button></div>
+    </section>
+
+    <!-- ══════ MECHANISM (reason to believe) ══════ -->
+    <section class="sec">
+      <div class="sec-h"><div class="eyebrow">How we do it</div><h2>Two Engines. One Breeding Program.</h2><p>The reason it works: we improve your <b>breeding</b> and your <b>business</b> as one connected system — with veterinary science as the foundation, not the sales pitch.</p></div>
       <div class="engines">
         <div class="engine">
           <div class="etag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5c-3 0-5 2-5 5 0 4 4 7 7 9 3-2 7-5 7-9 0-3-2-5-5-5-1.3 0-2.3.6-3 1.4C11.3 5.6 10.3 5 9 5z"/></svg>The Breeding Engine</div>
           <div class="flow"><span class="chip">Preparation</span><span class="arw">→</span><span class="chip">Reproduction</span><span class="arw">→</span><span class="chip">Pregnancy</span><span class="arw">→</span><span class="chip">Whelping</span><span class="arw">→</span><span class="chip">Neonatal</span><span class="arw">→</span><span class="chip">Healthy Puppies</span></div>
-          <p>Learn what to monitor, what better preparation looks like, how to recognize concerning changes, how to keep better records, and when veterinary involvement may be needed.</p>
-          <p><b>The goal isn't to replace your veterinarian.</b> It's to help you become a more informed, prepared breeder who can work more effectively with your veterinary team and reduce avoidable risk.</p>
+          <p>Evidence-informed veterinary education so you know what to monitor, recognize concerning changes earlier, keep better records, and prepare with confidence.</p>
+          <p><b>Not to replace your veterinarian</b> — to make you a more prepared breeder who works better with your vet team and reduces avoidable risk.</p>
         </div>
         <div class="engine b">
           <div class="etag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 4-6"/></svg>The Business Engine</div>
           <div class="flow"><span class="chip">Positioning</span><span class="arw">→</span><span class="chip">Demand</span><span class="arw">→</span><span class="chip">Qualified Buyers</span><span class="arw">→</span><span class="chip">Sales</span><span class="arw">→</span><span class="chip">Margin</span><span class="arw">→</span><span class="chip">Reinvestment</span></div>
-          <p>Build the systems to generate qualified demand, improve the buyer journey, price sustainably, understand your true litter economics, and know where your money is actually going.</p>
-          <p><b>Selling every puppy doesn't automatically mean you have a profitable breeding program.</b></p>
+          <p>Positioning, demand generation, a better buyer journey, sustainable pricing, and real litter economics — so you know exactly what your program makes.</p>
+          <p><b>Selling every puppy doesn't automatically mean you have a profitable program.</b></p>
         </div>
-      </div>
-    </section>
-
-    <!-- ══════ TWO ENGINES FUND EACH OTHER ══════ -->
-    <section class="sec">
-      <div class="sec-h"><div class="eyebrow">The signature idea</div><h2>The Two Engines Fund Each Other</h2></div>
-      <div class="cycle">
-        <div class="node g">Healthy Puppies</div><div class="arw">↓</div>
-        <div class="node">Strong Reputation</div><div class="arw">↓</div>
-        <div class="node">Qualified Demand</div><div class="arw">↓</div>
-        <div class="node">Sustainable Margins</div><div class="arw">↓</div>
-        <div class="node">Reinvestment</div><div class="arw">↓</div>
-        <div class="node g">Stronger Breeding Program</div>
-        <div class="loop">↻ &nbsp;And it compounds, litter after litter</div>
       </div>
       <div class="beliefbox">
-        <p>A financially healthy program gives you greater capacity to invest in health testing, veterinary care, reproductive planning, equipment, education, puppy development, and the standards you believe in.</p>
-        <div class="shift">Profit isn't the opposite of ethical breeding. <span class="u">Sustainable economics can help fund better breeding.</span></div>
+        <p>A financially healthy program gives you greater capacity to invest in health testing, veterinary care, reproductive planning, equipment, education, and the standards you believe in.</p>
+        <div class="shift">Profit isn't the opposite of ethical breeding. <span class="u">Sustainable economics fund better breeding.</span></div>
       </div>
     </section>
 
-    <!-- ══════ WHAT COULD BETTER SYSTEMS BE WORTH ══════ -->
+    <!-- ══════ THE 90-DAY LOOP ══════ -->
     <section class="sec">
-      <div class="sec-h"><div class="eyebrow">The ROI</div><h2>What Could Better Systems Be Worth?</h2><p>Imagine improving just one recurring constraint&hellip;</p></div>
-      <div class="roi2">
-        <div class="roicol">
-          <h3>📈 Business</h3>
-          <ul>
-            <li>A stronger pricing model</li>
-            <li>A better-qualified waitlist</li>
-            <li>Higher inquiry conversion</li>
-            <li>More predictable demand</li>
-            <li>Better cost tracking</li>
-            <li>Improved profit per litter</li>
-          </ul>
-        </div>
-        <div class="roicol">
-          <h3>🐾 Breeding</h3>
-          <ul>
-            <li>Better reproductive preparation</li>
-            <li>Better records &amp; trend tracking</li>
-            <li>Earlier recognition of concerning changes</li>
-            <li>Better preparation for whelping</li>
-            <li>More effective veterinary communication</li>
-            <li>Fewer avoidable mistakes &amp; preventable risks</li>
-          </ul>
-        </div>
-      </div>
-      <p class="leadline">Now multiply that improvement across every future litter.</p>
-      <p class="mutedlead">Academy isn't designed around giving you another pile of information. It's designed to help you identify and improve the systems that repeat across your breeding program.</p>
-    </section>
-
-    <!-- ══════ NOT ANOTHER COURSE (90-day cycle) ══════ -->
-    <section class="sec">
-      <div class="sec-h"><div class="eyebrow">How Academy works</div><h2>You're Not Buying Another Course. You're Building a Better Breeding Program.</h2><p>Every 90 days, we run the same simple loop against your real program:</p></div>
+      <div class="sec-h"><div class="eyebrow">How Academy works</div><h2>You're Not Buying a Course. You're Building a Program.</h2><p>Every 90 days we run the same loop against <b>your</b> real program — so improvements compound litter after litter, instead of piling up as unused information.</p></div>
       <div class="c90">
-        <div class="st"><div class="num">1</div><div class="k">Assess</div><p>Understand where your program currently stands.</p></div>
-        <div class="st"><div class="num">2</div><div class="k">Prioritize</div><p>Identify the constraints with the greatest potential impact.</p></div>
-        <div class="st"><div class="num">3</div><div class="k">Implement</div><p>Build the systems needed to improve them.</p></div>
-        <div class="st"><div class="num">4</div><div class="k">Measure</div><p>See what changed and what still needs attention.</p></div>
-        <div class="st"><div class="num">5</div><div class="k">Repeat</div><p>Choose the next priorities and keep improving.</p></div>
+        <div class="st"><div class="num">1</div><div class="k">Assess</div><p>Where your program stands right now.</p></div>
+        <div class="st"><div class="num">2</div><div class="k">Prioritize</div><p>The constraints with the biggest impact.</p></div>
+        <div class="st"><div class="num">3</div><div class="k">Implement</div><p>Build the systems to improve them.</p></div>
+        <div class="st"><div class="num">4</div><div class="k">Measure</div><p>See what changed and what's next.</p></div>
+        <div class="st"><div class="num">5</div><div class="k">Repeat</div><p>Choose the next priorities.</p></div>
       </div>
       <div class="c90flow">ASSESS → PRIORITIZE → IMPLEMENT → MEASURE → REPEAT ↻</div>
     </section>
 
     <!-- ══════ WHAT YOU'LL BUILD ══════ -->
     <section class="sec">
-      <div class="sec-h"><div class="eyebrow">The curriculum</div><h2>What You'll Build Inside BreedWise Academy</h2></div>
+      <div class="sec-h"><div class="eyebrow">What you'll build</div><h2>Systems Across Your Whole Program</h2></div>
       <div class="pillars">
         <div class="pil"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><rect x="7" y="11" width="3" height="5"/><rect x="12" y="8" width="3" height="8"/><rect x="17" y="13" width="3" height="3"/></svg></div><h3>Business &amp; Financial Systems</h3><p>Understand your numbers, litter economics, pricing, margins, and the financial health of your program.</p></div>
         <div class="pil"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l14-6v14L3 13zM3 11v2M17 8a3 3 0 0 1 0 8"/></svg></div><h3>Brand, Content &amp; Demand</h3><p>Build authority and qualified demand before you need homes for puppies.</p></div>
-        <div class="pil"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12l3 3 5-6"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg></div><h3>Sales &amp; Client Experience</h3><p>Create a repeatable process from first inquiry to qualified, committed puppy home.</p></div>
-        <div class="pil"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a4 4 0 0 0 8 0V3M8 21v-3a4 4 0 0 1 8 0v3M7 8h10M7 16h10"/></svg></div><h3>Breeding &amp; Reproduction</h3><p>Use evidence-informed veterinary education to make better-informed decisions around reproductive planning, preparation, breeding, and pregnancy.</p></div>
-        <div class="pil"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-7-9.5A3.7 3.7 0 0 1 12 8a3.7 3.7 0 0 1 7-.5C19 15.5 12 20 12 20Z"/></svg></div><h3>Whelping &amp; Puppy Health</h3><p>Improve preparation, monitoring, recordkeeping, recognition of concerning changes, and communication with your veterinary team.</p></div>
+        <div class="pil"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12l3 3 5-6"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg></div><h3>Sales &amp; Client Experience</h3><p>A repeatable process from first inquiry to qualified, committed puppy home.</p></div>
+        <div class="pil"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a4 4 0 0 0 8 0V3M8 21v-3a4 4 0 0 1 8 0v3M7 8h10M7 16h10"/></svg></div><h3>Breeding &amp; Reproduction</h3><p>Evidence-informed decisions around reproductive planning, preparation, breeding, and pregnancy.</p></div>
+        <div class="pil"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-7-9.5A3.7 3.7 0 0 1 12 8a3.7 3.7 0 0 1 7-.5C19 15.5 12 20 12 20Z"/></svg></div><h3>Whelping &amp; Puppy Health</h3><p>Better preparation, monitoring, recordkeeping, and communication with your vet team.</p></div>
         <div class="pil"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V23a2 2 0 0 1-4 0v-.2A1.7 1.7 0 0 0 7 21.3a1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 3.5 15H3a2 2 0 0 1 0-4h.2A1.7 1.7 0 0 0 4.7 8"/></svg></div><h3>Operations &amp; Systems</h3><p>Replace memory, scattered processes, and guesswork with repeatable systems.</p></div>
       </div>
     </section>
 
     <!-- ══════ SERVICE LAYER ══════ -->
     <section class="sec">
-      <div class="sec-h"><div class="eyebrow">The difference</div><h2>And You Won't Implement It Alone.</h2></div>
+      <div class="sec-h"><div class="eyebrow">And you won't do it alone</div><h2>Personalized Implementation</h2></div>
       <div class="svc">
         <div class="svcitem"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg></div><h3>Personalized 90-Day Plan</h3><p>Know exactly what you're working on and why.</p></div>
-        <div class="svcitem"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg></div><h3>5 Live Calls Each Week</h3><p>Business, sales, social media, breeding/reproduction, and implementation support.</p></div>
-        <div class="svcitem"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg></div><h3>Dedicated Member Success</h3><p>Someone helping keep your priorities and progress moving.</p></div>
-        <div class="svcitem"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg></div><h3>Expert Feedback</h3><p>Get feedback from the BreedWise team while you implement.</p></div>
-        <div class="svcitem"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 7l3 3-8 8H6v-3l8-8zM13 4l4 4"/></svg></div><h3>Proven Tools &amp; Templates</h3><p>Use the systems we've already developed instead of starting from scratch.</p></div>
+        <div class="svcitem"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg></div><h3>5 Live Calls Each Week</h3><p>Business, sales, social, breeding/reproduction &amp; implementation.</p></div>
+        <div class="svcitem"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg></div><h3>Dedicated Member Success</h3><p>Someone keeping your priorities and progress moving.</p></div>
+        <div class="svcitem"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg></div><h3>Expert Feedback</h3><p>Feedback from the BreedWise team as you implement.</p></div>
+        <div class="svcitem"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 7l3 3-8 8H6v-3l8-8zM13 4l4 4"/></svg></div><h3>Proven Tools &amp; Templates</h3><p>Use systems we've already built instead of starting from scratch.</p></div>
       </div>
     </section>
 
     <!-- ══════ AUTHORITY ══════ -->
     <section class="sec">
-      <div class="sec-h"><div class="eyebrow">Why trust us with both sides</div><h2>Business Expertise + Breeder Experience + Veterinary Science</h2></div>
+      <div class="sec-h"><div class="eyebrow">Reason to believe</div><h2>Business + Breeding + Veterinary Science</h2></div>
       <div class="authgrid">
         <div class="authcard">
           <div class="mono">AS</div>
@@ -423,7 +432,7 @@ fbq('init','1337266034525554');fbq('track','PageView');
           <div class="mono">EF</div>
           <div class="nm">Dr. Emmanuel Fontaine</div>
           <div class="role">Veterinarian · Canine Reproduction &amp; Neonatology</div>
-          <div class="proof"><b>20+ years · 10,000+ breeders trained · 35 countries.</b><br>[Add exact designations/credentials here — e.g. DVM, PhD, Dip. ECAR, as legally appropriate.]</div>
+          <div class="proof"><b>20+ years · 10,000+ breeders trained · 35 countries.</b><br>[Add exact designations/credentials — e.g. DVM, PhD, Dip. ECAR, as legally appropriate.]</div>
         </div>
         <div class="authcard">
           <div class="mono">Y</div>
@@ -438,36 +447,16 @@ fbq('init','1337266034525554');fbq('track','PageView');
       </div>
     </section>
 
-    <!-- ══════ MEMBER RESULTS ══════ -->
+    <!-- ══════ INVESTMENT REFRAME ══════ -->
     <section class="sec">
-      <div class="sec-h"><div class="eyebrow">Proof</div><h2>Don't Take Our Word For It.<br>See What Breeders Have Built With BreedWise.</h2></div>
-      <div class="vgrid">
-        <div class="vcard">
-          <div class="vwrap"><video controls playsinline preload="none" poster="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a2e0412e650055aa22bc975.png"><source src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a2aa063c53e51acc07b32d4.mov"></video></div>
-          <div class="vcap"><div class="n">Shaylee</div><div class="o">New breeder to 100K followers &amp; premium pricing in under 2 years</div></div>
-        </div>
-        <div class="vcard">
-          <div class="vwrap"><video controls playsinline preload="none" poster="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a2e0412e650055aa22bc971.png"><source src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/68bec3fbdd1b2c3d47e6172e.mov"></video></div>
-          <div class="vcap"><div class="n">Jake</div><div class="o">Sold-out litter &amp; $50K in 90 days with a premium waitlist</div></div>
-        </div>
-        <div class="vcard">
-          <div class="vwrap"><video controls playsinline preload="none" poster="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a532218c8fd689c35dd506e.png"><source src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a531b0a9c9b37b5fd9839aa.mov"></video></div>
-          <div class="vcap"><div class="n">Regina</div><div class="o">First-time breeder — fully booked before her first litter at $5K a puppy</div></div>
-        </div>
-      </div>
-      <div class="disc-mini">Results shown are documented member outcomes, are not typical, and are not a guarantee of your results.</div>
-    </section>
-
-    <!-- ══════ INVESTMENT COMPARISON ══════ -->
-    <section class="sec">
-      <div class="sec-h"><div class="eyebrow">Perspective</div><h2>Consider What You've Already Invested in Your Program.</h2></div>
+      <div class="sec-h"><div class="eyebrow">Perspective</div><h2>Consider What You've Already Invested.</h2></div>
       <div class="invested">
         <span class="c">Dogs</span><span class="c">Health testing</span><span class="c">Veterinary care</span><span class="c">Stud fees &amp; semen</span><span class="c">Reproductive services</span><span class="c">Equipment</span><span class="c">Food</span><span class="c">Registrations</span><span class="c">Travel</span><span class="c">Marketing</span><span class="c">Your time</span>
       </div>
-      <p class="investnote">And you'll continue investing in many of those things for years. The question isn't whether your breeding program costs money. <b>It's whether the systems behind those investments are helping you make better decisions and build a more sustainable program.</b></p>
+      <p class="investnote">And you'll keep investing in those for years. The question isn't whether your program costs money. <b>It's whether the systems behind those investments are helping you make better decisions and build a more sustainable program.</b></p>
     </section>
 
-    <!-- ══════ INVESTMENT ══════ -->
+    <!-- ══════ PRICING ══════ -->
     <section class="sec">
       <div class="sec-h"><div class="eyebrow">The investment</div><h2>BreedWise Academy</h2></div>
       <div class="pricebox">
@@ -477,45 +466,46 @@ fbq('init','1337266034525554');fbq('track','PageView');
         <div class="annual">$5,997<small> / year</small></div>
         <div class="save">Save $1,167 with annual membership</div>
       </div>
-      <p class="pricenote">Academy is designed for breeders who are ready to <b>implement</b> — not simply consume information. Apply below to see whether the program fits your goals, stage, and current priorities.</p>
+      <p class="pricenote">Academy is for breeders ready to <b>implement</b> — not simply consume information. Apply below to see whether the program fits your goals, stage, and current priorities.</p>
       <div class="clean">
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>No fake scarcity</span>
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>No inflated "value stacks"</span>
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>No guaranteed six figures</span>
       </div>
-      <div class="cta-wrap"><button class="cta" data-scroll>Apply to BreedWise Academy →</button></div>
+      <div class="cta-wrap"><button class="cta" data-scroll>Apply to See If Your Program Qualifies →</button></div>
     </section>
 
-    <!-- ══════ WHO IT'S FOR ══════ -->
+    <!-- ══════ QUALIFICATION ══════ -->
     <section class="sec">
-      <div class="sec-h"><div class="eyebrow">Honest fit check</div><h2>Who Academy Is Built For</h2></div>
+      <div class="sec-h"><div class="eyebrow">Qualification</div><h2>Who Gets Accepted</h2></div>
       <div class="fortwo">
         <div class="fbox yes">
-          <h3>This IS for you if…</h3>
+          <h3>We accept you if…</h3>
           <ul>
-            <li>You're an active or preparing breeder who takes health, homes &amp; ethics seriously.</li>
-            <li>You want a more profitable, predictable program — not just occasional puppy money.</li>
-            <li>You're ready to implement systems, not just collect more information.</li>
-            <li>You're willing to invest in your program over the next 30–90 days if the plan fits.</li>
+            <li>You're <b>actively breeding</b> (at least one litter a year) and take health, homes &amp; ethics seriously.</li>
+            <li>You have a real, current problem — pricing, placements, demand, puppy loss, or waitlist.</li>
+            <li>You want a more profitable, predictable program, not just occasional puppy money.</li>
+            <li>You're ready to implement systems and invest in your program if the plan fits.</li>
           </ul>
         </div>
         <div class="fbox no">
-          <h3>This is NOT for you if…</h3>
+          <h3>We turn you down if…</h3>
           <ul>
-            <li>You haven't started breeding and are just "curious."</li>
+            <li>You haven't started breeding yet and are just "curious."</li>
             <li>You want a get-rich-quick scheme or shortcuts that compromise dogs.</li>
             <li>You want done-for-you results without doing the implementation.</li>
             <li>You're not open to changing how you market, price, or run your program.</li>
           </ul>
         </div>
       </div>
+      <p class="downnote">Not quite ready for the full Academy? Some breeders are a better fit for our lower-cost starting point — if that's you, we'll point you there instead. Apply and we'll tell you honestly.</p>
     </section>
 
     <!-- ══════ APPLICATION FORM ══════ -->
     <section class="sec" id="apply">
       <div class="apply">
         <div class="apply-h">Apply to BreedWise Academy</div>
-        <div class="apply-sub">For breeders ready to implement — already operating or preparing to whelp their first litters. <b>Every field is required. We personally review each application.</b></div>
+        <div class="apply-sub">For <b>active, ethical breeders</b> ready to implement. <b>Every field is required. We personally review each application</b> — often within hours.</div>
         <form id="applyForm" autocomplete="on" novalidate>
           <div class="frow">
             <div class="fld"><label>First name <span class="req">*</span></label><input id="first" type="text" placeholder="First name" autocomplete="given-name"></div>
@@ -523,16 +513,16 @@ fbq('init','1337266034525554');fbq('track','PageView');
           </div>
           <div class="frow">
             <div class="fld"><label>Email <span class="req">*</span></label><input id="email" type="email" placeholder="you@email.com" autocomplete="email"></div>
-            <div class="fld"><label>Mobile phone <span class="req">*</span></label><input id="phone" type="tel" placeholder="For your confirmation &amp; call link" autocomplete="tel"></div>
+            <div class="fld"><label>Mobile phone <span class="req">*</span></label><input id="phone" type="tel" placeholder="We may call you today" autocomplete="tel"></div>
           </div>
 
           <div class="fld full"><label>Where are you in breeding? <span class="req">*</span></label>
             <select id="breeding_status">
               <option value="" disabled selected>Select…</option>
-              <option value="first">Planning my first litter</option>
               <option value="1-3">I've had 1–3 litters</option>
               <option value="4-10">I've had 4–10 litters</option>
               <option value="10plus">I've had 10+ litters</option>
+              <option value="first">Preparing my first litter (not yet breeding)</option>
             </select>
           </div>
 
@@ -570,7 +560,7 @@ fbq('init','1337266034525554');fbq('track','PageView');
               <option value="payplan">Yes — with help (credit / family / etc.)</option>
               <option value="not_now">Not right now</option>
             </select>
-            <div class="helper">Academy is $597/month or $5,997/year. Most members get started with at least $1,500 upfront and a plan for the remainder — we'll go through exact options on the call. This just makes sure we're not wasting your time if the timing isn't right yet.</div>
+            <div class="helper">Academy is $597/month or $5,997/year. Most members start with at least $1,500 upfront and a plan for the remainder — we'll go through exact options on the call. This just makes sure we're not wasting your time if the timing isn't right yet.</div>
           </div>
 
           <div class="fld full"><label>How soon do you want to upgrade your breeding program? <span class="req">*</span></label>
@@ -608,19 +598,19 @@ fbq('init','1337266034525554');fbq('track','PageView');
       <div class="faq">
         <details>
           <summary>What happens after I apply?<svg class="chev" width="16" height="10" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></summary>
-          <div class="a">We personally review every application. If it looks like a fit, we'll reach out to schedule a call to map your program's next priorities. If it's not a fit right now, we'll let you know — no wasted time on either side.</div>
+          <div class="a">We personally review every application, often within hours. Qualified breeders are contacted personally — often immediately — to schedule (or hold) a call to map your program's next priorities. If it's not a fit, we'll tell you honestly and point you to a better starting point.</div>
         </details>
         <details>
           <summary>How much is BreedWise Academy?<svg class="chev" width="16" height="10" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></summary>
-          <div class="a">$597/month, or $5,997/year (saving $1,167 vs monthly). We'll walk through options on your call. There's nothing to buy on this page — this is an application.</div>
+          <div class="a">$597/month, or $5,997/year (saving $1,167 vs monthly). We'll walk through options on your call. Nothing to buy on this page — this is an application.</div>
         </details>
         <details>
           <summary>Do I need to be breeding already?<svg class="chev" width="16" height="10" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></summary>
-          <div class="a">You should already be breeding, or actively preparing to whelp your first litters. Academy is built for breeders ready to implement systems across a real, ethical program.</div>
+          <div class="a">Academy is built for breeders who are actively breeding (at least a litter a year). If you're preparing your first litter, apply anyway — we may point you to a better-fit starting point rather than the full Academy.</div>
         </details>
         <details>
           <summary>Is this business coaching or veterinary education?<svg class="chev" width="16" height="10" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></summary>
-          <div class="a">Both — treated as one system. Academy combines business strategy, evidence-informed veterinary education, and personalized implementation so the two engines of your program (breeding and business) strengthen each other.</div>
+          <div class="a">Both — as one system. Academy combines business strategy, evidence-informed veterinary education, and personalized implementation so your breeding and business strengthen each other.</div>
         </details>
         <details>
           <summary>Will you hard-sell me?<svg class="chev" width="16" height="10" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></summary>
@@ -644,18 +634,45 @@ fbq('init','1337266034525554');fbq('track','PageView');
         </ul>
         <p class="intro" style="margin-top:6px">BreedWise Academy was built for that.</p>
         <div class="tagline">Better Breeding. Better Business. Stronger Programs.</div>
-        <div class="cta-wrap" style="margin-top:0"><button class="cta" data-scroll>Apply to BreedWise Academy →</button></div>
+        <div class="cta-wrap" style="margin-top:0"><button class="cta" data-scroll>Apply to See If Your Program Qualifies →</button></div>
       </div>
     </section>
 
   </main>
 
-  <!-- ══════ SUCCESS OVERLAY ══════ -->
+  <!-- ══════ SUCCESS EXPERIENCE (show-rate machine) ══════ -->
   <div class="ok" id="okOverlay">
     <div class="ok-card">
       <div class="ok-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
       <h3>Application Received</h3>
-      <p>Thanks — your application is in. <b>We personally review every application.</b> If it's a fit, we'll reach out by email &amp; text to schedule your call. Keep an eye on your inbox.</p>
+      <p class="ok-lead"><b>We're reviewing your program right now.</b> Qualified breeders are contacted personally — often immediately.</p>
+      <div class="ok-callout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Keep your phone nearby — we may call within the next few hours.</div>
+
+      <div class="ok-block">
+        <div class="k">What happens next</div>
+        <div class="ok-next">
+          <div class="n"><div class="num">1</div><h4>We Review</h4><p>Your program is reviewed personally — often within hours.</p></div>
+          <div class="n"><div class="num">2</div><h4>We Reach Out</h4><p>Qualified breeders get a call or text to lock in a time.</p></div>
+          <div class="n"><div class="num">3</div><h4>Your Gameplan</h4><p>On the call we map your 12-month plan and next steps.</p></div>
+        </div>
+      </div>
+
+      <div class="ok-block ok-prep">
+        <div class="k">Come prepared</div>
+        <ul>
+          <li>Have your current pricing, recent litters &amp; waitlist numbers handy.</li>
+          <li>Know your biggest constraint — pricing, demand, placements, or whelping.</li>
+          <li>Be somewhere quiet, with your camera on.</li>
+          <li><b>Come ready to make a clear yes or no decision on the call</b> — not "I'll think about it."</li>
+        </ul>
+      </div>
+
+      <div class="ok-block">
+        <div class="k">You're in good company</div>
+        <div class="ok-case" id="okCase">Breeders like you are filling waitlists and raising prices without compromising their ethics.</div>
+      </div>
+
+      <div class="ok-vet">Backed by our veterinary board — <b>Dr. Emmanuel Fontaine · Dr. Angela Hughes · Dr. David Mahoney</b></div>
     </div>
   </div>
 
@@ -690,6 +707,13 @@ fbq('init','1337266034525554');fbq('track','PageView');
       timeline:{now:'Right now / next 30 days','1-3':'1–3 months','3-6':'3–6 months','6plus':'6+ months / exploring'},
       decision:{me:'Just me',partner:'Me + partner/spouse',other:'Someone else (not decision-maker)'},
       decide:{yes:'Yes',no:'No'}
+    };
+    // Matched case study for the success page — proof that fits their stage.
+    const CASE = {
+      first: 'Like <b>Regina</b> — a first-time breeder who was fully booked before her first litter ever hit the ground, at $5K a puppy.',
+      '1-3': 'Like <b>Jake</b> — a sold-out litter and $50K in 90 days with a premium waitlist of ready buyers.',
+      '4-10':'Like <b>Shaylee</b> — real demand and premium pricing built in under two years, without compromising her ethics.',
+      '10plus':'Like our established breeders — turning a hard-earned reputation into premium pricing and a reliably profitable program.'
     };
 
     $('#applyForm').addEventListener('submit', async (e)=>{
@@ -735,7 +759,11 @@ fbq('init','1337266034525554');fbq('track','PageView');
       } catch(_) {}
       if (window.fbq){ fbq('track','Lead'); fbq('trackCustom','AcademyApplication'); }
 
+      // Matched proof on the success page
+      const okCase = $('#okCase'); if (okCase && CASE[v('breeding_status')]) okCase.innerHTML = CASE[v('breeding_status')];
+
       $('#okOverlay').classList.add('show');
+      window.scrollTo({top:0,behavior:'instant'});
       document.body.style.overflow='hidden';
     });
   </script>
