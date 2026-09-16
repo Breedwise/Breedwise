@@ -484,42 +484,6 @@ fbq('init','1337266034525554');fbq('track','PageView');
 
   </main>
 
-  <!-- ══════ SUCCESS EXPERIENCE ══════ -->
-  <div class="ok" id="okOverlay">
-    <div class="ok-card">
-      <div class="ok-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
-      <h3>Application Received</h3>
-      <p class="ok-lead"><b>We're reviewing your program right now.</b> Qualified breeders are contacted personally, often immediately.</p>
-      <div class="ok-callout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Keep your phone nearby. We may call within the next few hours.</div>
-
-      <div class="ok-block">
-        <div class="k">What happens next</div>
-        <div class="ok-next">
-          <div class="n"><div class="num">1</div><h4>We Review</h4><p>Your program is reviewed personally, often within hours.</p></div>
-          <div class="n"><div class="num">2</div><h4>We Reach Out</h4><p>Qualified breeders get a call or text to lock in a time.</p></div>
-          <div class="n"><div class="num">3</div><h4>The Call</h4><p>We confirm fit and, if qualified, map your next 12 months.</p></div>
-        </div>
-      </div>
-
-      <div class="ok-block ok-prep">
-        <div class="k">Come prepared</div>
-        <ul>
-          <li>Have your current pricing, recent litters, and waitlist numbers handy.</li>
-          <li>Know your biggest constraint: pricing, demand, placements, or whelping.</li>
-          <li>Be somewhere quiet, with your camera on.</li>
-          <li><b>Come ready to make a clear yes or no decision on the call,</b> not "I'll think about it."</li>
-        </ul>
-      </div>
-
-      <div class="ok-block">
-        <div class="k">You're in good company</div>
-        <div class="ok-case" id="okCase">Breeders like you are filling waitlists and raising prices without compromising their ethics.</div>
-      </div>
-
-      <div class="ok-vet">Backed by our veterinary board: <b>Dr. Emmanuel Fontaine, Dr. Angela Hughes, and Dr. David Mahoney.</b></div>
-    </div>
-  </div>
-
   <footer>
     <div class="wrap">
       <p class="disc">BreedWise Academy provides education and is not veterinary care. BreedWise does not provide veterinary diagnosis or treatment; individual medical decisions should be made with the veterinarian responsible for the animal's care. Results are not typical and are not a guarantee of your success. Your results will vary based on your dogs, program, market, education, effort, and background. Any numbers, case studies, or breeder stories shared are documented examples for illustrative and educational purposes only.</p>
@@ -554,13 +518,6 @@ fbq('init','1337266034525554');fbq('track','PageView');
       females:{'1':'1','2-3':'2 to 3','4-6':'4 to 6','7plus':'7+'},
       health:{full:'Full testing to breed standard',some:'Some testing',starting:'Not yet, committed to start',none:'Little to none'},
       waitlist:{full:'Full waitlist, buyers ready',some:'Some interest, no waitlist',perlitter:'Markets each litter as it comes',struggle:'Struggles to find buyers'}
-    };
-    // Matched case study for the success page (proof that fits their stage).
-    const CASE = {
-      first: 'Like <b>Regina</b>, a first-time breeder who was fully booked before her first litter ever hit the ground, at $5K a puppy.',
-      '1-3': 'Like <b>Jake</b>, a sold-out litter and $50K in 90 days with a premium waitlist of ready buyers.',
-      '4-10':'Like <b>Shaylee</b>, real demand and premium pricing built in under two years, without compromising her ethics.',
-      '10plus':'Like our established breeders, turning a hard-earned reputation into premium pricing and a reliably profitable program.'
     };
 
     $('#applyForm').addEventListener('submit', async (e)=>{
@@ -609,11 +566,8 @@ fbq('init','1337266034525554');fbq('track','PageView');
       } catch(_) {}
       if (window.fbq){ fbq('track','Lead'); fbq('trackCustom','AcademyApplication'); }
 
-      const okCase = $('#okCase'); if (okCase && CASE[v('breeding_status')]) okCase.innerHTML = CASE[v('breeding_status')];
-
-      $('#okOverlay').classList.add('show');
-      window.scrollTo({top:0,behavior:'instant'});
-      document.body.style.overflow='hidden';
+      // Give the keepalive POST and pixel a beat, then go to the confirmation page.
+      setTimeout(function(){ location.href = '/application-received.html'; }, 250);
     });
   </script>
 </body>
