@@ -376,6 +376,13 @@ fbq('init','1337266034525554');fbq('track','PageView');
             <div class="fld"><label>Mobile phone <span class="req">*</span></label><input id="phone" type="tel" placeholder="We may call you today" autocomplete="tel"></div>
           </div>
 
+          <div class="frow">
+            <div class="fld"><label>Your breed(s) <span class="req">*</span></label><input id="breeds" type="text" placeholder="e.g. Boerboel, Cane Corso, Goldendoodle"></div>
+            <div class="fld"><label>Breeding females you have <span class="req">*</span></label>
+              <select id="females"><option value="" disabled selected>Select…</option><option value="1">1</option><option value="2-3">2–3</option><option value="4-6">4–6</option><option value="7plus">7+</option></select>
+            </div>
+          </div>
+
           <div class="fld full"><label>Where are you in breeding? <span class="req">*</span></label>
             <select id="breeding_status">
               <option value="" disabled selected>Select…</option>
@@ -395,9 +402,7 @@ fbq('init','1337266034525554');fbq('track','PageView');
             </div>
           </div>
 
-          <div class="fld full"><label>Your breed(s) <span class="req">*</span></label><input id="breeds" type="text" placeholder="e.g. Boerboel, Cane Corso, Goldendoodle"></div>
-
-          <div class="fld full"><label>Your biggest challenge right now <span class="req">*</span></label>
+          <div class="fld full"><label>Your biggest bottleneck right now <span class="req">*</span></label>
             <select id="struggle">
               <option value="" disabled selected>Select…</option>
               <option value="selling">Selling pups and building demand</option>
@@ -409,8 +414,37 @@ fbq('init','1337266034525554');fbq('track','PageView');
           </div>
 
           <div class="frow">
+            <div class="fld"><label>Health testing you do <span class="req">*</span></label>
+              <select id="health_testing">
+                <option value="" disabled selected>Select…</option>
+                <option value="full">Full testing to breed standard</option>
+                <option value="some">Some testing, building toward full</option>
+                <option value="starting">Not yet, but committed to start</option>
+                <option value="none">Little to none right now</option>
+              </select>
+            </div>
+            <div class="fld"><label>Your current puppy pricing <span class="req">*</span></label>
+              <select id="price_current">
+                <option value="" disabled selected>Select…</option>
+                <option value="under2k">Under $2,000</option>
+                <option value="2-4k">$2,000–$4,000</option>
+                <option value="4-6k">$4,000–$6,000</option>
+                <option value="6kplus">$6,000+</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="frow">
+            <div class="fld"><label>Your buyer pipeline / waitlist <span class="req">*</span></label>
+              <select id="waitlist">
+                <option value="" disabled selected>Select…</option>
+                <option value="full">Full waitlist, buyers ready</option>
+                <option value="some">Some interest, no real waitlist</option>
+                <option value="perlitter">I market each litter as it comes</option>
+                <option value="struggle">I struggle to find buyers</option>
+              </select>
+            </div>
             <div class="fld"><label>Instagram handle <span class="req">*</span></label><input id="instagram" type="text" placeholder="@yourkennel"></div>
-            <div class="fld"><label>Where are you located? <span class="req">*</span></label><input id="location" type="text" placeholder="City, State / Country"></div>
           </div>
 
           <div class="fld full"><label>Do you have at least $1,500 to invest into your business? <span class="req">*</span></label>
@@ -517,7 +551,10 @@ fbq('init','1337266034525554');fbq('track','PageView');
     const LBL = {
       timeline:{now:'Right now, next 30 days','1-3':'1 to 3 months','3-6':'3 to 6 months','6plus':'6+ months, exploring'},
       decision:{me:'Just me',partner:'Me and partner/spouse',other:'Someone else (not decision-maker)'},
-      decide:{yes:'Yes',no:'No'}
+      decide:{yes:'Yes',no:'No'},
+      females:{'1':'1','2-3':'2 to 3','4-6':'4 to 6','7plus':'7+'},
+      health:{full:'Full testing to breed standard',some:'Some testing',starting:'Not yet, committed to start',none:'Little to none'},
+      waitlist:{full:'Full waitlist, buyers ready',some:'Some interest, no waitlist',perlitter:'Markets each litter as it comes',struggle:'Struggles to find buyers'}
     };
     // Matched case study for the success page (proof that fits their stage).
     const CASE = {
@@ -532,7 +569,7 @@ fbq('init','1337266034525554');fbq('track','PageView');
       if ($('#company').value) return; // honeypot
       const setErr = m => { $('#err').textContent = m; };
       const first=v('first'), last=v('last'), email=v('email').toLowerCase(), phone=v('phone');
-      const reqSel=['breeding_status','litters_last','litters_next','breeds','struggle','instagram','location','investment','timeline','decision','decide'];
+      const reqSel=['breeds','females','breeding_status','litters_last','litters_next','struggle','health_testing','price_current','waitlist','instagram','investment','timeline','decision','decide'];
       if(!first||!last) return setErr('Please enter your first and last name.');
       if(!emailRe.test(email)) return setErr('Please enter a valid email address.');
       if(!phone) return setErr('Please enter your mobile phone.');
@@ -542,8 +579,10 @@ fbq('init','1337266034525554');fbq('track','PageView');
       const btn=$('#submitBtn'); btn.disabled=true; btn.textContent='Submitting…';
 
       const notes = [
+        'Breeding females: '+(LBL.females[v('females')]||v('females')),
+        'Health testing: '+(LBL.health[v('health_testing')]||v('health_testing')),
+        'Buyer pipeline: '+(LBL.waitlist[v('waitlist')]||v('waitlist')),
         'Instagram: '+v('instagram'),
-        'Location: '+v('location'),
         'Wants to upgrade: '+(LBL.timeline[v('timeline')]||v('timeline')),
         'Decision-maker: '+(LBL.decision[v('decision')]||v('decision')),
         'Willing to decide on call: '+(LBL.decide[v('decide')]||v('decide'))
@@ -557,6 +596,7 @@ fbq('init','1337266034525554');fbq('track','PageView');
         breeds: v('breeds'),
         struggle: v('struggle'),
         challenge: $('#struggle').selectedOptions[0].textContent.trim(),
+        price_current: v('price_current'),
         investment: v('investment'),
         importance: URGENCY[v('timeline')] ?? 5,
         alignment: v('decide'),
