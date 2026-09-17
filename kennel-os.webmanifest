@@ -1,0 +1,15 @@
+{
+  "name": "Kennel OS",
+  "short_name": "Kennel OS",
+  "description": "Your kennel, end to end — dogs, breedings, litters, buyers and money.",
+  "start_url": "kennel-os.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#05070b",
+  "theme_color": "#05070b",
+  "icons": [
+    { "src": "breedwise-logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "breedwise-logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#05070b" id="themeColor">
+<title>Kennel OS</title>
+<link rel="icon" id="favicon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230a0f16'/><text x='50' y='68' font-size='52' font-family='Helvetica' font-weight='700' fill='%232f9bff' text-anchor='middle'>K</text></svg>">
+<link rel="manifest" href="kennel-os.webmanifest">
+<link rel="apple-touch-icon" href="breedwise-logo.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --accent:#2f9bff; --accent2:#7cc4ff;
+  --accent-soft:rgba(47,155,255,.13); --accent-line:rgba(47,155,255,.28);
+  --bg:#05070b; --bg2:#080d14; --card:#0d131c; --card2:#121a25; --line:#1b2532;
+  --ink:#e9eff7; --mid:#9dafc3; --muted:#61738a;
+  --good:#3ecf8e; --warn:#f0b429; --bad:#f2685f;
+  --r:16px; --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+html,body{background:var(--bg);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
+body{font-size:15px;line-height:1.5;min-height:100vh}
+button,input,select,textarea{font-family:var(--font);color:inherit}
+button{cursor:pointer;background:none;border:0}
+a{color:var(--accent);text-decoration:none}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#1c2735;border-radius:8px}
+
+/* ─── top bar ─── */
+.topbar{position:sticky;top:0;z-index:60;height:60px;display:flex;align-items:center;gap:12px;padding:0 14px;
+  background:rgba(5,7,11,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.icon-btn{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:var(--mid);flex:0 0 auto}
+.icon-btn:hover{background:var(--card);color:var(--ink)}
+.icon-btn.ring{border:1px solid var(--line);background:var(--card)}
+.tb-title{font-size:16px;font-weight:700;letter-spacing:-.01em;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.badge-dot{position:absolute;top:6px;right:6px;min-width:16px;height:16px;border-radius:9px;background:var(--accent);
+  color:#04070c;font-size:10px;font-weight:800;display:grid;place-items:center;padding:0 4px}
+.tb-wrap{position:relative}
+
+/* ─── drawer ─── */
+.scrim{position:fixed;inset:0;background:rgba(2,4,8,.62);backdrop-filter:blur(3px);z-index:80;opacity:0;pointer-events:none;transition:.22s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;left:0;bottom:0;width:302px;max-width:86vw;z-index:90;background:linear-gradient(180deg,#070c13,#05070b);
+  border-right:1px solid var(--line);transform:translateX(-104%);transition:transform .24s cubic-bezier(.3,.8,.3,1);
+  display:flex;flex-direction:column;overflow:hidden}
+.drawer.on{transform:none}
+.brandblock{padding:20px 18px 16px;display:flex;align-items:center;gap:13px;border-bottom:1px solid var(--line);
+  background:radial-gradient(120% 100% at 0% 0%,var(--accent-soft),transparent 62%)}
+.mark{width:56px;height:56px;border-radius:15px;flex:0 0 auto;display:grid;place-items:center;overflow:hidden;
+  background:var(--card2);border:1px solid var(--accent-line);box-shadow:0 0 22px var(--accent-soft)}
+.mark img{width:100%;height:100%;object-fit:contain;padding:5px}
+.mark span{font-size:20px;font-weight:800;color:var(--accent)}
+.brandblock h1{font-size:19px;font-weight:800;letter-spacing:.02em;line-height:1.1}
+.brandblock h1 i{font-style:normal;color:var(--accent)}
+.brandblock p{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:3px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px}
+.navscroll{flex:1;overflow-y:auto;padding:12px 12px 26px}
+.navgroup{font-size:11px;letter-spacing:.1em;color:var(--muted);font-weight:600;padding:16px 10px 7px}
+.navitem{display:flex;align-items:center;gap:14px;padding:11px 10px;border-radius:11px;color:var(--mid);font-size:15.5px;font-weight:500;width:100%;text-align:left}
+.navitem svg{width:20px;height:20px;flex:0 0 auto;opacity:.85}
+.navitem:hover{background:var(--card);color:var(--ink)}
+.navitem.on{background:var(--accent-soft);color:var(--ink);font-weight:600}
+.navitem.on svg{color:var(--accent);opacity:1}
+.navitem .n{margin-left:auto;font-size:11.5px;font-weight:700;background:var(--accent-soft);color:var(--accent);
+  border:1px solid var(--accent-line);border-radius:20px;padding:2px 9px}
+.drawer-foot{border-top:1px solid var(--line);padding:12px;font-size:12px;color:var(--muted);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.drawer-foot b{color:var(--mid);font-weight:600}
+
+/* ─── layout ─── */
+main{padding:18px 15px calc(112px + var(--safe-b));max-width:1080px;margin:0 auto}
+.view-head{margin-bottom:16px}
+.view-head h2{font-size:25px;font-weight:800;letter-spacing:-.02em}
+.view-head p{color:var(--muted);font-size:13.5px;margin-top:2px}
+.hi{font-size:13px;color:var(--muted);letter-spacing:.02em}
+
+/* ─── cards / stats ─── */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.card+.card{margin-top:12px}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.card-h h3{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.card-h a,.card-h button{font-size:12.5px;color:var(--accent);font-weight:600}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-bottom:14px}
+.stat{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:var(--r);padding:15px;position:relative;overflow:hidden}
+.stat:before{content:'';position:absolute;inset:0 0 auto 0;height:2px;background:linear-gradient(90deg,var(--accent),transparent)}
+.stat .k{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.stat .v{font-size:26px;font-weight:800;letter-spacing:-.03em;margin-top:7px}
+.stat .m{font-size:12px;color:var(--mid);margin-top:3px}
+.stat .m.up{color:var(--good)} .stat .m.dn{color:var(--bad)}
+@media(min-width:640px){.stats{grid-template-columns:repeat(4,1fr)}}
+
+/* ─── list rows ─── */
+.rows{display:flex;flex-direction:column}
+.row{display:flex;align-items:center;gap:13px;padding:13px 2px;border-bottom:1px solid var(--line);width:100%;text-align:left}
+.row:last-child{border-bottom:0}
+.row:active{opacity:.7}
+.av{width:42px;height:42px;border-radius:12px;flex:0 0 auto;display:grid;place-items:center;overflow:hidden;
+  background:var(--card2);border:1px solid var(--line);font-weight:700;font-size:14px;color:var(--accent)}
+.av img{width:100%;height:100%;object-fit:cover}
+.row .body{flex:1;min-width:0;overflow:hidden}
+.row .t{display:block;font-size:15px;font-weight:600;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .s{display:block;font-size:12.5px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .r{display:block;text-align:right;flex:0 0 auto;font-size:13px;color:var(--mid);font-weight:600;padding-left:8px}
+.row .r small{display:block;font-size:11px;color:var(--muted);font-weight:500;margin-top:2px}
+.pill{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 9px;border-radius:20px;background:var(--card2);color:var(--mid);border:1px solid var(--line)}
+.pill.good{background:rgba(62,207,142,.12);color:var(--good);border-color:rgba(62,207,142,.25)}
+.pill.warn{background:rgba(240,180,41,.12);color:var(--warn);border-color:rgba(240,180,41,.25)}
+.pill.bad{background:rgba(242,104,95,.12);color:var(--bad);border-color:rgba(242,104,95,.25)}
+.pill.acc{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-line)}
+.empty{text-align:center;padding:44px 18px;color:var(--muted);font-size:14px}
+.empty b{display:block;color:var(--mid);font-weight:600;font-size:15px;margin-bottom:5px}
+
+/* ─── controls ─── */
+.toolbar{display:flex;gap:9px;margin-bottom:13px;align-items:center}
+.search{flex:1;position:relative}
+.search input{width:100%;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px 11px 38px;font-size:14.5px}
+.search svg{position:absolute;left:12px;top:11px;width:17px;height:17px;color:var(--muted)}
+.search input:focus{outline:none;border-color:var(--accent-line)}
+.chips{display:flex;gap:7px;overflow-x:auto;max-width:100%;padding-bottom:11px;-webkit-overflow-scrolling:touch}
+.chips::-webkit-scrollbar{display:none}
+.chip{white-space:nowrap;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:20px;
+  background:var(--card);border:1px solid var(--line);color:var(--mid)}
+.chip.on{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:#04070c;
+  font-weight:700;font-size:13.5px;border-radius:12px;padding:12px 18px}
+.btn:active{transform:scale(.985)}
+.btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn.danger{background:rgba(242,104,95,.14);color:var(--bad);border:1px solid rgba(242,104,95,.3)}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.55;pointer-events:none}
+
+/* ─── bottom bar + fab ─── */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:70;height:calc(62px + var(--safe-b));padding-bottom:var(--safe-b);
+  display:flex;background:rgba(6,9,14,.94);backdrop-filter:blur(16px);border-top:1px solid var(--line)}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--muted);font-size:10.5px;font-weight:600}
+.tab svg{width:21px;height:21px}
+.tab.on{color:var(--accent)}
+.fab{position:fixed;right:17px;bottom:calc(78px + var(--safe-b));z-index:75;width:56px;height:56px;border-radius:19px;
+  background:linear-gradient(150deg,var(--accent2),var(--accent));color:#04070c;display:grid;place-items:center;
+  box-shadow:0 10px 26px rgba(0,0,0,.5),0 0 0 1px var(--accent-line)}
+.fab svg{width:26px;height:26px}
+
+/* ─── sheet / modal ─── */
+.sheet-wrap{position:fixed;inset:0;z-index:100;display:none}
+.sheet-wrap.on{display:block}
+.sheet-bg{position:absolute;inset:0;background:rgba(2,4,8,.66);backdrop-filter:blur(3px)}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-height:92vh;overflow-y:auto;background:var(--bg2);
+  border-top:1px solid var(--line);border-radius:22px 22px 0 0;padding:8px 16px calc(26px + var(--safe-b));
+  animation:up .26s cubic-bezier(.3,.9,.3,1)}
+@keyframes up{from{transform:translateY(24px);opacity:.4}to{transform:none;opacity:1}}
+.sheet .grab{width:38px;height:4px;border-radius:4px;background:#243040;margin:8px auto 14px}
+.sheet h3{font-size:19px;font-weight:800;letter-spacing:-.02em;margin-bottom:3px}
+.sheet .sub{font-size:13px;color:var(--muted);margin-bottom:16px}
+@media(min-width:760px){
+  .sheet{left:50%;right:auto;bottom:auto;top:50%;transform:translate(-50%,-50%);width:560px;max-height:86vh;
+    border-radius:20px;border:1px solid var(--line);animation:none}
+}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;background:var(--card);border:1px solid var(--line);border-radius:11px;
+  padding:12px 13px;font-size:15px;color:var(--ink)}
+.field textarea{min-height:82px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent-line)}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2361738a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 11px center;background-size:17px;padding-right:34px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.sheet-actions{display:flex;gap:10px;margin-top:18px}
+.sheet-actions .btn{flex:1}
+.err{color:var(--bad);font-size:13px;min-height:18px;margin-top:8px}
+
+/* ─── login ─── */
+#login{min-height:100vh;display:none;align-items:center;justify-content:center;padding:26px;
+  background:radial-gradient(120% 80% at 50% 0%,rgba(47,155,255,.10),transparent 60%)}
+.login-card{width:100%;max-width:392px;background:var(--card);border:1px solid var(--line);border-top:2px solid var(--accent);
+  border-radius:20px;padding:30px 26px}
+.login-card .mark{margin:0 auto 16px}
+.login-card h2{font-size:22px;font-weight:800;text-align:center;letter-spacing:-.02em}
+.login-card .lp{text-align:center;color:var(--muted);font-size:13px;margin:5px 0 22px}
+.login-alt{text-align:center;font-size:13px;color:var(--muted);margin-top:14px}
+.login-alt button{color:var(--accent);font-weight:600}
+
+/* ─── misc ─── */
+.loading{text-align:center;color:var(--muted);padding:70px 0;font-size:14px}
+.bars{display:flex;align-items:flex-end;gap:8px;height:118px;padding-top:8px}
+.bars .b{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;height:100%;justify-content:flex-end}
+.bars .b i{display:block;width:100%;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,var(--accent2),var(--accent));min-height:3px}
+.bars .b span{font-size:10px;color:var(--muted);font-weight:600}
+.funnel{display:flex;flex-direction:column;gap:8px}
+.fstep{display:flex;align-items:center;gap:11px;font-size:13.5px}
+.fstep .fl{width:82px;color:var(--mid);font-weight:600;flex:0 0 auto;text-transform:capitalize}
+.fstep .fb{flex:1;height:9px;border-radius:6px;background:var(--card2);overflow:hidden}
+.fstep .fb i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.fstep .fn{width:34px;text-align:right;font-weight:700;color:var(--ink);flex:0 0 auto}
+.swatches{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.sw{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);cursor:pointer}
+.sw.on{box-shadow:0 0 0 2px var(--accent)}
+.photo-row{display:flex;align-items:center;gap:14px}
+.thumb{width:76px;height:76px;border-radius:15px;flex:0 0 auto;background:var(--card2);border:1px solid var(--line);
+  display:grid;place-items:center;overflow:hidden;color:var(--muted)}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.photo-acts{display:flex;flex-direction:column;align-items:flex-start;gap:7px}
+.btn.sm{padding:9px 14px;font-size:12.5px}
+.imp-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px}
+.imp-table th{text-align:left;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  font-weight:700;padding:6px 10px 6px 0;white-space:nowrap}
+.imp-table td{padding:5px 10px 5px 0;color:var(--mid);border-top:1px solid var(--line);white-space:nowrap;
+  max-width:150px;overflow:hidden;text-overflow:ellipsis}
+.imp-scroll{overflow-x:auto;max-width:100%}
+.map-line{font-size:12.5px;color:var(--mid);margin-top:8px;line-height:1.7}
+.map-line b{color:var(--ink);font-weight:600}
+.map-line s{color:var(--muted);text-decoration:none;opacity:.75}
+.logo-drop{display:flex;align-items:center;gap:14px;padding:14px;border:1px dashed #24313f;border-radius:14px;background:var(--bg2)}
+.logo-drop .mark{width:66px;height:66px}
+.logo-drop .ld-t{font-size:13.5px;font-weight:600}
+.logo-drop .ld-s{font-size:12px;color:var(--muted);margin-top:2px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + var(--safe-b));z-index:200;
+  background:var(--card2);border:1px solid var(--accent-line);color:var(--ink);font-size:13.5px;font-weight:600;
+  padding:11px 18px;border-radius:30px;box-shadow:0 10px 30px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:.2s}
+.toast.on{opacity:1}
+.kswitch{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.mini{font-size:12.5px;color:var(--accent);font-weight:600}
+.sectitle{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:22px 0 9px}
+
+@media(min-width:900px){
+  .scrim{display:none}
+  .drawer{transform:none;box-shadow:none}
+  .topbar #menuBtn{display:none}
+  body{padding-left:302px}
+  .topbar{padding-left:22px}
+  main{padding:26px 26px 60px;max-width:1120px}
+  .tabbar{display:none}
+  .fab{bottom:28px;right:28px}
+  #login{padding-left:0}
+  body.anon{padding-left:0}
+  body.anon .drawer{display:none}
+}
+</style>
+</head>
+<body class="anon">
+
+<div id="login">
+  <div class="login-card">
+    <div class="mark" id="loginMark"><span>K</span></div>
+    <h2 id="loginTitle">Kennel OS</h2>
+    <p class="lp" id="loginSub">Sign in to your kennel</p>
+    <div class="field"><label>Email</label><input id="email" type="email" autocomplete="email" placeholder="you@kennel.com"></div>
+    <div class="field"><label>Password</label><input id="password" type="password" autocomplete="current-password" placeholder="••••••••"></div>
+    <button class="btn block" id="loginBtn">Sign in</button>
+    <div class="err" id="loginErr"></div>
+    <div class="login-alt">
+      <span id="altText">First time here?</span>
+      <button id="altBtn">Create your login</button>
+    </div>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+  <header class="topbar">
+    <button class="icon-btn" id="menuBtn" aria-label="Menu"></button>
+    <div class="tb-title" id="tbTitle">Dashboard</div>
+    <div class="tb-wrap"><button class="icon-btn ring" id="alertBtn" aria-label="Alerts"></button><span class="badge-dot" id="alertN" style="display:none">0</span></div>
+  </header>
+
+  <div class="scrim" id="scrim"></div>
+  <aside class="drawer" id="drawer">
+    <div class="brandblock">
+      <div class="mark" id="navMark"><span>K</span></div>
+      <div style="min-width:0">
+        <h1 id="navName">KENNEL <i>OS</i></h1>
+        <p id="navTag">Kennel Operating System</p>
+      </div>
+    </div>
+    <div class="navscroll" id="navScroll"></div>
+    <div class="drawer-foot">
+      <div class="kswitch"><b id="userEmail">—</b></div>
+      <button class="mini" id="signOut">Sign out</button>
+    </div>
+  </aside>
+
+  <main id="view"><div class="loading">Loading your kennel…</div></main>
+
+  <button class="fab" id="fab" aria-label="Quick add"></button>
+  <nav class="tabbar" id="tabbar"></nav>
+</div>
+
+<div class="sheet-wrap" id="sheetWrap">
+  <div class="sheet-bg" id="sheetBg"></div>
+  <div class="sheet" id="sheet"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   KENNEL OS (LITE) — white-label breeder operating system
+   One file, one Supabase project, many kennels. Branding is data:
+   a kennel uploads its logo → the accent color is extracted from the
+   artwork and every surface in the app re-skins itself instantly.
+   ══════════════════════════════════════════════════════════════════ */
+(function(){
+'use strict';
+
+/* ── CONFIG ─────────────────────────────────────────────────────────
+   Breeder records live in their OWN Supabase project, separate from
+   Breedwise's internal one. Point these two lines at that project and
+   nothing else in this file changes. VAPID_PUBLIC is the web-push
+   public key (public by design; the private half stays a function
+   secret) — leave it empty and the push toggle simply hides itself. */
+var SUPABASE_URL='https://jrfdufemonjhafqyacge.supabase.co';
+var SUPABASE_KEY='sb_publishable_qkW_hfFpTpsrpGqwIWo-dg_9ZoQwmqo';
+var VAPID_PUBLIC='';
+var SW_PATH='kennel-os-sw.js';
+var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,detectSessionInUrl:true}});
+
+var S={user:null,kennel:null,kennels:[],role:'viewer',isAdmin:false,
+       cache:{dogs:[],contacts:[],litters:[],puppies:[]},rows:{},dash:{},prefs:null,filter:{},search:{}};
+
+/* ─── tiny helpers ─────────────────────────────────────────────── */
+function $(s,r){return (r||document).querySelector(s);}
+function el(id){return document.getElementById(id);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function money(n){var v=Number(n||0);return '$'+v.toLocaleString('en-US',{maximumFractionDigits:0});}
+function money2(n){var v=Number(n||0);return '$'+v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function today(){return new Date().toISOString().slice(0,10);}
+function fdate(d){if(!d)return '';var p=String(d).slice(0,10).split('-');
+  if(p.length<3)return d;return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+p[1]-1]+' '+(+p[2])+', '+p[0];}
+function fshort(d){if(!d)return '';var p=String(d).slice(0,10).split('-');if(p.length<3)return d;
+  return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+p[1]-1]+' '+(+p[2]);}
+function days(d){if(!d)return null;var a=new Date(String(d).slice(0,10)+'T12:00:00'),b=new Date();
+  return Math.round((a-b)/86400000);}
+function age(dob){var n=days(dob);if(n==null)return '';n=-n;if(n<0)return '';
+  if(n<70)return n+' days';var m=Math.floor(n/30.44);
+  if(m<24)return m+' mo';return (Math.floor(m/12))+'y '+(m%12)+'m';}
+function markText(k){var t=(k&&(k.short_name||initials(k.name)))||'K';
+  return String(t).trim().slice(0,3).toUpperCase();}
+function initials(s){return String(s||'?').trim().split(/\s+/).slice(0,2).map(function(w){return w[0];}).join('').toUpperCase();}
+/* storage can throw (private mode, embedded contexts) — never let it break boot */
+function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+function toast(msg){var t=el('toast');t.textContent=msg;t.classList.add('on');
+  clearTimeout(t._x);t._x=setTimeout(function(){t.classList.remove('on');},2100);}
+
+/* ─── icons ────────────────────────────────────────────────────── */
+var P={
+ menu:'M4 6h16M4 12h16M4 18h16',
+ bell:'M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0',
+ home:'M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z',
+ calendar:'M7 3v3M17 3v3M4 8h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z',
+ check:'M4 5h12a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM7 12l3 3 10-10',
+ users:'M16 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 10a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M22 20v-2a4 4 0 0 0-3-3.8M16.5 3.3a4 4 0 0 1 0 7.4',
+ target:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8M12 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2',
+ dog:'M10 5.5a2 2 0 1 0 0-.1M17 8.5a2 2 0 1 0 0-.1M6 10.5a2 2 0 1 0 0-.1M19.5 14a2 2 0 1 0 0-.1M12.5 12c2.6 0 4.5 2.2 4.5 4.4 0 1.9-1.4 3.6-4.5 3.6S8 18.3 8 16.4C8 14.2 9.9 12 12.5 12z',
+ heart:'M12 20s-7-4.4-7-9.3A4 4 0 0 1 12 8a4 4 0 0 1 7 2.7C19 15.6 12 20 12 20z',
+ paw:'M5.5 12.5a2 2 0 1 0 0-.1M18.5 12.5a2 2 0 1 0 0-.1M9 7.5a2 2 0 1 0 0-.1M15 7.5a2 2 0 1 0 0-.1M12 12.5c2.4 0 4.4 2 4.4 4.2 0 1.8-1.3 3.3-4.4 3.3s-4.4-1.5-4.4-3.3c0-2.2 2-4.2 4.4-4.2z',
+ dollar:'M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6',
+ file:'M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8zM14 3v5h5',
+ chart:'M4 3v17a1 1 0 0 0 1 1h16M8 15l3.5-4.5L15 14l4-6',
+ cog:'M4 7h9M17 7h3M4 12h3M11 12h9M4 17h6M14 17h6M15 5a2 2 0 1 0 0 4 2 2 0 0 0 0-4M9 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4M12 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4',
+ plus:'M12 5v14M5 12h14',
+ x:'M6 6l12 12M18 6L6 18',
+ search:'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14M20 20l-3.5-3.5',
+ box:'M3 7.5 12 3l9 4.5v9L12 21 3 16.5zM3 7.5 12 12l9-4.5M12 12v9',
+ spark:'M12 3l2 5.6L20 11l-6 2.4L12 19l-2-5.6L4 11l6-2.4z',
+ chev:'M9 6l6 6-6 6',
+ image:'M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM8.5 10.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M21 16l-5-5-5 5-2-2-5 5'
+};
+function ic(n,sz){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '+
+  'stroke-linecap="round" stroke-linejoin="round"'+(sz?' style="width:'+sz+'px;height:'+sz+'px"':'')+'><path d="'+P[n]+'"/></svg>';}
+
+/* ─── color engine: a logo in, a whole theme out ───────────────── */
+function hex2rgb(h){h=String(h||'').replace('#','');
+  if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  var n=parseInt(h,16);if(isNaN(n))return {r:47,g:155,b:255};
+  return {r:(n>>16)&255,g:(n>>8)&255,b:n&255};}
+function rgb2hex(r,g,b){return '#'+[r,g,b].map(function(v){
+  return ('0'+Math.max(0,Math.min(255,Math.round(v))).toString(16)).slice(-2);}).join('');}
+function rgb2hsl(r,g,b){r/=255;g/=255;b/=255;
+  var mx=Math.max(r,g,b),mn=Math.min(r,g,b),h=0,s=0,l=(mx+mn)/2,d=mx-mn;
+  if(d){s=l>0.5?d/(2-mx-mn):d/(mx+mn);
+    h=mx===r?((g-b)/d+(g<b?6:0)):mx===g?((b-r)/d+2):((r-g)/d+4);h*=60;}
+  return {h:h,s:s,l:l};}
+function hsl2hex(h,s,l){h=((h%360)+360)%360;
+  var c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs((h/60)%2-1)),m=l-c/2,r,g,b;
+  if(h<60){r=c;g=x;b=0;}else if(h<120){r=x;g=c;b=0;}else if(h<180){r=0;g=c;b=x;}
+  else if(h<240){r=0;g=x;b=c;}else if(h<300){r=x;g=0;b=c;}else{r=c;g=0;b=x;}
+  return rgb2hex((r+m)*255,(g+m)*255,(b+m)*255);}
+function rgba(hex,a){var c=hex2rgb(hex);return 'rgba('+c.r+','+c.g+','+c.b+','+a+')';}
+function lighten(hex,amt){var c=hex2rgb(hex),h=rgb2hsl(c.r,c.g,c.b);
+  return hsl2hex(h.h,Math.max(.35,h.s*.92),Math.min(.82,h.l+amt));}
+/* Make any brand color legible as an accent on a near-black UI. */
+function tuneForDark(hex){var c=hex2rgb(hex),h=rgb2hsl(c.r,c.g,c.b);
+  var s=Math.max(.45,Math.min(.95,h.s)),l=Math.max(.48,Math.min(.66,h.l));
+  return hsl2hex(h.h,s,l);}
+
+/* Pull the dominant *brand* color out of a logo: hue-bucket the pixels,
+   weight by saturation, ignore the black/white/grey of the artwork. */
+function extractPalette(img){
+  var N=72,cv=document.createElement('canvas');cv.width=N;cv.height=N;
+  var cx=cv.getContext('2d',{willReadFrequently:true});
+  cx.drawImage(img,0,0,N,N);
+  var d;try{d=cx.getImageData(0,0,N,N).data;}catch(e){return null;}
+  var bins={},any=0;
+  for(var i=0;i<d.length;i+=4){
+    var a=d[i+3];if(a<130)continue;
+    var r=d[i],g=d[i+1],b=d[i+2];
+    var mx=Math.max(r,g,b),mn=Math.min(r,g,b);
+    any++;
+    if(mx-mn<28)continue;                        // grey / black / white
+    if(mx<34||mn>232)continue;                   // too dark / too washed
+    var h=rgb2hsl(r,g,b);
+    if(h.s<0.22)continue;
+    var key=Math.round(h.h/14);
+    var w=h.s*(1-Math.abs(h.l-0.5));             // vivid, mid-lightness wins
+    var o=bins[key]||(bins[key]={w:0,h:0,s:0,l:0,n:0});
+    o.w+=w;o.h+=h.h;o.s+=h.s;o.l+=h.l;o.n++;
+  }
+  var keys=Object.keys(bins);
+  if(!keys.length||!any)return null;
+  keys.sort(function(a,b){return bins[b].w-bins[a].w;});
+  var pal=keys.slice(0,5).map(function(k){var o=bins[k];
+    return tuneForDark(hsl2hex(o.h/o.n,o.s/o.n,o.l/o.n));});
+  return {accent:pal[0],accent2:lighten(pal[0],.16),palette:pal};
+}
+
+/* Paint the whole OS in a kennel's colors.
+   A gold button on a blue-grey app still looks like someone else's app,
+   so the neutrals get pulled toward the brand hue too: same near-black
+   depth, warmed or cooled to match the logo. Set brand.tint = false to
+   keep the stock cool greys. */
+function applyBrand(k){
+  k=k||{};
+  var a=k.accent||'#2f9bff', a2=k.accent_2||lighten(a,.16);
+  var r=document.documentElement.style;
+  r.setProperty('--accent',a);
+  r.setProperty('--accent2',a2);
+  r.setProperty('--accent-soft',rgba(a,.13));
+  r.setProperty('--accent-line',rgba(a,.30));
+  var c=hex2rgb(a),hs=rgb2hsl(c.r,c.g,c.b),h=hs.h;
+  if(!k.brand||k.brand.tint!==false){
+    r.setProperty('--bg',    hsl2hex(h,.20,.035));
+    r.setProperty('--bg2',   hsl2hex(h,.20,.055));
+    r.setProperty('--card',  hsl2hex(h,.18,.075));
+    r.setProperty('--card2', hsl2hex(h,.17,.105));
+    r.setProperty('--line',  hsl2hex(h,.15,.16));
+    r.setProperty('--ink',   hsl2hex(h,.14,.93));
+    r.setProperty('--mid',   hsl2hex(h,.11,.70));
+    r.setProperty('--muted', hsl2hex(h,.09,.47));
+  }
+  var short=k.short_name||initials(k.name)||'KENNEL';
+  var name=k.name||'Kennel OS';
+  document.title=short+' OS — '+name;
+  el('navName').innerHTML=esc(short)+' <i>OS</i>';
+  el('navTag').textContent=name;
+  var markHTML=k.logo_url?'<img src="'+esc(k.logo_url)+'" alt="">':'<span>'+esc(markText(k))+'</span>';
+  el('navMark').innerHTML=markHTML;
+  el('loginMark').innerHTML=markHTML;
+  el('themeColor').setAttribute('content',
+    getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()||'#05070b');
+  var at=document.querySelector('link[rel="apple-touch-icon"]');
+  if(at&&k.logo_url)at.setAttribute('href',k.logo_url);   // iOS home-screen icon
+  el('favicon').setAttribute('href',k.logo_url||
+    "data:image/svg+xml,"+encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='#0a0f16'/><text x='50' y='68' font-size='46' font-family='Helvetica' font-weight='700' fill='"+a+"' text-anchor='middle'>"+markText(k)+"</text></svg>"));
+}
+
+/* ─── media: phone photos are 4-8 MB, so resize before upload ──── */
+async function shrink(file,max){
+  if(/svg|gif/.test(file.type||''))return file;
+  var bmp=null;
+  try{bmp=await createImageBitmap(file,{imageOrientation:'from-image'});}
+  catch(e){try{bmp=await createImageBitmap(file);}catch(e2){return file;}}
+  var sc=Math.min(1,max/Math.max(bmp.width,bmp.height));
+  if(sc>=1&&file.size<700*1024)return file;
+  var cv=document.createElement('canvas');
+  cv.width=Math.round(bmp.width*sc);cv.height=Math.round(bmp.height*sc);
+  cv.getContext('2d').drawImage(bmp,0,0,cv.width,cv.height);
+  var blob=await new Promise(function(r){cv.toBlob(r,'image/jpeg',.82);});
+  return blob||file;
+}
+async function uploadMedia(file,folder){
+  if(file.size>20*1024*1024)throw new Error('Image must be under 20 MB');
+  var out=await shrink(file,1400),ext='jpg';
+  if(out===file)ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+  var path=K()+'/'+folder+'/'+Date.now()+'-'+Math.round(Math.random()*9999)+'.'+ext;
+  var up=await sb.storage.from('kennel-media').upload(path,out,{upsert:true,contentType:out.type||'image/jpeg'});
+  if(up.error)throw up.error;
+  return sb.storage.from('kennel-media').getPublicUrl(path).data.publicUrl;
+}
+
+/* ─── data access (always tenant-scoped) ───────────────────────── */
+function K(){return S.kennel?S.kennel.id:null;}
+function sel(table,cols){return sb.from(table).select(cols||'*').eq('kennel_id',K());}
+async function ins(table,row){row.kennel_id=K();
+  var r=await sb.from(table).insert(row).select().single();
+  if(r.error)throw r.error;return r.data;}
+async function upd(table,id,row){var r=await sb.from(table).update(row).eq('id',id).select().single();
+  if(r.error)throw r.error;return r.data;}
+async function del(table,id){var r=await sb.from(table).delete().eq('id',id);
+  if(r.error)throw r.error;}
+function canWrite(){return ['owner','manager','staff'].indexOf(S.role)>=0||S.isAdmin;}
+
+/* ─── sheet (modal) ────────────────────────────────────────────── */
+function openSheet(html){el('sheet').innerHTML='<div class="grab"></div>'+html;
+  el('sheetWrap').classList.add('on');document.body.style.overflow='hidden';}
+function closeSheet(){el('sheetWrap').classList.remove('on');document.body.style.overflow='';}
+el('sheetBg').addEventListener('click',closeSheet);
+
+function confirmSheet(title,msg,onYes,yesLabel,kind){
+  openSheet('<h3>'+esc(title)+'</h3><div class="sub">'+esc(msg)+'</div>'+
+    '<div class="sheet-actions"><button class="btn ghost" id="cNo">Cancel</button>'+
+    '<button class="btn '+(kind==='primary'?'':'danger')+'" id="cYes">'+esc(yesLabel||'Delete')+'</button></div>');
+  el('cNo').onclick=closeSheet;
+  el('cYes').onclick=function(){closeSheet();onYes();};
+}
+
+/* ─── drawer / nav ─────────────────────────────────────────────── */
+var NAV=[
+ {g:'Overview',items:[['','home','Dashboard'],['calendar','calendar','Calendar'],['tasks','check','Tasks','tasks_open']]},
+ {g:'Relationships',items:[['contacts','users','CRM & Contacts'],['leads','target','Leads & Sales','leads_open']]},
+ {g:'Kennel',items:[['dogs','dog','Dogs'],['breedings','heart','Breedings'],
+   ['litters','paw','Litters & Puppies'],['health','check','Health & Vaccines']]},
+ {g:'Business',items:[['money','dollar','Finances'],['documents','file','Documents']]},
+ {g:'Intelligence',items:[['reports','chart','Reports'],['settings','cog','Settings']]}
+];
+var TABS=[['','home','Home'],['dogs','dog','Dogs'],['money','dollar','Money'],['tasks','check','Tasks']];
+
+function renderNav(){
+  var cur=route().view,h='',nav=NAV.slice();
+  if(S.isAdmin)nav=nav.concat([{g:'Breedwise',items:[['admin','spark','White-label Admin']]}]);
+  nav.forEach(function(grp){
+    h+='<div class="navgroup">'+esc(grp.g)+'</div>';
+    grp.items.forEach(function(it){
+      var n=it[3]&&S.dash[it[3]]?'<span class="n">'+S.dash[it[3]]+'</span>':'';
+      h+='<button class="navitem'+(cur===it[0]?' on':'')+'" data-go="'+it[0]+'">'+ic(it[1])+
+         '<span>'+esc(it[2])+'</span>'+n+'</button>';
+    });
+  });
+  el('navScroll').innerHTML=h;
+  el('tabbar').innerHTML=TABS.map(function(t){
+    return '<button class="tab'+(cur===t[0]?' on':'')+'" data-go="'+t[0]+'">'+ic(t[1])+'<span>'+t[2]+'</span></button>';}).join('');
+}
+function openDrawer(o){el('drawer').classList.toggle('on',o);el('scrim').classList.toggle('on',o);}
+el('menuBtn').innerHTML=ic('menu');
+el('alertBtn').innerHTML=ic('bell');
+el('fab').innerHTML=ic('plus');
+el('menuBtn').onclick=function(){openDrawer(!el('drawer').classList.contains('on'));};
+el('scrim').onclick=function(){openDrawer(false);};
+document.addEventListener('click',function(e){
+  var g=e.target.closest('[data-go]');if(!g)return;
+  go(g.getAttribute('data-go'));openDrawer(false);
+});
+el('signOut').onclick=async function(){await sb.auth.signOut();location.reload();};
+el('alertBtn').onclick=function(){go('tasks');};
+
+/* ─── router ───────────────────────────────────────────────────── */
+function route(){var h=(location.hash||'#/').replace(/^#\/?/,'').split('/');
+  return {view:h[0]||'',id:h[1]||null};}
+function go(v,id){location.hash='#/'+v+(id?'/'+id:'');}
+window.addEventListener('hashchange',render);
+
+/* ══════════════════════════════════════════════════════════════════
+   RESOURCES — every module is declared once: table, fields, how a
+   row reads. The list, the search, the form and the save path are
+   all generated from this, which is what keeps the OS "lite".
+   ══════════════════════════════════════════════════════════════════ */
+function dogName(id){for(var i=0;i<S.cache.dogs.length;i++)if(S.cache.dogs[i].id===id)
+  return S.cache.dogs[i].call_name||S.cache.dogs[i].name;return null;}
+function contactName(id){for(var i=0;i<S.cache.contacts.length;i++)if(S.cache.contacts[i].id===id)
+  return S.cache.contacts[i].name;return null;}
+function litterName(id){for(var i=0;i<S.cache.litters.length;i++)if(S.cache.litters[i].id===id)
+  return S.cache.litters[i].name||('Litter '+fshort(S.cache.litters[i].whelp_date));return null;}
+function dogOpts(sex){return S.cache.dogs.filter(function(d){return !sex||d.sex===sex;})
+  .map(function(d){return [d.id,(d.call_name||d.name)+(d.sex?' ('+d.sex[0]+')':'')];});}
+function contactOpts(){return S.cache.contacts.map(function(c){return [c.id,c.name];});}
+function litterOpts(){return S.cache.litters.map(function(l){return [l.id,l.name||('Litter · '+fshort(l.whelp_date))];});}
+
+var STAT={active:'good',won:'good',sold:'good',delivered:'good',live:'good',done:'good',
+  available:'acc',new:'acc',expecting:'acc',planned:'acc',confirmed:'acc',whelped:'acc',
+  reserved:'warn',deposit:'warn',qualified:'warn',doing:'warn',hold:'warn',open:'warn',
+  lost:'bad',missed:'bad',cancelled:'bad',deceased:'bad'};
+function pill(v){if(!v)return '';return '<span class="pill '+(STAT[v]||'')+'">'+esc(v)+'</span>';}
+
+var RES={
+ dogs:{table:'kos_dogs',title:'Dogs',sub:'Every dog in your program',order:'name',asc:true,
+   search:['name','call_name','breed','color','reg_number'],
+   filterKey:'status',filters:['active','retired','placed','prospect','deceased'],
+   fields:[
+     {k:'name',l:'Registered name',t:'text',req:1},
+     {k:'call_name',l:'Call name',t:'text',h:1},{k:'sex',l:'Sex',t:'sel',opts:['Male','Female'],h:1},
+     {k:'breed',l:'Breed',t:'text',h:1},{k:'color',l:'Color / pattern',t:'text',h:1},
+     {k:'dob',l:'Date of birth',t:'date',h:1},
+     {k:'status',l:'Status',t:'sel',opts:['active','retired','placed','co-own','sold','prospect','deceased'],h:1},
+     {k:'role',l:'Role',t:'text',h:1,ph:'Producer / Stud / Companion'},{k:'weight',l:'Weight',t:'text',h:1},
+     {k:'reg_number',l:'Registration #',t:'text',h:1},{k:'microchip',l:'Microchip',t:'text',h:1},
+     {k:'sire',l:'Sire',t:'text',h:1},{k:'dam',l:'Dam',t:'text',h:1},
+     {k:'photo_url',l:'Photo',t:'photo'},{k:'notes',l:'Notes',t:'area'}],
+   row:function(d){return {img:d.photo_url,ini:initials(d.call_name||d.name),t:d.call_name||d.name,
+     s:[d.sex,d.breed,d.color].filter(Boolean).join(' · ')||d.name,
+     right:d.dob?age(d.dob):'',rsub:d.role||'',status:d.status};}},
+
+ breedings:{table:'kos_breedings',title:'Breedings',sub:'Pairings, due dates, stud fees',order:'bred_on',asc:false,
+   search:['sire_external','notes'],
+   filterKey:'status',filters:['planned','bred','confirmed','whelped','missed'],
+   detail:true,
+   fields:[
+     {k:'dam_id',l:'Dam',t:'ref',opts:function(){return dogOpts('Female');},h:1},
+     {k:'sire_id',l:'Sire (in-house)',t:'ref',opts:function(){return dogOpts('Male');},h:1},
+     {k:'sire_external',l:'Outside stud',t:'text'},
+     {k:'method',l:'Method',t:'sel',opts:['Natural','AI','Surgical AI','TCI'],h:1},
+     {k:'status',l:'Status',t:'sel',opts:['planned','bred','confirmed','whelped','missed','cancelled'],h:1},
+     {k:'bred_on',l:'Bred on',t:'date',h:1},{k:'due_date',l:'Due date',t:'date',h:1},
+     {k:'stud_fee',l:'Stud fee',t:'money',h:1},{k:'confirmed',l:'Pregnancy confirmed',t:'bool',h:1},
+     {k:'notes',l:'Notes',t:'area'}],
+   row:function(b){var d=dogName(b.dam_id)||'Dam TBD',s=dogName(b.sire_id)||b.sire_external||'Stud TBD';
+     var n=days(b.due_date);
+     return {ini:'♥',t:d+' × '+s,s:[b.method,b.bred_on?'bred '+fshort(b.bred_on):''].filter(Boolean).join(' · '),
+       right:b.due_date?fshort(b.due_date):'',rsub:n!=null&&n>=0&&b.status!=='whelped'?'due in '+n+'d':'',status:b.status};}},
+
+ litters:{table:'kos_litters',title:'Litters & Puppies',sub:'From whelp to go-home day',order:'whelp_date',asc:false,
+   search:['name','notes'],filterKey:'status',filters:['expecting','whelped','weaning','placing','closed'],
+   detail:true,
+   fields:[
+     {k:'name',l:'Litter name',t:'text',ph:'"A" Litter',req:1},
+     {k:'dam_id',l:'Dam',t:'ref',opts:function(){return dogOpts('Female');},h:1},
+     {k:'sire_id',l:'Sire',t:'ref',opts:function(){return dogOpts('Male');},h:1},
+     {k:'whelp_date',l:'Whelp date',t:'date',h:1},{k:'go_home_date',l:'Go-home date',t:'date',h:1},
+     {k:'status',l:'Status',t:'sel',opts:['expecting','whelped','weaning','placing','closed'],h:1},
+     {k:'born_total',l:'Born (total)',t:'num',h:1},
+     {k:'born_male',l:'Males',t:'num',h:1},{k:'born_female',l:'Females',t:'num',h:1},
+     {k:'notes',l:'Notes',t:'area'}],
+   row:function(l){return {ini:'🐾',t:l.name||('Litter · '+fshort(l.whelp_date)),
+     s:[dogName(l.dam_id),dogName(l.sire_id)].filter(Boolean).join(' × ')||'Pairing TBD',
+     right:l.whelp_date?fshort(l.whelp_date):'',rsub:(l.born_total||0)+' pups',status:l.status};}},
+
+ puppies:{table:'kos_puppies',title:'Puppies',sub:'',order:'name',asc:true,
+   search:['name','collar','color'],filterKey:'status',filters:['available','reserved','sold','kept','hold'],
+   fields:[
+     {k:'litter_id',l:'Litter',t:'ref',opts:litterOpts,req:1},
+     {k:'name',l:'Name / ID',t:'text',h:1},{k:'collar',l:'Collar',t:'text',h:1},
+     {k:'sex',l:'Sex',t:'sel',opts:['Male','Female'],h:1},{k:'color',l:'Color',t:'text',h:1},
+     {k:'status',l:'Status',t:'sel',opts:['available','reserved','sold','kept','hold','deceased'],h:1},
+     {k:'birth_weight',l:'Birth weight',t:'text',h:1},
+     {k:'price',l:'Price',t:'money',h:1},{k:'deposit',l:'Deposit paid',t:'money',h:1},
+     {k:'buyer_id',l:'Buyer',t:'ref',opts:contactOpts,h:1},{k:'go_home_date',l:'Go-home date',t:'date',h:1},
+     {k:'photo_url',l:'Photo',t:'photo'},{k:'notes',l:'Notes',t:'area'}],
+   row:function(p){return {img:p.photo_url,ini:initials(p.name||p.collar||'P'),t:p.name||p.collar||'Puppy',
+     s:[p.sex,p.color,contactName(p.buyer_id)].filter(Boolean).join(' · '),
+     right:p.price?money(p.price):'',rsub:p.deposit?money(p.deposit)+' dep':'',status:p.status};}},
+
+ contacts:{table:'kos_contacts',title:'CRM & Contacts',sub:'Buyers, vendors, vets, breeders',order:'name',asc:true,
+   search:['name','email','phone','city','state','instagram'],
+   filterKey:'type',filters:['buyer','lead','vendor','vet','breeder','other'],
+   fields:[
+     {k:'name',l:'Name',t:'text',req:1},
+     {k:'type',l:'Type',t:'sel',opts:['buyer','lead','vendor','vet','breeder','other'],h:1},
+     {k:'phone',l:'Phone',t:'tel',h:1},{k:'email',l:'Email',t:'email'},
+     {k:'city',l:'City',t:'text',h:1},{k:'state',l:'State',t:'text',h:1},
+     {k:'instagram',l:'Instagram',t:'text'},{k:'notes',l:'Notes',t:'area'}],
+   row:function(c){return {ini:initials(c.name),t:c.name,
+     s:[c.phone,c.email,[c.city,c.state].filter(Boolean).join(', ')].filter(Boolean).join(' · '),
+     right:'',rsub:'',status:c.type};}},
+
+ leads:{table:'kos_leads',title:'Leads & Sales',sub:'Your puppy pipeline',order:'created_at',asc:false,
+   search:['name','email','phone','source','interest'],
+   filterKey:'stage',filters:['new','contacted','qualified','deposit','won','lost'],
+   fields:[
+     {k:'name',l:'Name',t:'text',req:1},
+     {k:'stage',l:'Stage',t:'sel',opts:['new','contacted','qualified','deposit','won','lost'],h:1},
+     {k:'source',l:'Source',t:'text',h:1,ph:'Instagram / Website / Referral'},
+     {k:'phone',l:'Phone',t:'tel',h:1},{k:'email',l:'Email',t:'email',h:1},
+     {k:'interest',l:'Looking for',t:'text',ph:'Male, blue tri, spring litter'},
+     {k:'value',l:'Deal value',t:'money',h:1},{k:'next_action_at',l:'Follow up on',t:'date',h:1},
+     {k:'next_action',l:'Next action',t:'text'},
+     {k:'contact_id',l:'Linked contact',t:'ref',opts:contactOpts,h:1},
+     {k:'puppy_id',l:'Puppy',t:'ref',opts:function(){return S.cache.puppies.map(function(p){
+        return [p.id,(p.name||p.collar||'Puppy')+(p.color?' · '+p.color:'')];});},h:1},
+     {k:'notes',l:'Notes',t:'area'}],
+   row:function(l){var n=days(l.next_action_at);
+     return {ini:initials(l.name),t:l.name,
+       s:[l.source,l.interest].filter(Boolean).join(' · ')||'—',
+       right:l.value?money(l.value):'',
+       rsub:l.next_action_at?(n<0?'overdue '+(-n)+'d':n===0?'today':'in '+n+'d'):'',status:l.stage};}},
+
+ tasks:{table:'kos_tasks',title:'Tasks',sub:'What needs doing',order:'due_date',asc:true,
+   search:['title','notes','assigned_to'],
+   filterKey:'status',filters:['open','doing','done'],
+   fields:[
+     {k:'title',l:'Task',t:'text',req:1},
+     {k:'status',l:'Status',t:'sel',opts:['open','doing','done'],h:1},
+     {k:'priority',l:'Priority',t:'sel',opts:['low','normal','high'],h:1},
+     {k:'due_date',l:'Due',t:'date',h:1},{k:'assigned_to',l:'Assigned to',t:'text',h:1},
+     {k:'notes',l:'Notes',t:'area'}],
+   row:function(t){var n=days(t.due_date);
+     return {ini:t.status==='done'?'✓':(t.priority==='high'?'!':'•'),t:t.title,
+       s:[t.assigned_to,t.due_date?fshort(t.due_date):''].filter(Boolean).join(' · ')||'No due date',
+       right:'',rsub:t.due_date&&t.status!=='done'?(n<0?'overdue':n===0?'today':'in '+n+'d'):'',status:t.status};}},
+
+ money:{table:'kos_transactions',title:'Finances',sub:'Money in, money out',order:'occurred_on',asc:false,
+   search:['description','category','method'],
+   filterKey:'direction',filters:['in','out'],
+   fields:[
+     {k:'direction',l:'Direction',t:'sel',opts:['in','out'],req:1,h:1},
+     {k:'amount',l:'Amount',t:'money',req:1,h:1},
+     {k:'occurred_on',l:'Date',t:'date',h:1},
+     {k:'category',l:'Category',t:'text',h:1,ph:'Puppy sale / Stud fee / Vet / Feed'},
+     {k:'description',l:'Description',t:'text'},
+     {k:'method',l:'Method',t:'text',h:1,ph:'Stripe / Cash / Zelle'},
+     {k:'contact_id',l:'Contact',t:'ref',opts:contactOpts,h:1}],
+   row:function(t){return {ini:t.direction==='in'?'+':'−',t:t.description||t.category||'Transaction',
+     s:[fshort(t.occurred_on),t.category,contactName(t.contact_id)].filter(Boolean).join(' · '),
+     right:(t.direction==='in'?'+':'−')+money(t.amount),rsub:t.method||'',
+     rcls:t.direction==='in'?'good':'bad'};}},
+
+ documents:{table:'kos_documents',title:'Documents',sub:'Contracts, health records, pedigrees',order:'created_at',asc:false,
+   search:['title','category','notes'],
+   fields:[
+     {k:'title',l:'Title',t:'text',req:1},{k:'url',l:'Link',t:'text',ph:'https://…'},
+     {k:'category',l:'Category',t:'text',h:1,ph:'Contract / Health / Pedigree'},
+     {k:'notes',l:'Notes',t:'area'}],
+   row:function(d){return {ini:'📄',t:d.title,s:[d.category,d.url?'link':''].filter(Boolean).join(' · '),right:fshort(d.created_at)};}},
+
+ health:{table:'kos_health_events',title:'Health',sub:'Vaccines, dewormings, exams',order:'due_on',asc:true,
+   search:['name','product','notes'],filterKey:'kind',filters:['vaccine','deworm','exam','test','treatment'],
+   fields:[
+     {k:'name',l:'What',t:'text',req:1},
+     {k:'kind',l:'Type',t:'sel',opts:['vaccine','deworm','exam','test','treatment','other'],h:1},
+     {k:'due_on',l:'Due',t:'date',h:1},{k:'given_on',l:'Given',t:'date',h:1},
+     {k:'product',l:'Product',t:'text',h:1},{k:'dose',l:'Dose',t:'text',h:1},
+     {k:'administered_by',l:'Given by',t:'text',h:1},
+     {k:'dog_id',l:'Dog',t:'ref',opts:function(){return dogOpts();},h:1},
+     {k:'puppy_id',l:'Puppy',t:'ref',opts:function(){return S.cache.puppies.map(function(x){
+        return [x.id,(x.name||x.collar||'Puppy')];});},h:1},
+     {k:'litter_id',l:'Litter',t:'ref',opts:litterOpts,h:1},
+     {k:'notes',l:'Notes',t:'area'}],
+   row:function(h){var dd=days(h.due_on);
+     return {ini:h.given_on?'✓':(h.kind==='vaccine'?'💉':h.kind==='deworm'?'💊':'🩺'),t:h.name,
+       s:[h.product,h.given_on?'given '+fshort(h.given_on):h.due_on?'due '+fshort(h.due_on):''].filter(Boolean).join(' · '),
+       right:'',rsub:h.given_on?'':(dd!=null&&dd<0?'overdue':''),status:h.given_on?'done':h.kind};}},
+
+ progesterone:{table:'kos_progesterone',title:'Progesterone',sub:'Timing draws',order:'drawn_on',asc:true,
+   search:['lab','notes'],
+   fields:[
+     {k:'drawn_on',l:'Date drawn',t:'date',req:1,h:1},{k:'drawn_at',l:'Time',t:'time',h:1},
+     {k:'value',l:'Value (ng/mL)',t:'money',req:1,h:1},{k:'lab',l:'Lab',t:'text',h:1},
+     {k:'dog_id',l:'Dam',t:'ref',opts:function(){return dogOpts('Female');},h:1},
+     {k:'breeding_id',l:'Breeding',t:'ref',opts:function(){return S.cache.breedings||[];},h:1},
+     {k:'notes',l:'Notes',t:'area'}],
+   row:function(x){var n=progNote(x.value);
+     return {ini:'🧪',t:Number(x.value).toFixed(1)+' ng/mL',s:n.t+' · '+(x.lab||fshort(x.drawn_on)),
+       right:fshort(x.drawn_on)};}},
+
+ calendar:{table:'kos_events',title:'Calendar',sub:'Heats, whelps, vet visits, pickups',order:'starts_on',asc:true,
+   search:['title','notes','kind'],
+   filterKey:'kind',filters:['heat','breeding','whelp','vet','pickup','general'],
+   fields:[
+     {k:'title',l:'Event',t:'text',req:1},
+     {k:'kind',l:'Type',t:'sel',opts:['heat','breeding','whelp','vet','pickup','general'],h:1},
+     {k:'starts_on',l:'Date',t:'date',req:1,h:1},{k:'starts_at',l:'Time',t:'time',h:1},
+     {k:'notes',l:'Notes',t:'area'}],
+   row:function(e){var n=days(e.starts_on);
+     return {ini:'📅',t:e.title,s:[e.kind,e.starts_at?String(e.starts_at).slice(0,5):''].filter(Boolean).join(' · '),
+       right:fshort(e.starts_on),rsub:n===0?'today':n>0?'in '+n+'d':''};}}
+};
+
+/* ─── generic form ─────────────────────────────────────────────── */
+function fieldHTML(f,v){
+  var id='f_'+f.k,ph=f.ph?' placeholder="'+esc(f.ph)+'"':'',out='';
+  if(f.t==='sel'||f.t==='ref'){
+    var opts=f.t==='ref'?(typeof f.opts==='function'?f.opts():f.opts):
+      f.opts.map(function(o){return [o,o];});
+    out='<select id="'+id+'"><option value="">— none —</option>'+opts.map(function(o){
+      return '<option value="'+esc(o[0])+'"'+(String(v)===String(o[0])?' selected':'')+'>'+esc(o[1])+'</option>';}).join('')+'</select>';
+  }else if(f.t==='area'){
+    out='<textarea id="'+id+'"'+ph+'>'+esc(v||'')+'</textarea>';
+  }else if(f.t==='photo'){
+    var has=!!v;
+    out='<div class="photo-row"><div class="thumb" id="ph_'+f.k+'_t">'+
+      (has?'<img src="'+esc(v)+'" alt="">':ic('image',24))+'</div>'+
+      '<div class="photo-acts">'+
+        '<button type="button" class="btn ghost sm" id="ph_'+f.k+'_b">'+(has?'Replace photo':'Upload photo')+'</button>'+
+        '<button type="button" class="mini" id="ph_'+f.k+'_x"'+(has?'':' style="display:none"')+'>Remove</button>'+
+      '</div>'+
+      '<input type="hidden" id="f_'+f.k+'" value="'+esc(v||'')+'">'+
+      '<input type="file" accept="image/*" id="ph_'+f.k+'_f" style="display:none"></div>';
+  }else if(f.t==='bool'){
+    out='<select id="'+id+'"><option value="false"'+(!v?' selected':'')+'>No</option>'+
+        '<option value="true"'+(v?' selected':'')+'>Yes</option></select>';
+  }else{
+    var type=f.t==='date'?'date':f.t==='time'?'time':f.t==='num'||f.t==='money'?'number':
+             f.t==='email'?'email':f.t==='tel'?'tel':'text';
+    var step=f.t==='money'?' step="0.01"':'';
+    out='<input id="'+id+'" type="'+type+'"'+step+ph+' value="'+esc(v==null?'':v)+'">';
+  }
+  return '<div class="field'+(f.h?' hf':'')+'"><label>'+esc(f.l)+'</label>'+out+'</div>';
+}
+function wirePhoto(f){
+  var b=el('ph_'+f.k+'_b'),inp=el('ph_'+f.k+'_f'),hid=el('f_'+f.k),
+      th=el('ph_'+f.k+'_t'),rm=el('ph_'+f.k+'_x');
+  if(!b||!inp)return;
+  b.onclick=function(){inp.click();};
+  if(rm)rm.onclick=function(){hid.value='';th.innerHTML=ic('image',24);
+    rm.style.display='none';b.textContent='Upload photo';};
+  inp.onchange=async function(){
+    var file=this.files&&this.files[0];if(!file)return;
+    b.disabled=true;b.textContent='Uploading…';
+    try{
+      var url=await uploadMedia(file,'photos');
+      hid.value=url;th.innerHTML='<img src="'+esc(url)+'" alt="">';
+      if(rm)rm.style.display='';b.textContent='Replace photo';
+    }catch(e){toast(e.message||'Upload failed');b.textContent='Upload photo';}
+    b.disabled=false;this.value='';
+  };
+}
+function readField(f){
+  var e=el('f_'+f.k);if(!e)return undefined;
+  var v=e.value;
+  if(f.t==='bool')return v==='true';
+  if(v===''||v==null)return null;
+  if(f.t==='num')return parseInt(v,10);
+  if(f.t==='money')return parseFloat(v);
+  return v;
+}
+function openForm(key,rec,opts){
+  opts=opts||{};
+  if(!canWrite())return toast('Read-only access');
+  var R=RES[key],isNew=!rec||!rec.id;rec=rec||{};
+  var body='',pending=[];
+  R.fields.forEach(function(f){
+    if(opts.hide&&opts.hide.indexOf(f.k)>=0)return;
+    var v=rec[f.k]!=null?rec[f.k]:(opts.preset&&opts.preset[f.k]!=null?opts.preset[f.k]:
+      (isNew&&f.t==='date'&&(f.k==='occurred_on')?today():''));
+    if(f.h){pending.push(fieldHTML(f,v));if(pending.length===2){body+='<div class="f2">'+pending.join('')+'</div>';pending=[];}}
+    else{if(pending.length){body+='<div class="f2">'+pending.join('')+'</div>';pending=[];}
+      body+=fieldHTML(f,v);}
+  });
+  if(pending.length)body+='<div class="f2">'+pending.join('')+'</div>';
+
+  openSheet('<h3>'+(isNew?'New ':'Edit ')+esc(R.title.replace(/s$/,'').replace(' & Contacts','').replace(' & Sales',''))+'</h3>'+
+    '<div class="sub">'+esc(R.sub||'')+'</div>'+body+'<div class="err" id="fErr"></div>'+
+    '<div class="sheet-actions">'+
+      (isNew?'<button class="btn ghost" id="fCancel">Cancel</button>':'<button class="btn danger" id="fDel">Delete</button>')+
+      '<button class="btn" id="fSave">'+(isNew?'Create':'Save')+'</button></div>');
+
+  if(el('fCancel'))el('fCancel').onclick=closeSheet;
+  if(el('fDel'))el('fDel').onclick=function(){
+    confirmSheet('Delete this record?','This cannot be undone.',async function(){
+      try{await del(R.table,rec.id);toast('Deleted');await refreshCaches();render();}
+      catch(e){toast(e.message||'Delete failed');}});};
+  R.fields.forEach(function(f){if(f.t==='photo')wirePhoto(f);});
+  el('fSave').onclick=async function(){
+    var row={},bad=null;
+    R.fields.forEach(function(f){
+      if(opts.hide&&opts.hide.indexOf(f.k)>=0){
+        if(opts.preset&&opts.preset[f.k]!=null)row[f.k]=opts.preset[f.k];return;}
+      var v=readField(f);if(v===undefined)return;
+      if(f.req&&(v===null||v===''))bad=f.l;
+      row[f.k]=v;});
+    if(bad){el('fErr').textContent=bad+' is required';return;}
+    this.disabled=true;
+    try{
+      if(isNew)await ins(R.table,row); else await upd(R.table,rec.id,row);
+      closeSheet();toast(isNew?'Created':'Saved');await refreshCaches();render();
+    }catch(e){this.disabled=false;el('fErr').textContent=e.message||'Could not save';}
+  };
+}
+
+/* ─── generic list view ────────────────────────────────────────── */
+function rowHTML(key,rec,r){
+  var av=r.img?'<span class="av"><img src="'+esc(r.img)+'" alt=""></span>':
+    '<span class="av">'+esc(r.ini||'•')+'</span>';
+  var right='';
+  if(r.right||r.rsub||r.status){
+    right='<span class="r"'+(r.rcls?' style="color:var(--'+r.rcls+')"':'')+'>'+
+      (r.status?pill(r.status):esc(r.right||''))+
+      (r.status&&r.right?'<small>'+esc(r.right)+'</small>':(r.rsub?'<small>'+esc(r.rsub)+'</small>':''))+'</span>';
+  }
+  return '<button class="row" data-key="'+key+'" data-id="'+rec.id+'">'+av+
+    '<span class="body"><span class="t">'+esc(r.t||'—')+'</span><span class="s">'+esc(r.s||'')+'</span></span>'+
+    right+'</button>';
+}
+async function listView(key,cached){
+  var R=RES[key],v=el('view'),all;
+  if(cached&&S.rows[key]){
+    all=S.rows[key];
+  }else{
+    v.innerHTML='<div class="view-head"><h2>'+esc(R.title)+'</h2><p>'+esc(R.sub||'')+'</p></div><div class="loading">Loading…</div>';
+    var res=await sel(R.table).order(R.order,{ascending:!!R.asc,nullsFirst:false}).limit(500);
+    if(res.error){v.innerHTML='<div class="empty"><b>Could not load</b>'+esc(res.error.message)+'</div>';return;}
+    all=res.data||[];
+    S.rows[key]=all;
+  }
+  var term=(S.search[key]||'').toLowerCase(),fil=S.filter[key]||'';
+  var rows=all.filter(function(x){
+    if(fil&&String(x[R.filterKey])!==fil)return false;
+    if(!term)return true;
+    return R.search.some(function(f){return String(x[f]||'').toLowerCase().indexOf(term)>=0;});
+  });
+  var chips='';
+  if(R.filters){
+    chips='<div class="chips"><button class="chip'+(fil?'':' on')+'" data-f="">All '+all.length+'</button>'+
+      R.filters.map(function(f){
+        var n=all.filter(function(x){return String(x[R.filterKey])===f;}).length;
+        return '<button class="chip'+(fil===f?' on':'')+'" data-f="'+f+'">'+esc(f)+(n?' '+n:'')+'</button>';}).join('')+'</div>';
+  }
+  v.innerHTML='<div class="view-head"><h2>'+esc(R.title)+'</h2><p>'+esc(R.sub||'')+'</p></div>'+
+    (R.head?R.head(all):'')+
+    '<div class="toolbar"><div class="search">'+ic('search')+
+      '<input id="sInput" placeholder="Search '+esc(R.title.toLowerCase())+'…" value="'+esc(S.search[key]||'')+'"></div>'+
+      (canWrite()?'<button class="btn" id="addBtn">'+ic('plus',18)+'Add</button>':'')+'</div>'+
+    chips+
+    (rows.length?'<div class="card"><div class="rows">'+rows.map(function(x){
+        return rowHTML(key,x,R.row(x));}).join('')+'</div></div>'
+      :'<div class="empty"><b>Nothing here yet</b>'+(canWrite()?'Tap Add to create your first record.':'')+'</div>');
+
+  var si=el('sInput');
+  if(si){si.oninput=function(){S.search[key]=si.value;var p=si.selectionStart;
+    listView(key,true).then(function(){var n=el('sInput');if(n){n.focus();n.setSelectionRange(p,p);}});};}
+  if(el('addBtn'))el('addBtn').onclick=function(){openForm(key,null);};
+  Array.prototype.forEach.call(v.querySelectorAll('[data-f]'),function(b){
+    b.onclick=function(){S.filter[key]=b.getAttribute('data-f');listView(key,true);};});
+  Array.prototype.forEach.call(v.querySelectorAll('.row[data-id]'),function(b){
+    b.onclick=function(){
+      var id=b.getAttribute('data-id'),rec=null;
+      for(var i=0;i<all.length;i++)if(all[i].id===id)rec=all[i];
+      if(RES[key].detail)go(key,id); else openForm(key,rec);
+    };});
+}
+
+/* ─── extra headers on top of two of the generic lists ─────────── */
+RES.money.head=function(rows){
+  var m=new Date().toISOString().slice(0,7),inM=0,outM=0,inY=0,outY=0,y=m.slice(0,4);
+  rows.forEach(function(t){var d=String(t.occurred_on||'');
+    var a=Number(t.amount||0);
+    if(d.slice(0,4)===y){if(t.direction==='in')inY+=a;else outY+=a;}
+    if(d.slice(0,7)===m){if(t.direction==='in')inM+=a;else outM+=a;}});
+  return '<div class="stats">'+
+    stat('In this month',money(inM),'','up')+stat('Out this month',money(outM),'','dn')+
+    stat('Net this month',money(inM-outM),'',inM-outM>=0?'up':'dn')+
+    stat('Net year to date',money(inY-outY),money(inY)+' collected','')+'</div>';
+};
+RES.leads.head=function(rows){
+  var st=['new','contacted','qualified','deposit','won','lost'],mx=1,c={};
+  st.forEach(function(s){c[s]=rows.filter(function(r){return r.stage===s;}).length;mx=Math.max(mx,c[s]);});
+  var pipe=rows.filter(function(r){return r.stage==='qualified'||r.stage==='deposit';})
+    .reduce(function(a,r){return a+Number(r.value||0);},0);
+  return '<div class="card"><div class="card-h"><h3>Pipeline</h3><span class="mini">'+money(pipe)+' in play</span></div>'+
+    '<div class="funnel">'+st.map(function(s){
+      return '<div class="fstep"><span class="fl">'+s+'</span><span class="fb"><i style="width:'+
+        Math.round(c[s]/mx*100)+'%"></i></span><span class="fn">'+c[s]+'</span></div>';}).join('')+'</div></div>';
+};
+function stat(k,v,m,cls){return '<div class="stat"><div class="k">'+esc(k)+'</div><div class="v">'+esc(v)+
+  '</div>'+(m?'<div class="m '+(cls||'')+'">'+esc(m)+'</div>':'')+'</div>';}
+
+/* ─── dashboard ────────────────────────────────────────────────── */
+async function dashView(){
+  var v=el('view'),d=S.dash||{};
+  var hour=new Date().getHours();
+  var hi=hour<12?'Good morning':hour<18?'Good afternoon':'Good evening';
+  v.innerHTML='<div class="view-head"><div class="hi">'+hi+' · '+fdate(today())+'</div>'+
+    '<h2>'+esc(S.kennel.name)+'</h2><p>Here is where your program stands today.</p></div>'+
+    '<div class="stats">'+
+      stat('Revenue this month',money(d.month_in||0),(d.month_out?money(d.month_out)+' out':'—'),'')+
+      stat('Puppies available',String(d.puppies_avail||0),(d.litters||0)+' active litters','')+
+      stat('Open leads',String(d.leads_open||0),money(d.pipeline||0)+' pipeline','')+
+      stat('Tasks due',String(d.tasks_due||0),(d.tasks_open||0)+' open total',(d.tasks_due?'dn':''))+
+    '</div><div id="dToday"></div><div id="dNext"></div>'+
+    '<div class="card"><div class="card-h"><h3>Quick add</h3></div>'+
+      '<div class="chips" style="padding-bottom:0">'+
+      [['dogs','Dog'],['litters','Litter'],['puppies','Puppy'],['leads','Lead'],
+       ['contacts','Contact'],['tasks','Task'],['money','Transaction'],['calendar','Event']]
+       .map(function(q){return '<button class="chip" data-quick="'+q[0]+'">+ '+q[1]+'</button>';}).join('')+
+      '</div></div>';
+
+  Array.prototype.forEach.call(v.querySelectorAll('[data-quick]'),function(b){
+    b.onclick=function(){openForm(b.getAttribute('data-quick'),null);};});
+
+  var got=await Promise.all([
+    sel('kos_tasks').neq('status','done').order('due_date',{ascending:true,nullsFirst:false}).limit(60),
+    sel('kos_events').gte('starts_on',today()).order('starts_on',{ascending:true}).limit(20),
+    sel('kos_breedings').not('due_date','is',null).in('status',['bred','confirmed','planned'])
+      .order('due_date',{ascending:true}).limit(10),
+    sel('kos_leads').not('next_action_at','is',null).in('stage',['new','contacted','qualified','deposit'])
+      .order('next_action_at',{ascending:true}).limit(10)]);
+  var tasks=(got[0].data||[]),events=(got[1].data||[]),breed=(got[2].data||[]),leads=(got[3].data||[]);
+
+  var dueNow=tasks.filter(function(t){return t.due_date&&days(t.due_date)<=0;});
+  var evToday=events.filter(function(e){return days(e.starts_on)===0;});
+  var overdueLeads=leads.filter(function(l){return days(l.next_action_at)<=0;});
+  var todayItems=[]
+    .concat(dueNow.map(function(t){return {t:t.title,s:(days(t.due_date)<0?'Overdue · ':'Due today · ')+(t.assigned_to||'Task'),ini:'✓',go:'tasks',id:t.id};}))
+    .concat(evToday.map(function(e){return {t:e.title,s:'Today · '+(e.kind||'event'),ini:'📅',go:'calendar',id:e.id};}))
+    .concat(overdueLeads.map(function(l){return {t:'Follow up: '+l.name,s:(l.next_action||'Next action')+' · '+fshort(l.next_action_at),ini:'◎',go:'leads',id:l.id};}));
+
+  el('dToday').innerHTML='<div class="card"><div class="card-h"><h3>Today</h3>'+
+    '<button data-go="tasks">All tasks</button></div>'+
+    (todayItems.length?'<div class="rows">'+todayItems.slice(0,8).map(function(i){
+      return '<button class="row" data-open="'+i.go+'|'+i.id+'"><span class="av">'+i.ini+'</span>'+
+        '<span class="body"><span class="t">'+esc(i.t)+'</span><span class="s">'+esc(i.s)+'</span></span>'+
+        '<span class="r">'+ic('chev',16)+'</span></button>';}).join('')+'</div>'
+    :'<div class="empty" style="padding:26px 8px"><b>Nothing due today</b>Enjoy the quiet.</div>')+'</div>';
+
+  var up=[]
+    .concat(breed.filter(function(b){return days(b.due_date)>=0;}).map(function(b){
+      return {d:b.due_date,t:(dogName(b.dam_id)||'Dam')+' due to whelp',s:'Breeding · '+(b.method||'')};}))
+    .concat(events.filter(function(e){return days(e.starts_on)>0;}).map(function(e){
+      return {d:e.starts_on,t:e.title,s:(e.kind||'event')};}))
+    .concat(tasks.filter(function(t){return t.due_date&&days(t.due_date)>0;}).map(function(t){
+      return {d:t.due_date,t:t.title,s:'Task'+(t.assigned_to?' · '+t.assigned_to:'')};}));
+  up.sort(function(a,b){return String(a.d).localeCompare(String(b.d));});
+
+  el('dNext').innerHTML='<div class="card"><div class="card-h"><h3>Coming up</h3>'+
+    '<button data-go="calendar">Calendar</button></div>'+
+    (up.length?'<div class="rows">'+up.slice(0,7).map(function(i){
+      return '<div class="row"><span class="av">'+String(days(i.d))+'d</span>'+
+        '<span class="body"><span class="t">'+esc(i.t)+'</span><span class="s">'+esc(i.s)+'</span></span>'+
+        '<span class="r">'+esc(fshort(i.d))+'</span></div>';}).join('')+'</div>'
+    :'<div class="empty" style="padding:26px 8px"><b>Clear calendar</b>Add breedings, whelp dates or vet visits.</div>')+'</div>';
+
+  Array.prototype.forEach.call(v.querySelectorAll('[data-open]'),function(b){
+    b.onclick=async function(){
+      var p=b.getAttribute('data-open').split('|'),key=p[0];
+      var r=await sb.from(RES[key].table).select('*').eq('id',p[1]).single();
+      if(r.data)openForm(key,r.data);};});
+}
+
+/* ─── whelping: weights, health schedule, progesterone ──────────── */
+var OZ=28.3495;
+function oz(g){return (Number(g||0)/OZ);}
+function ozTxt(g){var o=oz(g);return o>=16?(o/16).toFixed(2)+' lb':o.toFixed(1)+' oz';}
+function spark(vals,w,h){
+  if(!vals||vals.length<2)return '';
+  var mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals),rg=(mx-mn)||1;
+  var pts=vals.map(function(v,i){
+    return (i/(vals.length-1)*w).toFixed(1)+','+(h-((v-mn)/rg)*h).toFixed(1);}).join(' ');
+  return '<svg viewBox="0 0 '+w+' '+h+'" width="'+w+'" height="'+h+'" fill="none" aria-hidden="true">'+
+    '<polyline points="'+pts+'" stroke="var(--accent)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+}
+/* A puppy losing weight is the emergency this whole screen exists for. */
+function weightState(series){
+  if(!series.length)return {label:'no weights',cls:''};
+  var last=series[series.length-1].grams,peak=Math.max.apply(null,series.map(function(x){return x.grams;}));
+  var down=peak>0?(peak-last)/peak:0;
+  if(down>=0.10)return {label:'down '+Math.round(down*100)+'% from peak',cls:'bad'};
+  if(down>=0.05)return {label:'down '+Math.round(down*100)+'%',cls:'warn'};
+  if(series.length>1){
+    var prev=series[series.length-2].grams;
+    if(last<prev)return {label:'lost since last weigh-in',cls:'warn'};
+    return {label:'+'+ozTxt(last-prev),cls:'good'};
+  }
+  return {label:'first weight',cls:''};
+}
+function openWeights(pups,onDone){
+  if(!canWrite())return toast('Read-only access');
+  var d=today();
+  openSheet('<h3>Log weights</h3><div class="sub">'+esc(fdate(d))+' · ounces. Leave a pup blank to skip.</div>'+
+    pups.map(function(p){
+      return '<div class="field"><label>'+esc(p.name||p.collar||'Puppy')+'</label>'+
+        '<input id="w_'+p.id+'" type="number" step="0.1" inputmode="decimal" placeholder="oz"></div>';}).join('')+
+    '<div class="err" id="wErr"></div><div class="sheet-actions">'+
+    '<button class="btn ghost" id="wCancel">Cancel</button><button class="btn" id="wSave">Save weights</button></div>');
+  el('wCancel').onclick=closeSheet;
+  var first=el('w_'+pups[0].id);if(first)first.focus();
+  el('wSave').onclick=async function(){
+    var rows=[];
+    pups.forEach(function(p){
+      var e=el('w_'+p.id);if(!e||e.value==='')return;
+      var g=parseFloat(e.value)*OZ;
+      if(!isNaN(g)&&g>0)rows.push({kennel_id:K(),puppy_id:p.id,weighed_on:d,grams:Math.round(g*10)/10});
+    });
+    if(!rows.length){el('wErr').textContent='Enter at least one weight';return;}
+    this.disabled=true;
+    var r=await sb.from('kos_weights').upsert(rows,{onConflict:'puppy_id,weighed_on'});
+    if(r.error){this.disabled=false;el('wErr').textContent=r.error.message;return;}
+    closeSheet();toast('Logged '+rows.length+' weight'+(rows.length===1?'':'s'));
+    onDone();
+  };
+}
+
+/* ─── litter detail (the one screen that earns a page of its own) ─ */
+async function litterView(id){
+  var v=el('view');
+  v.innerHTML='<div class="loading">Loading litter…</div>';
+  var lr=await sb.from('kos_litters').select('*').eq('id',id).single();
+  if(lr.error||!lr.data){v.innerHTML='<div class="empty"><b>Litter not found</b></div>';return;}
+  var L=lr.data;
+  var pr=await sel('kos_puppies').eq('litter_id',id).order('collar',{ascending:true});
+  var pups=pr.data||[];
+  var pupIds=pups.map(function(p){return p.id;});
+  var extra=await Promise.all([
+    pupIds.length?sel('kos_weights','puppy_id,weighed_on,grams').in('puppy_id',pupIds)
+      .order('weighed_on',{ascending:true}):Promise.resolve({data:[]}),
+    sel('kos_health_events').eq('litter_id',id).order('due_on',{ascending:true})]);
+  var weights=extra[0].data||[],health=extra[1].data||[];
+  var byPup={};weights.forEach(function(w){(byPup[w.puppy_id]=byPup[w.puppy_id]||[]).push(w);});
+  var weighedToday=weights.filter(function(w){return w.weighed_on===today();}).length;
+  var sold=pups.filter(function(p){return p.status==='sold';});
+  var revenue=pups.reduce(function(a,p){return a+(p.status==='sold'?Number(p.price||0):0);},0);
+  var reserved=pups.filter(function(p){return p.status==='reserved';}).length;
+  var avail=pups.filter(function(p){return p.status==='available';}).length;
+  var n=days(L.whelp_date);
+
+  v.innerHTML='<div class="view-head"><button class="mini" data-go="litters">‹ All litters</button>'+
+    '<h2>'+esc(L.name||'Litter')+'</h2><p>'+
+      esc([dogName(L.dam_id),dogName(L.sire_id)].filter(Boolean).join(' × ')||'Pairing TBD')+
+      (L.whelp_date?' · '+(n<=0?'whelped '+fdate(L.whelp_date):'due '+fdate(L.whelp_date)):'')+'</p></div>'+
+    '<div class="stats">'+
+      stat('Born',String(L.born_total||pups.length),(L.born_male||0)+'M · '+(L.born_female||0)+'F','')+
+      stat('Available',String(avail),reserved+' reserved','')+
+      stat('Sold',String(sold.length),money(revenue)+' collected','up')+
+      stat('Age',L.whelp_date&&n<=0?Math.round(-n/7)+' wk':'—',L.go_home_date?'home '+fshort(L.go_home_date):'','')+
+    '</div>'+
+    '<div class="card"><div class="card-h"><h3>Puppies</h3>'+
+      (canWrite()?'<button id="addPup">+ Add puppy</button>':'')+'</div>'+
+      (pups.length?'<div class="rows">'+pups.map(function(p){
+        return rowHTML('puppies',p,RES.puppies.row(p));}).join('')+'</div>'
+      :'<div class="empty" style="padding:26px 8px"><b>No puppies logged</b>Add them as they are whelped.</div>')+'</div>'+
+    '<div class="card"><div class="card-h"><h3>Daily weights</h3>'+
+      (canWrite()&&pups.length?'<button id="logW">'+(weighedToday?'Update today':'Log today')+'</button>':'')+'</div>'+
+      (pups.length?'<div class="rows">'+pups.map(function(p){
+        var series=byPup[p.id]||[],st=weightState(series),
+            last=series.length?series[series.length-1]:null;
+        return '<div class="row"><span class="av">'+esc((p.collar||p.name||'P').slice(0,2))+'</span>'+
+          '<span class="body"><span class="t">'+esc(p.name||p.collar||'Puppy')+'</span>'+
+          '<span class="s">'+(last?esc(ozTxt(last.grams))+' · '+esc(fshort(last.weighed_on)):'not weighed yet')+'</span></span>'+
+          '<span class="r">'+spark(series.map(function(x){return Number(x.grams);}),56,22)+
+          '<small style="color:var(--'+(st.cls||'muted')+')">'+esc(st.label)+'</small></span></div>';}).join('')+'</div>'+
+        (weighedToday?'':'<div class="ld-s" style="margin-top:10px">No weights logged today. Daily weights for the first two weeks catch a fading pup before anything else does.</div>')
+      :'<div class="empty" style="padding:26px 8px"><b>Add puppies first</b>Then weigh them daily.</div>')+
+    '</div>'+
+
+    '<div class="card"><div class="card-h"><h3>Health schedule</h3>'+
+      (canWrite()?'<button id="seedH">'+(health.length?'Add item':'Generate schedule')+'</button>':'')+'</div>'+
+      (health.length?'<div class="rows">'+health.map(function(h){
+        var dd=days(h.due_on),done=!!h.given_on;
+        return '<button class="row" data-health="'+h.id+'"><span class="av">'+
+          (done?'✓':(h.kind==='vaccine'?'💉':h.kind==='deworm'?'💊':'🩺'))+'</span>'+
+          '<span class="body"><span class="t">'+esc(h.name)+'</span><span class="s">'+
+            (done?'given '+esc(fshort(h.given_on)):esc(h.product||h.kind)+' · due '+esc(fshort(h.due_on)))+'</span></span>'+
+          '<span class="r">'+(done?'<span class="pill good">done</span>'
+            :dd==null?'':dd<0?'<span class="pill bad">overdue</span>'
+            :dd===0?'<span class="pill warn">today</span>':'<small>in '+dd+'d</small>')+'</span></button>';}).join('')+'</div>'
+      :'<div class="empty" style="padding:26px 8px"><b>No schedule yet</b>'+
+        (L.whelp_date?'Generate the standard deworming and vaccine dates from the whelp date.':'Set a whelp date first.')+'</div>')+
+    '</div>'+
+
+    (L.notes?'<div class="card"><div class="card-h"><h3>Notes</h3></div><div style="font-size:14px;color:var(--mid);white-space:pre-wrap">'+esc(L.notes)+'</div></div>':'')+
+    (canWrite()?'<div class="sheet-actions" style="margin-top:14px"><button class="btn ghost block" id="editLitter">Edit litter</button></div>':'');
+
+  if(el('addPup'))el('addPup').onclick=function(){
+    openForm('puppies',null,{preset:{litter_id:id},hide:['litter_id']});};
+  if(el('logW'))el('logW').onclick=function(){
+    openWeights(pups,function(){litterView(id);});};
+  if(el('seedH'))el('seedH').onclick=function(){
+    if(health.length)return openForm('health',null,{preset:{litter_id:id},hide:['litter_id','dog_id','puppy_id']});
+    if(!L.whelp_date)return toast('Set a whelp date first');
+    confirmSheet('Generate health schedule?',
+      'Creates the standard deworming, vaccine and vet-check dates counted from '+fdate(L.whelp_date)+
+      '. Every item stays editable, and nothing existing is touched.',
+      async function(){
+        var r=await sb.rpc('kos_seed_litter_protocol',{p_litter:id});
+        if(r.error)return toast(r.error.message);
+        toast('Added '+(r.data||0)+' scheduled items');litterView(id);
+      },'Generate','primary');};
+  Array.prototype.forEach.call(v.querySelectorAll('[data-health]'),function(b){
+    b.onclick=function(){
+      var hid=b.getAttribute('data-health'),rec=null;
+      for(var i=0;i<health.length;i++)if(health[i].id===hid)rec=health[i];
+      if(!rec)return;
+      if(rec.given_on)return openForm('health',rec,{hide:['dog_id','puppy_id','litter_id']});
+      confirmSheet(rec.name,'Mark this as given today, or open it to edit the details.',
+        async function(){
+          try{await upd('kos_health_events',rec.id,{given_on:today()});toast('Marked given');litterView(id);}
+          catch(e){toast(e.message);}
+        },'Mark given today','primary');};});
+  if(el('editLitter'))el('editLitter').onclick=function(){openForm('litters',L);};
+  Array.prototype.forEach.call(v.querySelectorAll('.row[data-id]'),function(b){
+    b.onclick=function(){var pid=b.getAttribute('data-id'),rec=null;
+      for(var i=0;i<pups.length;i++)if(pups[i].id===pid)rec=pups[i];
+      openForm('puppies',rec,{hide:['litter_id'],preset:{litter_id:id}});};});
+}
+
+/* Reference ranges only — labs calibrate differently and protocols
+   vary. The OS shows the number and the usual reading of it; the vet
+   makes the call. */
+function progNote(v){
+  v=Number(v||0);
+  if(v<1)   return {t:'Baseline',        s:'Under 1 ng/mL — not close yet'};
+  if(v<2.5) return {t:'Rising',          s:'Recheck in 24–48 hours'};
+  if(v<3.5) return {t:'LH surge range',  s:'2–3 ng/mL is commonly read as day 0'};
+  if(v<10)  return {t:'Ovulation window',s:'~5 ng/mL is ovulation; fertile days follow'};
+  if(v<25)  return {t:'Fertile period',  s:'Typical breeding window'};
+  return    {t:'Past peak',              s:'Beyond the usual window for most protocols'};
+}
+async function breedingView(id){
+  var v=el('view');
+  v.innerHTML='<div class="loading">Loading breeding…</div>';
+  var br=await sb.from('kos_breedings').select('*').eq('id',id).single();
+  if(br.error||!br.data){v.innerHTML='<div class="empty"><b>Breeding not found</b></div>';return;}
+  var B=br.data;
+  var got=await Promise.all([
+    sel('kos_progesterone').eq('breeding_id',id).order('drawn_on',{ascending:true}),
+    sel('kos_health_events').eq('dog_id',B.dam_id||'00000000-0000-0000-0000-000000000000')
+      .order('due_on',{ascending:true})]);
+  var draws=got[0].data||[];
+  var dam=dogName(B.dam_id)||'Dam TBD',sire=dogName(B.sire_id)||B.sire_external||'Stud TBD';
+  var dd=days(B.due_date),peak=Math.max.apply(null,draws.map(function(x){return Number(x.value);}).concat([10]));
+  var latest=draws.length?draws[draws.length-1]:null;
+
+  v.innerHTML='<div class="view-head"><button class="mini" data-go="breedings">‹ All breedings</button>'+
+    '<h2>'+esc(dam)+' × '+esc(sire)+'</h2><p>'+esc(B.method||'')+
+      (B.bred_on?' · bred '+fdate(B.bred_on):'')+'</p></div>'+
+    '<div class="stats">'+
+      stat('Status',String(B.status||'—'),B.confirmed?'pregnancy confirmed':'not confirmed','')+
+      stat('Due',B.due_date?fshort(B.due_date):'—',
+        dd!=null&&dd>=0&&B.status!=='whelped'?'in '+dd+' days':(B.due_date?'passed':''),'')+
+      stat('Draws',String(draws.length),latest?'last '+Number(latest.value).toFixed(1)+' ng/mL':'none logged','')+
+      stat('Stud fee',B.stud_fee?money(B.stud_fee):'—','','')+
+    '</div>'+
+    '<div class="card"><div class="card-h"><h3>Progesterone</h3>'+
+      (canWrite()?'<button id="addProg">+ Log draw</button>':'')+'</div>'+
+      (draws.length?
+        '<div class="bars">'+draws.map(function(x){
+          return '<div class="b"><i style="height:'+Math.max(3,Math.round(Number(x.value)/peak*100))+'%"></i>'+
+            '<span>'+esc(fshort(x.drawn_on))+'</span></div>';}).join('')+'</div>'+
+        '<div class="rows" style="margin-top:8px">'+draws.slice().reverse().map(function(x){
+          var n=progNote(x.value);
+          return '<button class="row" data-prog="'+x.id+'"><span class="av">'+Number(x.value).toFixed(1)+'</span>'+
+            '<span class="body"><span class="t">'+esc(n.t)+'</span><span class="s">'+esc(n.s)+'</span></span>'+
+            '<span class="r">'+esc(fshort(x.drawn_on))+(x.drawn_at?'<small>'+esc(String(x.drawn_at).slice(0,5))+'</small>':'')+'</span></button>';
+          }).join('')+'</div>'+
+        '<div class="ld-s" style="margin-top:12px">Reference ranges only — labs calibrate differently. Your repro vet sets the breeding date.</div>'
+      :'<div class="empty" style="padding:26px 8px"><b>No draws logged</b>Log each progesterone result and the curve builds itself.</div>')+
+    '</div>'+
+    (B.notes?'<div class="card"><div class="card-h"><h3>Notes</h3></div><div style="font-size:14px;color:var(--mid);white-space:pre-wrap">'+esc(B.notes)+'</div></div>':'')+
+    (canWrite()?'<div class="sheet-actions" style="margin-top:14px">'+
+      '<button class="btn ghost block" id="editBreeding">Edit breeding</button></div>':'');
+
+  if(el('addProg'))el('addProg').onclick=function(){
+    openForm('progesterone',null,{preset:{breeding_id:id,dog_id:B.dam_id,drawn_on:today()},
+      hide:['breeding_id','dog_id']});};
+  if(el('editBreeding'))el('editBreeding').onclick=function(){openForm('breedings',B);};
+  Array.prototype.forEach.call(v.querySelectorAll('[data-prog]'),function(b){
+    b.onclick=function(){
+      var pid=b.getAttribute('data-prog'),rec=null;
+      for(var i=0;i<draws.length;i++)if(draws[i].id===pid)rec=draws[i];
+      openForm('progesterone',rec,{hide:['breeding_id','dog_id']});};});
+}
+
+/* ─── reports ──────────────────────────────────────────────────── */
+async function reportsView(){
+  var v=el('view');
+  v.innerHTML='<div class="view-head"><h2>Reports</h2><p>The numbers that run the program</p></div><div class="loading">Crunching…</div>';
+  var got=await Promise.all([
+    sel('kos_transactions','occurred_on,direction,amount').order('occurred_on',{ascending:false}).limit(2000),
+    sel('kos_leads','stage,value,source').limit(2000),
+    sel('kos_puppies','status,price').limit(2000),
+    sel('kos_dogs','status,sex').limit(500)]);
+  var tx=got[0].data||[],leads=got[1].data||[],pups=got[2].data||[],dogs=got[3].data||[];
+
+  var months=[],now=new Date();
+  for(var i=5;i>=0;i--){var d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    months.push({k:d.toISOString().slice(0,7),l:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()],in:0,out:0});}
+  tx.forEach(function(t){var k=String(t.occurred_on||'').slice(0,7);
+    months.forEach(function(m){if(m.k===k){if(t.direction==='in')m.in+=Number(t.amount||0);else m.out+=Number(t.amount||0);}});});
+  var mx=Math.max.apply(null,months.map(function(m){return m.in;}).concat([1]));
+
+  var yIn=tx.filter(function(t){return t.direction==='in';}).reduce(function(a,t){return a+Number(t.amount||0);},0);
+  var yOut=tx.filter(function(t){return t.direction==='out';}).reduce(function(a,t){return a+Number(t.amount||0);},0);
+  var soldP=pups.filter(function(p){return p.status==='sold';});
+  var avg=soldP.length?soldP.reduce(function(a,p){return a+Number(p.price||0);},0)/soldP.length:0;
+  var won=leads.filter(function(l){return l.stage==='won';}).length;
+  var conv=leads.length?Math.round(won/leads.length*100):0;
+  var srcs={};leads.forEach(function(l){var s=l.source||'Unknown';srcs[s]=(srcs[s]||0)+1;});
+  var srcList=Object.keys(srcs).sort(function(a,b){return srcs[b]-srcs[a];}).slice(0,5);
+
+  v.innerHTML='<div class="view-head"><h2>Reports</h2><p>The numbers that run the program</p></div>'+
+    '<div class="stats">'+
+      stat('Collected',money(yIn),'all recorded income','up')+
+      stat('Spent',money(yOut),'all recorded expense','dn')+
+      stat('Net',money(yIn-yOut),'',yIn-yOut>=0?'up':'dn')+
+      stat('Avg puppy price',money(avg),soldP.length+' sold','')+
+    '</div>'+
+    '<div class="card"><div class="card-h"><h3>Income · last 6 months</h3><span class="mini">peak '+money(mx)+'</span></div>'+
+      '<div class="bars">'+months.map(function(m){
+        return '<div class="b"><i style="height:'+Math.max(2,Math.round(m.in/mx*100))+'%"></i><span>'+m.l+'</span></div>';}).join('')+
+      '</div></div>'+
+    '<div class="card"><div class="card-h"><h3>Lead conversion</h3><span class="mini">'+conv+'% closed</span></div>'+
+      '<div class="funnel">'+['new','contacted','qualified','deposit','won'].map(function(s){
+        var c=leads.filter(function(l){return l.stage===s;}).length;
+        var m2=Math.max(1,leads.length);
+        return '<div class="fstep"><span class="fl">'+s+'</span><span class="fb"><i style="width:'+
+          Math.round(c/m2*100)+'%"></i></span><span class="fn">'+c+'</span></div>';}).join('')+'</div></div>'+
+    '<div class="card"><div class="card-h"><h3>Where leads come from</h3></div>'+
+      (srcList.length?'<div class="funnel">'+srcList.map(function(s){
+        return '<div class="fstep"><span class="fl">'+esc(s)+'</span><span class="fb"><i style="width:'+
+          Math.round(srcs[s]/leads.length*100)+'%"></i></span><span class="fn">'+srcs[s]+'</span></div>';}).join('')+'</div>'
+      :'<div class="empty" style="padding:20px 8px">No leads logged yet.</div>')+'</div>'+
+    '<div class="card"><div class="card-h"><h3>Kennel</h3></div><div class="rows">'+
+      [['Active dogs',dogs.filter(function(d){return d.status==='active';}).length],
+       ['Females',dogs.filter(function(d){return d.sex==='Female';}).length],
+       ['Males',dogs.filter(function(d){return d.sex==='Male';}).length],
+       ['Puppies tracked',pups.length],
+       ['Available now',pups.filter(function(p){return p.status==='available';}).length]]
+      .map(function(r){return '<div class="row"><span class="body"><span class="t">'+r[0]+'</span></span><span class="r">'+r[1]+'</span></div>';}).join('')+
+      '</div></div>';
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   SETTINGS — identity, and the branding engine that makes this
+   white-label: drop in a logo, the OS re-skins itself.
+   ══════════════════════════════════════════════════════════════════ */
+var DEFAULT_SWATCHES=['#2f9bff','#3ecf8e','#f0b429','#ff7a45','#b8922e','#a06bff','#f2685f','#22c7c7'];
+
+async function settingsView(){
+  var v=el('view'),k=S.kennel,w=canWrite();
+  var pal=(k.brand&&k.brand.palette&&k.brand.palette.length?k.brand.palette:DEFAULT_SWATCHES);
+  v.innerHTML='<div class="view-head"><h2>Settings</h2><p>Make this OS unmistakably yours</p></div>'+
+
+  '<div class="card"><div class="card-h"><h3>Branding</h3><span class="mini" id="brandState">'+
+    (k.logo_url?'Logo set':'No logo yet')+'</span></div>'+
+    '<div class="logo-drop">'+
+      '<div class="mark" id="brandMark">'+(k.logo_url?'<img src="'+esc(k.logo_url)+'" alt="">':'<span>'+esc(markText(k))+'</span>')+'</div>'+
+      '<div style="flex:1;min-width:0">'+
+        '<div class="ld-t">Kennel logo</div>'+
+        '<div class="ld-s">PNG or SVG, transparent background. Your accent color is read straight off the artwork.</div>'+
+        '<input type="file" id="logoFile" accept="image/png,image/jpeg,image/webp,image/svg+xml" style="display:none">'+
+        (w?'<button class="btn ghost" id="logoBtn" style="margin-top:10px;padding:9px 15px">'+(k.logo_url?'Replace logo':'Upload logo')+'</button>':'')+
+      '</div></div>'+
+    '<div class="sectitle">Accent color</div>'+
+    '<div class="swatches" id="swatches">'+pal.slice(0,8).map(function(c){
+      return '<button class="sw'+(String(c).toLowerCase()===String(k.accent).toLowerCase()?' on':'')+
+        '" data-sw="'+esc(c)+'" style="background:'+esc(c)+'"></button>';}).join('')+
+      '<button class="sw" data-sw="custom" style="background:linear-gradient(135deg,#ff7a45,#a06bff,#2f9bff)" title="Custom"></button>'+
+    '</div>'+
+    '<div class="f2" style="margin-top:14px">'+
+      '<div class="field"><label>Accent (hex)</label><input id="bAccent" value="'+esc(k.accent||'')+'" placeholder="#2f9bff"></div>'+
+      '<div class="field"><label>Highlight</label><input id="bAccent2" value="'+esc(k.accent_2||'')+'" placeholder="#7cc4ff"></div>'+
+    '</div>'+
+    (w?'<div class="sheet-actions"><button class="btn ghost" id="bReset">Reset</button>'+
+       '<button class="btn" id="bSave">Save branding</button></div>':'')+
+  '</div>'+
+
+  '<div class="card"><div class="card-h"><h3>Kennel identity</h3></div>'+
+    '<div class="f2">'+
+      '<div class="field"><label>Kennel name</label><input id="sName" value="'+esc(k.name||'')+'"></div>'+
+      '<div class="field"><label>Short name (wordmark)</label><input id="sShort" value="'+esc(k.short_name||'')+'" maxlength="8"></div>'+
+    '</div>'+
+    '<div class="field"><label>Tagline</label><input id="sTag" value="'+esc(k.tagline||'')+'" placeholder="Champion-bred American Bullies"></div>'+
+    '<div class="f2">'+
+      '<div class="field"><label>Breed</label><input id="sBreed" value="'+esc(k.breed||'')+'"></div>'+
+      '<div class="field"><label>Location</label><input id="sLoc" value="'+esc(k.location||'')+'"></div>'+
+    '</div>'+
+    '<div class="f2">'+
+      '<div class="field"><label>Phone</label><input id="sPhone" value="'+esc(k.phone||'')+'"></div>'+
+      '<div class="field"><label>Website</label><input id="sWeb" value="'+esc(k.website||'')+'"></div>'+
+    '</div>'+
+    (w?'<button class="btn block" id="sSave">Save details</button>':'<div class="empty" style="padding:8px 0">Read-only access</div>')+
+  '</div>'+
+
+  '<div class="card"><div class="card-h"><h3>Team</h3><span class="mini">'+esc(S.role)+'</span></div>'+
+    '<div id="teamRows" class="rows"><div class="empty" style="padding:16px 0">Loading…</div></div>'+
+    (['owner','manager'].indexOf(S.role)>=0||S.isAdmin?
+      '<div class="f2" style="margin-top:14px">'+
+      '<div class="field"><label>Invite email</label><input id="invEmail" type="email" placeholder="teammate@kennel.com"></div>'+
+      '<div class="field"><label>Role</label><select id="invRole">'+
+        ['staff','manager','viewer','owner'].map(function(r){return '<option>'+r+'</option>';}).join('')+'</select></div></div>'+
+      '<button class="btn ghost block" id="invBtn">Send invite</button>'+
+      '<div class="ld-s" style="margin-top:8px">They sign in with this email and land straight in your kennel.</div>':'')+
+  '</div>'+
+
+  '<div class="card"><div class="card-h"><h3>Notifications</h3>'+
+    '<span class="mini" id="ntState">'+(S.prefs&&S.prefs.daily_email?'Daily email on':'Off')+'</span></div>'+
+    '<div class="f2">'+
+      '<div class="field"><label>Daily email digest</label><select id="ntEmail">'+
+        '<option value="1"'+(!S.prefs||S.prefs.daily_email?' selected':'')+'>On — only when something is due</option>'+
+        '<option value="0"'+(S.prefs&&!S.prefs.daily_email?' selected':'')+'>Off</option></select></div>'+
+      '<div class="field"><label>Send at</label><select id="ntHour">'+
+        Array.apply(null,Array(24)).map(function(_,i){
+          var lab=(i===0?'12 AM':i<12?i+' AM':i===12?'12 PM':(i-12)+' PM');
+          return '<option value="'+i+'"'+((S.prefs?S.prefs.send_hour:7)===i?' selected':'')+'>'+lab+'</option>';}).join('')+
+      '</select></div></div>'+
+    '<div class="field"><label>Timezone</label><select id="ntTz">'+
+      (function(){
+        var guess='America/New_York';
+        try{guess=Intl.DateTimeFormat().resolvedOptions().timeZone||guess;}catch(e){}
+        var zones=['America/New_York','America/Chicago','America/Denver','America/Phoenix',
+                   'America/Los_Angeles','America/Anchorage','Pacific/Honolulu'];
+        if(zones.indexOf(guess)<0)zones.unshift(guess);
+        var cur=(S.prefs&&S.prefs.timezone)||guess;
+        if(zones.indexOf(cur)<0)zones.unshift(cur);
+        return zones.map(function(z){return '<option'+(z===cur?' selected':'')+'>'+esc(z)+'</option>';}).join('');
+      })()+'</select></div>'+
+    (pushSupported()
+      ? '<button class="btn ghost block" id="ntPush" style="margin-bottom:10px">'+
+          (S.prefs&&S.prefs.push?'Push is on — re-enable on this device':'Enable push on this device')+'</button>'
+      : '<div class="ld-s" style="margin-bottom:10px">Push notifications turn on once the VAPID key is set in the app config'+
+        (location.protocol==='file:'?' (and the page is served over https)':'')+'.</div>')+
+    '<button class="btn block" id="ntSave">Save notifications</button>'+
+    '<div class="err" id="ntErr"></div>'+
+    '<div class="ld-s" style="margin-top:8px">The digest covers tasks and follow-ups due, whelp dates, vaccine and deworming dates, go-home days, and puppy weights not logged.</div>'+
+  '</div>'+
+
+  (w?'<div class="card"><div class="card-h"><h3>Import</h3><span class="mini">CSV</span></div>'+
+    '<div class="f2">'+
+      '<div class="field"><label>Import into</label><select id="impTarget">'+
+        IMPORTABLE.map(function(t){return '<option value="'+t[0]+'">'+t[1]+'</option>';}).join('')+'</select></div>'+
+      '<div class="field"><label>CSV file</label><input type="file" id="impFile" accept=".csv,text/csv,text/plain"></div>'+
+    '</div>'+
+    '<div class="field"><label>…or paste rows</label><textarea id="impText" placeholder="name,email,phone,city\nMarcus Webb,marcus@example.com,704-555-0110,Raleigh"></textarea></div>'+
+    '<div id="impPreview"></div>'+
+    '<button class="btn ghost block" id="impBtn" style="margin-top:12px">Preview import</button>'+
+    '<div class="ld-s" style="margin-top:8px">First row must be column headers. Columns we can\u2019t match are kept in each record\u2019s notes.</div>'+
+  '</div>':'')+
+
+  '<div class="card"><div class="card-h"><h3>Account</h3></div><div class="rows">'+
+    '<div class="row"><span class="body"><span class="t">'+esc(S.user.email)+'</span><span class="s">Signed in · '+esc(S.role)+'</span></span></div>'+
+    '<div class="row"><span class="body"><span class="t">'+esc(k.name)+'</span><span class="s">Kennel · '+esc(k.slug)+' · '+esc(k.plan)+'</span></span></div>'+
+    (S.kennels.length>1?'<div class="row"><span class="body"><span class="t">Switch kennel</span><span class="s">'+S.kennels.length+' available</span></span><span class="r" id="switchK" style="color:var(--accent)">Change</span></div>':'')+
+    '</div>'+
+    '<button class="btn danger block" id="soBtn" style="margin-top:14px">Sign out</button></div>';
+
+  /* branding interactions */
+  if(el('logoBtn'))el('logoBtn').onclick=function(){el('logoFile').click();};
+  if(el('logoFile'))el('logoFile').onchange=function(){handleLogo(this.files&&this.files[0]);};
+  Array.prototype.forEach.call(v.querySelectorAll('[data-sw]'),function(b){
+    b.onclick=function(){
+      var c=b.getAttribute('data-sw');
+      if(c==='custom'){
+        var inp=document.createElement('input');inp.type='color';inp.value=k.accent||'#2f9bff';
+        inp.oninput=function(){el('bAccent').value=inp.value;el('bAccent2').value=lighten(inp.value,.16);
+          applyBrand(Object.assign({},k,{accent:inp.value,accent_2:lighten(inp.value,.16)}));};
+        inp.click();return;
+      }
+      el('bAccent').value=c;el('bAccent2').value=lighten(c,.16);
+      Array.prototype.forEach.call(v.querySelectorAll('[data-sw]'),function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      applyBrand(Object.assign({},k,{accent:c,accent_2:lighten(c,.16)}));
+    };});
+  if(el('bSave'))el('bSave').onclick=async function(){
+    var a=el('bAccent').value.trim()||'#2f9bff',a2=el('bAccent2').value.trim()||lighten(a,.16);
+    this.disabled=true;
+    try{await saveKennel({accent:a,accent_2:a2});toast('Branding saved');}
+    catch(e){toast(e.message||'Save failed');}
+    this.disabled=false;};
+  if(el('bReset'))el('bReset').onclick=async function(){
+    try{await saveKennel({accent:'#2f9bff',accent_2:'#7cc4ff'});settingsView();toast('Reset to default');}
+    catch(e){toast(e.message);}};
+
+  if(el('sSave'))el('sSave').onclick=async function(){
+    this.disabled=true;
+    try{
+      await saveKennel({name:el('sName').value.trim(),short_name:el('sShort').value.trim().toUpperCase(),
+        tagline:el('sTag').value.trim(),breed:el('sBreed').value.trim(),location:el('sLoc').value.trim(),
+        phone:el('sPhone').value.trim(),website:el('sWeb').value.trim()});
+      toast('Saved');
+    }catch(e){toast(e.message||'Save failed');}
+    this.disabled=false;};
+
+  if(el('soBtn'))el('soBtn').onclick=async function(){await sb.auth.signOut();location.reload();};
+  if(el('switchK'))el('switchK').onclick=function(){
+    openSheet('<h3>Switch kennel</h3><div class="sub">You have access to more than one program.</div><div class="rows">'+
+      S.kennels.map(function(x){return '<button class="row" data-k="'+x.id+'"><span class="av">'+esc(markText(x))+
+        '</span><span class="body"><span class="t">'+esc(x.name)+'</span><span class="s">'+esc(x.slug)+'</span></span>'+
+        (x.id===k.id?'<span class="r">'+pill('active')+'</span>':'')+'</button>';}).join('')+'</div>');
+    Array.prototype.forEach.call(document.querySelectorAll('[data-k]'),function(b){
+      b.onclick=function(){lsSet('kos_kennel',b.getAttribute('data-k'));location.reload();};});};
+
+  if(el('ntSave'))el('ntSave').onclick=async function(){
+    this.disabled=true;el('ntErr').textContent='';
+    try{
+      await savePrefs({daily_email:el('ntEmail').value==='1',
+        send_hour:parseInt(el('ntHour').value,10),timezone:el('ntTz').value});
+      el('ntState').textContent=el('ntEmail').value==='1'?'Daily email on':'Off';
+      toast('Notification settings saved');
+    }catch(e){el('ntErr').textContent=e.message||'Could not save';}
+    this.disabled=false;};
+  if(el('ntPush'))el('ntPush').onclick=async function(){
+    this.disabled=true;var was=this.textContent;this.textContent='Asking your browser…';
+    try{await enablePush();toast('Push enabled on this device');this.textContent='Push is on — re-enable on this device';}
+    catch(e){el('ntErr').textContent=e.message||'Could not enable push';this.textContent=was;}
+    this.disabled=false;};
+
+  var imp={text:'',parsed:null};
+  function impReset(msg){imp.parsed=null;
+    if(el('impBtn'))el('impBtn').textContent='Preview import';
+    if(el('impPreview'))el('impPreview').innerHTML=msg?'<div class="ld-s" style="margin-top:10px">'+esc(msg)+'</div>':'';}
+  if(el('impFile'))el('impFile').onchange=function(){
+    var f=this.files&&this.files[0];if(!f)return;
+    var rd=new FileReader();
+    rd.onload=function(){imp.text=String(rd.result||'');impReset(f.name+' loaded — preview to check the columns.');};
+    rd.readAsText(f);};
+  if(el('impText'))el('impText').oninput=function(){imp.text=this.value;impReset('');};
+  if(el('impTarget'))el('impTarget').onchange=function(){impReset('');};
+  if(el('impBtn'))el('impBtn').onclick=async function(){
+    var target=el('impTarget').value,btn=this;
+    if(!imp.parsed){
+      var csv=parseCSV(imp.text||el('impText').value);
+      if(!csv){el('impPreview').innerHTML='<div class="err">Need a header row and at least one row of data.</div>';return;}
+      var map=guessMap(target,csv.headers),out=buildRows(target,csv,map);
+      if(!out.rows.length){
+        el('impPreview').innerHTML='<div class="err">No usable rows — every row is missing '+
+          esc(out.req?out.req.l:'a required value')+'.</div>';return;}
+      imp.parsed={target:target,rows:out.rows};
+      var matched=csv.headers.filter(function(h){return map[h];}),
+          ignored=csv.headers.filter(function(h){return !map[h];});
+      var keys=[];out.rows.slice(0,3).forEach(function(r){
+        Object.keys(r).forEach(function(kk){if(keys.indexOf(kk)<0)keys.push(kk);});});
+      el('impPreview').innerHTML=
+        '<div class="map-line">Matched <b>'+matched.length+'</b> of '+csv.headers.length+' columns'+
+          (matched.length?': '+matched.map(function(h){return '<b>'+esc(h)+'</b> → '+esc(map[h]);}).join(', '):'')+
+          (ignored.length?'<br>Kept in notes: <s>'+ignored.map(esc).join(', ')+'</s>':'')+
+          (out.skipped?'<br><s>'+out.skipped+' row(s) skipped — no '+esc(out.req.l)+'</s>':'')+
+        '</div>'+
+        '<div class="imp-scroll"><table class="imp-table"><tr>'+
+          keys.map(function(kk){return '<th>'+esc(kk)+'</th>';}).join('')+'</tr>'+
+          out.rows.slice(0,3).map(function(r){return '<tr>'+keys.map(function(kk){
+            return '<td>'+esc(String(r[kk]==null?'':r[kk]).split('\n')[0])+'</td>';}).join('')+'</tr>';}).join('')+
+        '</table></div>';
+      btn.textContent='Import '+out.rows.length+' row'+(out.rows.length===1?'':'s');
+      btn.className='btn block';
+      return;
+    }
+    btn.disabled=true;btn.textContent='Importing…';
+    try{
+      var n=await runImport(imp.parsed.target,imp.parsed.rows);
+      toast('Imported '+n+' record'+(n===1?'':'s'));
+      await refreshCaches();
+      settingsView();
+    }catch(e){
+      btn.disabled=false;btn.textContent='Retry import';
+      el('impPreview').innerHTML='<div class="err">'+esc(e.message||'Import failed')+'</div>';
+    }
+  };
+
+  var tm=await sb.from('kennel_members').select('*').eq('kennel_id',k.id);
+  var iv=await sb.from('kennel_invites').select('*').eq('kennel_id',k.id).is('accepted_at',null);
+  var rowsHTML=(tm.data||[]).map(function(m){
+    return '<div class="row"><span class="av">'+esc(initials(m.email||'?'))+'</span><span class="body">'+
+      '<span class="t">'+esc(m.email||'member')+'</span><span class="s">Member</span></span><span class="r">'+pill(m.role)+'</span></div>';}).join('')+
+    (iv.data||[]).map(function(i){
+    return '<div class="row"><span class="av">✉</span><span class="body"><span class="t">'+esc(i.email)+
+      '</span><span class="s">Invited · awaiting first sign-in</span></span><span class="r">'+pill(i.role)+'</span></div>';}).join('');
+  if(el('teamRows'))el('teamRows').innerHTML=rowsHTML||'<div class="empty" style="padding:16px 0">Just you so far.</div>';
+  if(el('invBtn'))el('invBtn').onclick=async function(){
+    var em=el('invEmail').value.trim();if(!em)return toast('Enter an email');
+    this.disabled=true;
+    var r=await sb.rpc('kos_invite_member',{p_kennel:k.id,p_email:em,p_role:el('invRole').value});
+    this.disabled=false;
+    if(r.error)return toast(r.error.message);
+    el('invEmail').value='';toast('Invite created');settingsView();};
+}
+
+async function saveKennel(patch){
+  var r=await sb.from('kennels').update(patch).eq('id',S.kennel.id).select().single();
+  if(r.error)throw r.error;
+  S.kennel=r.data;
+  for(var i=0;i<S.kennels.length;i++)if(S.kennels[i].id===r.data.id)S.kennels[i]=r.data;
+  applyBrand(S.kennel);
+  return r.data;
+}
+
+/* Logo → storage → color extraction → theme. The white-label moment. */
+async function handleLogo(file){
+  if(!file)return;
+  if(file.size>4*1024*1024)return toast('Logo must be under 4 MB');
+  var state=el('brandState');if(state)state.textContent='Reading colors…';
+  var url=URL.createObjectURL(file);
+  var pal=await new Promise(function(res){
+    var img=new Image();
+    img.onload=function(){var p=null;try{p=extractPalette(img);}catch(e){p=null;}res(p);};
+    img.onerror=function(){res(null);};
+    img.src=url;
+  });
+  try{
+    if(state)state.textContent='Uploading…';
+    var ext=(file.name.split('.').pop()||'png').toLowerCase().replace(/[^a-z0-9]/g,'');
+    var path=S.kennel.id+'/logo-'+Date.now()+'.'+ext;
+    var up=await sb.storage.from('kennel-brand').upload(path,file,{upsert:true,contentType:file.type||'image/png'});
+    if(up.error)throw up.error;
+    var pub=sb.storage.from('kennel-brand').getPublicUrl(path);
+    var patch={logo_url:pub.data.publicUrl,
+      brand:Object.assign({},S.kennel.brand||{},{palette:pal?pal.palette:null,extracted_at:new Date().toISOString()})};
+    if(pal){patch.accent=pal.accent;patch.accent_2=pal.accent2;}
+    await saveKennel(patch);
+    URL.revokeObjectURL(url);
+    toast(pal?'Branded from your logo':'Logo saved');
+    settingsView();
+  }catch(e){
+    URL.revokeObjectURL(url);
+    if(state)state.textContent='Upload failed';
+    toast(e.message||'Upload failed');
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   IMPORT — nobody retypes five years of litters. Paste a CSV (or pick
+   a file), we match the columns by name, and anything we can't place
+   is kept in that record's notes rather than dropped.
+   ══════════════════════════════════════════════════════════════════ */
+var IMPORTABLE=[['contacts','CRM contacts'],['leads','Leads'],['dogs','Dogs'],
+                ['tasks','Tasks'],['money','Transactions']];
+var ALIAS={
+  name:['fullname','contactname','buyername','client','clientname','customer','dogname','callname','firstname','title'],
+  email:['emailaddress','e-mail','mail'],
+  phone:['phonenumber','cell','cellphone','mobile','tel','telephone','contactnumber'],
+  city:['town'],state:['province','st','region'],
+  notes:['note','comment','comments','remarks','details'],
+  source:['leadsource','channel','howdidyouhear','howtheyfoundus','referral'],
+  stage:['status','pipelinestage','leadstage'],
+  value:['dealvalue','amount','price','quote','deposit'],
+  interest:['lookingfor','request','wants','puppyinterest'],
+  next_action_at:['followup','followupdate','nextfollowup','nextcontact'],
+  next_action:['nextstep','action'],
+  instagram:['ig','handle','instagramhandle','socials'],
+  dob:['birthdate','dateofbirth','whelpdate','whelped','born','birthday'],
+  sex:['gender'],color:['coat','colour','markings'],breed:['breedname'],
+  call_name:['barnname','nickname','petname','shortname'],
+  reg_number:['registration','registrationnumber','regno','akc','abkc'],
+  microchip:['chip','chipnumber','microchipnumber'],
+  weight:['currentweight','lbs'],role:['position','use'],
+  occurred_on:['date','transactiondate','paiddate','paymentdate'],
+  amount:['total','paid','price','value','subtotal'],
+  category:['type','expensetype','incometype'],
+  description:['memo','details','item','for','note'],
+  method:['paymentmethod','payment','paidvia','via'],
+  direction:['inout','flow','type'],
+  due_date:['due','duedate','deadline'],
+  assigned_to:['owner','assignee','assigned','who'],
+  priority:['urgency'],type:['contacttype','category','kind']
+};
+function nrm(x){return String(x==null?'':x).toLowerCase().replace(/[^a-z0-9]/g,'');}
+function parseCSV(text){
+  text=String(text||'').replace(/\r\n?/g,'\n').replace(/^\uFEFF/,'');
+  var rows=[],row=[],cur='',q=false;
+  for(var i=0;i<text.length;i++){
+    var c=text[i];
+    if(q){
+      if(c==='"'){ if(text[i+1]==='"'){cur+='"';i++;} else q=false; } else cur+=c;
+    }else if(c==='"'){q=true;}
+    else if(c===','){row.push(cur);cur='';}
+    else if(c==='\n'){row.push(cur);cur='';rows.push(row);row=[];}
+    else cur+=c;
+  }
+  if(cur!==''||row.length){row.push(cur);rows.push(row);}
+  rows=rows.filter(function(r){return r.some(function(c){return String(c).trim()!=='';});});
+  if(rows.length<2)return null;
+  return {headers:rows[0].map(function(h){return String(h).trim();}),rows:rows.slice(1)};
+}
+function normDate(v){
+  v=String(v||'').trim();if(!v)return null;
+  var m=v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if(m)return m[1]+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[3]).slice(-2);
+  m=v.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})$/);
+  if(m){var y=m[3].length===2?'20'+m[3]:m[3];
+    return y+'-'+('0'+m[1]).slice(-2)+'-'+('0'+m[2]).slice(-2);}
+  var d=new Date(v);
+  return isNaN(d.getTime())?null:d.toISOString().slice(0,10);
+}
+function guessMap(target,headers){
+  var fields=RES[target].fields.filter(function(f){return f.t!=='ref'&&f.t!=='photo';}),map={};
+  headers.forEach(function(h){
+    var n=nrm(h),hit=null;
+    fields.forEach(function(f){
+      if(hit)return;
+      if(n===nrm(f.k)||n===nrm(f.l))hit=f.k;
+      else if((ALIAS[f.k]||[]).indexOf(n)>=0)hit=f.k;
+    });
+    map[h]=hit;
+  });
+  return map;
+}
+function coerce(f,v){
+  v=String(v==null?'':v).trim();if(!v)return null;
+  if(f.t==='num'){var i=parseInt(v.replace(/[^0-9-]/g,''),10);return isNaN(i)?null:i;}
+  if(f.t==='money'){var n=parseFloat(v.replace(/[^0-9.-]/g,''));return isNaN(n)?null:n;}
+  if(f.t==='date')return normDate(v);
+  if(f.t==='bool')return /^(y|yes|true|1)$/i.test(v);
+  if(f.t==='sel'){var lo=v.toLowerCase(),hit=null;
+    f.opts.forEach(function(o){if(!hit&&String(o).toLowerCase()===lo)hit=o;});
+    return hit;}
+  return v;
+}
+function buildRows(target,csv,map){
+  var R=RES[target],byKey={};R.fields.forEach(function(f){byKey[f.k]=f;});
+  var hasNotes=!!byKey.notes,req=R.fields.filter(function(f){return f.req;})[0];
+  var built=csv.rows.map(function(cells){
+    var row={},extra=[];
+    csv.headers.forEach(function(h,i){
+      var raw=cells[i],k=map[h];
+      if(k&&byKey[k]){var c=coerce(byKey[k],raw);if(c!==null&&c!==undefined&&c!=='')row[k]=c;}
+      else if(hasNotes&&String(raw||'').trim())extra.push(h+': '+String(raw).trim());
+    });
+    if(extra.length)row.notes=[row.notes,extra.join('\n')].filter(Boolean).join('\n');
+    return row;
+  });
+  var defaults={money:{direction:'in'},leads:{stage:'new'},contacts:{type:'buyer'},
+                dogs:{status:'active'},tasks:{status:'open'}}[target]||{};
+  built.forEach(function(r){
+    Object.keys(defaults).forEach(function(k){if(!r[k])r[k]=defaults[k];});
+    if(target==='money'&&!r.occurred_on)r.occurred_on=today();
+  });
+  var kept=built.filter(function(r){return !req||(r[req.k]!=null&&r[req.k]!=='');});
+  return {rows:kept,skipped:built.length-kept.length,req:req};
+}
+async function runImport(target,rows){
+  var R=RES[target],done=0;
+  for(var i=0;i<rows.length;i+=50){
+    var chunk=rows.slice(i,i+50).map(function(r){
+      var c={};for(var k in r)c[k]=r[k];c.kennel_id=K();return c;});
+    var res=await sb.from(R.table).insert(chunk);
+    if(res.error)throw res.error;
+    done+=chunk.length;
+  }
+  return done;
+}
+
+/* ─── Breedwise-only: stand up a new white-label kennel ─────────── */
+async function adminView(){
+  var v=el('view');
+  v.innerHTML='<div class="view-head"><h2>White-label Admin</h2><p>Provision and manage breeder kennels</p></div>'+
+    '<div class="card"><div class="card-h"><h3>New kennel</h3></div>'+
+      '<div class="f2"><div class="field"><label>Kennel name</label><input id="pName" placeholder="Carolina&#39;s Bully Empire"></div>'+
+      '<div class="field"><label>Short name</label><input id="pShort" placeholder="CBE" maxlength="8"></div></div>'+
+      '<div class="f2"><div class="field"><label>Slug</label><input id="pSlug" placeholder="cbe"></div>'+
+      '<div class="field"><label>Breed</label><input id="pBreed" placeholder="American Bully"></div></div>'+
+      '<div class="field"><label>Owner email</label><input id="pEmail" type="email" placeholder="owner@kennel.com"></div>'+
+      '<button class="btn block" id="pBtn">Provision kennel</button>'+
+      '<div class="err" id="pErr"></div>'+
+      '<div class="ld-s" style="margin-top:8px">Creates the kennel, invites the owner, and seeds their starter checklist.</div>'+
+    '</div><div id="kList"><div class="loading">Loading kennels…</div></div>';
+
+  el('pName').oninput=function(){
+    var s=el('pSlug');
+    if(!s.dataset.touched)s.value=this.value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,32);};
+  el('pSlug').oninput=function(){this.dataset.touched='1';};
+  el('pBtn').onclick=async function(){
+    var name=el('pName').value.trim(),slug=el('pSlug').value.trim(),em=el('pEmail').value.trim();
+    if(!name||!slug||!em){el('pErr').textContent='Name, slug and owner email are required';return;}
+    this.disabled=true;el('pErr').textContent='';
+    var r=await sb.rpc('kos_provision_kennel',{p_name:name,p_slug:slug,p_owner_email:em,
+      p_short_name:el('pShort').value.trim(),p_breed:el('pBreed').value.trim()});
+    this.disabled=false;
+    if(r.error){el('pErr').textContent=r.error.message;return;}
+    toast('Kennel provisioned');adminView();
+  };
+
+  var kr=await sb.from('kennels').select('*').order('created_at',{ascending:false});
+  var ks=kr.data||[];
+  el('kList').innerHTML='<div class="card"><div class="card-h"><h3>All kennels</h3><span class="mini">'+ks.length+'</span></div>'+
+    (ks.length?'<div class="rows">'+ks.map(function(x){
+      return '<button class="row" data-open-k="'+x.id+'">'+
+        (x.logo_url?'<span class="av"><img src="'+esc(x.logo_url)+'" alt=""></span>':'<span class="av" style="color:'+esc(x.accent||'#2f9bff')+'">'+esc(markText(x))+'</span>')+
+        '<span class="body"><span class="t">'+esc(x.name)+'</span><span class="s">'+esc(x.slug)+' · '+esc(x.owner_email||'no owner')+'</span></span>'+
+        '<span class="r">'+pill(x.status)+'<small>'+esc(x.plan)+'</small></span></button>';}).join('')+'</div>'
+    :'<div class="empty"><b>No kennels yet</b>Provision the first one above.</div>')+'</div>';
+  Array.prototype.forEach.call(document.querySelectorAll('[data-open-k]'),function(b){
+    b.onclick=function(){lsSet('kos_kennel',b.getAttribute('data-open-k'));location.hash='#/';location.reload();};});
+}
+
+/* ─── render dispatcher ────────────────────────────────────────── */
+var TITLES={'':'Dashboard',calendar:'Calendar',tasks:'Tasks',contacts:'CRM & Contacts',leads:'Leads & Sales',
+  dogs:'Dogs',breedings:'Breedings',litters:'Litters & Puppies',health:'Health & Vaccines',
+  money:'Finances',documents:'Documents',reports:'Reports',settings:'Settings',admin:'White-label Admin'};
+
+async function render(){
+  if(!S.kennel)return;
+  var r=route();
+  el('tbTitle').textContent=TITLES[r.view]||'Dashboard';
+  renderNav();
+  window.scrollTo(0,0);
+  try{
+    if(r.view==='')return await dashView();
+    if(r.view==='litters'&&r.id)return await litterView(r.id);
+    if(r.view==='breedings'&&r.id)return await breedingView(r.id);
+    if(r.view==='reports')return await reportsView();
+    if(r.view==='settings')return await settingsView();
+    if(r.view==='admin')return S.isAdmin?await adminView():go('');
+    if(RES[r.view])return await listView(r.view);
+    go('');
+  }catch(e){
+    el('view').innerHTML='<div class="empty"><b>Something went wrong</b>'+esc(e.message||String(e))+'</div>';
+  }
+}
+
+/* ─── caches + counters ────────────────────────────────────────── */
+async function refreshCaches(){
+  var got=await Promise.all([
+    sel('kos_dogs','id,name,call_name,sex,status').order('name'),
+    sel('kos_contacts','id,name,type').order('name'),
+    sel('kos_litters','id,name,whelp_date,status').order('whelp_date',{ascending:false}),
+    sel('kos_puppies','id,name,collar,color,status,litter_id').limit(400),
+    sb.rpc('kos_dashboard',{p_kennel:K()}),
+    sel('kos_breedings','id,dam_id,bred_on,status').order('bred_on',{ascending:false}).limit(60)]);
+  S.cache.dogs=got[0].data||[];S.cache.contacts=got[1].data||[];
+  S.cache.litters=got[2].data||[];S.cache.puppies=got[3].data||[];
+  S.cache.breedings=(got[5]&&got[5].data?got[5].data:[]).map(function(b){
+    return [b.id,(dogName(b.dam_id)||'Dam')+' · '+(b.bred_on?fshort(b.bred_on):b.status)];});
+  S.rows={};
+  S.dash=(got[4].data&&typeof got[4].data==='object')?got[4].data:{};
+  var n=Number(S.dash.tasks_due||0);
+  el('alertN').style.display=n?'grid':'none';el('alertN').textContent=n>9?'9+':String(n);
+  renderNav();
+}
+
+/* ─── quick add ────────────────────────────────────────────────── */
+el('fab').onclick=function(){
+  var r=route();
+  if(r.view==='litters'&&r.id)return openForm('puppies',null,{preset:{litter_id:r.id},hide:['litter_id']});
+  if(RES[r.view]&&r.view!=='')return openForm(r.view,null);
+  openSheet('<h3>Quick add</h3><div class="sub">What are you logging?</div><div class="rows">'+
+    [['dogs','Dog','dog'],['litters','Litter','paw'],['puppies','Puppy','paw'],['leads','Lead','target'],
+     ['contacts','Contact','users'],['tasks','Task','check'],['money','Transaction','dollar'],['calendar','Event','calendar']]
+    .map(function(q){return '<button class="row" data-add="'+q[0]+'"><span class="av">'+ic(q[2],18)+
+      '</span><span class="body"><span class="t">'+q[1]+'</span></span><span class="r">'+ic('chev',15)+'</span></button>';}).join('')+
+    '</div>');
+  Array.prototype.forEach.call(document.querySelectorAll('[data-add]'),function(b){
+    b.onclick=function(){closeSheet();setTimeout(function(){openForm(b.getAttribute('data-add'),null);},130);};});
+};
+
+/* ─── installable app + push ───────────────────────────────────── */
+var SW=null;
+async function initSW(){
+  if(!('serviceWorker' in navigator)||location.protocol==='file:')return;
+  try{SW=await navigator.serviceWorker.register(SW_PATH);}catch(e){}
+}
+function b64ToU8(s){
+  var pad='='.repeat((4-s.length%4)%4);
+  var b=atob((s+pad).replace(/-/g,'+').replace(/_/g,'/'));
+  var out=new Uint8Array(b.length);
+  for(var i=0;i<b.length;i++)out[i]=b.charCodeAt(i);
+  return out;
+}
+function pushSupported(){
+  return !!(VAPID_PUBLIC&&'serviceWorker' in navigator&&'PushManager' in window&&'Notification' in window);
+}
+async function enablePush(){
+  if(!pushSupported())throw new Error('This browser cannot receive push');
+  var perm=await Notification.requestPermission();
+  if(perm!=='granted')throw new Error('Notifications were blocked in the browser');
+  var reg=SW||await navigator.serviceWorker.ready;
+  var sub=await reg.pushManager.getSubscription();
+  if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64ToU8(VAPID_PUBLIC)});
+  var raw=sub.toJSON();
+  var r=await sb.from('kos_push_subs').upsert({
+    kennel_id:K(),user_id:S.user.id,endpoint:raw.endpoint,
+    p256dh:raw.keys.p256dh,auth:raw.keys.auth,
+    user_agent:navigator.userAgent.slice(0,180)},{onConflict:'endpoint'});
+  if(r.error)throw r.error;
+  await savePrefs({push:true});
+}
+async function savePrefs(patch){
+  var base={kennel_id:K(),user_id:S.user.id,email:S.user.email};
+  var row=Object.assign(base,S.prefs||{},patch);
+  delete row.id;delete row.created_at;delete row.updated_at;delete row.last_sent_on;
+  var r=await sb.from('kos_notify_prefs').upsert(row,{onConflict:'kennel_id,email'}).select().single();
+  if(r.error)throw r.error;
+  S.prefs=r.data;
+  return r.data;
+}
+async function loadPrefs(){
+  var r=await sb.from('kos_notify_prefs').select('*').eq('kennel_id',K())
+    .eq('email',S.user.email).maybeSingle();
+  S.prefs=(r&&r.data)||null;
+}
+
+/* ─── auth + boot ──────────────────────────────────────────────── */
+var signupMode=false;
+function showLogin(msg){
+  el('app').style.display='none';el('login').style.display='flex';
+  document.body.classList.add('anon');
+  if(msg)el('loginErr').textContent=msg;
+}
+el('altBtn').onclick=function(){
+  signupMode=!signupMode;
+  el('loginTitle').textContent=signupMode?'Create your login':'Kennel OS';
+  el('loginSub').textContent=signupMode?'Use the email your kennel was set up with':'Sign in to your kennel';
+  el('loginBtn').textContent=signupMode?'Create login':'Sign in';
+  el('altText').textContent=signupMode?'Already set up?':'First time here?';
+  el('altBtn').textContent=signupMode?'Sign in':'Create your login';
+  el('loginErr').textContent='';
+};
+el('loginBtn').onclick=async function(){
+  var em=el('email').value.trim(),pw=el('password').value;
+  if(!em||!pw){el('loginErr').textContent='Email and password required';return;}
+  this.disabled=true;el('loginErr').textContent='';
+  var r=signupMode?await sb.auth.signUp({email:em,password:pw})
+                  :await sb.auth.signInWithPassword({email:em,password:pw});
+  this.disabled=false;
+  if(r.error){el('loginErr').textContent=r.error.message;return;}
+  if(signupMode&&!(r.data&&r.data.session)){
+    el('loginErr').textContent='Check your email to confirm, then sign in.';return;}
+  boot();
+};
+['email','password'].forEach(function(id){el(id).addEventListener('keydown',function(e){
+  if(e.key==='Enter')el('loginBtn').click();});});
+
+function noKennel(){
+  el('login').style.display='none';el('app').style.display='block';
+  document.body.classList.remove('anon');
+  el('view').innerHTML='<div class="empty"><b>No kennel linked to '+esc(S.user.email)+'</b>'+
+    'Your Breedwise team provisions your kennel and invites this email. Once that is done, sign out and back in.'+
+    '</div><button class="btn ghost block" id="noOut" style="max-width:320px;margin:0 auto">Sign out</button>';
+  el('noOut').onclick=async function(){await sb.auth.signOut();location.reload();};
+}
+
+async function boot(){
+  var ses=await sb.auth.getSession();
+  if(!ses.data||!ses.data.session){showLogin();return;}
+  S.user=ses.data.session.user;
+  el('userEmail').textContent=S.user.email;
+  el('login').style.display='none';el('app').style.display='block';
+  document.body.classList.remove('anon');
+
+  try{await sb.rpc('kos_claim_invites');}catch(e){}
+  var adm=await sb.rpc('kos_is_admin');S.isAdmin=!!(adm&&adm.data);
+
+  var mem=await sb.from('kennel_members').select('kennel_id,role').eq('user_id',S.user.id);
+  var mems=mem.data||[];
+  var kq=sb.from('kennels').select('*').order('name');
+  var kr=await kq;
+  S.kennels=(kr.data||[]);
+  if(!S.kennels.length){noKennel();return;}
+
+  var want=new URLSearchParams(location.search).get('k')||lsGet('kos_kennel');
+  var pick=null;
+  if(want)for(var i=0;i<S.kennels.length;i++)
+    if(S.kennels[i].id===want||S.kennels[i].slug===want)pick=S.kennels[i];
+  if(!pick){
+    for(var j=0;j<S.kennels.length&&!pick;j++)
+      for(var m=0;m<mems.length;m++)if(mems[m].kennel_id===S.kennels[j].id)pick=S.kennels[j];
+  }
+  if(!pick)pick=S.kennels[0];
+  S.kennel=pick;
+  lsSet('kos_kennel',pick.id);
+  S.role='viewer';
+  for(var q=0;q<mems.length;q++)if(mems[q].kennel_id===pick.id)S.role=mems[q].role;
+  if(S.isAdmin&&S.role==='viewer')S.role='manager';
+
+  applyBrand(S.kennel);
+  initSW();
+  await Promise.all([refreshCaches(),loadPrefs()]);
+  await render();
+}
+
+sb.auth.onAuthStateChange(function(evt){if(evt==='SIGNED_OUT')showLogin();});
+boot();
+})();
+</script>
+</body>
+</html>
