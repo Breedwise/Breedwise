@@ -1768,7 +1768,16 @@ var TITLES={'':'Dashboard',calendar:'Calendar',tasks:'Tasks',contacts:'CRM & Con
   money:'Finances',documents:'Documents',reports:'Reports',settings:'Settings',admin:'White-label Admin'};
 
 async function render(){
-  if(!S.kennel)return;
+  if(!S.kennel){
+    // First run on a fresh project: no kennels exist yet. An admin still
+    // needs somewhere to stand — the screen that creates the first one.
+    if(S.isAdmin){
+      el('tbTitle').textContent='White-label Admin';
+      renderNav();
+      return await adminView();
+    }
+    return;
+  }
   var r=route();
   el('tbTitle').textContent=TITLES[r.view]||'Dashboard';
   renderNav();
@@ -1924,7 +1933,16 @@ async function boot(){
   var kq=sb.from('kennels').select('*').order('name');
   var kr=await kq;
   S.kennels=(kr.data||[]);
-  if(!S.kennels.length){noKennel();return;}
+  if(!S.kennels.length){
+    if(S.isAdmin){            // Breedwise staff: go straight to provisioning
+      S.role='manager';
+      el('tbTitle').textContent='White-label Admin';
+      renderNav();
+      await adminView();
+      return;
+    }
+    noKennel();return;        // a breeder genuinely has nothing yet
+  }
 
   var want=new URLSearchParams(location.search).get('k')||lsGet('kos_kennel');
   var pick=null;
