@@ -109,6 +109,17 @@ fbq('init','1337266034525554');fbq('track','PageView');fbq('trackCustom','Applic
   .tcard .who .rl{font-size:12px;color:var(--muted);margin-top:2px}
   .tcard .stars{color:var(--gold);font-size:13px;letter-spacing:2px;margin-bottom:10px}
   .tcard blockquote{font-size:13px;color:var(--mid);font-weight:300;line-height:1.7;font-style:italic}
+  .tform{display:inline-block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600;border:1px solid var(--gold-line);border-radius:20px;padding:4px 10px;margin-bottom:12px}
+  /* 9:16 video testimonials */
+  .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:760px;margin:0 auto}
+  @media(max-width:640px){.vgrid{grid-template-columns:1fr 1fr;max-width:440px}}
+  @media(max-width:400px){.vgrid{grid-template-columns:1fr;max-width:260px}}
+  .vcard{display:flex;flex-direction:column;gap:9px}
+  .vwrap{position:relative;width:100%;padding-top:177.78%;border-radius:14px;overflow:hidden;border:1px solid var(--gold-line);background:#0e0d0b;box-shadow:0 20px 50px -24px rgba(0,0,0,.85)}
+  .vwrap video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .vcap{text-align:center}
+  .vcap .n{font-family:var(--body);font-weight:700;color:var(--gold);font-size:13.5px}
+  .vcap .o{font-size:11.5px;color:var(--muted);margin-top:1px}
 
   footer{border-top:1px solid var(--line);margin-top:64px;padding:30px 0 46px;text-align:center;color:var(--muted);font-size:11.5px;line-height:1.7}
   footer .disc{max-width:760px;margin:0 auto 16px;font-size:10.5px;line-height:1.6;color:rgba(245,242,234,.38)}
@@ -180,31 +191,45 @@ fbq('init','1337266034525554');fbq('track','PageView');fbq('trackCustom','Applic
       </div>
     </section>
 
-    <!-- ══════ PROOF: RESULTS ══════ -->
+    <!-- ══════ PROOF: TESTIMONIALS ══════ -->
     <section class="sec">
-      <div class="sec-h"><div class="eyebrow">Proof</div><h2>Breeders We've Worked With</h2></div>
-      <div class="rgrid">
-        <div class="rcard"><div class="metric">$56,500</div><div class="name">Ethical breeder · 90 days</div><div class="desc">2 puppies he couldn't sell became a $56,500 litter, without changing his dogs.</div></div>
-        <div class="rcard"><div class="metric">$50K</div><div class="name">Jake</div><div class="desc">From no sales to a sold-out litter and a premium waitlist of ready buyers.</div></div>
-        <div class="rcard"><div class="metric">100K</div><div class="name">Shaylee</div><div class="desc">New breeder to 100K followers, real demand, and premium pricing in under 2 years.</div></div>
-        <div class="rcard"><div class="metric">$5K / pup</div><div class="name">Regina</div><div class="desc">First-time breeder, fully booked before her first litter ever hit the ground.</div></div>
-        <div class="rcard"><div class="metric">Record sale</div><div class="name">Trina &amp; Dion</div><div class="desc">7-year breeders, highest-priced puppy in their program's history within a month.</div></div>
-        <div class="rcard"><div class="metric">Sold out</div><div class="name">Madison Garruso</div><div class="desc">From stuck on sales and marketing to positioning and converting with confidence.</div></div>
+      <div class="sec-h"><div class="eyebrow">Proof</div><h2>Real BreedWise Breeders</h2></div>
+      <div class="vgrid">
+        <div class="vcard"><div class="vwrap"><video controls playsinline preload="none" poster="videos/t3.jpg"><source src="videos/t3.mp4" type="video/mp4"></video></div><div class="vcap"><div class="n">Jake Ayers</div><div class="o">Breeder · North Carolina</div></div></div>
+        <div class="vcard"><div class="vwrap"><video controls playsinline preload="none" poster="videos/t1.jpg"><source src="videos/t1.mp4" type="video/mp4"></video></div><div class="vcap"><div class="n">Michelle Cordova</div><div class="o">Breeder · Utah</div></div></div>
+        <div class="vcard"><div class="vwrap"><video controls playsinline preload="none" poster="videos/t7.jpg"><source src="videos/t7.mp4" type="video/mp4"></video></div><div class="vcap"><div class="n">Shaylee Griffin</div><div class="o">Breeder · Utah</div></div></div>
+        <div class="vcard"><div class="vwrap"><video controls playsinline preload="none" poster="videos/t2.jpg"><source src="videos/t2.mp4" type="video/mp4"></video></div><div class="vcap"><div class="n">Catherine Sjuve</div><div class="o">Breeder · Florida</div></div></div>
+        <div class="vcard"><div class="vwrap"><video controls playsinline preload="none" poster="videos/t4.jpg"><source src="videos/t4.mp4" type="video/mp4"></video></div><div class="vcap"><div class="n">Jose Duarte</div><div class="o">Breeder · New Mexico</div></div></div>
+        <div class="vcard"><div class="vwrap"><video controls playsinline preload="none" poster="videos/t6.jpg"><source src="videos/t6.mp4" type="video/mp4"></video></div><div class="vcap"><div class="n">Paul &amp; Heather</div><div class="o">Breeder · South Carolina</div></div></div>
       </div>
-      <div class="disc-mini">Results shown are documented member outcomes, are atypical, and are not a guarantee of your results.</div>
 
       <div class="tgrid">
         <div class="tcard">
-          <div class="who"><img src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/69f678888831cb2c6cccac54.png" alt="Madison Garruso"><div><div class="nm">Madison Garruso</div><div class="rl">BreedWise Academy Member</div></div></div>
+          <div class="tform">Pricing &amp; Demand</div>
           <div class="stars">★★★★★</div>
-          <blockquote>"After just a few months I went from feeling like a complete mess with sales to actually understanding my market, how to position myself, and how to communicate the value of my program in a way that converts. If you feel stuck and want to become profitable and confident, I would 100% recommend joining BreedWise."</blockquote>
+          <blockquote>"We've bred for over 7 years and knew we were undervaluing our program. Less than a month after joining, we sold a puppy for the highest price in our program's history."</blockquote>
+          <div class="who" style="margin-top:14px;margin-bottom:0"><img src="photos/rev-trina.jpg" alt="Trina and Dion"><div><div class="nm">Trina &amp; Dion</div><div class="rl">Breeding 7+ years · Accelerator</div></div></div>
         </div>
         <div class="tcard">
-          <div class="who"><img src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/69f6709152d70cb766b15704.jpeg" alt="Trina and Dion"><div><div class="nm">Trina &amp; Dion</div><div class="rl">Breeding 7+ years · Accelerator members</div></div></div>
+          <div class="tform">Pricing &amp; Standards</div>
           <div class="stars">★★★★★</div>
-          <blockquote>"We've been breeding for over 7 years and knew we were undervaluing our program. After less than a month in the Accelerator, we sold one of our puppies for the highest price in our program's history. This is just the beginning."</blockquote>
+          <blockquote>"I've bred for 7 years and never learned anything like what BreedWise offers. I started OFA testing, I'm improving my breed, and my clients are paying me three times more than I've ever charged."</blockquote>
+          <div class="who" style="margin-top:14px;margin-bottom:0"><img src="photos/rev-jasmin.jpg" alt="Jasmin Garcia"><div><div class="nm">Jasmin Garcia</div><div class="rl">Breeding 7 years</div></div></div>
+        </div>
+        <div class="tcard">
+          <div class="tform">Years of Experience</div>
+          <div class="stars">★★★★★</div>
+          <blockquote>"I started breeding 13 years ago, and the information I learned through BreedWise in 3 months would have saved me years had I known it sooner."</blockquote>
+          <div class="who" style="margin-top:14px;margin-bottom:0"><img src="photos/rev-michael.jpg" alt="Michael Page"><div><div class="nm">Michael Page</div><div class="rl">Breeding 13 years</div></div></div>
+        </div>
+        <div class="tcard">
+          <div class="tform">Sales &amp; Marketing</div>
+          <div class="stars">★★★★★</div>
+          <blockquote>"Before BreedWise I was a complete mess with sales. After a few months I understand my market, how to position myself, and how to communicate my program's value in a way that converts. The best part is the community."</blockquote>
+          <div class="who" style="margin-top:14px;margin-bottom:0"><img src="photos/rev-madison.jpg" alt="Madison Gorruso"><div><div class="nm">Madison Gorruso</div><div class="rl">BreedWise Academy member</div></div></div>
         </div>
       </div>
+      <div class="disc-mini">Testimonials are from real BreedWise members. Results are not typical and are not a guarantee of your results.</div>
     </section>
 
   </main>
