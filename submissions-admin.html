@@ -390,7 +390,48 @@ function renderBusiness(r){
     ${t('Upcoming decision',i.upcoming)}
     ${t('Anything else',i.anything)}`;
 }
+function ascore(n){ n=Number(n); return n>=7?'s-hi':(n>=4?'s-md':'s-lo'); }
+function prioPill(p){ const c=p==='Critical'?'s-lo':(p==='High'?'s-md':'s-hi'); return `<span class="pill ${c}">${esc(p)}</span>`; }
+function renderAssessment(r){
+  const res=r.result||{}, i=r.inputs||{};
+  const c=res.confidence||{}, pc=res.primary_constraint||{}, snap=res.member_snapshot||{}, rm=res.member_roadmap||{};
+  const li=a=>(a&&a.length)?`<ul class="li">${a.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p style="color:var(--muted)">—</p>';
+  const kv=(l,v)=> v&&String(v).trim()?`<div class="kvrow"><b>${esc(l)}:</b> ${esc(v)}</div>`:'';
+  const scores=(res.scores||[]).map(s=>`<tr><td class="n">${esc(s.domain)}</td><td><span class="pill ${ascore(s.score)}">${s.score}</span></td><td style="color:var(--muted);font-size:12px">${esc(s.note||'')}</td></tr>`).join('');
+  const flags=(res.expert_flags||[]).map(f=>`<div class="kvrow" style="${f.flag?'':'opacity:.5'}"><b style="color:${f.flag?'var(--del)':'var(--muted)'}">${f.flag?'✔':'—'} ${esc(f.expert)}:</b> ${esc(f.why||'')}</div>`).join('');
+  const paths=(res.pathways||[]).map(p=>`<div class="kvrow"><b>${esc(p.name)}</b> ${prioPill(p.priority)}<div style="color:var(--muted);font-size:12.5px;margin-top:2px">${esc(p.why)}</div></div>`).join('');
+  const notNow=res.not_now?`<div class="kvrow" style="opacity:.7"><b style="color:var(--muted)">Not now — ${esc(res.not_now.name)}:</b> ${esc(res.not_now.reason)}</div>`:'';
+  const sprints=(res.sprint_120||[]).map(s=>`<div class="block"><h3>Sprint ${s.sprint} · ${esc(s.pathway)}</h3>
+    <p><b style="color:var(--ink)">Now:</b> ${esc(s.current_state)}</p><p style="margin-top:4px"><b style="color:var(--ink)">Target:</b> ${esc(s.desired_state)}</p>
+    <div style="font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);margin-top:8px;font-weight:700">Milestones</div>${li(s.milestones)}
+    <div style="font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);margin-top:8px;font-weight:700">Resources</div>${li(s.resources)}
+    <p style="margin-top:8px"><b style="color:var(--ink)">KPI:</b> ${esc(s.kpi)} · <b style="color:var(--ink)">Done when:</b> ${esc(s.definition_of_done)}</p></div>`).join('');
+  const banner=c.review_required
+    ? `<div class="block" style="border-color:var(--fu);background:rgba(224,128,126,.10)"><h3 style="color:var(--fu)">⚠ Jenn review required before activating</h3><p>${(c.reasons||[]).map(esc).join(' · ')||'Confidence below threshold.'}</p></div>`
+    : `<div class="block" style="border-color:var(--del);background:rgba(109,191,144,.08)"><h3 style="color:var(--del)">✔ High-confidence recommendation</h3><p style="color:var(--mid)">Constraint ${c.constraint_pct??'–'}% · Pathways ${c.pathway_pct??'–'}% — still confirm before activating.</p></div>`;
+  return `
+    ${banner}
+    <div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--del)">#1 Constraint · confidence ${c.constraint_pct??'–'}%</div>
+      <div class="big" style="font-size:20px">${esc(pc.name||'')}</div>${li(pc.evidence)}</div>
+    <div class="block"><h3>Member snapshot</h3>${kv('Breed',snap.breed)}${kv('Stage',snap.program_stage)}${kv('Next litter',snap.next_litter)}${kv('Price',snap.current_price)}${kv('Volume',snap.current_volume)}${kv('Primary goal',snap.primary_goal)}${r.meta&&r.meta.next_review?kv('Next review',r.meta.next_review):''}</div>
+    <div class="block"><h3>Desired transformation</h3><p><b style="color:var(--ink)">120 days:</b> ${esc(res.transformation_120||'')}</p><p style="margin-top:4px"><b style="color:var(--ink)">12 months:</b> ${esc(res.direction_12mo||'')}</p></div>
+    <div class="block"><h3>Domain scores (0–10)</h3><div class="tblwrap"><table class="sc"><tbody>${scores}</tbody></table></div></div>
+    <div class="block"><h3>Recommended pathways</h3>${paths}${notNow}<p style="color:var(--muted);font-size:11.5px;margin-top:6px">Pathway confidence ${c.pathway_pct??'–'}%</p></div>
+    <div class="block"><h3>Expert flags</h3>${flags}</div>
+    <div class="block"><h3>Secondary constraints</h3>${li(res.secondary_constraints)}</div>
+    <div class="block"><h3>Strengths</h3>${li(res.strengths)}</div>
+    <div class="block"><h3>Risks / flags</h3>${li(res.risks)}</div>
+    <div class="block"><h3>Missing information</h3>${li(res.missing_info)}</div>
+    <div style="font-family:var(--heading);color:var(--gold);font-size:15px;margin:20px 2px 4px">120-Day Sprint Plan</div>
+    ${sprints}
+    <div class="block" style="border-color:var(--gold-deep)"><h3>What the member sees (roadmap)</h3>
+      <p><b style="color:var(--ink)">Where you are:</b> ${esc(rm.where_you_are||'')}</p>
+      <p style="margin-top:6px"><b style="color:var(--ink)">120-day focus:</b> ${esc(rm.focus_statement||'')}</p>
+      ${(rm.priorities||[]).map((p,n)=>`<p style="margin-top:6px"><b style="color:var(--gold)">0${n+1} ${esc(p.title)}</b> — ${esc(p.work_toward)}</p>`).join('')}
+      <p style="margin-top:6px;color:var(--muted)">${esc(rm.next_steps||'')}</p></div>`;
+}
 function renderBody(r){
+  if(r.tool==='implementation-assessment') return renderAssessment(r);
   if(r.tool==='niche-blueprint'&&r.result) return renderBlueprint(r.result,r.inputs||{});
   if(r.tool==='value-architect'&&r.result) return renderValueArchitect(r.result,r.inputs||{});
   if(r.tool==='feedback') return renderFeedback(r);
