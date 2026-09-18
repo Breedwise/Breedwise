@@ -121,6 +121,17 @@ fbq('init','1337266034525554');fbq('track','PageView');fbq('trackCustom','Applic
   .vcap .n{font-family:var(--body);font-weight:700;color:var(--gold);font-size:13.5px}
   .vcap .o{font-size:11.5px;color:var(--muted);margin-top:1px}
 
+  /* member wins wall */
+  .wins{columns:3;column-gap:16px;max-width:1000px;margin:0 auto}
+  @media(max-width:900px){.wins{columns:2}}
+  @media(max-width:600px){.wins{columns:1;max-width:460px}}
+  .wincard{break-inside:avoid;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 20px 18px;margin-bottom:16px}
+  .wincard .wtag{display:inline-block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;border:1px solid var(--gold-line);border-radius:20px;padding:3px 9px;margin-bottom:11px}
+  .wincard p{font-size:13px;color:var(--mid);font-weight:300;line-height:1.6;font-style:italic}
+  .wincard .wwho{display:flex;align-items:center;gap:11px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+  .wincard .wav{flex:none;width:38px;height:38px;border-radius:50%;background:var(--gold-soft);border:1px solid var(--gold-line);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:14px;color:var(--gold)}
+  .wincard .wwho b{color:var(--ink);font-weight:700;font-size:13.5px;line-height:1.2;display:block}
+  .wincard .wwho span{font-size:11.5px;color:var(--muted);line-height:1.3}
   footer{border-top:1px solid var(--line);margin-top:64px;padding:30px 0 46px;text-align:center;color:var(--muted);font-size:11.5px;line-height:1.7}
   footer .disc{max-width:760px;margin:0 auto 16px;font-size:10.5px;line-height:1.6;color:rgba(245,242,234,.38)}
   footer a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
@@ -203,6 +214,23 @@ fbq('init','1337266034525554');fbq('track','PageView');fbq('trackCustom','Applic
         </div>
       </div>
       <div class="disc-mini">Testimonials are from real BreedWise members. Results are not typical and are not a guarantee of your results.</div>
+    </section>
+
+    <!-- ══════ MEMBER WINS WALL ══════ -->
+    <section class="sec">
+      <div class="sec-h"><div class="eyebrow">Straight from the community</div><h2>Wins Happening Every Week</h2></div>
+      <div class="wins">
+        <div class="wincard"><div class="wtag">🏆 Wait List Building</div><p>"While we were doing our masterclass last night I had 2 people sign up and qualify for my litter due tomorrow!"</p><div class="wwho"><span class="wav">CS</span><div><b>Cathy Sjuve</b><span>BreedWise member</span></div></div></div>
+        <div class="wincard"><div class="wtag">🏆 Wins This Week</div><p>"We've had several qualification calls this week. Three people confirmed for our wait-list and two others found their Guardian among our current puppies!"</p><div class="wwho"><span class="wav">HP</span><div><b>Heather &amp; Paul Angelo</b><span>Guardians of Eden · Cane Corso &amp; Rottweiler</span></div></div></div>
+        <div class="wincard"><div class="wtag">📈 800 → 4,000 Followers</div><p>"Using the BreedWise social media strategy, I grew my IG from 800 to 4,000 followers organically in a few months. Super grateful for your help!"</p><div class="wwho"><span class="wav">R</span><div><b>Regina</b><span>TX Shorty Frenchies</span></div></div></div>
+        <div class="wincard"><div class="wtag">📈 Weekly Win</div><p>"One of our reels hit 13,500 likes and 1,500 new Facebook followers. Our Instagram grew from 30 to 500 followers with 3,500 likes and 59k views. Thank you for the help!"</p><div class="wwho"><span class="wav">RW</span><div><b>Ron Weller</b><span>Misty Hills German Shepherds</span></div></div></div>
+        <div class="wincard"><div class="wtag">🧬 OFA Normal</div><p>"One down, a couple more to go! Couldn't be any happier with these results. Baby Malinois loading..." (OFA elbows: Normal)</p><div class="wwho"><span class="wav">B</span><div><b>Brittani</b><span>Healthy. Striking. Working Dogs</span></div></div></div>
+        <div class="wincard"><div class="wtag">🐾 Sold Out at 3 Weeks</div><p>"His first litter since joining sold out at three weeks old, and at the highest price he's ever charged across the board."</p><div class="wwho"><span class="wav">MP</span><div><b>Mike Page</b><span>Thoroughbred Bullies</span></div></div></div>
+        <div class="wincard"><div class="wtag">🐾 First Planned Breeding</div><p>"My win is prepping myself for an actual planned breeding. I've never really planned a breeding, they always just happened."</p><div class="wwho"><span class="wav">M</span><div><b>Michael</b><span>Founder, Thoroughbred Bullies</span></div></div></div>
+        <div class="wincard"><div class="wtag">🏆 Mentorship</div><p>"My biggest win was discovering the mentorship and resources to help me grow, not only my business, but my mindset. Excited to keep building, one step at a time."</p><div class="wwho"><span class="wav">TM</span><div><b>Todd Miller</b><span>Blessed Beyond Dobermans</span></div></div></div>
+        <div class="wincard"><div class="wtag">📸 Improving &amp; Evolving</div><p>"My biggest weakness was social media and photos. I look back at where I started and how far I've come. Take time to reflect on your own progress."</p><div class="wwho"><span class="wav">LB</span><div><b>LaMont Brown</b><span>Dreams Realized Kennels · Inglewood, CA</span></div></div></div>
+      </div>
+      <div class="disc-mini">Wins shared by real BreedWise members. Results are not typical and are not a guarantee of your results.</div>
     </section>
 
   </main>
