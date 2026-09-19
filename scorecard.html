@@ -171,7 +171,7 @@ var sb=window.supabase.createClient(SB_URL,SB_KEY);
 
 var CATS=['Demand','Brand & Positioning','Social Media & Content','Buyer Experience & Sales','Pricing',
           'Profitability','Breeding & Reproductive Prep','Whelping & Neonatal','Data & Recordkeeping','Operations & Systems'];
-var CODE='', MSGS=[], CAT=1, BUSY=false, DONE=false, KENNEL='';
+var CODE='', MSGS=[], CAT=1, BUSY=false, DONE=false, KENNEL='', SEEN={}, FOCUS='';
 
 function $(s){return document.querySelector(s);}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){
@@ -180,10 +180,12 @@ async function sha256(s){var b=await crypto.subtle.digest('SHA-256',new TextEnco
   return [].slice.call(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0');}).join('');}
 
 function rail(){
+  // breeders choose their own order, so the rail counts ground covered
+  var n=0,k; for(k in SEEN)if(SEEN[k])n++;
   $('#rail').innerHTML=CATS.map(function(_,i){
-    var n=i+1;return '<i class="'+(n<CAT?'done':n===CAT?'on':'')+'"></i>';}).join('');
+    return '<i class="'+(i<n?'done':i===n?'on':'')+'"></i>';}).join('');
   $('#capLeft').textContent=DONE?'Complete':(CATS[CAT-1]||'Getting started');
-  $('#capRight').innerHTML=DONE?'':'<b>'+CAT+'</b> of 10';
+  $('#capRight').innerHTML=DONE?'':'<b>'+Math.min(n+(DONE?0:1),10)+'</b> of 10';
 }
 function bubble(role,text){
   var d=document.createElement('div');
@@ -220,14 +222,16 @@ async function turn(userText){
     MSGS.push({role:'assistant',content:d.reply});
     bubble('assistant',d.reply);
     if(d.kennel_name)KENNEL=d.kennel_name;
-    CAT=Math.max(CAT,Number(d.current_category)||CAT);
+    var c=Number(d.current_category)||0;
+    if(c>=1&&c<=10){SEEN[c]=true;CAT=c;}
+    if(d.focus)FOCUS=d.focus;
     if(d.vet_flag){
       $('#vet').innerHTML='<div class="vetwarn"><b>Please contact your veterinarian.</b> '+
         'It sounds like there may be an active concern with a dog or a puppy. This scorecard is educational and cannot assess a medical situation — '+
         'call your veterinarian or an emergency veterinary service now. Your answers are saved; come back when things are settled.</div>';
     }
     if(d.ready_to_score){
-      DONE=true; CAT=10;
+      DONE=true; for(var q=1;q<=10;q++)SEEN[q]=true;
       $('#composer').style.display='none';
       $('#finishWrap').style.display='block';
       if(document.getElementById('mName')&&KENNEL)document.getElementById('mName').value=KENNEL;
@@ -319,7 +323,7 @@ async function finish(){
 }
 
 function reset(){
-  MSGS=[];CAT=1;DONE=false;KENNEL='';
+  MSGS=[];CAT=1;DONE=false;KENNEL='';SEEN={};FOCUS='';
   $('#thread').innerHTML='';$('#thread').style.display='';$('#out').innerHTML='';$('#vet').innerHTML='';
   $('#composer').style.display='';$('#finishWrap').style.display='none';
   $('#finish').disabled=false;$('#finish').textContent='Build my scorecard';
