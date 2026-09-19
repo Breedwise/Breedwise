@@ -430,7 +430,40 @@ function renderAssessment(r){
       ${(rm.priorities||[]).map((p,n)=>`<p style="margin-top:6px"><b style="color:var(--gold)">0${n+1} ${esc(p.title)}</b> — ${esc(p.work_toward)}</p>`).join('')}
       <p style="margin-top:6px;color:var(--muted)">${esc(rm.next_steps||'')}</p></div>`;
 }
+/* ── BreedWise Program Scorecard™ ───────────────────────────────── */
+function renderScorecard(r){
+  const res=r.result||{}, inp=r.inputs||{};
+  const all=res.scores||[];
+  const sum=eng=>all.filter(s=>s.engine===eng).reduce((a,s)=>a+(Number(s.score)||0),0);
+  const li=a=>(a&&a.length)?`<ul class="li">${a.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p style="color:var(--muted)">—</p>';
+  const items=arr=>(arr||[]).map(x=>`<div class="kvrow"><b style="color:var(--ink)">${esc(x.area||x.priority||'')}</b>
+    <div style="color:var(--muted);font-size:12.5px;margin-top:2px">${esc(x.why||'')}</div></div>`).join('')
+    ||'<p style="color:var(--muted)">—</p>';
+  const rows=eng=>all.filter(s=>s.engine===eng).map(s=>`<tr>
+      <td class="n">${esc(s.label||s.key)}</td>
+      <td><span class="pill ${ascore(s.score)}">${Number(s.score)||0}</span></td>
+      <td style="color:var(--muted);font-size:12px">${esc(s.evidence||'')}</td></tr>`).join('');
+  const sn=res.snapshot||{};
+  const tx=(inp.transcript||[]).map(m=>`${m.role==='user'?'BREEDER':'SCORECARD'}: ${m.content}`).join('\n\n');
+  return `
+    <div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold)">Overall program score</div>
+      <div class="big">${res.overall??'–'}<span style="font-size:15px;color:var(--muted)">/100</span></div>
+      <div style="color:var(--mid);font-size:12.5px;margin-top:2px">Business ${sum('business')}/60 · Breeding ${sum('breeding')}/40 — the pattern matters more than the total.</div></div>
+    <div class="block"><h3>Business engine</h3><div class="tblwrap"><table class="sc"><tbody>${rows('business')}</tbody></table></div></div>
+    <div class="block"><h3>Breeding engine</h3><div class="tblwrap"><table class="sc"><tbody>${rows('breeding')}</tbody></table></div></div>
+    <div class="block"><h3>What's working</h3>${items(res.working)}</div>
+    <div class="block"><h3>Biggest gaps</h3>${items(res.gaps)}</div>
+    <div class="block" style="border-color:var(--gold-deep)"><h3>#1 priority — ${esc((res.priority||{}).area||'')}</h3>
+      <p>${esc((res.priority||{}).reasoning||'')}</p></div>
+    <div class="block"><h3>Focus next</h3>${items(res.focus)}</div>
+    <div class="block"><h3>Member snapshot</h3><p>Strongest in <b style="color:var(--ink)">${esc(sn.strongest_in||'')}</b>.
+      Biggest opportunities: <b style="color:var(--ink)">${esc(sn.biggest_opportunities||'')}</b>.
+      Improve <b style="color:var(--ink)">${esc(sn.improve_first||'')}</b> first, then
+      <b style="color:var(--ink)">${esc(sn.stronger_for||'')}</b>.</p></div>
+    ${tx?`<div class="block"><h3>Interview transcript</h3><pre style="white-space:pre-wrap;font-family:var(--body);font-size:12.5px;color:var(--mid);margin:0">${esc(tx)}</pre></div>`:''}`;
+}
 function renderBody(r){
+  if(r.tool==='program-scorecard'&&r.result) return renderScorecard(r);
   if(r.tool==='implementation-assessment') return renderAssessment(r);
   if(r.tool==='niche-blueprint'&&r.result) return renderBlueprint(r.result,r.inputs||{});
   if(r.tool==='value-architect'&&r.result) return renderValueArchitect(r.result,r.inputs||{});
