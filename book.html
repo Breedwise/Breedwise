@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Book Your BreedWise Strategy Call</title>
+<meta name="description" content="Pick a time and let's build the plan for your breeding program. A focused call with the BreedWise team.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#0a0a0a; --panel:#141414; --line:#242424;
+    --gold:#cdae72; --gold2:#e2cb86; --grad:linear-gradient(135deg,#e2cb86,#c3a35c);
+    --ink:#f4f1ea; --sub:#c9c3b8; --muted:#8f8a80;
+    --disp:'Anton',Impact,sans-serif; --body:'Poppins',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased}
+  img{max-width:100%}
+  .wrap{max-width:920px;margin:0 auto;padding-left:20px;padding-right:20px}
+  .disp{font-family:var(--disp);font-weight:400;letter-spacing:.5px;line-height:1.02}
+  .eyebrow{font-family:var(--body);font-weight:600;font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold)}
+  .gtext{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  .topbar{border-bottom:1px solid var(--line);padding:16px 0;text-align:center}
+  .brand{font-family:var(--disp);font-size:22px;letter-spacing:1.5px}
+  .brand b{color:var(--gold)}
+
+  .hero{position:relative;text-align:center;padding-block:52px 8px;overflow:hidden}
+  .hero::before{content:"";position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:820px;max-width:130%;height:480px;
+    background:radial-gradient(closest-side, rgba(205,174,114,.20), transparent 72%);pointer-events:none}
+  .hero .in{position:relative}
+  .hero h1{font-size:clamp(30px,5.4vw,52px);margin:14px 0 0;text-wrap:balance}
+  .hero .sub{color:var(--sub);font-size:clamp(15px,2vw,18px);max-width:56ch;margin:18px auto 0}
+  .hero .sub b{color:var(--ink);font-weight:500}
+
+  /* value row */
+  .vals{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:34px auto 0;max-width:760px}
+  .val{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 16px;text-align:center}
+  .val .vn{font-family:var(--disp);font-size:15px;letter-spacing:1px;color:var(--gold2)}
+  .val p{color:var(--sub);font-size:13px;margin:8px 0 0}
+
+  /* calendar */
+  .cal-sec{padding-block:40px 20px}
+  .cal-head{text-align:center;margin-bottom:22px}
+  .cal-head h2{font-family:var(--disp);font-weight:400;font-size:clamp(22px,3.6vw,30px);letter-spacing:.5px;margin:0}
+  .cal-head p{color:var(--muted);font-size:14px;margin:10px 0 0}
+  .cal-card{background:#ffffff;border-radius:18px;padding:10px;box-shadow:0 24px 70px rgba(0,0,0,.55);border:1px solid rgba(205,174,114,.35)}
+  .cal-card iframe{display:block;width:100%;border:none;min-height:740px;border-radius:12px}
+
+  /* trust */
+  .trust{padding-block:34px 8px}
+  .quotes{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:760px;margin:0 auto}
+  .quote{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .quote .stars{color:var(--gold);font-size:13px;letter-spacing:2px;margin-bottom:8px}
+  .quote blockquote{margin:0;color:var(--sub);font-size:14px;line-height:1.55}
+  .quote .who{margin-top:12px;font-size:12.5px;color:var(--muted)}
+  .quote .who b{color:var(--ink);display:block;font-size:13.5px}
+
+  .expect{max-width:620px;margin:30px auto 0;text-align:center;color:var(--sub);font-size:14.5px}
+  .expect .t{font-family:var(--disp);font-size:18px;letter-spacing:.5px;color:var(--ink);margin-bottom:8px}
+
+  footer{border-top:1px solid var(--line);padding-block:30px 60px;text-align:center;color:var(--muted);font-size:12px;margin-top:40px}
+  footer .fb{font-family:var(--disp);font-size:16px;letter-spacing:1px;color:var(--gold)}
+  footer .disc{max-width:60ch;margin:10px auto 0;line-height:1.6;font-size:11.5px}
+
+  b,strong{font-weight:600}
+  @media(max-width:640px){ .vals,.quotes{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+  <div class="topbar"><span class="brand disp">BREED<b>WISE</b></span></div>
+
+  <div class="hero">
+    <div class="wrap in">
+      <span class="eyebrow">Your BreedWise Strategy Call</span>
+      <h1 class="disp" id="headline">Let's Build Your Plan.</h1>
+      <p class="sub">Pick a time below and we'll walk through where your program is now, your biggest gaps, and the fastest path to a stronger, more profitable breeding program. <b>No pressure, just a real plan.</b></p>
+
+      <div class="vals">
+        <div class="val"><div class="vn">CLARITY</div><p>A straight read on where your program stands today.</p></div>
+        <div class="val"><div class="vn">A PLAN</div><p>The specific next moves that matter most for you.</p></div>
+        <div class="val"><div class="vn">15 MINUTES</div><p>Focused and worth your time. Come as you are.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CALENDAR ===== -->
+  <section class="cal-sec">
+    <div class="wrap">
+      <div class="cal-head">
+        <h2 class="disp">Grab Your Time</h2>
+        <p>Choose the slot that works best. You'll get an instant confirmation.</p>
+      </div>
+      <div class="cal-card">
+        <iframe src="https://link.breedwise.io/widget/booking/Vf5YgCxLMJqdeAbYFOfB" allow="payment" scrolling="no" id="Vf5YgCxLMJqdeAbYFOfB_1789832734110"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRUST ===== -->
+  <section class="trust">
+    <div class="wrap">
+      <div class="quotes">
+        <div class="quote">
+          <div class="stars">★★★★★</div>
+          <blockquote>"We've bred for over 7 years and knew we were undervaluing our program. Less than a month after joining, we sold a puppy for the highest price in our program's history."</blockquote>
+          <div class="who"><b>Trina &amp; Dion</b>Breeding 7+ years</div>
+        </div>
+        <div class="quote">
+          <div class="stars">★★★★★</div>
+          <blockquote>"The information I learned through BreedWise in 3 months would have saved me years had I known it sooner."</blockquote>
+          <div class="who"><b>Michael Page</b>Breeding 13 years</div>
+        </div>
+      </div>
+
+      <div class="expect">
+        <div class="t disp">What To Expect</div>
+        <p>A real conversation about your program, not a pitch. Bring your current pricing, your breeds, and the one thing you most want to fix. We'll handle the rest.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="fb">BREEDWISE</div>
+    <div class="disc">BreedWise Academy, LLC · 800 N King Street, Suite 304 #4050, Wilmington, DE<br>Nothing on this site is veterinary, legal, tax, or investment advice. Consult your own licensed professionals before making decisions that affect your dogs, business, or finances.</div>
+  </footer>
+
+  <!-- GHL booking widget resizer -->
+  <script src="https://link.breedwise.io/js/form_embed.js" type="text/javascript"></script>
+  <script>
+    // Optional prefill: if the visitor arrived with ?fname / ?email, pass it into the calendar + headline.
+    (function(){
+      try{
+        var p = new URLSearchParams(location.search);
+        var f = (p.get('fname') || p.get('name') || '').trim().replace(/[^a-zA-Z' -]/g,'').slice(0,24);
+        var e = (p.get('email') || '').trim();
+        if(f){ document.getElementById('headline').textContent = f + ", Let's Build Your Plan."; }
+        if(f || e){
+          var ifr = document.getElementById('Vf5YgCxLMJqdeAbYFOfB_1789832734110');
+          if(ifr && ifr.src){
+            var u = new URL(ifr.src);
+            if(f) u.searchParams.set('first_name', f);
+            if(e) u.searchParams.set('email', e);
+            ifr.src = u.toString();
+          }
+        }
+      }catch(err){}
+    })();
+  </script>
+</body>
+</html>
