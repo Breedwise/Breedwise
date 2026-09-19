@@ -90,6 +90,19 @@ main{padding:22px 0 60px}
 .snap em{font-style:normal;color:var(--gold)}
 .closing{color:var(--mid);font-size:14px;margin-top:10px}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.f2{grid-template-columns:1fr}}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px}
+.delta{font-size:11.5px;font-weight:700;margin-left:8px}
+.delta.up{color:var(--good)}.delta.dn{color:var(--bad)}
+.then{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;text-align:center}
+.then .col .k{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.then .col .v{font-family:var(--heading);font-size:34px;margin-top:4px}
+.then .col.now .v{color:var(--gold)}
+.then .ar{color:var(--gold-deep);font-size:22px}
+.steps{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px}
+.steps span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--gold);border:1px solid var(--border);border-radius:30px;padding:8px 15px}
 .foot{max-width:820px;margin:30px auto 0;padding:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .link{font-size:12px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:var(--body)}
 .link:hover{color:var(--gold)}
@@ -126,8 +139,17 @@ main{padding:22px 0 60px}
       <textarea id="say" rows="2" placeholder="Type your answer…" aria-label="Your answer"></textarea>
       <button class="btn" id="send">Send</button>
     </div>
-    <div class="actions" id="finishWrap" style="display:none">
-      <button class="btn" id="finish">Build my scorecard</button>
+    <div id="finishWrap" style="display:none">
+      <div class="block" style="margin-top:4px">
+        <h3>One last thing</h3>
+        <p style="color:var(--mid);font-size:14px;margin-bottom:14px">So we can save your baseline and show you what moved when you reassess at Day 90.</p>
+        <div class="f2">
+          <div class="field"><label>Kennel name</label><input id="mName" placeholder="Your kennel"></div>
+          <div class="field"><label>Email</label><input id="mEmail" type="email" placeholder="you@kennel.com"></div>
+        </div>
+        <button class="btn" id="finish" style="width:100%">Build my scorecard</button>
+        <div class="err" id="fErr"></div>
+      </div>
     </div>
     <div id="out"></div>
   </div></main>
@@ -207,7 +229,8 @@ async function turn(userText){
     if(d.ready_to_score){
       DONE=true; CAT=10;
       $('#composer').style.display='none';
-      $('#finishWrap').style.display='flex';
+      $('#finishWrap').style.display='block';
+      if(document.getElementById('mName')&&KENNEL)document.getElementById('mName').value=KENNEL;
     }
     rail();
   }catch(e){
@@ -223,11 +246,24 @@ function bar(n){
 }
 function group(scores,engine,title){
   var rows=scores.filter(function(s){return s.engine===engine;}).map(function(s){
-    return '<div class="srow"><div><div class="nm">'+esc(s.label)+'</div>'+bar(Number(s.score)||0)+
+    var dl=(typeof s.delta==='number'&&s.delta!==0)
+      ? '<span class="delta '+(s.delta>0?'up':'dn')+'">'+(s.delta>0?'+':'')+s.delta+'</span>' : '';
+    return '<div class="srow"><div><div class="nm">'+esc(s.label)+dl+'</div>'+bar(Number(s.score)||0)+
       '<div class="ev">'+esc(s.evidence)+'</div></div><div class="num">'+(Number(s.score)||0)+'</div></div>';}).join('');
   var sum=scores.filter(function(s){return s.engine===engine;}).reduce(function(a,s){return a+(Number(s.score)||0);},0);
   var max=(engine==='business'?60:40);
   return '<div class="engine">'+title+' · '+sum+'/'+max+'</div>'+rows;
+}
+function prevBlock(res){
+  var p=res.previous; if(!p)return '';
+  var d=(res.overall||0)-(p.overall||0);
+  return '<div class="block"><h3>Day 1 &rarr; Day '+p.days+'</h3><div class="then">'+
+    '<div class="col"><div class="k">Day 1</div><div class="v">'+p.overall+'</div></div>'+
+    '<div class="ar">&rarr;</div>'+
+    '<div class="col now"><div class="k">Today</div><div class="v">'+(res.overall||0)+'</div></div>'+
+    '</div><p class="closing" style="text-align:center">'+
+    (d>0?'Up '+d+' points since your first scorecard.':d<0?'Down '+Math.abs(d)+' points \u2014 worth looking at what changed.':'Level with your first scorecard.')+
+    '</p></div>';
 }
 function renderCard(res){
   var items=function(arr){return (arr||[]).map(function(x){
@@ -240,18 +276,21 @@ function renderCard(res){
     '<div class="block">'+group(res.scores||[],'business','Business Engine')+
       group(res.scores||[],'breeding','Breeding Engine')+'</div>'+
     '<div class="block"><h3>What’s working</h3>'+items(res.working)+'</div>'+
-    '<div class="block"><h3>Your biggest gaps</h3>'+items(res.gaps)+'</div>'+
+    '<div class="block"><h3>Your biggest opportunities</h3>'+items(res.gaps)+'</div>'+
     '<div class="block prio"><h3>Your #1 priority</h3><div class="item"><b>'+esc((res.priority||{}).area||'')+'</b>'+
       '<p>'+esc((res.priority||{}).reasoning||'')+'</p></div></div>'+
     '<div class="block"><h3>What to focus on next</h3>'+items(res.focus)+'</div>'+
-    '<div class="block"><h3>Your BreedWise snapshot</h3><p class="snap">Right now, your program appears strongest in <em>'+
-      esc(sn.strongest_in||'')+'</em>. The biggest opportunities appear to be <em>'+esc(sn.biggest_opportunities||'')+
-      '</em>. If you improve <em>'+esc(sn.improve_first||'')+'</em> first, you’ll be in a stronger position to work on <em>'+
-      esc(sn.stronger_for||'')+'</em> next.</p>'+
-      '<p class="closing">Your Scorecard isn’t a grade. It’s a snapshot of where your breeding program stands today so you can stop guessing what needs attention and start prioritizing intentionally.</p></div>'+
-    '<div class="block"><h3>Use this as your baseline</h3><p>As you work through the 90-Day Profitable Breeder Blueprint, come back to these scores and reassess. '+
-      'The goal isn’t a perfect score overnight. The goal is to <b style="color:var(--ink)">see it, understand it, measure it, and prioritize it</b>.</p>'+
-      '<p class="closing">If you eventually want personalized help implementing the changes you’ve identified, that’s where BreedWise Academy goes deeper.</p></div>'+
+    '<div class="block"><h3>Your BreedWise snapshot</h3>'+
+      '<div class="item"><b>Strongest</b><p>'+esc(sn.strongest||sn.strongest_in||'')+'</p></div>'+
+      '<div class="item"><b>Biggest opportunities</b><p>'+esc(sn.opportunities||sn.biggest_opportunities||'')+'</p></div>'+
+      '<div class="item"><b>Start here</b><p>'+esc(sn.start_here||sn.improve_first||'')+'</p></div>'+
+      (sn.synthesis?'<p class="snap" style="margin-top:14px">'+esc(sn.synthesis)+'</p>':'')+
+      '<p class="closing">Your Scorecard is a snapshot of where your program stands today, not a grade \u2014 so you can stop guessing what needs attention and start prioritizing intentionally.</p></div>'+
+    prevBlock(res)+
+    '<div class="block prio"><h3>Your next step</h3>'+
+      '<p>Take this Scorecard into your <b style="color:var(--ink)">90-Day Profitable Breeder Blueprint</b>. As you work through the program, you will learn what each of these systems needs, why it matters, and what to measure.</p>'+
+      '<div class="steps"><span>See it</span><span>Understand it</span><span>Measure it</span><span>Prioritize it</span></div>'+
+      '<p class="closing" style="text-align:center">Come back and reassess at Day 90 \u2014 we will show you exactly what moved.</p></div>'+
     '<div class="actions"><button class="btn" onclick="window.print()">Save / print</button>'+
       '<button class="btn ghost" id="again">Start over</button></div>';
   var a=$('#again'); if(a)a.onclick=reset;
@@ -262,7 +301,12 @@ async function finish(){
   if(BUSY)return; BUSY=true;
   $('#finish').disabled=true; $('#finish').textContent='Scoring your program…';
   try{
-    var d=await api({action:'score',messages:MSGS,member_name:KENNEL});
+    var nEl=document.getElementById('mName'), eEl=document.getElementById('mEmail');
+    var nm=(nEl&&nEl.value.trim())||KENNEL, em=(eEl&&eEl.value.trim())||'';
+    if(!em){$('#fErr').textContent='Enter your email so we can save your baseline.';
+      $('#finish').disabled=false;$('#finish').textContent='Build my scorecard';BUSY=false;return;}
+    KENNEL=nm;
+    var d=await api({action:'score',messages:MSGS,member_name:nm,member_email:em});
     $('#finishWrap').style.display='none';
     $('#thread').style.display='none';
     rail();
