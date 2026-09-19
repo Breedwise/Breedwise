@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Profitable Breeder — Your Recommended Starting Point | BreedWise</title>
+<meta name="description" content="Based on your BreedWise Academy application, here's where we recommend you start. The Profitable Breeder helps you see your gaps and know what to improve next.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#0a0a0a; --panel:#121212; --panel2:#161616; --line:#242424; --line2:#1b1b1b;
+    --gold:#cdae72; --gold2:#e2cb86; --grad:linear-gradient(135deg,#e2cb86,#c3a35c);
+    --ink:#f4f1ea; --sub:#c9c3b8; --muted:#8f8a80;
+    --paw:#cdae72; --biz:#7fb2e6;
+    --disp:'Anton',Impact,sans-serif; --body:'Poppins',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.65;-webkit-font-smoothing:antialiased}
+  img{max-width:100%}
+  .wrap{max-width:860px;margin:0 auto;padding-left:20px;padding-right:20px}
+  .disp{font-family:var(--disp);font-weight:400;letter-spacing:.5px;line-height:1.02}
+  .gold{color:var(--gold)}
+  .gtext{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .eyebrow{font-family:var(--body);font-weight:600;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
+
+  /* top bar */
+  .topbar{border-bottom:1px solid var(--line);padding:16px 0;text-align:center}
+  .brand{font-family:var(--disp);font-size:22px;letter-spacing:1.5px;color:var(--ink)}
+  .brand b{color:var(--gold)}
+
+  /* hero / recommendation */
+  .hero{position:relative;text-align:center;padding-block:56px 40px;overflow:hidden}
+  .hero::before{content:"";position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:820px;max-width:130%;height:520px;
+    background:radial-gradient(closest-side, rgba(205,174,114,.20), transparent 72%);pointer-events:none}
+  .hero .inner{position:relative}
+  .hero h1{font-size:clamp(30px,5.6vw,52px);margin:16px 0 0;text-wrap:balance}
+  .hero .sub{color:var(--sub);font-size:clamp(15px,2.1vw,18px);max-width:60ch;margin:20px auto 0}
+  .hero .sub b{color:var(--ink);font-weight:500}
+
+  /* VSL */
+  .vsl{margin:34px auto 0;max-width:760px}
+  .vsl .frame{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;border:1px solid var(--line);
+    background:#000 center/cover no-repeat;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .vsl .frame iframe,.vsl .frame video{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .vsl .placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+    background:radial-gradient(120% 120% at 50% 20%, #1c1c1c, #0c0c0c)}
+  .vsl .play{width:74px;height:74px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center}
+  .vsl .play::before{content:"";border-left:22px solid #0a0a0a;border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:5px}
+  .vsl .ph-t{font-size:13px;color:var(--muted);letter-spacing:.04em}
+  .vsl .cap{text-align:center;color:var(--muted);font-size:13px;margin-top:12px}
+
+  /* CTA button */
+  .cta{display:inline-block;background:var(--grad);color:#0a0a0a;font-weight:700;font-size:clamp(15px,2vw,17px);
+    letter-spacing:.02em;text-decoration:none;padding:18px 40px;border-radius:12px;box-shadow:0 12px 34px rgba(205,174,114,.28);
+    transition:transform .15s, box-shadow .15s}
+  .cta:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(205,174,114,.4)}
+  .cta.big{padding:20px 48px}
+  .cta-note{color:var(--muted);font-size:13px;margin-top:14px;letter-spacing:.02em}
+  .cta-wrap{text-align:center;margin-top:30px}
+  .price-inline{font-family:var(--disp);font-size:20px;color:var(--gold2);letter-spacing:.5px}
+
+  section{padding-block:46px;border-top:1px solid var(--line2)}
+  .sec-h{text-align:center;max-width:64ch;margin:0 auto 30px}
+  .sec-h h2{font-size:clamp(24px,4.2vw,38px);margin:10px 0 0;text-wrap:balance}
+  .sec-h p{color:var(--sub);margin:16px auto 0;font-size:15.5px}
+
+  /* pains list */
+  .pains{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+  .pain{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;color:var(--sub);font-size:15px}
+  .pains .kick{text-align:center;color:var(--ink);font-weight:500;font-size:17px;margin-top:8px}
+  .pains .fix{text-align:center;color:var(--gold2);font-weight:500;font-size:15px}
+
+  /* two engines */
+  .engines{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .engine{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;border-top:3px solid var(--ec,var(--gold))}
+  .engine.paw{--ec:var(--paw)} .engine.biz{--ec:var(--biz)}
+  .engine .et{font-family:var(--disp);font-size:20px;letter-spacing:.5px;display:flex;align-items:center;gap:10px}
+  .engine .flowline{font-size:12.5px;color:var(--gold2);font-weight:500;margin:12px 0 14px;line-height:1.7}
+  .engine.biz .flowline{color:var(--biz)}
+  .engine p{color:var(--sub);font-size:14px;margin:0}
+  .eq{text-align:center;color:var(--ink);font-weight:500;font-size:16px;margin-top:22px;max-width:56ch;margin-left:auto;margin-right:auto}
+
+  /* 90 days steps */
+  .steps4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .st{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;text-align:center}
+  .st .stn{font-family:var(--disp);font-size:15px;letter-spacing:1px;color:var(--gold2)}
+  .st p{color:var(--sub);font-size:13px;margin:8px 0 0}
+  .goalquote{text-align:center;font-size:clamp(17px,2.4vw,21px);color:var(--ink);font-weight:400;font-style:italic;max-width:58ch;margin:28px auto 0;line-height:1.5}
+  .goalquote .gq{color:var(--gold2)}
+
+  /* whats inside */
+  .inside{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+  .item{display:flex;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .item .ck{color:var(--gold);font-weight:700;flex:0 0 auto;font-size:16px}
+  .item .it-b h4{margin:0 0 3px;font-size:15px;font-weight:600;color:var(--ink)}
+  .item .it-b p{margin:0;font-size:13.5px;color:var(--sub)}
+
+  /* comparison */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:760px;margin:0 auto}
+  .col{border:1px solid var(--line);border-radius:16px;padding:24px;background:var(--panel)}
+  .col.tpb{border-color:rgba(205,174,114,.5);box-shadow:0 0 0 1px rgba(205,174,114,.15)}
+  .col .tag{font-family:var(--body);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .col h3{font-family:var(--disp);font-size:22px;letter-spacing:.5px;margin:6px 0 2px}
+  .col .word{font-family:var(--disp);font-size:15px;letter-spacing:2px;color:var(--gold2);margin-bottom:12px}
+  .col.aca .word{color:var(--biz)}
+  .col .q{color:var(--ink);font-weight:500;font-size:14.5px;margin:0 0 12px}
+  .col ul{list-style:none;margin:0 0 14px;padding:0;color:var(--sub);font-size:14px}
+  .col ul li{padding:3px 0}
+  .col .pr{font-family:var(--disp);font-size:22px;color:var(--gold2);letter-spacing:.5px}
+  .compare-note{text-align:center;color:var(--ink);font-weight:500;margin:22px auto 0;max-width:52ch;font-size:15.5px}
+  .compare-note b{color:var(--gold2)}
+
+  /* start where you are */
+  .startlist{max-width:560px;margin:0 auto;color:var(--sub);font-size:15px}
+  .startlist p{margin:0 0 10px}
+  .startlist .lead{color:var(--ink);font-weight:500}
+
+  /* pricing box */
+  .pricebox{max-width:560px;margin:0 auto;background:linear-gradient(180deg,#151515,#0e0e0e);border:1px solid rgba(205,174,114,.4);
+    border-radius:20px;padding:32px 28px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .pricebox h3{font-family:var(--disp);font-size:26px;letter-spacing:.5px;margin:0 0 4px}
+  .pricebox .lil{color:var(--muted);font-size:14px;margin-bottom:18px}
+  .pricebox ul{list-style:none;margin:0 auto 20px;padding:0;text-align:left;max-width:340px;color:var(--sub);font-size:14.5px}
+  .pricebox ul li{padding:5px 0;display:flex;gap:10px}
+  .pricebox ul li::before{content:"✓";color:var(--gold);font-weight:700}
+  .pricebox .pnum{font-family:var(--disp);font-size:40px;color:var(--gold2);letter-spacing:.5px;line-height:1}
+  .pricebox .pnum span{font-family:var(--body);font-size:16px;color:var(--sub);font-weight:400}
+  .pricebox .cancel{color:var(--muted);font-size:13px;margin:6px 0 22px}
+
+  /* guarantee */
+  .guarantee{max-width:600px;margin:24px auto 0;border:1px dashed rgba(205,174,114,.4);border-radius:14px;padding:22px 24px;text-align:center}
+  .guarantee .gt{font-family:var(--disp);font-size:18px;letter-spacing:.5px;color:var(--gold2)}
+  .guarantee p{color:var(--sub);font-size:13.5px;margin:10px 0 0}
+
+  /* closing */
+  .closing{text-align:center}
+  .closing .mantra{font-family:var(--disp);font-size:clamp(22px,3.4vw,30px);letter-spacing:.5px;line-height:1.15;margin:22px 0 0}
+  .closing .mantra span{color:var(--gold2)}
+
+  footer{border-top:1px solid var(--line);padding-block:30px 60px;text-align:center;color:var(--muted);font-size:12px}
+  footer .fbrand{font-family:var(--disp);font-size:16px;letter-spacing:1px;color:var(--gold)}
+  footer .disc{max-width:60ch;margin:12px auto 0;line-height:1.6;font-size:11.5px}
+
+  b,strong{font-weight:600}
+  @media(max-width:640px){
+    .engines,.compare{grid-template-columns:1fr}
+    .steps4{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar"><span class="brand">BREED<b>WISE</b></span></div>
+
+  <!-- ===== HERO: PERSONAL RECOMMENDATION ===== -->
+  <div class="hero">
+    <div class="wrap inner">
+      <span class="eyebrow">Your Personal Recommendation</span>
+      <h1 class="disp" id="headline">Here's Where We Recommend You Start.</h1>
+      <p class="sub">Based on your BreedWise Academy application, Academy may not be the right starting point for you right now. But that does not mean you have to figure everything out on your own.</p>
+      <p class="sub" style="margin-top:14px">We created <b>The Profitable Breeder</b> to help serious breeders understand what their program needs, identify their biggest gaps, and know what to improve next.</p>
+
+      <!-- ===== AUSTIN'S VSL ===== -->
+      <div class="vsl">
+        <div class="frame" id="vslFrame">
+          <!-- REPLACE this placeholder with Austin's real VSL embed (iframe or <video>). Keep it inside .frame -->
+          <div class="placeholder">
+            <div class="play"></div>
+            <div class="ph-t">Watch this short video from Austin</div>
+          </div>
+        </div>
+        <div class="cap">A quick word from Austin on why this is your best first step</div>
+      </div>
+
+      <div class="cta-wrap">
+        <a class="cta big" data-checkout href="#">START THE PROFITABLE BREEDER →</a>
+        <div class="cta-note"><span class="price-inline">$97/month</span> · Cancel anytime</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== YOU APPLIED FOR A REASON ===== -->
+  <section>
+    <div class="wrap">
+      <div class="sec-h">
+        <span class="eyebrow">You Applied To BreedWise For A Reason</span>
+        <h2 class="disp">There's Usually One Real Problem</h2>
+      </div>
+      <div class="pains">
+        <div class="pain">Maybe you want more qualified families waiting for your puppies.</div>
+        <div class="pain">Maybe you're tired of buyers disappearing when they hear your price.</div>
+        <div class="pain">Maybe you're making money from your litters, but you're not completely sure what you're actually keeping after all the expenses.</div>
+        <div class="pain">Or maybe you simply want to become a better-prepared, more informed breeder.</div>
+        <p class="kick">Whatever brought you here, the hard part is the same:</p>
+        <p class="fix">It's hard to know what you should fix FIRST.</p>
+        <p class="kick" style="color:var(--sub);font-weight:400">That's exactly what The Profitable Breeder was built to help you figure out.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TWO ENGINES ===== -->
+  <section>
+    <div class="wrap">
+      <div class="sec-h">
+        <h2 class="disp">A Strong Breeding Program<br>Needs Two Engines</h2>
+      </div>
+      <div class="engines">
+        <div class="engine paw">
+          <div class="et">🐾 The Breeding Engine</div>
+          <div class="flowline">Preparation → Breeding → Pregnancy → Whelping → Neonatal → Healthy Puppies</div>
+          <p>Understand what to monitor, keep better records, prepare for complications, make more informed breeding decisions, and communicate more effectively with your veterinary team.</p>
+        </div>
+        <div class="engine biz">
+          <div class="et">📈 The Business Engine</div>
+          <div class="flowline">Positioning → Demand → Buyers → Sales → Margin → Reinvestment</div>
+          <p>Understand how to create demand, attract qualified buyers, price your puppies, know your numbers, and build a program that can financially support doing things the right way.</p>
+        </div>
+      </div>
+      <p class="eq">Healthy Puppies + Healthy Economics = A More Sustainable Breeding Program</p>
+    </div>
+  </section>
+
+  <!-- ===== FIRST 90 DAYS ===== -->
+  <section>
+    <div class="wrap">
+      <div class="sec-h">
+        <span class="eyebrow">Your First 90 Days</span>
+        <h2 class="disp">The Goal Isn't More Content.<br>It's Clarity.</h2>
+        <p>Not hundreds of hours of videos. A clear path to understanding your own program.</p>
+      </div>
+      <div class="steps4">
+        <div class="st"><div class="stn">SEE</div><p>Understand the essential pieces of a successful breeding program.</p></div>
+        <div class="st"><div class="stn">UNDERSTAND</div><p>Learn why each piece matters.</p></div>
+        <div class="st"><div class="stn">MEASURE</div><p>See where your program stands today.</p></div>
+        <div class="st"><div class="stn">PRIORITIZE</div><p>Know what deserves your attention next.</p></div>
+      </div>
+      <p class="goalquote">By the end of your first 90 days: <span class="gq">"I understand my breeding program better, I can see my biggest gaps, and I know what I need to improve next."</span></p>
+    </div>
+  </section>
+
+  <!-- ===== WHAT'S INSIDE ===== -->
+  <section>
+    <div class="wrap">
+      <div class="sec-h"><h2 class="disp">What's Inside</h2></div>
+      <div class="inside">
+        <div class="item"><span class="ck">✓</span><div class="it-b"><h4>90-Day Profitable Breeder Blueprint</h4><p>Follow a clear path through the essential parts of building a stronger breeding program.</p></div></div>
+        <div class="item"><span class="ck">✓</span><div class="it-b"><h4>BreedWise Program Scorecard</h4><p>Evaluate your program across demand, brand, sales, pricing, profit, reproduction, litter protection, data and more.</p></div></div>
+        <div class="item"><span class="ck">✓</span><div class="it-b"><h4>Litter Profit Snapshot</h4><p>See the difference between what your litter brings in and what it actually makes.</p></div></div>
+        <div class="item"><span class="ck">✓</span><div class="it-b"><h4>Buyers, Demand, Pricing &amp; Profit Education</h4><p>Understand the business systems behind stronger, more predictable breeding programs.</p></div></div>
+        <div class="item"><span class="ck">✓</span><div class="it-b"><h4>Veterinary-Backed Breeding Education</h4><p>Learn about reproduction, whelping, neonatal preparedness and other critical breeding topics.</p></div></div>
+        <div class="item"><span class="ck">✓</span><div class="it-b"><h4>Weekly Profitable Breeder Live</h4><p>Bring your questions and get help understanding what your program needs next.</p></div></div>
+        <div class="item"><span class="ck">✓</span><div class="it-b"><h4>The Profitable Breeder Community</h4><p>Learn alongside other serious breeders working to improve their programs.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COMPARISON ===== -->
+  <section>
+    <div class="wrap">
+      <div class="sec-h">
+        <h2 class="disp">The Profitable Breeder<br>vs. BreedWise Academy</h2>
+        <p>You originally applied for Academy, so here's the most important distinction.</p>
+      </div>
+      <div class="compare">
+        <div class="col tpb">
+          <div class="tag">The Profitable Breeder</div>
+          <div class="word">CLARITY</div>
+          <p class="q">"What does my breeding program need?"</p>
+          <ul><li>See it.</li><li>Understand it.</li><li>Measure it.</li><li>Prioritize it.</li></ul>
+          <div class="pr">$97<span style="font-size:15px;color:var(--sub)">/mo</span></div>
+        </div>
+        <div class="col aca">
+          <div class="tag">BreedWise Academy</div>
+          <div class="word">IMPLEMENTATION</div>
+          <p class="q">"Help me actually improve it."</p>
+          <ul><li>Assess.</li><li>Prioritize.</li><li>Implement.</li><li>Measure.</li><li>Reassess.</li></ul>
+          <p style="color:var(--muted);font-size:13px;margin:0">Personalized implementation roadmap + higher-touch support.</p>
+        </div>
+      </div>
+      <p class="compare-note"><b>TPB helps you identify the gaps. Academy helps you close them.</b> You don't need to be ready for Academy today to start moving forward.</p>
+    </div>
+  </section>
+
+  <!-- ===== START WHERE YOU ARE ===== -->
+  <section>
+    <div class="wrap">
+      <div class="sec-h"><h2 class="disp">Start Where You Are</h2></div>
+      <div class="startlist">
+        <p>You don't need another massive financial commitment right now.</p>
+        <p>You don't need to try to fix everything at once.</p>
+        <p>And you don't need to wait until you're "ready" to start understanding your program better.</p>
+        <p class="lead" style="margin-top:18px">Start with The Profitable Breeder.</p>
+        <p>Work through the Blueprint. Complete your Scorecard. Understand your litter economics. Attend the weekly Lives. Identify the areas that deserve your attention. And start building the foundation.</p>
+        <p style="margin-top:14px">Then, if the time comes when you want more personalized implementation support, BreedWise Academy will still be here.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRICING BOX ===== -->
+  <section>
+    <div class="wrap">
+      <div class="pricebox">
+        <h3>Join The Profitable Breeder</h3>
+        <div class="lil">Everything you need to start getting clearer on your breeding program.</div>
+        <ul>
+          <li>90-Day Blueprint</li>
+          <li>Program Scorecard</li>
+          <li>Litter Profit Snapshot</li>
+          <li>Business Education</li>
+          <li>Veterinary-Backed Education</li>
+          <li>Weekly Live Sessions</li>
+          <li>BreedWise Community</li>
+        </ul>
+        <div class="pnum">$97<span> /month</span></div>
+        <div class="cancel">Cancel anytime.</div>
+        <a class="cta big" data-checkout href="#">YES — START MY 90-DAY BLUEPRINT →</a>
+      </div>
+
+      <div class="guarantee">
+        <div class="gt">30-Day Clarity Guarantee</div>
+        <p>Complete your first Blueprint lesson, your BreedWise Program Scorecard, your Litter Profit Snapshot, and attend one Profitable Breeder Live. If you're not clearer on what your breeding program needs next, contact us within the guarantee period and we'll refund your first month.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CLOSING ===== -->
+  <section>
+    <div class="wrap closing">
+      <div class="sec-h" style="margin-bottom:10px">
+        <h2 class="disp">You're Not Starting Over</h2>
+        <p>You already took the first step when you applied to BreedWise. Now we're simply pointing you toward the BreedWise program that makes the most sense for where you are today.</p>
+      </div>
+      <p class="mantra">Better Breeding.<br>Better Business.<br><span>Stronger Programs.</span></p>
+      <div class="cta-wrap" style="margin-top:34px">
+        <a class="cta big" data-checkout href="#">JOIN THE PROFITABLE BREEDER — $97/MONTH →</a>
+        <div class="cta-note">Cancel anytime · 30-Day Clarity Guarantee</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="fbrand">BREEDWISE</div>
+    <div class="disc">Nothing on this site is veterinary, legal, tax, or investment advice. You should consult your own licensed professionals before making decisions that affect your dogs, business, or finances. All content and materials are the property of BreedWise Academy, LLC and may not be used without our express written consent.</div>
+  </footer>
+
+<script>
+  // 1) Personalize the headline from ?fname= (falls back cleanly to no name)
+  (function(){
+    try{
+      var p = new URLSearchParams(location.search);
+      var n = (p.get('fname') || p.get('name') || '').trim();
+      if(n){
+        n = n.replace(/[^a-zA-Z' -]/g,'').slice(0,24);
+        if(n) document.getElementById('headline').textContent = n + ", Here's Where We Recommend You Start.";
+      }
+    }catch(e){}
+  })();
+
+  // 2) Point every CTA at your real checkout. REPLACE the value below with the TPB checkout URL.
+  (function(){
+    var CHECKOUT_URL = "REPLACE_WITH_TPB_CHECKOUT_URL";
+    if(CHECKOUT_URL && CHECKOUT_URL.indexOf('REPLACE_WITH') !== 0){
+      document.querySelectorAll('[data-checkout]').forEach(function(a){ a.setAttribute('href', CHECKOUT_URL); });
+    }
+  })();
+</script>
+</body>
+</html>
