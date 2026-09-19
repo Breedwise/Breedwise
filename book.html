@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Book Your BreedWise Strategy Call</title>
-<meta name="description" content="Pick a time and let's build the plan for your breeding program. A focused call with the BreedWise team.">
+<title>Book Your BreedWise Academy Fit Call</title>
+<meta name="description" content="Pick a time and let's talk about your breeding program and whether BreedWise Academy is the right fit to help you get there.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap">
@@ -46,7 +46,7 @@
   .cal-sec{padding-block:40px 20px}
   .cal-head{text-align:center;margin-bottom:22px}
   .cal-head h2{font-family:var(--disp);font-weight:400;font-size:clamp(22px,3.6vw,30px);letter-spacing:.5px;margin:0}
-  .cal-head p{color:var(--muted);font-size:14px;margin:10px 0 0}
+  .cal-head p{color:var(--sub);font-size:14.5px;margin:12px auto 0;max-width:60ch;line-height:1.6}
   .cal-card{background:#ffffff;border-radius:18px;padding:10px;box-shadow:0 24px 70px rgba(0,0,0,.55);border:1px solid rgba(205,174,114,.35)}
   .cal-card iframe{display:block;width:100%;border:none;min-height:740px;border-radius:12px}
 
@@ -76,14 +76,14 @@
 
   <div class="hero">
     <div class="wrap in">
-      <span class="eyebrow">Your BreedWise Strategy Call</span>
-      <h1 class="disp" id="headline">Let's Build Your Plan.</h1>
-      <p class="sub">Pick a time below and we'll walk through where your program is now, your biggest gaps, and the fastest path to a stronger, more profitable breeding program. <b>No pressure, just a real plan.</b></p>
+      <span class="eyebrow">BreedWise Academy</span>
+      <h1 class="disp" id="headline">Let's Talk About Your Breeding Program.</h1>
+      <p class="sub">You've taken the first step by applying. Now let's look at where your program is today, what you want to improve, and whether <b>BreedWise Academy</b> is the right fit to help you get there.</p>
 
       <div class="vals">
-        <div class="val"><div class="vn">CLARITY</div><p>A straight read on where your program stands today.</p></div>
-        <div class="val"><div class="vn">A PLAN</div><p>The specific next moves that matter most for you.</p></div>
-        <div class="val"><div class="vn">15 MINUTES</div><p>Focused and worth your time. Come as you are.</p></div>
+        <div class="val"><div class="vn">YOUR PROGRAM</div><p>Where you are today and what you're working toward.</p></div>
+        <div class="val"><div class="vn">YOUR GAPS</div><p>The biggest challenges currently standing in the way.</p></div>
+        <div class="val"><div class="vn">THE RIGHT NEXT STEP</div><p>Whether Academy is the right level of support for you.</p></div>
       </div>
     </div>
   </div>
@@ -92,8 +92,8 @@
   <section class="cal-sec">
     <div class="wrap">
       <div class="cal-head">
-        <h2 class="disp">Grab Your Time</h2>
-        <p>Choose the slot that works best. You'll get an instant confirmation.</p>
+        <h2 class="disp">Choose Your Time</h2>
+        <p>This is a focused 15-minute conversation. Come prepared to talk about your breeding program, what you're trying to improve, and what's currently getting in the way. If we believe Academy may be able to help, we'll explain what working together could look like.</p>
       </div>
       <div class="cal-card">
         <iframe src="https://link.breedwise.io/widget/booking/Vf5YgCxLMJqdeAbYFOfB" allow="payment" scrolling="no" id="Vf5YgCxLMJqdeAbYFOfB_1789832734110"></iframe>
@@ -119,7 +119,7 @@
 
       <div class="expect">
         <div class="t disp">What To Expect</div>
-        <p>A real conversation about your program, not a pitch. Bring your current pricing, your breeds, and the one thing you most want to fix. We'll handle the rest.</p>
+        <p>A real conversation about your breeding program, not a generic sales presentation. Bring your current pricing, your breed(s), and the #1 thing you most want to improve. We'll take it from there.</p>
       </div>
     </div>
   </section>
@@ -138,7 +138,7 @@
         var p = new URLSearchParams(location.search);
         var f = (p.get('fname') || p.get('name') || '').trim().replace(/[^a-zA-Z' -]/g,'').slice(0,24);
         var e = (p.get('email') || '').trim();
-        if(f){ document.getElementById('headline').textContent = f + ", Let's Build Your Plan."; }
+        if(f){ document.getElementById('headline').textContent = f + ", Let's Talk About Your Breeding Program."; }
         if(f || e){
           var ifr = document.getElementById('Vf5YgCxLMJqdeAbYFOfB_1789832734110');
           if(ifr && ifr.src){
