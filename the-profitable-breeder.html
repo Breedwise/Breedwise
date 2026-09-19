@@ -68,6 +68,17 @@
 
   section{padding-block:52px}
   section.tinted{background:var(--tint);border-top:1px solid var(--line2);border-bottom:1px solid var(--line2)}
+  /* dark sections — redefine tokens locally so all children invert cleanly */
+  section.dark{
+    background:#100e0c;color:var(--ink);
+    border-top:1px solid #262320;border-bottom:1px solid #262320;
+    --panel:#1a1815; --panel2:#201d19; --line:#2c2823; --line2:#221f1b;
+    --ink:#f5f2ea; --ink2:#e8e3d8; --sub:#c6bfb2; --muted:#948c7e;
+    --gold-deep:#d8b878; --biz:#6fa8e0;
+    --shadow:0 12px 34px rgba(0,0,0,.45); --shadow-lg:0 26px 64px rgba(0,0,0,.6);
+  }
+  /* keep the light-on-light pricing card readable even inside a dark section */
+  section.dark .pricebox{ --ink:#1a1712; --ink2:#2c2820; --sub:#5b544a; --muted:#928b7f; --gold-deep:#9c7a33; }
   .sec-h{text-align:center;max-width:64ch;margin:0 auto 32px}
   .sec-h h2{font-size:clamp(25px,4.2vw,40px);margin:10px 0 0;text-wrap:balance;color:var(--ink)}
   .sec-h p{color:var(--sub);margin:16px auto 0;font-size:15.5px}
@@ -145,9 +156,9 @@
   .closing .mantra{font-family:var(--disp);font-size:clamp(23px,3.4vw,32px);letter-spacing:.5px;line-height:1.15;margin:22px 0 0;color:var(--ink)}
   .closing .mantra span{color:var(--gold-deep)}
 
-  footer{border-top:1px solid var(--line);padding-block:32px 64px;text-align:center;color:var(--muted);font-size:12px;background:var(--tint)}
-  footer .fbrand{font-family:var(--disp);font-size:16px;letter-spacing:1px;color:var(--gold)}
-  footer .disc{max-width:60ch;margin:12px auto 0;line-height:1.6;font-size:11.5px}
+  footer{border-top:1px solid #262320;padding-block:32px 64px;text-align:center;color:#9a9386;font-size:12px;background:#100e0c}
+  footer .fbrand{font-family:var(--disp);font-size:16px;letter-spacing:1px;color:var(--gold2)}
+  footer .disc{max-width:60ch;margin:12px auto 0;line-height:1.6;font-size:11.5px;color:#79736a}
 
   b,strong{font-weight:600}
   @media(max-width:640px){
@@ -194,7 +205,7 @@
   </div>
 
   <!-- ===== YOU APPLIED FOR A REASON ===== -->
-  <section class="tinted">
+  <section class="dark">
     <div class="wrap">
       <div class="sec-h">
         <span class="eyebrow">You Applied To BreedWise For A Reason</span>
@@ -235,7 +246,7 @@
   </section>
 
   <!-- ===== FIRST 90 DAYS ===== -->
-  <section class="tinted">
+  <section class="dark">
     <div class="wrap">
       <div class="sec-h">
         <span class="eyebrow">Your First 90 Days</span>
@@ -269,7 +280,7 @@
   </section>
 
   <!-- ===== COMPARISON ===== -->
-  <section class="tinted">
+  <section class="dark">
     <div class="wrap">
       <div class="sec-h">
         <h2 class="disp">The Profitable Breeder<br>vs. BreedWise Academy</h2>
@@ -311,7 +322,7 @@
   </section>
 
   <!-- ===== PRICING BOX ===== -->
-  <section class="tinted">
+  <section class="dark">
     <div class="wrap">
       <div class="pricebox">
         <h3>Join The Profitable Breeder</h3>
