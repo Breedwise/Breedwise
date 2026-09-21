@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BreedWise Funnel Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap">
+<style>
+  :root{--bg:#0a0a0a;--panel:#141414;--line:#242424;--gold:#cdae72;--gold2:#e2cb86;--ink:#f4f1ea;--sub:#c9c3b8;--muted:#8f8a80;--live:#57c98a;--disp:'Anton',Impact,sans-serif}
+  *{box-sizing:border-box}html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:'Poppins',system-ui,sans-serif;font-weight:300}
+  .wrap{max-width:900px;margin:0 auto;padding:28px 20px 60px}
+  .top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  h1{font-family:var(--disp);font-weight:400;font-size:clamp(24px,5vw,32px);letter-spacing:1px;margin:0}
+  h1 b{color:var(--gold)}
+  .sub{color:var(--muted);font-size:12px;letter-spacing:.04em;margin-top:6px}
+  .refresh{font-family:var(--disp);font-size:12px;letter-spacing:.1em;color:#0a0a0a;background:linear-gradient(135deg,#e2cb86,#c3a35c);border:0;border-radius:8px;padding:8px 14px;cursor:pointer}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .kpi .n{font-family:var(--disp);font-size:clamp(22px,4vw,30px);color:var(--gold2);line-height:1}
+  .kpi .l{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+  h2{font-family:var(--disp);font-weight:400;font-size:18px;letter-spacing:.5px;margin:30px 0 14px}
+  .srow{display:grid;grid-template-columns:190px 1fr 92px;gap:12px;align-items:center;padding:7px 0}
+  .sname{font-size:13px;color:var(--sub)}
+  .strack{position:relative;background:#0e0e0e;border:1px solid var(--line);border-radius:8px;height:30px;overflow:hidden}
+  .sfill{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,#c3a35c,#e2cb86);border-radius:7px;transition:width .5s}
+  .scount{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-family:var(--disp);font-size:14px;color:var(--ink)}
+  .sval{font-size:12px;color:var(--muted);text-align:right}
+  .conv{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .cv{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center}
+  .cv .n{font-family:var(--disp);font-size:24px;color:var(--live)}
+  .cv .l{font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:.05em}
+  .msg{color:var(--muted);font-size:14px;padding:40px 0;text-align:center}
+  .foot{color:var(--muted);font-size:11px;margin-top:34px}
+  @media(max-width:640px){.kpis,.conv{grid-template-columns:1fr 1fr}.srow{grid-template-columns:110px 1fr 66px}.sname{font-size:11px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>BREEDWISE <b>FUNNEL</b></h1>
+      <div class="sub" id="sub">Loading live data…</div>
+    </div>
+    <button class="refresh" onclick="load()">Refresh</button>
+  </div>
+  <div id="app"><div class="msg" id="msg">Loading…</div></div>
+  <div class="foot" id="foot"></div>
+</div>
+
+<script>
+  var API = "https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/bw-metrics";
+  function key(){ try{ return new URLSearchParams(location.search).get("key") || ""; }catch(e){ return ""; } }
+  var money = function(n){ return "$" + Math.round(n||0).toLocaleString("en-US"); };
+  var pctTxt = function(v){ return v===null || v===undefined ? "—" : v + "%"; };
+
+  function render(d){
+    var maxC = Math.max(1, ...d.stages.map(function(s){ return s.count; }));
+    var bars = d.stages.map(function(s){
+      var w = s.count ? Math.max(6, Math.round(s.count/maxC*100)) : 0;
+      return '<div class="srow"><div class="sname">'+esc(s.name)+'</div>'+
+             '<div class="strack"><div class="sfill" style="width:'+w+'%"></div><span class="scount">'+s.count+'</span></div>'+
+             '<div class="sval">'+money(s.value)+'</div></div>';
+    }).join("");
+    var c = d.conversion;
+    document.getElementById("app").innerHTML =
+      '<div class="kpis">'+
+        kpi(d.kpis.total,"Total in funnel")+kpi(d.kpis.enrolled,"Enrolled")+
+        kpi(money(d.kpis.wonValue),"Won value")+kpi(money(d.kpis.pipelineValue),"Pipeline value")+
+      '</div>'+
+      '<h2>Stages</h2>'+bars+
+      '<h2>Conversion</h2><div class="conv">'+
+        cv(pctTxt(c.appToBooked),"App → Booked")+cv(pctTxt(c.bookedToShowed),"Booked → Showed")+
+        cv(pctTxt(c.showedToEnrolled),"Showed → Enrolled")+cv(pctTxt(c.appToEnrolled),"App → Enrolled")+
+      '</div>';
+    var t = new Date(d.generated).toLocaleString("en-US",{timeZone:"America/New_York"});
+    document.getElementById("sub").textContent = d.pipeline + " · live from CC360";
+    document.getElementById("foot").textContent = "Updated " + t + " ET · " + d.kpis.total + " opportunities. Reflects current pipeline state.";
+  }
+  function kpi(n,l){ return '<div class="kpi"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>'; }
+  function cv(n,l){ return '<div class="cv"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>'; }
+  function esc(s){ return String(s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+
+  function load(){
+    var k = key();
+    if(!k){ document.getElementById("msg").textContent = "Add ?key=YOUR_DASH_SECRET to the URL to view."; return; }
+    document.getElementById("msg") && (document.getElementById("msg").textContent = "Loading…");
+    fetch(API + "?secret=" + encodeURIComponent(k))
+      .then(function(r){ return r.json(); })
+      .then(function(d){ if(d && d.ok){ render(d); } else { document.getElementById("app").innerHTML = '<div class="msg">'+esc((d&&d.error)||"Could not load")+'</div>'; } })
+      .catch(function(e){ document.getElementById("app").innerHTML = '<div class="msg">Network error loading metrics.</div>'; });
+  }
+  load();
+  setInterval(load, 120000); // refresh every 2 min
+</script>
+</body>
+</html>
