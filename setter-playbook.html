@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Private · BreedWise</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root{--bg:#0a0a0a;--panel:#141414;--panel2:#101010;--line:#262626;--line2:#1c1c1c;--gold:#cdae72;--gold2:#e2cb86;--grad:linear-gradient(135deg,#e2cb86,#c3a35c);--ink:#f2efe9;--sub:#c9c3b8;--muted:#8f8a80;--live:#57c98a;--warn:#e2953a;--mono:'JetBrains Mono',ui-monospace,monospace;--body:'Poppins',system-ui,sans-serif;--disp:'Anton',Impact,sans-serif}
+  *{box-sizing:border-box}body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.62;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px;margin:0 auto;padding-left:20px;padding-right:20px}
+  nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(10,10,10,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:0 -20px;padding:12px 20px}
+  nav .navin{max-width:940px;margin:0 auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--sub);text-decoration:none;padding:6px 10px;border:1px solid var(--line);border-radius:999px;white-space:nowrap}
+  nav a:hover{color:var(--gold2);border-color:var(--gold)}
+  nav .brand{font-family:var(--disp);font-weight:400;letter-spacing:1px;color:var(--ink);font-size:15px;margin-right:6px}
+  nav .brand b{color:var(--gold)}
+  header{padding-block:46px 34px;border-bottom:1px solid var(--line);background:radial-gradient(120% 120% at 50% -10%, rgba(205,174,114,.14), transparent 60%)}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin:0 0 16px}
+  h1{font-family:var(--disp);font-weight:400;font-size:clamp(34px,6vw,58px);line-height:.96;margin:0}
+  h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{color:var(--sub);font-size:clamp(15px,2vw,17px);max-width:66ch;margin:20px 0 0}
+  .mission{font-family:var(--disp);font-weight:400;font-size:clamp(19px,3vw,26px);color:var(--gold2);margin:22px 0 0;letter-spacing:.02em;line-height:1.2}
+  section{padding-block:38px;border-bottom:1px solid var(--line2);scroll-margin-top:70px}
+  .sh{display:flex;align-items:baseline;gap:12px;margin:0 0 6px}
+  .sn{font-family:var(--mono);font-size:13px;color:var(--gold);letter-spacing:.1em}
+  h2{font-family:var(--disp);font-weight:400;font-size:clamp(22px,4vw,32px);line-height:1.03;margin:0;letter-spacing:.02em}
+  .sdesc{color:var(--sub);max-width:70ch;margin:12px 0 18px;font-size:14.5px}
+  h3{font-family:var(--disp);font-weight:400;font-size:18px;letter-spacing:.02em;margin:24px 0 6px;color:var(--ink)}
+  ul,ol{margin:8px 0 0;padding-left:20px;color:var(--sub);font-size:14.5px}li{margin-bottom:8px}li b{color:var(--ink);font-weight:600}
+  .ic{font-family:var(--mono);font-size:12px;color:var(--gold2);background:#0e0e0e;padding:2px 6px;border-radius:5px;border:1px solid var(--line)}
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .kpi .n{font-family:var(--disp);font-size:26px;color:var(--gold2);line-height:1}
+  .kpi .l{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:7px}
+  .kpi .d{font-size:12.5px;color:var(--sub);margin-top:8px}
+  .script{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:0 12px 12px 0;padding:14px 16px;margin:10px 0;font-size:14px;color:var(--sub);line-height:1.6}
+  .script .who{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold2);display:block;margin-bottom:6px}
+  .script em{color:var(--muted);font-style:italic}
+  .box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;border-left:4px solid var(--ac,var(--gold))}
+  .box.warn{--ac:var(--warn)}.box.ok{--ac:var(--live)}
+  .box h4{margin:0 0 6px;font-size:14.5px;color:var(--ink);font-weight:600}
+  .box p,.box li{color:var(--sub);font-size:14px}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin:12px 0}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:520px}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line2);vertical-align:top}
+  th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:500;background:var(--panel2)}
+  tr:last-child td{border-bottom:0}
+  td code,.tag{font-family:var(--mono);font-size:12px;color:var(--gold2)}
+  .day{display:grid;grid-template-columns:120px 1fr;gap:14px;padding:10px 0;border-top:1px solid var(--line)}
+  .day:first-child{border-top:0}
+  .day .t{font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:.04em}
+  .day .a{font-size:14px;color:var(--sub)}
+  footer{padding-block:28px 60px;color:var(--muted);font-size:12px;font-family:var(--mono)}
+  b,strong{font-weight:600}
+
+  #gate{position:fixed;inset:0;z-index:9999;background:#0a0a0a;display:flex;align-items:center;justify-content:center;padding:24px}
+  .gate-card{width:100%;max-width:400px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:34px 30px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  .gate-brand{font-family:var(--disp);font-size:24px;letter-spacing:2px;color:var(--ink)}
+  .gate-brand b{color:var(--gold)}
+  .gate-title{font-family:var(--disp);font-size:22px;letter-spacing:.5px;color:var(--gold2);margin-top:16px}
+  .gate-sub{color:var(--muted);font-size:13px;margin-top:8px;letter-spacing:.02em}
+  #pw{width:100%;margin-top:22px;background:#0d0d0d;border:1px solid var(--line);border-radius:10px;color:var(--ink);font-family:var(--body);font-size:16px;padding:13px 15px;outline:none;text-align:center}
+  #pw:focus{border-color:var(--gold)}
+  #unlock{width:100%;margin-top:12px;background:var(--grad);color:#0a0a0a;font-family:var(--body);font-weight:700;font-size:15px;letter-spacing:.04em;text-transform:uppercase;border:0;border-radius:10px;padding:14px;cursor:pointer;transition:transform .15s}
+  #unlock:hover{transform:translateY(-1px)}
+  #gate-err{color:#ff6a5d;font-size:13px;margin-top:12px;min-height:16px}
+  #content{display:none}
+</style>
+</head>
+<body>
+  <div id="gate">
+    <div class="gate-card">
+      <div class="gate-brand">BREED<b>WISE</b></div>
+      <div class="gate-title">Setter Playbook</div>
+      <div class="gate-sub">Private &middot; Sales team only. Enter the password to continue.</div>
+      <input id="pw" type="password" placeholder="Password" autocomplete="off" spellcheck="false">
+      <button id="unlock" type="button">Unlock &rarr;</button>
+      <div id="gate-err"></div>
+    </div>
+  </div>
+
+  <div id="content">
+<div class="wrap">
+  <nav><div class="navin">
+    <span class="brand">BREED<b>WISE</b></span>
+    <a href="#job">The Job</a><a href="#numbers">Numbers</a><a href="#day">Your Day</a><a href="#flow">Lead Flow</a><a href="#call">The Call</a><a href="#scripts">Texts</a><a href="#objections">Objections</a><a href="#handoff">Handoff</a><a href="#crm">CRM</a>
+  </div></nav>
+
+  <header>
+    <p class="eyebrow">BreedWise Academy · Sales Team</p>
+    <h1>Setter <span class="g">Playbook</span></h1>
+    <p class="lede">The standard operating procedure for setting Academy applications. This is how Regina (and Yasmin) turn an application into a booked Fit Call on Austin's calendar. Follow it every time and the numbers take care of themselves.</p>
+    <p class="mission">You have one job: get qualified applicants on Austin's calendar, fast.</p>
+  </header>
+
+  <!-- THE JOB -->
+  <section id="job">
+    <div class="sh"><span class="sn">01</span><h2>What a setter does (and doesn't)</h2></div>
+    <div class="box ok"><h4>✅ Your job</h4>
+      <ul style="margin:0">
+        <li><b>Speed:</b> be first to reach every new application, ideally within minutes.</li>
+        <li><b>Confirm fit:</b> make sure they're a real, operating breeder who's serious and can invest.</li>
+        <li><b>Book the Fit Call</b> with Austin, and make sure they show.</li>
+        <li><b>Log everything</b> cleanly in CC360 so Austin walks into the call prepared.</li>
+      </ul>
+    </div>
+    <div class="box warn"><h4>🚫 Not your job</h4>
+      <ul style="margin:0">
+        <li><b>Do NOT pitch or sell the Academy.</b> You never quote the $6,000 or explain the whole program. That's Austin's call.</li>
+        <li>Don't answer deep "what's included / how much" questions in detail — tease and defer: "That's exactly what Austin walks you through on the call."</li>
+        <li>Don't chase unqualified people. If they're not a fit, disposition and move on.</li>
+      </ul>
+    </div>
+    <p class="note" style="font-size:12.5px;color:var(--muted);border-left:2px solid var(--line);padding-left:12px;font-style:italic">Mental model: you're the concierge who reviewed their application and is personally getting them a seat with Austin. Warm, fast, in control. Not a salesperson.</p>
+  </section>
+
+  <!-- NUMBERS -->
+  <section id="numbers">
+    <div class="sh"><span class="sn">02</span><h2>The numbers you're held to</h2></div>
+    <div class="kpis">
+      <div class="kpi"><div class="n">&lt; 5 min</div><div class="l">Speed to first touch</div><div class="d">First call + text on a fresh application. Contact rate collapses after the first few minutes.</div></div>
+      <div class="kpi"><div class="n">40%+</div><div class="l">Set rate</div><div class="d">Qualified applications you turn into a booked Fit Call.</div></div>
+      <div class="kpi"><div class="n">70%+</div><div class="l">Show rate</div><div class="d">Booked calls that actually show up. Reminders + confirmation are on you.</div></div>
+    </div>
+    <p class="sdesc">These live on the <b>Sales Team</b> tab of the tracking sheet and the Scoreboard. Your day is judged on <b>booked, showed calls</b> — not dials. A hundred dials with no bookings is a bad day; ten dials and three shows is a great one.</p>
+  </section>
+
+  <!-- YOUR DAY -->
+  <section id="day">
+    <div class="sh"><span class="sn">03</span><h2>Your day, structured</h2></div>
+    <p class="sdesc">The workflow does the reminding, but you drive. Work in focused blocks.</p>
+    <div class="box">
+      <div class="day"><div class="t">First thing</div><div class="a">Clear overnight applications — every fresh lead gets a call + text before you do anything else. Speed is the whole game.</div></div>
+      <div class="day"><div class="t">Morning block</div><div class="a">Work your call tasks in CC360 (the cadence assigns them to you). Dial in order of newest + hottest first.</div></div>
+      <div class="day"><div class="t">Midday</div><div class="a">Confirm every Fit Call booked for the next 24h (quick text/call) to protect show rate. Follow up on no-answers from the morning.</div></div>
+      <div class="day"><div class="t">Afternoon block</div><div class="a">Second round of dials on today's + yesterday's leads. Send the day's ride-along texts/emails to anyone you haven't reached.</div></div>
+      <div class="day"><div class="t">End of day</div><div class="a">Every lead has a next step or a disposition. Nothing sits untouched. Update notes so Austin's calls tomorrow are prepped.</div></div>
+    </div>
+    <div class="box warn" style="margin-top:14px"><h4>Calling hours</h4>Work leads <b>9:00 AM – 7:00 PM Eastern, Mon–Sat.</b> The system already holds call tasks to this window, so don't force calls outside it.</div>
+  </section>
+
+  <!-- LEAD FLOW -->
+  <section id="flow">
+    <div class="sh"><span class="sn">04</span><h2>How leads reach you</h2></div>
+    <ol>
+      <li>A breeder submits the <b>Academy application</b>. It's scored instantly.</li>
+      <li>They land in CC360 tagged <span class="ic">academy-qualified</span> and assigned to <b>you</b> (<span class="ic">owner-regina</span>).</li>
+      <li>The <b>call cadence workflow</b> fires and starts dropping call tasks + texts/emails on your list.</li>
+      <li>Their whole application is on the contact record — <b>read it before you dial.</b> Breed, biggest challenge, current pricing, and whether they said yes to investing are all there.</li>
+      <li>You call, confirm fit, and book the Fit Call. The lead moves to <b>Qualified – No Booking</b> while you work it, then <b>Enrollment Call Booked</b> when you set it.</li>
+    </ol>
+    <div class="box ok"><h4>Read before you dial</h4>Pull up the contact and glance at: <b>their name, breed, biggest challenge, current puppy price, and tier.</b> Opening a call already knowing their situation is the difference between a setter and a telemarketer.</div>
+  </section>
+
+  <!-- THE CALL -->
+  <section id="call">
+    <div class="sh"><span class="sn">05</span><h2>The setter call — the frame</h2></div>
+    <p class="sdesc">Five beats: open, confirm, dig, transition, book. Keep it 5–8 minutes. You lead, they answer.</p>
+
+    <h3>1 · Open (pattern + permission)</h3>
+    <div class="script"><span class="who">You</span>"Hey {name}? This is Regina with BreedWise — you just put in an application for the Academy, so I'm reaching out personally. Did I catch you at an okay time for a few minutes?"</div>
+
+    <h3>2 · Confirm (why they applied)</h3>
+    <div class="script"><span class="who">You</span>"I read through your application — I see you're breeding {breed}. In your own words, what made you raise your hand and apply right now?"<br><em>Let them talk. This is where they sell themselves.</em></div>
+
+    <h3>3 · Dig (confirm the fit — do NOT sell)</h3>
+    <p class="sdesc" style="margin:8px 0 6px">Quietly confirm the three things that make them a fit for Austin's time:</p>
+    <ul>
+      <li><b>Operating breeder:</b> "How many litters are you doing a year right now?"</li>
+      <li><b>Real problem:</b> "You mentioned {their biggest challenge} — how much is that costing you right now?"</li>
+      <li><b>Serious + able:</b> "If Austin looks at your program and there's a clear path forward, are you in a position to invest in fixing it?" <em>(They already answered yes to $1,500 on the app — you're confirming, not re-selling.)</em></li>
+    </ul>
+
+    <h3>4 · Transition (hand them to Austin)</h3>
+    <div class="script"><span class="who">You</span>"Okay — based on what you're telling me, this is exactly the kind of program Austin can help. What he does on the call is look at where you are, find the biggest gaps, and lay out whether the Academy is the right fit to get you there. It's about 15 minutes, no pressure."</div>
+
+    <h3>5 · Book (assume the close)</h3>
+    <div class="script"><span class="who">You</span>"I've got some time on his calendar tomorrow — does morning or afternoon work better for you?"<br><em>Offer two options, not "when are you free." Get it on the calendar while you're on the phone. Confirm the email + number so reminders reach them.</em></div>
+    <div class="box"><h4>Then lock it in</h4>Send the confirmation immediately, tell them to expect a reminder, and set the expectation: <b>"Come with your current pricing, your breed, and the one thing you most want to fix — Austin will take it from there."</b></div>
+  </section>
+
+  <!-- SCRIPTS -->
+  <section id="scripts">
+    <div class="sh"><span class="sn">06</span><h2>Texts &amp; voicemails</h2></div>
+    <p class="sdesc">Use these when you don't reach them live. The workflow sends some automatically; send these personally when you're working the lead.</p>
+    <h3>First text (with your first call)</h3>
+    <div class="script">Hey {name}, Regina with BreedWise here — got your Academy application and tried to reach you. When's a good 5 min to connect? I'll get you set up with Austin.</div>
+    <h3>No answer, mid-cadence</h3>
+    <div class="script">{name}, still want to get you in front of Austin for your {breed} program. What's better today — morning or afternoon?</div>
+    <h3>Voicemail (keep it short)</h3>
+    <div class="script"><em>"Hey {name}, it's Regina with BreedWise about your Academy application. Give me a call back when you get a sec, or shoot me a text — I want to get you scheduled. Talk soon."</em></div>
+  </section>
+
+  <!-- OBJECTIONS -->
+  <section id="objections">
+    <div class="sh"><span class="sn">07</span><h2>Objection handling</h2></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>They say</th><th>You say</th></tr></thead>
+      <tbody>
+        <tr><td>"How much is it?"</td><td>"Great question — it depends on your program, which is exactly what Austin figures out on the call. That's why it's a fit call, not a pitch."</td></tr>
+        <tr><td>"Just send me info."</td><td>"Totally fair — the honest answer is the 'info' is a look at YOUR program, and that only happens on the call. It's 15 minutes. Morning or afternoon?"</td></tr>
+        <tr><td>"I'm not sure I can afford it."</td><td>"That's part of what the call is for — if it's not the right time, Austin will tell you straight. No pressure. Worst case you walk away with a clearer plan."</td></tr>
+        <tr><td>"I need to talk to my partner."</td><td>"Smart — bring them on the call. When are you both free?"</td></tr>
+        <tr><td>"I'm too busy right now."</td><td>"I hear you, breeding doesn't slow down. It's 15 minutes and it's about making the busy pay off. Even {day} evening?"</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note" style="font-size:12.5px;color:var(--muted);border-left:2px solid var(--line);padding-left:12px;font-style:italic">Golden rule: every objection ends by going back to booking the call. You're not debating — you're steering to Austin.</p>
+  </section>
+
+  <!-- HANDOFF -->
+  <section id="handoff">
+    <div class="sh"><span class="sn">08</span><h2>The handoff to Austin</h2></div>
+    <p class="sdesc">A booked call is only half your job. Austin should open every Fit Call already knowing the person. Before the call, log a short note on the contact:</p>
+    <div class="box"><h4>Handoff note template</h4>
+      <p style="font-family:var(--mono);font-size:13px;color:var(--gold2)">Breed: ___ · Litters/yr: ___ · Biggest challenge: ___ · Current price: ___ · Why they applied: ___ · Can invest: yes/confirmed · Watch-outs: ___</p>
+    </div>
+    <ul>
+      <li>Confirm the Fit Call is on <b>Austin's</b> calendar with the Zoom link.</li>
+      <li>Make sure the opportunity is on <b>Enrollment Call Booked</b>.</li>
+      <li>Text them the "come prepared" line so they show ready.</li>
+    </ul>
+  </section>
+
+  <!-- CRM -->
+  <section id="crm" style="border-bottom:0">
+    <div class="sh"><span class="sn">09</span><h2>CRM hygiene (non-negotiable)</h2></div>
+    <p class="sdesc">The system only works if you keep it clean. Every lead has a status at all times.</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Situation</th><th>What you do in CC360</th></tr></thead>
+      <tbody>
+        <tr><td>Working the lead</td><td>Opportunity → <code>Qualified – No Booking</code></td></tr>
+        <tr><td>Booked the Fit Call</td><td>Add tag <code>booked</code> → opportunity moves to <code>Enrollment Call Booked</code>; log the handoff note</td></tr>
+        <tr><td>They no-showed the call</td><td>Opportunity → <code>No Show</code>; run the rebook texts</td></tr>
+        <tr><td>Reached, not a fit / not serious</td><td>Disposition + note why; let the nurture take them</td></tr>
+        <tr><td>Can't reach after full cadence</td><td>Tag <code>nurture</code> → opportunity → <code>Lost / No Response</code></td></tr>
+      </tbody>
+    </table></div>
+    <div class="box ok" style="margin-top:16px"><h4>The one rule</h4>If it isn't in CC360, it didn't happen. Every call, text, and outcome gets logged — that's what feeds your Sales Team numbers and lets Austin close.</div>
+  </section>
+
+  <footer>BreedWise Academy · Setter Playbook · pairs with the call cadence workflow and the Sales Team tracking tab</footer>
+</div>
+  </div>
+<script>
+  (function(){
+    var HASH = "7c80836fc0ce4e3956aa136771a24b98d946bece11d70efef268e3612037234d";
+    function h(s){ return crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)).then(function(b){ return Array.prototype.map.call(new Uint8Array(b), function(x){ return x.toString(16).padStart(2,'0'); }).join(''); }); }
+    function reveal(){ var g=document.getElementById('gate'); if(g) g.remove(); document.getElementById('content').style.display='block'; document.title='Setter Playbook'; }
+    function tryUnlock(){
+      var v=document.getElementById('pw').value||'';
+      h(v).then(function(hex){
+        if(hex===HASH){ try{sessionStorage.setItem('sp_unlocked','1');}catch(e){} reveal(); }
+        else { document.getElementById('gate-err').textContent='Incorrect password. Try again.'; document.getElementById('pw').select(); }
+      });
+    }
+    document.getElementById('unlock').addEventListener('click', tryUnlock);
+    document.getElementById('pw').addEventListener('keydown', function(e){ if(e.key==='Enter') tryUnlock(); });
+    try{ if(sessionStorage.getItem('sp_unlocked')==='1'){ reveal(); } else { document.getElementById('pw').focus(); } }catch(e){ document.getElementById('pw').focus(); }
+  })();
+</script>
+</body>
+</html>
