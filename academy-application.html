@@ -572,13 +572,13 @@ fbq('init','1337266034525554');fbq('track','PageView');
         ref, utm, source:'Academy Application Page', page: location.href
       };
 
-      try {
-        await fetch(APPLY_ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, keepalive:true, body: JSON.stringify(payload) });
-      } catch(_) {}
+      // Fire-and-forget: keepalive lets the POST finish server-side after we navigate,
+      // so the applicant never waits on the backend. Do NOT await it.
+      try { fetch(APPLY_ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, keepalive:true, body: JSON.stringify(payload) }); } catch(_) {}
       if (window.fbq){ fbq('track','Lead'); fbq('trackCustom','AcademyApplication'); }
 
-      // Give the keepalive POST and pixel a beat, then go to the confirmation page.
-      setTimeout(function(){ location.href = '/application-received.html'; }, 250);
+      // Go straight to the confirmation page.
+      setTimeout(function(){ location.href = '/application-received.html'; }, 400);
     });
   </script>
 </body>
