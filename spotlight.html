@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BreedWise Spotlight — Welcome</title>
+<meta name="description" content="You've been invited to BreedWise Spotlight. Share your experience, spotlight your story, and help more breeders find the education and support they need.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Poppins:wght@300;400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#0a0a0a; --panel:#121212; --panel2:#161616; --line:#242424; --line2:#1b1b1b;
+    --gold:#cdae72; --gold2:#e2cb86; --grad:linear-gradient(135deg,#e2cb86,#c3a35c);
+    --ink:#f4f1ea; --sub:#c9c3b8; --muted:#8f8a80;
+    --disp:'Anton',Impact,sans-serif; --serif:'Cormorant Garamond',Georgia,serif; --body:'Poppins',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased}
+  img{max-width:100%}
+  .wrap{max-width:920px;margin:0 auto;padding-left:22px;padding-right:22px}
+  .disp{font-family:var(--disp);font-weight:400;letter-spacing:.5px;line-height:1.02}
+  .eyebrow{font-family:var(--body);font-weight:600;font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold)}
+  .gtext{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  .topbar{border-bottom:1px solid var(--line);padding:16px 0;text-align:center}
+  .brand{font-family:var(--disp);font-size:22px;letter-spacing:2px}
+  .brand b{color:var(--gold)}
+
+  /* CTA */
+  .cta{display:inline-block;background:var(--grad);color:#0a0a0a;font-weight:700;font-size:clamp(14px,1.8vw,16px);letter-spacing:.04em;text-transform:uppercase;text-decoration:none;padding:17px 38px;border-radius:11px;box-shadow:0 14px 34px rgba(205,174,114,.26);transition:transform .15s, box-shadow .15s}
+  .cta:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(205,174,114,.38)}
+  .cta.ghost{background:transparent;color:var(--gold2);border:1px solid var(--gold);box-shadow:none}
+  .cta.ghost:hover{background:rgba(205,174,114,.08)}
+  .cta-wrap{margin-top:30px}
+
+  /* hero */
+  .hero{position:relative;text-align:center;padding-block:64px 52px;overflow:hidden}
+  .hero::before{content:"";position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:900px;max-width:140%;height:560px;background:radial-gradient(closest-side, rgba(205,174,114,.20), transparent 70%);pointer-events:none}
+  .hero .in{position:relative}
+  .hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(34px,6vw,60px);line-height:1.05;margin:18px 0 0;letter-spacing:.5px}
+  .hero .sub{color:var(--sub);font-size:clamp(15px,2.1vw,18px);max-width:60ch;margin:22px auto 0}
+  .hero .sub b{color:var(--ink);font-weight:500}
+  .rule{font-family:var(--disp);font-size:clamp(20px,3.4vw,30px);letter-spacing:.5px;margin:28px 0 0}
+  .rule .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* video */
+  .vsl{margin:30px auto 0;max-width:760px}
+  .vsl .frame{position:relative;aspect-ratio:16/9;border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:0 24px 70px rgba(0,0,0,.55)}
+  .vsl .frame iframe,.vsl .frame video{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .vsl .placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:radial-gradient(120% 120% at 50% 20%, #1c1c1c, #0c0c0c)}
+  .vsl .play{width:74px;height:74px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center}
+  .vsl .play::before{content:"";border-left:22px solid #0a0a0a;border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:5px}
+  .vsl .ph-t{font-size:13px;color:#cfc7b8;letter-spacing:.06em;text-transform:uppercase}
+
+  section{padding-block:52px;border-top:1px solid var(--line2)}
+  section.tint{background:#0d0d0d}
+  .sec-h{text-align:center;max-width:64ch;margin:0 auto 30px}
+  .sec-h h2{font-family:var(--serif);font-weight:600;font-size:clamp(26px,4.4vw,40px);margin:10px 0 0;letter-spacing:.5px;line-height:1.1}
+  .sec-h p{color:var(--sub);margin:16px auto 0;font-size:15.5px}
+  .lead-line{color:var(--sub);font-size:15.5px;max-width:64ch;margin:0 auto;text-align:center}
+
+  /* criteria checklist */
+  .crit{max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+  .crit .c{display:flex;gap:14px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 18px}
+  .crit .ck{color:var(--gold);font-weight:700;flex:0 0 auto;font-size:16px;line-height:1.6}
+  .crit .c span{color:var(--sub);font-size:15px}
+  .closer{text-align:center;color:var(--ink);font-weight:500;font-size:17px;margin-top:22px}
+
+  /* numbered steps */
+  .steps{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:760px;margin:0 auto}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .step .sn{font-family:var(--disp);font-size:30px;color:var(--gold2);line-height:1}
+  .step h4{margin:12px 0 6px;font-size:15px;font-weight:600;color:var(--ink);letter-spacing:.02em}
+  .step p{margin:0;color:var(--sub);font-size:14px}
+
+  /* compensation */
+  .comp{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:720px;margin:0 auto}
+  .cc{background:linear-gradient(180deg,#151515,#0e0e0e);border:1px solid rgba(205,174,114,.35);border-radius:16px;padding:28px 24px;text-align:center}
+  .cc .name{font-family:var(--serif);font-weight:600;font-size:22px;color:var(--ink);letter-spacing:.3px}
+  .cc .pct{font-family:var(--disp);font-size:46px;color:var(--gold2);line-height:1;margin:12px 0 4px}
+  .cc .d{color:var(--sub);font-size:14px}
+  .comp-note{text-align:center;color:var(--sub);font-size:15px;margin:22px auto 0;max-width:52ch}
+  .fine{text-align:center;color:var(--muted);font-size:12px;margin-top:10px}
+
+  /* post angles */
+  .angles{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+  .angle{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:0 12px 12px 0;padding:16px 20px}
+  .angle .t{font-family:var(--body);font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold2);margin-bottom:6px}
+  .angle .q{font-family:var(--serif);font-weight:500;font-style:italic;font-size:18px;color:var(--ink)}
+  .warn-line{text-align:center;font-family:var(--serif);font-style:italic;font-size:clamp(17px,2.4vw,21px);color:var(--gold2);max-width:56ch;margin:26px auto 0}
+
+  /* spotlight topics */
+  .topics{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:11px}
+  .topics .t{display:flex;gap:13px;align-items:center;color:var(--sub);font-size:15px}
+  .topics .t .ck{color:var(--gold);font-weight:700}
+
+  /* ladder */
+  .ladder{max-width:620px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:0}
+  .rung{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px;text-align:center}
+  .rung.hot{border-color:rgba(205,174,114,.5);box-shadow:0 0 0 1px rgba(205,174,114,.14)}
+  .rung .r{font-family:var(--disp);font-size:19px;letter-spacing:1px;color:var(--gold2)}
+  .rung p{margin:8px 0 0;color:var(--sub);font-size:14px}
+  .arrow{color:var(--muted);font-size:20px;padding:10px 0}
+  .ladder-note{text-align:center;color:var(--sub);font-size:15px;margin-top:22px}
+  .ladder-note b{color:var(--ink)}
+
+  /* partnership */
+  .part{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:760px;margin:0 auto}
+  .pcol{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px}
+  .pcol .h{font-family:var(--disp);font-size:16px;letter-spacing:1.5px;color:var(--gold2);text-align:center;margin-bottom:14px}
+  .pcol ul{list-style:none;margin:0;padding:0}
+  .pcol li{padding:7px 0;color:var(--sub);font-size:15px;text-align:center;border-top:1px solid var(--line2)}
+  .pcol li:first-child{border-top:0}
+  .together{text-align:center;font-family:var(--serif);font-style:italic;font-size:clamp(17px,2.4vw,21px);color:var(--ink);max-width:58ch;margin:26px auto 0}
+
+  /* final */
+  .final{text-align:center;background:radial-gradient(120% 120% at 50% 0%, rgba(205,174,114,.14), transparent 60%)}
+  .final ol{max-width:420px;margin:22px auto 0;text-align:left;color:var(--sub);font-size:16px;padding-left:0;list-style:none;counter-reset:f}
+  .final ol li{counter-increment:f;padding:12px 0 12px 46px;position:relative;border-top:1px solid var(--line2)}
+  .final ol li:first-child{border-top:0}
+  .final ol li::before{content:counter(f);position:absolute;left:0;top:10px;width:30px;height:30px;border-radius:50%;background:var(--grad);color:#0a0a0a;font-family:var(--disp);font-size:15px;display:flex;align-items:center;justify-content:center}
+  .mantra{font-family:var(--disp);font-size:clamp(20px,3vw,28px);letter-spacing:.5px;margin:28px 0 0}
+  .mantra span{color:var(--gold2)}
+
+  footer{border-top:1px solid var(--line);padding-block:30px 60px;text-align:center;color:var(--muted);font-size:12px}
+  footer .fb{font-family:var(--disp);font-size:16px;letter-spacing:1px;color:var(--gold)}
+  footer .disc{max-width:60ch;margin:12px auto 0;line-height:1.6;font-size:11.5px}
+
+  b,strong{font-weight:600}
+  @media(max-width:640px){ .steps,.comp,.part{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+  <div class="topbar"><span class="brand disp">BREED<b>WISE</b> · SPOTLIGHT</span></div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="wrap in">
+      <span class="eyebrow">BreedWise Spotlight</span>
+      <h1 id="headline">Welcome to BreedWise Spotlight</h1>
+      <p class="sub">You've been invited because we believe you represent the kind of breeder we want associated with BreedWise.</p>
+      <p class="sub" style="margin-top:14px">You've built experience worth sharing. Now we want to help give you a bigger platform to share it, while helping more breeders find the education and support they need.</p>
+      <p class="rule">Your role is simple: <span class="g">Share. Don't sell.</span></p>
+
+      <div class="vsl">
+        <div class="frame" id="welcomeVideo">
+          <!-- REPLACE with the welcome video embed (iframe or <video>). -->
+          <div class="placeholder"><div class="play"></div><div class="ph-t">Your Welcome Video</div></div>
+        </div>
+      </div>
+
+      <div class="cta-wrap"><a class="cta" href="#video">Watch Your Welcome Video →</a></div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <section class="tint">
+    <div class="wrap">
+      <div class="sec-h"><span class="eyebrow">Why You Were Invited</span><h2>This Isn't an Open Affiliate Program</h2>
+        <p>BreedWise Spotlight is a select group of breeders and industry leaders we trust to represent what we believe responsible, professional breeding can become.</p></div>
+      <div class="crit">
+        <div class="c"><span class="ck">✓</span><span>Care about doing things the right way</span></div>
+        <div class="c"><span class="ck">✓</span><span>Believe breeders should never stop learning</span></div>
+        <div class="c"><span class="ck">✓</span><span>Have earned the trust of other breeders</span></div>
+        <div class="c"><span class="ck">✓</span><span>Want to positively influence the breeding industry</span></div>
+        <div class="c"><span class="ck">✓</span><span>Believe healthier breeding programs and healthier businesses can coexist</span></div>
+      </div>
+      <p class="closer">That's why we invited you.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section>
+    <div class="wrap">
+      <div class="sec-h"><span class="eyebrow">How It Works</span><h2>Keep It Simple</h2></div>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><h4>Share Your Experience</h4><p>Talk about your breeding journey, what you've learned, what's worked, what hasn't, and where BreedWise has played a role.</p></div>
+        <div class="step"><div class="sn">2</div><h4>We Spotlight You</h4><p>We'll look for opportunities to feature your story through BreedWise content, interviews, Lives, collaborations and educational conversations.</p></div>
+        <div class="step"><div class="sn">3</div><h4>Introduce BreedWise</h4><p>When you meet breeders who could benefit from what we're building, simply point them in the right direction using your personal link.</p></div>
+        <div class="step"><div class="sn">4</div><h4>We Take It From There</h4><p>You don't need to sell, close or chase anyone. BreedWise handles the education, community, sales and member experience.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="tint">
+    <div class="wrap">
+      <div class="sec-h"><span class="eyebrow">Your Compensation</span><h2>When BreedWise Grows Through You, You Participate</h2></div>
+      <div class="comp">
+        <div class="cc"><div class="name">The Profitable Breeder</div><div class="pct">40%</div><div class="d">recurring commission on members you refer</div></div>
+        <div class="cc"><div class="name">BreedWise Academy</div><div class="pct">20%</div><div class="d">referral commission on Academy members you refer*</div></div>
+      </div>
+      <p class="comp-note">Your personal affiliate link tracks the breeders you introduce to BreedWise. <b style="color:var(--ink)">You make the introduction. We handle the rest.</b></p>
+      <p class="fine">*Subject to the BreedWise Affiliate Agreement and applicable commission terms.</p>
+      <div class="cta-wrap" style="text-align:center"><a class="cta" data-affiliate href="#">Get My Affiliate Link →</a></div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section>
+    <div class="wrap">
+      <div class="sec-h"><span class="eyebrow">What Should I Post?</span><h2>Don't Become a BreedWise Advertisement</h2>
+        <p>We invited you because people already listen to you. Keep creating the content that built that trust. When BreedWise fits naturally, talk about things like:</p></div>
+      <div class="angles">
+        <div class="angle"><div class="t">Your Story</div><div class="q">"Here's what I wish I knew when I started breeding…"</div></div>
+        <div class="angle"><div class="t">Your Experience</div><div class="q">"This is something that changed the way we run our breeding program…"</div></div>
+        <div class="angle"><div class="t">What You've Learned</div><div class="q">"One of the things I learned through BreedWise was…"</div></div>
+        <div class="angle"><div class="t">Your Results</div><div class="q">"Here's what changed for our program after we started doing this differently…"</div></div>
+        <div class="angle"><div class="t">Your Recommendation</div><div class="q">"If you're a breeder struggling with this too, here's where I'd recommend starting…"</div></div>
+      </div>
+      <p class="lead-line" style="margin-top:22px">Then share your BreedWise link.</p>
+      <p class="warn-line">Share what happened for you. Never promise what will happen for someone else.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="tint">
+    <div class="wrap">
+      <div class="sec-h"><span class="eyebrow">Your Spotlight</span><h2>Now We Want to Tell Your Story</h2>
+        <p>Your first collaboration with us will be your BreedWise Spotlight. We'll sit down and talk about:</p></div>
+      <div class="topics">
+        <div class="t"><span class="ck">✓</span> Where you started</div>
+        <div class="t"><span class="ck">✓</span> Challenges you faced</div>
+        <div class="t"><span class="ck">✓</span> What you've learned</div>
+        <div class="t"><span class="ck">✓</span> What changed in your program</div>
+        <div class="t"><span class="ck">✓</span> Your results and milestones</div>
+        <div class="t"><span class="ck">✓</span> How BreedWise played a role</div>
+        <div class="t"><span class="ck">✓</span> What you'd tell another breeder today</div>
+      </div>
+      <p class="lead-line" style="margin-top:22px">From there, we'll look for ways to turn your experience into content that builds your authority while helping other breeders learn from your journey.</p>
+      <div class="cta-wrap" style="text-align:center"><a class="cta" data-spotlight href="#">Book My Spotlight →</a></div>
+    </div>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section>
+    <div class="wrap">
+      <div class="sec-h"><span class="eyebrow">Where This Can Go</span><h2>Spotlight Is Just the Beginning</h2>
+        <p>There's no pressure to become anything more. But for partners who love educating breeders and align deeply with where BreedWise is going, there may be opportunities to grow.</p></div>
+      <div class="ladder">
+        <div class="rung hot"><div class="r">SPOTLIGHT</div><p>Share your story and introduce breeders to BreedWise.</p></div>
+        <div class="arrow">↓</div>
+        <div class="rung"><div class="r">CONTRIBUTOR</div><p>Join educational content, Lives, interviews, workshops and community conversations.</p></div>
+        <div class="arrow">↓</div>
+        <div class="rung"><div class="r">BreedWise Leader / Mentor</div><p>For select partners, opportunities may develop to teach, mentor and take on a larger role within the BreedWise ecosystem.</p></div>
+      </div>
+      <p class="ladder-note">You don't need to think about any of that today. <b>Everyone starts with Spotlight.</b> Let's see where we can build together.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 8 -->
+  <section class="tint">
+    <div class="wrap">
+      <div class="sec-h"><span class="eyebrow">The Partnership</span><h2>You Build Your Influence. We Build BreedWise. Together, We Help More Breeders.</h2></div>
+      <div class="part">
+        <div class="pcol"><div class="h">YOU BRING</div><ul>
+          <li>Your experience</li><li>Your story</li><li>Your voice</li><li>Your relationships</li><li>Your credibility</li>
+        </ul></div>
+        <div class="pcol"><div class="h">BREEDWISE BRINGS</div><ul>
+          <li>The platform</li><li>The education</li><li>The veterinary experts</li><li>The business strategy</li><li>The community</li><li>The content opportunities</li><li>The infrastructure</li>
+        </ul></div>
+      </div>
+      <p class="together">And together, we can help more breeders build stronger, healthier and more sustainable breeding programs.</p>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section class="final">
+    <div class="wrap">
+      <div class="sec-h"><h2>Ready?</h2><p>You only have 3 things to do to get started:</p></div>
+      <ol>
+        <li>Watch your welcome video</li>
+        <li>Activate your affiliate link</li>
+        <li>Book your BreedWise Spotlight</li>
+      </ol>
+      <p class="lead-line" style="margin-top:22px">That's it. We'll help you with the rest.</p>
+      <p class="mantra disp">Welcome to BreedWise Spotlight.</p>
+      <p class="lead-line" style="margin-top:14px;color:var(--muted)">Better Breeding. Better Business. <span style="color:var(--gold2)">Stronger Programs.</span></p>
+      <div class="cta-wrap" style="text-align:center"><a class="cta" href="#video">Let's Get Started →</a></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="fb">BREEDWISE</div>
+    <div class="disc">BreedWise Academy, LLC · 800 N King Street, Suite 304 #4050, Wilmington, DE · Participation in BreedWise Spotlight is subject to the BreedWise Affiliate Agreement and applicable commission terms.</div>
+  </footer>
+
+<script>
+  // Personalize the hero from ?fname= (falls back cleanly)
+  (function(){
+    try{
+      var p = new URLSearchParams(location.search);
+      var n = (p.get('fname') || p.get('name') || '').trim().replace(/[^a-zA-Z' -]/g,'').slice(0,24);
+      if(n) document.getElementById('headline').textContent = "Welcome to BreedWise Spotlight, " + n;
+    }catch(e){}
+  })();
+  // Wire the affiliate + spotlight CTAs once you have the links.
+  (function(){
+    var AFFILIATE_URL = "REPLACE_WITH_AFFILIATE_SIGNUP_URL";
+    var SPOTLIGHT_URL = "REPLACE_WITH_SPOTLIGHT_BOOKING_URL";
+    if(AFFILIATE_URL.indexOf('REPLACE_WITH')!==0) document.querySelectorAll('[data-affiliate]').forEach(function(a){a.href=AFFILIATE_URL;});
+    if(SPOTLIGHT_URL.indexOf('REPLACE_WITH')!==0) document.querySelectorAll('[data-spotlight]').forEach(function(a){a.href=SPOTLIGHT_URL;});
+  })();
+</script>
+</body>
+</html>
