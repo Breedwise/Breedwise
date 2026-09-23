@@ -1992,7 +1992,7 @@
   // Founder sees everything. Each section lists the roles allowed to see it.
   const NAV = [
     { group:'Company', items:[
-      ['director','Company Health',['Founder','Director','CommunityManager']],
+      ['director','Company Health',['Founder','Director']],
       ['calendar','Calendar',['Founder','Director','Vet']],
       ['reports','Reports',['Founder','Director']],
     ]},
@@ -2004,18 +2004,18 @@
       ['targets','Q3 Targets',['Founder','SalesTeam']],
     ]},
     { group:'Member Success', items:[
-      ['directory','Directory',['Founder','Director','CommunityManager']],
-      ['handoff','Onboarding Handoff',['Founder','Director','AccountabilityLeader','CommunityManager']],
-      ['al','Pod Command Center',['Founder','Director','AccountabilityLeader','CommunityManager']],
-      ['churned','Churned Members',['Founder','Director','AccountabilityLeader','CommunityManager']],
-      ['lastweek','Last Week',['Founder','Director','AccountabilityLeader','CommunityManager']],
-      ['cm','Community Engine',['Founder','Director','CommunityManager']],
-      ['issues','Issues',['Founder','Director','CommunityManager']],
+      ['directory','Directory',['Founder','Director']],
+      ['handoff','Onboarding Handoff',['Founder','Director']],
+      ['churned','Churned Members',['Founder','Director']],
+      ['lastweek','Last Week',['Founder','Director']],
+      ['issues','Issues',['Founder','Director']],
       ['strategy','Strategy Sessions',['Founder','Director']],
-      ['accelerator','Accelerator',['Founder','Director','CommunityManager']],
+      ['accelerator','Accelerator',['Founder','Director']],
     ]},
+    // Pods (Pod Command Center) + Community Engine retired 2026-09 — Academy pivot.
+    // NAV items removed so the tabs no longer appear; panels + tables + data kept.
     { group:'Tasks', items:[
-      ['tasks','Tasks',['Founder','Director','AccountabilityLeader','CommunityManager','SalesTeam','Vet','Systems']],
+      ['tasks','Tasks',['Founder','Director','SalesTeam','Vet','Systems']],
     ]},
     { group:'Affiliates', items:[
       ['affiliates','Affiliates',['Founder','Director']],
@@ -2031,7 +2031,7 @@
     ]},
     { group:'Me', items:[
       ['mysessions','My Sessions',['Founder','Vet']],
-      ['comp','My Pay',['Founder','Director','AccountabilityLeader','CommunityManager','Vet']],
+      ['comp','My Pay',['Founder','Director','Vet']],
     ]},
   ];
   const EXTRA_LABEL = { Vet:'Veterinary Team', Systems:'CRM / Systems' };
