@@ -1,0 +1,342 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Academy Member Success — Breedwise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#1b1b20;--surface:#111114;--card:#26262c;--card-2:#212127;--border:#34343c;
+  --gold:#d6ba76;--gold-deep:#b89c47;--gold-faint:rgba(214,186,118,.10);--gold-grad:linear-gradient(135deg,#e2cb86 0%,#bfa050 100%);
+  --on-gold:#1a1509;--ink:#f4f1ea;--muted:#8f8d85;--mid:#c4c1b8;
+  --green:#6dbf90;--green-bg:rgba(109,191,144,.15);--yellow:#d7a94e;--yellow-bg:rgba(215,169,78,.15);--red:#e0807e;--red-bg:rgba(224,128,126,.15);--radius:11px;
+  --heading:'Playfair Display',Georgia,serif;--body:'Inter',-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.hide{display:none!important}a{color:var(--gold)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+input,select,textarea{font-family:var(--body);font-size:14px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--ink);padding:9px 11px;outline:none;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+textarea{resize:vertical;min-height:64px;line-height:1.5}
+.btn{background:var(--gold-grad);color:var(--on-gold);border:0;border-radius:9px;padding:10px 16px;font-weight:700;font-size:12px;letter-spacing:.04em;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--gold);border:1px solid var(--border);font-weight:600}
+.btn.sm{padding:6px 11px;font-size:11px}
+.btn:disabled{opacity:.5;cursor:default}
+.err{color:var(--red);font-size:13px;min-height:16px}
+.gate{max-width:380px;margin:9vh auto;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:30px}
+.gate .mk{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.gate h1{font-family:var(--heading);font-size:24px;margin-bottom:6px}
+.gate p{color:var(--muted);font-size:13px;margin:0 0 18px}
+.gate input{margin-bottom:11px}.gate .btn{width:100%}
+#app{display:none}#app.on{display:block}
+.top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding:22px 0;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.top .mk{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.top h1{font-family:var(--heading);font-size:24px}
+.who{font-size:12px;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:14px}
+.kpi .v{font-family:var(--heading);font-size:28px}.kpi .l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.kpi .t{font-size:10.5px;margin-top:4px}
+.ok{color:var(--green)}.bad{color:var(--red)}
+.queue{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.qchip{font-size:12px;font-weight:600;padding:7px 13px;border-radius:20px;border:1px solid var(--border);background:var(--card-2);color:var(--muted);cursor:pointer;display:flex;gap:7px;align-items:center}
+.qchip.on{background:var(--gold-faint);color:var(--gold);border-color:var(--gold-deep)}
+.qchip .ct{font-family:var(--heading);font-size:15px}
+.search{margin-left:auto;min-width:200px;max-width:240px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:10px 9px;border-bottom:1px solid var(--border);vertical-align:middle}
+th{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td .nm{font-weight:600;color:var(--ink)}td .sub{font-size:11.5px;color:var(--muted)}
+.hdot{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:12px}
+.hdot i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.h-Green i{background:var(--green)}.h-Green{color:var(--green)}
+.h-Yellow i{background:var(--yellow)}.h-Yellow{color:var(--yellow)}
+.h-Red i{background:var(--red)}.h-Red{color:var(--red)}
+.actbadge{font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:12px}
+.act-on{background:var(--green-bg);color:#8fd0a6}.act-off{background:var(--red-bg);color:var(--red)}
+.foc{font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--gold);background:var(--gold-faint);border-radius:20px;padding:3px 9px;white-space:nowrap}
+.open{font-size:11px;font-weight:700;color:var(--gold);cursor:pointer;background:none;border:1px solid var(--border);border-radius:7px;padding:5px 10px}
+.empty{color:var(--muted);padding:26px 0;text-align:center}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.62);display:flex;align-items:flex-start;justify-content:center;padding:24px;overflow:auto}
+.sheet{background:var(--bg);border:1px solid var(--border);border-radius:16px;max-width:760px;width:100%;padding:24px;margin:auto}
+.sheet h2{font-family:var(--heading);font-size:23px}
+.sheet .close{float:right;cursor:pointer;color:var(--muted);font-size:22px;background:none;border:0}
+.block{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:15px 16px;margin-top:12px}
+.block h3{font-family:var(--heading);font-size:15px;color:var(--gold);margin-bottom:9px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fld{margin-bottom:9px}.fld label{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+.acts{display:flex;flex-direction:column;gap:7px}
+.acheck{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--mid);cursor:pointer}
+.acheck input{width:auto}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.hp{font-size:12px;font-weight:600;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card-2);color:var(--muted);cursor:pointer}
+.hp.on-Green{background:var(--green-bg);color:var(--green);border-color:var(--green)}
+.hp.on-Yellow{background:var(--yellow-bg);color:var(--yellow);border-color:var(--yellow)}
+.hp.on-Red{background:var(--red-bg);color:var(--red);border-color:var(--red)}
+.hp.on-auto{background:var(--gold-faint);color:var(--gold);border-color:var(--gold-deep)}
+.win{background:var(--card-2);border:1px solid var(--border);border-radius:9px;padding:10px 12px;margin-top:8px;font-size:12.5px;color:var(--mid)}
+.win b{color:var(--ink)}
+.rev{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;color:var(--mid);padding:7px 0;border-bottom:1px solid var(--border)}
+@media(max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}.row2{grid-template-columns:1fr}.search{min-width:140px}}
+</style>
+
+<div id="gate" class="gate">
+  <div class="mk">Breedwise · Academy</div>
+  <h1>Member Success</h1>
+  <p>Sign in to track and support every Academy member.</p>
+  <input id="gEmail" type="email" placeholder="you@breedwise.io" autocomplete="username">
+  <input id="gPass" type="password" placeholder="Password" autocomplete="current-password">
+  <button class="btn" id="gBtn">Sign in</button>
+  <div class="err" id="gErr"></div>
+</div>
+
+<div id="app"><div class="wrap">
+  <div class="top">
+    <div><div class="mk">Breedwise · Academy</div><h1>Member Success</h1></div>
+    <div style="text-align:right"><div class="who" id="who"></div><button class="btn ghost sm" id="signout" style="margin-top:6px">Sign out</button></div>
+  </div>
+  <div class="kpis" id="kpis"></div>
+  <div class="queue" id="queue"></div>
+  <div style="overflow-x:auto"><table><thead><tr><th>Member</th><th>Day</th><th>Focus</th><th>Next litter</th><th>Health</th><th>Clarity</th><th>Activated</th><th>Last contact</th><th>Next action</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+</div></div>
+
+<div id="modal" class="modal hide"><div class="sheet" id="sheet"></div></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+const SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+const sb=supabase.createClient(SB_URL,SB_KEY);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const FOCUS=['Buyers & Demand','Sales & Buyer Experience','Pricing & Profitability','Brand & Positioning','Breeding & Reproduction','Whelping & Neonatal Preparedness','Genetics & Breeding Decisions','Operations & Recordkeeping'];
+const WINCATS=['Demand','Sales','Pricing','Profit','Brand','Reproduction','Whelping','Genetics','Operations','Other'];
+const LITTER=['Planning','Bred / expecting','Puppies available','Placed'];
+const today=()=>new Date().toISOString().slice(0,10);
+const dsince=d=>{ if(!d) return null; const t=new Date(String(d).slice(0,10)+'T12:00'); return isNaN(t)?null:Math.floor((Date.now()-t)/864e5); };
+let ROWS=[], ME=null, QF='all';
+
+$('#gBtn').addEventListener('click',signIn);
+$('#gPass').addEventListener('keydown',e=>{if(e.key==='Enter')signIn();});
+$('#signout').addEventListener('click',async()=>{await sb.auth.signOut();location.reload();});
+async function signIn(){
+  const email=$('#gEmail').value.trim(), password=$('#gPass').value; $('#gErr').textContent='';
+  if(!email||!password){$('#gErr').textContent='Enter your email and password.';return;}
+  $('#gBtn').disabled=true;$('#gBtn').textContent='Signing in…';
+  const {error}=await sb.auth.signInWithPassword({email,password});
+  $('#gBtn').disabled=false;$('#gBtn').textContent='Sign in';
+  if(error){$('#gErr').textContent=error.message;return;} boot();
+}
+async function boot(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){$('#gate').classList.remove('hide');$('#app').classList.remove('on');return;}
+  ME=session.user.email; $('#who').textContent=ME;
+  $('#gate').classList.add('hide');$('#app').classList.add('on'); load();
+}
+async function load(){
+  const [mem,trk]=await Promise.all([
+    sb.from('members').select('id,name,email,program,next_breeding_date').eq('program','Academy').order('name'),
+    sb.from('academy_tracking').select('*'),
+  ]);
+  if(mem.error){ $('#rows').innerHTML=`<tr><td colspan="10" class="empty">Couldn't load members (${esc(mem.error.message)}).</td></tr>`; return; }
+  const T={}; (trk.data||[]).forEach(t=>T[t.member_id]=t);
+  ROWS=(mem.data||[]).map(m=>({m, t:T[m.id]||{member_id:m.id}}));
+  render();
+}
+/* ---- derived ---- */
+function day(r){ return dsince(r.t.enrolled_at); }
+function activated(t){ return !!(t.act_assessment&&t.act_onboarding&&t.act_focusplan&&t.act_firstaction); }
+function clarity(t){ return t.clarity!=null?t.clarity:null; }
+function reviewDue(r){ const d=day(r), t=r.t;
+  if(t.next_review && dsince(t.next_review)>=0) return true;
+  if(d!=null && d>=60 && !t.review60_done) return true;
+  if(d!=null && d>=105 && !t.review120_done) return true;
+  return false; }
+function health(r){ const t=r.t; if(t.health_override) return t.health_override;
+  const d=day(r), sc=dsince(t.last_contact), cl=clarity(t);
+  if(sc!=null && sc>=21) return 'Red';
+  if((sc!=null&&sc>=10) || (cl!=null&&cl<=7) || (d!=null&&d>7&&!activated(t)) || (t.next_review&&dsince(t.next_review)>=0)) return 'Yellow';
+  return 'Green'; }
+function winsToCapture(r){ const d=day(r); return health(r)==='Green' && d!=null && d>=30 && (!(r.t.wins||[]).length); }
+function bucket(r){ const h=health(r), d=day(r);
+  if(h==='Red') return 'red'; if(h==='Yellow') return 'yellow';
+  if(d!=null && d<=7 && !activated(r.t)) return 'new';
+  if(reviewDue(r)) return 'review';
+  if(winsToCapture(r)) return 'win'; return 'green'; }
+
+function render(){
+  const bk=ROWS.map(bucket);
+  const c=k=>bk.filter(x=>x===k).length;
+  const green=ROWS.filter(r=>health(r)==='Green').length;
+  const past7=ROWS.filter(r=>{const d=day(r);return d!=null&&d>=7;});
+  const act7=past7.filter(r=>activated(r.t)).length;
+  const due=ROWS.filter(r=>{const d=day(r);return d!=null&&d>=60;});
+  const revDone=due.filter(r=>{const d=day(r); return d>=120?r.t.review120_done:r.t.review60_done;}).length;
+  const cls=ROWS.map(r=>clarity(r.t)).filter(v=>v!=null);
+  const avgC=cls.length?(cls.reduce((a,b)=>a+b,0)/cls.length):null;
+  const pct=(n,d)=>d?Math.round(n/d*100):0;
+  const kpi=(l,v,t,ok)=>`<div class="kpi"><div class="v ${ok===true?'ok':(ok===false?'bad':'')}">${v}</div><div class="l">${l}</div><div class="t ${ok===true?'ok':(ok===false?'bad':'')}">${t}</div></div>`;
+  const a7=pct(act7,past7.length), gp=pct(green,ROWS.length), rp=pct(revDone,due.length);
+  $('#kpis').innerHTML=
+    kpi('Day-7 Activation',a7+'%','target ≥90%',a7>=90)+
+    kpi('Healthy (Green)',gp+'%','target ≥85%',gp>=85)+
+    kpi('Reviews on time',rp+'%','target ≥90%',rp>=90)+
+    kpi('Avg clarity',avgC!=null?avgC.toFixed(1):'—','target ≥9',avgC!=null?avgC>=9:null);
+  const pups=ROWS.filter(r=>(+r.t.pups_available||0)>0).length;
+  const Q=[['all','All',ROWS.length],['red','🔴 Red',c('red')],['yellow','🟡 Yellow',c('yellow')],['new','🆕 New',c('new')],['review','📅 Reviews due',c('review')],['pups','🐾 Puppies available',pups],['win','🏆 Wins',c('win')]];
+  $('#queue').innerHTML=Q.map(([k,l,n])=>`<span class="qchip ${QF===k?'on':''}" data-q="${k}">${l} <span class="ct">${n}</span></span>`).join('')+`<input class="search" id="search" placeholder="Search member…">`;
+  $('#queue').querySelectorAll('[data-q]').forEach(el=>el.addEventListener('click',()=>{QF=el.dataset.q;render();}));
+  $('#search').addEventListener('input',renderRows);
+  renderRows();
+}
+function visible(){
+  const q=($('#search')&&$('#search').value||'').toLowerCase();
+  return ROWS.filter(r=>{
+    if(QF==='pups'){ if(!((+r.t.pups_available||0)>0)) return false; }
+    else if(QF!=='all' && bucket(r)!==QF) return false;
+    if(q && !((r.m.name||'')+(r.m.email||'')).toLowerCase().includes(q)) return false;
+    return true;
+  }).sort((a,b)=>{ const o={red:0,yellow:1,new:2,review:3,win:4,green:5}; return o[bucket(a)]-o[bucket(b)]; });
+}
+function renderRows(){
+  const rows=visible();
+  if(!rows.length){ $('#rows').innerHTML=`<tr><td colspan="10" class="empty">No members in this view.</td></tr>`; return; }
+  $('#rows').innerHTML=rows.map(r=>{ const t=r.t, h=health(r), d=day(r), act=activated(t), cl=clarity(t);
+    return `<tr>
+      <td><div class="nm">${esc(r.m.name||'—')}</div><div class="sub">${esc(r.m.email||'')}</div></td>
+      <td>${d!=null?d:'—'}</td>
+      <td>${t.primary_focus?`<span class="foc">${esc(t.primary_focus)}</span>`:'<span class="sub">—</span>'}</td>
+      <td class="sub">${(+t.pups_available||0)>0?`<span class="actbadge act-on">🐾 ${+t.pups_available} available</span><br>`:''}${esc(t.litter_stage||t.next_litter||r.m.next_breeding_date||'—')}</td>
+      <td><span class="hdot h-${h}"><i></i>${h}</span></td>
+      <td>${cl!=null?cl:'<span class="sub">—</span>'}</td>
+      <td><span class="actbadge ${act?'act-on':'act-off'}">${act?'Activated':'Not yet'}</span></td>
+      <td class="sub">${t.last_contact?esc(t.last_contact):'—'}</td>
+      <td class="sub" style="max-width:180px">${esc(t.next_action||'—')}</td>
+      <td><button class="open" data-open="${r.m.id}">Open</button></td>
+    </tr>`;}).join('');
+  $('#rows').querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click',()=>openMember(el.dataset.open)));
+}
+
+/* ---- member drawer ---- */
+function openMember(id){
+  const r=ROWS.find(x=>x.m.id===id); if(!r) return;
+  const t=r.t, d=day(r), h=health(r), act=activated(t);
+  const focOpts=(sel)=>`<option value="">—</option>`+FOCUS.map(f=>`<option ${sel===f?'selected':''}>${esc(f)}</option>`).join('');
+  const winsHtml=(t.wins||[]).map(w=>`<div class="win"><b>${esc(w.category||'')}</b> · ${esc(w.before||'')} → <b>${esc(w.after||'')}</b>${w.changed?'<div style="margin-top:3px">'+esc(w.changed)+'</div>':''}${w.quote?'<div style="margin-top:3px;font-style:italic">“'+esc(w.quote)+'”</div>':''}<div class="sub" style="margin-top:3px">${esc((w.at||'').slice(0,10))}${w.ok?' · marketing ok':''}</div></div>`).join('')||'<div class="sub">No wins logged yet.</div>';
+  $('#sheet').innerHTML=`
+    <button class="close" id="mClose">×</button>
+    <h2>${esc(r.m.name||'Member')}</h2>
+    <div class="who">${esc(r.m.email||'')} · Day ${d!=null?d:'—'} · <span class="hdot h-${h}"><i></i>${h}</span> · ${act?'Activated':'Not activated'}</div>
+
+    <div class="block"><h3>Academy Focus Plan <button class="btn ghost sm" id="pullAssess" style="float:right">Pull from assessment</button></h3>
+      <div class="fld"><label>120-day goal</label><textarea id="f_goal" rows="2">${esc(t.goal_120||'')}</textarea></div>
+      <div class="row2">
+        <div class="fld"><label>Primary focus</label><select id="f_primary">${focOpts(t.primary_focus)}</select></div>
+        <div class="fld"><label>Secondary focus</label><select id="f_secondary">${focOpts(t.secondary_focus)}</select></div>
+      </div>
+      <div class="row2">
+        <div class="fld"><label>Next litter</label><input id="f_litter" value="${esc(t.next_litter||'')}"></div>
+        <div class="fld"><label>Next review date</label><input id="f_review" type="date" value="${esc(t.next_review||'')}"></div>
+      </div>
+      <div class="fld"><label>Recommended resources (one per line)</label><textarea id="f_res" rows="3">${esc(t.resources||'')}</textarea></div>
+      <div class="fld"><label>First action</label><input id="f_first" value="${esc(t.first_action||'')}"></div>
+    </div>
+
+    <div class="block"><h3>Litter &amp; puppies</h3>
+      <div class="row2">
+        <div class="fld"><label>Litter stage</label><select id="f_litstage"><option value="">—</option>${LITTER.map(s=>`<option ${t.litter_stage===s?'selected':''}>${esc(s)}</option>`).join('')}</select></div>
+        <div class="fld"><label>Puppies available now</label><input id="f_pups" type="number" min="0" value="${t.pups_available!=null?t.pups_available:''}"></div>
+      </div>
+      <div class="fld"><label>How the litter is doing</label><textarea id="f_litupd" rows="2">${esc(t.litter_update||'')}</textarea></div>
+    </div>
+
+    <div class="block"><h3>Day-7 activation</h3>
+      <div class="acts">
+        <label class="acheck"><input type="checkbox" id="a_assessment" ${t.act_assessment?'checked':''}> Assessment completed</label>
+        <label class="acheck"><input type="checkbox" id="a_onboarding" ${t.act_onboarding?'checked':''}> Onboarding attended</label>
+        <label class="acheck"><input type="checkbox" id="a_focusplan" ${t.act_focusplan?'checked':''}> Focus Plan assigned</label>
+        <label class="acheck"><input type="checkbox" id="a_firstaction" ${t.act_firstaction?'checked':''}> First Action completed</label>
+      </div></div>
+
+    <div class="block"><h3>Health &amp; clarity</h3>
+      <div class="fld"><label>Health (auto unless you override)</label>
+        <div class="pills" id="hpills">
+          <span class="hp ${!t.health_override?'on-auto':''}" data-h="">Auto (${h})</span>
+          <span class="hp ${t.health_override==='Green'?'on-Green':''}" data-h="Green">🟢 Green</span>
+          <span class="hp ${t.health_override==='Yellow'?'on-Yellow':''}" data-h="Yellow">🟡 Yellow</span>
+          <span class="hp ${t.health_override==='Red'?'on-Red':''}" data-h="Red">🔴 Red</span>
+        </div></div>
+      <div class="row2">
+        <div class="fld"><label>Clarity pulse (1–10)</label><input id="f_clarity" type="number" min="1" max="10" value="${t.clarity!=null?t.clarity:''}"></div>
+        <div class="fld"><label>Last contact</label><input id="f_contact" type="date" value="${esc(t.last_contact||'')}"></div>
+      </div>
+      <div class="fld"><label>Next action</label><input id="f_next" value="${esc(t.next_action||'')}"></div>
+    </div>
+
+    <div class="block"><h3>Reviews</h3>
+      <div class="rev"><span>Day-60 progress review</span><label class="acheck"><input type="checkbox" id="r_60" ${t.review60_done?'checked':''}> Done</label></div>
+      <div class="rev" style="border-bottom:none"><span>Day-120 transformation review</span><label class="acheck"><input type="checkbox" id="r_120" ${t.review120_done?'checked':''}> Done</label></div>
+      <div class="fld" style="margin-top:8px"><label>Continuation status</label><select id="f_status">${['Active','Continuation','Accelerator','Graduated','Paused'].map(s=>`<option ${(t.status||'Active')===s?'selected':''}>${s}</option>`).join('')}</select></div>
+    </div>
+
+    <div class="block"><h3>Wins <button class="btn ghost sm" id="addWin" style="float:right">+ Log win</button></h3>
+      <div id="winForm" class="hide" style="margin-bottom:8px">
+        <div class="row2"><div class="fld"><label>Category</label><select id="w_cat">${WINCATS.map(c=>`<option>${c}</option>`).join('')}</select></div><div class="fld"><label>Marketing ok?</label><select id="w_ok"><option value="">Not yet</option><option value="1">Yes</option></select></div></div>
+        <div class="row2"><div class="fld"><label>Before</label><input id="w_before"></div><div class="fld"><label>After</label><input id="w_after"></div></div>
+        <div class="fld"><label>What changed</label><input id="w_changed"></div>
+        <div class="fld"><label>Member quote (optional)</label><input id="w_quote"></div>
+        <button class="btn sm" id="saveWin">Save win</button>
+      </div>
+      <div id="winList">${winsHtml}</div></div>
+
+    <div class="block"><h3>Notes</h3><textarea id="f_notes" rows="3">${esc(t.notes||'')}</textarea></div>
+
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px"><span class="err" id="mErr" style="margin-right:auto"></span><button class="btn ghost" id="mCancel">Close</button><button class="btn" id="mSave">Save member</button></div>`;
+  $('#modal').classList.remove('hide');
+  let hoverride=t.health_override||'';
+  let winsLocal=(t.wins||[]).slice();
+  $('#mClose').onclick=$('#mCancel').onclick=closeModal;
+  $('#modal').onclick=e=>{if(e.target.id==='modal')closeModal();};
+  $('#hpills').querySelectorAll('[data-h]').forEach(el=>el.onclick=()=>{ hoverride=el.dataset.h; $('#hpills').querySelectorAll('.hp').forEach(x=>x.className='hp'); el.className='hp '+(el.dataset.h?('on-'+el.dataset.h):'on-auto'); });
+  $('#addWin').onclick=()=>$('#winForm').classList.toggle('hide');
+  $('#saveWin').onclick=()=>{ const w={category:$('#w_cat').value,before:$('#w_before').value.trim(),after:$('#w_after').value.trim(),changed:$('#w_changed').value.trim(),quote:$('#w_quote').value.trim(),ok:!!$('#w_ok').value,at:new Date().toISOString()}; if(!w.before&&!w.after&&!w.changed){ return; } winsLocal.push(w); $('#winList').innerHTML=winsLocal.map(x=>`<div class="win"><b>${esc(x.category)}</b> · ${esc(x.before)} → <b>${esc(x.after)}</b>${x.changed?'<div style="margin-top:3px">'+esc(x.changed)+'</div>':''}</div>`).join(''); $('#winForm').classList.add('hide'); ['w_before','w_after','w_changed','w_quote'].forEach(id=>$('#'+id).value=''); };
+  $('#pullAssess').onclick=()=>pullAssessment(r);
+  $('#mSave').onclick=async()=>{
+    const patch={ member_id:r.m.id,
+      enrolled_at:t.enrolled_at||today(),
+      goal_120:$('#f_goal').value.trim()||null, primary_focus:$('#f_primary').value||null, secondary_focus:$('#f_secondary').value||null,
+      next_litter:$('#f_litter').value.trim()||null, next_review:$('#f_review').value||null, resources:$('#f_res').value.trim()||null, first_action:$('#f_first').value.trim()||null,
+      litter_stage:$('#f_litstage').value||null, pups_available:$('#f_pups').value?+$('#f_pups').value:0, litter_update:$('#f_litupd').value.trim()||null,
+      act_assessment:$('#a_assessment').checked, act_onboarding:$('#a_onboarding').checked, act_focusplan:$('#a_focusplan').checked, act_firstaction:$('#a_firstaction').checked,
+      health_override:hoverride||null, clarity:$('#f_clarity').value?+$('#f_clarity').value:null, last_contact:$('#f_contact').value||null, next_action:$('#f_next').value.trim()||null,
+      review60_done:$('#r_60').checked, review120_done:$('#r_120').checked, status:$('#f_status').value,
+      wins:winsLocal, notes:$('#f_notes').value.trim()||null, updated_at:new Date().toISOString(), updated_by:ME };
+    $('#mSave').disabled=true;
+    const {error}=await sb.from('academy_tracking').upsert(patch,{onConflict:'member_id'});
+    $('#mSave').disabled=false;
+    if(error){ $('#mErr').textContent=error.message; return; }
+    r.t=patch; closeModal(); render();
+  };
+}
+async function pullAssessment(r){
+  $('#pullAssess').disabled=true; $('#pullAssess').textContent='Loading…';
+  const {data}=await sb.from('tool_submissions').select('result,created_at').eq('tool','implementation-assessment').eq('member_email',r.m.email).order('created_at',{ascending:false}).limit(1);
+  $('#pullAssess').disabled=false; $('#pullAssess').textContent='Pull from assessment';
+  const res=data&&data[0]&&data[0].result; if(!res){ $('#mErr').textContent='No assessment found for this member’s email.'; return; }
+  const rm=res.member_roadmap||{};
+  if(rm.focus_statement) $('#f_goal').value=rm.focus_statement;
+  const p1=res.pathways&&res.pathways[0]&&res.pathways[0].name; const p2=res.pathways&&res.pathways[1]&&res.pathways[1].name;
+  const mapFocus=n=>FOCUS.find(f=>n&&(f.toLowerCase().includes(String(n).toLowerCase().split(' ')[0])))||'';
+  if(p1) $('#f_primary').value=mapFocus(p1)||$('#f_primary').value;
+  if(p2) $('#f_secondary').value=mapFocus(p2)||$('#f_secondary').value;
+  const resNames=(res.sprint_120&&res.sprint_120[0]&&res.sprint_120[0].resources)||[];
+  if(resNames.length) $('#f_res').value=resNames.join('\n');
+  if(rm.priorities&&rm.priorities[0]) $('#f_first').value='Start: '+rm.priorities[0].title;
+  $('#a_assessment').checked=true;
+  $('#mErr').textContent='Pulled from assessment — review and save.';
+}
+function closeModal(){ $('#modal').classList.add('hide'); }
+boot();
+</script>
