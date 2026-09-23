@@ -1,0 +1,131 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The Academy Journey — Breedwise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1b1b20;--surface:#111114;--card:#26262c;--card-2:#212127;--border:#34343c;
+  --gold:#d6ba76;--gold-deep:#b89c47;--gold-faint:rgba(214,186,118,.10);--gold-grad:linear-gradient(135deg,#e2cb86,#bfa050);
+  --on-gold:#1a1509;--ink:#f4f1ea;--muted:#8f8d85;--mid:#c4c1b8;
+  --green:#6dbf90;--yellow:#d7a94e;--red:#e0807e;
+  --heading:'Playfair Display',Georgia,serif;--body:'Inter',-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;padding:0 22px}
+.masthead{background:var(--surface);border-bottom:1px solid var(--border);padding:44px 22px 34px;text-align:center}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+.masthead h1{font-family:var(--heading);font-size:clamp(28px,6vw,44px);line-height:1.08;color:var(--ink);margin:12px 0 14px}
+.tenets{max-width:640px;margin:0 auto;color:var(--mid);font-size:14.5px}
+.tenets b{color:var(--gold)}
+h2.sec{font-family:var(--heading);font-size:22px;color:var(--gold);margin:44px 0 18px;text-align:center}
+/* journey flow */
+.flow{display:flex;flex-direction:column;gap:0;max-width:520px;margin:0 auto}
+.step{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:15px 20px;position:relative}
+.step .n{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.step .d{color:var(--mid);font-size:13px;margin-top:2px}
+.arrow{width:2px;height:20px;background:var(--gold-deep);margin:0 auto;opacity:.6}
+/* timeline */
+.tl{position:relative;margin:20px 0 0;padding-top:8px}
+.tl .bar{height:4px;background:var(--card-2);border:1px solid var(--border);border-radius:4px;position:relative}
+.tl .bar .fill{position:absolute;inset:0;background:var(--gold-grad);border-radius:4px;opacity:.35}
+.cps{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:16px}
+.cp{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:13px}
+.cp .day{font-family:var(--heading);font-size:15px;color:var(--gold)}
+.cp .t{font-weight:600;font-size:13px;margin-top:4px}
+.cp .s{color:var(--muted);font-size:11.5px;margin-top:4px}
+.cp.act{border-color:var(--gold-deep);background:var(--gold-faint)}
+.badge{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--on-gold);background:var(--gold-grad);border-radius:12px;padding:3px 10px;margin-top:8px}
+/* health */
+.health{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.hcard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;border-top:3px solid var(--border)}
+.hcard.g{border-top-color:var(--green)}.hcard.y{border-top-color:var(--yellow)}.hcard.r{border-top-color:var(--red)}
+.hcard h3{font-family:var(--heading);font-size:16px;margin-bottom:6px}
+.hcard.g h3{color:var(--green)}.hcard.y h3{color:var(--yellow)}.hcard.r h3{color:var(--red)}
+.hcard ul{list-style:none;margin:0;padding:0;font-size:12.5px;color:var(--mid)}.hcard li{margin:5px 0;padding-left:14px;position:relative}
+.hcard li:before{content:'·';position:absolute;left:2px;color:var(--gold)}
+.hcard .do{margin-top:9px;font-size:12px;color:var(--ink);font-weight:600}
+/* promises + routes */
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.pm{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:14px;text-align:center}
+.pm .k{font-family:var(--heading);font-size:15px;color:var(--gold)}.pm .d{font-size:11.5px;color:var(--muted);margin-top:5px}
+.routes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.rt{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px}
+.rt .p{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold)}
+.rt h3{font-family:var(--heading);font-size:17px;margin:3px 0 6px}
+.rt ul{list-style:none;margin:0;padding:0;font-size:12.5px;color:var(--mid)}.rt li{margin:4px 0}
+.foot{max-width:960px;margin:44px auto 0;padding:22px;border-top:1px solid var(--border);text-align:center;color:var(--muted);font-size:13px}
+.foot b{color:var(--mid)}
+@media(max-width:760px){.cps,.health,.grid5,.routes{grid-template-columns:1fr 1fr}.grid5{grid-template-columns:1fr}}
+</style>
+
+<header class="masthead">
+  <div class="eyebrow">Breedwise Academy</div>
+  <h1>The 120-Day Member Journey</h1>
+  <div class="tenets">
+    No Academy member should ever wonder what to do next, or who to ask when they're stuck.<br>
+    <b>Academy guides implementation. Accelerator helps build the systems.</b>
+  </div>
+</header>
+
+<div class="wrap">
+  <h2 class="sec">The Client Journey</h2>
+  <div class="flow" id="flow"></div>
+
+  <h2 class="sec">The 120-Day Timeline</h2>
+  <div class="tl"><div class="bar"><div class="fill" style="width:100%"></div></div>
+    <div class="cps" id="cps"></div>
+  </div>
+
+  <h2 class="sec">Member Health</h2>
+  <div class="health">
+    <div class="hcard g"><h3>🟢 Green — On track</h3><ul><li>Engaging &amp; taking action</li><li>Using Academy</li><li>Making progress</li><li>Clear on next step</li></ul><div class="do">Normal support.</div></div>
+    <div class="hcard y"><h3>🟡 Yellow — Needs attention</h3><ul><li>No activity 10–14 days</li><li>Action overdue / stalled</li><li>Appears stuck or confused</li><li>Clarity score ≤ 7</li></ul><div class="do">Personal outreach &lt; 1 business day.</div></div>
+    <div class="hcard r"><h3>🔴 Red — Intervention</h3><ul><li>No activity 21+ days</li><li>Multiple unanswered outreach</li><li>Dissatisfaction / cancel risk</li><li>Major expectation mismatch</li></ul><div class="do">Same-business-day intervention.</div></div>
+  </div>
+
+  <h2 class="sec">The Five Promises</h2>
+  <div class="grid5">
+    <div class="pm"><div class="k">Know me</div><div class="d">We understand your program and goals.</div></div>
+    <div class="pm"><div class="k">Guide me</div><div class="d">You know where to focus and what to do next.</div></div>
+    <div class="pm"><div class="k">Support me</div><div class="d">You know exactly where to go when stuck.</div></div>
+    <div class="pm"><div class="k">Show me</div><div class="d">You can see the progress you've made.</div></div>
+    <div class="pm"><div class="k">Keep me moving</div><div class="d">You know what the next improvement is.</div></div>
+  </div>
+
+  <h2 class="sec">Day 120 — What's Next</h2>
+  <div class="routes">
+    <div class="rt"><div class="p">Option A · $297/mo</div><h3>Academy Continuation</h3><ul><li>Ongoing education &amp; coaching</li><li>Community &amp; accountability</li><li>Periodic reassessment</li><li>A new Focus Plan each cycle</li></ul></div>
+    <div class="rt"><div class="p">Option B · $20K</div><h3>Accelerator</h3><ul><li>Custom system architecture</li><li>Hands-on buildout &amp; deployment</li><li>Project management</li><li>Faster implementation</li></ul></div>
+    <div class="rt"><div class="p">Option C</div><h3>Graduate / Pause</h3><ul><li>They got what they came for</li><li>No forced retention</li><li>Door stays open</li></ul></div>
+  </div>
+</div>
+
+<div class="foot"><b>Assessment diagnoses. Academy delivers.</b><br>Right member → right focus → right resource → right support → right next step. The member implements; BreedWise guides, teaches, reviews, supports and holds them accountable.</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const STEPS=[
+ ['Enroll','Payment → access, CRM record, Day 7/60/105/120 calculated, Jennifer notified, welcome sent.'],
+ ['Assess','Member completes the Academy Assessment. AI summarizes, Jennifer reviews. AI recommends, BreedWise confirms.'],
+ ['Onboard','30-minute call: outcome → current reality → focus → navigate → one first action.'],
+ ['Focus','One primary focus (+1–2 secondary). The Academy Focus Plan is set.'],
+ ['Learn + Implement','Curriculum, tools, coaching, expert education, community. The member does the work.'],
+ ['Support + Accountability','Managed by exception — Red/Yellow surfaced automatically, wins captured.'],
+ ['Review Progress','Day-60 progress review + Day-120 transformation review.'],
+ ['Next Step','Continuation, Accelerator, or graduate.'],
+];
+$('#flow').innerHTML=STEPS.map((s,i)=>`<div class="step"><div class="n">${s[0]}</div><div class="d">${s[1]}</div></div>${i<STEPS.length-1?'<div class="arrow"></div>':''}`).join('');
+const CPS=[
+ ['Days 0–3','Assessment','Where they are, what they want, biggest challenges.',false],
+ ['Days 1–7','Onboarding + Focus Plan','Goal, focus, first action set.',true],
+ ['Day 14','Clarity Pulse','“How clear are you on what comes next?” ≤7 → follow-up.',false],
+ ['Day 60','Progress Review','What changed, what is in the way, keep or change focus.',false],
+ ['Day 105','Prep Transformation','Pull assessment, baseline, wins, clarity.',false],
+ ['Day 120','Transformation Review','Before vs after → route to next step.',true],
+];
+$('#cps').innerHTML=CPS.map(c=>`<div class="cp ${c[3]?'act':''}"><div class="day">${c[0]}</div><div class="t">${c[1]}</div><div class="s">${c[2]}</div>${c[3]?'<div class="badge">Milestone</div>':''}</div>`).join('');
+</script>

@@ -100,7 +100,7 @@ td .nm{font-weight:600;color:var(--ink)}td .sub{font-size:11.5px;color:var(--mut
   </div>
   <div class="kpis" id="kpis"></div>
   <div class="queue" id="queue"></div>
-  <div style="overflow-x:auto"><table><thead><tr><th>Member</th><th>Day</th><th>Focus</th><th>Next litter</th><th>Health</th><th>Clarity</th><th>Activated</th><th>Last contact</th><th>Next action</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+  <div style="overflow-x:auto"><table><thead><tr><th>Member</th><th>120-Day</th><th>Focus</th><th>Next litter</th><th>Health</th><th>Clarity</th><th>Activated</th><th>Last contact</th><th>Next action</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
 </div></div>
 
 <div id="modal" class="modal hide"><div class="sheet" id="sheet"></div></div>
@@ -148,6 +148,9 @@ async function load(){
 /* ---- derived ---- */
 function day(r){ return dsince(r.t.enrolled_at); }
 function activated(t){ return !!(t.act_assessment&&t.act_onboarding&&t.act_focusplan&&t.act_firstaction); }
+function implPct(t){ const ms=t.milestones||[]; if(ms.length) return Math.round(ms.filter(m=>m.done).length/ms.length*100);
+  const gates=[t.act_assessment,t.act_onboarding,t.act_focusplan,t.act_firstaction,t.review60_done,t.prep105_done,t.review120_done];
+  return Math.round(gates.filter(Boolean).length/gates.length*100); }
 function clarity(t){ return t.clarity!=null?t.clarity:null; }
 function reviewDue(r){ const d=day(r), t=r.t;
   if(t.next_review && dsince(t.next_review)>=0) return true;
@@ -206,7 +209,7 @@ function renderRows(){
   $('#rows').innerHTML=rows.map(r=>{ const t=r.t, h=health(r), d=day(r), act=activated(t), cl=clarity(t);
     return `<tr>
       <td><div class="nm">${esc(r.m.name||'—')}</div><div class="sub">${esc(r.m.email||'')}</div></td>
-      <td>${d!=null?d:'—'}</td>
+      <td style="min-width:74px">Day ${d!=null?d:'—'}<div style="height:4px;background:var(--border);border-radius:3px;margin-top:5px;max-width:64px"><div style="height:100%;width:${implPct(t)}%;background:var(--gold-grad);border-radius:3px"></div></div><div class="sub" style="font-size:10px;margin-top:2px">${implPct(t)}% done</div></td>
       <td>${t.primary_focus?`<span class="foc">${esc(t.primary_focus)}</span>`:'<span class="sub">—</span>'}</td>
       <td class="sub">${(+t.pups_available||0)>0?`<span class="actbadge act-on">🐾 ${+t.pups_available} available</span><br>`:''}${esc(t.litter_stage||t.next_litter||r.m.next_breeding_date||'—')}</td>
       <td><span class="hdot h-${h}"><i></i>${h}</span></td>
@@ -244,6 +247,17 @@ function openMember(id){
       <div class="fld"><label>First action</label><input id="f_first" value="${esc(t.first_action||'')}"></div>
     </div>
 
+    <div class="block"><h3>120-Day Implementation <span style="float:right;font-family:var(--body);font-size:12px;color:var(--gold)">Day ${d!=null?d:'—'} / 120 · <b id="implLbl">${implPct(t)}%</b> done</span></h3>
+      <div style="height:9px;background:var(--card-2);border:1px solid var(--border);border-radius:6px;position:relative;margin:2px 0 4px">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:${Math.min((d||0)/120*100,100)}%;background:var(--gold-faint);border-radius:6px"></div>
+        ${[7,14,60,105,120].map(dd=>`<span style="position:absolute;left:${Math.min(dd/120*100,100)}%;top:-3px;width:2px;height:15px;background:var(--gold-deep)"></span>`).join('')}
+      </div>
+      <div class="sub" style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:9px"><span>Enroll</span><span>D14 pulse</span><span>D60 review</span><span>D105 prep</span><span>D120</span></div>
+      <div id="msList"></div>
+      <div style="display:flex;gap:8px;margin-top:8px"><input id="ms_new" placeholder="Add an implementation milestone…"><input id="ms_day" type="number" placeholder="day" style="max-width:78px"><button class="btn sm" id="ms_add">Add</button></div>
+      <button class="btn ghost sm" id="pullSprint" style="margin-top:8px">Pull 120-day sprint plan from assessment</button>
+    </div>
+
     <div class="block"><h3>Litter &amp; puppies</h3>
       <div class="row2">
         <div class="fld"><label>Litter stage</label><select id="f_litstage"><option value="">—</option>${LITTER.map(s=>`<option ${t.litter_stage===s?'selected':''}>${esc(s)}</option>`).join('')}</select></div>
@@ -277,6 +291,7 @@ function openMember(id){
 
     <div class="block"><h3>Reviews</h3>
       <div class="rev"><span>Day-60 progress review</span><label class="acheck"><input type="checkbox" id="r_60" ${t.review60_done?'checked':''}> Done</label></div>
+      <div class="rev"><span>Day-105 transformation prep</span><label class="acheck"><input type="checkbox" id="r_105" ${t.prep105_done?'checked':''}> Done</label></div>
       <div class="rev" style="border-bottom:none"><span>Day-120 transformation review</span><label class="acheck"><input type="checkbox" id="r_120" ${t.review120_done?'checked':''}> Done</label></div>
       <div class="fld" style="margin-top:8px"><label>Continuation status</label><select id="f_status">${['Active','Continuation','Accelerator','Graduated','Paused'].map(s=>`<option ${(t.status||'Active')===s?'selected':''}>${s}</option>`).join('')}</select></div>
     </div>
@@ -297,6 +312,24 @@ function openMember(id){
   $('#modal').classList.remove('hide');
   let hoverride=t.health_override||'';
   let winsLocal=(t.wins||[]).slice();
+  let msLocal=(t.milestones||[]).slice();
+  function renderMs(){
+    $('#msList').innerHTML=msLocal.length?msLocal.map((m,i)=>`<label class="acheck" style="justify-content:space-between"><span><input type="checkbox" data-ms="${i}" ${m.done?'checked':''}> ${esc(m.label)}${m.day?` <span class="sub">· day ${m.day}</span>`:''}</span><span class="sub" data-msdel="${i}" style="cursor:pointer">✕</span></label>`).join(''):'<div class="sub">No implementation milestones yet — add them or pull the 120-day sprint plan from the assessment.</div>';
+    $('#msList').querySelectorAll('[data-ms]').forEach(cb=>cb.onchange=()=>{ const i=+cb.dataset.ms; msLocal[i].done=cb.checked; msLocal[i].at=cb.checked?new Date().toISOString():null; updImpl(); });
+    $('#msList').querySelectorAll('[data-msdel]').forEach(x=>x.onclick=()=>{ msLocal.splice(+x.dataset.msdel,1); renderMs(); updImpl(); });
+  }
+  function updImpl(){ const el=$('#implLbl'); if(!el) return; el.textContent=(msLocal.length?Math.round(msLocal.filter(m=>m.done).length/msLocal.length*100):implPct(t))+'%'; }
+  renderMs();
+  $('#ms_add').onclick=()=>{ const lbl=$('#ms_new').value.trim(); if(!lbl) return; msLocal.push({label:lbl,day:$('#ms_day').value?+$('#ms_day').value:null,done:false}); $('#ms_new').value='';$('#ms_day').value=''; renderMs(); updImpl(); };
+  $('#pullSprint').onclick=async()=>{
+    $('#pullSprint').disabled=true; $('#pullSprint').textContent='Loading…';
+    const {data}=await sb.from('tool_submissions').select('result').eq('tool','implementation-assessment').eq('member_email',r.m.email).order('created_at',{ascending:false}).limit(1);
+    $('#pullSprint').disabled=false; $('#pullSprint').textContent='Pull 120-day sprint plan from assessment';
+    const res=data&&data[0]&&data[0].result;
+    if(!res||!res.sprint_120){ $('#mErr').textContent='No assessment sprint plan found for this member.'; return; }
+    (res.sprint_120||[]).forEach(s=>{ (s.milestones||[]).forEach(mi=>{ if(!msLocal.some(x=>x.label===mi)) msLocal.push({label:mi,day:(s.sprint||1)*40,done:false}); }); });
+    renderMs(); updImpl(); $('#mErr').textContent='Pulled the sprint plan — review, adjust days, and save.';
+  };
   $('#mClose').onclick=$('#mCancel').onclick=closeModal;
   $('#modal').onclick=e=>{if(e.target.id==='modal')closeModal();};
   $('#hpills').querySelectorAll('[data-h]').forEach(el=>el.onclick=()=>{ hoverride=el.dataset.h; $('#hpills').querySelectorAll('.hp').forEach(x=>x.className='hp'); el.className='hp '+(el.dataset.h?('on-'+el.dataset.h):'on-auto'); });
@@ -311,8 +344,8 @@ function openMember(id){
       litter_stage:$('#f_litstage').value||null, pups_available:$('#f_pups').value?+$('#f_pups').value:0, litter_update:$('#f_litupd').value.trim()||null,
       act_assessment:$('#a_assessment').checked, act_onboarding:$('#a_onboarding').checked, act_focusplan:$('#a_focusplan').checked, act_firstaction:$('#a_firstaction').checked,
       health_override:hoverride||null, clarity:$('#f_clarity').value?+$('#f_clarity').value:null, last_contact:$('#f_contact').value||null, next_action:$('#f_next').value.trim()||null,
-      review60_done:$('#r_60').checked, review120_done:$('#r_120').checked, status:$('#f_status').value,
-      wins:winsLocal, notes:$('#f_notes').value.trim()||null, updated_at:new Date().toISOString(), updated_by:ME };
+      review60_done:$('#r_60').checked, prep105_done:$('#r_105').checked, review120_done:$('#r_120').checked, status:$('#f_status').value,
+      milestones:msLocal, wins:winsLocal, notes:$('#f_notes').value.trim()||null, updated_at:new Date().toISOString(), updated_by:ME };
     $('#mSave').disabled=true;
     const {error}=await sb.from('academy_tracking').upsert(patch,{onConflict:'member_id'});
     $('#mSave').disabled=false;
