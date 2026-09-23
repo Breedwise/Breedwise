@@ -91,6 +91,11 @@ fbq('init','1337266034525554');fbq('track','PageView');
   .mcard p{font-size:13px;color:var(--mid);font-weight:300;line-height:1.55}
   .mech-note{text-align:center;max-width:52em;margin:24px auto 0;color:var(--mid);font-weight:300;font-size:15px;line-height:1.7}
   .mech-note b{color:var(--ink);font-weight:600}
+  .bridge{position:relative;max-width:640px;margin:22px auto 0;text-align:center;background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:16px;padding:22px 26px}
+  .bridge .lk{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:var(--bg);border:1px solid var(--gold-line);margin-bottom:12px}
+  .bridge .lk svg{width:19px;height:19px;color:var(--gold)}
+  .bridge p{color:var(--ink);font-weight:500;font-size:15.5px;line-height:1.6;margin:0}
+  .bridge .em{color:var(--gold);font-weight:700}
 
   /* ── TWO ENGINES ── */
   .engines{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -231,18 +236,43 @@ fbq('init','1337266034525554');fbq('track','PageView');
 
     <!-- ══════ 1 · OUTCOME ══════ -->
     <section class="hero">
-      <span class="pill">For Serious Breeders · By Application</span>
-      <h1>Build a More Profitable, Predictable<br><span class="u">Breeding Program.</span></h1>
-      <p class="sub">Get <b>more qualified families waiting for your puppies</b>, understand what your litters actually make, and make better-informed breeding decisions, with business coaching and veterinary education in one program.</p>
-      <div class="cta-wrap"><button class="cta" data-scroll>Apply to BreedWise Academy</button><div class="cta-sub">By application. We personally review every submission.</div></div>
-      <div class="triad">Healthier Puppies <span>•</span> More Qualified Buyers <span>•</span> Better Profit</div>
+      <style>
+        .hbul{list-style:none;max-width:42em;margin:22px auto 0;padding:0;text-align:left}
+        .hbul li{display:flex;gap:13px;align-items:flex-start;padding:9px 0;color:var(--mid);font-size:15px;line-height:1.55;border-top:1px solid rgba(255,255,255,.06)}
+        .hbul li:first-child{border-top:0}
+        .hbul .ico{flex:0 0 auto;font-size:15px;line-height:1.62;color:var(--gold);font-weight:700}
+        .workto{color:var(--ink);font-weight:600;font-size:15px;margin:22px 0 0}
+        .broker{max-width:44em;margin:18px auto 0;color:#726d64;font-size:12px;line-height:1.6}
+        .impl{max-width:44em;margin:0 auto;text-align:center}
+        .impl p{color:var(--mid);font-size:15.5px;line-height:1.7;margin:0 0 16px}
+        .impl .yours{color:var(--gold);font-weight:600}
+        .impl .build{color:var(--ink);font-weight:600;font-size:17px;margin-top:6px}
+        .runline{color:var(--ink);font-weight:600;font-size:16px;margin-top:16px}
+        .hero .sub{max-width:880px}
+        @media(max-width:640px){ .hero .sub{max-width:36em} }
+      </style>
+      <span class="pill">For Established, Ethics-First Breeders · By Application</span>
+      <h1>Build a More Predictable, Profitable<br><span class="u">Breeding Program in 120 Days.</span></h1>
+      <p class="sub">Build repeatable systems to attract qualified puppy families, turn serious inquiries into committed homes, understand what each litter actually makes, and make better-informed decisions from breeding and pregnancy through whelping and neonatal care.</p>
+      <p class="workto">Inside BreedWise Academy, you'll work to:</p>
+      <ul class="hbul">
+        <li><span class="ico">✓</span>Build a stronger pipeline of qualified puppy families</li>
+        <li><span class="ico">✓</span>Better prepare for breeding, pregnancy, whelping, and neonatal care</li>
+        <li><span class="ico">✓</span>Install a repeatable inquiry, qualification, and follow-up process</li>
+        <li><span class="ico">✓</span>Make better-informed breeding decisions with veterinary education</li>
+        <li><span class="ico">✓</span>Price and position your puppies with more confidence</li>
+        <li><span class="ico">✓</span>Track what each litter actually makes after expenses</li>
+      </ul>
+      <p class="runline">You run your breeding program. We help you build it better.</p>
+      <div class="cta-wrap"><button class="cta" data-scroll>Apply to See if Your Program Qualifies →</button></div>
+      <p class="broker">BreedWise does not broker, place, or sell your puppies. You remain responsible for your dogs, puppy families, transactions, and breeding program.</p>
     </section>
 
     <!-- ══════ 2 · PROBLEM ══════ -->
     <section class="sec">
       <div class="sec-h"><div class="eyebrow">The problem</div><h2 style="font-size:clamp(21px,3.5vw,31px)">You're Doing the Work.<br>So Why Does Every Litter Still Feel Harder Than It Should?</h2><p>You health test. You care where your puppies go. You invest in your dogs. You want to do things the right way. But you may still be dealing with:</p></div>
       <div class="gaps">
-        <div class="gap"><h3>Breeding</h3><p>You're second-guessing timing, pregnancy, whelping, puppy health, or when it's time to call your vet.</p></div>
+        <div class="gap"><h3>Breeding</h3><p>You're second-guessing breeding preparation, timing, pregnancy, whelping, or what deserves a call to your veterinarian.</p></div>
         <div class="gap"><h3>Buyers</h3><p>You don't have enough qualified families waiting before your puppies arrive.</p></div>
         <div class="gap"><h3>Sales</h3><p>People ask "How much?" and disappear, or tell you they found a cheaper puppy somewhere else.</p></div>
         <div class="gap"><h3>Profit</h3><p>You can sell an entire litter and still wonder where all the money went.</p></div>
@@ -257,24 +287,27 @@ fbq('init','1337266034525554');fbq('track','PageView');
         <div class="engine">
           <div class="etag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5c-3 0-5 2-5 5 0 4 4 7 7 9 3-2 7-5 7-9 0-3-2-5-5-5-1.3 0-2.3.6-3 1.4C11.3 5.6 10.3 5 9 5z"/></svg>The Breeding Engine</div>
           <div class="flow"><span class="chip">Preparation</span><span class="arw">→</span><span class="chip">Reproduction</span><span class="arw">→</span><span class="chip">Pregnancy</span><span class="arw">→</span><span class="chip">Whelping</span><span class="arw">→</span><span class="chip">Neonatal Health</span><span class="arw">→</span><span class="chip">Healthy Puppies</span></div>
-          <p class="ed">Know what to do before you breed, catch trouble earlier, whelp with more confidence, and know when to call the vet, so you're not figuring it out alone at 2 a.m. or losing puppies you didn't have to.</p>
+          <p class="ed">Prepare more thoroughly before breeding, understand what to watch throughout pregnancy and whelping, recognize warning signs earlier, and know when veterinary attention may be needed.</p>
         </div>
         <div class="engine b">
           <div class="etag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 4-6"/></svg>The Business Engine</div>
           <div class="flow"><span class="chip">Positioning</span><span class="arw">→</span><span class="chip">Demand</span><span class="arw">→</span><span class="chip">Qualified Buyers</span><span class="arw">→</span><span class="chip">Sales</span><span class="arw">→</span><span class="chip">Margin</span><span class="arw">→</span><span class="chip">Reinvestment</span></div>
-          <p class="ed">Get more of the right families interested, turn "how much?" into deposits, stop competing on price, and actually know what each litter makes you.</p>
+          <p class="ed">Attract more of the right puppy families, turn more serious inquiries into committed homes, stop competing primarily on price, and understand what each litter actually makes.</p>
         </div>
       </div>
-      <p class="mech-note">Better breeding protects what your business depends on. A healthier business gives you more to put back into doing breeding right. <b>BreedWise Academy helps you find the biggest things holding your program back, on both sides, and gives you the help to fix them.</b></p>
+      <div class="bridge">
+        <span class="lk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h6M8.5 8.5H7a4 4 0 0 0 0 8h1.5M15.5 8.5H17a4 4 0 0 1 0 8h-1.5"/></svg></span>
+        <p><span class="em">Better breeding protects what your business depends on.</span> A healthier business gives you more to put back into doing breeding right.</p>
+      </div>
     </section>
 
     <!-- ══════ 4 · PROOF ══════ -->
     <section class="sec">
-      <div class="sec-h"><div class="eyebrow">Proof</div><h2>Breeders Are Already Doing It</h2></div>
+      <div class="sec-h"><div class="eyebrow">Proof</div><h2>What This Can Look Like in a Real Breeding Program</h2></div>
       <div class="proofstrip">
         <div class="cell"><div class="big">$50K+</div><div class="lbl">litters, from multiple breeders, in as little as 90 days</div></div>
         <div class="cell"><div class="big" style="font-size:19px">Sold-Out Litters</div><div class="lbl">premium pricing and full waitlists, without compromising ethics</div></div>
-        <div class="cell"><div class="big" style="font-size:19px">Vet-Backed</div><div class="lbl">Dr. Fontaine, Dr. Hughes, Dr. Mahoney</div></div>
+        <div class="cell"><div class="big" style="font-size:17px">Veterinary Expertise</div><div class="lbl">Dr. Fontaine · Dr. Hughes · Dr. Mahoney</div></div>
       </div>
       <div class="vgrid">
         <div class="vcard">
@@ -292,6 +325,18 @@ fbq('init','1337266034525554');fbq('track','PageView');
       </div>
       <div class="disc-mini">Results shown are documented member outcomes, are not typical, and are not a guarantee of your results.</div>
       <div class="cta-wrap"><button class="cta" data-scroll>Apply to See If Your Program Qualifies</button></div>
+    </section>
+
+    <!-- ══════ IMPLEMENTATION VEHICLE ══════ -->
+    <section class="sec">
+      <div class="sec-h"><div class="eyebrow">The vehicle</div><h2>This Isn't Another Breeder Course.<br>It's 120 Days of Implementation.</h2></div>
+      <div class="impl">
+        <p>Knowing what to do isn't the same as getting it implemented in your breeding program.</p>
+        <p>Over 120 days, we help you identify the biggest constraints across both sides of your breeding program, determine what needs to change first, and work with you as you implement better systems.</p>
+        <p class="yours">Your dogs. Your litters. Your puppy families. Your numbers. Your program.</p>
+        <p>You get the education, systems, coaching, feedback, veterinary education, and accountability to help you improve the areas that matter most to your program.</p>
+        <p class="build">You don't just learn the system. You build it into your breeding program.</p>
+      </div>
     </section>
 
     <!-- ══════ TEAM / AUTHORITY ══════ -->
@@ -335,34 +380,38 @@ fbq('init','1337266034525554');fbq('track','PageView');
 
     <!-- ══════ 5 · APPLICATION CTA ══════ -->
     <section class="sec">
-      <div class="sec-h"><div class="eyebrow">Is it a fit?</div><h2>Who Academy Is For</h2></div>
+      <div class="sec-h"><div class="eyebrow">Is it a fit?</div><h2>We're Looking for Breeders Who Are Ready to Build</h2></div>
       <div class="fortwo">
         <div class="fbox yes">
           <h3>Apply if…</h3>
           <ul>
-            <li>You're an ethical breeder <b>already operating</b> (at least a litter a year) with a real pricing, demand, placement, or puppy-loss problem.</li>
-            <li>Or you're <b>actively preparing your first litter within the next 12 months</b>, not just considering it.</li>
-            <li>You're ready to put in the work and invest in your program if the plan is a fit.</li>
+            <li>You're already operating a breeding program or have a specific upcoming breeding plan</li>
+            <li>You care deeply about the quality, health, and placement of the dogs you produce</li>
+            <li>You have a real challenge around qualified puppy families, pricing, sales, profitability, or your breeding systems</li>
+            <li>You're willing to change how you market, sell, track, or operate when something isn't working</li>
+            <li>You're prepared to do the work, not just consume more information</li>
+            <li>You're prepared to invest in improving your program if Academy is the right fit</li>
           </ul>
         </div>
         <div class="fbox no">
           <h3>Don't apply if…</h3>
           <ul>
-            <li>You're only considering breeding "someday," with no litter planned.</li>
-            <li>You want shortcuts that compromise dogs, or results without doing the work.</li>
-            <li>You're not open to changing how you market, price, or run your program.</li>
+            <li>Breeding is still a "someday" idea</li>
+            <li>You're looking for BreedWise to find buyers or sell your puppies for you</li>
+            <li>You're looking for shortcuts that compromise your dogs</li>
+            <li>You want results without implementing the work</li>
           </ul>
         </div>
       </div>
-      <p class="downnote">Not quite ready for the full Academy? We'll point you to a lower-cost starting point instead. Apply and we'll tell you honestly.</p>
+      <p class="downnote">Not ready for Academy yet? That's okay. If we believe another BreedWise program is a better starting point for where you are today, we'll tell you.</p>
     </section>
 
     <section class="sec">
       <div class="sec-h"><div class="eyebrow">The process</div><h2>What Happens After You Apply</h2></div>
       <div class="steps">
-        <div class="step"><div class="num">1</div><h3>We Review</h3><p>Your program is reviewed personally, often within hours.</p></div>
-        <div class="step"><div class="num">2</div><h3>We Reach Out</h3><p>Qualified breeders are contacted personally, often immediately.</p></div>
-        <div class="step"><div class="num">3</div><h3>The Call</h3><p>We determine whether BreedWise is the right fit for your goals and, if qualified, map your next 12 months.</p></div>
+        <div class="step"><div class="num">1</div><h3>Apply</h3><p>Tell us about your breeding program, upcoming litters, puppy pricing, buyer pipeline, and what you're struggling with most.</p></div>
+        <div class="step"><div class="num">2</div><h3>Qualification</h3><p>Our team reviews your application. If we believe Academy could be a fit, we'll contact you to schedule a call.</p></div>
+        <div class="step"><div class="num">3</div><h3>Map the Next 12 Months</h3><p>We'll look at where your breeding program is today, where you want it to go, and the biggest constraints between the two. If Academy is the right vehicle to get there, we'll show you what working together looks like.</p></div>
       </div>
     </section>
 
@@ -452,7 +501,7 @@ fbq('init','1337266034525554');fbq('track','PageView');
             <div class="fld"><label>Instagram handle <span class="req">*</span></label><input id="instagram" type="text" placeholder="@yourkennel"></div>
           </div>
 
-          <div class="fld full"><label>Do you have at least $1,500 to invest in your breeding program? <span class="req">*</span></label>
+          <div class="fld full"><label>If BreedWise Academy is the right fit, are you financially prepared to invest at least $1,500 to get started? <span class="req">*</span></label>
             <select id="investment">
               <option value="" disabled selected>Select…</option>
               <option value="yes">Yes</option>
