@@ -159,7 +159,7 @@
 
   @media print{
     body{background:#fff;color:#111}
-    #app > .wrap > header,.mode,.mode-note,.hud,form,.actions,.saveline,footer,#gate{display:none!important}
+    #app > .wrap > header,.mode,.mode-note,.hud,form,.actions,.saveline,footer,#gate,#savebox{display:none!important}
     #snapshot{border:1px solid #ccc;box-shadow:none;background:#fff;margin:0}
     .snap-h h2,.rr .rv,.reveal .rn{color:#111}.snap-h .k,.dx-h,.mini .mh,.priority .pl,.reveal .rt{color:#8a6d2f}
     .rr,.mini,.insight,.reveal,.priority{background:#faf7f2;border-color:#e5ddcd}
@@ -217,15 +217,17 @@
       <!-- OVERVIEW -->
       <section>
         <div class="sh"><span class="n">01</span><h2>Litter Overview</h2></div>
+        <p class="desc"><b>Surviving</b> = puppies that lived. <b>Placed</b> = spoken for (deposit taken). <b>Sold</b> = paid off. These can all be different numbers — e.g. 5 survived, 3 placed, 2 sold so far.</p>
         <div class="grid g3">
           <div class="fld"><label>Breed</label><input type="text" id="breed" placeholder="Breed"></div>
           <div class="fld"><label>Date of birth</label><input type="date" id="dob"></div>
           <div class="fld"><label>Avg. puppy price</label><div class="money"><input type="number" id="avgPrice" placeholder="0"></div></div>
           <div class="fld"><label># Born</label><input type="number" id="nBorn" placeholder="0"></div>
-          <div class="fld"><label># Surviving / placed</label><input type="number" id="nSurv" placeholder="0"></div>
-          <div class="fld"><label># Sold</label><input type="number" id="nSold" placeholder="0"></div>
-          <div class="fld full-only full"><label>End: # Retained (kept)</label><input type="number" id="nRetain" placeholder="0"></div>
-          <div class="fld full-only full"><label>End: # Remaining (unsold)</label><input type="number" id="nRemain" placeholder="0"></div>
+          <div class="fld"><label># Surviving <span style="color:var(--muted)">· lived</span></label><input type="number" id="nSurv" placeholder="0"><div class="hint">Survived — whether or not placed yet.</div></div>
+          <div class="fld"><label># Placed <span style="color:var(--muted)">· deposit</span></label><input type="number" id="nPlaced" placeholder="0"><div class="hint">Spoken for / deposit taken.</div></div>
+          <div class="fld"><label># Sold <span style="color:var(--muted)">· paid off</span></label><input type="number" id="nSold" placeholder="0"><div class="hint">Paid in full.</div></div>
+          <div class="fld full-only full"><label># Retained <span style="color:var(--muted)">· you kept</span></label><input type="number" id="nRetain" placeholder="0"></div>
+          <div class="fld full-only full"><label># Remaining <span style="color:var(--muted)">· still available</span></label><input type="number" id="nRemain" placeholder="0"></div>
           <div class="fld full-only full"><label>Date first puppy reserved</label><input type="date" id="dFirst"></div>
         </div>
       </section>
@@ -287,8 +289,7 @@
           <div class="fld"><label>Total inquiries</label><input type="number" id="dInq" placeholder="0"></div>
           <div class="fld full-only full"><label>Applications</label><input type="number" id="dApps" placeholder="0"></div>
           <div class="fld"><label>Qualified applicants</label><input type="number" id="dQual" placeholder="0"></div>
-          <div class="fld"><label>Reservations / deposits</label><input type="number" id="dRes" placeholder="0"></div>
-          <div class="fld"><label>Reserved before birth</label><input type="number" id="dResBirth" placeholder="0"></div>
+          <div class="fld"><label>Reserved before birth <span style="color:var(--muted)">(of your placed)</span></label><input type="number" id="dResBirth" placeholder="0"></div>
           <div class="fld full-only full"><label>Reserved by 2 weeks</label><input type="number" id="dRes2" placeholder="0"></div>
           <div class="fld full-only full"><label>Reserved by 4 weeks</label><input type="number" id="dRes4" placeholder="0"></div>
           <div class="fld"><label>Days until fully placed</label><input type="number" id="dDays" placeholder="0"></div>
@@ -395,6 +396,17 @@
         <div class="pv" id="snapPriority">—</div>
       </div>
 
+      <div class="mini" id="savebox" style="margin-top:20px">
+        <div class="mh">Send to your BreedWise coach</div>
+        <p style="font-size:13px;color:var(--mid);font-weight:300;margin:2px 0 12px">Save this to your BreedWise profile so your coach can help you act on it. They'll see your numbers and your next-litter priority — no re-explaining.</p>
+        <div class="grid">
+          <div class="fld"><label>Your email</label><input type="email" id="saveEmail" placeholder="you@email.com"></div>
+          <div class="fld"><label>Your name (optional)</label><input type="text" id="saveName" placeholder="Name"></div>
+        </div>
+        <button type="button" class="btn gold" id="saveBtn" onclick="saveProfile()" style="margin-top:12px">Save to my profile →</button>
+        <div id="saveMsg" style="font-size:12.5px;margin-top:10px;min-height:16px;color:var(--muted)"></div>
+      </div>
+
       <div class="actions">
         <button type="button" class="btn gold" onclick="window.print()">Save / Print Snapshot</button>
         <button type="button" class="btn ghost" onclick="resetAll()">Start a new litter</button>
@@ -466,7 +478,7 @@ function puppyPrices(){var a=[];document.querySelectorAll('#puppyRows .puppy-row
 /* ---------- compute ---------- */
 function compute(){
   var full=isFull();
-  var sold=n('nSold'), born=n('nBorn'), surv=n('nSurv');
+  var sold=n('nSold'), born=n('nBorn'), surv=n('nSurv'), placed=n('nPlaced');
   var pSales=puppySales();
   var other=full?n('fOther'):n('qOther');
   var forfeit=full?n('fForfeit'):0, refund=full?n('fRefund'):0, fees=full?n('fFees'):0;
@@ -497,10 +509,10 @@ function compute(){
   /* snapshot rows */
   set('oRev',fmt(revenue));set('oDir',fmt(direct));set('oMargin',fmt(margin),margin<0);set('oAlloc',fmt(alloc));set('oProfit',fmt(profit),profit<0);
   set('mMargin',pct(marginPct));set('mRevPer',fmt(revPer));set('mProfPer',fmt(profPer),profPer<0);set('mBreakeven',fmt(breakeven));set('mAllIn',fmt(allIn));set('mSurvival',born>0?pct(survRate):'—');
-  var dRes=n('dRes'),dQual=n('dQual'),dInq=n('dInq'),dBefore=n('dBefore'),dResBirth=n('dResBirth'),dDays=n('dDays');
-  set('mBefore',dBefore);set('mInq',dInq);set('mRes',dRes);
-  set('mResBirth',sold>0?pct(dResBirth/sold*100):'0%');
-  var convBase=dQual>0?dQual:dInq;set('mConv',convBase>0?pct(dRes/convBase*100):'—');
+  var dQual=n('dQual'),dInq=n('dInq'),dBefore=n('dBefore'),dResBirth=n('dResBirth'),dDays=n('dDays');
+  set('mBefore',dBefore);set('mInq',dInq);set('mRes',placed);
+  var rbDen=placed>0?placed:sold;set('mResBirth',rbDen>0?pct(dResBirth/rbDen*100):'0%');
+  var convBase=dQual>0?dQual:dInq;set('mConv',convBase>0?pct(placed/convBase*100):'—');
   set('mDaysR',dDays>0?dDays+' days':'—');
   set('mHours',Math.round(hours));set('mPerHour',hours>0?fmt(perHour):'—');
   var lr=document.getElementById('mLaborRow');if(rate>0&&hours>0){lr.style.display='flex';set('mEcon',fmt(econ),econ<0);}else{lr.style.display='none';}
@@ -518,12 +530,20 @@ function compute(){
   var nm=(document.getElementById('litterName').value||'').trim();var br=(document.getElementById('breed').value||'').trim();
   set('snapTitle',nm||'Litter Performance');set('snapMeta',[br,sold?sold+' sold':'',born?born+' born':''].filter(Boolean).join(' · '));
 
-  renderInsights({revenue:revenue,direct:direct,alloc:alloc,profit:profit,margin:margin,marginPct:marginPct,sold:sold,born:born,surv:surv,
+  renderInsights({revenue:revenue,direct:direct,alloc:alloc,profit:profit,margin:margin,marginPct:marginPct,sold:sold,born:born,surv:surv,placed:placed,
     breakeven:breakeven,revPer:revPer,profPer:profPer,pLow:n('pLow'),pAdv:n('pAdv'),pDisc:full?n('pDisc'):0,
-    dBefore:dBefore,dInq:dInq,dQual:dQual,dRes:dRes,dDays:dDays,hours:hours,perHour:perHour,
+    dBefore:dBefore,dInq:dInq,dQual:dQual,dRes:placed,dDays:dDays,hours:hours,perHour:perHour,
     qMore:segState.qMore,qPressure:segState.qPressure});
 
   var one=(document.getElementById('rOne').value||'').trim();set('snapPriority',one||'—');
+
+  window.SNAP={
+    litter:nm, breed:br, guess:guess,
+    metrics:{revenue:revenue,direct:direct,alloc:alloc,profit:profit,marginPct:marginPct,profPer:profPer,revPer:revPer,
+      breakeven:breakeven,allIn:allIn,sold:sold,born:born,surv:surv,placed:placed,hours:hours,perHour:perHour,survRate:survRate,litter:nm},
+    demand:{before:dBefore,inq:dInq,qual:dQual,placed:placed,resBirthPct:rbDen>0?dResBirth/rbDen*100:0,days:dDays},
+    flags:window.SNAP_FLAGS||[], priority:one
+  };
 }
 function set(id,v,neg){var el=document.getElementById(id);if(!el)return;el.textContent=v;if(neg!==undefined)el.classList.toggle('neg',!!neg);}
 
@@ -531,30 +551,33 @@ function set(id,v,neg){var el=document.getElementById(id);if(!el)return;el.textC
 function renderInsights(d){
   var out=[];
   // profit reality
-  if(d.sold>0&&d.profit<=0) out.push(['warn','⚠','<b>This litter did not turn a profit</b> after the costs you entered. That is not failure — it is the exact thing to fix. Start with your biggest cost category and your pricing.']);
-  else if(d.sold>0&&d.marginPct>0&&d.marginPct<25) out.push(['warn','↓','Your margin is <b>'+pct(d.marginPct)+'</b>. Healthy programs keep more of each sale — this usually points to pricing or cost, not effort.']);
+  if(d.sold>0&&d.profit<=0) out.push(['warn','⚠','<b>This litter did not turn a profit</b> after the costs you entered. That is not failure — it is the exact thing to fix. Start with your biggest cost category and your pricing.','noprofit']);
+  else if(d.sold>0&&d.marginPct>0&&d.marginPct<25) out.push(['warn','↓','Your margin is <b>'+pct(d.marginPct)+'</b>. Healthy programs keep more of each sale — this usually points to pricing or cost, not effort.','lowmargin']);
   else if(d.marginPct>=55) out.push(['good','✓','Strong margin at <b>'+pct(d.marginPct)+'</b>. The lever now is doing it <b>repeatably</b> — same result on the next litter, not by luck.']);
   // pricing left on table
-  if(d.qMore==='Yes'&&(d.pDisc>0||(d.pAdv>0&&d.revPer>0&&d.revPer<d.pAdv))) out.push(['warn','$','<b>You left money on the table.</b> You had more qualified families than puppies, yet still sold below your advertised price. That is margin you can keep next time — a positioning fix, not a discount.']);
+  if(d.qMore==='Yes'&&(d.pDisc>0||(d.pAdv>0&&d.revPer>0&&d.revPer<d.pAdv))) out.push(['warn','$','<b>You left money on the table.</b> You had more qualified families than puppies, yet still sold below your advertised price. That is margin you can keep next time — a positioning fix, not a discount.','pricing']);
   // break-even below
-  if(d.sold>0&&d.pLow>0&&d.breakeven>0&&d.pLow<d.breakeven) out.push(['warn','◎','Your break-even was <b>'+fmt(d.breakeven)+'</b> per puppy, but your lowest sold for <b>'+fmt(d.pLow)+'</b> — <b>below cost</b>. Know your floor before you discount.']);
+  if(d.sold>0&&d.pLow>0&&d.breakeven>0&&d.pLow<d.breakeven) out.push(['warn','◎','Your break-even was <b>'+fmt(d.breakeven)+'</b> per puppy, but your lowest sold for <b>'+fmt(d.pLow)+'</b> — <b>below cost</b>. Know your floor before you discount.','pricing']);
   else if(d.sold>0&&d.breakeven>0) out.push(['info','◎','Every puppy needed to clear <b>'+fmt(d.breakeven)+'</b> just to break even. Price from there, not from what others charge.']);
   // demand vs conversion
   if(d.sold>0){
-    if(d.dBefore===0&&d.dInq>0&&d.dInq<d.sold*3) out.push(['warn','↘','<b>Looks like a demand problem.</b> Few qualified families in the pipeline before the litter — you were selling from behind. The fix is building demand <b>before</b> the next litter is born.']);
-    else if(d.dInq>=d.sold*4&&d.dRes>0&&d.dRes<d.dInq*0.25) out.push(['warn','⇄','<b>Looks like a conversion problem.</b> Plenty of interest, but it is not turning into reservations. That is a sales-process and follow-up gap, not a traffic gap.']);
-    else if(d.dBefore>=d.sold) out.push(['good','✓','You had qualified families waiting <b>before</b> birth — that is exactly the position a strong program wants to be in.']);
+    if(d.dBefore===0&&d.dInq>0&&d.dInq<d.sold*3) out.push(['warn','↘','<b>Looks like a demand problem.</b> Few qualified families in the pipeline before the litter — you were selling from behind. The fix is building demand <b>before</b> the next litter is born.','demand']);
+    else if(d.dInq>=d.sold*4&&d.dRes>0&&d.dRes<d.dInq*0.25) out.push(['warn','⇄','<b>Looks like a conversion problem.</b> Plenty of interest, but it is not turning into reservations. That is a sales-process and follow-up gap, not a traffic gap.','conversion']);
+    else if(d.dBefore>=d.sold) out.push(['good','✓','You had qualified families waiting <b>before</b> birth — exactly the position a strong program wants to be in.']);
   }
+  // placed vs paid (cash still to collect)
+  if(d.placed>d.sold) out.push(['info','◷','<b>'+(d.placed-d.sold)+'</b> puppies are placed (deposit) but not yet paid off — that is cash still to collect. Track it so it does not slip.']);
   // time reality
   if(d.hours>0&&d.perHour>0&&d.perHour<25) out.push(['warn','⏱','At <b>'+Math.round(d.hours)+' hours</b>, this litter paid you about <b>'+fmt(d.perHour)+'/hour</b>. Worth knowing before you scale — the goal is more profit per hour, not just more litters.']);
   else if(d.hours>0&&d.perHour>=75) out.push(['good','⏱','About <b>'+fmt(d.perHour)+'/owner-hour</b> — your time is well spent here.']);
-  // survival cost drag
-  if(d.born>0&&d.surv>0&&d.surv<d.born) out.push(['info','◆','You raised <b>'+d.born+'</b> but placed <b>'+d.surv+'</b>. Every puppy carries cost whether or not it sells, so preparation on the breeding side protects the whole litter’s economics.']);
+  // survival cost drag (born vs survived — not placed)
+  if(d.born>0&&d.surv>0&&d.surv<d.born) out.push(['info','◆','Of <b>'+d.born+'</b> born, <b>'+d.surv+'</b> survived. Every puppy you raise carries cost whether or not it makes it to placement, so breeding-side preparation protects the whole litter’s economics.','loss']);
   // systems gap
   var noAreas=[];SYS.forEach(function(it){if(segState['s_'+slug(it)]==='No')noAreas.push(it);});
   if(noAreas.length>=2) out.push(['info','▤','You went in <b>without documented systems</b> for '+noAreas.slice(0,3).join(', ').toLowerCase()+(noAreas.length>3?', and more':'')+'. Documented systems are the cheapest upgrade you can make before the next litter.']);
 
   if(!out.length) out.push(['info','◷','Fill in a few more numbers — revenue, costs, and your demand funnel — and your snapshot will tell you whether this was a pricing, demand, or conversion story.']);
+  window.SNAP_FLAGS=out.map(function(o){return o[3];}).filter(function(x){return !!x;}).filter(function(v,i,a){return a.indexOf(v)===i;});
   document.getElementById('insights').innerHTML=out.slice(0,6).map(function(i){return '<div class="insight '+i[0]+'"><span class="ic">'+i[1]+'</span><span class="it">'+i[2]+'</span></div>';}).join('');
 }
 
@@ -576,6 +599,23 @@ function restore(){try{var o=JSON.parse(localStorage.getItem('bw_litter')||'null
 }catch(e){}}
 function resetAll(){if(!confirm('Clear this litter and start fresh?'))return;try{localStorage.removeItem('bw_litter');}catch(e){}location.reload();}
 
+function saveProfile(){
+  var msg=document.getElementById('saveMsg');
+  var email=(document.getElementById('saveEmail').value||'').trim().toLowerCase();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){msg.style.color='#ff6a5d';msg.textContent='Please enter a valid email.';return;}
+  compute();
+  var code='';try{code=sessionStorage.getItem('ls_code')||'';}catch(e){}
+  var s=window.SNAP||{};
+  var payload={code:code,member_email:email,member_name:(document.getElementById('saveName').value||'').trim(),
+    litter:s.litter||'',breed:s.breed||'',metrics:s.metrics||{},demand:s.demand||{},flags:s.flags||[],guess:s.guess||0,priority:s.priority||''};
+  var btn=document.getElementById('saveBtn');btn.disabled=true;btn.textContent='Saving…';msg.style.color='var(--muted)';msg.textContent='';
+  fetch('https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/litter-snapshot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .then(function(r){return r.json();}).then(function(d){btn.disabled=false;btn.textContent='Save to my profile →';
+      if(d&&d.ok){msg.style.color='var(--green)';msg.textContent='Saved ✓ Your coach can now see this snapshot.';}
+      else{msg.style.color='#ff6a5d';msg.textContent=(d&&d.error)||'Could not save — try again.';}})
+    .catch(function(){btn.disabled=false;btn.textContent='Save to my profile →';msg.style.color='#ff6a5d';msg.textContent='Network error — try again.';});
+}
+
 document.addEventListener('input',function(e){if(e.target.closest('#f')){compute();save();}});
 
 /* ---------- gate ---------- */
@@ -584,7 +624,7 @@ document.addEventListener('input',function(e){if(e.target.closest('#f')){compute
           '25e7b557235afa23f4d1ae0ac108bfdfefa7ea58ea50bd986321cbd0034c52dc']; /* ACCELERATOR2026 */
   function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
   function reveal(){var g=document.getElementById('gate');if(g)g.remove();document.getElementById('app').style.display='block';document.title='Litter Snapshot · BreedWise';restore();compute();}
-  function tryUnlock(){var v=(document.getElementById('pw').value||'').trim();h(v).then(function(hex){if(OK.indexOf(hex)>=0){try{sessionStorage.setItem('ls_ok','1');}catch(e){}reveal();}else{document.getElementById('gate-err').textContent='Incorrect code. Try again.';document.getElementById('pw').select();}});}
+  function tryUnlock(){var v=(document.getElementById('pw').value||'').trim();h(v).then(function(hex){if(OK.indexOf(hex)>=0){try{sessionStorage.setItem('ls_ok','1');sessionStorage.setItem('ls_code',v);}catch(e){}reveal();}else{document.getElementById('gate-err').textContent='Incorrect code. Try again.';document.getElementById('pw').select();}});}
   document.getElementById('unlock').addEventListener('click',tryUnlock);
   document.getElementById('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
   try{if(sessionStorage.getItem('ls_ok')==='1'){reveal();}else{document.getElementById('pw').focus();}}catch(e){document.getElementById('pw').focus();}
