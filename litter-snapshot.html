@@ -605,6 +605,7 @@ function saveProfile(){
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){msg.style.color='#ff6a5d';msg.textContent='Please enter a valid email.';return;}
   compute();
   var code='';try{code=sessionStorage.getItem('ls_code')||'';}catch(e){}
+  if(!code){code=(prompt('Confirm your BreedWise access code to save this to your profile:')||'').trim();if(!code){msg.style.color='var(--muted)';msg.textContent='';return;}try{sessionStorage.setItem('ls_code',code);}catch(e){}}
   var s=window.SNAP||{};
   var payload={code:code,member_email:email,member_name:(document.getElementById('saveName').value||'').trim(),
     litter:s.litter||'',breed:s.breed||'',metrics:s.metrics||{},demand:s.demand||{},flags:s.flags||[],guess:s.guess||0,priority:s.priority||''};
