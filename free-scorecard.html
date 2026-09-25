@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The 2-Minute Breeder Scorecard | BreedWise</title>
+<meta name="description" content="Find your breeding program's biggest gap in 2 minutes — free. See where you stand on demand, pricing, profit, and breeding preparation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#0a0a0a; --panel:#151519; --panel2:#1b1b21; --line:rgba(245,242,234,.10);
+    --ink:#f5f2ea; --mid:rgba(245,242,234,.74); --muted:rgba(245,242,234,.48);
+    --gold:#cdae72; --gold2:#e2cb86; --gold-soft:rgba(205,174,114,.12); --gold-line:rgba(205,174,114,.30);
+    --grad:linear-gradient(135deg,#e2cb86,#c3a35c); --green:#6dbf90;
+    --disp:'Anton',Impact,sans-serif; --body:'Poppins',-apple-system,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(120% 50% at 50% -6%,rgba(205,174,114,.10),transparent 60%);min-height:100vh}
+  .wrap{max-width:560px;margin:0 auto;padding:0 20px}
+  h1,h2,.disp{font-family:var(--disp);font-weight:400;letter-spacing:.01em;text-transform:uppercase;line-height:1.04}
+  .u{color:var(--gold)}
+
+  header{padding:42px 0 6px;text-align:center}
+  .brand{font-family:var(--disp);font-size:20px;letter-spacing:2px}.brand b{color:var(--gold)}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-top:24px}
+  header h1{font-size:clamp(28px,7vw,40px);margin-top:10px}
+  .lead{color:var(--mid);font-weight:300;max-width:30em;margin:14px auto 0;font-size:15.5px}
+  .start{margin-top:26px;background:var(--grad);color:#1a1206;font-family:var(--body);font-weight:700;font-size:16px;border:0;border-radius:44px;padding:16px 34px;cursor:pointer;box-shadow:0 16px 40px -14px rgba(205,174,114,.6)}
+  .startnote{font-size:12.5px;color:var(--muted);margin-top:12px}
+
+  /* progress */
+  .prog{height:4px;background:var(--panel2);border-radius:4px;overflow:hidden;margin:30px 0 20px}
+  .prog i{display:block;height:100%;background:var(--grad);width:0;transition:width .3s}
+  .qcount{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:14px}
+
+  /* question */
+  #quiz{display:none}
+  .q h2{font-size:clamp(20px,5vw,27px);text-transform:none;font-family:var(--body);font-weight:600;line-height:1.3;text-align:center;margin-bottom:20px}
+  .opts{display:grid;gap:11px}
+  .opt{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:17px 18px;cursor:pointer;font-size:15.5px;color:var(--ink);transition:.15s;text-align:left;display:flex;align-items:center;gap:13px}
+  .opt:hover{border-color:var(--gold-line)}
+  .opt:active{transform:scale(.99)}
+  .opt .dot{flex:0 0 auto;width:22px;height:22px;border-radius:50%;border:2px solid var(--gold-line)}
+  .opt.sel{border-color:var(--gold);background:var(--gold-soft)}
+  .opt.sel .dot{background:var(--gold);border-color:var(--gold)}
+  .back{display:block;margin:20px auto 0;background:none;border:0;color:var(--muted);font-family:var(--body);font-size:13px;cursor:pointer}
+
+  /* result */
+  #result{display:none;text-align:center}
+  .rlabel{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .score{font-family:var(--disp);font-size:clamp(56px,18vw,88px);color:var(--gold);line-height:1;margin-top:8px}
+  .score small{font-size:.34em;color:var(--muted)}
+  .band{font-family:var(--disp);font-size:clamp(20px,5vw,28px);margin-top:6px}
+  .gapbox{background:var(--panel);border:1px solid var(--gold-line);border-radius:16px;padding:22px 20px;margin:24px 0 0;text-align:left}
+  .gapbox .gl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .gapbox .gt{font-family:var(--disp);font-size:22px;margin:7px 0 8px}
+  .gapbox .gd{color:var(--mid);font-weight:300;font-size:14.5px;line-height:1.55}
+  .engine-note{font-size:13px;color:var(--muted);margin-top:14px}
+
+  .capture{background:linear-gradient(180deg,var(--panel),#101015);border:1px solid var(--gold-line);border-radius:18px;padding:24px 22px;margin-top:22px;text-align:left}
+  .capture h3{font-family:var(--body);font-weight:700;font-size:18px;text-transform:none;text-align:center}
+  .capture p{color:var(--mid);font-weight:300;font-size:14px;text-align:center;margin:8px 0 16px}
+  .capture input{width:100%;font-family:var(--body);font-size:16px;color:var(--ink);background:#0d0d0d;border:1px solid var(--line);border-radius:11px;padding:14px 15px;outline:none;margin-bottom:10px}
+  .capture input:focus{border-color:var(--gold-line);box-shadow:0 0 0 3px var(--gold-soft)}
+  .capture button{width:100%;background:var(--grad);color:#1a1206;font-family:var(--body);font-weight:700;font-size:16px;border:0;border-radius:11px;padding:15px;cursor:pointer}
+  .capture .fine{font-size:11.5px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.5}
+  #capMsg{font-size:13px;text-align:center;margin-top:10px;min-height:16px}
+
+  /* TPB CTA (post-capture) */
+  #tpb{display:none;text-align:center;margin-top:8px}
+  #tpb .ok{color:var(--green);font-weight:600;font-size:15px;margin-bottom:18px}
+  .tpbcard{background:linear-gradient(180deg,var(--panel),#101015);border:1px solid var(--gold-line);border-radius:18px;padding:26px 22px}
+  .tpbcard .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .tpbcard h3{font-size:clamp(22px,5.5vw,30px);margin-top:10px}
+  .tpbcard p{color:var(--mid);font-weight:300;font-size:14.5px;margin:12px 0 0;line-height:1.6}
+  .tpbcard ul{list-style:none;display:grid;gap:9px;margin:16px 0 0;text-align:left}
+  .tpbcard li{position:relative;padding-left:26px;font-size:14px;color:var(--mid);font-weight:300}
+  .tpbcard li::before{content:"✓";position:absolute;left:0;color:var(--gold);font-weight:700}
+  .tpbcta{display:inline-block;margin-top:20px;background:var(--grad);color:#1a1206;font-family:var(--body);font-weight:700;font-size:16px;text-decoration:none;border-radius:44px;padding:15px 30px}
+  .tpbprice{font-size:12.5px;color:var(--muted);margin-top:12px}
+
+  footer{margin:44px 0 40px;text-align:center;color:var(--muted);font-size:11px;line-height:1.7}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header id="intro">
+      <div class="brand">BREED<b>WISE</b></div>
+      <div class="eyebrow">Free · 2 Minutes · No Login</div>
+      <h1>What's the <span class="u">One Thing</span><br>Holding Your Program Back?</h1>
+      <p class="lead">Seven quick questions across your breeding and business engines. You'll get your score and your single biggest opportunity — instantly.</p>
+      <button class="start" onclick="start()">Start the Scorecard →</button>
+      <div class="startnote">No email needed to see your result.</div>
+    </header>
+
+    <div id="quiz">
+      <div class="prog"><i id="progBar"></i></div>
+      <div class="qcount" id="qcount"></div>
+      <div class="q" id="qbox"></div>
+      <button class="back" id="backBtn" onclick="back()" style="display:none">← Back</button>
+    </div>
+
+    <div id="result">
+      <div class="rlabel">Your Breeding Program Score</div>
+      <div class="score"><span id="scoreNum">0</span><small>/14</small></div>
+      <div class="band" id="bandTxt"></div>
+      <div class="gapbox">
+        <div class="gl">Your biggest opportunity right now</div>
+        <div class="gt" id="gapTitle"></div>
+        <div class="gd" id="gapDesc"></div>
+        <div class="engine-note" id="engineNote"></div>
+      </div>
+
+      <div class="capture" id="capture">
+        <h3>Want your full breakdown + the free tools to fix it?</h3>
+        <p>I'll send your complete engine-by-engine breakdown and point you to the exact tools to close this gap.</p>
+        <input type="email" id="email" placeholder="Your email" autocomplete="email" inputmode="email">
+        <input type="text" id="name" placeholder="Your name (optional)" autocomplete="name">
+        <button id="capBtn" onclick="submitLead()">Send my breakdown →</button>
+        <div id="capMsg"></div>
+        <div class="fine">We'll email your results and occasional breeder tips. Unsubscribe anytime.</div>
+      </div>
+
+      <div id="tpb">
+        <div class="ok" id="okLine">✓ Check your inbox — your breakdown is on the way.</div>
+        <div class="tpbcard">
+          <div class="k">Your next step</div>
+          <h3>Stop Guessing. Start Measuring.</h3>
+          <p>This scorecard showed you <b>one</b> gap. Inside <b>The Profitable Breeder</b> you get the full picture — and the tools and team to actually fix it:</p>
+          <ul>
+            <li>The full 10-part Program Scorecard</li>
+            <li>The Litter Snapshot tool — know what every litter really makes</li>
+            <li>Learn directly from Dr. Fontaine &amp; the BreedWise vets</li>
+            <li>A community of serious breeders + our team</li>
+          </ul>
+          <a class="tpbcta" id="tpbCta" href="https://www.skool.com/theprofitablebreeder/about" target="_blank" rel="noopener">Start The Profitable Breeder →</a>
+          <div class="tpbprice">$97/month · cancel anytime</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>© <span id="yr"></span> BreedWise. This is educational, not veterinary or financial advice.</footer>
+  </div>
+
+<script>
+  var TOKEN="bwlm_95c65f47e71390742651";
+  var ENDPOINT="https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/lead-capture";
+  var qs=new URLSearchParams(location.search);
+  var ANGLE=(qs.get('a')||qs.get('angle')||'').slice(0,40);
+  var SOURCE=(qs.get('src')||qs.get('source')||qs.get('utm_content')||'').slice(0,40);
+  document.getElementById('yr').textContent=new Date().getFullYear();
+
+  var Q=[
+    {area:"Demand",engine:"business",q:"When your next litter is ready, how many qualified families are usually waiting?",
+      a:["None yet — I start from scratch each time","A few interested people","A real waitlist, ready to go"]},
+    {area:"Buyer Conversion",engine:"business",q:"When someone asks your price, what usually happens?",
+      a:["They ask and disappear","Some commit, some ghost","They're basically pre-sold before they ask"]},
+    {area:"Pricing",engine:"business",q:"How do you set your puppy price?",
+      a:["I match what others charge","Mostly gut feeling","My program's value and my real costs"]},
+    {area:"Profitability",engine:"business",q:"After a litter, do you know what you actually kept?",
+      a:["No real idea","A rough guess","I track it to the dollar"]},
+    {area:"Breeding Preparation",engine:"breeding",q:"Going into a breeding, how confident are you in timing and prep?",
+      a:["I'm mostly winging it","Okay, but I second-guess a lot","Documented, and I know what to watch"]},
+    {area:"Whelping & Neonatal",engine:"breeding",q:"Going into whelping, how prepared do you feel?",
+      a:["Winging it and hoping","Okay but anxious","A plan, and I know when to call the vet"]},
+    {area:"Trusted Answers",engine:"breeding",q:"When you hit a breeding question, where do your answers come from?",
+      a:["Facebook groups & Google","A mix of sources","Experts I actually trust"]}
+  ];
+  var GAP={
+    "Demand":"You're selling from behind — starting each litter without families waiting. Building demand <b>before</b> the litter is the single biggest change to how a program feels.",
+    "Buyer Conversion":"You have interest, but it leaks. A repeatable way to qualify and follow up turns 'just looking' into committed homes.",
+    "Pricing":"Your price isn't anchored to your value — so you compete on number instead of program. This is usually the fastest margin win there is.",
+    "Profitability":"You can't improve what you don't measure. Knowing what each litter truly makes changes every decision after it.",
+    "Breeding Preparation":"Going in under-prepared puts the whole litter at risk. More preparation and clearer timing protects everything downstream.",
+    "Whelping & Neonatal":"The first days decide a lot. A real plan — and knowing when to escalate to your vet — protects the litter and your peace of mind.",
+    "Trusted Answers":"Ten breeders, ten answers. Getting guidance you can actually trust ends the second-guessing that slows everything down."
+  };
+  var BANDS=[[0,5,"Early — Big Upside"],[6,9,"Building — Clear Gaps"],[10,12,"Strong — Fine-Tuning"],[13,14,"Dialed In"]];
+
+  var idx=0, ans=new Array(Q.length).fill(null);
+  function start(){document.getElementById('intro').style.display='none';document.getElementById('quiz').style.display='block';idx=0;render();}
+  function render(){
+    var q=Q[idx];
+    document.getElementById('progBar').style.width=((idx)/Q.length*100)+'%';
+    document.getElementById('qcount').textContent='Question '+(idx+1)+' of '+Q.length;
+    document.getElementById('backBtn').style.display=idx>0?'block':'none';
+    var h='<h2>'+q.q+'</h2><div class="opts">';
+    q.a.forEach(function(opt,i){h+='<div class="opt'+(ans[idx]===i?' sel':'')+'" onclick="pick('+i+')"><span class="dot"></span><span>'+opt+'</span></div>';});
+    h+='</div>';
+    document.getElementById('qbox').innerHTML=h;
+    window.scrollTo(0,0);
+  }
+  function back(){if(idx>0){idx--;render();}}
+  function pick(i){ans[idx]=i;render();
+    setTimeout(function(){ if(idx<Q.length-1){idx++;render();} else {finish();} },220);}
+  function finish(){
+    document.getElementById('progBar').style.width='100%';
+    var total=ans.reduce(function(a,b){return a+(b||0);},0);
+    // biggest gap = lowest-scoring area (first in Q order on ties)
+    var gapArea=Q[0].area, low=99;
+    Q.forEach(function(q,i){var s=ans[i]||0; if(s<low){low=s;gapArea=q.area;}});
+    // engine lean (normalized)
+    var bMax=0,bScore=0,rMax=0,rScore=0;
+    Q.forEach(function(q,i){var s=ans[i]||0; if(q.engine==='business'){bMax+=2;bScore+=s;} else {rMax+=2;rScore+=s;}});
+    var bPct=bMax?bScore/bMax:1, rPct=rMax?rScore/rMax:1;
+    var engine = bPct<rPct ? 'business' : 'breeding';
+    var band='';BANDS.forEach(function(x){if(total>=x[0]&&total<=x[1])band=x[2];});
+
+    document.getElementById('quiz').style.display='none';
+    document.getElementById('result').style.display='block';
+    document.getElementById('scoreNum').textContent=total;
+    document.getElementById('bandTxt').textContent=band;
+    document.getElementById('gapTitle').textContent=gapArea;
+    document.getElementById('gapDesc').innerHTML=GAP[gapArea]||'';
+    document.getElementById('engineNote').innerHTML='Your <b style="color:var(--gold)">'+(engine==='business'?'Business':'Breeding')+' Engine</b> is where you have the most room to grow right now.';
+    window.RESULT={score:total,maxScore:14,gap:gapArea,engine:engine,answers:ans.map(function(a,i){return Q[i].area+':'+(a||0);}).join(', ')};
+    window.scrollTo(0,0);
+  }
+  function submitLead(){
+    var msg=document.getElementById('capMsg');
+    var email=(document.getElementById('email').value||'').trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){msg.style.color='#ff6a5d';msg.textContent='Please enter a valid email.';return;}
+    var r=window.RESULT||{};
+    var payload={token:TOKEN,email:email,name:(document.getElementById('name').value||'').trim(),
+      score:r.score,maxScore:r.maxScore,gap:r.gap,engine:r.engine,answers:r.answers,source:SOURCE,angle:ANGLE};
+    var btn=document.getElementById('capBtn');btn.disabled=true;btn.textContent='Sending…';msg.textContent='';
+    fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},keepalive:true,body:JSON.stringify(payload)})
+      .then(function(x){return x.json();}).then(function(d){
+        if(d&&d.ok){document.getElementById('capture').style.display='none';document.getElementById('tpb').style.display='block';window.scrollTo(0,document.getElementById('tpb').offsetTop-40);}
+        else{btn.disabled=false;btn.textContent='Send my breakdown →';msg.style.color='#ff6a5d';msg.textContent=(d&&d.error)||'Something went wrong — try again.';}
+      }).catch(function(){btn.disabled=false;btn.textContent='Send my breakdown →';msg.style.color='#ff6a5d';msg.textContent='Network error — try again.';});
+  }
+</script>
+</body>
+</html>
