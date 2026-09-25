@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#0a0a0a; --panel:#141419; --panel2:#1a1a20; --line:rgba(245,242,234,.10);
+    --ink:#f5f2ea; --mid:rgba(245,242,234,.72); --muted:rgba(245,242,234,.46);
+    --gold:#cdae72; --gold2:#e2cb86; --gold-soft:rgba(205,174,114,.12); --gold-line:rgba(205,174,114,.30);
+    --grad:linear-gradient(135deg,#e2cb86,#c3a35c);
+    --green:#6dbf90; --green-soft:rgba(109,191,144,.12); --blue:#7aa7d8; --red:#e0807e; --red-soft:rgba(224,128,126,.1);
+    --disp:'Anton',Impact,sans-serif; --body:'Poppins',-apple-system,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(120% 50% at 50% -6%,rgba(205,174,114,.08),transparent 60%)}
+  .wrap{max-width:820px;margin:0 auto;padding:0 18px}
+  h1,h2,.disp{font-family:var(--disp);font-weight:400;letter-spacing:.01em;text-transform:uppercase;line-height:1.04}
+  a{color:var(--gold2)}
+
+  /* GATE */
+  #gate{position:fixed;inset:0;z-index:9999;background:#0a0a0a;display:flex;align-items:center;justify-content:center;padding:24px}
+  .gate-card{width:100%;max-width:400px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:34px 30px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  .gate-brand{font-family:var(--disp);font-size:24px;letter-spacing:2px}.gate-brand b{color:var(--gold)}
+  .gate-title{font-family:var(--disp);font-size:21px;color:var(--gold2);margin-top:16px}
+  .gate-sub{color:var(--muted);font-size:13px;margin-top:8px}
+  #pw{width:100%;margin-top:22px;background:#0d0d0d;border:1px solid var(--line);border-radius:10px;color:var(--ink);font-family:var(--body);font-size:16px;padding:13px 15px;outline:none;text-align:center}
+  #pw:focus{border-color:var(--gold)}
+  #unlock{width:100%;margin-top:12px;background:var(--grad);color:#0a0a0a;font-family:var(--body);font-weight:700;font-size:15px;letter-spacing:.04em;text-transform:uppercase;border:0;border-radius:10px;padding:14px;cursor:pointer}
+  #gate-err{color:#ff6a5d;font-size:13px;margin-top:12px;min-height:16px}
+  #app{display:none}
+
+  header{padding:40px 0 6px;text-align:center}
+  .brand{font-family:var(--disp);font-size:20px;letter-spacing:2px}.brand b{color:var(--gold)}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-top:22px}
+  header h1{font-size:clamp(28px,5.5vw,44px);margin-top:10px}
+  header h1 .u{color:var(--gold)}
+  .lead{color:var(--mid);font-weight:300;max-width:36em;margin:14px auto 0;font-size:15px}
+
+  /* mode toggle */
+  .mode{display:inline-flex;background:var(--panel);border:1px solid var(--line);border-radius:40px;padding:4px;margin:22px auto 0;gap:2px}
+  .mode button{font-family:var(--body);font-weight:600;font-size:13px;color:var(--mid);background:none;border:0;border-radius:30px;padding:9px 18px;cursor:pointer;transition:.15s}
+  .mode button.on{background:var(--grad);color:#1a1206}
+  .mode-note{font-size:12px;color:var(--muted);margin-top:10px}
+
+  /* sticky live headline */
+  .hud{position:sticky;top:0;z-index:50;background:rgba(10,10,10,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);margin-top:26px}
+  .hud-in{max-width:820px;margin:0 auto;padding:12px 18px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .hud .c{text-align:center}
+  .hud .c .v{font-family:var(--disp);font-size:clamp(16px,3.4vw,23px);color:var(--gold);line-height:1}
+  .hud .c .v.neg{color:var(--red)}
+  .hud .c .l{font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+  @media(max-width:560px){.hud .c .l{font-size:8.5px}}
+
+  section{margin:34px 0 0}
+  .sh{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:11px;margin-bottom:16px}
+  .sh .n{font-family:var(--disp);font-size:14px;color:var(--gold)}
+  .sh h2{font-size:clamp(18px,3vw,24px)}
+  .sh .sub{font-size:12.5px;color:var(--muted);font-weight:300;margin-left:auto;text-align:right}
+  .desc{color:var(--muted);font-size:13px;font-weight:300;margin:-6px 0 14px}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .grid.g3{grid-template-columns:1fr 1fr 1fr}
+  @media(max-width:560px){.grid,.grid.g3{grid-template-columns:1fr 1fr}}
+  .fld{display:flex;flex-direction:column;gap:5px}
+  .fld.full{grid-column:1/-1}
+  .fld label{font-size:11.5px;color:var(--mid);font-weight:500}
+  .fld .hint{font-size:11px;color:var(--muted);font-weight:300}
+  input,select,textarea{width:100%;font-family:var(--body);font-size:14.5px;color:var(--ink);background:#0d0d0d;border:1px solid var(--line);border-radius:9px;padding:10px 12px;outline:none;transition:.15s}
+  input:focus,select:focus,textarea:focus{border-color:var(--gold-line);box-shadow:0 0 0 3px var(--gold-soft)}
+  input::placeholder,textarea::placeholder{color:rgba(245,242,234,.28)}
+  .money{position:relative}
+  .money::before{content:"$";position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none}
+  .money input{padding-left:24px}
+  textarea{resize:vertical;min-height:64px;line-height:1.5}
+  select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23cdae72' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:30px}
+
+  .cat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px}
+  .cat-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .cat-h .t{font-weight:600;font-size:14px;color:var(--ink)}
+  .cat-h .sub{font-family:var(--disp);color:var(--gold);font-size:16px}
+  .cat-items{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+  @media(max-width:560px){.cat-items{grid-template-columns:1fr}}
+  .li{display:flex;flex-direction:column;gap:4px}
+  .li label{font-size:11px;color:var(--muted)}
+
+  .quick-only .full,.full-only .quick{display:none}
+  body.full .quick-only .full{display:block}
+
+  .puppy-row{display:grid;grid-template-columns:auto 1fr 1fr 1fr auto;gap:8px;align-items:end;margin-bottom:8px}
+  .puppy-row .idx{font-family:var(--disp);color:var(--gold);font-size:14px;padding-bottom:10px;width:22px}
+  .puppy-row .x{background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;width:34px;height:38px;cursor:pointer;font-size:16px}
+  .puppy-row .x:hover{border-color:var(--red);color:var(--red)}
+  .puppy-head{display:grid;grid-template-columns:auto 1fr 1fr 1fr auto;gap:8px;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .puppy-head span:first-child{width:22px}
+  .addbtn{font-family:var(--body);font-weight:600;font-size:13px;color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:9px;padding:9px 14px;cursor:pointer;margin-top:4px}
+  @media(max-width:560px){.puppy-row,.puppy-head{grid-template-columns:auto 1fr 1fr auto}.puppy-row .disc,.puppy-head .disc{display:none}}
+
+  .seg{display:flex;gap:6px;flex-wrap:wrap}
+  .seg button{font-family:var(--body);font-size:12.5px;font-weight:500;color:var(--mid);background:#0d0d0d;border:1px solid var(--line);border-radius:8px;padding:8px 13px;cursor:pointer}
+  .seg button.on{background:var(--gold-soft);border-color:var(--gold-line);color:var(--gold2);font-weight:600}
+  .sysrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .sysrow:last-child{border-bottom:0}
+  .sysrow .sl{font-size:13.5px;color:var(--mid)}
+
+  /* SNAPSHOT */
+  #snapshot{margin-top:40px;background:linear-gradient(180deg,var(--panel),#101015);border:1px solid var(--gold-line);border-radius:20px;padding:26px 24px;box-shadow:0 40px 90px -50px #000}
+  .snap-h{text-align:center;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:20px}
+  .snap-h .k{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .snap-h h2{font-size:26px;margin-top:8px}
+  .snap-h .m{color:var(--muted);font-size:13px;margin-top:6px}
+  .reveal{background:var(--panel2);border:1px solid var(--gold-line);border-radius:14px;padding:18px;text-align:center;margin-bottom:20px}
+  .reveal .rt{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .reveal .rn{font-family:var(--disp);font-size:clamp(28px,7vw,44px);color:var(--gold);margin-top:6px}
+  .reveal .rn.neg{color:var(--red)}
+  .reveal .rd{font-size:13.5px;color:var(--mid);margin-top:10px;font-weight:300}
+  .reveal .rd b{color:var(--ink)}
+
+  .rows{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:8px}
+  .rr{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--panel);padding:12px 16px}
+  .rr .rl{font-size:13.5px;color:var(--mid)}
+  .rr .rv{font-family:var(--disp);font-size:18px;color:var(--ink)}
+  .rr.em{background:var(--panel2)}.rr.em .rl{color:var(--ink);font-weight:600}.rr.em .rv{color:var(--gold);font-size:22px}
+  .rr .rv.neg{color:var(--red)}
+  .snap-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:560px){.snap-cols{grid-template-columns:1fr}}
+  .mini{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .mini .mh{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+  .mini .mr{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;color:var(--mid)}
+  .mini .mr b{color:var(--ink);font-weight:600}
+
+  .dx{margin-top:20px}
+  .dx-h{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+  .insight{display:flex;gap:12px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:9px}
+  .insight .ic{flex:0 0 auto;width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px}
+  .insight.warn .ic{background:var(--red-soft);border:1px solid rgba(224,128,126,.3)}
+  .insight.good .ic{background:var(--green-soft);border:1px solid rgba(109,191,144,.3)}
+  .insight.info .ic{background:var(--gold-soft);border:1px solid var(--gold-line)}
+  .insight .it{font-size:13.5px;color:var(--mid);font-weight:300;line-height:1.5}
+  .insight .it b{color:var(--ink);font-weight:600}
+
+  .priority{margin-top:20px;background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:14px;padding:18px 20px;text-align:center}
+  .priority .pl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .priority .pv{font-size:17px;color:var(--ink);font-weight:600;margin-top:8px;line-height:1.4;min-height:22px}
+
+  .actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:22px 0 10px}
+  .btn{font-family:var(--body);font-weight:700;font-size:14px;border-radius:44px;padding:13px 24px;cursor:pointer;border:0}
+  .btn.gold{background:var(--grad);color:#1a1206}
+  .btn.ghost{background:none;border:1px solid var(--line);color:var(--mid)}
+  .saveline{text-align:center;font-size:11.5px;color:var(--muted);margin-top:6px}
+
+  footer{margin:50px 0 40px;text-align:center;color:var(--muted);font-size:11px;line-height:1.7;border-top:1px solid var(--line);padding-top:22px}
+
+  @media print{
+    body{background:#fff;color:#111}
+    #app > .wrap > header,.mode,.mode-note,.hud,form,.actions,.saveline,footer,#gate{display:none!important}
+    #snapshot{border:1px solid #ccc;box-shadow:none;background:#fff;margin:0}
+    .snap-h h2,.rr .rv,.reveal .rn{color:#111}.snap-h .k,.dx-h,.mini .mh,.priority .pl,.reveal .rt{color:#8a6d2f}
+    .rr,.mini,.insight,.reveal,.priority{background:#faf7f2;border-color:#e5ddcd}
+    .rr.em .rv,.reveal .rn{color:#8a6d2f}
+  }
+</style>
+</head>
+<body class="quick">
+  <div id="gate">
+    <div class="gate-card">
+      <div class="gate-brand">BREED<b>WISE</b></div>
+      <div class="gate-title">Litter Snapshot™</div>
+      <div class="gate-sub">Members only. Enter your access code.</div>
+      <input id="pw" type="password" placeholder="Access code" autocomplete="off" spellcheck="false">
+      <button id="unlock" type="button">Unlock →</button>
+      <div id="gate-err"></div>
+    </div>
+  </div>
+
+  <div id="app">
+    <div class="wrap">
+      <header>
+        <div class="brand">BREED<b>WISE</b></div>
+        <div class="eyebrow">The Profitable Breeder · Tool</div>
+        <h1>Litter <span class="u">Snapshot</span></h1>
+        <p class="lead">Stop guessing what your litter made. Enter your numbers and see exactly what happened financially, where the money went, and the one thing to change before your next litter.</p>
+        <div class="mode">
+          <button type="button" id="mQuick" class="on" onclick="setMode('quick')">Quick · ~5 min</button>
+          <button type="button" id="mFull" onclick="setMode('full')">Full Review · ~15 min</button>
+        </div>
+        <div class="mode-note" id="modeNote">Quick gives you the money reveal fast. Switch to Full any time to add program costs, your time, the sales funnel, and reflection.</div>
+      </header>
+    </div>
+
+    <div class="hud"><div class="hud-in">
+      <div class="c"><div class="v" id="hudRev">$0</div><div class="l">Revenue</div></div>
+      <div class="c"><div class="v" id="hudMargin">$0</div><div class="l">Direct Margin</div></div>
+      <div class="c"><div class="v" id="hudProfit">$0</div><div class="l">Est. Profit</div></div>
+      <div class="c"><div class="v" id="hudPer">$0</div><div class="l">Profit / Puppy</div></div>
+    </div></div>
+
+    <div class="wrap">
+    <form id="f" autocomplete="off" onsubmit="return false">
+
+      <!-- GUT CHECK -->
+      <section>
+        <div class="sh"><span class="n">00</span><h2>Gut Check</h2></div>
+        <p class="desc">Before you calculate anything — off the top of your head, what do you think this litter made in profit? We'll come back to this.</p>
+        <div class="grid">
+          <div class="fld money"><label>Your gut estimate of profit</label><input type="number" id="guess" placeholder="0"></div>
+          <div class="fld"><label>Litter name / ID</label><input type="text" id="litterName" placeholder="e.g. Luna x Titan · Spring 26"></div>
+        </div>
+      </section>
+
+      <!-- OVERVIEW -->
+      <section>
+        <div class="sh"><span class="n">01</span><h2>Litter Overview</h2></div>
+        <div class="grid g3">
+          <div class="fld"><label>Breed</label><input type="text" id="breed" placeholder="Breed"></div>
+          <div class="fld"><label>Date of birth</label><input type="date" id="dob"></div>
+          <div class="fld"><label>Avg. puppy price</label><div class="money"><input type="number" id="avgPrice" placeholder="0"></div></div>
+          <div class="fld"><label># Born</label><input type="number" id="nBorn" placeholder="0"></div>
+          <div class="fld"><label># Surviving / placed</label><input type="number" id="nSurv" placeholder="0"></div>
+          <div class="fld"><label># Sold</label><input type="number" id="nSold" placeholder="0"></div>
+          <div class="fld full-only full"><label>End: # Retained (kept)</label><input type="number" id="nRetain" placeholder="0"></div>
+          <div class="fld full-only full"><label>End: # Remaining (unsold)</label><input type="number" id="nRemain" placeholder="0"></div>
+          <div class="fld full-only full"><label>Date first puppy reserved</label><input type="date" id="dFirst"></div>
+        </div>
+      </section>
+
+      <!-- REVENUE -->
+      <section>
+        <div class="sh"><span class="n">02</span><h2>Revenue</h2><span class="sub" id="revSub">$0</span></div>
+        <div class="quick-only quick">
+          <p class="desc">Quick mode: just the totals. Switch to Full to enter each puppy.</p>
+          <div class="grid">
+            <div class="fld money"><label>Total puppy sales</label><input type="number" id="qPuppySales" placeholder="0"></div>
+            <div class="fld money"><label>Other revenue (training, delivery, etc.)</label><input type="number" id="qOther" placeholder="0"></div>
+          </div>
+        </div>
+        <div class="full-only full">
+          <p class="desc">One row per puppy sold. Final = agreed price − discount.</p>
+          <div class="puppy-head"><span></span><span>Agreed price</span><span>Deposit paid</span><span class="disc">Discount</span><span></span></div>
+          <div id="puppyRows"></div>
+          <button type="button" class="addbtn" onclick="addPuppy()">+ Add puppy</button>
+          <div class="grid" style="margin-top:14px">
+            <div class="fld money"><label>Other revenue (training, upgrades, delivery collected)</label><input type="number" id="fOther" placeholder="0"></div>
+            <div class="fld money"><label>Forfeited deposits kept</label><input type="number" id="fForfeit" placeholder="0"></div>
+            <div class="fld money"><label>Refunds / returns paid out</label><input type="number" id="fRefund" placeholder="0"><div class="hint">Subtracted from revenue</div></div>
+            <div class="fld money"><label>Payment processing fees</label><input type="number" id="fFees" placeholder="0"><div class="hint">Stripe / PayPal, etc. Subtracted.</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DIRECT EXPENSES -->
+      <section>
+        <div class="sh"><span class="n">03</span><h2>Direct Litter Costs</h2><span class="sub" id="dirSub">$0</span></div>
+        <p class="desc">The costs that belong to <b>this litter</b>. This is usually where "revenue" and "profit" start to separate.</p>
+        <div id="directCats"></div>
+      </section>
+
+      <!-- ALLOCATED -->
+      <section class="full-only full">
+        <div class="sh"><span class="n">04</span><h2>Allocated Program Costs</h2><span class="sub" id="allocSub">$0</span></div>
+        <p class="desc">Your program has costs beyond one litter — website, ads, insurance, facility. Allocate a fair <b>portion</b> to this litter (not the full annual amount). Kept separate on purpose: this is the number breeders forget.</p>
+        <div class="cat"><div class="cat-items" id="allocItems"></div></div>
+      </section>
+
+      <!-- TIME -->
+      <section class="full-only full">
+        <div class="sh"><span class="n">05</span><h2>Your Time</h2><span class="sub" id="hrSub">0 hrs</span></div>
+        <p class="desc">The cost nobody tracks. We won't deduct this from your profit — but you should <b>see</b> it.</p>
+        <div class="cat"><div class="cat-items" id="timeItems"></div></div>
+        <div class="grid" style="margin-top:12px">
+          <div class="fld money"><label>What is an hour of your time worth? (optional)</label><input type="number" id="hourlyRate" placeholder="0"></div>
+        </div>
+      </section>
+
+      <!-- DEMAND -->
+      <section>
+        <div class="sh"><span class="n" id="demN">04</span><h2>Demand &amp; Sales</h2></div>
+        <p class="desc">This is what turns a calculator into a diagnosis — it separates a <b>pricing</b> problem from a <b>demand</b> problem from a <b>conversion</b> problem.</p>
+        <div class="grid g3">
+          <div class="fld"><label>Qualified families waiting <b>before</b> birth</label><input type="number" id="dBefore" placeholder="0"></div>
+          <div class="fld"><label>Total inquiries</label><input type="number" id="dInq" placeholder="0"></div>
+          <div class="fld full-only full"><label>Applications</label><input type="number" id="dApps" placeholder="0"></div>
+          <div class="fld"><label>Qualified applicants</label><input type="number" id="dQual" placeholder="0"></div>
+          <div class="fld"><label>Reservations / deposits</label><input type="number" id="dRes" placeholder="0"></div>
+          <div class="fld"><label>Reserved before birth</label><input type="number" id="dResBirth" placeholder="0"></div>
+          <div class="fld full-only full"><label>Reserved by 2 weeks</label><input type="number" id="dRes2" placeholder="0"></div>
+          <div class="fld full-only full"><label>Reserved by 4 weeks</label><input type="number" id="dRes4" placeholder="0"></div>
+          <div class="fld"><label>Days until fully placed</label><input type="number" id="dDays" placeholder="0"></div>
+        </div>
+      </section>
+
+      <!-- PRICING -->
+      <section>
+        <div class="sh"><span class="n" id="priN">05</span><h2>Pricing</h2></div>
+        <div class="grid g3">
+          <div class="fld money"><label>Advertised price</label><input type="number" id="pAdv" placeholder="0"></div>
+          <div class="fld money"><label>Highest sold</label><input type="number" id="pHigh" placeholder="0"></div>
+          <div class="fld money"><label>Lowest sold</label><input type="number" id="pLow" placeholder="0"></div>
+          <div class="fld money full-only full"><label>Total discounts / concessions</label><input type="number" id="pDisc" placeholder="0"></div>
+        </div>
+        <div class="grid" style="margin-top:12px">
+          <div class="fld"><label>Did you feel pressure to lower price to place puppies?</label>
+            <div class="seg" data-key="qPressure"><button type="button" data-v="Yes">Yes</button><button type="button" data-v="No">No</button></div></div>
+          <div class="fld"><label>Did you have more qualified families than puppies?</label>
+            <div class="seg" data-key="qMore"><button type="button" data-v="Yes">Yes</button><button type="button" data-v="No">No</button></div></div>
+          <div class="fld full full-only"><label>Did qualified families question your price?</label>
+            <div class="seg" data-key="qQuestion"><button type="button" data-v="Frequently">Frequently</button><button type="button" data-v="Sometimes">Sometimes</button><button type="button" data-v="Rarely">Rarely</button><button type="button" data-v="Never">Never</button></div></div>
+        </div>
+      </section>
+
+      <!-- SYSTEMS -->
+      <section class="full-only full">
+        <div class="sh"><span class="n">08</span><h2>Breeding Program Systems</h2></div>
+        <p class="desc">Not a medical score — a readiness check. Which of these did you have <b>documented</b> going into this litter?</p>
+        <div class="cat" id="sysList"></div>
+        <div class="fld full" style="margin-top:14px"><label>What happened this litter that you want to be better prepared for next time?</label><textarea id="sysNote" placeholder="Be honest — this is the most useful thing you'll write."></textarea></div>
+      </section>
+
+      <!-- REFLECTION -->
+      <section>
+        <div class="sh"><span class="n" id="refN">06</span><h2>What Did This Litter Teach You?</h2></div>
+        <div class="grid">
+          <div class="fld full"><label>What worked well?</label><textarea id="rWorked" placeholder=""></textarea></div>
+          <div class="fld full full-only"><label>Where did you lose money or create unnecessary expense?</label><textarea id="rLostMoney"></textarea></div>
+          <div class="fld full full-only"><label>Where did you lose potential buyers or demand?</label><textarea id="rLostBuyers"></textarea></div>
+          <div class="fld full full-only"><label>What caught you unprepared on the breeding side?</label><textarea id="rUnprepared"></textarea></div>
+          <div class="fld full full-only"><label>What system would have made this litter easier?</label><textarea id="rSystem"></textarea></div>
+          <div class="fld full"><label>The ONE thing you'll change before your next litter</label><textarea id="rOne" placeholder="Your next-litter priority."></textarea></div>
+        </div>
+      </section>
+    </form>
+
+    <!-- SNAPSHOT -->
+    <div id="snapshot">
+      <div class="snap-h">
+        <div class="k">Your Litter Snapshot</div>
+        <h2 id="snapTitle">Litter Performance</h2>
+        <div class="m" id="snapMeta"></div>
+      </div>
+
+      <div class="reveal" id="revealBox">
+        <div class="rt">Estimated Litter Profit</div>
+        <div class="rn" id="revealNum">$0</div>
+        <div class="rd" id="revealDelta"></div>
+      </div>
+
+      <div class="rows">
+        <div class="rr"><span class="rl">Gross Revenue</span><span class="rv" id="oRev">$0</span></div>
+        <div class="rr"><span class="rl">Direct Litter Costs</span><span class="rv" id="oDir">$0</span></div>
+        <div class="rr em"><span class="rl">Direct Litter Margin</span><span class="rv" id="oMargin">$0</span></div>
+        <div class="rr full-only full"><span class="rl">Allocated Program Costs</span><span class="rv" id="oAlloc">$0</span></div>
+        <div class="rr em"><span class="rl">Estimated Litter Profit</span><span class="rv" id="oProfit">$0</span></div>
+      </div>
+
+      <div class="snap-cols" style="margin-top:12px">
+        <div class="mini">
+          <div class="mh">Per Puppy</div>
+          <div class="mr"><span>Profit margin</span><b id="mMargin">0%</b></div>
+          <div class="mr"><span>Revenue / puppy sold</span><b id="mRevPer">$0</b></div>
+          <div class="mr"><span>Profit / puppy sold</span><b id="mProfPer">$0</b></div>
+          <div class="mr"><span>Break-even price</span><b id="mBreakeven">$0</b></div>
+          <div class="mr"><span>All-in cost / puppy raised</span><b id="mAllIn">$0</b></div>
+          <div class="mr"><span>Survival rate</span><b id="mSurvival">—</b></div>
+        </div>
+        <div class="mini">
+          <div class="mh">Demand</div>
+          <div class="mr"><span>Qualified before birth</span><b id="mBefore">0</b></div>
+          <div class="mr"><span>Qualified inquiries</span><b id="mInq">0</b></div>
+          <div class="mr"><span>Reservations</span><b id="mRes">0</b></div>
+          <div class="mr"><span>Reserved before birth</span><b id="mResBirth">0%</b></div>
+          <div class="mr"><span>Inquiry → reservation</span><b id="mConv">—</b></div>
+          <div class="mr"><span>Days to fully placed</span><b id="mDaysR">—</b></div>
+        </div>
+      </div>
+      <div class="mini full-only full" style="margin-top:12px">
+        <div class="mh">Your Time (economic view)</div>
+        <div class="mr"><span>Estimated owner hours</span><b id="mHours">0</b></div>
+        <div class="mr"><span>Profit / owner hour</span><b id="mPerHour">$0</b></div>
+        <div class="mr" id="mLaborRow" style="display:none"><span>Profit after your labor value</span><b id="mEcon">$0</b></div>
+      </div>
+
+      <div class="dx">
+        <div class="dx-h">What Your Numbers Are Telling You</div>
+        <div id="insights"></div>
+      </div>
+
+      <div class="priority">
+        <div class="pl">Your Next-Litter Priority</div>
+        <div class="pv" id="snapPriority">—</div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn gold" onclick="window.print()">Save / Print Snapshot</button>
+        <button type="button" class="btn ghost" onclick="resetAll()">Start a new litter</button>
+      </div>
+      <div class="saveline" id="saveline">Your entries save automatically on this device.</div>
+    </div>
+
+    <footer>
+      BreedWise · The Profitable Breeder — Litter Snapshot™. For your own program management. Estimates only, not tax or accounting advice.
+    </footer>
+    </div>
+  </div>
+
+<script>
+/* ---------- config ---------- */
+var DIRECT = {
+  repro:{label:'Breeding / Reproduction',items:['Stud fee','Semen / shipping','Progesterone testing','Repro vet care','AI','Pregnancy confirmation','Other']},
+  whelping:{label:'Whelping / Neonatal',items:['Whelping supplies','Emergency supplies','Vet expenses','C-section','Meds / supplements','Formula / feeding','Other']},
+  raising:{label:'Puppy Raising',items:['Food','Vaccinations','Deworming','Microchips','Vet exams','Health testing','Registration','Puppy packs','Cleaning / supplies','Other']},
+  placement:{label:'Placement / Delivery',items:['Transport','Flight nanny','Delivery','Health certificates','Other']}
+};
+var ALLOC = ['Website','Advertising','Content / marketing','Software','Insurance','Kennel / facility','Equipment','Education','Professional services','Labor / help','Travel','Breeding-dog health testing','Other operating'];
+var TIME = ['Breeding / prep','Whelping / neonatal','Daily puppy care','Cleaning','Client comms','Content / marketing','Applications / sales','Pickup / delivery','Other'];
+var SYS = ['Breeding preparation','Pregnancy preparation','Whelping preparation','Newborn monitoring','Weight tracking','Record keeping','Emergency / vet escalation','Puppy raising','Puppy placement'];
+var slug=function(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');};
+
+/* ---------- build dynamic fields ---------- */
+function moneyLI(id,label){return '<div class="li"><label>'+label+'</label><div class="money"><input type="number" id="'+id+'" placeholder="0"></div></div>';}
+(function build(){
+  var dc=document.getElementById('directCats'),html='';
+  for(var k in DIRECT){var c=DIRECT[k];html+='<div class="cat" data-cat="'+k+'"><div class="cat-h"><span class="t">'+c.label+'</span><span class="sub" id="sub_'+k+'">$0</span></div>';
+    html+='<div class="quick-only quick" style="margin-top:12px">'+moneyLI('q_'+k,c.label+' — total')+'</div>';
+    html+='<div class="cat-items full-only full">';
+    c.items.forEach(function(it){html+=moneyLI('d_'+k+'_'+slug(it),it);});
+    html+='</div></div>';}
+  dc.innerHTML=html;
+  var ai='';ALLOC.forEach(function(it){ai+=moneyLI('a_'+slug(it),it);});document.getElementById('allocItems').innerHTML=ai;
+  var ti='';TIME.forEach(function(it){ti+='<div class="li"><label>'+it+' (hrs)</label><input type="number" id="t_'+slug(it)+'" placeholder="0"></div>';});document.getElementById('timeItems').innerHTML=ti;
+  var sl='';SYS.forEach(function(it){var key='s_'+slug(it);sl+='<div class="sysrow"><span class="sl">'+it+'</span><div class="seg" data-key="'+key+'"><button type="button" data-v="Yes">Yes</button><button type="button" data-v="Partially">Partial</button><button type="button" data-v="No">No</button></div></div>';});
+  document.getElementById('sysList').innerHTML=sl;
+  addPuppy();addPuppy();addPuppy();
+})();
+
+var segState={};
+document.addEventListener('click',function(e){var b=e.target.closest('.seg button');if(!b)return;var seg=b.parentElement,key=seg.getAttribute('data-key');
+  seg.querySelectorAll('button').forEach(function(x){x.classList.remove('on');});b.classList.add('on');segState[key]=b.getAttribute('data-v');compute();save();});
+
+var pIdx=0;
+function addPuppy(){pIdx++;var d=document.createElement('div');d.className='puppy-row';
+  d.innerHTML='<span class="idx">'+pIdx+'</span>'+
+    '<div class="money"><input type="number" class="pPrice" placeholder="0"></div>'+
+    '<div class="money"><input type="number" class="pDep" placeholder="0"></div>'+
+    '<div class="money disc"><input type="number" class="pDiscount" placeholder="0"></div>'+
+    '<button type="button" class="x" title="remove">×</button>';
+  d.querySelector('.x').addEventListener('click',function(){d.remove();reindex();compute();save();});
+  document.getElementById('puppyRows').appendChild(d);}
+function reindex(){var i=0;document.querySelectorAll('#puppyRows .idx').forEach(function(s){s.textContent=++i;});pIdx=i;}
+
+/* ---------- helpers ---------- */
+function n(id){var el=document.getElementById(id);return el?(parseFloat(el.value)||0):0;}
+function fmt(v){var neg=v<0;v=Math.round(Math.abs(v));return (neg?'-$':'$')+v.toLocaleString('en-US');}
+function pct(v){return (Math.round(v*10)/10)+'%';}
+var isFull=function(){return document.body.classList.contains('full');};
+
+function catTotal(k){if(isFull()){var t=0;DIRECT[k].items.forEach(function(it){t+=n('d_'+k+'_'+slug(it));});return t;}return n('q_'+k);}
+function puppySales(){if(isFull()){var t=0;document.querySelectorAll('#puppyRows .puppy-row').forEach(function(r){t+=(parseFloat(r.querySelector('.pPrice').value)||0)-(parseFloat(r.querySelector('.pDiscount').value)||0);});return t;}return n('qPuppySales');}
+function puppyPrices(){var a=[];document.querySelectorAll('#puppyRows .puppy-row').forEach(function(r){var v=(parseFloat(r.querySelector('.pPrice').value)||0)-(parseFloat(r.querySelector('.pDiscount').value)||0);if(v>0)a.push(v);});return a;}
+
+/* ---------- compute ---------- */
+function compute(){
+  var full=isFull();
+  var sold=n('nSold'), born=n('nBorn'), surv=n('nSurv');
+  var pSales=puppySales();
+  var other=full?n('fOther'):n('qOther');
+  var forfeit=full?n('fForfeit'):0, refund=full?n('fRefund'):0, fees=full?n('fFees'):0;
+  var revenue=pSales+other+forfeit-refund-fees;
+
+  var direct=0;for(var k in DIRECT){var ct=catTotal(k);direct+=ct;var s=document.getElementById('sub_'+k);if(s)s.textContent=fmt(ct);}
+  var alloc=0;if(full){ALLOC.forEach(function(it){alloc+=n('a_'+slug(it));});}
+  var margin=revenue-direct;
+  var profit=revenue-direct-alloc;
+
+  var hours=0;if(full){TIME.forEach(function(it){hours+=n('t_'+slug(it));});}
+  var rate=n('hourlyRate');
+  var laborVal=hours*rate, econ=profit-laborVal;
+
+  var totalCost=direct+alloc;
+  var breakeven=sold>0?totalCost/sold:0;
+  var revPer=sold>0?pSales/sold:0;
+  var profPer=sold>0?profit/sold:0;
+  var allIn=surv>0?totalCost/surv:0;
+  var marginPct=revenue>0?profit/revenue*100:0;
+  var survRate=born>0?surv/born*100:0;
+  var perHour=hours>0?profit/hours:0;
+
+  /* HUD + subs */
+  set('hudRev',fmt(revenue));set('hudMargin',fmt(margin));set('hudProfit',fmt(profit),profit<0);set('hudPer',fmt(profPer),profPer<0);
+  set('revSub',fmt(revenue));set('dirSub',fmt(direct));set('allocSub',fmt(alloc));set('hrSub',Math.round(hours)+' hrs');
+
+  /* snapshot rows */
+  set('oRev',fmt(revenue));set('oDir',fmt(direct));set('oMargin',fmt(margin),margin<0);set('oAlloc',fmt(alloc));set('oProfit',fmt(profit),profit<0);
+  set('mMargin',pct(marginPct));set('mRevPer',fmt(revPer));set('mProfPer',fmt(profPer),profPer<0);set('mBreakeven',fmt(breakeven));set('mAllIn',fmt(allIn));set('mSurvival',born>0?pct(survRate):'—');
+  var dRes=n('dRes'),dQual=n('dQual'),dInq=n('dInq'),dBefore=n('dBefore'),dResBirth=n('dResBirth'),dDays=n('dDays');
+  set('mBefore',dBefore);set('mInq',dInq);set('mRes',dRes);
+  set('mResBirth',sold>0?pct(dResBirth/sold*100):'0%');
+  var convBase=dQual>0?dQual:dInq;set('mConv',convBase>0?pct(dRes/convBase*100):'—');
+  set('mDaysR',dDays>0?dDays+' days':'—');
+  set('mHours',Math.round(hours));set('mPerHour',hours>0?fmt(perHour):'—');
+  var lr=document.getElementById('mLaborRow');if(rate>0&&hours>0){lr.style.display='flex';set('mEcon',fmt(econ),econ<0);}else{lr.style.display='none';}
+
+  /* reveal */
+  set('revealNum',fmt(profit),profit<0);
+  var guess=n('guess');var rd=document.getElementById('revealDelta');
+  if(guess>0){var diff=guess-profit;
+    if(Math.abs(diff)<Math.max(500,guess*0.05)) rd.innerHTML='You guessed <b>'+fmt(guess)+'</b> — right on the money. Now you can prove it.';
+    else if(diff>0) rd.innerHTML='You guessed <b>'+fmt(guess)+'</b>. It was actually <b>'+fmt(profit)+'</b> — a <b>'+fmt(diff)+'</b> gap. That gap is where your program leaks.';
+    else rd.innerHTML='You guessed <b>'+fmt(guess)+'</b> — you actually made <b>'+fmt(profit)+'</b>. Better than you thought.';
+  } else rd.textContent='';
+
+  /* meta title */
+  var nm=(document.getElementById('litterName').value||'').trim();var br=(document.getElementById('breed').value||'').trim();
+  set('snapTitle',nm||'Litter Performance');set('snapMeta',[br,sold?sold+' sold':'',born?born+' born':''].filter(Boolean).join(' · '));
+
+  renderInsights({revenue:revenue,direct:direct,alloc:alloc,profit:profit,margin:margin,marginPct:marginPct,sold:sold,born:born,surv:surv,
+    breakeven:breakeven,revPer:revPer,profPer:profPer,pLow:n('pLow'),pAdv:n('pAdv'),pDisc:full?n('pDisc'):0,
+    dBefore:dBefore,dInq:dInq,dQual:dQual,dRes:dRes,dDays:dDays,hours:hours,perHour:perHour,
+    qMore:segState.qMore,qPressure:segState.qPressure});
+
+  var one=(document.getElementById('rOne').value||'').trim();set('snapPriority',one||'—');
+}
+function set(id,v,neg){var el=document.getElementById(id);if(!el)return;el.textContent=v;if(neg!==undefined)el.classList.toggle('neg',!!neg);}
+
+/* ---------- diagnosis engine ---------- */
+function renderInsights(d){
+  var out=[];
+  // profit reality
+  if(d.sold>0&&d.profit<=0) out.push(['warn','⚠','<b>This litter did not turn a profit</b> after the costs you entered. That is not failure — it is the exact thing to fix. Start with your biggest cost category and your pricing.']);
+  else if(d.sold>0&&d.marginPct>0&&d.marginPct<25) out.push(['warn','↓','Your margin is <b>'+pct(d.marginPct)+'</b>. Healthy programs keep more of each sale — this usually points to pricing or cost, not effort.']);
+  else if(d.marginPct>=55) out.push(['good','✓','Strong margin at <b>'+pct(d.marginPct)+'</b>. The lever now is doing it <b>repeatably</b> — same result on the next litter, not by luck.']);
+  // pricing left on table
+  if(d.qMore==='Yes'&&(d.pDisc>0||(d.pAdv>0&&d.revPer>0&&d.revPer<d.pAdv))) out.push(['warn','$','<b>You left money on the table.</b> You had more qualified families than puppies, yet still sold below your advertised price. That is margin you can keep next time — a positioning fix, not a discount.']);
+  // break-even below
+  if(d.sold>0&&d.pLow>0&&d.breakeven>0&&d.pLow<d.breakeven) out.push(['warn','◎','Your break-even was <b>'+fmt(d.breakeven)+'</b> per puppy, but your lowest sold for <b>'+fmt(d.pLow)+'</b> — <b>below cost</b>. Know your floor before you discount.']);
+  else if(d.sold>0&&d.breakeven>0) out.push(['info','◎','Every puppy needed to clear <b>'+fmt(d.breakeven)+'</b> just to break even. Price from there, not from what others charge.']);
+  // demand vs conversion
+  if(d.sold>0){
+    if(d.dBefore===0&&d.dInq>0&&d.dInq<d.sold*3) out.push(['warn','↘','<b>Looks like a demand problem.</b> Few qualified families in the pipeline before the litter — you were selling from behind. The fix is building demand <b>before</b> the next litter is born.']);
+    else if(d.dInq>=d.sold*4&&d.dRes>0&&d.dRes<d.dInq*0.25) out.push(['warn','⇄','<b>Looks like a conversion problem.</b> Plenty of interest, but it is not turning into reservations. That is a sales-process and follow-up gap, not a traffic gap.']);
+    else if(d.dBefore>=d.sold) out.push(['good','✓','You had qualified families waiting <b>before</b> birth — that is exactly the position a strong program wants to be in.']);
+  }
+  // time reality
+  if(d.hours>0&&d.perHour>0&&d.perHour<25) out.push(['warn','⏱','At <b>'+Math.round(d.hours)+' hours</b>, this litter paid you about <b>'+fmt(d.perHour)+'/hour</b>. Worth knowing before you scale — the goal is more profit per hour, not just more litters.']);
+  else if(d.hours>0&&d.perHour>=75) out.push(['good','⏱','About <b>'+fmt(d.perHour)+'/owner-hour</b> — your time is well spent here.']);
+  // survival cost drag
+  if(d.born>0&&d.surv>0&&d.surv<d.born) out.push(['info','◆','You raised <b>'+d.born+'</b> but placed <b>'+d.surv+'</b>. Every puppy carries cost whether or not it sells, so preparation on the breeding side protects the whole litter’s economics.']);
+  // systems gap
+  var noAreas=[];SYS.forEach(function(it){if(segState['s_'+slug(it)]==='No')noAreas.push(it);});
+  if(noAreas.length>=2) out.push(['info','▤','You went in <b>without documented systems</b> for '+noAreas.slice(0,3).join(', ').toLowerCase()+(noAreas.length>3?', and more':'')+'. Documented systems are the cheapest upgrade you can make before the next litter.']);
+
+  if(!out.length) out.push(['info','◷','Fill in a few more numbers — revenue, costs, and your demand funnel — and your snapshot will tell you whether this was a pricing, demand, or conversion story.']);
+  document.getElementById('insights').innerHTML=out.slice(0,6).map(function(i){return '<div class="insight '+i[0]+'"><span class="ic">'+i[1]+'</span><span class="it">'+i[2]+'</span></div>';}).join('');
+}
+
+/* ---------- mode / persistence ---------- */
+function setMode(m){document.body.classList.toggle('full',m==='full');document.body.classList.toggle('quick',m==='quick');
+  document.getElementById('mQuick').classList.toggle('on',m==='quick');document.getElementById('mFull').classList.toggle('on',m==='full');
+  var n=full()? {demN:'06',priN:'07',refN:'09'} : {demN:'04',priN:'05',refN:'06'};set('demN',n.demN);set('priN',n.priN);set('refN',n.refN);
+  compute();save();}
+function full(){return document.body.classList.contains('full');}
+function save(){try{var o={seg:segState,mode:full()?'full':'quick',puppies:[]};
+  document.querySelectorAll('#f input,#f textarea').forEach(function(el){if(el.id)o[el.id]=el.value;});
+  document.querySelectorAll('#puppyRows .puppy-row').forEach(function(r){o.puppies.push([r.querySelector('.pPrice').value,r.querySelector('.pDep').value,r.querySelector('.pDiscount').value]);});
+  localStorage.setItem('bw_litter',JSON.stringify(o));}catch(e){}}
+function restore(){try{var o=JSON.parse(localStorage.getItem('bw_litter')||'null');if(!o)return;
+  if(o.mode==='full')setMode('full');
+  if(o.puppies&&o.puppies.length){document.getElementById('puppyRows').innerHTML='';pIdx=0;o.puppies.forEach(function(p){addPuppy();var rows=document.querySelectorAll('#puppyRows .puppy-row');var r=rows[rows.length-1];r.querySelector('.pPrice').value=p[0];r.querySelector('.pDep').value=p[1];r.querySelector('.pDiscount').value=p[2];});}
+  for(var key in o){var el=document.getElementById(key);if(el&&typeof o[key]==='string')el.value=o[key];}
+  segState=o.seg||{};for(var sk in segState){var seg=document.querySelector('.seg[data-key="'+sk+'"]');if(seg){var b=seg.querySelector('button[data-v="'+segState[sk]+'"]');if(b)b.classList.add('on');}}
+}catch(e){}}
+function resetAll(){if(!confirm('Clear this litter and start fresh?'))return;try{localStorage.removeItem('bw_litter');}catch(e){}location.reload();}
+
+document.addEventListener('input',function(e){if(e.target.closest('#f')){compute();save();}});
+
+/* ---------- gate ---------- */
+(function(){
+  var OK=['3669e01642f704c7f7fd45379aa6a2c7a231bf80199aad1c9fda1dc07b15f9d5', /* SCORECARD2026 */
+          '25e7b557235afa23f4d1ae0ac108bfdfefa7ea58ea50bd986321cbd0034c52dc']; /* ACCELERATOR2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function reveal(){var g=document.getElementById('gate');if(g)g.remove();document.getElementById('app').style.display='block';document.title='Litter Snapshot · BreedWise';restore();compute();}
+  function tryUnlock(){var v=(document.getElementById('pw').value||'').trim();h(v).then(function(hex){if(OK.indexOf(hex)>=0){try{sessionStorage.setItem('ls_ok','1');}catch(e){}reveal();}else{document.getElementById('gate-err').textContent='Incorrect code. Try again.';document.getElementById('pw').select();}});}
+  document.getElementById('unlock').addEventListener('click',tryUnlock);
+  document.getElementById('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('ls_ok')==='1'){reveal();}else{document.getElementById('pw').focus();}}catch(e){document.getElementById('pw').focus();}
+})();
+</script>
+</body>
+</html>
