@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#0a0a0a; --panel:#141419; --panel2:#1a1a20; --line:rgba(245,242,234,.10);
+    --ink:#f5f2ea; --mid:rgba(245,242,234,.74); --muted:rgba(245,242,234,.47);
+    --gold:#cdae72; --gold2:#e2cb86; --gold-soft:rgba(205,174,114,.12); --gold-line:rgba(205,174,114,.30);
+    --grad:linear-gradient(135deg,#e2cb86,#c3a35c);
+    --green:#6dbf90; --blue:#7aa7d8; --pink:#d89ab0;
+    --disp:'Anton',Impact,sans-serif; --body:'Poppins',-apple-system,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(120% 55% at 50% -8%,rgba(205,174,114,.09),transparent 60%)}
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px}
+  h1,h2,h3,.disp{font-family:var(--disp);font-weight:400;letter-spacing:.01em;text-transform:uppercase;line-height:1.05}
+  a{color:var(--gold2)}
+
+  #gate{position:fixed;inset:0;z-index:9999;background:#0a0a0a;display:flex;align-items:center;justify-content:center;padding:24px}
+  .gate-card{width:100%;max-width:400px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:34px 30px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  .gate-brand{font-family:var(--disp);font-size:24px;letter-spacing:2px}.gate-brand b{color:var(--gold)}
+  .gate-title{font-family:var(--disp);font-size:21px;color:var(--gold2);margin-top:16px}
+  .gate-sub{color:var(--muted);font-size:13px;margin-top:8px}
+  #pw{width:100%;margin-top:22px;background:#0d0d0d;border:1px solid var(--line);border-radius:10px;color:var(--ink);font-family:var(--body);font-size:16px;padding:13px 15px;outline:none;text-align:center}
+  #pw:focus{border-color:var(--gold)}
+  #unlock{width:100%;margin-top:12px;background:var(--grad);color:#0a0a0a;font-family:var(--body);font-weight:700;font-size:15px;letter-spacing:.04em;text-transform:uppercase;border:0;border-radius:10px;padding:14px;cursor:pointer}
+  #gate-err{color:#ff6a5d;font-size:13px;margin-top:12px;min-height:16px}
+  #content{display:none}
+
+  header{padding:46px 0 8px;text-align:center}
+  .brand{font-family:var(--disp);font-size:22px;letter-spacing:2px}.brand b{color:var(--gold)}
+  .eyebrow{font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-top:26px}
+  header h1{font-size:clamp(30px,6vw,52px);margin-top:12px}
+  header h1 .u{color:var(--gold)}
+  .onel{max-width:44em;margin:20px auto 0;background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:16px;padding:20px 24px}
+  .onel .big{color:var(--ink);font-size:16.5px;font-weight:500;line-height:1.5}
+  .onel .sub{color:var(--gold2);font-weight:600;font-size:15px;margin-top:12px}
+  .who{display:inline-flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+  .who span{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:30px;padding:6px 14px;font-weight:600}
+
+  .toc{margin:34px auto 0;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+  .toc-h{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:12px}
+  .toc ol{list-style:none;counter-reset:t;display:grid;grid-template-columns:1fr 1fr;gap:8px 24px}
+  @media(max-width:640px){.toc ol{grid-template-columns:1fr}}
+  .toc li{counter-increment:t;font-size:14px}
+  .toc li a{color:var(--mid);text-decoration:none;display:flex;gap:10px}
+  .toc li a:hover{color:var(--gold2)}
+  .toc li a::before{content:counter(t,decimal-leading-zero);color:var(--gold);font-weight:700;font-family:var(--disp);font-size:13px}
+
+  section{margin:56px 0 0;scroll-margin-top:20px}
+  .sh{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:22px}
+  .sh .n{font-family:var(--disp);font-size:15px;color:var(--gold);flex:0 0 auto}
+  .sh h2{font-size:clamp(21px,3.6vw,30px)}
+  p{color:var(--mid);font-weight:300;margin:0 0 14px}
+  p b,li b,td b{color:var(--ink);font-weight:600}
+  .flowline{display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:center;margin:6px 0 18px}
+  .flowline .chip{font-size:12px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:20px;padding:7px 13px}
+  .flowline .arw{color:var(--gold);font-weight:700}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:0 0 14px}
+  .card.gold{border-color:var(--gold-line)}
+  .card h3{font-family:var(--body);font-weight:700;font-size:15.5px;color:var(--ink);text-transform:none;letter-spacing:0;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+  .card h3 .num{flex:0 0 auto;width:28px;height:28px;border-radius:8px;background:var(--gold-soft);border:1px solid var(--gold-line);color:var(--gold);font-family:var(--disp);font-size:14px;display:flex;align-items:center;justify-content:center}
+  ul.clean{list-style:none;display:grid;gap:8px;margin:6px 0 0}
+  ul.clean li{position:relative;padding-left:22px;color:var(--mid);font-weight:300;font-size:14px;line-height:1.5}
+  ul.clean li::before{content:"→";position:absolute;left:0;color:var(--gold);font-weight:700}
+  .cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  @media(max-width:640px){.cols3{grid-template-columns:1fr}}
+  .mini{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .mini .mt{font-family:var(--disp);color:var(--gold);font-size:16px}
+  .mini .md{font-size:13px;color:var(--mid);font-weight:300;margin-top:5px}
+
+  table{width:100%;border-collapse:collapse;margin:6px 0 14px;font-size:14px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  td{color:var(--mid);font-weight:300}
+  .pill{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;border-radius:20px;padding:3px 9px;color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line);white-space:nowrap}
+
+  .comp{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:560px){.comp{grid-template-columns:1fr}}
+  .comp .c{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .comp .c.b{border-color:var(--gold-line)}
+  .comp .c .l{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .comp .c .v{font-family:var(--disp);color:var(--gold);font-size:22px;margin-top:6px}
+  .comp .c .d{font-size:13px;color:var(--mid);font-weight:300;margin-top:6px}
+
+  .kpi{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:560px){.kpi{grid-template-columns:1fr}}
+  .kpi .k{background:var(--panel);border:1px solid var(--gold-line);border-radius:14px;padding:18px 20px}
+  .kpi .k .m{font-family:var(--disp);color:var(--gold);font-size:26px}
+  .kpi .k .t{font-weight:600;color:var(--ink);font-size:14.5px;margin-top:4px}
+  .kpi .k .d{font-size:12.5px;color:var(--muted);font-weight:300;margin-top:5px}
+
+  .rhythm .r{display:grid;grid-template-columns:120px 1fr;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}
+  @media(max-width:560px){.rhythm .r{grid-template-columns:90px 1fr}}
+  .rhythm .day{font-family:var(--disp);color:var(--gold);font-size:15px}
+  .rhythm .task{font-size:14px;color:var(--mid);font-weight:300}
+  .pipe{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px}
+  .pipe span{font-size:11.5px;font-weight:600;color:var(--mid);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 11px}
+  .pipe .arw{border:0;background:none;color:var(--gold);padding:7px 2px}
+
+  .qs{counter-reset:q;display:grid;gap:10px;margin-top:6px}
+  .qs .qq{counter-increment:q;position:relative;padding-left:40px;color:var(--ink);font-weight:600;font-size:15px}
+  .qs .qq::before{content:counter(q);position:absolute;left:0;top:-2px;width:28px;height:28px;border-radius:50%;background:var(--gold-soft);border:1px solid var(--gold-line);color:var(--gold);font-family:var(--disp);font-size:14px;display:flex;align-items:center;justify-content:center}
+  .qs .qq small{display:block;color:var(--muted);font-weight:300;font-size:13px;margin-top:2px}
+
+  .decide{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:8px}
+  @media(max-width:560px){.decide{grid-template-columns:1fr 1fr}}
+  .decide div{text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 8px;font-family:var(--disp);font-size:15px;color:var(--gold)}
+
+  .note{background:var(--panel2);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;font-size:13.5px;color:var(--mid)}
+  .note b{color:var(--gold2)}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .tags span{font-size:12.5px;color:var(--mid);background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:6px 13px;font-weight:300}
+  footer{margin:70px 0 50px;text-align:center;color:var(--muted);font-size:11.5px;line-height:1.7;border-top:1px solid var(--line);padding-top:24px}
+</style>
+</head>
+<body>
+  <div id="gate">
+    <div class="gate-card">
+      <div class="gate-brand">BREED<b>WISE</b></div>
+      <div class="gate-title">Content Engine</div>
+      <div class="gate-sub">Private · Team only.</div>
+      <input id="pw" type="password" placeholder="Password" autocomplete="off" spellcheck="false">
+      <button id="unlock" type="button">Unlock →</button>
+      <div id="gate-err"></div>
+    </div>
+  </div>
+
+  <div id="content"><div class="wrap">
+    <header>
+      <div class="brand">BREED<b>WISE</b></div>
+      <div class="eyebrow">Role Playbook · Social Media Manager &amp; Strategist</div>
+      <h1>The BreedWise<br><span class="u">Content Engine</span></h1>
+      <div class="onel">
+        <div class="big">Yasmin owns BreedWise's organic content engine — from identifying what we should create, to getting it produced and distributed, to measuring whether it generates qualified breeders and customers.</div>
+        <div class="sub">Her job isn't to post more content. Her job is to build a content machine that produces measurable growth.</div>
+      </div>
+      <div class="who"><span>Owner · Yasmin</span><span>Creators · Austin &amp; Dr. Emmanuel</span><span>+ Editor</span></div>
+
+      <div class="toc">
+        <div class="toc-h">In this playbook</div>
+        <ol>
+          <li><a href="#mission">Role mission</a></li>
+          <li><a href="#comp">Compensation</a></li>
+          <li><a href="#engine">The content engine</a></li>
+          <li><a href="#daily">The 4 daily responsibilities</a></li>
+          <li><a href="#batch">Batch production system</a></li>
+          <li><a href="#rhythm">Weekly operating rhythm</a></li>
+          <li><a href="#pipeline">Content pipeline</a></li>
+          <li><a href="#scorecard">Yasmin's scorecard</a></li>
+          <li><a href="#meeting">The weekly meeting</a></li>
+          <li><a href="#quarterly">Quarterly strategy</a></li>
+          <li><a href="#invest">Growth path</a></li>
+        </ol>
+      </div>
+    </header>
+
+    <!-- 1 MISSION -->
+    <section id="mission">
+      <div class="sh"><span class="n">01</span><h2>Role Mission</h2></div>
+      <p>Build and operate BreedWise's organic content engine to consistently generate <b>attention, qualified breeder leads, TPB members, and Academy opportunities.</b></p>
+      <p>Yasmin owns the content system end to end:</p>
+      <div class="flowline"><span class="chip">Idea</span><span class="arw">→</span><span class="chip">Creation</span><span class="arw">→</span><span class="chip">Distribution</span><span class="arw">→</span><span class="chip">Lead</span><span class="arw">→</span><span class="chip">Measurement</span><span class="arw">→</span><span class="chip">Iteration</span></div>
+      <div class="note"><b>Important:</b> Yasmin does not have to personally perform every task. She owns making sure the system runs.</div>
+    </section>
+
+    <!-- 2 COMP -->
+    <section id="comp">
+      <div class="sh"><span class="n">02</span><h2>Compensation</h2></div>
+      <div class="comp">
+        <div class="c"><div class="l">Base</div><div class="v">$1,000 / mo</div></div>
+        <div class="c"><div class="l">Strategy / participation calls</div><div class="v">$100 / call</div><div class="d">Minimum 4 per month.</div></div>
+        <div class="c b"><div class="l">TPB growth bonus</div><div class="v">+$1,000</div><div class="d">For 100 new TPB members in a calendar month.</div></div>
+        <div class="c b"><div class="l">Academy growth bonus</div><div class="v">Switzerland incentive</div><div class="d">For 20 new Academy members in 45 days.</div></div>
+      </div>
+    </section>
+
+    <!-- 3 ENGINE -->
+    <section id="engine">
+      <div class="sh"><span class="n">03</span><h2>The Content Engine</h2></div>
+      <p><b>One content machine → multiple platforms.</b> The goal is not to create completely different content for every platform. <b>Create once. Adapt. Distribute everywhere.</b></p>
+      <table>
+        <tr><th>Platform</th><th>Short-form</th><th>Stories</th><th>Carousel / Long</th></tr>
+        <tr><td><b>Instagram</b></td><td>5 Reels/day</td><td>5/day</td><td>1 carousel/day</td></tr>
+        <tr><td><b>Facebook</b></td><td>5 Reels/day</td><td>5/day</td><td>1 carousel/day</td></tr>
+        <tr><td><b>TikTok</b></td><td>5 videos/day</td><td>5/day where applicable</td><td>1 carousel/photo/day where applicable</td></tr>
+        <tr><td><b>YouTube</b></td><td>5 Shorts/day</td><td>—</td><td>2 long-form/week</td></tr>
+      </table>
+      <div class="note">These are primarily the <b>same core assets</b> intelligently distributed, with platform-specific hooks, captions, CTAs, titles, formatting or edits where needed. That turns an impossible volume problem into a <b>distribution system.</b></div>
+    </section>
+
+    <!-- 4 DAILY -->
+    <section id="daily">
+      <div class="sh"><span class="n">04</span><h2>The 4 Daily Responsibilities</h2></div>
+
+      <div class="card">
+        <h3><span class="num">1</span>Ideation — study what's already working</h3>
+        <p style="margin:0 0 10px">Continuously identify signal to turn into more signal:</p>
+        <div class="tags"><span>Winning BreedWise content</span><span>Winning breeder content</span><span>Adjacent-industry content</span><span>Hooks</span><span>Formats</span><span>Topics</span><span>Questions breeders ask</span><span>Objections</span><span>Comments worth filming</span><span>Competitor gaps</span><span>Trending conversations</span></div>
+        <div class="cols3" style="margin-top:14px">
+          <div class="mini"><div class="mt">Replicate</div><div class="md">It already works — make another version.</div></div>
+          <div class="mini"><div class="mt">Iterate</div><div class="md">Keep the concept, improve the hook / angle / format.</div></div>
+          <div class="mini"><div class="mt">Innovate</div><div class="md">Test something genuinely new.</div></div>
+        </div>
+        <div class="note" style="margin-bottom:0"><b>The goal isn't constant originality.</b> Find signal → create more signal.</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">2</span>Creation — turn ideas into content-ready assets</h3>
+        <div class="pipe"><span>Idea</span><span class="arw">→</span><span>Hook</span><span class="arw">→</span><span>Script / framework</span><span class="arw">→</span><span>Creator assigned</span><span class="arw">→</span><span>Filmed</span><span class="arw">→</span><span>Edited</span><span class="arw">→</span><span>Approved</span><span class="arw">→</span><span>Scheduled</span></div>
+        <table style="margin-top:14px">
+          <tr><th>Creator</th><th>Owns</th></tr>
+          <tr><td><b>Austin</b></td><td>Breeder / business / founder content</td></tr>
+          <tr><td><b>Dr. Emmanuel</b></td><td>Veterinary education</td></tr>
+          <tr><td><b>Yasmin</b></td><td>Brand / social / community content where appropriate</td></tr>
+          <tr><td><b>Editor</b></td><td>Editing capacity as added</td></tr>
+        </table>
+        <div class="note" style="margin-bottom:0">Every batch day should already have the topics, hooks, scripts and CTAs prepared. <b>Austin and Emmanuel show up to film — not to figure out what to film.</b></div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">3</span>Distribution — daily publishing with purpose</h3>
+        <div class="cols3">
+          <div class="mini"><div class="mt">Attention</div><div class="md">Reach the right breeders.</div></div>
+          <div class="mini"><div class="mt">Trust</div><div class="md">Build authority and credibility.</div></div>
+          <div class="mini"><div class="mt">Education</div><div class="md">Teach something useful.</div></div>
+          <div class="mini"><div class="mt">Conversion</div><div class="md">Move the right person toward TPB / Academy.</div></div>
+        </div>
+        <p style="margin:14px 0 8px">Not every post needs a CTA — but the overall system must create a path:</p>
+        <div class="flowline"><span class="chip">Content</span><span class="arw">→</span><span class="chip">Engagement</span><span class="arw">→</span><span class="chip">DM / Lead</span><span class="arw">→</span><span class="chip">TPB</span><span class="arw">→</span><span class="chip">Academy</span></div>
+        <div class="note" style="margin-bottom:0"><b>ManyChat</b> should be intentionally built into that journey where appropriate.</div>
+      </div>
+
+      <div class="card gold">
+        <h3><span class="num">4</span>Delegation &amp; accountability</h3>
+        <p>Yasmin owns the pipeline even when someone else owns the task.</p>
+        <ul class="clean">
+          <li><b>Austin:</b> film assigned content, complete batch days, editing where currently required</li>
+          <li><b>Dr. Emmanuel:</b> film assigned veterinary content, complete agreed batch requirements</li>
+          <li><b>Future editor:</b> edit assigned content, hit turnaround deadlines, maintain BreedWise visual standards</li>
+        </ul>
+        <p style="margin:14px 0 8px">Her job is <b>not</b> to silently absorb missed work. If a dependency threatens the pipeline:</p>
+        <div class="flowline"><span class="chip">Identify</span><span class="arw">→</span><span class="chip">Follow up</span><span class="arw">→</span><span class="chip">Escalate</span><span class="arw">→</span><span class="chip">Solve</span></div>
+      </div>
+    </section>
+
+    <!-- 5 BATCH -->
+    <section id="batch">
+      <div class="sh"><span class="n">05</span><h2>Batch Production System</h2></div>
+      <p>Volume isn't a filming problem — it's a <b>batching + distribution</b> problem. Here's the math that makes 5 pieces/day realistic:</p>
+      <table>
+        <tr><th>Every 2 weeks</th><th>Output</th><th>Weekly capacity</th></tr>
+        <tr><td><b>Austin</b></td><td>42 Reels</td><td>21 / week</td></tr>
+        <tr><td><b>Dr. Emmanuel</b></td><td>28 Reels</td><td>14 / week</td></tr>
+        <tr><td><b>Total</b></td><td><b>70 short-form / 2 weeks</b></td><td><b>35 / week = 5 / day</b></td></tr>
+      </table>
+      <p>Those 5 core pieces/day are then distributed across IG, FB, TikTok and YouTube Shorts.</p>
+      <div class="cols3">
+        <div class="mini"><div class="mt">Carousels</div><div class="md">7 / week, created in one dedicated block.</div></div>
+        <div class="mini"><div class="mt">Stories</div><div class="md">A repeatable weekly framework — don't reinvent them each morning.</div></div>
+        <div class="mini"><div class="mt">Long form</div><div class="md">4 videos / 2 weeks → supports 2 / week on YouTube.</div></div>
+      </div>
+    </section>
+
+    <!-- 6 RHYTHM -->
+    <section id="rhythm">
+      <div class="sh"><span class="n">06</span><h2>Weekly Operating Rhythm</h2></div>
+      <p>Yasmin's week should be predictable. She shouldn't spend every day reacting to "what do we post today?"</p>
+      <div class="rhythm">
+        <div class="r"><div class="day">Mon</div><div class="task">Analytics + ideation + weekly priorities</div></div>
+        <div class="r"><div class="day">Tue</div><div class="task">Scripts / frameworks + carousel batch</div></div>
+        <div class="r"><div class="day">Wed</div><div class="task">Distribution + pipeline + upcoming batch prep</div></div>
+        <div class="r"><div class="day">Thu</div><div class="task">Batch filming / production as scheduled</div></div>
+        <div class="r"><div class="day">Fri</div><div class="task">Analytics + winners/losers + next week's optimization</div></div>
+      </div>
+      <div class="note"><b>Publishing and community monitoring continue daily.</b> Today's content was decided two weeks ago. Today's performance decides what gets created next.</div>
+    </section>
+
+    <!-- 7 PIPELINE -->
+    <section id="pipeline">
+      <div class="sh"><span class="n">07</span><h2>Content Pipeline</h2></div>
+      <p>Maintain at least <b>14 days of ready-to-publish content</b> at all times.</p>
+      <div class="pipe">
+        <span>Ideas</span><span class="arw">→</span><span>Scripted</span><span class="arw">→</span><span>Ready to film</span><span class="arw">→</span><span>Filmed</span><span class="arw">→</span><span>Editing</span><span class="arw">→</span><span>Approved</span><span class="arw">→</span><span>Scheduled</span><span class="arw">→</span><span>Published</span><span class="arw">→</span><span>Analyzed</span>
+      </div>
+      <div class="note" style="margin-bottom:0">A simple Google Sheet is enough initially. <b>Don't overbuild this.</b></div>
+    </section>
+
+    <!-- 8 SCORECARD -->
+    <section id="scorecard">
+      <div class="sh"><span class="n">08</span><h2>Yasmin's Scorecard</h2></div>
+      <p>Four primary numbers. Everything else is diagnosis.</p>
+      <div class="kpi">
+        <div class="k"><div class="m">≥ 95%</div><div class="t">Publishing consistency</div><div class="d">Did we publish what we committed to?</div></div>
+        <div class="k"><div class="m">≥ 14 days</div><div class="t">Pipeline health</div><div class="d">Two weeks of content ready or reliably moving through production.</div></div>
+        <div class="k"><div class="m">125 / wk</div><div class="t">Qualified leads</div><div class="d">An identifiable breeder who takes a measurable inbound action — ManyChat opt-in, lead form, or application. Views &amp; followers are not leads.</div></div>
+        <div class="k"><div class="m">25 / wk</div><div class="t">New TPB members <span class="pill">100 / mo</span></div><div class="d">The primary monetization KPI for the organic engine.</div></div>
+      </div>
+      <p style="margin-top:18px"><b>Secondary metrics</b> (why the four moved — don't stare at all of them weekly):</p>
+      <div class="tags"><span>Views</span><span>Reach</span><span>Watch time</span><span>Retention</span><span>Shares</span><span>Saves</span><span>Comments</span><span>Profile visits</span><span>Follower growth</span><span>DM starts</span><span>Lead conversion rate</span><span>Lead → TPB conversion</span><span>Content → Academy opportunities</span></div>
+    </section>
+
+    <!-- 9 MEETING -->
+    <section id="meeting">
+      <div class="sh"><span class="n">09</span><h2>The Weekly Content Meeting</h2></div>
+      <p>30–45 minutes. Answer five questions, then end with assigned owners and deadlines.</p>
+      <div class="qs">
+        <div class="qq">What won?<small>Which content generated the most qualified attention / leads?</small></div>
+        <div class="qq">Why did it win?<small>Topic? Hook? Person? Format? Emotion? CTA?</small></div>
+        <div class="qq">What lost?<small>What consistently underperformed?</small></div>
+        <div class="qq">What do we make more of?<small>Turn winners into series instead of constantly starting over.</small></div>
+        <div class="qq">What's blocking production?<small>Austin? Emmanuel? Editing? Approvals? Ideas? Distribution?</small></div>
+      </div>
+    </section>
+
+    <!-- 10 QUARTERLY -->
+    <section id="quarterly">
+      <div class="sh"><span class="n">10</span><h2>Quarterly Strategy</h2></div>
+      <p>Every quarter, step outside the weekly machine and evaluate the whole path:</p>
+      <div class="flowline"><span class="chip">Audience</span><span class="arw">→</span><span class="chip">Content</span><span class="arw">→</span><span class="chip">Leads</span><span class="arw">→</span><span class="chip">TPB</span><span class="arw">→</span><span class="chip">Academy</span></div>
+      <div class="tags" style="margin-bottom:16px"><span>Content pillars</span><span>Creator performance</span><span>Platform performance</span><span>Lead sources</span><span>Top converting topics</span><span>Audience quality</span><span>TPB conversion</span><span>Academy influence</span><span>Production bottlenecks</span><span>New formats</span><span>Team capacity</span></div>
+      <p>Then decide what to:</p>
+      <div class="decide"><div>Double<br>Down</div><div>Fix</div><div>Stop</div><div>Test</div></div>
+    </section>
+
+    <!-- 11 INVEST -->
+    <section id="invest">
+      <div class="sh"><span class="n">11</span><h2>Growth Path</h2></div>
+      <p>The goal is not to keep Yasmin as someone who "posts social media." She's developing into someone who can <b>operate BreedWise's organic acquisition channel.</b> As BreedWise grows, she should increasingly <b>direct the machine</b> rather than manually perform every task inside it. Skills to build:</p>
+      <div class="tags"><span>Content strategy</span><span>Copywriting / hooks</span><span>Analytics</span><span>Direct response</span><span>ManyChat</span><span>Lead generation</span><span>Creative direction</span><span>Brand strategy</span><span>AI workflows</span><span>Team management</span></div>
+    </section>
+
+    <footer>
+      BreedWise — Internal role playbook. Confidential. Do not distribute outside the team.<br>
+      Social Media Manager &amp; Strategist &nbsp;·&nbsp; v1 · <span id="yr"></span>
+    </footer>
+  </div></div>
+
+<script>
+  (function(){
+    var HASH="7c80836fc0ce4e3956aa136771a24b98d946bece11d70efef268e3612037234d"; // BreedWiseSetters26
+    function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+    function reveal(){var g=document.getElementById('gate');if(g)g.remove();document.getElementById('content').style.display='block';document.title='Content Engine · BreedWise';var y=document.getElementById('yr');if(y)y.textContent=new Date().getFullYear();}
+    function tryUnlock(){var v=(document.getElementById('pw').value||'');h(v).then(function(hex){if(hex===HASH){try{sessionStorage.setItem('ce_ok','1');}catch(e){}reveal();}else{document.getElementById('gate-err').textContent='Incorrect password. Try again.';document.getElementById('pw').select();}});}
+    document.getElementById('unlock').addEventListener('click',tryUnlock);
+    document.getElementById('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+    try{if(sessionStorage.getItem('ce_ok')==='1'){reveal();}else{document.getElementById('pw').focus();}}catch(e){document.getElementById('pw').focus();}
+  })();
+</script>
+</body>
+</html>
