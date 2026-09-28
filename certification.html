@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#0a0a0a; --panel:#141419; --panel2:#1a1a20; --line:rgba(245,242,234,.10);
+    --ink:#f5f2ea; --mid:rgba(245,242,234,.72); --muted:rgba(245,242,234,.46);
+    --gold:#cdae72; --gold2:#e2cb86; --gold-soft:rgba(205,174,114,.12); --gold-line:rgba(205,174,114,.30);
+    --grad:linear-gradient(135deg,#e2cb86,#c3a35c);
+    --green:#6dbf90; --green-soft:rgba(109,191,144,.14); --amber:#e0b062; --amber-soft:rgba(224,176,98,.14); --red:#e0807e; --red-soft:rgba(224,128,126,.12);
+    --disp:'Anton',Impact,sans-serif; --body:'Poppins',-apple-system,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(120% 50% at 50% -6%,rgba(205,174,114,.08),transparent 60%)}
+  .wrap{max-width:900px;margin:0 auto;padding:0 18px}
+  h1,h2,h3,.disp{font-family:var(--disp);font-weight:400;letter-spacing:.01em;text-transform:uppercase;line-height:1.05}
+  a{color:var(--gold2)}
+
+  #gate{position:fixed;inset:0;z-index:9999;background:#0a0a0a;display:flex;align-items:center;justify-content:center;padding:24px}
+  .gate-card{width:100%;max-width:400px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:34px 30px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  .gate-brand{font-family:var(--disp);font-size:24px;letter-spacing:2px}.gate-brand b{color:var(--gold)}
+  .gate-title{font-family:var(--disp);font-size:20px;color:var(--gold2);margin-top:16px}
+  .gate-sub{color:var(--muted);font-size:13px;margin-top:8px}
+  #pw{width:100%;margin-top:22px;background:#0d0d0d;border:1px solid var(--line);border-radius:10px;color:var(--ink);font-family:var(--body);font-size:16px;padding:13px 15px;outline:none;text-align:center}
+  #pw:focus{border-color:var(--gold)}
+  #unlock{width:100%;margin-top:12px;background:var(--grad);color:#0a0a0a;font-family:var(--body);font-weight:700;font-size:15px;letter-spacing:.04em;text-transform:uppercase;border:0;border-radius:10px;padding:14px;cursor:pointer}
+  #gate-err{color:#ff6a5d;font-size:13px;margin-top:12px;min-height:16px}
+  #app{display:none}
+
+  header{padding:36px 0 6px;text-align:center}
+  .brand{font-family:var(--disp);font-size:20px;letter-spacing:2px}.brand b{color:var(--gold)}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-top:20px}
+  header h1{font-size:clamp(26px,5vw,42px);margin-top:10px}
+  header h1 .u{color:var(--gold)}
+  .sub{color:var(--mid);font-weight:300;font-size:13.5px;margin-top:8px}
+
+  .tabs{display:flex;gap:6px;justify-content:center;margin:22px 0 4px;flex-wrap:wrap}
+  .tabs button{font-family:var(--body);font-weight:600;font-size:13.5px;color:var(--mid);background:var(--panel);border:1px solid var(--line);border-radius:30px;padding:10px 20px;cursor:pointer}
+  .tabs button.on{background:var(--grad);color:#1a1206;border-color:transparent}
+
+  .note-legal{background:var(--panel2);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:12px 16px;margin:18px 0;font-size:12.5px;color:var(--muted);line-height:1.55}
+  .note-legal b{color:var(--gold2)}
+
+  /* candidate bar */
+  .cbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:16px;position:sticky;top:8px;z-index:40;backdrop-filter:blur(8px)}
+  .cbar select{flex:1;min-width:150px;font-family:var(--body);font-size:14px;color:var(--ink);background:#0d0d0d;border:1px solid var(--line);border-radius:9px;padding:9px 11px;outline:none}
+  .cbar button{font-family:var(--body);font-weight:600;font-size:12.5px;border-radius:9px;padding:9px 12px;cursor:pointer;border:1px solid var(--line);background:var(--panel2);color:var(--mid)}
+  .cbar button.pri{background:var(--gold-soft);border-color:var(--gold-line);color:var(--gold2)}
+  .cbar .ov{width:100%;display:flex;align-items:center;gap:10px;margin-top:4px}
+  .cbar .ov .bar{flex:1;height:6px;background:var(--panel2);border-radius:6px;overflow:hidden}
+  .cbar .ov .bar i{display:block;height:100%;background:var(--grad);width:0;transition:width .3s}
+  .cbar .ov .lbl{font-size:11.5px;color:var(--muted);white-space:nowrap}
+
+  fieldset{border:1px solid var(--line);border-radius:14px;padding:0;margin:0 0 12px;background:var(--panel)}
+  .fs-h{display:flex;align-items:center;gap:12px;padding:15px 18px;cursor:pointer;user-select:none}
+  .fs-h .cv{font-family:var(--disp);color:var(--gold);font-size:15px;flex:0 0 auto}
+  .fs-h legend,.fs-h .lg{font-family:var(--body);font-weight:700;font-size:15px;color:var(--ink);flex:1;text-transform:none}
+  .fs-h .pbar{width:80px;height:6px;background:var(--panel2);border-radius:6px;overflow:hidden;flex:0 0 auto}
+  .fs-h .pbar i{display:block;height:100%;background:var(--grad);width:0;transition:width .3s}
+  .fs-h .chev{color:var(--muted);transition:transform .2s;flex:0 0 auto}
+  fieldset.open .fs-h .chev{transform:rotate(90deg)}
+  .fs-body{display:none;padding:0 18px 18px}
+  fieldset.open .fs-body{display:block}
+  .sec-h{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:16px 0 8px}
+  .sec-h:first-child{margin-top:4px}
+
+  label.ck{display:flex;align-items:flex-start;gap:11px;padding:8px 0;cursor:pointer;font-size:14px;color:var(--mid);border-top:1px solid rgba(245,242,234,.05)}
+  label.ck:first-of-type{border-top:0}
+  label.ck input{appearance:none;flex:0 0 auto;width:20px;height:20px;border:1.6px solid var(--gold-line);border-radius:6px;margin-top:1px;cursor:pointer;position:relative;transition:.12s}
+  label.ck input:checked{background:var(--grad);border-color:transparent}
+  label.ck input:checked::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#1a1206;font-size:13px;font-weight:800}
+  label.ck input:checked + span{color:var(--ink)}
+  .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 4px}
+  @media(max-width:560px){.fgrid{grid-template-columns:1fr}}
+  .fld label{display:block;font-size:11px;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:5px}
+  .fld input,textarea{width:100%;font-family:var(--body);font-size:14px;color:var(--ink);background:#0d0d0d;border:1px solid var(--line);border-radius:9px;padding:10px 12px;outline:none}
+  .fld input:focus,textarea:focus{border-color:var(--gold-line);box-shadow:0 0 0 3px var(--gold-soft)}
+  textarea{resize:vertical;min-height:64px;line-height:1.5;margin-top:6px}
+  .note-inline{font-size:12px;color:var(--muted);font-style:italic;background:var(--panel2);border-radius:9px;padding:10px 13px;margin:10px 0 2px;line-height:1.5}
+
+  .statusrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+  .statusrow .sl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .seg{display:inline-flex;gap:6px;flex-wrap:wrap}
+  .seg button{font-family:var(--body);font-size:12px;font-weight:600;color:var(--mid);background:#0d0d0d;border:1px solid var(--line);border-radius:8px;padding:8px 13px;cursor:pointer}
+  .seg button[data-v="pass"].on{background:var(--green-soft);border-color:rgba(109,191,144,.4);color:var(--green)}
+  .seg button[data-v="corrections"].on{background:var(--amber-soft);border-color:rgba(224,176,98,.4);color:var(--amber)}
+  .seg button[data-v="incomplete"].on{background:var(--red-soft);border-color:rgba(224,128,126,.4);color:var(--red)}
+  .seg button[data-v="certified"].on{background:var(--green-soft);border-color:rgba(109,191,144,.4);color:var(--green)}
+  .seg button[data-v="conditional"].on{background:var(--amber-soft);border-color:rgba(224,176,98,.4);color:var(--amber)}
+  .seg button[data-v="notyet"].on{background:var(--red-soft);border-color:rgba(224,128,126,.4);color:var(--red)}
+  .seg button.on{font-weight:700}
+  .pathseg button.on{background:var(--gold-soft);border-color:var(--gold-line);color:var(--gold2)}
+
+  .finalcard{background:linear-gradient(180deg,var(--panel),#101015);border:1px solid var(--gold-line);border-radius:16px;padding:20px 20px;margin-top:14px}
+  .finalcard h3{font-size:18px;margin-bottom:4px}
+  .gateroll{display:grid;gap:8px;margin:12px 0}
+  .gateroll .gr{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;color:var(--mid);background:var(--panel2);border-radius:9px;padding:9px 13px}
+  .gateroll .gr .st{font-family:var(--disp);font-size:13px;padding:2px 10px;border-radius:20px}
+  .st.pass{color:var(--green);background:var(--green-soft)} .st.corrections{color:var(--amber);background:var(--amber-soft)} .st.incomplete,.st.none{color:var(--muted);background:var(--panel)}
+
+  .actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:22px 0 8px}
+  .btn{font-family:var(--body);font-weight:700;font-size:14px;border-radius:44px;padding:12px 22px;cursor:pointer;border:0}
+  .btn.gold{background:var(--grad);color:#1a1206}
+  .btn.ghost{background:none;border:1px solid var(--line);color:var(--mid)}
+  .saveline{text-align:center;font-size:11.5px;color:var(--muted);margin-top:4px}
+
+  /* buildout */
+  .countdown{display:flex;align-items:center;justify-content:center;gap:14px;background:var(--panel);border:1px solid var(--gold-line);border-radius:16px;padding:18px;margin-bottom:16px}
+  .countdown .big{font-family:var(--disp);font-size:38px;color:var(--gold);line-height:1}
+  .countdown .lbl{font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+  .proj{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:12px}
+  .proj .ph{display:flex;align-items:center;gap:12px;padding:15px 18px;cursor:pointer}
+  .proj .ph .pn{font-family:var(--disp);color:var(--gold);font-size:15px}
+  .proj .ph .pt{flex:1;font-weight:700;font-size:14.5px;color:var(--ink)}
+  .proj .ph .pbar{width:70px;height:6px;background:var(--panel2);border-radius:6px;overflow:hidden}
+  .proj .ph .pbar i{display:block;height:100%;background:var(--grad);width:0;transition:.3s}
+  .proj .pbody{display:none;padding:0 18px 16px}
+  .proj.open .pbody{display:block}
+  .owner{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px}
+  .owner span{font-size:11px;color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:20px;padding:4px 11px;font-weight:600}
+
+  footer{margin:60px 0 46px;text-align:center;color:var(--muted);font-size:11px;line-height:1.7;border-top:1px solid var(--line);padding-top:22px}
+  @media print{ #gate,.tabs,.cbar button,.cbar select,.actions,.saveline,footer,.fs-h .chev,.tabs{display:none!important}
+    body{background:#fff;color:#111} fieldset,.finalcard,.proj{border-color:#ccc;background:#fff} .fs-body,.pbody{display:block!important} }
+</style>
+</head>
+<body>
+  <div id="gate">
+    <div class="gate-card">
+      <div class="gate-brand">BREED<b>WISE</b></div>
+      <div class="gate-title">Certification System</div>
+      <div class="gate-sub">Private · Reviewers &amp; team only.</div>
+      <input id="pw" type="password" placeholder="Password" autocomplete="off" spellcheck="false">
+      <button id="unlock" type="button">Unlock →</button>
+      <div id="gate-err"></div>
+    </div>
+  </div>
+
+  <div id="app"><div class="wrap">
+    <header>
+      <div class="brand">BREED<b>WISE</b></div>
+      <div class="eyebrow">Operating System &amp; Standards · BOSS™</div>
+      <h1>Certified Breeder™<br><span class="u">Certification System</span></h1>
+      <div class="sub">Validates demonstrated knowledge, documented standards, systems, preparedness, and ethics. It does <b>not</b> certify or guarantee medical outcomes, pregnancy, litter size, puppy health, or profitability.</div>
+      <div class="tabs">
+        <button id="tabAudit" class="on" onclick="showTab('audit')">Certification Audit</button>
+        <button id="tabBuild" onclick="showTab('build')">System Buildout · Nov 28</button>
+      </div>
+    </header>
+
+    <!-- AUDIT -->
+    <div id="viewAudit">
+      <div class="cbar">
+        <select id="candSel" onchange="switchCand(this.value)"></select>
+        <button class="pri" onclick="newCand()">+ New</button>
+        <button onclick="renameCand()">Rename</button>
+        <button onclick="delCand()">Delete</button>
+        <button onclick="window.print()">Print</button>
+        <div class="ov"><div class="bar"><i id="ovBar"></i></div><div class="lbl" id="ovLbl">0%</div></div>
+      </div>
+      <div class="note-legal"><b>Certification principle:</b> BreedWise verifies documentation, systems, preparedness and ethical practices. It does not determine whether an individual dog is medically appropriate for breeding, and certification does not constitute veterinary approval of breeding decisions.</div>
+      <div id="auditBody"></div>
+      <div class="saveline">Every entry saves automatically on this device, per candidate.</div>
+    </div>
+
+    <!-- BUILDOUT -->
+    <div id="viewBuild" style="display:none">
+      <div class="countdown"><div><div class="big" id="cdDays">—</div></div><div><div class="lbl">days to launch</div><div style="font-size:13px;color:var(--mid);margin-top:2px">Target operational date · <b style="color:var(--ink)">November 28, 2026</b></div></div></div>
+      <div class="cbar" style="position:static"><div class="ov" style="margin-top:0"><div class="bar"><i id="boBar"></i></div><div class="lbl" id="boLbl">0%</div></div></div>
+      <div id="buildBody"></div>
+      <div class="saveline">Shared team checklist — saves on this device.</div>
+    </div>
+
+    <footer>BreedWise — Internal certification tool. Confidential. BOSS™ and BreedWise Certified Breeder™ are BreedWise standards.<br>v1 · <span id="yr"></span></footer>
+  </div></div>
+
+<script>
+/* ---------------- config ---------------- */
+var MEMBER={ identity:'Member identity verified',
+  fields:[['name','Member Name'],['kennel','Breeding Program / Kennel'],['breeds','Breed(s)'],['enroll','Academy Enrollment Date'],['agreement','Original Agreement Version'],['revstart','Certification Review Started'],['reviewer','Assigned Reviewer']],
+  path:['Current 120-Day Academy','Grandfathered / Legacy Member'] };
+
+var GATES=[
+ {key:'g1',title:'Gate 1 · Education & Knowledge',secs:[
+   {h:'Academy Completion',checks:['Required Academy curriculum completed','Legacy coursework reviewed and credited where applicable','Any required missing education completed']},
+   {h:'Certification Assessment',checks:['Official Certification Assessment completed','Minimum overall passing score achieved','Minimum competency achieved in critical breeding/health sections'],fields:[['score','Assessment Score (/100)'],['attempt','Assessment Attempt'],['date','Assessment Date']]},
+   {h:'Knowledge Areas',checks:['Breeding & reproductive preparation','Genetics & health-testing principles','Pregnancy & whelping preparedness','Neonatal monitoring & recordkeeping','Ethical breeding practices','Puppy raising & responsible placement','Buyer qualification & client experience','Pricing & litter economics','Marketing, demand & professional representation','Breeding-program operations & systems']}
+ ]},
+ {key:'g2',title:'Gate 2 · Genetics & Health Testing',secs:[
+   {h:'Genetic Testing',checks:['Active breeding dogs identified','Genetic-testing documentation submitted','Documentation reviewed against BreedWise requirements','Breed-relevant testing verified per BreedWise standard']},
+   {h:'Health Testing',checks:['Health-testing documentation submitted','Minimum BreedWise health-testing requirement satisfied','Breed-specific requirements reviewed where applicable','Health-testing records organized and available']},
+   {h:'Disclosure & Recordkeeping',checks:['Breeder maintains health/genetic testing records','Breeder has a process for accurately disclosing relevant testing info'],note:'BreedWise is verifying documentation and adherence to certification standards — not whether an individual dog is medically appropriate for breeding.'}
+ ]},
+ {key:'g3',title:'Gate 3 · Veterinary Relationship & Preparedness',secs:[
+   {h:'',checks:['Evidence of established veterinary relationship submitted','Primary veterinary contact documented','Emergency veterinary contact documented','Veterinary/emergency plan exists for breeding and whelping','Breeder understands when veterinary involvement may be needed'],note:'BreedWise verifies preparedness, documentation and veterinary relationships. Certification does not constitute veterinary approval of breeding decisions.'}
+ ]},
+ {key:'g4',title:'Gate 4 · BOSS™ Standards',secs:[
+   {h:'A · Breeding Program Standards',checks:['Breeding goals/purpose documented','Active breeding dogs documented','Breeding records maintained','Planned breeding process documented','Health/genetic records organized']},
+   {h:'B · Whelping & Neonatal Preparedness',checks:['Whelping preparation system demonstrated','Whelping supplies/preparation documented','Emergency plan documented','Puppy identification/recordkeeping system demonstrated','Puppy monitoring system demonstrated']},
+   {h:'C · Puppy Raising & Placement',checks:['Puppy raising process documented','Buyer application/screening process demonstrated','Responsible placement process demonstrated','Puppy agreement/contract submitted','Puppy-family education process demonstrated','Post-placement support process demonstrated']},
+   {h:'D · Business & Professional Standards',checks:['Litter economics exercise completed','Pricing process demonstrated','Buyer journey/process documented','Professional marketing/representation reviewed','Core breeding-program records organized']},
+   {h:'E · BreedWise Code of Ethics',checks:['Current Code of Ethics acknowledged','Health and temperament prioritized','Responsible pairing principles demonstrated','Appropriate health-testing process demonstrated','Humane and safe environment attested/documented','Breeding-stock information represented accurately','Responsible puppy placement demonstrated','Reasonable post-sale support demonstrated','No unverified medical claims identified during audit','Certification/brand language used appropriately']}
+ ]}
+];
+var PORTFOLIO=['Academy completion record','Certification Assessment result','Code of Ethics acknowledgment','Breeding-program overview','Active breeding dog list','Breeding goals/purpose','Sample breeding records','Genetic-testing documentation','Health-testing documentation','Health/genetic recordkeeping example','Veterinary relationship verification','Emergency veterinary plan','Whelping preparation documentation','Puppy monitoring/recordkeeping example','Buyer application/screening process','Puppy agreement/contract','Puppy-family education materials','Post-placement support process','Litter economics exercise','Pricing exercise/process','Additional requested corrections completed'];
+var FINAL_FIELDS=[['deadline','Correction Deadline'],['auditdate','Final Audit Date'],['finalrev','Reviewer'],['effective','Certification Effective Date'],['certid','Certification ID']];
+var LEGACY={checks:['Original signed enrollment agreement located','Original payment obligation verified','Payment completion date verified','Original certification promise verified','Original curriculum completion reviewed','Previously completed work mapped to current requirements','Credit awarded for qualifying completed requirements','Remaining certification requirements identified','Member given individualized Legacy Certification Pathway','Member informed 120-Day Academy repurchase is NOT required for grandfathered pathway'],
+  fields:[['tuition','Original Tuition'],['paid','Amount Paid'],['balance','Remaining Contractual Balance'],['paydate','Payment Completion Date'],['window','Certification Deadline / Window']],
+  areas:[['credited','Previous Requirements Credited'],['remaining','Remaining Requirements']]};
+
+var BUILD=[
+ {t:'Certification Standard v1.0',own:['Austin','Sci: Emmanuel + Vet','Ops: Jenn'],c:['Define purpose of certification','Define what certification DOES validate','Define what certification does NOT validate','Define four certification gates','Define mandatory requirements','Define breed-specific requirement process','Define acceptable evidence','Define pass / conditional / not-yet rules','Veterinary/scientific review completed','Legal review completed','Version 1.0 approved']},
+ {t:'Certification Assessment',own:['Austin','Sci: Emmanuel + Vet'],c:['Define assessment blueprint','Define knowledge categories','Determine number of questions','Build question bank','Create scientific questions','Create business/operations questions','Create ethics questions','Establish overall passing score','Establish critical-section minimum scores','Establish retake policy','Establish waiting period if applicable','Build automated scoring','Build result/report template','Pilot test assessment internally','Veterinary/scientific approval','Final assessment published']},
+ {t:'Genetics & Health Testing Standard',own:['Sci: Emmanuel / Vet'],c:['Define genetic-testing requirement','Define minimum health-testing requirement','Determine how breed-specific standards are set','Define acceptable testing documentation','Define how abnormal/carrier results are handled','Define disclosure expectations','Define recordkeeping expectations','Create reviewer instructions','Create member-facing requirements','Scientific approval complete']},
+ {t:'Veterinary Relationship Verification',own:[],c:['Define acceptable proof of veterinary relationship','Define primary-vet requirement','Define emergency-vet requirement','Define emergency-plan requirement','Create verification form','Create member attestation','Scientific/legal review']},
+ {t:'Certification Portfolio',own:['Jenn'],c:['Finalize required document list','Create member submission checklist','Create upload system','Create file-naming convention','Create member certification folder template','Create missing-document notification','Create portfolio-complete notification','Test submission workflow']},
+ {t:'Certification Audit Rubric',own:['Austin + Jenn','Sci: Emmanuel / Vet'],c:['Create Gate 1 scoring rubric','Create Gate 2 verification rubric','Create Gate 3 verification rubric','Create Gate 4 verification rubric','Define PASS criteria','Define CONDITIONAL criteria','Define NOT YET CERTIFIED criteria','Define correction process','Define correction deadline','Define reassessment process','Define escalation process for questionable cases','Train certification reviewers']},
+ {t:'Legacy Certification Policy',own:['Austin','Ops: Jenn'],c:['Collect all historical agreement versions','Identify legacy member cohorts','Document promise made to each cohort','Document payment terms for each cohort','Document access terms for each cohort','Document certification terms for each cohort','Map old curriculum to new requirements','Establish grandfathering-credit rules','Establish legacy certification window','Create individual transition-plan template','Legal review of policy','Communicate policy to legacy members']},
+ {t:'Certification Administration',own:['Jenn'],c:['Create certification tracker','Assign certification IDs','Create certification-status fields','Build 30-day audit SLA tracking','Create correction tracking','Create certification approval workflow','Create certificate template','Create certification approval email','Create conditional/corrections email','Create not-yet-certified email','Create certification registry/database']},
+ {t:'Certification Governance',own:[],c:['Define who can approve certification','Define who can deny/hold certification','Define scientific escalation process','Define member appeal process','Define certification revocation process','Define Code of Ethics enforcement process','Define certification-status verification process','Define standards-update process','Define version-control policy']},
+ {t:'Final November 28 Launch Readiness',own:[],c:['Certification Standard v1.0 approved','Assessment live','Health/genetics requirements approved','Veterinary verification process live','Portfolio submission system live','Audit rubric approved','Legacy policy approved','Legacy members mapped','Certification tracker operational','Jenn/reviewers trained','Member communications prepared','Certificates/credential system ready','Legal review complete','Scientific review complete','First certification candidate tested end-to-end']}
+];
+
+/* ---------------- state ---------------- */
+var DB={active:null,list:{}}, BO={};
+function loadDB(){try{DB=JSON.parse(localStorage.getItem('bw_cert_v1'))||DB;}catch(e){} try{BO=JSON.parse(localStorage.getItem('bw_cert_bo_v1'))||{};}catch(e){}
+  if(!DB.active||!DB.list[DB.active]){var id=Object.keys(DB.list)[0]; if(!id){id=mkCand('Candidate 1');} DB.active=id;}}
+function saveDB(){try{localStorage.setItem('bw_cert_v1',JSON.stringify(DB));}catch(e){}}
+function saveBO(){try{localStorage.setItem('bw_cert_bo_v1',JSON.stringify(BO));}catch(e){}}
+function mkCand(label){var id='c'+Date.now()+Math.floor(Math.random()*999);DB.list[id]={label:label,rec:{}};DB.active=id;saveDB();return id;}
+function rec(){return DB.list[DB.active].rec;}
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
+function ck(k,txt){return '<label class="ck"><input type="checkbox" data-k="'+k+'"><span>'+esc(txt)+'</span></label>';}
+function fld(k,label){return '<div class="fld"><label>'+esc(label)+'</label><input type="text" data-k="'+k+'"></div>';}
+
+/* ---------------- render audit ---------------- */
+function renderAudit(){
+  var r=rec(),h='';
+  // member
+  h+='<fieldset class="open"><div class="fs-h" onclick="tog(this)"><span class="cv">◈</span><span class="lg">Member Information</span><span class="chev">›</span></div><div class="fs-body">';
+  h+=ck('mem.identity',MEMBER.identity);
+  h+='<div class="fgrid">'+MEMBER.fields.map(function(f){return fld('mem.f.'+f[0],f[1]);}).join('')+'</div>';
+  h+='<div class="sec-h">Certification Path</div><div class="seg pathseg" data-seg="mem.path">'+MEMBER.path.map(function(p){return '<button type="button" data-v="'+esc(p)+'">'+esc(p)+'</button>';}).join('')+'</div>';
+  h+='</div></fieldset>';
+  // gates
+  GATES.forEach(function(g){
+    h+='<fieldset data-gate="'+g.key+'"><div class="fs-h" onclick="tog(this)"><span class="cv" data-cv="'+g.key+'">0/0</span><span class="lg">'+g.title+'</span><span class="pbar"><i data-pb="'+g.key+'"></i></span><span class="chev">›</span></div><div class="fs-body">';
+    g.secs.forEach(function(s,si){
+      if(s.h) h+='<div class="sec-h">'+esc(s.h)+'</div>';
+      s.checks.forEach(function(c,ci){h+=ck(g.key+'.'+si+'.c.'+ci,c);});
+      if(s.fields) h+='<div class="fgrid">'+s.fields.map(function(f){return fld(g.key+'.f.'+f[0],f[1]);}).join('')+'</div>';
+      if(s.note) h+='<div class="note-inline">'+esc(s.note)+'</div>';
+    });
+    h+='<div class="statusrow"><span class="sl">Gate status</span><div class="seg" data-seg="'+g.key+'.status"><button type="button" data-v="pass">Pass</button><button type="button" data-v="corrections">Corrections</button><button type="button" data-v="incomplete">Not complete</button></div></div>';
+    h+='<div class="fld" style="margin-top:12px"><label>Reviewer notes</label><textarea data-k="'+g.key+'.notes"></textarea></div>';
+    h+='</div></fieldset>';
+  });
+  // portfolio
+  h+='<fieldset data-gate="port"><div class="fs-h" onclick="tog(this)"><span class="cv" data-cv="port">0/0</span><span class="lg">Certification Portfolio · Evidence</span><span class="pbar"><i data-pb="port"></i></span><span class="chev">›</span></div><div class="fs-body">';
+  PORTFOLIO.forEach(function(c,i){h+=ck('port.c.'+i,c);});
+  h+='</div></fieldset>';
+  // legacy (only if legacy path)
+  var legacy = r['mem.path']===MEMBER.path[1];
+  h+='<fieldset id="legacyFs" class="'+(legacy?'':'')+'" style="'+(legacy?'':'display:none')+'"><div class="fs-h" onclick="tog(this)"><span class="cv">↺</span><span class="lg">Legacy Member Review</span><span class="chev">›</span></div><div class="fs-body">';
+  LEGACY.checks.forEach(function(c,i){h+=ck('leg.c.'+i,c);});
+  h+='<div class="fgrid">'+LEGACY.fields.map(function(f){return fld('leg.f.'+f[0],f[1]);}).join('')+'</div>';
+  LEGACY.areas.forEach(function(a){h+='<div class="fld" style="margin-top:10px"><label>'+esc(a[1])+'</label><textarea data-k="leg.ta.'+a[0]+'"></textarea></div>';});
+  h+='</div></fieldset>';
+  // final
+  h+='<div class="finalcard"><h3>Final Certification Audit</h3><div class="gateroll" id="gateRoll"></div>';
+  h+='<div class="sl" style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:6px 0 8px">Final decision</div>';
+  h+='<div class="seg" data-seg="final.decision"><button type="button" data-v="certified">Certified</button><button type="button" data-v="conditional">Conditional</button><button type="button" data-v="notyet">Not yet certified</button></div>';
+  h+='<div class="fld" style="margin-top:14px"><label>Corrections required</label><textarea data-k="final.corrections"></textarea></div>';
+  h+='<div class="fgrid" style="margin-top:10px">'+FINAL_FIELDS.map(function(f){return fld('final.f.'+f[0],f[1]);}).join('')+'</div></div>';
+
+  document.getElementById('auditBody').innerHTML=h;
+  applyValues(); wireInputs(); refreshProgress(); renderGateRoll();
+}
+function tog(el){el.parentElement.classList.toggle('open');}
+
+function applyValues(){
+  var r=rec();
+  document.querySelectorAll('#auditBody [data-k]').forEach(function(el){
+    var v=r[el.getAttribute('data-k')];
+    if(el.type==='checkbox') el.checked=!!v; else el.value=(v==null?'':v);
+  });
+  document.querySelectorAll('#auditBody .seg[data-seg]').forEach(function(seg){
+    var v=r[seg.getAttribute('data-seg')];
+    seg.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-v')===v);});
+  });
+}
+function wireInputs(){
+  document.querySelectorAll('#auditBody [data-k]').forEach(function(el){
+    el.addEventListener(el.type==='checkbox'?'change':'input',function(){
+      rec()[el.getAttribute('data-k')] = el.type==='checkbox'?el.checked:el.value; saveDB();
+      if(el.type==='checkbox'){refreshProgress();renderGateRoll();}
+    });
+  });
+  document.querySelectorAll('#auditBody .seg[data-seg]').forEach(function(seg){
+    seg.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){
+      var key=seg.getAttribute('data-seg'),val=b.getAttribute('data-v');
+      rec()[key]=(rec()[key]===val?'':val); saveDB();
+      seg.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x.getAttribute('data-v')===rec()[key]);});
+      if(key==='mem.path'){ var lf=document.getElementById('legacyFs'); lf.style.display=(rec()[key]===MEMBER.path[1])?'':'none'; }
+      if(key.indexOf('.status')>0||key==='final.decision') renderGateRoll();
+    });});
+  });
+}
+function gateTotals(gk){var t=0;var g=GATES.filter(function(x){return x.key===gk;})[0];
+  if(g){g.secs.forEach(function(s){t+=s.checks.length;});} else if(gk==='port'){t=PORTFOLIO.length;} return t;}
+function gateDone(gk){var r=rec(),n=0;Object.keys(r).forEach(function(k){if(k.indexOf(gk+'.')===0&&k.indexOf('.c.')>0&&r[k]===true)n++;});return n;}
+function refreshProgress(){
+  var totalChecks=0,doneChecks=0;
+  GATES.forEach(function(g){var t=gateTotals(g.key),d=gateDone(g.key);totalChecks+=t;doneChecks+=d;
+    var pb=document.querySelector('[data-pb="'+g.key+'"]');if(pb)pb.style.width=(t?d/t*100:0)+'%';
+    var cv=document.querySelector('[data-cv="'+g.key+'"]');if(cv)cv.textContent=d+'/'+t;});
+  var pt=gateTotals('port'),pd=gateDone('port');totalChecks+=pt;doneChecks+=pd;
+  var ppb=document.querySelector('[data-pb="port"]');if(ppb)ppb.style.width=(pt?pd/pt*100:0)+'%';
+  var pcv=document.querySelector('[data-cv="port"]');if(pcv)pcv.textContent=pd+'/'+pt;
+  var pctv=totalChecks?Math.round(doneChecks/totalChecks*100):0;
+  document.getElementById('ovBar').style.width=pctv+'%';document.getElementById('ovLbl').textContent=pctv+'% · '+doneChecks+'/'+totalChecks;
+}
+function renderGateRoll(){
+  var r=rec(),roll=document.getElementById('gateRoll');if(!roll)return;var h='';
+  GATES.forEach(function(g){var st=r[g.key+'.status']||'none';h+='<div class="gr"><span>'+g.title+'</span><span class="st '+st+'">'+(st==='none'?'—':st)+'</span></div>';});
+  roll.innerHTML=h;
+}
+
+/* candidate mgmt */
+function fillCandSel(){var s=document.getElementById('candSel');s.innerHTML=Object.keys(DB.list).map(function(id){return '<option value="'+id+'"'+(id===DB.active?' selected':'')+'>'+esc(DB.list[id].label)+'</option>';}).join('');}
+function switchCand(id){DB.active=id;saveDB();fillCandSel();renderAudit();}
+function newCand(){var nm=prompt('New candidate name:','Candidate '+(Object.keys(DB.list).length+1));if(nm===null)return;mkCand(nm.trim()||'Candidate');fillCandSel();renderAudit();}
+function renameCand(){var nm=prompt('Rename candidate:',DB.list[DB.active].label);if(nm===null)return;DB.list[DB.active].label=nm.trim()||DB.list[DB.active].label;saveDB();fillCandSel();}
+function delCand(){if(Object.keys(DB.list).length<=1){alert('Keep at least one candidate.');return;}if(!confirm('Delete '+DB.list[DB.active].label+'? This cannot be undone.'))return;delete DB.list[DB.active];DB.active=Object.keys(DB.list)[0];saveDB();fillCandSel();renderAudit();}
+
+/* ---------------- render buildout ---------------- */
+function renderBuild(){
+  var h='',done=0,total=0;
+  BUILD.forEach(function(p,pi){
+    var pd=0;p.c.forEach(function(_,ci){if(BO['bo.'+pi+'.'+ci])pd++;});done+=pd;total+=p.c.length;
+    h+='<div class="proj"><div class="ph" onclick="this.parentElement.classList.toggle(\'open\')"><span class="pn">'+String(pi+1).padStart(2,'0')+'</span><span class="pt">'+esc(p.t)+'</span><span class="pbar"><i style="width:'+(pd/p.c.length*100)+'%" data-bpb="'+pi+'"></i></span><span style="font-size:11.5px;color:var(--muted);min-width:38px;text-align:right">'+pd+'/'+p.c.length+'</span></div><div class="pbody">';
+    if(p.own.length)h+='<div class="owner">'+p.own.map(function(o){return '<span>'+esc(o)+'</span>';}).join('')+'</div>';
+    p.c.forEach(function(c,ci){h+=ck('bo.'+pi+'.'+ci,c);});
+    h+='</div></div>';
+  });
+  document.getElementById('buildBody').innerHTML=h;
+  document.querySelectorAll('#buildBody [data-k]').forEach(function(el){el.checked=!!BO[el.getAttribute('data-k')];
+    el.addEventListener('change',function(){BO[el.getAttribute('data-k')]=el.checked;saveBO();renderBuild();});});
+  var pct=total?Math.round(done/total*100):0;document.getElementById('boBar').style.width=pct+'%';document.getElementById('boLbl').textContent=pct+'% · '+done+'/'+total;
+  var t=new Date('2026-11-28T00:00:00');var days=Math.ceil((t-new Date())/86400000);document.getElementById('cdDays').textContent=days>0?days:'0';
+}
+
+function showTab(t){document.getElementById('viewAudit').style.display=t==='audit'?'':'none';document.getElementById('viewBuild').style.display=t==='build'?'':'none';
+  document.getElementById('tabAudit').classList.toggle('on',t==='audit');document.getElementById('tabBuild').classList.toggle('on',t==='build');
+  if(t==='build')renderBuild();}
+
+/* ---------------- gate ---------------- */
+(function(){
+  var HASH="7c80836fc0ce4e3956aa136771a24b98d946bece11d70efef268e3612037234d"; // BreedWiseSetters26
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function reveal(){var g=document.getElementById('gate');if(g)g.remove();document.getElementById('app').style.display='block';document.title='Certification · BreedWise';document.getElementById('yr').textContent=new Date().getFullYear();loadDB();fillCandSel();renderAudit();}
+  function tryUnlock(){var v=(document.getElementById('pw').value||'');h(v).then(function(hex){if(hex===HASH){try{sessionStorage.setItem('cert_ok','1');}catch(e){}reveal();}else{document.getElementById('gate-err').textContent='Incorrect password. Try again.';document.getElementById('pw').select();}});}
+  document.getElementById('unlock').addEventListener('click',tryUnlock);
+  document.getElementById('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('cert_ok')==='1'){reveal();}else{document.getElementById('pw').focus();}}catch(e){document.getElementById('pw').focus();}
+})();
+</script>
+</body>
+</html>
