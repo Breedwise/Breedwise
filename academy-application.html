@@ -590,6 +590,14 @@ fbq('init','1337266034525554');fbq('track','PageView');
         'Willing to decide on call: '+(LBL.decide[v('decide')]||v('decide'))
       ].join('\n');
 
+      // Meta attribution — cookies + a shared event_id travel to CAPI for dedup + match quality.
+      var _ck=function(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';};
+      var _sp=new URLSearchParams(location.search);
+      var _fbp=_ck('_fbp'), _fbc=_ck('_fbc'), _fbclid=_sp.get('fbclid')||'';
+      if(!_fbc && _fbclid){ _fbc='fb.1.'+Date.now()+'.'+_fbclid; }
+      var _eid=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():('lead-'+Date.now()+'-'+Math.random().toString(16).slice(2));
+      try{ sessionStorage.setItem('bw_lead_eid',_eid); }catch(_){}
+
       const payload = {
         name: first+' '+last, email, phone,
         breeding_status: v('breeding_status'),
@@ -610,13 +618,15 @@ fbq('init','1337266034525554');fbq('track','PageView');
         alignment: v('decide'),
         mindset: v('decide'),
         notes,
-        ref, utm, source:'Academy Application Page', page: location.href
+        ref, utm, source:'Academy Application Page', page: location.href,
+        fbp:_fbp, fbc:_fbc, fbclid:_fbclid, event_id:_eid
       };
 
       // Fire-and-forget: keepalive lets the POST finish server-side after we navigate,
       // so the applicant never waits on the backend. Do NOT await it.
       try { fetch(APPLY_ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, keepalive:true, body: JSON.stringify(payload) }); } catch(_) {}
-      if (window.fbq){ fbq('track','Lead'); fbq('trackCustom','AcademyApplication'); }
+      // Canonical Lead now fires on application-received.html (deduped via event_id with the CAPI Lead).
+      if (window.fbq){ fbq('trackCustom','AcademyApplication'); }
 
       // Go straight to the confirmation page.
       setTimeout(function(){ location.href = '/application-received.html'; }, 400);
