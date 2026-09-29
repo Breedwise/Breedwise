@@ -133,7 +133,7 @@ async function boot(){
   $('#gate').classList.add('hide');$('#app').classList.add('on'); load();
 }
 async function load(){
-  const {data,error}=await sb.from('tool_submissions').select('*').order('created_at',{ascending:false});
+  const {data,error}=await sb.from('tool_submissions').select('*').not('tool','in','("site-pageview","site-session","meta-attribution")').order('created_at',{ascending:false});
   if(error){ $('#rows').innerHTML=`<tr><td colspan="7" class="empty">Couldn't load (${esc(error.message)}). If this is the first run, the submissions table may not be set up yet.</td></tr>`; return; }
   ROWS=data||[]; render();
 }
