@@ -26,11 +26,14 @@ Deno.serve(async (req) => {
     rows = data || [];
   } catch (e) { return j({ error: "query failed", detail: String(e) }, 502); }
 
-  const pvs = rows.filter((r) => r.tool === "site-pageview").map((r) => r.meta || {});
+  // Exclude verification/test rows so the dashboard reflects real traffic only.
+  const TEST_SRC = new Set(["corsdiag", "beacontest", "qa-analytics"]);
+  const isTest = (m: any) => !m || /^(qa|corstest)/i.test(String(m.sid || "")) || TEST_SRC.has(String(m.src || ""));
+  const pvs = rows.filter((r) => r.tool === "site-pageview").map((r) => r.meta || {}).filter((m) => !isTest(m));
   // Dedup session rows by sid — keep the one with the most active time (fullest snapshot).
   const bySid: Record<string, any> = {};
   rows.filter((r) => r.tool === "site-session").forEach((r) => {
-    const m = r.meta || {}; const sid = m.sid || Math.random();
+    const m = r.meta || {}; if (isTest(m)) return; const sid = m.sid || Math.random();
     if (!bySid[sid] || (Number(m.active) || 0) > (Number(bySid[sid].active) || 0)) bySid[sid] = m;
   });
   const sessions = Object.values(bySid);

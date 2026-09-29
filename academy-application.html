@@ -669,7 +669,10 @@ fbq('init','1337266034525554');fbq('track','PageView');
     var sid='s'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
     var sp=new URLSearchParams(location.search);
     var src=(sp.get('utm_source')||sp.get('src')||(sp.get('fbclid')?'facebook':''))||'';
-    function beacon(o){try{var s=JSON.stringify(o);if(navigator.sendBeacon){navigator.sendBeacon(EP,new Blob([s],{type:'application/json'}));}else{fetch(EP,{method:'POST',headers:{'Content-Type':'application/json'},keepalive:true,body:s});}}catch(_){}}
+    function beacon(o){try{var s=JSON.stringify(o);
+      if(navigator.sendBeacon && navigator.sendBeacon(EP, s)) return;   // string => text/plain => no CORS preflight => reliable cross-origin
+      fetch(EP,{method:'POST',headers:{'Content-Type':'text/plain'},keepalive:true,body:s}).catch(function(){});
+    }catch(_){}}
     beacon({t:'pv',sid:sid,page:page,ref:document.referrer||'',src:src,w:innerWidth,h:innerHeight});
     var start=Date.now(),active=0,lastTick=Date.now(),maxScroll=0,reachedForm=false,startedForm=false;
     function accrue(){if(document.visibilityState==='visible'){active+=Date.now()-lastTick;}lastTick=Date.now();}
