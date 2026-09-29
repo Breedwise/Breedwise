@@ -540,6 +540,33 @@ fbq('init','1337266034525554');fbq('track','PageView');
 
   <script>
     const APPLY_ENDPOINT = 'https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/vsl-apply';
+
+    // ---- Partial / abandoned application capture ----
+    // Fires once a valid email is entered (and on exit) even if they never submit,
+    // so a setter can follow up and attribution is saved. Not the Lead event.
+    (function(){
+      var PARTIAL = 'https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/partial-capture';
+      var re = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+      var ck = function(n){ var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)'); return m?m.pop():''; };
+      var sp = new URLSearchParams(location.search);
+      var last='', started=false; window.__submitted=false;
+      var gv = function(id){ var el=document.getElementById(id); return el?(el.value||'').trim():''; };
+      function partial(reason){
+        if(window.__submitted) return;
+        var email=gv('email').toLowerCase(); if(!re.test(email)) return;
+        var phone=gv('phone'); var key=email+'|'+phone;
+        if(key===last && reason!=='exit') return; last=key;
+        var fbc=ck('_fbc'), fbclid=sp.get('fbclid')||''; if(!fbc && fbclid) fbc='fb.1.'+Date.now()+'.'+fbclid;
+        var payload={ email:email, phone:phone, first:gv('first'), last:gv('last'), breeds:gv('breeds'),
+          reason:reason, fbp:ck('_fbp'), fbc:fbc, fbclid:fbclid, page:location.href };
+        try{ fetch(PARTIAL, {method:'POST', headers:{'Content-Type':'application/json'}, keepalive:true, body:JSON.stringify(payload)}); }catch(_){}
+        if(!started && window.fbq){ started=true; try{ fbq('trackCustom','StartedApplication'); }catch(_){} }
+      }
+      function hook(id){ var el=document.getElementById(id); if(el) el.addEventListener('blur', function(){ partial(id); }); }
+      hook('email'); hook('phone');
+      document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='hidden') partial('exit'); });
+      window.addEventListener('pagehide', function(){ partial('exit'); });
+    })();
     const $  = s => document.querySelector(s);
     const $$ = s => Array.from(document.querySelectorAll(s));
     $('#yr').textContent = new Date().getFullYear();
@@ -568,6 +595,7 @@ fbq('init','1337266034525554');fbq('track','PageView');
 
     $('#applyForm').addEventListener('submit', async (e)=>{
       e.preventDefault();
+      window.__submitted = true;                    // stop partial-capture from firing on our own redirect
       if ($('#company').value) return; // honeypot
       const setErr = m => { $('#err').textContent = m; };
       const first=v('first'), last=v('last'), email=v('email').toLowerCase(), phone=v('phone');

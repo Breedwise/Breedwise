@@ -342,7 +342,7 @@ Deno.serve(async (req) => {
   try {
     const cc = await pushCC360(d, sc, owner);
     result.cc360 = cc.ok; result.cc360_fields = (cc as any).fields ?? 0; if (!cc.ok) { result.cc360_status = cc.status; result.cc360_err = (cc as any).err; result.cc360_contact = (cc as any).contactId; }
-    if ((cc as any).contactId) { const op = await createOpportunity(d, sc, (cc as any).contactId); result.cc360_opp = op.ok; }
+    if ((cc as any).contactId) { result.cc360_contact_id = (cc as any).contactId; const op = await createOpportunity(d, sc, (cc as any).contactId); result.cc360_opp = op.ok; }
   } catch (e) { result.cc360_error = String((e as any)?.message ?? e); }
 
   // 3) Dialer mirror + analytics + alerts — run in the BACKGROUND after responding,
@@ -366,6 +366,8 @@ Deno.serve(async (req) => {
     } catch (_) { /* */ }
     try { await pushSheets(d, sc, owner); } catch (_) { /* */ }
     try { await fbCapi(d, sc, referer, attr); } catch (_) { /* */ }
+    // Completed application supersedes any earlier partial capture — clear those tags.
+    try { if (result.cc360_contact_id) await fetch(`${GH}/contacts/${result.cc360_contact_id}/tags`, { method: "DELETE", headers: ghHead, body: JSON.stringify({ tags: ["application-partial", "application-started"] }) }); } catch (_) { /* */ }
     // Persist attribution keyed by email so the off-page Schedule CAPI event (fired weeks later
     // from CC360 when the call is booked) can match back to the original ad click.
     try {
