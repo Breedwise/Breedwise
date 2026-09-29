@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Puppy Application — ABR Kennels | Home of the Rain Danes</title>
+<meta name="description" content="Apply for an AKC Great Dane puppy from ABR Kennels — raised with faith and family in Glasgow, KY.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap">
+<style>
+  :root{
+    --cream:#f7f1e4; --cream2:#efe7d4; --ink:#2b2420; --mid:#5c534b; --muted:#8a8075;
+    --purple:#6f4a9e; --purple2:#8a63bb; --purple-soft:rgba(111,74,158,.10); --purple-line:rgba(111,74,158,.25);
+    --red:#c0392b; --line:rgba(43,36,32,.14); --green:#3f9e6a;
+    --disp:'Alfa Slab One',Georgia,serif; --body:'Poppins',-apple-system,sans-serif; --script:'Pacifico',cursive;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px;margin:0 auto;padding:0 20px}
+  h1,h2,h3,.disp{font-family:var(--disp);font-weight:400;line-height:1.1}
+  a{color:var(--purple)}
+  .hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0}
+
+  header{background:rgba(247,241,228,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;max-width:720px;margin:0 auto}
+  .brandline{display:flex;align-items:center;gap:10px;font-family:var(--disp);color:var(--purple);font-size:18px}
+  .brandline svg{height:34px;width:auto}
+  .nav a.back{font-family:var(--body);font-size:13px;font-weight:500;color:var(--ink)}
+
+  .head{text-align:center;padding:44px 0 8px}
+  .head .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--purple);font-weight:700}
+  .head h1{font-size:clamp(30px,6vw,46px);color:var(--purple);margin-top:10px}
+  .head .tag{font-family:var(--script);color:var(--ink);font-size:22px;margin-top:2px}
+  .head p{color:var(--mid);font-weight:300;max-width:34em;margin:14px auto 0;font-size:15px}
+
+  form{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px 26px 26px;margin:26px 0 40px;box-shadow:0 26px 60px -40px rgba(0,0,0,.4)}
+  .sec{margin-top:26px}.sec:first-child{margin-top:0}
+  .sec-t{font-family:var(--disp);font-size:17px;color:var(--ink);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .sec-t .n{width:26px;height:26px;border-radius:50%;background:var(--purple-soft);border:1px solid var(--purple-line);color:var(--purple);font-size:13px;display:flex;align-items:center;justify-content:center;font-family:var(--disp)}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+  @media(max-width:560px){.row{grid-template-columns:1fr}}
+  .fld{margin-bottom:13px}.fld.full{grid-column:1/-1}
+  label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:6px}
+  .req{color:var(--red)}
+  input,select,textarea{width:100%;font-family:var(--body);font-size:15px;color:var(--ink);background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:12px 13px;outline:none;transition:.15s}
+  input:focus,select:focus,textarea:focus{border-color:var(--purple-line);box-shadow:0 0 0 3px var(--purple-soft);background:#fff}
+  textarea{resize:vertical;min-height:80px;line-height:1.55}
+  select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236f4a9e' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:32px}
+  .btn{width:100%;background:var(--purple);color:#fff;font-family:var(--body);font-weight:700;font-size:16px;border:0;border-radius:44px;padding:16px;cursor:pointer;margin-top:22px;transition:.18s;box-shadow:0 14px 34px -14px rgba(111,74,158,.6)}
+  .btn:hover{background:var(--purple2);transform:translateY(-1px)}
+  .btn:disabled{opacity:.65;cursor:default;transform:none}
+  .consent{font-size:11.5px;color:var(--muted);text-align:center;margin-top:14px;line-height:1.5}
+  .err{color:var(--red);font-size:13.5px;text-align:center;margin-top:12px;min-height:1px}
+
+  .done{display:none;text-align:center;background:#fff;border:1px solid var(--purple-line);border-radius:20px;padding:44px 28px;margin:26px 0 40px;box-shadow:0 26px 60px -40px rgba(0,0,0,.4)}
+  .done.show{display:block}
+  .done .ic{width:64px;height:64px;border-radius:50%;background:var(--purple-soft);border:1px solid var(--purple-line);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:30px;color:var(--purple)}
+  .done h2{font-size:28px;color:var(--purple)}
+  .done p{color:var(--mid);font-weight:300;max-width:30em;margin:12px auto 0}
+
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 0 40px}
+  footer .fb{font-family:var(--disp);color:var(--ink);font-size:15px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <g id="abrmark">
+    <path d="M8 120 Q100 100 192 120" fill="none" stroke="#2b2420" stroke-width="5" stroke-linecap="round"/>
+    <g fill="#2b2420">
+      <rect x="52" y="66" width="7" height="52" rx="1"/><rect x="43" y="78" width="25" height="7" rx="1"/>
+      <rect x="96" y="40" width="9" height="78" rx="1"/><rect x="84" y="56" width="33" height="9" rx="1"/>
+      <rect x="142" y="66" width="7" height="52" rx="1"/><rect x="133" y="78" width="25" height="7" rx="1"/>
+    </g>
+    <path fill="#2b2420" d="M70 118 C70 108 71 101 73 98 C74 96 74 92 73 89 C72 86 73 83 76 82 C77 78 80 74 85 73 C88 72 92 72 95 74 C98 71 101 69 104 69 C104 66 105 63 107 62 C108 60 110 60 111 62 C112 64 112 67 111 69 C114 70 116 72 117 75 C121 76 125 79 127 84 C129 88 130 94 130 100 C130 108 129 114 128 118 L124 118 C124 112 123 106 122 101 C120 104 117 106 114 107 C112 110 111 114 111 118 L107 118 C107 114 108 110 109 107 C105 108 100 108 96 107 C96 111 96 115 96 118 L92 118 C92 114 92 110 92 107 C89 106 87 105 85 103 C84 108 83 113 83 118 L79 118 C79 112 80 106 81 101 C79 105 76 110 74 114 C73 116 72 117 70 118 Z"/>
+  </g>
+</defs></svg>
+
+<header><div class="nav">
+  <a class="brandline" href="abr-kennels.html"><svg viewBox="0 0 200 130"><use href="#abrmark"/></svg><span>ABR Kennels</span></a>
+  <a class="back" href="abr-kennels.html">← Back to site</a>
+</div></header>
+
+<div class="wrap">
+  <div class="head">
+    <div class="eyebrow">AKC Great Dane Puppies</div>
+    <h1>Puppy Application</h1>
+    <div class="tag">Home of the Rain Danes</div>
+    <p>Tell us about your home and what you're looking for. We place our Danes with loving, prepared families — and we're here for the life of your dog.</p>
+  </div>
+
+  <form id="f" autocomplete="on" novalidate>
+    <input class="hp" type="text" id="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <div class="sec">
+      <div class="sec-t"><span class="n">1</span>About You</div>
+      <div class="row">
+        <div class="fld"><label>First name <span class="req">*</span></label><input id="first" type="text" autocomplete="given-name"></div>
+        <div class="fld"><label>Last name <span class="req">*</span></label><input id="last" type="text" autocomplete="family-name"></div>
+      </div>
+      <div class="row">
+        <div class="fld"><label>Email <span class="req">*</span></label><input id="email" type="email" placeholder="you@email.com" autocomplete="email"></div>
+        <div class="fld"><label>Phone <span class="req">*</span></label><input id="phone" type="tel" placeholder="Best number to reach you" autocomplete="tel"></div>
+      </div>
+      <div class="fld full"><label>City &amp; State</label><input id="location" type="text" placeholder="e.g. Glasgow, KY"></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-t"><span class="n">2</span>What You're Looking For</div>
+      <div class="row">
+        <div class="fld"><label>I'm interested in</label>
+          <select id="interest"><option value="" disabled selected>Select…</option><option>A puppy now</option><option>Joining the waitlist</option><option>Stud service</option><option>Boarding &amp; Training</option></select></div>
+        <div class="fld"><label>Timeframe</label>
+          <select id="timeframe"><option value="" disabled selected>Select…</option><option>As soon as possible</option><option>1–3 months</option><option>3–6 months</option><option>Just exploring</option></select></div>
+        <div class="fld"><label>Color preference</label>
+          <select id="color"><option value="" disabled selected>Select…</option><option>No preference</option><option>Harlequin</option><option>Mantle</option><option>Blue</option><option>Chocolate</option><option>Lilac</option><option>Fawn</option><option>Tan point</option></select></div>
+        <div class="fld"><label>Sex preference</label>
+          <select id="sex"><option value="" disabled selected>Select…</option><option>No preference</option><option>Male</option><option>Female</option></select></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-t"><span class="n">3</span>Your Home</div>
+      <div class="row">
+        <div class="fld"><label>Home type</label>
+          <select id="home"><option value="" disabled selected>Select…</option><option>House</option><option>Farm / acreage</option><option>Townhome</option><option>Apartment</option></select></div>
+        <div class="fld"><label>Do you own or rent?</label>
+          <select id="ownrent"><option value="" disabled selected>Select…</option><option>Own</option><option>Rent (landlord allows large dogs)</option></select></div>
+        <div class="fld"><label>Fenced yard?</label>
+          <select id="yard"><option value="" disabled selected>Select…</option><option>Yes, fully fenced</option><option>Partially</option><option>No</option></select></div>
+        <div class="fld"><label>Experience with giant breeds</label>
+          <select id="experience"><option value="" disabled selected>Select…</option><option>First-time giant-breed owner</option><option>Some experience</option><option>Very experienced</option></select></div>
+      </div>
+      <div class="row">
+        <div class="fld"><label>Other pets in the home</label><input id="pets" type="text" placeholder="e.g. 1 dog, 2 cats — or none"></div>
+        <div class="fld"><label>Children &amp; ages</label><input id="kids" type="text" placeholder="e.g. 2 kids (6 &amp; 9) — or none"></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-t"><span class="n">4</span>A Little More</div>
+      <div class="fld full"><label>Why a Great Dane, and what are you hoping for in a puppy?</label><textarea id="why" placeholder="Tell us a little about what you're looking for."></textarea></div>
+      <div class="row">
+        <div class="fld"><label>How did you hear about us?</label><input id="referral" type="text" placeholder="Instagram, a friend, our sign…"></div>
+        <div class="fld"><label>Veterinarian (optional)</label><input id="vet" type="text" placeholder="Clinic name / city"></div>
+      </div>
+      <div class="fld full"><label>Anything else you'd like us to know?</label><textarea id="notes" placeholder="Optional"></textarea></div>
+    </div>
+
+    <button type="submit" class="btn" id="submitBtn">Submit My Application →</button>
+    <div class="err" id="err"></div>
+    <div class="consent">By submitting, you agree to be contacted by ABR Kennels about your application. We respect your privacy and never share your information.</div>
+  </form>
+
+  <div class="done" id="done">
+    <div class="ic">✝</div>
+    <h2>Thank You!</h2>
+    <p>Your application has been received. Dawn will personally review it and reach out to you soon. We can't wait to help you find your ABR Dane.</p>
+    <p style="margin-top:18px"><a href="abr-kennels.html">← Back to ABR Kennels</a></p>
+  </div>
+</div>
+
+<footer>
+  <div class="fb">ABR Kennels</div>
+  Glasgow, KY · <a href="tel:+18139928635">813.992.8635</a> · <a href="mailto:Abrkennels@yahoo.com">Abrkennels@yahoo.com</a>
+</footer>
+
+<script>
+  var ENDPOINT='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/puppy-application';
+  var $=function(s){return document.querySelector(s);};
+  var emailRe=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  var v=function(id){var el=document.getElementById(id);return el?(el.value||'').trim():'';};
+  $('#f').addEventListener('submit',function(e){
+    e.preventDefault();
+    if($('#company').value) return;
+    var err=$('#err');
+    var first=v('first'),last=v('last'),email=v('email').toLowerCase(),phone=v('phone');
+    if(!first||!last){err.textContent='Please enter your first and last name.';return;}
+    if(!emailRe.test(email)){err.textContent='Please enter a valid email address.';return;}
+    if(!phone){err.textContent='Please enter a phone number.';return;}
+    err.textContent='';
+    var payload={ client:'abr-kennels', kennel:'ABR Kennels',
+      first:first, last:last, email:email, phone:phone, location:v('location'),
+      interest:v('interest'), timeframe:v('timeframe'), color:v('color'), sex:v('sex'),
+      home:v('home'), ownrent:v('ownrent'), yard:v('yard'), experience:v('experience'),
+      pets:v('pets'), kids:v('kids'), why:v('why'), referral:v('referral'), vet:v('vet'), notes:v('notes') };
+    var btn=$('#submitBtn'); btn.disabled=true; btn.textContent='Submitting…';
+    fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},keepalive:true,body:JSON.stringify(payload)})
+      .then(function(r){return r.json();}).then(function(d){
+        if(d&&d.ok){ $('#f').style.display='none'; document.querySelector('.head').style.display='none'; $('#done').classList.add('show'); window.scrollTo(0,0); }
+        else{ btn.disabled=false; btn.textContent='Submit My Application →'; err.textContent=(d&&d.error)||'Something went wrong — please try again.'; }
+      }).catch(function(){ btn.disabled=false; btn.textContent='Submit My Application →'; err.textContent='Network error — please try again.'; });
+  });
+</script>
+</body>
+</html>
