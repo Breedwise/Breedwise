@@ -686,7 +686,8 @@ fbq('init','1337266034525554');fbq('track','PageView');
     var dwell={},inview={};
     if('IntersectionObserver' in window){
       var io=new IntersectionObserver(function(es){es.forEach(function(en){var i=secs.indexOf(en.target);if(i<0)return;var lb=labels[i];
-        if(en.isIntersecting&&en.intersectionRatio>=0.5){inview[i]=Date.now();if(formEl&&(en.target===formEl||en.target.contains(formEl)))reachedForm=true;}
+        if(en.isIntersecting&&formEl&&(en.target===formEl||en.target.contains(formEl)))reachedForm=true;
+        if(en.isIntersecting&&en.intersectionRatio>=0.5){inview[i]=Date.now();}
         else if(inview[i]){dwell[lb]=(dwell[lb]||0)+(Date.now()-inview[i])/1000;delete inview[i];}});},{threshold:[0,0.5,1]});
       secs.forEach(function(s){io.observe(s);});
     }
