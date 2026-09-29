@@ -660,5 +660,38 @@ fbq('init','1337266034525554');fbq('track','PageView');
       setTimeout(function(){ location.href = '/application-received.html'; }, 400);
     });
   </script>
+
+  <!-- BreedWise first-party engagement tracker (anonymous) -->
+  <script>
+  (function(){
+    var EP='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/track';
+    var page=(location.pathname.split('/').pop()||'index');
+    var sid='s'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+    var sp=new URLSearchParams(location.search);
+    var src=(sp.get('utm_source')||sp.get('src')||(sp.get('fbclid')?'facebook':''))||'';
+    function beacon(o){try{var s=JSON.stringify(o);if(navigator.sendBeacon){navigator.sendBeacon(EP,new Blob([s],{type:'application/json'}));}else{fetch(EP,{method:'POST',headers:{'Content-Type':'application/json'},keepalive:true,body:s});}}catch(_){}}
+    beacon({t:'pv',sid:sid,page:page,ref:document.referrer||'',src:src,w:innerWidth,h:innerHeight});
+    var start=Date.now(),active=0,lastTick=Date.now(),maxScroll=0,reachedForm=false,startedForm=false;
+    function accrue(){if(document.visibilityState==='visible'){active+=Date.now()-lastTick;}lastTick=Date.now();}
+    setInterval(accrue,1000);
+    function onScroll(){var sh=document.documentElement.scrollHeight||1;var p=Math.min(100,Math.round((window.scrollY+innerHeight)/sh*100));if(p>maxScroll)maxScroll=p;}
+    window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+    document.addEventListener('focusin',function(e){if(e.target.closest&&e.target.closest('form'))startedForm=true;});
+    var formEl=document.querySelector('#apply,form');
+    var secs=[].slice.call(document.querySelectorAll('main > section, section')).filter(function(v,i,a){return a.indexOf(v)===i;}).slice(0,24);
+    var labels=secs.map(function(el,i){var h=el.querySelector('h1,h2,.apply-h,.disp');var t=h?h.textContent.replace(/\s+/g,' ').trim():'';return t?t.slice(0,44):'section '+(i+1);});
+    var dwell={},inview={};
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(es){es.forEach(function(en){var i=secs.indexOf(en.target);if(i<0)return;var lb=labels[i];
+        if(en.isIntersecting&&en.intersectionRatio>=0.5){inview[i]=Date.now();if(formEl&&(en.target===formEl||en.target.contains(formEl)))reachedForm=true;}
+        else if(inview[i]){dwell[lb]=(dwell[lb]||0)+(Date.now()-inview[i])/1000;delete inview[i];}});},{threshold:[0,0.5,1]});
+      secs.forEach(function(s){io.observe(s);});
+    }
+    function send(){accrue();Object.keys(inview).forEach(function(i){var lb=labels[i];dwell[lb]=(dwell[lb]||0)+(Date.now()-inview[i])/1000;inview[i]=Date.now();});
+      beacon({t:'session',sid:sid,page:page,src:src,dur:(Date.now()-start)/1000,active:active/1000,scroll:maxScroll,sections:dwell,reachedForm:reachedForm,startedForm:startedForm});}
+    document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')send();});
+    window.addEventListener('pagehide',send);
+  })();
+  </script>
 </body>
 </html>
