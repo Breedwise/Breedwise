@@ -28,6 +28,15 @@ Deno.serve(async (req) => {
   if (!SECRET || String(b.secret ?? "") !== SECRET) return j({ error: "unauthorized" }, 403);
   if (!PIXEL || !TOKEN) return j({ error: "META_PIXEL_ID / META_CAPI_TOKEN not configured" }, 500);
 
+  // Token validator — hits the pixel's metadata with the token; sends NO event.
+  if (b.validate) {
+    try {
+      const r = await fetch(`https://graph.facebook.com/v19.0/${PIXEL}?fields=name,id&access_token=${TOKEN}`);
+      const rj = await r.json().catch(() => ({}));
+      return j({ ok: r.ok, valid: r.ok, pixel: rj }, r.ok ? 200 : 200);
+    } catch (e) { return j({ ok: false, valid: false, error: String(e) }); }
+  }
+
   const email = String(b.email ?? "").trim().toLowerCase();
   const phone = String(b.phone ?? "").replace(/[^0-9]/g, "");
   if (!email && !phone) return j({ error: "email or phone required" }, 400);
