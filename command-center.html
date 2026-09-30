@@ -5,223 +5,359 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0b0e13;--panel:#141a22;--panel2:#0f151c;--line:#232c38;--ink:#eef3f9;--mid:#c0cad6;--muted:#7f8b99;
-    --gold:#c6a35c;--green:#54b487;--red:#e8695f;--blue:#5aa9e6;--purple:#9a7bd0;
-    --disp:'Georgia',serif;
+    --bg:#0a0d12;--bg2:#0c1017;--panel:#12181f;--panel2:#0e131a;--line:#212b36;--line2:#2c3846;
+    --ink:#f0f4f9;--mid:#bcc6d2;--muted:#7c8896;--faint:#586472;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--red:#e8695f;--blue:#5aa9e6;--purple:#a481d8;--amber:#e0a955;
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   }
   *{box-sizing:border-box}
   html,body{margin:0;height:100%}
-  body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  body{background:radial-gradient(1200px 700px at 78% -8%,rgba(201,168,98,.07),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
 
   /* gate */
   #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:50}
   #gate .box{width:min(92vw,380px);text-align:center}
-  #gate .brand{font-size:13px;letter-spacing:.24em;color:var(--muted);font-weight:700;margin-bottom:18px}
-  #gate .brand b{color:var(--gold)}
-  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em}
-  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#1a130a;font-weight:700;font-size:15px;cursor:pointer}
+  #gate .mark{margin:0 auto 18px}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#1a130a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
   #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
   #gate .hint{color:var(--muted);font-size:12px;margin-top:14px}
 
-  #app{display:none;min-height:100vh;padding:16px 18px 22px}
-  header.bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
-  .bar .brand{font-size:13px;letter-spacing:.22em;color:var(--mid);font-weight:700}
-  .bar .brand b{color:var(--gold)}
-  .bar .title{font-size:15px;color:var(--muted);font-weight:300}
+  /* brand mark */
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),#a9863f);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 14px rgba(201,168,98,.28)}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#15100a;font-size:18px;line-height:1}
+  .logo .wm{font-size:16px;letter-spacing:.2em;font-weight:700;color:var(--ink)}
+  .logo .wm b{color:var(--gold);font-weight:700}
+
+  #app{display:none;min-height:100vh;padding:16px 20px 18px}
+
+  /* top bar */
+  header.bar{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+  .bar .sub{font-family:var(--disp);font-size:15px;color:var(--mid);font-weight:500}
+  .bar .sub b{color:var(--gold);font-weight:600}
   .bar .spacer{flex:1}
   .live{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
-  .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(84,180,135,.6);animation:pulse 2s infinite}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
   .dot.stale{background:var(--red);animation:none}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(84,180,135,.5)}70%{box-shadow:0 0 0 9px rgba(84,180,135,0)}100%{box-shadow:0 0 0 0 rgba(84,180,135,0)}}
-  .refresh{background:var(--panel);border:1px solid var(--line);color:var(--mid);border-radius:9px;padding:7px 12px;font-size:12px;cursor:pointer}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(87,185,138,.5)}70%{box-shadow:0 0 0 9px rgba(87,185,138,0)}100%{box-shadow:0 0 0 0 rgba(87,185,138,0)}}
+  .refresh{background:var(--panel);border:1px solid var(--line);color:var(--mid);border-radius:9px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:var(--sans)}
   .refresh:hover{border-color:var(--gold);color:var(--ink)}
 
-  .grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;height:calc(100vh - 74px)}
-  @media(max-width:820px){.grid{grid-template-columns:1fr;grid-template-rows:none;height:auto}}
-  .tile{background:linear-gradient(160deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:18px;padding:20px 22px;display:flex;flex-direction:column;overflow:hidden;position:relative;min-height:230px}
-  .tile .th{display:flex;align-items:center;gap:9px;margin-bottom:4px}
-  .tile .th .ic{font-size:15px}
-  .tile .th h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0}
-  .tile .th .tag{margin-left:auto;font-size:11px;color:var(--muted);font-weight:300}
-  .accent-blue .th .ic{color:var(--blue)} .accent-purple .th .ic{color:var(--purple)}
-  .accent-gold .th .ic{color:var(--gold)} .accent-green .th .ic{color:var(--green)}
+  /* goal strip */
+  .strip{background:linear-gradient(120deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:18px;padding:16px 22px;margin-bottom:14px;display:grid;grid-template-columns:minmax(340px,1.4fr) 1px 2fr;gap:22px;align-items:center}
+  @media(max-width:900px){.strip{grid-template-columns:1fr;gap:16px}.strip .vline{display:none}}
+  .goal .top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .goal .lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .goal .big{font-family:var(--disp);font-size:38px;line-height:1;color:var(--gold);font-weight:600}
+  .goal .of{font-size:15px;color:var(--muted);font-weight:400}
+  .goal .badge{margin-left:auto;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:20px}
+  .badge.on{background:rgba(87,185,138,.16);color:var(--green)}
+  .badge.off{background:rgba(232,105,95,.16);color:var(--red)}
+  .track{position:relative;height:12px;background:#0a0e13;border:1px solid var(--line);border-radius:8px;margin:12px 0 8px;overflow:visible}
+  .track .fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--gold),var(--gold-soft));border-radius:8px 4px 4px 8px;transition:width .8s ease}
+  .track .pace{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink);opacity:.6}
+  .track .pace::after{content:'pace';position:absolute;top:-15px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--muted);letter-spacing:.05em}
+  .goal .row{display:flex;gap:20px;font-size:12px;color:var(--muted)}
+  .goal .row b{color:var(--ink);font-weight:600}
+  .vline{background:var(--line);width:1px;height:70px;align-self:center}
+  .counters{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+  @media(max-width:900px){.counters{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:560px){.counters{grid-template-columns:repeat(2,1fr)}}
+  .ctr .v{font-family:var(--disp);font-size:26px;font-weight:600;line-height:1;color:var(--ink)}
+  .ctr .v .d{font-family:var(--sans);font-size:12px;font-weight:600;margin-left:5px}
+  .ctr .d.up{color:var(--green)} .ctr .d.dn{color:var(--red)}
+  .ctr .l{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:4px}
 
-  .hero{font-family:var(--disp);font-size:52px;line-height:1;margin:8px 0 2px;letter-spacing:-.5px}
-  .hero.gold{color:var(--gold)} .hero.green{color:var(--green)} .hero.blue{color:var(--blue)} .hero.purple{color:var(--purple)}
-  .hero small{font-size:20px;color:var(--muted);font-family:-apple-system,sans-serif;font-weight:300;margin-left:6px}
-  .herosub{font-size:12.5px;color:var(--muted);font-weight:300;margin-bottom:12px}
+  /* grid */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  .tile{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;overflow:hidden;position:relative;min-height:250px}
+  .tile::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px}
+  .tile.green::before{background:var(--green)} .tile.blue::before{background:var(--blue)}
+  .tile.purple::before{background:var(--purple)} .tile.gold::before{background:var(--gold)}
+  .th{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+  .th h2{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--mid);font-weight:700;margin:0}
+  .th .ic{font-size:14px}
+  .green .th .ic{color:var(--green)} .blue .th .ic{color:var(--blue)} .purple .th .ic{color:var(--purple)} .gold .th .ic{color:var(--gold)}
+  .th .tag{margin-left:auto;font-size:11px;color:var(--muted);font-weight:400}
 
-  .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 14px;margin-top:auto}
-  .stat .v{font-size:19px;font-weight:600;color:var(--ink)}
-  .stat .v.sm{font-size:16px}
-  .stat .l{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
-  .stat .v .up{color:var(--green);font-size:12px} .stat .v .dn{color:var(--red);font-size:12px}
+  .hero{font-family:var(--disp);font-size:46px;line-height:1;margin:6px 0 2px;letter-spacing:-.5px;font-weight:600}
+  .green .hero{color:var(--green)} .blue .hero{color:var(--blue)} .purple .hero{color:var(--purple)} .gold .hero{color:var(--gold)}
+  .hero small{font-size:17px;color:var(--muted);font-family:var(--sans);font-weight:400;margin-left:7px}
+  .herosub{font-size:12.5px;color:var(--muted);font-weight:400;margin-bottom:10px}
+  .herosub .up{color:var(--green);font-weight:600} .herosub .dn{color:var(--red);font-weight:600}
 
-  /* funnel bars */
-  .bars{margin-top:10px;display:flex;flex-direction:column;gap:7px;overflow-y:auto}
-  .brow{display:grid;grid-template-columns:130px 1fr auto;align-items:center;gap:10px;font-size:12.5px}
+  .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px 14px;margin-top:auto}
+  .stat .v{font-size:18px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+  .stat .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+
+  /* funnel */
+  .funnel{display:flex;flex-direction:column;gap:3px;margin-top:4px}
+  .fstep{display:grid;grid-template-columns:120px 1fr auto;align-items:center;gap:12px}
+  .fstep .nm{font-size:12px;color:var(--mid)}
+  .fstep .track2{height:22px;background:#0a0e13;border-radius:6px;overflow:hidden}
+  .fstep .fill2{height:100%;border-radius:6px;min-width:3px;background:linear-gradient(90deg,var(--blue),#7cc0f0);display:flex;align-items:center;justify-content:flex-end;padding-right:8px}
+  .fstep .fill2 b{font-size:12px;color:#08121c;font-weight:700}
+  .fstep .rate{font-size:12px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .fstep .rate b{color:var(--green);font-weight:600}
+  .fconv{grid-column:2;height:13px;display:flex;align-items:center;padding-left:2px;font-size:10px;color:var(--faint)}
+
+  /* pipeline bars */
+  .bars{margin-top:8px;display:flex;flex-direction:column;gap:6px;overflow-y:auto;flex:1}
+  .brow{display:grid;grid-template-columns:132px 1fr auto;align-items:center;gap:10px;font-size:12px}
   .brow .nm{color:var(--mid);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .brow .track{height:9px;background:#0a0e13;border-radius:6px;overflow:hidden}
-  .brow .fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--blue));border-radius:6px;min-width:2px}
+  .brow .track3{height:8px;background:#0a0e13;border-radius:6px;overflow:hidden}
+  .brow .fill3{height:100%;background:linear-gradient(90deg,var(--purple),#c3a6ec);border-radius:6px;min-width:2px}
   .brow .ct{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-  .brow .ct span{color:var(--muted);font-weight:300;font-size:11px}
+  .brow .ct span{color:var(--muted);font-weight:400;font-size:11px}
 
-  .foot{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);display:flex;gap:18px;font-size:12px;color:var(--muted)}
+  .foot{margin-top:11px;padding-top:10px;border-top:1px solid var(--line);display:flex;gap:16px;font-size:12px;color:var(--muted);flex-wrap:wrap}
   .foot b{color:var(--ink);font-weight:600}
+  .foot .warn b{color:var(--red)}
 
-  .empty{margin:auto;text-align:center;color:var(--muted);max-width:280px}
+  .empty{margin:auto;text-align:center;color:var(--muted);max-width:290px;padding:10px 0}
   .empty .big{font-size:30px;color:var(--mid);font-family:var(--disp);margin-bottom:6px}
-  .empty .cta{margin-top:10px;font-size:12px;color:var(--gold);word-break:break-word}
+  .empty .cta{margin-top:10px;font-size:12px;color:var(--gold);line-height:1.5}
   .err{color:var(--red);font-size:11.5px;margin-top:6px}
-  .skl{color:var(--muted);opacity:.5}
+  .skl{color:var(--muted);opacity:.4}
+  footer.brandfoot{text-align:center;color:var(--faint);font-size:11px;margin-top:12px;letter-spacing:.04em}
 </style>
 </head>
 <body>
   <div id="gate"><div class="box">
-    <div class="brand">BREED<b>WISE</b></div>
+    <div class="logo mark"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
     <input id="pw" type="password" placeholder="Access code" autocomplete="off">
     <button id="unlock">Open Command Center →</button>
     <div class="err" id="gate-err"></div>
-    <div class="hint">Internal metrics wall. Team access only.</div>
+    <div class="hint">Internal revenue wall · team access only</div>
   </div></div>
 
   <div id="app">
     <header class="bar">
-      <span class="brand">BREED<b>WISE</b></span>
-      <span class="title">Command Center · <span id="pipeName">New VSL Funnel</span></span>
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+      <span class="sub">Command Center · <b id="pipeName">New VSL Funnel</b></span>
       <span class="spacer"></span>
       <span class="live"><span class="dot" id="liveDot"></span><span id="liveTxt">connecting…</span></span>
       <button class="refresh" id="refreshBtn">↻ Refresh</button>
     </header>
 
-    <div class="grid">
-      <!-- 1 WEBSITE -->
-      <div class="tile accent-blue" id="tile-web">
-        <div class="th"><span class="ic">◱</span><h2>Traffic &amp; Engagement</h2><span class="tag" id="webTag">last 24h</span></div>
-        <div id="web-body"><div class="hero blue skl">—</div></div>
+    <!-- GOAL STRIP -->
+    <div class="strip">
+      <div class="goal">
+        <div class="top">
+          <span class="lbl">Revenue to Goal</span>
+          <span class="badge off" id="paceBadge">—</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin-top:6px">
+          <span class="big" id="mtdBig">$0</span><span class="of" id="goalOf">of $100k</span>
+        </div>
+        <div class="track"><div class="fill" id="goalFill" style="width:0%"></div><div class="pace" id="goalPace" style="left:0%"></div></div>
+        <div class="row">
+          <span>Need <b id="needDay">$0</b>/day</span>
+          <span>Projected <b id="projEOM">$0</b></span>
+          <span><b id="daysLeft">0</b> days left</span>
+        </div>
       </div>
-      <!-- 2 ADS -->
-      <div class="tile accent-gold" id="tile-ads">
-        <div class="th"><span class="ic">◎</span><h2>Meta Ads</h2><span class="tag" id="adsTag"></span></div>
-        <div id="ads-body"><div class="hero gold skl">—</div></div>
-      </div>
-      <!-- 3 FUNNEL -->
-      <div class="tile accent-purple" id="tile-crm">
-        <div class="th"><span class="ic">⇉</span><h2>Pipeline &amp; Outbound</h2><span class="tag" id="crmTag"></span></div>
-        <div id="crm-body"><div class="hero purple skl">—</div></div>
-      </div>
-      <!-- 4 CASH -->
-      <div class="tile accent-green" id="tile-cash">
-        <div class="th"><span class="ic">$</span><h2>Cash Collected</h2><span class="tag">Stripe</span></div>
-        <div id="cash-body"><div class="hero green skl">—</div></div>
+      <div class="vline"></div>
+      <div class="counters" id="counters">
+        <div class="ctr"><div class="v skl">—</div><div class="l">loading</div></div>
       </div>
     </div>
+
+    <!-- 2x2 -->
+    <div class="grid">
+      <div class="tile green" id="tile-cash">
+        <div class="th"><span class="ic">$</span><h2>Revenue &amp; Sales</h2><span class="tag">Stripe · MTD</span></div>
+        <div id="cash-body"><div class="hero skl">—</div></div>
+      </div>
+      <div class="tile blue" id="tile-funnel">
+        <div class="th"><span class="ic">⇩</span><h2>Acquisition Funnel</h2><span class="tag" id="funnelTag">last 7 days</span></div>
+        <div id="funnel-body"><div class="hero skl">—</div></div>
+      </div>
+      <div class="tile purple" id="tile-crm">
+        <div class="th"><span class="ic">⇉</span><h2>Pipeline &amp; Outbound</h2><span class="tag" id="crmTag"></span></div>
+        <div id="crm-body"><div class="hero skl">—</div></div>
+      </div>
+      <div class="tile gold" id="tile-ads">
+        <div class="th"><span class="ic">◎</span><h2>Ads Efficiency</h2><span class="tag" id="adsTag"></span></div>
+        <div id="ads-body"><div class="hero skl">—</div></div>
+      </div>
+    </div>
+    <footer class="brandfoot">BREEDWISE · The Profitable Breeder — internal metrics. Live figures, refreshed automatically.</footer>
   </div>
 
 <script>
-/* ---------- config ---------- */
 var FEED='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/bw-dashboard';
 var SECRET='YrKJx6hWQ-buaiTVuN3VcqMS';           /* DASH_SECRET */
 var REFRESH_MS=45000;
-var lastOK=0, timer=null;
+var lastOK=0, timer=null, DATA={};
 
-/* ---------- helpers ---------- */
 function usd(n){n=Number(n)||0;var neg=n<0;n=Math.abs(n);var s=n>=1000?Math.round(n).toLocaleString('en-US'):(Math.round(n*100)/100).toLocaleString('en-US');return (neg?'-$':'$')+s;}
+function usdk(n){n=Number(n)||0;if(Math.abs(n)>=1000)return '$'+(Math.round(n/100)/10)+'k';return usd(n);}
 function k(n){n=Number(n)||0;return n>=1000?(Math.round(n/100)/10)+'k':String(n);}
 function dur(sec){sec=Math.round(Number(sec)||0);if(sec<60)return sec+'s';var m=Math.floor(sec/60),s=sec%60;return m+'m'+(s?(' '+s+'s'):'');}
 function el(id){return document.getElementById(id);}
 function esc(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+function pct(a,b){return b>0?Math.round(a/b*100):0;}
+function stat(v,l){return '<div class="stat"><div class="v">'+v+'</div><div class="l">'+l+'</div></div>';}
+function arrow(d){if(d==null)return '';return d>=0?'<span class="d up">▲'+d+'%</span>':'<span class="d dn">▼'+Math.abs(d)+'%</span>';}
 
-/* ---------- renderers ---------- */
-function renderWeb(w){
-  var b=el('web-body');
-  if(!w||!w.available){b.innerHTML='<div class="empty"><div class="big">—</div>Analytics feed unavailable'+(w&&w.error?'<div class="err">'+esc(w.error)+'</div>':'')+'</div>';return;}
+/* ---------- goal strip + counters ---------- */
+function renderStrip(m,c){
+  m=m||{};c=c||{};
+  el('mtdBig').textContent=usd(m.mtd||0);
+  el('goalOf').textContent='of '+usdk(m.goal||100000);
+  var fillPct=Math.min(100,pct(m.mtd,m.goal||100000));
+  el('goalFill').style.width=fillPct+'%';
+  var pacePct=Math.min(100,pct(m.expectedByNow,m.goal||100000));
+  el('goalPace').style.left=pacePct+'%';
+  var badge=el('paceBadge');
+  if(m.onPace){badge.className='badge on';badge.textContent='ON PACE · '+(m.pacePct||0)+'%';}
+  else{badge.className='badge off';badge.textContent='BEHIND · '+(m.pacePct||0)+'% of pace';}
+  el('needDay').textContent=usd(m.neededPerDay||0);
+  el('projEOM').textContent=usd(m.projectedEOM||0);
+  el('daysLeft').textContent=Math.max(0,(m.daysInMonth||0)-(m.dayOfMonth||0));
+  var nl=c.newLeads||{};
+  el('counters').innerHTML=
+    ctr(usd(m.today||0),'cash today',m.deltaPct)+
+    ctr(nl.today!=null?nl.today:'—','new leads today',nl.yesterday!=null&&nl.yesterday>0?Math.round(((nl.today||0)-nl.yesterday)/nl.yesterday*100):null)+
+    ctr(c.applications7d!=null?c.applications7d:'—','applications · 7d')+
+    ctr(c.closes7d!=null?c.closes7d:'—','closes · 7d')+
+    ctr((c.outbound&&c.outbound.available)?(c.outbound.calls24||0):'—','dials today');
+}
+function ctr(v,l,d){return '<div class="ctr"><div class="v">'+v+(d!=null?arrow(d):'')+'</div><div class="l">'+l+'</div></div>';}
+
+/* ---------- tiles ---------- */
+function renderCash(m){
+  var b=el('cash-body');
+  if(!m||!m.available){b.innerHTML=empty('—','Stripe feed unavailable',m&&m.error);return;}
   b.innerHTML=
-    '<div class="hero blue">'+ (w.views24||0) +'<small>views today</small></div>'+
-    '<div class="herosub">'+(w.uniques24||0)+' unique visitors · top page: '+esc((w.topPages&&w.topPages[0]&&w.topPages[0].page)||'—')+'</div>'+
+    '<div class="hero">'+usd(m.mtd)+'<small>month to date</small></div>'+
+    '<div class="herosub">Today '+usd(m.today)+' '+(m.deltaPct!=null?(m.deltaPct>=0?'<span class="up">▲'+m.deltaPct+'% vs yesterday</span>':'<span class="dn">▼'+Math.abs(m.deltaPct)+'% vs yesterday</span>'):'')+' · '+(m.countMtd||0)+' sales this month</div>'+
     '<div class="stats">'+
-      stat(w.views7d||0,'views · 7d')+
-      stat(dur(w.avgActiveSec),'avg active time')+
-      stat((w.avgScrollPct||0)+'%','avg scroll')+
-      stat((w.formReachedPct||0)+'%','reached form')+
-      stat((w.formStartedPct||0)+'%','started form')+
-      stat(w.sessions7d||0,'sessions · 7d')+
+      stat(usd(m.last7d),'last 7 days')+
+      stat(usd(m.aov),'avg sale')+
+      stat(usd(m.projectedEOM),'projected EOM')+
+      stat(usd(m.last30d),'last 30 days')+
+      stat(usd(m.net30d),'net · 30d')+
+      stat(m.refunds30d>0?usd(m.refunds30d):'$0','refunds · 30d')+
+    '</div>';
+}
+function renderFunnel(w,c,ads){
+  var b=el('funnel-body');
+  if(!c||!c.available){b.innerHTML=empty('—','Pipeline feed unavailable',c&&c.error);return;}
+  var steps=[
+    {nm:'Visitors',n:(w&&w.uniques7d)||0},
+    {nm:'Applications',n:c.applications7d||0},
+    {nm:'Booked Calls',n:c.bookedCount||0},
+    {nm:'Enrolled',n:c.enrolledCount||0}
+  ];
+  var max=Math.max(1,steps[0].n);
+  var rows='';
+  steps.forEach(function(s,i){
+    var w2=Math.max(3,Math.round(s.n/max*100));
+    // conversion vs previous step — only show when it's a sensible funnel step (<=100%)
+    var r=i>0&&steps[i-1].n>0?Math.round(s.n/steps[i-1].n*100):null;
+    var rate=(r!=null&&r<=100)?('<b>'+r+'%</b> conv'):'—';
+    rows+='<div class="fstep"><span class="nm">'+s.nm+'</span>'+
+      '<span class="track2"><span class="fill2" style="width:'+w2+'%"><b>'+s.n+'</b></span></span>'+
+      '<span class="rate">'+rate+'</span></div>';
+  });
+  var v2e=pct(steps[3].n,steps[0].n);
+  // CAC / ROAS from ads when available
+  var eff='';
+  if(ads&&ads.available){
+    var spend=(ads.last7d&&ads.last7d.spend)||0;
+    var cac=steps[3].n>0?spend/steps[3].n:0;
+    var roas=spend>0&&DATA.cash?( (DATA.cash.last7d||0)/spend):0;
+    eff='<span>CAC <b>'+(steps[3].n?usd(cac):'—')+'</b></span><span>ROAS (cash) <b>'+(spend?(Math.round(roas*100)/100)+'x':'—')+'</b></span>';
+  } else {
+    eff='<span class="warn">CAC / ROAS <b>needs ads token</b></span>';
+  }
+  b.innerHTML='<div class="funnel">'+rows+'</div>'+
+    '<div class="foot"><span>Visitor→Enrolled <b>'+v2e+'%</b></span>'+eff+'</div>';
+}
+function renderCrm(c){
+  var b=el('crm-body'), tag=el('crmTag');
+  if(!c||!c.available){b.innerHTML=empty('—','Pipeline feed unavailable',c&&c.error);return;}
+  if(c.pipeline) el('pipeName').textContent=c.pipeline;
+  tag.textContent=(c.totalLeads||0)+' leads · '+usdk(c.totalValue||0);
+  var dist=c.distribution||[], max=1; dist.forEach(function(s){if(s.count>max)max=s.count;});
+  var bars=dist.map(function(s){
+    return '<div class="brow"><span class="nm" title="'+esc(s.name)+'">'+esc(s.name)+'</span>'+
+      '<span class="track3"><span class="fill3" style="width:'+Math.max(2,Math.round(s.count/max*100))+'%"></span></span>'+
+      '<span class="ct">'+s.count+(s.value?' <span>'+usdk(s.value)+'</span>':'')+'</span></div>';
+  }).join('');
+  var ob=c.outbound||{};
+  var obTxt=ob.available?((ob.calls24||0)+' today · '+(ob.calls7d||0)+'/7d'):'no dialer data';
+  var nl=c.newLeads||{};
+  b.innerHTML=
+    '<div class="bars">'+(bars||'<div class="skl">No leads yet.</div>')+'</div>'+
+    '<div class="foot">'+
+      '<span>New: <b>'+(nl.today||0)+'</b> today · <b>'+(nl.d7||0)+'</b>/7d</span>'+
+      (c.stale>0?'<span class="warn">Stale (3d+): <b>'+c.stale+'</b></span>':'<span>Stale: <b>0</b></span>')+
+      '<span>Dials: <b>'+esc(obTxt)+'</b></span>'+
     '</div>';
 }
 function renderAds(a){
   var b=el('ads-body'), tag=el('adsTag');
   if(!a||!a.available){
-    tag.textContent='not connected';
     var acct=a&&a.account?a.account:'832632449145533';
-    b.innerHTML='<div class="empty"><div class="big">◎</div>Meta ad reporting is ready to switch on.'+
-      '<div class="cta">Add a Meta System-User token with <b>ads_read</b> for account '+esc(acct)+'.</div>'+
-      (a&&a.error?'<div class="err">'+esc(a.error)+'</div>':'')+'</div>';
+    if(a&&a.error){
+      tag.textContent='token rejected';
+      b.innerHTML='<div class="empty"><div class="big">⚠</div>Meta token is set but was <b>rejected</b>.'+
+        '<div class="cta">Regenerate a Meta <b>System-User</b> token with <b>ads_read</b> on account '+esc(acct)+', then re-set META_ADS_TOKEN.</div>'+
+        '<div class="err">'+esc(a.error)+'</div></div>';
+    } else {
+      tag.textContent='not connected';
+      b.innerHTML='<div class="empty"><div class="big">◎</div>Ad reporting is wired and ready.'+
+        '<div class="cta">Add a Meta System-User token with <b>ads_read</b> for account '+esc(acct)+' and this fills in live.</div></div>';
+    }
     return;
   }
   tag.textContent='today · 7d';
   var t=a.today||{}, d=a.last7d||{};
+  var closes=(DATA.crm&&DATA.crm.closes7d)||0;
+  var cac=closes>0?(d.spend||0)/closes:0;
+  var roas=(d.spend>0&&DATA.cash)?((DATA.cash.last7d||0)/d.spend):0;
   b.innerHTML=
-    '<div class="hero gold">'+usd(t.spend)+'<small>spend today</small></div>'+
-    '<div class="herosub">'+(t.leads||0)+' leads today · '+(t.leads? usd(t.cpl):'—')+' cost / lead</div>'+
+    '<div class="hero">'+usd(t.spend)+'<small>spend today</small></div>'+
+    '<div class="herosub">'+(t.leads||0)+' leads today · '+(t.leads?usd(t.cpl):'—')+' / lead</div>'+
     '<div class="stats">'+
       stat(usd(d.spend),'spend · 7d')+
+      stat(closes?usd(cac):'—','CAC (per close)')+
+      stat(d.spend?(Math.round(roas*100)/100)+'x':'—','ROAS on cash')+
       stat(d.leads||0,'leads · 7d')+
       stat(d.leads?usd(d.cpl):'—','CPL · 7d')+
-      stat(((t.ctr||0).toFixed?(t.ctr).toFixed(2):t.ctr)+'%','CTR today')+
       stat(k(t.impressions),'impress. today')+
-      stat(d.roas?(Math.round(d.roas*100)/100)+'x':'—','ROAS · 7d')+
     '</div>';
 }
-function renderCrm(c){
-  var b=el('crm-body'), tag=el('crmTag');
-  if(!c||!c.available){b.innerHTML='<div class="empty"><div class="big">—</div>Pipeline feed unavailable'+(c&&c.error?'<div class="err">'+esc(c.error)+'</div>':'')+'</div>';return;}
-  if(c.pipeline) el('pipeName').textContent=c.pipeline;
-  tag.textContent=(c.totalLeads||0)+' leads';
-  var dist=c.distribution||[], max=1; dist.forEach(function(s){if(s.count>max)max=s.count;});
-  var ob=c.outbound||{}, obTxt = ob.available ? ((ob.calls24||0)+' today · '+(ob.calls7d||0)+' · 7d'+(ob.calls7dCapped?'+':'')) : 'no dialer data';
-  var bars=dist.map(function(s){
-    return '<div class="brow"><span class="nm" title="'+esc(s.name)+'">'+esc(s.name)+'</span>'+
-      '<span class="track"><span class="fill" style="width:'+Math.max(2,Math.round(s.count/max*100))+'%"></span></span>'+
-      '<span class="ct">'+s.count+(s.value?' <span>'+usd(s.value)+'</span>':'')+'</span></div>';
-  }).join('');
-  b.innerHTML=
-    '<div class="hero purple">'+usd(c.totalValue)+'<small>pipeline value</small></div>'+
-    '<div class="herosub">'+(c.totalLeads||0)+' total leads · '+(c.openCount||0)+' open'+(c.wonCount?' · '+c.wonCount+' won':'')+'</div>'+
-    '<div class="bars">'+(bars||'<div class="skl">No leads in this pipeline yet.</div>')+'</div>'+
-    '<div class="foot"><span>Outbound dials: <b>'+esc(obTxt)+'</b></span></div>';
-}
-function renderCash(m){
-  var b=el('cash-body');
-  if(!m||!m.available){b.innerHTML='<div class="empty"><div class="big">—</div>Stripe feed unavailable'+(m&&m.error?'<div class="err">'+esc(m.error)+'</div>':'')+'</div>';return;}
-  b.innerHTML=
-    '<div class="hero green">'+usd(m.mtd)+'<small>month to date</small></div>'+
-    '<div class="herosub">'+(m.countMtd||0)+' payments this month</div>'+
-    '<div class="stats">'+
-      stat(usd(m.today),'today')+
-      stat(usd(m.last7d),'last 7 days')+
-      stat(usd(m.last30d),'last 30 days')+
-      stat(m.count24||0,'payments today')+
-      stat(usd(m.net30d),'net · 30d')+
-      stat('USD','currency')+
-    '</div>';
-}
-function stat(v,l,cls){return '<div class="stat"><div class="v'+(cls?' '+cls:'')+'">'+v+'</div><div class="l">'+l+'</div></div>';}
+function empty(big,msg,err){return '<div class="empty"><div class="big">'+big+'</div>'+esc(msg)+(err?'<div class="err">'+esc(err)+'</div>':'')+'</div>';}
 
-/* ---------- fetch loop ---------- */
-function setLive(ok,msg){var dot=el('liveDot');dot.classList.toggle('stale',!ok);el('liveTxt').textContent=msg;}
-function ago(ts){var s=Math.round((Date.now()-ts)/1000);if(s<60)return s+'s ago';var m=Math.floor(s/60);return m+'m ago';}
+/* ---------- loop ---------- */
+function setLive(ok,msg){el('liveDot').classList.toggle('stale',!ok);el('liveTxt').textContent=msg;}
+function ago(ts){var s=Math.round((Date.now()-ts)/1000);if(s<60)return s+'s ago';return Math.floor(s/60)+'m ago';}
 function tickLabel(){if(lastOK)setLive(true,'live · updated '+ago(lastOK));}
 function load(){
   setLive(true,'updating…');
   fetch(FEED+'?secret='+encodeURIComponent(SECRET),{cache:'no-store'})
     .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
     .then(function(d){
-      renderWeb(d.website); renderAds(d.ads); renderCrm(d.crm); renderCash(d.cash);
+      DATA=d;
+      renderStrip(d.cash,d.crm);
+      renderCash(d.cash);
+      renderFunnel(d.website,d.crm,d.ads);
+      renderCrm(d.crm);
+      renderAds(d.ads);
       lastOK=Date.now(); tickLabel();
     })
-    .catch(function(e){setLive(false, 'reconnecting… ('+(e.message||'error')+')');});
+    .catch(function(e){setLive(false,'reconnecting… ('+(e.message||'error')+')');});
 }
 function start(){load();if(timer)clearInterval(timer);timer=setInterval(load,REFRESH_MS);setInterval(tickLabel,5000);
   document.addEventListener('visibilitychange',function(){if(!document.hidden)load();});
