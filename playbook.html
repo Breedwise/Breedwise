@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13;--bg2:#0e131a;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;
+    --ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--faint:#59657350;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--red:#e8695f;--blue:#5aa9e6;--purple:#a481d8;--amber:#e0a955;
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{margin:0;background:radial-gradient(1100px 600px at 82% -10%,rgba(201,168,98,.06),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.55}
+
+  /* gate */
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:80}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#1a130a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #gate .hint{color:var(--muted);font-size:12px;margin-top:14px}
+
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),#a9863f);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 14px rgba(201,168,98,.28)}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#15100a;font-size:18px;line-height:1}
+  .logo .wm{font-size:16px;letter-spacing:.2em;font-weight:700;color:var(--ink)}
+  .logo .wm b{color:var(--gold)}
+
+  #app{display:none}
+  /* sticky nav */
+  nav.top{position:sticky;top:0;z-index:40;background:rgba(11,14,19,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav.top .in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:11px 22px}
+  nav .pills{display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+  nav .pills::-webkit-scrollbar{display:none}
+  nav .pills a{white-space:nowrap;font-size:12px;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:8px;font-weight:500}
+  nav .pills a:hover{color:var(--ink);background:var(--panel)}
+  nav .print{background:var(--panel);border:1px solid var(--line);color:var(--mid);border-radius:9px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:26px 22px 60px}
+  header.hero{padding:14px 0 8px}
+  header .k{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  header h1{font-family:var(--disp);font-size:40px;line-height:1.05;margin:8px 0 6px;font-weight:600;letter-spacing:-.5px}
+  header p.lead{color:var(--mid);font-size:15px;max-width:720px;font-weight:300}
+
+  section{margin-top:34px;scroll-margin-top:70px}
+  .sh{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:16px}
+  .sh .n{font-family:var(--disp);font-size:15px;color:var(--gold);font-weight:600}
+  .sh h2{font-family:var(--disp);font-size:24px;font-weight:600;margin:0;letter-spacing:-.3px}
+  .sh .tag{margin-left:auto;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+
+  .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:14px}
+  .card h3{font-family:var(--disp);font-size:17px;margin:0 0 8px;font-weight:600}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:820px){.cols,.cols3{grid-template-columns:1fr}}
+
+  .callout{background:rgba(201,168,98,.09);border:1px solid rgba(201,168,98,.28);border-left:3px solid var(--gold);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:14px}
+  .callout.blue{background:rgba(90,169,230,.09);border-color:rgba(90,169,230,.3);border-left-color:var(--blue)}
+  .callout.green{background:rgba(87,185,138,.09);border-color:rgba(87,185,138,.3);border-left-color:var(--green)}
+  .callout b{color:var(--gold-soft)}
+  .callout.blue b{color:#a9d6ff}.callout.green b{color:#9fe3c2}
+
+  ul.clean{list-style:none;padding:0;margin:8px 0}
+  ul.clean li{position:relative;padding:5px 0 5px 22px;font-size:14px;color:var(--mid)}
+  ul.clean li::before{content:'›';position:absolute;left:4px;color:var(--gold);font-weight:700}
+  ul.check li::before{content:'☐';left:0;color:var(--muted)}
+  ul.clean li b{color:var(--ink);font-weight:600}
+  .stepnum{display:flex;gap:12px;margin:9px 0;font-size:14px;color:var(--mid)}
+  .stepnum .b{flex:none;width:24px;height:24px;border-radius:50%;background:var(--panel2);border:1px solid var(--line2);color:var(--gold);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .stepnum b{color:var(--ink)}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0}
+  th{text-align:left;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:8px 10px;border-bottom:1px solid var(--line2)}
+  td{padding:8px 10px;border-bottom:1px solid var(--line);color:var(--mid);vertical-align:top}
+  td b,td .own{color:var(--ink);font-weight:600}
+  tr:last-child td{border-bottom:0}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
+  .pill{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px}
+  .p-austin{background:rgba(201,168,98,.16);color:var(--gold-soft)}
+  .p-jen{background:rgba(164,129,216,.16);color:#c9b4ec}
+  .p-reg{background:rgba(90,169,230,.16);color:#a9d6ff}
+  .p-yas{background:rgba(224,169,85,.16);color:#f0cf9a}
+  .p-emm{background:rgba(87,185,138,.16);color:#9fe3c2}
+  .p-open{background:rgba(129,141,155,.16);color:var(--mid)}
+
+  .rhythm{display:grid;grid-template-columns:120px 1fr;gap:0}
+  .rhythm .t{font-family:var(--disp);color:var(--gold);font-size:14px;font-weight:600;padding:12px 0;border-top:1px solid var(--line)}
+  .rhythm .c{padding:12px 0;border-top:1px solid var(--line)}
+  @media(max-width:620px){.rhythm{grid-template-columns:1fr}.rhythm .t{padding-bottom:0;border-top:1px solid var(--line)}.rhythm .c{border-top:0;padding-top:4px}}
+
+  .qa{display:grid;grid-template-columns:1fr auto;gap:8px 16px;font-size:13.5px;padding:7px 0;border-bottom:1px solid var(--line)}
+  .qa .q{color:var(--mid)} .qa .a{color:var(--gold-soft);font-weight:600;white-space:nowrap}
+  .miss{color:var(--red);font-weight:600}
+  code.f{background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12px;color:var(--gold-soft)}
+  footer.bf{text-align:center;color:#59657390;font-size:11px;margin-top:40px;letter-spacing:.04em}
+  @media print{nav.top{display:none}#app{display:block!important}#gate{display:none!important}body{background:#fff;color:#111}.card,.tblwrap{border-color:#ddd}}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo mark" style="margin-bottom:18px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Open Playbook →</button>
+    <div class="err" id="gate-err"></div>
+    <div class="hint">Leadership operating playbook · team access only</div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top"><div class="in">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+      <div class="pills">
+        <a href="#daily">Daily</a><a href="#weekly">Weekly</a><a href="#os">The OS</a><a href="#chart">Accountability</a>
+        <a href="#scorecards">Scorecards</a><a href="#sops">SOPs</a><a href="#offer">Offer Ref</a><a href="#handoffs">Handoffs</a>
+        <a href="#slas">SLAs</a><a href="#escalation">Escalation</a><a href="#scoreboard">$100K</a><a href="#cert">Certification</a>
+        <a href="#diagnostic">Diagnostic</a><a href="#plan">7-Day</a><a href="#done">Done</a>
+      </div>
+      <button class="print" onclick="window.print()">Print</button>
+    </div></nav>
+
+    <div class="wrap">
+      <header class="hero">
+        <div class="k">Operating System · Austin's Playbook</div>
+        <h1>Run the company by exception,<br>not by explanation.</h1>
+        <p class="lead">This is your day-to-day operating manual. The job is to stop being BreedWise's search engine: decide what only you can decide, put the answer into the system once, and let each role operate and improve their part.</p>
+      </header>
+
+      <div class="callout">
+        <b>The one distinction that removes most of the ambiguity:</b> Austin decides <b>what the product is</b>. Jennifer makes sure members <b>successfully move through it</b>. When a question is "what should the product / price / policy / science be?" → that's you. When it's "how do we move this member forward?" → that's the role, operating the system.
+      </div>
+
+      <!-- DAILY -->
+      <section id="daily">
+        <div class="sh"><span class="n">01</span><h2>Your Daily Rhythm</h2><span class="tag">manage by exception</span></div>
+        <div class="rhythm">
+          <div class="t">Morning</div>
+          <div class="c">
+            <ul class="clean">
+              <li>Open the <b>Command Center</b> and ask one question: <b>"What's red?"</b> — goal pace, at-risk members, stale leads, outstanding escalations.</li>
+              <li>Scan the <b>Issues / Decisions</b> queue. Make the calls only you can make: pricing, product, policy, scientific-scope, escalated member situations.</li>
+              <li>Anything you can't decide yet gets flagged <span class="miss">DECISION REQUIRED</span> with a date — never left vague.</li>
+            </ul>
+          </div>
+          <div class="t">Build blocks</div>
+          <div class="c">
+            <ul class="clean">
+              <li><b>Product / Curriculum</b> block — you own <i>what the product is</i>. Move one roadmap item forward.</li>
+              <li><b>Certification</b> block — daily until <b>Nov 28, 2026</b>. Treat it as a project, not background curriculum work.</li>
+            </ul>
+          </div>
+          <div class="t">All day</div>
+          <div class="c">
+            <p style="margin:0 0 8px;color:var(--mid);font-size:14px">When someone asks a recurring question, run this loop instead of answering from memory:</p>
+            <div class="stepnum"><span class="b">1</span><div>Is the answer already in a <b>Role Scorecard</b>, the <b>Current Offer Reference</b>, or an <b>SOP</b>? → point them to it.</div></div>
+            <div class="stepnum"><span class="b">2</span><div>Answer doesn't exist? → make the decision <b>once</b>.</div></div>
+            <div class="stepnum"><span class="b">3</span><div>Immediately <b>put it into the system</b> so the same question never reaches you again.</div></div>
+          </div>
+          <div class="t">End of day</div>
+          <div class="c">
+            <ul class="clean">
+              <li>Clear the <b>Issues / Decisions</b> queue to zero-or-dated.</li>
+              <li>Every decision made today that changes an answer → the owner updates the relevant tab before you're asked twice.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout blue">Your daily win: you made <b>decisions</b>, not documents — and every recurring question got answered by the system, not by you.</div>
+      </section>
+
+      <!-- WEEKLY -->
+      <section id="weekly">
+        <div class="sh"><span class="n">02</span><h2>Your Weekly Rhythm</h2><span class="tag">rituals that hold it together</span></div>
+        <div class="cols3">
+          <div class="card">
+            <h3>Monday · Operating Meeting</h3>
+            <p style="font-size:13px;color:var(--muted);margin:0 0 8px">Run it with four questions. Nothing else.</p>
+            <ul class="clean">
+              <li>"Show me the <b>scoreboard</b>."</li>
+              <li>"<b>What's red?</b>"</li>
+              <li>"What needs a <b>leadership decision</b>?"</li>
+              <li>"Who owns each <b>next action, by when</b>?"</li>
+            </ul>
+            <p style="font-size:12.5px;color:var(--muted);margin-top:8px">Never "how's it going?" and never a member-by-member tour of people who are fine.</p>
+          </div>
+          <div class="card">
+            <h3>Member Success · 30 min</h3>
+            <ul class="clean">
+              <li><b>5 min</b> — Scoreboard: what's red?</li>
+              <li><b>10 min</b> — Exceptions only: at-risk, stuck, Academy opportunities, open escalations, cert issues, major wins.</li>
+              <li><b>10 min</b> — Issues needing Austin (pricing / product / policy / curriculum gap).</li>
+              <li><b>5 min</b> — Commitments: who / what / by when.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Friday · Scoreboards In</h3>
+            <p style="font-size:13px;color:var(--mid);margin:0 0 6px">Each owner submits their scoreboard (see Jennifer's below). You review <b>reds only</b>.</p>
+            <p style="font-size:12.5px;color:var(--muted);margin:0">Don't invent targets yet — collect 2–4 weeks of baseline, then set targets where history doesn't already give one.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- OS STRUCTURE -->
+      <section id="os">
+        <div class="sh"><span class="n">03</span><h2>The Operating System — 13 Tabs</h2><span class="tag">one navigation system</span></div>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Tab</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><b>01 — Company Dashboard</b></td><td>Company goal + weekly numbers</td></tr>
+            <tr><td><b>02 — Accountability Chart</b></td><td>WHO owns what</td></tr>
+            <tr><td><b>03 — Role Scorecards</b></td><td>WHAT each person is accountable for</td></tr>
+            <tr><td><b>04 — SOP Index</b></td><td>HOW recurring work gets executed</td></tr>
+            <tr><td><b>05 — Current Offer Reference</b></td><td>Current product / pricing / policy answers</td></tr>
+            <tr><td><b>06 — Product Roadmap</b></td><td>WHAT is being built / released and when</td></tr>
+            <tr><td><b>07 — Member Success Dashboard</b></td><td>WHERE every member stands</td></tr>
+            <tr><td><b>08 — Sales Dashboard</b></td><td>WHERE every opportunity stands</td></tr>
+            <tr><td><b>09 — Marketing Dashboard</b></td><td>WHERE customers are coming from</td></tr>
+            <tr><td><b>10 — Q4 Priorities</b></td><td>WHAT must change this quarter</td></tr>
+            <tr><td><b>11 — Issues / Decisions</b></td><td>WHAT needs leadership resolution</td></tr>
+            <tr><td><b>12 — Certification Buildout</b></td><td>Everything required for Nov 28</td></tr>
+            <tr><td><b>13 — Resource Library</b></td><td>Actual tools / docs / assets</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ACCOUNTABILITY -->
+      <section id="chart">
+        <div class="sh"><span class="n">04</span><h2>Accountability Chart</h2><span class="tag">lock this first</span></div>
+        <div class="callout">Remove Jennifer from anything implying <b>Head of Product / Curriculum</b>. She owns Member Success &amp; Delivery Operations, not product strategy.</div>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Function</th><th>Accountable Owner</th></tr></thead>
+          <tbody>
+            <tr><td>CEO / Company Direction</td><td><span class="pill p-austin">Austin</span></td></tr>
+            <tr><td>Growth</td><td><span class="pill p-austin">Austin</span></td></tr>
+            <tr><td>Social Media</td><td><span class="pill p-yas">Yasmin</span></td></tr>
+            <tr><td>Content</td><td><span class="pill p-austin">Austin</span></td></tr>
+            <tr><td>Scientific Content</td><td><span class="pill p-emm">Emmanuel</span></td></tr>
+            <tr><td>Paid Media</td><td><span class="pill p-austin">Austin</span> → future hire</td></tr>
+            <tr><td>Setting</td><td><span class="pill p-reg">Regina</span></td></tr>
+            <tr><td>Closing</td><td><span class="pill p-austin">Austin</span></td></tr>
+            <tr><td>Sales Operations</td><td><span class="pill p-reg">Regina</span></td></tr>
+            <tr><td>Member Success</td><td><span class="pill p-jen">Jennifer</span></td></tr>
+            <tr><td>Academy / BOSS Delivery Operations</td><td><span class="pill p-jen">Jennifer</span></td></tr>
+            <tr><td>Expert Delivery Coordination</td><td><span class="pill p-jen">Jennifer</span></td></tr>
+            <tr><td>Head of Product / Curriculum</td><td><span class="pill p-austin">Austin</span></td></tr>
+            <tr><td>Scientific Curriculum</td><td><span class="pill p-emm">Emmanuel</span></td></tr>
+            <tr><td>Business Curriculum</td><td><span class="pill p-austin">Austin</span></td></tr>
+            <tr><td>Curriculum Operations</td><td><span class="pill p-austin">Austin</span> / Jennifer provides member feedback</td></tr>
+            <tr><td>Tools &amp; Resources</td><td><span class="pill p-austin">Austin</span></td></tr>
+            <tr><td>Certification Product / Standard</td><td><span class="pill p-austin">Austin</span> + scientific review</td></tr>
+            <tr><td>Certification Administration</td><td><span class="pill p-jen">Jennifer</span></td></tr>
+            <tr><td>Operations</td><td><span class="pill p-austin">Austin</span> → future hire</td></tr>
+            <tr><td>Finance</td><td><span class="pill p-austin">Austin</span> + Bookkeeper / CPA</td></tr>
+            <tr><td>Affiliate Program</td><td><span class="pill p-open">Open</span></td></tr>
+            <tr><td>Member Proof / Case Studies</td><td><span class="pill p-jen">Jennifer</span> + <span class="pill p-yas">Yasmin</span></td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- SCORECARDS -->
+      <section id="scorecards">
+        <div class="sh"><span class="n">05</span><h2>Role Scorecards</h2><span class="tag">one screen each</span></div>
+        <div class="cols">
+          <div class="card">
+            <h3>The standard (Tab 03)</h3>
+            <p style="font-size:13px;color:var(--muted);margin:0 0 8px">Every role, same format, fits on one screen. No three-page job descriptions.</p>
+            <ul class="clean" style="columns:2;font-size:13px">
+              <li>Role</li><li>Owner</li><li>Reports To</li><li>Mission</li><li>Primary Outcome</li><li>Primary KPI</li><li>Supporting KPIs</li><li>Weekly Responsibilities</li><li>Q4 Priorities</li><li>Handoffs</li><li>Does NOT Own</li><li>Definition of Winning</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Documentation ownership</h3>
+            <ul class="clean">
+              <li><span class="pill p-austin">Austin</span> — company strategy, product decisions, offer truth</li>
+              <li><span class="pill p-jen">Jennifer</span> — Member Success SOPs</li>
+              <li><span class="pill p-reg">Regina</span> — Sales / Setting SOPs</li>
+              <li><span class="pill p-yas">Yasmin</span> — Social / Distribution SOPs</li>
+              <li><span class="pill p-emm">Emmanuel</span> — assigned scientific standards</li>
+            </ul>
+            <p style="font-size:12.5px;color:var(--muted);margin-top:6px">The person closest to the recurring work improves its documentation — or every doc project comes back to you.</p>
+          </div>
+        </div>
+
+        <div class="card" style="border-color:rgba(164,129,216,.35)">
+          <h3><span class="pill p-jen">Jennifer</span> Director of Member Success — the model scorecard</h3>
+          <div class="callout" style="margin-top:6px">Jennifer's job is to <b>know the status of every BreedWise member</b>, ensure they know their next step, proactively intervene when progress stalls, and coordinate the people / resources required to move them forward.</div>
+          <div class="callout blue">You are <b>not</b> expected to invent product, pricing, scientific guidance, or company policy. You are expected to know <b>where the approved answer lives</b> — or exactly who owns the escalation when one doesn't exist.</div>
+          <div class="cols3" style="margin-top:12px">
+            <div>
+              <p style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 4px">Mission</p>
+              <p style="font-size:13px;color:var(--mid);margin:0">Ensure members activate, make measurable progress, get appropriate support, stay engaged, and move into the right next stage of their journey.</p>
+              <p style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:12px 0 4px">Primary Outcome</p>
+              <p style="font-size:13px;color:var(--mid);margin:0">Members progressing toward the outcome they bought BreedWise to achieve.</p>
+              <p style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:12px 0 4px">Primary KPI</p>
+              <p style="font-size:13px;color:var(--ink);font-weight:600;margin:0">Member Activation &amp; Progress Rate</p>
+            </div>
+            <div>
+              <p style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);font-weight:700;margin:0 0 4px">Owns</p>
+              <ul class="clean" style="font-size:12.5px">
+                <li>TPB onboarding, activation, engagement</li>
+                <li>Member progress tracking + follow-up</li>
+                <li>Academy/BOSS onboarding + progress</li>
+                <li>At-risk identification + re-engagement</li>
+                <li>Member communication</li>
+                <li>Expert escalation coordination</li>
+                <li>Certification administration</li>
+                <li>Member wins + testimonial ID</li>
+                <li>Academy opportunity identification</li>
+                <li>Member feedback → Product</li>
+              </ul>
+            </div>
+            <div>
+              <p style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--red);font-weight:700;margin:0 0 4px">Does NOT Own</p>
+              <ul class="clean" style="font-size:12.5px">
+                <li>Product strategy</li>
+                <li>Pricing decisions</li>
+                <li>Payment-policy creation</li>
+                <li>Scientific standards</li>
+                <li>Curriculum strategy</li>
+                <li>Sales closing</li>
+                <li>Veterinary decisions</li>
+                <li>Technical automation development</li>
+                <li>Company strategy</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SOPs -->
+      <section id="sops">
+        <div class="sh"><span class="n">06</span><h2>SOP Standard &amp; Index</h2><span class="tag">the SOP is the path</span></div>
+        <div class="callout green">Jennifer drafts the <b>HOW</b>. You approve anything affecting company policy. Tell her: <i>"I've defined your outcomes, ownership, product info and escalation boundaries. Document the repeatable workflows you own. Bring me decisions or gaps that need leadership — not questions the system already answers."</i></div>
+        <div class="cols">
+          <div class="card">
+            <h3>One template for every SOP</h3>
+            <ul class="clean" style="font-size:13px">
+              <li>Name · Owner · Purpose · Trigger · Frequency · SLA</li>
+              <li>Systems Used · Resources Used</li>
+              <li>Handoff · Escalation Owner</li>
+              <li><b>Procedure</b> — Step 1…5</li>
+              <li><b>Exceptions</b> — If X → do Y. If Y → escalate to Z.</li>
+              <li><b>Definition of Done</b></li>
+              <li>Related Resources (links) · KPI affected · Last Updated · Owner</li>
+            </ul>
+            <p style="font-size:12.5px;color:var(--muted);margin-top:6px">This fixes the "tools are segmented" complaint: the SOP is the path, the resources are what you use along it.</p>
+          </div>
+          <div class="card">
+            <h3>Standardized statuses</h3>
+            <p style="font-size:13px;color:var(--mid)">Members: <b>NEW · ACTIVATED · PROGRESSING · STUCK · AT RISK · INACTIVE · COMPLETED · CERTIFICATION PATH</b></p>
+            <p style="font-size:13px;color:var(--mid);margin-top:8px">Roadmap: <b>BACKLOG → APPROVED → BUILDING → REVIEW → READY → SCHEDULED → LIVE</b></p>
+            <p style="font-size:12.5px;color:var(--muted);margin-top:8px">Jennifer shouldn't have to <i>remember</i> member health — it should be visible.</p>
+          </div>
+        </div>
+        <div class="tblwrap"><table>
+          <thead><tr><th>#</th><th>SOP</th><th>Trigger</th><th>SLA</th><th>Definition of Done</th></tr></thead>
+          <tbody>
+            <tr><td>01</td><td><b>New TPB Member</b></td><td>TPB purchase</td><td>TBD</td><td>Activated + next step</td></tr>
+            <tr><td>02</td><td>TPB Community Management</td><td>Daily</td><td>Daily</td><td>Community monitored</td></tr>
+            <tr><td>03</td><td>TPB Inactive Member</td><td>Inactivity threshold</td><td>TBD</td><td>Re-engagement attempted</td></tr>
+            <tr><td>04</td><td><b>Academy Opportunity</b></td><td>Qualification signals</td><td>Same / next business day</td><td>Regina receives opportunity</td></tr>
+            <tr><td>05</td><td>Academy Enrollment</td><td>Closed sale</td><td>TBD</td><td>Member fully onboarded</td></tr>
+            <tr><td>06</td><td>Academy Progress Review</td><td>Recurring</td><td>Weekly</td><td>Status current</td></tr>
+            <tr><td>07</td><td>At-Risk Academy Member</td><td>Risk trigger</td><td>TBD</td><td>Intervention completed</td></tr>
+            <tr><td>08</td><td>Member Question</td><td>Question received</td><td>TBD</td><td>Answered / routed</td></tr>
+            <tr><td>09</td><td>Expert Escalation</td><td>Specialist question</td><td>TBD</td><td>Expert loop closed</td></tr>
+            <tr><td>10</td><td>Curriculum Gap</td><td>Missing answer / resource</td><td>Weekly</td><td>Logged / routed</td></tr>
+            <tr><td>11</td><td>Member Win</td><td>Result identified</td><td>TBD</td><td>Documented</td></tr>
+            <tr><td>12</td><td>Testimonial / Case Study</td><td>Qualified win</td><td>TBD</td><td>Permission + asset captured</td></tr>
+            <tr><td>13</td><td>Certification Progress</td><td>Eligible member</td><td>Recurring</td><td>Requirements current</td></tr>
+            <tr><td>14</td><td>Certification Evidence</td><td>Evidence submitted</td><td>TBD</td><td>Logged / reviewed / routed</td></tr>
+            <tr><td>15</td><td>Billing Question</td><td>Member asks</td><td>TBD</td><td>Answered / escalated</td></tr>
+            <tr><td>16</td><td>Cancellation / Retention</td><td>Cancellation intent</td><td>TBD</td><td>Correct workflow completed</td></tr>
+            <tr><td>17</td><td>Accelerator Member</td><td>Enrollment</td><td>TBD</td><td>Delivery path active</td></tr>
+            <tr><td>18</td><td>Product Feedback</td><td>Member feedback</td><td>Weekly</td><td>Product backlog updated</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- OFFER REFERENCE -->
+      <section id="offer">
+        <div class="sh"><span class="n">07</span><h2>Current Offer &amp; Product Reference</h2><span class="tag">source of truth · Austin fills</span></div>
+        <div class="callout">Header this document: <b>Last Updated ___ · Owner: Austin Shanks.</b> This is the current source of truth. Previous pricing / policies / structures are not communicated unless specifically grandfathered. When Jennifer needs to answer Judy about payment options, she looks <i>here</i> — she doesn't ask you.</div>
+        <div class="cols">
+          <div class="card"><h3>The Profitable Breeder</h3><ul class="clean" style="font-size:12.5px;columns:2">
+            <li>Price</li><li>Billing</li><li>Cancellation</li><li>Guarantee</li><li>Who it's for</li><li>Primary outcome</li><li>90-day journey</li><li>Release cadence</li><li>Community access</li><li>Support included</li><li>After 90 days</li><li>Academy ascension criteria</li></ul></div>
+          <div class="card"><h3>Academy / BOSS</h3><ul class="clean" style="font-size:12.5px;columns:2">
+            <li>Current price</li><li>Payment options</li><li>Program duration</li><li>Access duration</li><li>Primary outcome</li><li>What's included</li><li>Curriculum sequence</li><li>Release cadence</li><li>Calls / support</li><li>Certification link</li><li>Cancellation rules</li><li>Who approves exceptions</li></ul></div>
+          <div class="card"><h3>Accelerator</h3><ul class="clean" style="font-size:12.5px;columns:2">
+            <li>Current price</li><li>Program duration</li><li>Primary outcome</li><li>Deliverables</li><li>Calls</li><li>Asset location</li><li>Support expectations</li><li>Response expectations</li><li>Who owns delivery</li></ul></div>
+          <div class="card"><h3>Certification</h3><ul class="clean" style="font-size:12.5px;columns:2">
+            <li>Eligibility</li><li>Earliest eligibility</li><li>Education requirements</li><li>Assessment requirements</li><li>Documentation requirements</li><li>Audit requirements</li><li>Scientific approval</li><li>Administers: Jennifer</li><li>Final determination: TBD governance</li><li>Operational: Nov 28, 2026</li></ul></div>
+        </div>
+      </section>
+
+      <!-- HANDOFFS -->
+      <section id="handoffs">
+        <div class="sh"><span class="n">08</span><h2>The Five Handoffs</h2><span class="tag">routing ≠ removing accountability</span></div>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Handoff</th><th>Trigger</th><th>New Owner</th></tr></thead>
+          <tbody>
+            <tr><td>Marketing → Member Success</td><td>TPB purchase</td><td><span class="pill p-jen">Jennifer</span></td></tr>
+            <tr><td>Member Success → Sales</td><td>Qualified Academy opportunity identified (Jennifer flags + documents)</td><td><span class="pill p-reg">Regina</span></td></tr>
+            <tr><td>Setter → Closer</td><td>Qualified appointment booked (Regina: CRM complete)</td><td><span class="pill p-austin">Austin</span></td></tr>
+            <tr><td>Sales → Member Success</td><td>Academy enrollment / payment confirmed</td><td><span class="pill p-jen">Jennifer</span></td></tr>
+            <tr><td>Member Success → Expert</td><td>Question requires specialized expertise</td><td><span class="pill p-emm">Expert</span> <span style="color:var(--muted)">(Jennifer still closes the loop)</span></td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout">Routing something does <b>not</b> remove accountability for ensuring the member gets resolution. Whoever routes still owns the outcome until the loop is closed.</div>
+      </section>
+
+      <!-- SLAs -->
+      <section id="slas">
+        <div class="sh"><span class="n">09</span><h2>Member Success SLAs</h2><span class="tag">define what you can consistently deliver</span></div>
+        <p style="font-size:13.5px;color:var(--mid)">No vague "respond quickly." Set a target for each, reflecting what BreedWise can consistently hit, so members and staff share one expectation.</p>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Event</th><th>Target</th></tr></thead>
+          <tbody>
+            <tr><td>New TPB member</td><td class="miss">___</td></tr>
+            <tr><td>New Academy member</td><td class="miss">___</td></tr>
+            <tr><td>General member question</td><td class="miss">___</td></tr>
+            <tr><td>At-risk member detected</td><td class="miss">___</td></tr>
+            <tr><td>Academy opportunity</td><td class="miss">___</td></tr>
+            <tr><td>Expert escalation</td><td class="miss">___</td></tr>
+            <tr><td>Curriculum question requiring research</td><td class="miss">___</td></tr>
+            <tr><td>Billing issue</td><td class="miss">___</td></tr>
+            <tr><td>Technical issue</td><td class="miss">___</td></tr>
+            <tr><td>Certification evidence submitted</td><td class="miss">___</td></tr>
+            <tr><td>Member win identified</td><td class="miss">___</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ESCALATION -->
+      <section id="escalation">
+        <div class="sh"><span class="n">10</span><h2>Escalation Rule &amp; Product Feedback Loop</h2><span class="tag">stop being the search engine</span></div>
+        <div class="callout"><b>Team rule:</b> Before escalating a recurring operational question, check the Role Scorecard, Current Offer Reference, and relevant SOP. If the answer exists, follow it. If it doesn't, escalate the <b>missing decision</b> — and once resolved, update the system so the same question never needs leadership again.</div>
+        <div class="card">
+          <h3>The product feedback loop</h3>
+          <div class="stepnum"><span class="b">1</span><div>Member question → Can Jennifer answer from an approved resource? <b>Yes</b> → answer.</div></div>
+          <div class="stepnum"><span class="b">2</span><div><b>No</b> → does the approved answer exist elsewhere? <b>Yes</b> → locate it, update the SOP / library.</div></div>
+          <div class="stepnum"><span class="b">3</span><div>Still no → isolated or recurring? Isolated → resolve. <b>Recurring → PRODUCT GAP.</b></div></div>
+          <div class="stepnum"><span class="b">4</span><div>Route the gap: Business → <span class="pill p-austin">Austin</span> · Scientific → <span class="pill p-emm">Emmanuel</span> · Operational → Ops.</div></div>
+          <div class="stepnum"><span class="b">5</span><div>Product decision → create / update resource → Jennifer closes the member loop → SOP + library updated.</div></div>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:8px">This is what stops you from answering the same question 25 times.</p>
+        </div>
+      </section>
+
+      <!-- $100K SCOREBOARD -->
+      <section id="scoreboard">
+        <div class="sh"><span class="n">11</span><h2>The $100K Company Scoreboard</h2><span class="tag">Tab 01</span></div>
+        <div class="callout" style="text-align:center;font-size:16px"><b>TARGET: $100,000+ MONTHLY CASH COLLECTED</b></div>
+        <div class="cols3">
+          <div class="card"><h3>Growth</h3><ul class="clean" style="font-size:12.5px"><li>Traffic</li><li>Ad spend</li><li>TPB CAC</li><li>TPB purchases</li><li>TPB cash collected</li><li>Organic purchases</li><li>Affiliate purchases</li></ul></div>
+          <div class="card"><h3>Member Success</h3><ul class="clean" style="font-size:12.5px"><li>TPB activation</li><li>TPB retention</li><li>Academy opportunities</li><li>Academy member health</li><li>Member wins</li></ul></div>
+          <div class="card"><h3>Sales</h3><ul class="clean" style="font-size:12.5px"><li>Academy opportunities</li><li>Contacted</li><li>Calls booked</li><li>Shows</li><li>Qualified calls</li><li>Sales · Close rate</li><li>Academy cash collected</li></ul></div>
+          <div class="card"><h3>Product</h3><ul class="clean" style="font-size:12.5px"><li>Product milestones released</li><li>BOSS™ systems completed</li><li>Tool implementation</li><li>Curriculum gaps outstanding</li></ul></div>
+          <div class="card"><h3>Finance</h3><ul class="clean" style="font-size:12.5px"><li>Total cash collected</li><li>TPB cash · Academy cash</li><li>Refunds · Ad spend · OpEx</li><li>Operating profit</li><li>Cash balance</li></ul></div>
+          <div class="card" style="border-color:rgba(201,168,98,.3)"><h3>The flywheel</h3><p style="font-size:12px;color:var(--mid);margin:0">Attention → TPB visitor → purchase → activation → progress → Academy opportunity → qualification → enrollment → activation → result → proof → better marketing → more attention. Jennifer owns the middle-and-back — that's why her numbers matter.</p></div>
+        </div>
+      </section>
+
+      <!-- CERTIFICATION -->
+      <section id="cert">
+        <div class="sh"><span class="n">12</span><h2>Certification — a 59-Day Project</h2><span class="tag">operational by Nov 28, 2026</span></div>
+        <div class="callout">Don't merely have certification "written" by Nov 28 — have it <b>operational</b>. You should be able to put a real eligible member through the entire process end-to-end.</div>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Workstream</th><th>Owner</th></tr></thead>
+          <tbody>
+            <tr><td>Certification Standard v1.0</td><td><span class="pill p-austin">Austin</span></td></tr>
+            <tr><td>Scientific Requirements</td><td><span class="pill p-emm">Emmanuel / vet team</span></td></tr>
+            <tr><td>Certification Assessment</td><td><span class="pill p-austin">Austin</span> + scientific team</td></tr>
+            <tr><td>Genetics &amp; Health Testing Verification Standard</td><td><span class="pill p-emm">Vet / scientific team</span></td></tr>
+            <tr><td>Veterinary Relationship Verification</td><td><span class="pill p-emm">Scientific</span> + <span class="pill p-austin">Austin</span></td></tr>
+            <tr><td>Certification Portfolio</td><td><span class="pill p-jen">Jennifer</span></td></tr>
+            <tr><td>Certification Audit Rubric</td><td><span class="pill p-austin">Austin</span> + <span class="pill p-jen">Jennifer</span> + scientific</td></tr>
+            <tr><td>Legacy Member Policy</td><td><span class="pill p-austin">Austin</span> + <span class="pill p-jen">Jennifer</span> + legal</td></tr>
+            <tr><td>Certification Administration SOP</td><td><span class="pill p-jen">Jennifer</span></td></tr>
+            <tr><td>Certification Tracker</td><td><span class="pill p-jen">Jennifer</span></td></tr>
+            <tr><td>Governance / Approvals / Appeals / Revocation</td><td><span class="pill p-austin">Austin</span> + counsel</td></tr>
+            <tr><td>First End-to-End Test Member</td><td><span class="pill p-jen">Jennifer</span> coordinates</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- DIAGNOSTIC -->
+      <section id="diagnostic">
+        <div class="sh"><span class="n">13</span><h2>Your Diagnostic Framework</h2><span class="tag">after 10–15 SOPs, stop writing &amp; run it</span></div>
+        <p style="font-size:13.5px;color:var(--mid)">Every time something breaks, don't invent a new document — ask which existing artifact failed:</p>
+        <div class="tblwrap"><table>
+          <thead><tr><th>What went wrong</th><th>Fix it here</th></tr></thead>
+          <tbody>
+            <tr><td>Ownership was unclear</td><td class="own">Accountability Chart</td></tr>
+            <tr><td>Success was unclear</td><td class="own">Role Scorecard</td></tr>
+            <tr><td>The process was unclear</td><td class="own">SOP</td></tr>
+            <tr><td>Company policy was missing</td><td class="own">Current Offer Reference</td></tr>
+            <tr><td>The tool was missing</td><td class="own">Resource / Product backlog</td></tr>
+            <tr><td>Process known but not followed</td><td class="own">Performance / accountability</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- 7-DAY PLAN -->
+      <section id="plan">
+        <div class="sh"><span class="n">14</span><h2>Your 7-Day Execution Plan</h2><span class="tag">start here</span></div>
+        <div class="cols">
+          <div class="card"><h3>Today — <span class="pill p-austin">Austin</span></h3><ul class="clean check" style="font-size:13px">
+            <li>Finalize accountability changes; remove Product vs Member Success ambiguity</li>
+            <li>Add Role Scorecards tab; paste in role scorecards</li>
+            <li>Give Jennifer her finalized one-page scorecard</li>
+            <li>Create empty SOP Index, Current Offer Reference, Product Roadmap</li></ul></div>
+          <div class="card"><h3>Next 48h — <span class="pill p-austin">Austin</span></h3><ul class="clean check" style="font-size:13px">
+            <li>Complete TPB / Academy / Accelerator current-offer answers</li>
+            <li>Make unresolved pricing / payment / access decisions</li>
+            <li>Populate known product release dates</li>
+            <li>Flag anything undecided as <span class="miss">DECISION REQUIRED</span> — not vague</li></ul></div>
+          <div class="card"><h3>Next 48h — <span class="pill p-jen">Jennifer</span></h3><ul class="clean check" style="font-size:13px">
+            <li>Review her Role Scorecard + existing resources</li>
+            <li>Populate SOP Index with every recurring Member Success workflow</li>
+            <li>Identify missing resources</li>
+            <li>Draft: New TPB Member · TPB Community · Academy Opportunity · New Academy Member · Member Question/Escalation SOPs</li></ul></div>
+          <div class="card"><h3>By end of week — <span class="pill p-jen">Jennifer</span></h3><ul class="clean check" style="font-size:13px">
+            <li>Build Member Success Dashboard; enter every active TPB/Academy member</li>
+            <li>Assign every Academy member a status; flag at-risk + missing next actions</li>
+            <li>Identify Academy opportunities, open escalations, member wins</li>
+            <li>Draft remaining high-priority SOPs</li></ul></div>
+          <div class="card"><h3>By end of week — <span class="pill p-austin">Austin</span></h3><ul class="clean check" style="font-size:13px">
+            <li>Review only areas needing company decisions</li>
+            <li>Approve / modify SLAs + handoff criteria</li>
+            <li>Finalize Accelerator resource-location decision</li>
+            <li>Review Product Roadmap + certification ownership</li></ul></div>
+          <div class="card"><h3>By end of week — <span class="pill p-reg">Regina</span></h3><ul class="clean check" style="font-size:13px">
+            <li>Verify Academy handoff workflow + CRM stages</li>
+            <li>Verify every Academy opportunity has an owner + next action</li></ul>
+            <h3 style="margin-top:14px">Next Monday</h3><p style="font-size:13px;color:var(--mid);margin:0">Run the first real operating meeting with the four questions. Not "how's it going?" — "Show me the scoreboard."</p></div>
+        </div>
+      </section>
+
+      <!-- WHAT DONE LOOKS LIKE -->
+      <section id="done">
+        <div class="sh"><span class="n">15</span><h2>What "Done" Looks Like</h2><span class="tag">answer these without messaging anyone</span></div>
+        <div class="card">
+          <div class="qa"><span class="q">Who owns this?</span><span class="a">Accountability Chart</span></div>
+          <div class="qa"><span class="q">What is Jennifer supposed to accomplish?</span><span class="a">Role Scorecard</span></div>
+          <div class="qa"><span class="q">How does Jennifer onboard a TPB member?</span><span class="a">SOP</span></div>
+          <div class="qa"><span class="q">What does Academy currently cost?</span><span class="a">Current Offer Reference</span></div>
+          <div class="qa"><span class="q">What's being released next?</span><span class="a">Product Roadmap</span></div>
+          <div class="qa"><span class="q">Which Academy members are behind?</span><span class="a">Member Success Dashboard</span></div>
+          <div class="qa"><span class="q">Which TPB members look Academy-ready?</span><span class="a">Member Success Dashboard</span></div>
+          <div class="qa"><span class="q">What happens after Jennifer identifies one?</span><span class="a">Handoff SOP</span></div>
+          <div class="qa"><span class="q">Where is that member in Sales?</span><span class="a">Sales Dashboard</span></div>
+          <div class="qa"><span class="q">Who needs expert help?</span><span class="a">Member Success Dashboard</span></div>
+          <div class="qa"><span class="q">What does Jennifer need from Austin?</span><span class="a">Issues / Decisions</span></div>
+          <div class="qa"><span class="q">Are we on pace for $100K?</span><span class="a">Company Dashboard</span></div>
+          <div class="qa" style="border-bottom:0"><span class="q">On pace for Nov 28 certification readiness?</span><span class="a">Certification Buildout</span></div>
+        </div>
+        <div class="callout green">That's when you have an <b>operating system</b>, not a collection of good documents — and a fair way to evaluate every role: clear ownership, measurable outcomes, approved decisions, workflows, tools, authority, and escalation rules. Then require each person to own their machine.</div>
+      </section>
+
+      <footer class="bf">BREEDWISE · Operating System Playbook — internal leadership document. Owner: Austin Shanks.</footer>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var OK='368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875'; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function el(id){return document.getElementById(id);}
+  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Operating Playbook · BreedWise';}
+  function tryUnlock(){var v=(el('pw').value||'').trim();h(v).then(function(hex){if(hex===OK){try{sessionStorage.setItem('pb_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
+  el('unlock').addEventListener('click',tryUnlock);
+  el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('pb_ok')==='1'){reveal();}else{el('pw').focus();}}catch(e){el('pw').focus();}
+})();
+</script>
+</body>
+</html>
