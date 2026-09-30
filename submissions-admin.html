@@ -135,7 +135,26 @@ async function boot(){
 async function load(){
   const {data,error}=await sb.from('tool_submissions').select('*').order('created_at',{ascending:false});
   if(error){ $('#rows').innerHTML=`<tr><td colspan="7" class="empty">Couldn't load (${esc(error.message)}). If this is the first run, the submissions table may not be set up yet.</td></tr>`; return; }
-  ROWS=data||[]; render();
+  const raw=data||[];
+  // Build the set of emails that completed a full application (from completed attribution rows).
+  const completed=new Set();
+  raw.forEach(r=>{ if(r.tool==='meta-attribution'){ const isP=(r.meta&&r.meta.partial===true)||/partial/i.test(r.tool_label||''); if(!isP){ const e=(r.member_email||'').toLowerCase(); if(e) completed.add(e); } } });
+  window.COMPLETED_EMAILS=completed;
+  const HIDE=new Set(['site-pageview','site-session']);          // pure analytics — never in the work log
+  ROWS=[];
+  raw.forEach(r=>{
+    if(HIDE.has(r.tool)) return;
+    if(r.tool==='meta-attribution'){
+      const isP=(r.meta&&r.meta.partial===true)||/partial/i.test(r.tool_label||'');
+      if(!isP) return;                                            // hide completed-attribution noise
+      r.tool='application-partial'; r.tool_label='Partial Application';
+      const e=(r.member_email||'').toLowerCase();
+      r._converted=!!(e&&completed.has(e));
+      r.summary=(r._converted?'✓ Converted to application':'Not submitted — follow up')+((r.meta&&r.meta.fbc)?' · from ad click':'');
+    }
+    ROWS.push(r);
+  });
+  render();
 }
 function toolsList(){ const m={}; ROWS.forEach(r=>{ m[r.tool]=r.tool_label||r.tool; }); return m; }
 function inTool(r){ return toolFilter==='All'||r.tool===toolFilter; }
@@ -483,7 +502,31 @@ function renderBody(r,forExport){
   if(r.tool==='social-media') return renderSocialMedia(r);
   if(r.tool==='business') return renderBusiness(r);
   if(r.tool==='litter-snapshot') return renderLitterSnapshot(r);
+  if(r.tool==='application-partial') return renderPartial(r);
   return renderGeneric(r);
+}
+function renderPartial(r){
+  const m=r.meta||{};
+  const conv=r._converted;
+  const kvrow=(k,v)=> (v!=null&&String(v).trim())?`<div class="kvrow"><b>${esc(k)}:</b> ${esc(v)}</div>`:'';
+  const cap=m.captured_at?new Date(m.captured_at*1000):(r.created_at?new Date(r.created_at):null);
+  const when=cap?cap.toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'—';
+  return `
+    <div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--del)">Partial application</div>
+      <div class="big" style="font-size:22px">${conv?'Converted to a full application ✓':'Started — never submitted'}</div>
+      <p style="color:var(--mid);font-size:13px;margin-top:6px">${conv?'This lead came back and completed the application. No recovery needed.':'Real recovery opportunity — they gave contact info and showed intent but did not finish. Reach out.'}</p></div>
+    <div class="block"><h3>Contact</h3>
+      ${kvrow('Email',r.member_email)}
+      ${kvrow('Name',r.member_name)}
+      ${kvrow('Phone', m.phone || '(in CC360 — search the contact tagged “application-partial”)')}
+      ${kvrow('Breed(s)',m.breeds)}
+    </div>
+    <div class="block"><h3>Capture</h3>
+      ${kvrow('Started',when)}
+      ${kvrow('Drop point',m.reason)}
+      ${kvrow('From ad click', m.fbc?'Yes':'No')}
+      ${kvrow('Status', conv?'Converted — no action':'Open — follow up')}
+    </div>`;
 }
 function renderLitterSnapshot(r){
   const res=r.result||{}, i=r.inputs||{}, m=res.metrics||r.meta||{};
