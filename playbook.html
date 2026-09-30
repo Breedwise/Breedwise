@@ -89,6 +89,23 @@
   .p-yas{background:rgba(224,169,85,.16);color:#f0cf9a}
   .p-emm{background:rgba(87,185,138,.16);color:#9fe3c2}
   .p-open{background:rgba(129,141,155,.16);color:var(--mid)}
+  .s-on{background:rgba(87,185,138,.16);color:#9fe3c2}
+  .s-build{background:rgba(90,169,230,.16);color:#a9d6ff}
+  .s-risk{background:rgba(224,169,85,.16);color:#f0cf9a}
+  .s-behind{background:rgba(232,105,95,.16);color:#f2a59d}
+  .s-done{background:rgba(201,168,98,.18);color:var(--gold-soft)}
+  /* daily schedule */
+  .sched{display:flex;flex-direction:column;margin:2px 0}
+  .blk{display:grid;grid-template-columns:118px 1fr;gap:0;border-top:1px solid var(--line)}
+  .blk:last-child{border-bottom:1px solid var(--line)}
+  .blk .tm{font-family:var(--disp);font-size:14px;color:var(--gold);font-weight:600;padding:11px 12px;border-right:1px solid var(--line);white-space:nowrap}
+  .blk .bd{padding:11px 14px}
+  .blk .nm{font-size:14px;color:var(--ink);font-weight:600}
+  .blk .dr{font-size:12px;color:var(--muted);margin-top:2px}
+  .blk.key{background:rgba(201,168,98,.06)}
+  .blk.key .tm{color:var(--gold-soft)}
+  .blk.rest .nm{color:var(--mid);font-weight:400}
+  @media(max-width:560px){.blk{grid-template-columns:92px 1fr}.blk .tm{font-size:12.5px;padding:10px 8px}}
 
   .rhythm{display:grid;grid-template-columns:120px 1fr;gap:0}
   .rhythm .t{font-family:var(--disp);color:var(--gold);font-size:14px;font-weight:600;padding:12px 0;border-top:1px solid var(--line)}
@@ -116,7 +133,7 @@
     <nav class="top"><div class="in">
       <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
       <div class="pills">
-        <a href="#daily">Daily</a><a href="#weekly">Weekly</a><a href="#os">The OS</a><a href="#chart">Accountability</a>
+        <a href="#daily">My Day</a><a href="#quarterly">Quarterly</a><a href="#weekly">Weekly</a><a href="#os">The OS</a><a href="#chart">Accountability</a>
         <a href="#scorecards">Scorecards</a><a href="#sops">SOPs</a><a href="#offer">Offer Ref</a><a href="#handoffs">Handoffs</a>
         <a href="#slas">SLAs</a><a href="#escalation">Escalation</a><a href="#scoreboard">$100K</a><a href="#cert">Certification</a>
         <a href="#diagnostic">Diagnostic</a><a href="#plan">7-Day</a><a href="#done">Done</a>
@@ -137,7 +154,24 @@
 
       <!-- DAILY -->
       <section id="daily">
-        <div class="sh"><span class="n">01</span><h2>Your Daily Rhythm</h2><span class="tag">manage by exception</span></div>
+        <div class="sh"><span class="n">01</span><h2>Your Day, Blocked</h2><span class="tag">4:00 AM → 10:00 PM</span></div>
+        <div class="card" style="padding:6px 18px 10px">
+          <div class="sched">
+            <div class="blk rest"><div class="tm">4:00 AM</div><div class="bd"><div class="nm">Wake up</div></div></div>
+            <div class="blk"><div class="tm">4:20 AM</div><div class="bd"><div class="nm">Bible &amp; prayer</div><div class="dr">Foundation before input — mind set before the world gets a vote.</div></div></div>
+            <div class="blk key"><div class="tm">5:30 AM</div><div class="bd"><div class="nm">Eat That Frog — the #1 hard task</div><div class="dr">Your daily move on a <b style="color:var(--gold-soft)">quarterly priority</b>. Deep work, no meetings, no phone. This is where the quarter actually gets built.</div></div></div>
+            <div class="blk rest"><div class="tm">7:30 AM</div><div class="bd"><div class="nm">Take the dogs out</div><div class="dr">Reset before the day opens up.</div></div></div>
+            <div class="blk"><div class="tm">8:00–10:00</div><div class="bd"><div class="nm">Meetings</div><div class="dr"><b>Monday:</b> run the Operating Meeting (scoreboard → what's red → decisions → owners). Other days: team syncs + clear the Issues/Decisions queue.</div></div></div>
+            <div class="blk"><div class="tm">10:00–11:00</div><div class="bd"><div class="nm">Outbounds</div><div class="dr">Pipeline generation — feeds Setting &amp; the top of the $100K funnel.</div></div></div>
+            <div class="blk rest"><div class="tm">11:00–1:00</div><div class="bd"><div class="nm">Gym &amp; lunch</div><div class="dr">Non-negotiable recovery — protects the 4–8 PM close block.</div></div></div>
+            <div class="blk key"><div class="tm">1:00–4:00</div><div class="bd"><div class="nm">Deep Work — Product · Curriculum · Certification <span style="color:var(--muted);font-weight:400;font-size:11px">(confirm label)</span></div><div class="dr">Second daily block on a <b style="color:var(--gold-soft)">quarterly priority</b> — ship roadmap + drive the Nov 28 certification build.</div></div></div>
+            <div class="blk key"><div class="tm">4:00–8:00</div><div class="bd"><div class="nm">Sales Calls — Closing</div><div class="dr">The revenue block. Directly moves <b style="color:var(--gold-soft)">Academy cash → $100K</b>.</div></div></div>
+            <div class="blk rest"><div class="tm">8:00–10:00</div><div class="bd"><div class="nm">Wind down / family</div></div></div>
+            <div class="blk rest"><div class="tm">10:00 PM</div><div class="bd"><div class="nm">Bed</div><div class="dr">Guard it — 4:00 AM only works if 10:00 PM holds.</div></div></div>
+          </div>
+        </div>
+        <div class="callout green"><b>The bridge that makes the quarter happen:</b> two blocks a day are aimed at your quarterly rocks — the <b>5:30 AM frog</b> and the <b>1–4 PM deep work</b>. If those two blocks each move one Quarterly Priority forward, the quarter takes care of itself. Everything else (meetings, outbounds, closing) runs the machine day to day.</div>
+        <h3 style="font-family:var(--disp);font-size:18px;margin:20px 0 6px">How each block is used</h3>
         <div class="rhythm">
           <div class="t">Morning</div>
           <div class="c">
@@ -172,9 +206,63 @@
         <div class="callout blue">Your daily win: you made <b>decisions</b>, not documents — and every recurring question got answered by the system, not by you.</div>
       </section>
 
+      <!-- QUARTERLY -->
+      <section id="quarterly">
+        <div class="sh"><span class="n">02</span><h2>Quarterly Priorities &amp; Progress</h2><span class="tag">Q4 2026 · Oct–Dec</span></div>
+        <div class="callout" style="text-align:center;font-size:15px"><b>The rocks this quarter.</b> Your daily 5:30 AM frog + 1–4 PM deep work exist to move these — nothing else earns those two blocks.</div>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Priority (rock)</th><th>Owner</th><th>Definition of done / metric</th><th>Status</th><th>Next milestone</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><b>Hit $100K / month cash collected</b></td>
+              <td><span class="pill p-austin">Austin</span> <span class="pill p-reg">Regina</span></td>
+              <td>Monthly cash (Command Center) reaches target pace</td>
+              <td><span class="pill s-behind">BEHIND</span></td>
+              <td>Get <code class="f">ads_read</code> live + lift close rate on the 4–8 PM block</td>
+            </tr>
+            <tr>
+              <td><b>Certification operational by Nov 28</b></td>
+              <td><span class="pill p-austin">Austin</span> <span class="pill p-emm">Emmanuel</span> <span class="pill p-jen">Jennifer</span></td>
+              <td>A real eligible member can run the full process end-to-end</td>
+              <td><span class="pill s-build">BUILDING</span></td>
+              <td>Standard v1.0 + Scientific Requirements drafted</td>
+            </tr>
+            <tr>
+              <td><b>Install the Operating System</b></td>
+              <td><span class="pill p-austin">Austin</span> <span class="pill p-jen">Jennifer</span></td>
+              <td>Accountability, scorecards, SOP index &amp; Member Success Dashboard live and in use</td>
+              <td><span class="pill s-build">BUILDING</span></td>
+              <td>Jennifer's Member Dashboard + first 10 SOPs</td>
+            </tr>
+            <tr>
+              <td><b>TPB → Academy ascension engine</b></td>
+              <td><span class="pill p-jen">Jennifer</span> → <span class="pill p-reg">Regina</span></td>
+              <td>Academy opportunities identified &amp; handed off every week</td>
+              <td><span class="pill s-on">ON TRACK</span></td>
+              <td>Set the weekly opportunity target</td>
+            </tr>
+            <tr>
+              <td style="color:var(--muted)">Your 5th rock (optional)</td>
+              <td class="miss">___</td><td class="miss">___</td><td><span class="pill p-open">SET</span></td><td class="miss">___</td>
+            </tr>
+          </tbody>
+        </table></div>
+        <div class="cols" style="margin-top:14px">
+          <div class="card"><h3>Progress cadence</h3><ul class="clean">
+            <li><b>Daily:</b> the frog + deep-work blocks each advance one rock. Name which rock before you start.</li>
+            <li><b>Friday:</b> update each status pill (ON TRACK / AT RISK / BEHIND / DONE) and the next milestone.</li>
+            <li><b>Monday:</b> any rock that's BEHIND is the first thing "what's red?" surfaces.</li>
+          </ul></div>
+          <div class="card"><h3>Status key</h3><p style="margin:0 0 8px">
+            <span class="pill s-on">ON TRACK</span> <span class="pill s-build">BUILDING</span> <span class="pill s-risk">AT RISK</span> <span class="pill s-behind">BEHIND</span> <span class="pill s-done">DONE</span></p>
+            <p style="font-size:12.5px;color:var(--muted);margin:0">Don't over-track. Five rocks max. If everything is a priority, nothing is — the daily blocks can only push one or two forward at a time.</p>
+          </div>
+        </div>
+      </section>
+
       <!-- WEEKLY -->
       <section id="weekly">
-        <div class="sh"><span class="n">02</span><h2>Your Weekly Rhythm</h2><span class="tag">rituals that hold it together</span></div>
+        <div class="sh"><span class="n">03</span><h2>Your Weekly Rhythm</h2><span class="tag">rituals that hold it together</span></div>
         <div class="cols3">
           <div class="card">
             <h3>Monday · Operating Meeting</h3>
@@ -206,7 +294,7 @@
 
       <!-- OS STRUCTURE -->
       <section id="os">
-        <div class="sh"><span class="n">03</span><h2>The Operating System — 13 Tabs</h2><span class="tag">one navigation system</span></div>
+        <div class="sh"><span class="n">04</span><h2>The Operating System — 13 Tabs</h2><span class="tag">one navigation system</span></div>
         <div class="tblwrap"><table>
           <thead><tr><th>Tab</th><th>Purpose</th></tr></thead>
           <tbody>
@@ -229,7 +317,7 @@
 
       <!-- ACCOUNTABILITY -->
       <section id="chart">
-        <div class="sh"><span class="n">04</span><h2>Accountability Chart</h2><span class="tag">lock this first</span></div>
+        <div class="sh"><span class="n">05</span><h2>Accountability Chart</h2><span class="tag">lock this first</span></div>
         <div class="callout">Remove Jennifer from anything implying <b>Head of Product / Curriculum</b>. She owns Member Success &amp; Delivery Operations, not product strategy.</div>
         <div class="tblwrap"><table>
           <thead><tr><th>Function</th><th>Accountable Owner</th></tr></thead>
@@ -263,7 +351,7 @@
 
       <!-- SCORECARDS -->
       <section id="scorecards">
-        <div class="sh"><span class="n">05</span><h2>Role Scorecards</h2><span class="tag">one screen each</span></div>
+        <div class="sh"><span class="n">06</span><h2>Role Scorecards</h2><span class="tag">one screen each</span></div>
         <div class="cols">
           <div class="card">
             <h3>The standard (Tab 03)</h3>
@@ -333,7 +421,7 @@
 
       <!-- SOPs -->
       <section id="sops">
-        <div class="sh"><span class="n">06</span><h2>SOP Standard &amp; Index</h2><span class="tag">the SOP is the path</span></div>
+        <div class="sh"><span class="n">07</span><h2>SOP Standard &amp; Index</h2><span class="tag">the SOP is the path</span></div>
         <div class="callout green">Jennifer drafts the <b>HOW</b>. You approve anything affecting company policy. Tell her: <i>"I've defined your outcomes, ownership, product info and escalation boundaries. Document the repeatable workflows you own. Bring me decisions or gaps that need leadership — not questions the system already answers."</i></div>
         <div class="cols">
           <div class="card">
@@ -383,7 +471,7 @@
 
       <!-- OFFER REFERENCE -->
       <section id="offer">
-        <div class="sh"><span class="n">07</span><h2>Current Offer &amp; Product Reference</h2><span class="tag">source of truth · Austin fills</span></div>
+        <div class="sh"><span class="n">08</span><h2>Current Offer &amp; Product Reference</h2><span class="tag">source of truth · Austin fills</span></div>
         <div class="callout">Header this document: <b>Last Updated ___ · Owner: Austin Shanks.</b> This is the current source of truth. Previous pricing / policies / structures are not communicated unless specifically grandfathered. When Jennifer needs to answer Judy about payment options, she looks <i>here</i> — she doesn't ask you.</div>
         <div class="cols">
           <div class="card"><h3>The Profitable Breeder</h3><ul class="clean" style="font-size:12.5px;columns:2">
@@ -399,7 +487,7 @@
 
       <!-- HANDOFFS -->
       <section id="handoffs">
-        <div class="sh"><span class="n">08</span><h2>The Five Handoffs</h2><span class="tag">routing ≠ removing accountability</span></div>
+        <div class="sh"><span class="n">09</span><h2>The Five Handoffs</h2><span class="tag">routing ≠ removing accountability</span></div>
         <div class="tblwrap"><table>
           <thead><tr><th>Handoff</th><th>Trigger</th><th>New Owner</th></tr></thead>
           <tbody>
@@ -415,7 +503,7 @@
 
       <!-- SLAs -->
       <section id="slas">
-        <div class="sh"><span class="n">09</span><h2>Member Success SLAs</h2><span class="tag">define what you can consistently deliver</span></div>
+        <div class="sh"><span class="n">10</span><h2>Member Success SLAs</h2><span class="tag">define what you can consistently deliver</span></div>
         <p style="font-size:13.5px;color:var(--mid)">No vague "respond quickly." Set a target for each, reflecting what BreedWise can consistently hit, so members and staff share one expectation.</p>
         <div class="tblwrap"><table>
           <thead><tr><th>Event</th><th>Target</th></tr></thead>
@@ -437,7 +525,7 @@
 
       <!-- ESCALATION -->
       <section id="escalation">
-        <div class="sh"><span class="n">10</span><h2>Escalation Rule &amp; Product Feedback Loop</h2><span class="tag">stop being the search engine</span></div>
+        <div class="sh"><span class="n">11</span><h2>Escalation Rule &amp; Product Feedback Loop</h2><span class="tag">stop being the search engine</span></div>
         <div class="callout"><b>Team rule:</b> Before escalating a recurring operational question, check the Role Scorecard, Current Offer Reference, and relevant SOP. If the answer exists, follow it. If it doesn't, escalate the <b>missing decision</b> — and once resolved, update the system so the same question never needs leadership again.</div>
         <div class="card">
           <h3>The product feedback loop</h3>
@@ -452,7 +540,7 @@
 
       <!-- $100K SCOREBOARD -->
       <section id="scoreboard">
-        <div class="sh"><span class="n">11</span><h2>The $100K Company Scoreboard</h2><span class="tag">Tab 01</span></div>
+        <div class="sh"><span class="n">12</span><h2>The $100K Company Scoreboard</h2><span class="tag">Tab 01</span></div>
         <div class="callout" style="text-align:center;font-size:16px"><b>TARGET: $100,000+ MONTHLY CASH COLLECTED</b></div>
         <div class="cols3">
           <div class="card"><h3>Growth</h3><ul class="clean" style="font-size:12.5px"><li>Traffic</li><li>Ad spend</li><li>TPB CAC</li><li>TPB purchases</li><li>TPB cash collected</li><li>Organic purchases</li><li>Affiliate purchases</li></ul></div>
@@ -466,7 +554,7 @@
 
       <!-- CERTIFICATION -->
       <section id="cert">
-        <div class="sh"><span class="n">12</span><h2>Certification — a 59-Day Project</h2><span class="tag">operational by Nov 28, 2026</span></div>
+        <div class="sh"><span class="n">13</span><h2>Certification — a 59-Day Project</h2><span class="tag">operational by Nov 28, 2026</span></div>
         <div class="callout">Don't merely have certification "written" by Nov 28 — have it <b>operational</b>. You should be able to put a real eligible member through the entire process end-to-end.</div>
         <div class="tblwrap"><table>
           <thead><tr><th>Workstream</th><th>Owner</th></tr></thead>
@@ -489,7 +577,7 @@
 
       <!-- DIAGNOSTIC -->
       <section id="diagnostic">
-        <div class="sh"><span class="n">13</span><h2>Your Diagnostic Framework</h2><span class="tag">after 10–15 SOPs, stop writing &amp; run it</span></div>
+        <div class="sh"><span class="n">14</span><h2>Your Diagnostic Framework</h2><span class="tag">after 10–15 SOPs, stop writing &amp; run it</span></div>
         <p style="font-size:13.5px;color:var(--mid)">Every time something breaks, don't invent a new document — ask which existing artifact failed:</p>
         <div class="tblwrap"><table>
           <thead><tr><th>What went wrong</th><th>Fix it here</th></tr></thead>
@@ -506,7 +594,7 @@
 
       <!-- 7-DAY PLAN -->
       <section id="plan">
-        <div class="sh"><span class="n">14</span><h2>Your 7-Day Execution Plan</h2><span class="tag">start here</span></div>
+        <div class="sh"><span class="n">15</span><h2>Your 7-Day Execution Plan</h2><span class="tag">start here</span></div>
         <div class="cols">
           <div class="card"><h3>Today — <span class="pill p-austin">Austin</span></h3><ul class="clean check" style="font-size:13px">
             <li>Finalize accountability changes; remove Product vs Member Success ambiguity</li>
@@ -542,7 +630,7 @@
 
       <!-- WHAT DONE LOOKS LIKE -->
       <section id="done">
-        <div class="sh"><span class="n">15</span><h2>What "Done" Looks Like</h2><span class="tag">answer these without messaging anyone</span></div>
+        <div class="sh"><span class="n">16</span><h2>What "Done" Looks Like</h2><span class="tag">answer these without messaging anyone</span></div>
         <div class="card">
           <div class="qa"><span class="q">Who owns this?</span><span class="a">Accountability Chart</span></div>
           <div class="qa"><span class="q">What is Jennifer supposed to accomplish?</span><span class="a">Role Scorecard</span></div>
