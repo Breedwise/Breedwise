@@ -133,7 +133,7 @@ async function boot(){
   $('#gate').classList.add('hide');$('#app').classList.add('on'); load();
 }
 async function load(){
-  const {data,error}=await sb.from('tool_submissions').select('*').not('tool','in','("site-pageview","site-session","meta-attribution")').order('created_at',{ascending:false});
+  const {data,error}=await sb.from('tool_submissions').select('*').order('created_at',{ascending:false});
   if(error){ $('#rows').innerHTML=`<tr><td colspan="7" class="empty">Couldn't load (${esc(error.message)}). If this is the first run, the submissions table may not be set up yet.</td></tr>`; return; }
   ROWS=data||[]; render();
 }
@@ -446,7 +446,8 @@ function renderScorecard(r,forExport){
       <td class="n">${esc(s.label||s.key)}${(typeof s.delta==='number'&&s.delta!==0)
         ?` <span style="font-size:11px;font-weight:700;color:${s.delta>0?'var(--del)':'var(--fu)'}">${s.delta>0?'+':''}${s.delta}</span>`:''}</td>
       <td><span class="pill ${ascore(s.score)}">${Number(s.score)||0}</span></td>
-      <td style="color:var(--muted);font-size:12px">${esc(s.evidence||'')}</td></tr>`).join('');
+      <td style="color:var(--muted);font-size:12px">${esc(s.evidence||'')}${s.standard
+        ?`<div style="color:var(--mid);margin-top:6px;padding-left:9px;border-left:2px solid var(--gold-faint)"><b style="color:var(--gold)">Strong looks like</b> ${esc(s.standard)}</div>`:''}</td></tr>`).join('');
   const sn=res.snapshot||{};
   const tx=(inp.transcript||[]).map(m=>`${m.role==='user'?'BREEDER':'SCORECARD'}: ${m.content}`).join('\n\n');
   return `
@@ -481,7 +482,33 @@ function renderBody(r,forExport){
   if(r.tool==='vet-relations') return renderVetRelations(r);
   if(r.tool==='social-media') return renderSocialMedia(r);
   if(r.tool==='business') return renderBusiness(r);
+  if(r.tool==='litter-snapshot') return renderLitterSnapshot(r);
   return renderGeneric(r);
+}
+function renderLitterSnapshot(r){
+  const res=r.result||{}, i=r.inputs||{}, m=res.metrics||r.meta||{};
+  const flags=res.flags||m.flags||[];
+  const priority=res.priority||'';
+  const money=v=>(Number(v)<0?'-$':'$')+Math.round(Math.abs(Number(v)||0)).toLocaleString('en-US');
+  const pct=v=>(Math.round((Number(v)||0)*10)/10)+'%';
+  const margin=(m.margin!=null)?m.margin:((Number(m.revenue)||0)-(Number(m.direct)||0));
+  const answers=Array.isArray(i.answers)?i.answers:[];
+  const ansBlocks=answers.map(g=>`<div class="block"><h3>${esc(g[0]||'')}</h3>${(g[1]||[]).map(qa=>`<div class="kvrow"><b>${esc(qa[0])}:</b> ${esc(qa[1])}</div>`).join('')}</div>`).join('');
+  const moneyRows=[
+    ['Gross Revenue',m.revenue],['Direct Litter Costs',m.direct],['Direct Litter Margin',margin],
+    ['Indirect & Program Costs',m.alloc],['Estimated Litter Profit',m.profit]
+  ].filter(x=>x[1]!=null).map(x=>`<div class="kvrow"><b>${x[0]}:</b> ${esc(money(x[1]))}</div>`).join('');
+  const sub=[m.sold!=null?`${m.sold} sold`:'',m.placed!=null?`${m.placed} placed`:'',(m.surv!=null&&m.born!=null)?`${m.surv} survived of ${m.born}`:''].filter(Boolean).join(' · ');
+  return `
+    <div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--del)">Estimated litter profit</div><div class="big">${money(m.profit)}</div><p style="color:var(--mid);font-size:13px;margin-top:6px">${esc(m.litter||'Litter')}${sub?' · '+esc(sub):''}${m.marginPct!=null?' · '+pct(m.marginPct)+' margin':''}</p></div>
+    <div class="block"><h3>Money</h3>${moneyRows||'<p>—</p>'}
+      ${m.profPer!=null?`<div class="kvrow"><b>Profit / puppy:</b> ${esc(money(m.profPer))}</div>`:''}
+      ${m.breakeven!=null?`<div class="kvrow"><b>Break-even price:</b> ${esc(money(m.breakeven))}</div>`:''}
+      ${m.hours?`<div class="kvrow"><b>Owner hours:</b> ${Math.round(m.hours)}${m.perHour?` (${esc(money(m.perHour))}/hr)`:''}</div>`:''}
+      ${(i.guess||r.guess)?`<div class="kvrow"><b>Their gut guess:</b> ${esc(money(i.guess||r.guess))}</div>`:''}</div>
+    ${flags.length?`<div class="block"><h3>Signals</h3><p>${flags.map(f=>esc(f)).join(' · ')}</p></div>`:''}
+    ${priority?`<div class="block"><h3>Next-litter priority</h3><p>${esc(priority)}</p></div>`:''}
+    ${ansBlocks?`<div class="block" style="background:none;border:0;padding:14px 0 0"><h3>Full answers (exactly what they entered)</h3></div>${ansBlocks}`:`<div class="block"><p style="color:var(--muted)">Full itemized answers weren't captured for this submission (saved before the update).</p></div>`}`;
 }
 function renderGeneric(r){
   const inp=r.inputs, res=r.result;

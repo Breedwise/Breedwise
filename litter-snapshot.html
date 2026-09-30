@@ -724,7 +724,8 @@ function saveProfile(){
   if(!code){code=(prompt('Confirm your BreedWise access code to save this to your profile:')||'').trim();if(!code){msg.style.color='var(--muted)';msg.textContent='';return;}try{sessionStorage.setItem('ls_code',code);}catch(e){}}
   var s=window.SNAP||{};
   var payload={code:code,member_email:email,member_name:(document.getElementById('saveName').value||'').trim(),
-    litter:s.litter||'',breed:s.breed||'',metrics:s.metrics||{},demand:s.demand||{},flags:s.flags||[],guess:s.guess||0,priority:s.priority||''};
+    litter:s.litter||'',breed:s.breed||'',metrics:s.metrics||{},demand:s.demand||{},flags:s.flags||[],guess:s.guess||0,priority:s.priority||'',
+    answers:collectAnswers()};
   var btn=document.getElementById('saveBtn');btn.disabled=true;btn.textContent='Saving…';msg.style.color='var(--muted)';msg.textContent='';
   fetch('https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/litter-snapshot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
     .then(function(r){return r.json();}).then(function(d){btn.disabled=false;btn.textContent='Save to my profile →';
