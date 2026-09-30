@@ -142,17 +142,37 @@ async function load(){
   window.COMPLETED_EMAILS=completed;
   const HIDE=new Set(['site-pageview','site-session']);          // pure analytics — never in the work log
   ROWS=[];
+  const byEmail={}, byName={}, partials=[];                       // condense the same lead into one entry
   raw.forEach(r=>{
     if(HIDE.has(r.tool)) return;
     if(r.tool==='meta-attribution'){
       const isP=(r.meta&&r.meta.partial===true)||/partial/i.test(r.tool_label||'');
       if(!isP) return;                                            // hide completed-attribution noise
+      const e=(r.member_email||'').trim().toLowerCase();
+      const nm=(r.member_name||'').trim().toLowerCase();
+      const kept=(e&&byEmail[e])||(nm&&byName[nm]);               // same email OR same name = same person
+      if(kept){                                                   // condense — do not double count
+        kept._captures=(kept._captures||1)+1;
+        const km=kept.meta||(kept.meta={}), rm=r.meta||{};
+        ['phone','breeds','reason','fbc','fbclid','event_id'].forEach(f=>{ if(!km[f]&&rm[f]) km[f]=rm[f]; });
+        if(!kept.member_name&&r.member_name) kept.member_name=r.member_name;
+        if(e&&completed.has(e)) kept._converted=true;
+        if(e&&!byEmail[e]) byEmail[e]=kept;
+        if(nm&&!byName[nm]) byName[nm]=kept;
+        return;                                                   // drop the duplicate row
+      }
       r.tool='application-partial'; r.tool_label='Partial Application';
-      const e=(r.member_email||'').toLowerCase();
-      r._converted=!!(e&&completed.has(e));
-      r.summary=(r._converted?'✓ Converted to application':'Not submitted — follow up')+((r.meta&&r.meta.fbc)?' · from ad click':'');
+      r._converted=!!(e&&completed.has(e)); r._captures=1;
+      if(e) byEmail[e]=r; if(nm) byName[nm]=r;
+      partials.push(r); ROWS.push(r);
+      return;
     }
     ROWS.push(r);
+  });
+  partials.forEach(r=>{                                           // finalize once capture counts are known
+    r.summary=(r._converted?'✓ Converted to application':'Not submitted — follow up')
+      +((r.meta&&r.meta.fbc)?' · from ad click':'')
+      +(r._captures>1?(' · '+r._captures+' captures'):'');
   });
   render();
 }
@@ -525,6 +545,7 @@ function renderPartial(r){
       ${kvrow('Started',when)}
       ${kvrow('Drop point',m.reason)}
       ${kvrow('From ad click', m.fbc?'Yes':'No')}
+      ${kvrow('Times started', (r._captures&&r._captures>1)?(r._captures+' captures (condensed to one lead)'):null)}
       ${kvrow('Status', conv?'Converted — no action':'Open — follow up')}
     </div>`;
 }
