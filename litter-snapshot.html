@@ -89,6 +89,12 @@
   @media(max-width:560px){.cat-items{grid-template-columns:1fr}}
   .li{display:flex;flex-direction:column;gap:4px}
   .li label{font-size:11px;color:var(--muted)}
+  .li .lihint{font-size:10.5px;line-height:1.35;color:var(--muted);opacity:.72;font-weight:300;margin-top:-1px}
+  .note{display:flex;gap:8px;align-items:flex-start;background:rgba(198,163,92,.08);border:1px solid rgba(198,163,92,.25);border-radius:10px;padding:9px 12px;margin:-4px 0 14px;font-size:12px;line-height:1.45;color:var(--mid);font-weight:300}
+  .note b{color:var(--ink);font-weight:600}
+  .note .ni{color:var(--gold);flex:none;font-size:13px;line-height:1.3}
+  .snap-explain{font-size:12px;line-height:1.5;color:var(--muted);font-weight:300;margin:10px 2px 0;padding-top:10px;border-top:1px dashed var(--line)}
+  .snap-explain b{color:var(--ink);font-weight:600}
 
   .quick-only .full,.full-only .quick{display:none}
   body.full .quick-only .full{display:block}
@@ -260,20 +266,27 @@
       <section>
         <div class="sh"><span class="n">03</span><h2>Direct Litter Costs</h2><span class="sub" id="dirSub">$0</span></div>
         <p class="desc">The costs that belong to <b>this litter</b>. This is usually where "revenue" and "profit" start to separate.</p>
+        <div class="note"><span class="ni">∑</span><span>Just enter each line — we <b>add up every category and total for you automatically</b>. You never have to sum anything yourself; watch the numbers at the top update live as you type.</span></div>
         <div id="directCats"></div>
       </section>
 
-      <!-- ALLOCATED -->
-      <section class="full-only full">
-        <div class="sh"><span class="n">04</span><h2>Allocated Program Costs</h2><span class="sub" id="allocSub">$0</span></div>
-        <p class="desc">Your program has costs beyond one litter — website, ads, insurance, facility. Allocate a fair <b>portion</b> to this litter (not the full annual amount). Kept separate on purpose: this is the number breeders forget.</p>
-        <div class="cat"><div class="cat-items" id="allocItems"></div></div>
+      <!-- ALLOCATED / INDIRECT -->
+      <section>
+        <div class="sh"><span class="n">04</span><h2>Indirect &amp; Program Costs</h2><span class="sub" id="allocSub">$0</span></div>
+        <p class="desc">Your ongoing business costs that aren't tied to one litter — website, ads, insurance, facility, software. Enter the fair <b>portion</b> that belongs to this litter (not the full annual amount).</p>
+        <div class="note"><span class="ni">◆</span><span>These <b>do</b> come out of your <b>Estimated Litter Profit</b> below — they're your true overhead. They're kept separate from Direct Litter Costs so you can see each layer, but nothing here is left out of your bottom line.</span></div>
+        <div class="quick-only quick">
+          <div class="cat"><div class="cat-items">
+            <div class="li"><label>Indirect / program portion for this litter</label><div class="money"><input type="number" id="qa_alloc" placeholder="0"></div><div class="lihint">A rough share of your monthly business costs (ads, website, insurance, software, facility). Switch to Full Review to itemize.</div></div>
+          </div></div>
+        </div>
+        <div class="full-only full"><div class="cat"><div class="cat-items" id="allocItems"></div></div></div>
       </section>
 
       <!-- TIME -->
       <section class="full-only full">
         <div class="sh"><span class="n">05</span><h2>Your Time</h2><span class="sub" id="hrSub">0 hrs</span></div>
-        <p class="desc">The cost nobody tracks. We won't deduct this from your profit — but you should <b>see</b> it.</p>
+        <p class="desc">The cost nobody tracks. We won't deduct this from your profit — but you should <b>see</b> it. Each bucket below has a plain-English description so you know exactly what goes where (e.g. how <b>breeding prep</b> hours differ from <b>whelping</b> hours). Your total hours add up automatically.</p>
         <div class="cat"><div class="cat-items" id="timeItems"></div></div>
         <div class="grid" style="margin-top:12px">
           <div class="fld money"><label>What is an hour of your time worth? (optional)</label><input type="number" id="hourlyRate" placeholder="0"></div>
@@ -282,7 +295,7 @@
 
       <!-- DEMAND -->
       <section>
-        <div class="sh"><span class="n" id="demN">04</span><h2>Demand &amp; Sales</h2></div>
+        <div class="sh"><span class="n" id="demN">05</span><h2>Demand &amp; Sales</h2></div>
         <p class="desc">This is what turns a calculator into a diagnosis — it separates a <b>pricing</b> problem from a <b>demand</b> problem from a <b>conversion</b> problem.</p>
         <div class="grid g3">
           <div class="fld"><label>Qualified families waiting <b>before</b> birth</label><input type="number" id="dBefore" placeholder="0"></div>
@@ -298,7 +311,7 @@
 
       <!-- PRICING -->
       <section>
-        <div class="sh"><span class="n" id="priN">05</span><h2>Pricing</h2></div>
+        <div class="sh"><span class="n" id="priN">06</span><h2>Pricing</h2></div>
         <div class="grid g3">
           <div class="fld money"><label>Advertised price</label><input type="number" id="pAdv" placeholder="0"></div>
           <div class="fld money"><label>Highest sold</label><input type="number" id="pHigh" placeholder="0"></div>
@@ -325,7 +338,7 @@
 
       <!-- REFLECTION -->
       <section>
-        <div class="sh"><span class="n" id="refN">06</span><h2>What Did This Litter Teach You?</h2></div>
+        <div class="sh"><span class="n" id="refN">07</span><h2>What Did This Litter Teach You?</h2></div>
         <div class="grid">
           <div class="fld full"><label>What worked well?</label><textarea id="rWorked" placeholder=""></textarea></div>
           <div class="fld full full-only"><label>Where did you lose money or create unnecessary expense?</label><textarea id="rLostMoney"></textarea></div>
@@ -355,9 +368,10 @@
         <div class="rr"><span class="rl">Gross Revenue</span><span class="rv" id="oRev">$0</span></div>
         <div class="rr"><span class="rl">Direct Litter Costs</span><span class="rv" id="oDir">$0</span></div>
         <div class="rr em"><span class="rl">Direct Litter Margin</span><span class="rv" id="oMargin">$0</span></div>
-        <div class="rr full-only full"><span class="rl">Allocated Program Costs</span><span class="rv" id="oAlloc">$0</span></div>
+        <div class="rr"><span class="rl">Indirect &amp; Program Costs</span><span class="rv" id="oAlloc">$0</span></div>
         <div class="rr em"><span class="rl">Estimated Litter Profit</span><span class="rv" id="oProfit">$0</span></div>
       </div>
+      <div class="snap-explain"><b>Two numbers, on purpose.</b> <b>Direct Litter Margin</b> = revenue minus the costs tied to <b>this litter</b> (stud, vet, food, whelping). <b>Estimated Litter Profit</b> then subtracts your <b>indirect &amp; program costs</b> (website, ads, insurance, facility) — this is your true bottom line, with <b>every</b> expense you entered accounted for.</div>
 
       <div class="snap-cols" style="margin-top:12px">
         <div class="mini">
@@ -408,9 +422,11 @@
       </div>
 
       <div class="actions">
-        <button type="button" class="btn gold" onclick="window.print()">Save / Print Snapshot</button>
+        <button type="button" class="btn gold" onclick="downloadSnapshot()">Download my Snapshot (HTML)</button>
+        <button type="button" class="btn ghost" onclick="window.print()">Print / Save as PDF</button>
         <button type="button" class="btn ghost" onclick="resetAll()">Start a new litter</button>
       </div>
+      <div class="saveline">The download is a single file with all your entries and results — open it in any browser, keep it, or send it to your coach.</div>
       <div class="saveline" id="saveline">Your entries save automatically on this device.</div>
     </div>
 
@@ -429,7 +445,17 @@ var DIRECT = {
   placement:{label:'Placement / Delivery',items:['Transport','Flight nanny','Delivery','Health certificates','Other']}
 };
 var ALLOC = ['Website','Advertising','Content / marketing','Software','Insurance','Kennel / facility','Equipment','Education','Professional services','Labor / help','Travel','Breeding-dog health testing','Other operating'];
-var TIME = ['Breeding / prep','Whelping / neonatal','Daily puppy care','Cleaning','Client comms','Content / marketing','Applications / sales','Pickup / delivery','Other'];
+var TIME = [
+  ['Breeding / prep','Heat tracking, progesterone tests, stud coordination, pre-breeding vet trips, prepping the whelping area.'],
+  ['Whelping / neonatal','The whelp itself plus round-the-clock newborn care in the first 1-2 weeks — feeding, warmth, weighing.'],
+  ['Daily puppy care','Week 3 to go-home: feeding, weaning, socializing, potty and crate work, daily handling.'],
+  ['Cleaning','Whelping box, pens, floors, laundry and sanitation beyond the daily care above.'],
+  ['Client comms','Answering inquiries, screening families, updates, photos and videos, deposit and contract handling.'],
+  ['Content / marketing','Filming, editing, posting, and website or listing updates to attract families.'],
+  ['Applications / sales','Reviewing applications, interviews, matching puppies to families, paperwork.'],
+  ['Pickup / delivery','Go-home day, transport, flight-nanny coordination, meeting buyers.'],
+  ['Other','Anything above that does not fit — registration runs, supply shopping, record keeping.']
+];
 var SYS = ['Breeding preparation','Pregnancy preparation','Whelping preparation','Newborn monitoring','Weight tracking','Record keeping','Emergency / vet escalation','Puppy raising','Puppy placement'];
 var slug=function(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');};
 
@@ -444,7 +470,7 @@ function moneyLI(id,label){return '<div class="li"><label>'+label+'</label><div 
     html+='</div></div>';}
   dc.innerHTML=html;
   var ai='';ALLOC.forEach(function(it){ai+=moneyLI('a_'+slug(it),it);});document.getElementById('allocItems').innerHTML=ai;
-  var ti='';TIME.forEach(function(it){ti+='<div class="li"><label>'+it+' (hrs)</label><input type="number" id="t_'+slug(it)+'" placeholder="0"></div>';});document.getElementById('timeItems').innerHTML=ti;
+  var ti='';TIME.forEach(function(it){var lab=it[0],hint=it[1]||'';ti+='<div class="li"><label>'+lab+' (hrs)</label><input type="number" id="t_'+slug(lab)+'" placeholder="0">'+(hint?'<div class="lihint">'+hint+'</div>':'')+'</div>';});document.getElementById('timeItems').innerHTML=ti;
   var sl='';SYS.forEach(function(it){var key='s_'+slug(it);sl+='<div class="sysrow"><span class="sl">'+it+'</span><div class="seg" data-key="'+key+'"><button type="button" data-v="Yes">Yes</button><button type="button" data-v="Partially">Partial</button><button type="button" data-v="No">No</button></div></div>';});
   document.getElementById('sysList').innerHTML=sl;
   addPuppy();addPuppy();addPuppy();
@@ -485,11 +511,11 @@ function compute(){
   var revenue=pSales+other+forfeit-refund-fees;
 
   var direct=0;for(var k in DIRECT){var ct=catTotal(k);direct+=ct;var s=document.getElementById('sub_'+k);if(s)s.textContent=fmt(ct);}
-  var alloc=0;if(full){ALLOC.forEach(function(it){alloc+=n('a_'+slug(it));});}
+  var alloc=full?(function(){var t=0;ALLOC.forEach(function(it){t+=n('a_'+slug(it));});return t;})():n('qa_alloc');
   var margin=revenue-direct;
   var profit=revenue-direct-alloc;
 
-  var hours=0;if(full){TIME.forEach(function(it){hours+=n('t_'+slug(it));});}
+  var hours=0;if(full){TIME.forEach(function(it){hours+=n('t_'+slug(it[0]));});}
   var rate=n('hourlyRate');
   var laborVal=hours*rate, econ=profit-laborVal;
 
@@ -584,7 +610,7 @@ function renderInsights(d){
 /* ---------- mode / persistence ---------- */
 function setMode(m){document.body.classList.toggle('full',m==='full');document.body.classList.toggle('quick',m==='quick');
   document.getElementById('mQuick').classList.toggle('on',m==='quick');document.getElementById('mFull').classList.toggle('on',m==='full');
-  var n=full()? {demN:'06',priN:'07',refN:'09'} : {demN:'04',priN:'05',refN:'06'};set('demN',n.demN);set('priN',n.priN);set('refN',n.refN);
+  var n=full()? {demN:'06',priN:'07',refN:'09'} : {demN:'05',priN:'06',refN:'07'};set('demN',n.demN);set('priN',n.priN);set('refN',n.refN);
   compute();save();}
 function full(){return document.body.classList.contains('full');}
 function save(){try{var o={seg:segState,mode:full()?'full':'quick',puppies:[]};
@@ -598,6 +624,96 @@ function restore(){try{var o=JSON.parse(localStorage.getItem('bw_litter')||'null
   segState=o.seg||{};for(var sk in segState){var seg=document.querySelector('.seg[data-key="'+sk+'"]');if(seg){var b=seg.querySelector('button[data-v="'+segState[sk]+'"]');if(b)b.classList.add('on');}}
 }catch(e){}}
 function resetAll(){if(!confirm('Clear this litter and start fresh?'))return;try{localStorage.removeItem('bw_litter');}catch(e){}location.reload();}
+
+/* ---------- download a self-contained snapshot of the user's own answers ---------- */
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function txt(id){var el=document.getElementById(id);return el?el.textContent:'';}
+function labelFor(el){var box=el.closest('.fld,.li,.sysrow');if(!box)return el.id||'';var lab=box.querySelector('label,.sl');return lab?lab.textContent.replace(/\s+/g,' ').trim():(el.id||'');}
+function collectAnswers(){
+  var groups=[];
+  document.querySelectorAll('#f > section').forEach(function(sec){
+    if(sec.offsetParent===null)return;                        // skip sections hidden in the current mode
+    var h=sec.querySelector('h2');var title=h?h.textContent.trim():'';var rows=[];
+    sec.querySelectorAll('input,textarea').forEach(function(el){
+      if(el.type==='button'||el.closest('.puppy-row'))return;
+      if(el.offsetParent===null)return;                        // skip fields hidden in the current mode
+      var v=(el.value||'').trim();if(!v)return;
+      rows.push([labelFor(el),v]);
+    });
+    sec.querySelectorAll('.seg').forEach(function(seg){
+      if(seg.offsetParent===null)return;var on=seg.querySelector('button.on');if(!on)return;
+      rows.push([labelFor(seg),on.getAttribute('data-v')]);
+    });
+    // puppies (revenue section, full mode)
+    var pr=sec.querySelectorAll('#puppyRows .puppy-row');
+    if(pr.length){var plist=[];pr.forEach(function(r){var p=r.querySelector('.pPrice').value,dp=r.querySelector('.pDep').value,dc=r.querySelector('.pDiscount').value;if(p||dp||dc)plist.push('Price '+(p||'0')+' · deposit '+(dp||'0')+' · discount '+(dc||'0'));});
+      if(plist.length)rows.push(['Puppies entered',plist.join('  |  ')]);}
+    if(rows.length)groups.push([title,rows]);
+  });
+  return groups;
+}
+function downloadSnapshot(){
+  compute();
+  var s=window.SNAP||{},m=s.metrics||{};
+  var title=(s.litter||'').trim()||'Litter Performance';
+  var metaLine=txt('snapMeta');
+  var when=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  var rowsHtml=[
+    ['Gross Revenue',txt('oRev')],['Direct Litter Costs',txt('oDir')],['Direct Litter Margin',txt('oMargin')],
+    ['Indirect &amp; Program Costs',txt('oAlloc')],['Estimated Litter Profit',txt('oProfit')]
+  ].map(function(r,i){return '<tr'+(i>=2?' class="em"':'')+'><td>'+r[0]+'</td><td class="v">'+esc(r[1])+'</td></tr>';}).join('');
+  var perHtml=[
+    ['Profit margin',txt('mMargin')],['Revenue / puppy sold',txt('mRevPer')],['Profit / puppy sold',txt('mProfPer')],
+    ['Break-even price',txt('mBreakeven')],['All-in cost / puppy raised',txt('mAllIn')],['Survival rate',txt('mSurvival')]
+  ].map(function(r){return '<tr><td>'+r[0]+'</td><td class="v">'+esc(r[1])+'</td></tr>';}).join('');
+  var demHtml=[
+    ['Qualified before birth',txt('mBefore')],['Qualified inquiries',txt('mInq')],['Reservations',txt('mRes')],
+    ['Reserved before birth',txt('mResBirth')],['Inquiry → reservation',txt('mConv')],['Days to fully placed',txt('mDaysR')]
+  ].map(function(r){return '<tr><td>'+r[0]+'</td><td class="v">'+esc(r[1])+'</td></tr>';}).join('');
+  var insights=document.getElementById('insights').innerHTML;
+  var priority=esc(txt('snapPriority'));
+  var entries=collectAnswers().map(function(g){
+    return '<div class="grp"><h3>'+esc(g[0])+'</h3><table class="ans">'+g[1].map(function(r){return '<tr><td class="q">'+esc(r[0])+'</td><td class="a">'+esc(r[1])+'</td></tr>';}).join('')+'</table></div>';
+  }).join('');
+  var laborNote=(m.hours>0)?'<p class="fine">Estimated owner hours: <b>'+Math.round(m.hours)+'</b>'+(m.perHour>0?' · about <b>'+txt('mPerHour')+'</b> profit per hour':'')+'. Your time is shown for awareness and is not deducted from profit.</p>':'';
+  var doc='<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Litter Snapshot — '+esc(title)+'</title>'+
+    '<style>'+
+    ':root{--bg:#0e1116;--panel:#161b22;--line:#2a323d;--ink:#eef2f7;--mid:#c3ccd7;--muted:#8b97a5;--gold:#c6a35c;--green:#4ea877}'+
+    '*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;padding:32px 18px}'+
+    '.wrap{max-width:760px;margin:0 auto}.brand{font-size:13px;letter-spacing:.22em;color:var(--muted);font-weight:700}.brand b{color:var(--gold)}'+
+    '.ey{color:var(--muted);font-size:12px;margin:2px 0 14px}h1{font-size:30px;margin:0 0 4px}.meta{color:var(--muted);font-size:13px;margin-bottom:22px}'+
+    '.reveal{background:linear-gradient(135deg,#1a2028,#12161c);border:1px solid var(--line);border-radius:16px;padding:22px;text-align:center;margin-bottom:18px}'+
+    '.reveal .t{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}.reveal .n{font-family:Georgia,serif;font-size:46px;color:var(--gold);margin-top:6px}'+
+    'table{width:100%;border-collapse:collapse;margin:0}td{padding:9px 4px;border-bottom:1px solid var(--line);font-size:14px}td.v{text-align:right;font-family:Georgia,serif;color:var(--gold)}'+
+    'tr.em td{font-weight:700;color:var(--ink)}tr.em td.v{font-size:17px}'+
+    '.explain{font-size:12.5px;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:11px 13px;margin:14px 0 22px}.explain b{color:var(--ink)}'+
+    '.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px}@media(max-width:560px){.cols{grid-template-columns:1fr}}'+
+    '.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px}.card h2{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}'+
+    '.dx{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:22px}.dx h2{font-size:15px;margin:0 0 10px}'+
+    '.insight{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:13.5px;color:var(--mid)}.insight:first-child{border-top:0}.insight .ic{color:var(--gold)}.insight b{color:var(--ink)}'+
+    '.priority{background:rgba(198,163,92,.1);border:1px solid rgba(198,163,92,.3);border-radius:14px;padding:16px 18px;margin-bottom:26px}.priority .pl{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}.priority .pv{font-size:16px;color:var(--ink)}'+
+    '.grp{margin-bottom:16px}.grp h3{font-size:13px;color:var(--gold);margin:0 0 4px;border-bottom:1px solid var(--line);padding-bottom:6px}'+
+    'table.ans td{border-bottom:1px solid #202832;vertical-align:top}td.q{color:var(--muted);font-size:12.5px;width:46%}td.a{color:var(--ink);font-size:13px}'+
+    '.fine{font-size:12px;color:var(--muted)}footer{margin-top:26px;color:var(--muted);font-size:11.5px;border-top:1px solid var(--line);padding-top:14px}'+
+    '</style></head><body><div class="wrap">'+
+    '<div class="brand">BREED<b>WISE</b></div><div class="ey">The Profitable Breeder · Litter Snapshot</div>'+
+    '<h1>'+esc(title)+'</h1><div class="meta">'+esc(metaLine)+(metaLine?' · ':'')+'Generated '+esc(when)+'</div>'+
+    '<div class="reveal"><div class="t">Estimated Litter Profit</div><div class="n">'+esc(txt('revealNum'))+'</div></div>'+
+    '<table>'+rowsHtml+'</table>'+
+    '<div class="explain"><b>Two numbers, on purpose.</b> Direct Litter Margin = revenue minus the costs tied to this litter. Estimated Litter Profit then also subtracts your indirect &amp; program costs — this is your true bottom line, with every expense you entered included.</div>'+
+    '<div class="cols"><div class="card"><h2>Per Puppy</h2><table>'+perHtml+'</table></div><div class="card"><h2>Demand</h2><table>'+demHtml+'</table></div></div>'+
+    laborNote+
+    '<div class="dx"><h2>What Your Numbers Are Telling You</h2>'+insights+'</div>'+
+    '<div class="priority"><div class="pl">Your Next-Litter Priority</div><div class="pv">'+(priority&&priority!=='—'?priority:'Set this in the tool to capture your one focus for next time.')+'</div></div>'+
+    '<h2 style="font-size:16px;margin:0 0 10px">Your Entries</h2>'+entries+
+    '<footer>BreedWise · The Profitable Breeder — Litter Snapshot. Your own program figures. Estimates only, not tax or accounting advice.</footer>'+
+    '</div></body></html>';
+  var blob=new Blob([doc],{type:'text/html'});
+  var url=URL.createObjectURL(blob);var a=document.createElement('a');
+  var fn=(title.replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'')||'Litter')+'-Snapshot.html';
+  a.href=url;a.download=fn;document.body.appendChild(a);a.click();
+  setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},1500);
+}
 
 function saveProfile(){
   var msg=document.getElementById('saveMsg');
