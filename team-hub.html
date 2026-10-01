@@ -80,7 +80,7 @@
         <div>
           <div class="k">BreedWise OS</div>
           <h1>Team Hub</h1>
-          <p id="subline">Every playbook, guide and SOP, organized by seat. Each opens with its own code, shown on the card.</p>
+          <p id="subline">Every playbook, guide and SOP, organized by seat. You're seeing the documents your code unlocks.</p>
         </div>
         <input class="search" id="q" placeholder="Search documents…">
       </header>
@@ -88,7 +88,7 @@
       <div id="hub"></div>
       <div class="empty" id="noResults" style="display:none">No documents match that search.</div>
 
-      <footer class="bf">BREEDWISE OS · Team Hub. Access codes are shown for leadership to share the right link with the right seat. Add new documents as we build them.</footer>
+      <footer class="bf">BREEDWISE OS · Team Hub. Add new documents as we build them.</footer>
     </div>
   </div>
 
@@ -152,7 +152,7 @@ function render(filter){
       cards+='<div class="pcard'+(c.wide?' wide':'')+'">'+
         '<div class="person"><span class="ava '+c.ava+'">'+c.initial+'</span><div><div class="pname">'+c.name+'</div><div class="prole">'+c.role+'</div></div></div>'+
         docs.map(function(d){
-          return '<a class="doc" href="'+d.href+'" target="_blank" rel="noopener"><div class="dt">'+d.t+'<span class="arrow">open ↗</span></div><div class="dp">'+d.p+'</div><span class="code'+(d.priv?' priv':'')+'">'+(d.priv?'🔒 ':'')+d.code+'</span></a>';
+          return '<a class="doc" href="'+d.href+'" target="_blank" rel="noopener"><div class="dt">'+d.t+'<span class="arrow">open ↗</span></div><div class="dp">'+d.p+'</div>'+(d.priv?'<span class="code priv">🔒 Private</span>':'')+'</a>';
         }).join('')+'</div>';
     });
     if(cards){ html+='<div class="grouphd">'+g.group+'</div><div class="grid">'+cards+'</div>'; }
