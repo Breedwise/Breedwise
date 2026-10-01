@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13;--bg2:#0e131a;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;
+    --ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--red:#e8695f;--blue:#5aa9e6;--purple:#a481d8;--amber:#e0a955;
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{margin:0;background:radial-gradient(1100px 600px at 82% -10%,rgba(201,168,98,.07),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.55}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:80}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#1a130a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #gate .hint{color:var(--muted);font-size:12px;margin-top:14px}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),#a9863f);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 14px rgba(201,168,98,.28)}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#15100a;font-size:18px;line-height:1}
+  .logo .wm{font-size:16px;letter-spacing:.2em;font-weight:700;color:var(--ink)}
+  .logo .wm b{color:var(--gold)}
+  #app{display:none}
+  nav.top{position:sticky;top:0;z-index:40;background:rgba(11,14,19,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav.top .in{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:11px 22px}
+  nav .pills{display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+  nav .pills::-webkit-scrollbar{display:none}
+  nav .pills a{white-space:nowrap;font-size:12px;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:8px;font-weight:500}
+  nav .pills a:hover{color:var(--ink);background:var(--panel)}
+  nav .print{background:var(--panel);border:1px solid var(--line);color:var(--mid);border-radius:9px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+  .wrap{max-width:1000px;margin:0 auto;padding:26px 22px 60px}
+  header.hero{padding:14px 0 8px}
+  header .k{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  header h1{font-family:var(--disp);font-size:36px;line-height:1.06;margin:8px 0 6px;font-weight:600;letter-spacing:-.5px}
+  header p.lead{color:var(--mid);font-size:15px;max-width:720px;font-weight:300}
+  section{margin-top:32px;scroll-margin-top:70px}
+  .sh{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:16px;flex-wrap:wrap}
+  .sh .n{font-family:var(--disp);font-size:15px;color:var(--gold);font-weight:600}
+  .sh h2{font-family:var(--disp);font-size:23px;font-weight:600;margin:0;letter-spacing:-.3px}
+  .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:14px}
+  .card h3{font-family:var(--disp);font-size:17px;margin:0 0 8px;font-weight:600}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:820px){.cols,.cols3{grid-template-columns:1fr}}
+  .callout{background:rgba(201,168,98,.09);border:1px solid rgba(201,168,98,.28);border-left:3px solid var(--gold);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:14px;color:var(--mid)}
+  .callout.red{background:rgba(232,105,95,.09);border-color:rgba(232,105,95,.3);border-left-color:var(--red)}
+  .callout.green{background:rgba(87,185,138,.09);border-color:rgba(87,185,138,.3);border-left-color:var(--green)}
+  .callout b{color:var(--gold-soft)}.callout.red b{color:#f2a59d}.callout.green b{color:#9fe3c2}
+  ul.clean{list-style:none;padding:0;margin:8px 0}
+  ul.clean li{position:relative;padding:5px 0 5px 22px;font-size:14px;color:var(--mid)}
+  ul.clean li::before{content:'›';position:absolute;left:4px;color:var(--gold);font-weight:700}
+  ul.clean li b{color:var(--ink);font-weight:600}
+  ol.num{counter-reset:s;list-style:none;padding:0;margin:4px 0}
+  ol.num li{position:relative;padding:6px 0 6px 30px;font-size:13px;color:var(--mid)}
+  ol.num li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:6px;width:21px;height:21px;border-radius:50%;background:var(--panel2);border:1px solid var(--line2);color:var(--gold);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0}
+  th{text-align:left;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:8px 10px;border-bottom:1px solid var(--line2)}
+  td{padding:9px 10px;border-bottom:1px solid var(--line);color:var(--mid);vertical-align:top}
+  td b{color:var(--ink);font-weight:600}td.r{text-align:right}tr:last-child td{border-bottom:0}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
+  .src{font-size:11.5px;color:var(--muted)}.src a{color:var(--blue)}
+  a.btnlink{display:inline-block;margin-top:4px;padding:9px 14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;color:var(--gold-soft);font-size:13px;font-weight:600;text-decoration:none}
+  a.btnlink:hover{border-color:var(--gold)}
+  footer.bf{text-align:center;color:#59657390;font-size:11px;margin-top:40px;letter-spacing:.04em}
+  @media print{nav.top{display:none}#app{display:block!important}#gate{display:none!important}body{background:#fff;color:#111}}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo mark" style="margin-bottom:18px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Open →</button>
+    <div class="err" id="gate-err"></div>
+    <div class="hint">Austin only · sales seat strategy</div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top"><div class="in">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+      <div class="pills">
+        <a href="#comp">Comp design</a><a href="#pilot">Pilot economics</a><a href="#legal">Legal</a><a href="#math">The Math</a>
+        <a href="#bottlenecks">Bottlenecks</a><a href="#rules">Comm. rules</a><a href="#sops">SOP backlog</a><a href="#eval">Day-30 eval</a><a href="#present">How to present</a>
+      </div>
+      <button class="print" onclick="window.print()">Print</button>
+    </div></nav>
+
+    <div class="wrap">
+      <header class="hero">
+        <div class="k">Austin only · Sales Seat Strategy</div>
+        <h1>Regina Sales Seat — Build-out &amp; Decisions</h1>
+        <p class="lead">The strategy, economics, legal, and evaluation layer behind the Regina seat. This is your decision document. The clean, Regina-facing version lives on its own page.</p>
+      </header>
+      <div class="callout"><a class="btnlink" href="regina-sales-playbook.html" target="_blank" rel="noopener">Open Regina's playbook (her version) ↗</a> &nbsp; <span class="src">Gated separately with her own code — she never sees this page.</span></div>
+
+      <!-- COMP DESIGN -->
+      <section id="comp">
+        <div class="sh"><span class="n">01</span><h2>Compensation Design Decisions</h2></div>
+        <div class="callout"><b>Set the money language straight first:</b> do not call the Academy setter payout "5 to 10%." Your examples ($150 on $1,500 collected, $300 on $6,000+) are a <b>tiered bounty</b>. Make it explicit so nobody argues later about what a percentage meant.</div>
+        <div class="cols">
+          <div class="card"><h3>Why a $20 TPB bounty</h3><p style="font-size:13.5px;color:var(--mid)">If Academy pays commission and TPB does not, Regina will naturally <b>over-qualify</b> people for Academy. The $20 rewards the <b>correct</b> recommendation, not the most expensive one. At $97/mo it is ~20.6% of first-month payment; no recurring TPB commission.</p></div>
+          <div class="card"><h3>Pay on cash, not calendar</h3><p style="font-size:13.5px;color:var(--mid)">Do not pay for simply booking a call; that incentivizes putting anyone with a pulse on your calendar. The setter tier pays on <b>collected cash</b>, so variable pay is tied to quality. <span class="src">Comparable DM-setter roles advertise 2–5% of closed deals. <a href="https://dynamisrev.com/careers/dm-setter" target="_blank" rel="noopener">DynamisRev</a></span></p></div>
+        </div>
+        <div class="card">
+          <h3>Closer comp — your rules</h3>
+          <ul class="clean" style="font-size:13.5px">
+            <li><b>Start at 10% of net cash collected</b> on deals she personally closes, paid as cash is collected (e.g. $150 now on a $1,500 deposit toward $6,000, then $450 as the balance comes in). <span class="src"><a href="https://www.dialacloser.com/jobs/details/79-high-ticket-closers-for-career-training-online-education-program" target="_blank" rel="noopener">Dial A Closer</a></span></li>
+            <li><b>Do NOT stack</b> the $300 setter commission + the 10% closer commission when she sets and closes her own deal. One or the other.</li>
+            <li><b>12.5% for self-sourced-and-closed is a later move</b>, not now. Company-set lead she closes stays 10%. Let her prove she can close first.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- PILOT ECONOMICS -->
+      <section id="pilot">
+        <div class="sh"><span class="n">02</span><h2>Pilot Economics &amp; Workload</h2></div>
+        <div class="callout"><b>$200/week base for the pilot</b> (~$867/month). Keeps you below the $250 target while guaranteeing pay for consistently working the pipeline. But define the workload, or $200/week quietly becomes "available seven days a week all day."</div>
+        <div class="cols3">
+          <div class="card"><h3>Coverage</h3><p style="font-size:13px;color:var(--mid)">Mon–Fri primary · weekend light/assigned only · 2–3 defined inbox checks daily, not "always online."</p></div>
+          <div class="card"><h3>Track actual hours</h3><p style="font-size:13px;color:var(--mid)">During the pilot, so you know whether $200/week is sustainable before you lock it in.</p></div>
+          <div class="card"><h3>Lead volume is yours</h3><p style="font-size:13px;color:var(--mid)">She cannot earn $7K if the machine does not create conversations. That is Marketing's job, not Regina's.</p></div>
+        </div>
+      </section>
+
+      <!-- LEGAL -->
+      <section id="legal">
+        <div class="sh"><span class="n">03</span><h2>Classification &amp; Legal</h2></div>
+        <div class="callout red"><b>Worker classification:</b> if Regina is treated as an employee rather than a genuine contractor, have payroll or counsel review the base-plus-commission arrangement, hours, minimum wage / overtime and classification. Calling someone a contractor does not determine status; the economic reality does. <span class="src"><a href="https://www.dol.gov/agencies/whd/fact-sheets/13-flsa-employment-relationship" target="_blank" rel="noopener">U.S. Dept. of Labor</a></span></div>
+        <div class="callout red"><b>Put the entire compensation plan in writing before relying on it.</b> Commission terms can constitute promised wages depending on status and jurisdiction, and changing or recovering earned commissions can carry wage-law consequences.</div>
+      </section>
+
+      <!-- MATH -->
+      <section id="math">
+        <div class="sh"><span class="n">04</span><h2>The $6.5–7K Math (Austin's view)</h2></div>
+        <div class="callout red"><b>She probably cannot replace a $6,500–$7,000/month job as only a setter</b> under these economics. At max $300 setter payout: $6,500 − ~$867 base = $5,633 in commission = about <b>19 Academy closes a month</b>. For $7,000, about 21. That is a closer's output, not a setter's.</div>
+        <div class="card">
+          <h3>Her real path is closing</h3>
+          <div class="tblwrap"><table>
+            <thead><tr><th>At 10% of collected cash</th><th class="r">Commission</th><th class="r">+ base</th><th class="r">Total / mo</th></tr></thead>
+            <tbody>
+              <tr><td>$56,000 personally closed</td><td class="r">$5,600</td><td class="r">~$867</td><td class="r"><b>~$6,467</b></td></tr>
+              <tr><td>$60,000 personally closed</td><td class="r">$6,000</td><td class="r">~$867</td><td class="r"><b>~$6,867</b></td></tr>
+            </tbody>
+          </table></div>
+          <p style="font-size:13px;color:var(--mid);margin-top:10px">At a $6,000 average upfront collection, $60K is ~<b style="color:var(--ink)">10 closed Academy customers a month</b> — ~60% of the cash for the $100K/month objective.</p>
+        </div>
+        <div class="callout"><b>Do not promise her $7K/month. Show her the math required to earn it.</b> Her income equation: Lead Volume × Conversation Rate × Qualification Rate × Booking Rate × Show Rate × Close Rate × Cash Collected × Commission.</div>
+      </section>
+
+      <!-- BOTTLENECKS -->
+      <section id="bottlenecks">
+        <div class="sh"><span class="n">05</span><h2>Bottlenecks Before Launch</h2></div>
+        <div class="tblwrap"><table>
+          <thead><tr><th>#</th><th>Bottleneck</th><th>Fix</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Incentive mismatch (Academy pays, TPB doesn't)</td><td>$20 TPB bounty</td></tr>
+            <tr><td>2</td><td>Qualification ambiguity → bad appointments</td><td>Academy Qualification Matrix</td></tr>
+            <tr><td>3</td><td>No single offer reference (moving offer)</td><td>Current Offer &amp; Payment Reference</td></tr>
+            <tr><td>4</td><td>Attribution ("was that Regina's sale?")</td><td>Source + owner + outcome in CRM, every convo</td></tr>
+            <tr><td>5</td><td>Lead volume</td><td>Marketing's responsibility</td></tr>
+            <tr><td>6</td><td>Founder closing capacity (books 15, you take 6)</td><td>Scoreboard: Set → Booked → Held → Qualified → Closed</td></tr>
+            <tr><td>7</td><td>Follow-up underworked</td><td>A visible follow-up pipeline</td></tr>
+            <tr><td>8</td><td>No closer apprenticeship (cold $6K call)</td><td>Build the transition deliberately</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- RULES -->
+      <section id="rules">
+        <div class="sh"><span class="n">06</span><h2>Commission Rules to Define in Writing</h2></div>
+        <div class="card"><ul class="clean" style="font-size:13.5px;columns:2">
+          <li>What counts as Regina-sourced?</li><li>What counts as a TPB conversion?</li><li>What counts as Academy setter credit?</li><li>Books with Regina, closes 30 days later?</li><li>No-shows, then you later close them?</li><li>Jennifer later ascends a TPB member Regina first spoke with?</li><li>What is "Net Cash Collected"? Taxes excluded?</li><li>Refunds? Chargebacks?</li><li>When are commissions paid?</li><li>Can two people get attribution?</li><li>Setter stacks with closer? <b style="color:var(--red)">No.</b></li>
+        </ul></div>
+      </section>
+
+      <!-- SOP BACKLOG -->
+      <section id="sops">
+        <div class="sh"><span class="n">07</span><h2>Sales SOP Backlog</h2></div>
+        <div class="cols">
+          <div class="card"><h3>Priority 1</h3><ol class="num" style="font-size:12.5px">
+            <li>Instagram Comment Response</li><li>Comment → DM Handoff</li><li>DM Conversation</li><li>TPB Qualification &amp; Routing</li><li>Academy Qualification</li><li>Academy Booking</li><li>CRM Documentation</li><li>DM Follow-Up</li><li>No-Response</li><li>No-Show</li><li>TPB Purchase Attribution</li><li>Academy Setter Attribution</li>
+          </ol></div>
+          <div class="card"><h3>Priority 2</h3><ul class="clean" style="font-size:12.5px"><li>13. Academy Offer &amp; Payment</li><li>14. Objection Handling</li><li>15. Lead Disqualification</li><li>16. Lead Nurture</li><li>17. Setter → Closer Handoff</li><li>18. Sales Call Prep</li><li>19. Discovery Call</li><li>20. Academy Sales Call</li><li>21. Sales Follow-Up</li><li>22. Payment Collection</li><li>23. Commission Calc / Payout</li><li>24. Refund / Chargeback Commission</li><li>25. Call Review &amp; Coaching</li><li>26. Setter → Closer Certification</li></ul></div>
+        </div>
+      </section>
+
+      <!-- EVAL -->
+      <section id="eval">
+        <div class="sh"><span class="n">08</span><h2>Day-30 Readiness Evaluation</h2></div>
+        <div class="callout"><b>Decide on evidence, not on whether you "feel" she's ready.</b> At day 30, choose: continue as Setter, or advance to Setter + Closer Apprentice.</div>
+        <div class="card"><p style="font-size:13px;color:var(--muted);margin:0 0 6px">Evaluate:</p><ul class="clean" style="font-size:13.5px;columns:2">
+          <li>Conversation quality</li><li>Qualification accuracy</li><li>Booked-call quality</li><li>Show rate</li><li>Downstream close rate</li><li>TPB conversions</li><li>Revenue generated</li><li>Follow-up discipline</li><li>CRM discipline</li><li>Coachability</li>
+        </ul></div>
+      </section>
+
+      <!-- PRESENT -->
+      <section id="present">
+        <div class="sh"><span class="n">09</span><h2>How to Present It to Regina</h2></div>
+        <div class="callout green"><b>Don't say</b> "I'm giving you a $200/week Instagram job." <b>$200/week isn't the opportunity.</b> The opportunity is that BreedWise pays her to learn the front of the sales process, pays commissions while she learns, then develops her into a 10%-of-collected-cash closer. Lead with the career, show the math, never guarantee the income.</div>
+        <p style="font-size:13.5px;color:var(--mid)">The clean pitch and her full operating playbook are on her page — send her that link, not this one:</p>
+        <a class="btnlink" href="regina-sales-playbook.html" target="_blank" rel="noopener">Regina's Sales Playbook ↗</a>
+      </section>
+
+      <footer class="bf">BREEDWISE · Sales seat strategy — Austin only. The Regina-facing playbook is a separate, separately-gated page.</footer>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var OK='368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875'; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function el(id){return document.getElementById(id);}
+  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Sales Seat Strategy · BreedWise';}
+  function tryUnlock(){var v=(el('pw').value||'').trim();h(v).then(function(hex){if(hex===OK){try{sessionStorage.setItem('sbi_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
+  el('unlock').addEventListener('click',tryUnlock);
+  el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('sbi_ok')==='1'){reveal();}else{el('pw').focus();}}catch(e){el('pw').focus();}
+})();
+</script>
+</body>
+</html>
