@@ -595,12 +595,22 @@ function openSub(id){
       <div><label>Owner</label><select id="m_owner">${OWNERS.map(o=>`<option ${((r.owner||'Unassigned')===o)?'selected':''}>${o}</option>`).join('')}</select></div>
     </div>
     <div style="margin-top:12px"><label style="font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px">Staff notes</label><textarea id="m_notes" rows="3" style="width:100%">${esc(r.notes||'')}</textarea></div>
-    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px"><button class="btn ghost" id="mDownload" style="margin-right:auto">Download</button><button class="btn ghost" id="mCancel">Close</button><button class="btn" id="mSave">Save</button></div>`;
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px"><button class="btn ghost" id="mDelete" style="margin-right:auto;color:#e8695f;border-color:rgba(232,105,95,.4)">Delete</button><button class="btn ghost" id="mDownload">Download</button><button class="btn ghost" id="mCancel">Close</button><button class="btn" id="mSave">Save</button></div>`;
   $('#modal').classList.remove('hide');
   $('#mClose').onclick=closeModal; $('#mCancel').onclick=closeModal;
   $('#modal').onclick=e=>{if(e.target.id==='modal')closeModal();};
   $('#mDownload').onclick=()=>downloadOne(r);
+  $('#mDelete').onclick=()=>deleteSub(id);
   $('#mSave').onclick=async()=>{ await update(id,{status:$('#m_status').value,owner:$('#m_owner').value,notes:$('#m_notes').value.trim()||null}); closeModal(); renderRows(); };
+}
+async function deleteSub(id){
+  const r=ROWS.find(x=>x.id===id);
+  const who=r?(r.member_name||r.member_email||r.tool_label||'this submission'):'this submission';
+  if(!confirm('Delete "'+who+'"?\n\nThis permanently removes the submission and cannot be undone.')) return;
+  const {error}=await sb.from('tool_submissions').delete().eq('id',id);
+  if(error){ alert('Could not delete: '+error.message+(/permission|policy|denied/i.test(error.message)?'\n\nThe delete policy for tool_submissions needs to be enabled for the admin role in Supabase.':'')); return; }
+  ROWS=ROWS.filter(x=>x.id!==id);
+  closeModal(); render();
 }
 function closeModal(){ $('#modal').classList.add('hide'); }
 boot();
