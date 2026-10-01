@@ -146,6 +146,16 @@
   .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   @media(max-width:560px){.cgrid{grid-template-columns:1fr}}
   .checkin{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+  .trstatus{border-radius:10px;padding:10px 13px;margin-bottom:12px;font-size:13px;font-weight:500;display:none}
+  .trstatus.ontrack{background:rgba(87,185,138,.12);border:1px solid rgba(87,185,138,.3);color:#9fe3c2}
+  .trstatus.ahead{background:rgba(201,168,98,.12);border:1px solid rgba(201,168,98,.3);color:var(--gold-soft)}
+  .trstatus.risk{background:rgba(232,105,95,.12);border:1px solid rgba(232,105,95,.35);color:#f2a59d}
+  .trstatus b{color:var(--ink)}
+  .trow .catch{font-size:11px;margin-top:3px}
+  .trow .catch.behind{color:var(--amber)} .trow .catch.ok{color:var(--muted)} .trow .catch.done{color:var(--green)}
+  .reschip{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;color:var(--gold-soft);font-size:13px;font-weight:600;text-decoration:none;cursor:pointer}
+  .reschip:hover{border-color:var(--gold)}
+  .reschip .ar{color:var(--muted)}
   .hist{margin-top:14px;font-size:12.5px}
   .hist .h{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid var(--line);color:var(--mid)}
   .hist .h .d{color:var(--gold)} .hist .h b{color:var(--ink)}
@@ -279,6 +289,12 @@
         <div class="diag-box execution" id="diagBox"></div>
       </div>
 
+      <div class="card" id="leverCard" style="display:none">
+        <h3>Work this lever with</h3>
+        <p class="desc2" id="leverIntro">The Accelerator resources built to move exactly this bottleneck.</p>
+        <div id="leverResources" class="chips"></div>
+      </div>
+
       <div class="card">
         <h3>Your 90 days, month by month</h3>
         <div class="months">
@@ -308,6 +324,7 @@
           <button type="button" class="btn ghost" onclick="loadProgress()">Load my plan &amp; progress</button>
           <span id="loadMsg"></span>
         </div>
+        <div class="trstatus" id="trackStatus"></div>
         <div id="trackBars"></div>
         <div class="checkin">
           <div class="cgrid">
@@ -447,6 +464,7 @@ function compute(){
   renderMonths(gap, {puppiesNeeded:puppiesNeeded,waitNeeded:waitNeeded,waitlist:waitlist,demandGap:demandGap,productionGap:productionGap,priceTarget:priceTarget,price:price,goal:goal});
   renderWeekly(gap, {demandGap:demandGap,puppiesNeeded:puppiesNeeded,littersNeeded:littersNeeded,revTarget:revTarget});
   renderLevers();
+  renderLeverResources(gap);
 
   var showable=(goal&&(target>0||goal==='brand'));
   document.getElementById('plan').classList.toggle('show', !!showable);
@@ -514,21 +532,37 @@ function q4Frac(){ var s=Date.UTC(2026,9,1), e=Date.UTC(2026,11,31,23,59,59); va
 function renderTracker(){
   var p=window.PLAN||{}, m=p.math||{};
   var frac=q4Frac();
+  var WEEK=7*86400000, weeksLeft=Math.max(0,(Date.UTC(2026,11,31,23,59,59)-Date.now())/WEEK);
   var last=CHECKINS.length?CHECKINS[CHECKINS.length-1]:null;
   var rows=[
-    ['Qualified families', last?last.families:0, m.waitNeeded||0, false],
-    ['Deposits collected', last?last.deposits:0, m.puppiesNeeded||0, false],
-    ['Litters locked', last?last.litters:0, m.littersNeeded||0, false],
-    ['Cash collected', last?last.cash:0, m.revTarget||0, true]
+    ['Qualified families','families', last?last.families:0, m.waitNeeded||0, false],
+    ['Deposits collected','deposits', last?last.deposits:0, m.puppiesNeeded||0, false],
+    ['Litters locked','litters', last?last.litters:0, m.littersNeeded||0, false],
+    ['Cash collected','cash', last?last.cash:0, m.revTarget||0, true]
   ];
+  var behindCount=0, primaryKey=gapPrimaryMetric(p.gap), primaryBehind=false;
   document.getElementById('trackBars').innerHTML=rows.map(function(r){
-    var name=r[0], act=r[1]||0, tgt=r[2]||0, money=r[3];
+    var name=r[0], key=r[1], act=r[2]||0, tgt=r[3]||0, money=r[4];
     var fill=tgt>0?Math.min(100,Math.round(act/tgt*100)):0;
-    var paceVal=tgt*frac, behind=act<paceVal-0.0001;
+    var paceVal=tgt*frac, done=tgt>0&&act>=tgt, behind=!done&&act<paceVal-0.0001;
+    var remaining=Math.max(0,tgt-act);
+    var needWk=weeksLeft>0.2?(money?Math.ceil(remaining/weeksLeft/50)*50:Math.ceil(remaining/weeksLeft)):remaining;
+    var catchCls=done?'done':(behind?'behind':'ok');
+    var catchTxt=done?'Complete ✓':(behind?('Behind pace — need ~'+(money?fmt(needWk):needWk)+'/week to catch up'):('On pace — ~'+(money?fmt(needWk):needWk)+'/week to finish'));
+    if(last){ if(behind)behindCount++; if(key===primaryKey&&behind&&act<paceVal*0.8&&frac>0.1)primaryBehind=true; }
     var fmtV=money?fmt(act):act, fmtT=money?fmt(tgt):tgt;
     return '<div class="trow"><div class="tl"><span class="name">'+name+'</span><span class="val">'+fmtV+' / '+fmtT+' <span class="pace">· pace '+(money?fmt(paceVal):Math.round(paceVal))+'</span></span></div>'+
-      '<div class="tbar"><div class="tfill'+(behind?' behind':'')+'" style="width:'+fill+'%"></div><div class="tpace" style="left:'+Math.round(frac*100)+'%"></div></div></div>';
+      '<div class="tbar"><div class="tfill'+(behind?' behind':'')+'" style="width:'+fill+'%"></div><div class="tpace" style="left:'+Math.round(frac*100)+'%"></div></div>'+
+      '<div class="catch '+catchCls+'">'+catchTxt+'</div></div>';
   }).join('');
+  var st=document.getElementById('trackStatus');
+  if(!last){ st.style.display='none'; }
+  else { var wl=Math.max(1,Math.ceil(weeksLeft));
+    if(primaryBehind||behindCount>=3){ st.className='trstatus risk'; st.innerHTML='<b>At risk.</b> You\'re behind pace on your key lever with ~'+wl+' week'+(wl===1?'':'s')+' left. Lean into the catch-up numbers below and your weekly needle-mover.'; }
+    else if(behindCount===0){ st.className='trstatus ahead'; st.innerHTML='<b>Ahead of pace.</b> Strong — hold the weekly rhythm and you\'ll clear the goal with room to spare.'; }
+    else { st.className='trstatus ontrack'; st.innerHTML='<b>On track.</b> A metric or two is a touch behind — the catch-up targets below keep you on the line.'; }
+    st.style.display='block';
+  }
   var h=document.getElementById('checkinHist');
   if(CHECKINS.length){
     h.innerHTML='<div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:10px 0 4px">Check-in history</div>'+
@@ -548,6 +582,10 @@ function checkin(){
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(cr.email)){msg.style.color='#ff6a5d';msg.textContent='Enter your email (in the tracker or the save box) first.';return;}
   if(!cr.code)return;
   var ci={families:n('ciFamilies'),deposits:n('ciDeposits'),litters:n('ciLitters'),cash:n('ciCash'),note:val('ciNote')};
+  (function(){var p=window.PLAN||{},m=p.math||{},frac=q4Frac();var pk=gapPrimaryMetric(p.gap);
+    var tg={families:m.waitNeeded||0,deposits:m.puppiesNeeded||0,litters:m.littersNeeded||0,cash:m.revTarget||0}[pk]||0;
+    var ac={families:ci.families,deposits:ci.deposits,litters:ci.litters,cash:ci.cash}[pk]||0;
+    ci.atRisk=(tg>0&&frac>0.1&&ac<tg*frac*0.8);})();
   msg.style.color='var(--muted)';msg.textContent='Saving…';
   fetch('https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/q4-plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'checkin',code:cr.code,member_email:cr.email,checkin:ci})})
     .then(function(r){return r.json();}).then(function(d){
@@ -582,6 +620,24 @@ function renderLevers(){
   if(!picks.length){el.innerHTML='<li style="color:var(--muted)">Pick up to 3 supporting levers above and they\'ll appear here, in priority order.</li>';return;}
   el.innerHTML=picks.map(function(l,i){return '<li><b style="color:var(--ink)">'+(i+1)+'. '+l+'</b></li>';}).join('');
 }
+
+/* ---------- route each lever to the Accelerator resource that fixes it ---------- */
+var RESOURCES={
+  demand:[{label:'Niche Finder',href:'niche-finder.html'},{label:'Accelerator Vault',href:'accelerator-vault.html'}],
+  production:[{label:'Litter Snapshot',href:'litter-snapshot.html'},{label:'Accelerator Vault',href:'accelerator-vault.html'}],
+  pricing:[{label:'Value Architect',href:'value-architect.html'},{label:'Niche Finder',href:'niche-finder.html'}],
+  conversion:[{label:'Value Architect',href:'value-architect.html'},{label:'Boost Checklist',href:'accelerator-boost-checklist.html'}],
+  execution:[{label:'Boost Checklist',href:'accelerator-boost-checklist.html'},{label:'Accelerator Vault',href:'accelerator-vault.html'}]
+};
+var LEVER_INTRO={demand:'Build demand and attract the right buyer:',production:'Plan your litter economics and lock production:',pricing:'Rebuild your offer and raise your price with proof:',conversion:'Tighten positioning and close more of your demand:',execution:'Systematize and run the plan without drift:'};
+function renderLeverResources(gap){
+  var card=document.getElementById('leverCard'), list=RESOURCES[gap]||RESOURCES.execution;
+  if(!list||!list.length){card.style.display='none';return;}
+  document.getElementById('leverIntro').textContent=LEVER_INTRO[gap]||'The Accelerator resources built to move this bottleneck:';
+  document.getElementById('leverResources').innerHTML=list.map(function(r){return '<a class="reschip" href="'+r.href+'" target="_blank" rel="noopener">'+r.label+' <span class="ar">↗</span></a>';}).join('');
+  card.style.display='block';
+}
+function gapPrimaryMetric(g){ return g==='demand'?'families':g==='production'?'litters':g==='conversion'?'deposits':'cash'; }
 
 /* ---------- persistence ---------- */
 function save(){try{var o={seg:segState,picks:picks};document.querySelectorAll('#f input,#f textarea').forEach(function(el){if(el.id)o[el.id]=el.value;});localStorage.setItem('bw_q4plan',JSON.stringify(o));}catch(e){}}
