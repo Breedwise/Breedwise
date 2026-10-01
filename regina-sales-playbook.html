@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13;--bg2:#0e131a;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;
+    --ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--red:#e8695f;--blue:#5aa9e6;--purple:#a481d8;--amber:#e0a955;
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{margin:0;background:radial-gradient(1100px 600px at 82% -10%,rgba(90,169,230,.06),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.55}
+
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:80}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#1a130a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #gate .hint{color:var(--muted);font-size:12px;margin-top:14px}
+
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),#a9863f);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 14px rgba(201,168,98,.28)}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#15100a;font-size:18px;line-height:1}
+  .logo .wm{font-size:16px;letter-spacing:.2em;font-weight:700;color:var(--ink)}
+  .logo .wm b{color:var(--gold)}
+
+  #app{display:none}
+  nav.top{position:sticky;top:0;z-index:40;background:rgba(11,14,19,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav.top .in{max-width:1040px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:11px 22px}
+  nav .pills{display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+  nav .pills::-webkit-scrollbar{display:none}
+  nav .pills a{white-space:nowrap;font-size:12px;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:8px;font-weight:500}
+  nav .pills a:hover{color:var(--ink);background:var(--panel)}
+  nav .print{background:var(--panel);border:1px solid var(--line);color:var(--mid);border-radius:9px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+
+  .wrap{max-width:1040px;margin:0 auto;padding:26px 22px 60px}
+  header.hero{padding:14px 0 8px}
+  header .k{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);font-weight:700}
+  header h1{font-family:var(--disp);font-size:38px;line-height:1.06;margin:8px 0 6px;font-weight:600;letter-spacing:-.5px}
+  header p.lead{color:var(--mid);font-size:15px;max-width:740px;font-weight:300}
+
+  section{margin-top:34px;scroll-margin-top:70px}
+  .sh{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:16px;flex-wrap:wrap}
+  .sh .n{font-family:var(--disp);font-size:15px;color:var(--gold);font-weight:600}
+  .sh h2{font-family:var(--disp);font-size:23px;font-weight:600;margin:0;letter-spacing:-.3px}
+  .sh .tag{margin-left:auto;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+
+  .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:14px}
+  .card h3{font-family:var(--disp);font-size:17px;margin:0 0 8px;font-weight:600}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:820px){.cols,.cols3{grid-template-columns:1fr}}
+
+  .callout{background:rgba(90,169,230,.09);border:1px solid rgba(90,169,230,.28);border-left:3px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:14px;color:var(--mid)}
+  .callout.gold{background:rgba(201,168,98,.09);border-color:rgba(201,168,98,.28);border-left-color:var(--gold)}
+  .callout.red{background:rgba(232,105,95,.09);border-color:rgba(232,105,95,.3);border-left-color:var(--red)}
+  .callout.green{background:rgba(87,185,138,.09);border-color:rgba(87,185,138,.3);border-left-color:var(--green)}
+  .callout b{color:#a9d6ff}.callout.gold b{color:var(--gold-soft)}.callout.red b{color:#f2a59d}.callout.green b{color:#9fe3c2}
+
+  .flow{font-size:13.5px;color:var(--mid);background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;line-height:1.7}
+  .flow b{color:var(--gold-soft)}
+  ul.clean{list-style:none;padding:0;margin:8px 0}
+  ul.clean li{position:relative;padding:5px 0 5px 22px;font-size:14px;color:var(--mid)}
+  ul.clean li::before{content:'›';position:absolute;left:4px;color:var(--blue);font-weight:700}
+  ul.clean li b{color:var(--ink);font-weight:600}
+  ul.no li::before{content:'×';color:var(--red)}
+  ul.yes li::before{content:'✓';color:var(--green)}
+  ol.num{counter-reset:s;list-style:none;padding:0;margin:4px 0}
+  ol.num li{position:relative;padding:6px 0 6px 30px;font-size:14px;color:var(--mid)}
+  ol.num li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:6px;width:21px;height:21px;border-radius:50%;background:var(--panel2);border:1px solid var(--line2);color:var(--gold);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  ol.num li b{color:var(--ink)}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0}
+  th{text-align:left;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:8px 10px;border-bottom:1px solid var(--line2)}
+  td{padding:9px 10px;border-bottom:1px solid var(--line);color:var(--mid);vertical-align:top}
+  td b{color:var(--ink);font-weight:600}
+  td.r{text-align:right}
+  tr:last-child td{border-bottom:0}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
+  .big{font-family:var(--disp);color:var(--gold);font-weight:600}
+
+  .ladder .st{display:grid;grid-template-columns:150px 1fr;gap:0}
+  .ladder .st>div{padding:14px 0;border-top:1px solid var(--line)}
+  .ladder .st .lbl{font-family:var(--disp);color:var(--gold);font-size:16px;font-weight:600}
+  .ladder .st .lbl small{display:block;color:var(--muted);font-family:var(--sans);font-size:11.5px;font-weight:400;margin-top:3px}
+  @media(max-width:620px){.ladder .st{grid-template-columns:1fr}.ladder .st .body{border-top:0;padding-top:2px}}
+
+  .pill{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px}
+  .p-reg{background:rgba(90,169,230,.16);color:#a9d6ff}.p-austin{background:rgba(201,168,98,.16);color:var(--gold-soft)}
+  .p-yas{background:rgba(224,169,85,.16);color:#f0cf9a}.p-jen{background:rgba(164,129,216,.16);color:#c9b4ec}
+  code.f{background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12px;color:var(--gold-soft)}
+  .src{font-size:11.5px;color:var(--muted)}.src a{color:var(--blue)}
+  .pitch{background:linear-gradient(135deg,#141c26,#0f141b);border:1px solid var(--line2);border-left:3px solid var(--gold);border-radius:14px;padding:20px 22px;font-size:15px;line-height:1.65;color:var(--mid)}
+  .pitch b{color:var(--ink)}
+  footer.bf{text-align:center;color:#59657390;font-size:11px;margin-top:40px;letter-spacing:.04em}
+  @media print{nav.top{display:none}#app{display:block!important}#gate{display:none!important}body{background:#fff;color:#111}.card,.tblwrap{border-color:#ddd}}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo mark" style="margin-bottom:18px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Open Playbook →</button>
+    <div class="err" id="gate-err"></div>
+    <div class="hint">Sales build-out · leadership access only</div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top"><div class="in">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+      <div class="pills">
+        <a href="#role">Role</a><a href="#pilot">Pilot</a><a href="#comp">Comp</a><a href="#closer">Closer</a><a href="#math">The Math</a>
+        <a href="#ladder">Ladder</a><a href="#dm">DM Playbook</a><a href="#not">Not This</a><a href="#bottlenecks">Bottlenecks</a>
+        <a href="#sops">SOPs</a><a href="#kpis">KPIs</a><a href="#rules">Rules</a><a href="#folder">The Folder</a><a href="#thirty">30-Day</a><a href="#pitch">The Pitch</a>
+      </div>
+      <button class="print" onclick="window.print()">Print</button>
+    </div></nav>
+
+    <div class="wrap">
+      <header class="hero">
+        <div class="k">Sales Build-out · Setter → Closer Track</div>
+        <h1>Regina — Inbound Sales Setter → Closer Track</h1>
+        <p class="lead">A 30-day pilot for a new seat. Regina is not taking over social media strategy. Her job is to turn the attention Yasmin and Austin create into conversations, TPB customers, qualified Academy appointments, and eventually closed revenue.</p>
+      </header>
+
+      <div class="callout gold"><b>Set the money language straight first:</b> do not call the Academy setter payout "5 to 10%." The examples ($150 on $1,500 collected, $300 on $6,000+) are a <b>tiered bounty</b>. Make it explicit so nobody argues later about what a percentage meant.</div>
+
+      <!-- 1 ROLE -->
+      <section id="role">
+        <div class="sh"><span class="n">01</span><h2>Why this role exists</h2></div>
+        <div class="cols">
+          <div class="card">
+            <h3>Mission</h3>
+            <p style="font-size:14px;color:var(--mid)">Turn inbound social engagement into qualified BreedWise customers and sales opportunities.</p>
+            <p style="font-size:13px;color:var(--muted);margin-top:6px"><b style="color:var(--ink)">Current role:</b> Inbound DM Setter · <b style="color:var(--ink)">Path:</b> Setter → Junior Closer → Full Closer · <b style="color:var(--ink)">Reports to:</b> Austin · <b style="color:var(--ink)">Works with:</b> Yasmin, Jennifer, Austin.</p>
+          </div>
+          <div class="card">
+            <h3>The one-line job</h3>
+            <p style="font-size:14px;color:var(--mid)">Not "answer Instagram comments."</p>
+            <p style="font-family:var(--disp);font-size:18px;color:var(--gold-soft);margin-top:6px">Convert qualified social attention into tracked revenue opportunities.</p>
+          </div>
+        </div>
+        <div class="flow" style="margin-top:4px">Content / Ads → Comments &amp; DMs → <b>Regina</b> → TPB or Academy → Austin closes Academy → Jennifer fulfills → Member results → More proof / content</div>
+      </section>
+
+      <!-- 2 PILOT -->
+      <section id="pilot">
+        <div class="sh"><span class="n">02</span><h2>30-Day Pilot Scope</h2></div>
+        <div class="callout"><b>Base: $200/week for the pilot</b> (about $867/month). Below the $250 target, and guaranteed pay for consistently monitoring and working the pipeline. But define the workload, or $200/week quietly becomes "available seven days a week all day."</div>
+        <div class="cols3">
+          <div class="card"><h3>Mon–Fri</h3><p style="font-size:13px;color:var(--mid)">Primary coverage.</p></div>
+          <div class="card"><h3>Weekend</h3><p style="font-size:13px;color:var(--mid)">Light monitoring or specifically assigned coverage only.</p></div>
+          <div class="card"><h3>Daily</h3><p style="font-size:13px;color:var(--mid)">2 to 3 defined inbox / comment checks, not "always online."</p></div>
+        </div>
+        <p style="font-size:13px;color:var(--mid)"><b style="color:var(--ink)">Track actual hours during the pilot</b> so you know whether $200/week is sustainable before you lock it in.</p>
+        <div class="callout red"><b>Classification caution:</b> if Regina is treated as an employee rather than a genuine contractor, have payroll or counsel review the base-plus-commission arrangement, hours, minimum wage / overtime and worker classification. Calling someone a contractor does not determine status; the economic reality of the relationship does. <span class="src"><a href="https://www.dol.gov/agencies/whd/fact-sheets/13-flsa-employment-relationship" target="_blank" rel="noopener">U.S. Dept. of Labor</a></span></div>
+      </section>
+
+      <!-- 3 COMP -->
+      <section id="comp">
+        <div class="sh"><span class="n">03</span><h2>Compensation to Test</h2></div>
+        <div class="cols3">
+          <div class="card"><h3>Base</h3><p class="big" style="font-size:26px">$200<small style="font-size:14px;color:var(--muted)">/week</small></p><p style="font-size:12.5px;color:var(--muted)">~$867/month. Pays Regina for showing up, monitoring, responding, following up, records and training, even on a week Austin closes nothing.</p></div>
+          <div class="card"><h3>TPB commission</h3><p class="big" style="font-size:26px">$20</p><p style="font-size:12.5px;color:var(--muted)">Per directly attributable new TPB customer she converts in a DM. No recurring TPB commission. At $97/mo, that is ~20.6% of first-month payment.</p></div>
+          <div class="card"><h3>Why pay for TPB</h3><p style="font-size:13px;color:var(--mid)">If Academy pays and TPB does not, she will over-qualify people for Academy. Reward the <b>correct</b> recommendation, not the most expensive one.</p></div>
+        </div>
+        <div class="card">
+          <h3>Academy setter commission — a simple tier</h3>
+          <div class="tblwrap"><table>
+            <thead><tr><th>Upfront net cash collected</th><th class="r">Regina setter commission</th></tr></thead>
+            <tbody>
+              <tr><td><b>$1,500 – $2,999</b></td><td class="r"><b>$150</b></td></tr>
+              <tr><td><b>$3,000 – $5,999</b></td><td class="r"><b>$225</b></td></tr>
+              <tr><td><b>$6,000+</b></td><td class="r"><b>$300</b></td></tr>
+            </tbody>
+          </table></div>
+          <p style="font-size:13px;color:var(--mid);margin-top:10px"><b style="color:var(--ink)">Regina sets → Austin closes → BreedWise collects cash → Regina earns the bounty.</b> Do not pay for simply booking the call; that incentivizes putting anyone with a pulse on Austin's calendar. Variable pay is tied to <b style="color:var(--ink)">quality</b>, not calendar volume. <span class="src">Comparable DM-setter roles advertise 2 to 5% of closed deals. <a href="https://dynamisrev.com/careers/dm-setter" target="_blank" rel="noopener">DynamisRev</a></span></p>
+        </div>
+      </section>
+
+      <!-- 4 CLOSER -->
+      <section id="closer">
+        <div class="sh"><span class="n">04</span><h2>When Regina Becomes the Closer</h2><span class="tag">a different comp plan</span></div>
+        <div class="callout gold"><b>Start at 10% of net cash collected</b> on Academy sales Regina personally closes. If someone pays $1,500 today toward a $6,000 obligation, she earns $150 now; when BreedWise later collects the remaining $4,500, she earns another $450 as that cash is collected, assuming the account stays eligible under the written plan. <span class="src">10% of collected revenue is a defensible high-ticket closer structure. <a href="https://www.dialacloser.com/jobs/details/79-high-ticket-closers-for-career-training-online-education-program" target="_blank" rel="noopener">Dial A Closer</a></span></div>
+        <div class="cols">
+          <div class="card red" style="border-color:rgba(232,105,95,.3)"><h3>Do not stack</h3><p style="font-size:13.5px;color:var(--mid)">When Regina sets <b>and</b> closes her own deal, she does not earn the $300 setter commission <b>plus</b> the 10% closer commission. One or the other.</p></div>
+          <div class="card"><h3>Later (not yet)</h3><ul class="clean" style="font-size:13.5px"><li>Company-set lead Regina closes: <b>10%</b></li><li>Regina self-sources, qualifies and closes: potentially <b>12.5%</b></li></ul><p style="font-size:12.5px;color:var(--muted)">Do not introduce 12.5% yet. Let her prove she can close first.</p></div>
+        </div>
+      </section>
+
+      <!-- 5 MATH -->
+      <section id="math">
+        <div class="sh"><span class="n">05</span><h2>Her Path to $6,500 – $7,000 / Month</h2></div>
+        <div class="callout red"><b>The biggest issue with the original idea:</b> she probably cannot realistically replace a $6,500–$7,000/month job as <b>only a setter</b> under these economics. At the max $300 setter payout: $6,500 − ~$867 base = $5,633 in commission, or about <b>19 Academy closes a month</b> at $300 each. For $7,000, about 21. That is not a setter's job; that is a closer's.</div>
+        <div class="card">
+          <h3>The real path: setting creates the opportunity, closing creates the career</h3>
+          <div class="tblwrap"><table>
+            <thead><tr><th>At 10% of collected cash</th><th class="r">Closer commission</th><th class="r">+ base</th><th class="r">Total / month</th></tr></thead>
+            <tbody>
+              <tr><td>$56,000 personally closed</td><td class="r">$5,600</td><td class="r">~$867</td><td class="r"><b>~$6,467</b></td></tr>
+              <tr><td>$60,000 personally closed</td><td class="r">$6,000</td><td class="r">~$867</td><td class="r"><b>~$6,867</b></td></tr>
+            </tbody>
+          </table></div>
+          <p style="font-size:13px;color:var(--mid);margin-top:10px">At a $6,000 average upfront collection, $60K is about <b style="color:var(--ink)">10 closed Academy customers a month</b> — and Regina alone would be producing ~60% of the cash for the $100K/month objective. <b style="color:var(--ink)">Do not promise her $7K/month. Show her the math required to earn it.</b></p>
+        </div>
+      </section>
+
+      <!-- 6 LADDER -->
+      <section id="ladder">
+        <div class="sh"><span class="n">06</span><h2>Regina's Career Ladder</h2><span class="tag">show her this literally</span></div>
+        <div class="card ladder">
+          <div class="st"><div class="lbl">Stage 1<small>Inbound DM Setter</small></div><div class="body">
+            <p style="font-size:13px;color:var(--muted);margin:0 0 6px">Objective: master conversations and qualification.</p>
+            <p style="font-size:13px;color:var(--mid)"><b style="color:var(--ink)">Owns:</b> comment responses, DM conversations, lead qualification, TPB routing, Academy routing, appointment booking, follow-up, CRM documentation, no-show recovery.</p>
+            <p style="font-size:13px;color:var(--mid);margin-top:4px"><b style="color:var(--ink)">Earns:</b> $200/week + $20 TPB conversions + Academy setter commissions.</p>
+          </div></div>
+          <div class="st"><div class="lbl">Stage 2<small>Senior Setter / Closer Apprentice</small></div><div class="body">
+            <p style="font-size:13px;color:var(--mid)">Keep setting. Add: shadow Austin's calls, study winning and losing calls, learn the Academy offer and discovery framework and objections, role-play, begin running discovery portions, run supervised calls, review every call after.</p>
+            <p style="font-size:12.5px;color:var(--muted);margin-top:4px">Setting and closing are different skills. The transition is about downstream meeting quality, discovery ability, shadowing, role-play and supervised real calls, not appointment volume. <span class="src"><a href="https://www.drillcall.com/blog/sdr-to-ae-the-promotion-criteria-nobody-writes-down" target="_blank" rel="noopener">DrillCall</a></span></p>
+          </div></div>
+          <div class="st"><div class="lbl">Stage 3<small>Junior Closer</small></div><div class="body">
+            <p style="font-size:13px;color:var(--mid)">Regina takes selected qualified calls; Austin reviews them. Warmest, lower-risk opportunities go to Regina; complex situations go to Austin. Now track her own: held calls, qualified calls, close rate, cash collected, follow-up closes, refunds / cancellations.</p>
+          </div></div>
+          <div class="st"><div class="lbl">Stage 4<small>Full Closer</small></div><div class="body">
+            <p style="font-size:13px;color:var(--mid)">Regina owns a meaningful portion of the Academy calendar: convert qualified opportunities into appropriate Academy customers while protecting customer fit and company economics. <b style="color:var(--ink)">10% of collected revenue</b> becomes the main income engine.</p>
+          </div></div>
+        </div>
+      </section>
+
+      <!-- 7 DM PLAYBOOK -->
+      <section id="dm">
+        <div class="sh"><span class="n">07</span><h2>Her DM Playbook</h2><span class="tag">do not freestyle</span></div>
+        <div class="cols">
+          <div class="card"><h3>1 · Engage</h3><p style="font-size:13px;color:var(--mid)">Someone comments. Acknowledge publicly when appropriate. The comment-to-DM automation delivers the first response; Regina takes over once they actually engage in the DM. <span class="src">Build the human handoff around Meta's supported messaging flow. <a href="https://www.postman.com/meta/instagram/documentation/6yqw8pt/instagram-api" target="_blank" rel="noopener">Meta / Instagram API</a></span></p></div>
+          <div class="card"><h3>2 · Start a real conversation</h3><p style="font-size:13px;color:var(--mid)">Not "Want to book a call?" Instead: <i>"Curious — are you currently breeding, or still preparing for your first litter?"</i> Now she has context.</p></div>
+          <div class="card"><h3>3 · Understand</h3><p style="font-size:13px;color:var(--mid)">How established are they? What are they struggling with? What have they tried? What do they want to change? Why now? Education or implementation?</p></div>
+          <div class="card"><h3>4 · Route</h3><ul class="clean" style="font-size:13px"><li><b>TPB</b> — need clarity, education, fundamentals, tools, or not yet right for high-ticket → send TPB VSL.</li><li><b>Academy</b> — established breeder + meaningful problem + wants implementation + urgency + resources → book call.</li><li><b>Nurture</b> — not ready for either → appropriate marketing path.</li></ul></div>
+          <div class="card"><h3>5 · Book</h3><p style="font-size:13px;color:var(--mid)">Book, confirm time, record qualification notes, source, primary pain, desired outcome, relevant context, so Austin walks onto the call informed.</p></div>
+          <div class="card"><h3>6 · Follow up</h3><p style="font-size:13px;color:var(--mid)">No response is not a dead lead. Regina owns follow-up until the lead books, buys TPB, explicitly declines, is disqualified, or reaches the defined nurture point.</p></div>
+        </div>
+      </section>
+
+      <!-- 8 NOT -->
+      <section id="not">
+        <div class="sh"><span class="n">08</span><h2>What Regina Should NOT Do</h2></div>
+        <div class="callout"><b>She is not becoming the Social Media Manager.</b> <span class="pill p-yas">Yasmin</span> still owns content and distribution. Regina owns the <b>sales conversations social media creates</b> — not content calendars, filming, editing, analytics strategy, or what gets posted.</div>
+        <div class="card"><ul class="clean no" style="columns:2;font-size:13.5px">
+          <li>Give veterinary advice</li><li>Make scientific claims</li><li>Promise outcomes</li><li>Negotiate Academy pricing</li><li>Invent payment plans</li><li>Offer discounts</li><li>Change guarantees</li><li>Promise certification</li><li>Handle Member Success issues</li><li>Recommend Academy just because they can afford it</li>
+        </ul></div>
+        <div class="callout red"><b>Until she is certified internally as a closer, she does not try to close Academy in the DMs.</b> Her job is to create enough desire and clarity to get the right person onto the call.</div>
+      </section>
+
+      <!-- 9 BOTTLENECKS -->
+      <section id="bottlenecks">
+        <div class="sh"><span class="n">09</span><h2>Biggest Bottlenecks Before Launch</h2></div>
+        <div class="tblwrap"><table>
+          <thead><tr><th>#</th><th>Bottleneck</th><th>Fix</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><b>Incentive mismatch</b> — Academy pays, TPB does not → she pushes Academy</td><td>$20 TPB bounty</td></tr>
+            <tr><td>2</td><td><b>Qualification ambiguity</b> — bad appointments fill Austin's calendar</td><td>Academy Qualification Matrix</td></tr>
+            <tr><td>3</td><td><b>No single offer reference</b> — she cannot sell a moving offer</td><td>Current Offer &amp; Payment Reference</td></tr>
+            <tr><td>4</td><td><b>Attribution</b> — "was that Regina's sale?" arguments</td><td>Source + owner + outcome in CRM, every conversation</td></tr>
+            <tr><td>5</td><td><b>Lead volume</b> — she cannot earn $7K if the machine does not create conversations</td><td>Marketing's responsibility, not Regina's</td></tr>
+            <tr><td>6</td><td><b>Founder closing capacity</b> — 15 booked, Austin takes 6</td><td>Scoreboard splits Set → Booked → Held → Qualified → Closed</td></tr>
+            <tr><td>7</td><td><b>Follow-up</b> — teams overwork new leads, underwork existing ones</td><td>A visible follow-up pipeline</td></tr>
+            <tr><td>8</td><td><b>No closer apprenticeship</b> — do not hand her a $6K call cold</td><td>Build the transition deliberately (Stage 2–3)</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout gold" style="margin-top:12px"><b>Her income equation:</b> Lead Volume × Conversation Rate × Qualification Rate × Booking Rate × Show Rate × Close Rate × Cash Collected × Commission. Eventually you will know exactly which variable is limiting her.</div>
+      </section>
+
+      <!-- 10 SOPs -->
+      <section id="sops">
+        <div class="sh"><span class="n">10</span><h2>SOPs to Create</h2><span class="tag">your Sales SOP backlog</span></div>
+        <div class="cols">
+          <div class="card"><h3>Priority 1</h3><ol class="num" start="1" style="font-size:13px">
+            <li>Instagram Comment Response</li><li>Comment → DM Handoff</li><li>DM Conversation</li><li>TPB Qualification &amp; Routing</li><li>Academy Qualification</li><li>Academy Booking</li><li>CRM Documentation</li><li>DM Follow-Up</li><li>No-Response</li><li>No-Show</li><li>TPB Purchase Attribution</li><li>Academy Setter Attribution</li>
+          </ol></div>
+          <div class="card"><h3>Priority 2</h3><ul class="clean" style="font-size:13px;columns:1">
+            <li>13. Academy Offer &amp; Payment</li><li>14. Objection Handling Playbook</li><li>15. Lead Disqualification</li><li>16. Lead Nurture</li><li>17. Setter → Closer Handoff</li><li>18. Sales Call Preparation</li><li>19. Discovery Call</li><li>20. Academy Sales Call</li><li>21. Sales Follow-Up</li><li>22. Payment Collection</li><li>23. Commission Calculation / Payout</li><li>24. Refund / Chargeback Commission</li><li>25. Call Review &amp; Coaching</li><li>26. Setter → Closer Certification</li>
+          </ul></div>
+        </div>
+      </section>
+
+      <!-- 11 KPIs -->
+      <section id="kpis">
+        <div class="sh"><span class="n">11</span><h2>KPIs to Create</h2><span class="tag">track baseline before setting targets</span></div>
+        <div class="cols3">
+          <div class="card"><h3>Activity</h3><ul class="clean" style="font-size:12.5px"><li>Comments requiring response</li><li>Comments responded to</li><li>DM conversations started</li><li>Follow-ups sent</li></ul></div>
+          <div class="card"><h3>Funnel</h3><ul class="clean" style="font-size:12.5px"><li>DM conversations</li><li>Qualified conversations</li><li>TPB recommendations / purchases</li><li>Academy opps / booked / held / qualified</li><li>Academy sales · cash collected</li></ul></div>
+          <div class="card"><h3>Conversion</h3><ul class="clean" style="font-size:12.5px"><li>Comment → DM</li><li>DM → meaningful convo</li><li>DM → TPB purchase</li><li>DM → Academy opp</li><li>Opp → booked → showed → qualified → closed</li></ul></div>
+          <div class="card"><h3>Quality</h3><ul class="clean" style="font-size:12.5px"><li>No-show rate</li><li>Disqualification rate</li><li>Close rate on Regina-sourced leads</li><li>Refund / cancellation rate</li><li>CRM completeness</li></ul></div>
+          <div class="card"><h3>Revenue</h3><ul class="clean" style="font-size:12.5px"><li>TPB cash sourced</li><li>Academy cash sourced</li><li>Total Regina-sourced cash</li><li>Commission paid</li><li>Revenue per $1 of Regina comp</li></ul></div>
+          <div class="card" style="border-color:rgba(201,168,98,.3)"><h3>Her primary KPI</h3><p style="font-size:13px;color:var(--mid)">Setter: <b style="color:var(--gold-soft)">Qualified Sales Opportunities Generated.</b><br>Closer: <b style="color:var(--gold-soft)">Net Cash Collected.</b></p></div>
+        </div>
+      </section>
+
+      <!-- 12 RULES -->
+      <section id="rules">
+        <div class="sh"><span class="n">12</span><h2>Commission Rules in Writing</h2><span class="tag">define before the first commissionable sale</span></div>
+        <div class="card"><ul class="clean" style="font-size:13.5px;columns:2">
+          <li>What counts as Regina-sourced?</li><li>What counts as a TPB conversion?</li><li>What counts as Academy setter credit?</li><li>Books with Regina, closes 30 days later?</li><li>No-shows, then Austin later closes?</li><li>Jennifer later ascends a TPB member Regina first spoke with?</li><li>What is "Net Cash Collected"? Taxes excluded?</li><li>Refunds? Chargebacks?</li><li>When are commissions paid?</li><li>Can two people get attribution?</li><li>Does setter stack with closer? <b style="color:var(--red)">No.</b></li>
+        </ul></div>
+        <div class="callout red"><b>Put the entire compensation plan in writing before relying on it.</b> Commission terms can constitute promised wages depending on employment status and jurisdiction, and changing or recovering earned commissions can carry wage-law consequences. <span class="src"><a href="https://www.dol.gov/agencies/whd/fact-sheets/13-flsa-employment-relationship" target="_blank" rel="noopener">U.S. Dept. of Labor</a></span></div>
+      </section>
+
+      <!-- 13 FOLDER -->
+      <section id="folder">
+        <div class="sh"><span class="n">13</span><h2>The Folder: REGINA — Sales Playbook</h2><span class="tag">ready before she starts</span></div>
+        <div class="tblwrap"><table>
+          <thead><tr><th>#</th><th>Document</th><th>What it is</th></tr></thead>
+          <tbody>
+            <tr><td>01</td><td><b>Role Scorecard</b></td><td>What she owns</td></tr>
+            <tr><td>02</td><td><b>Compensation Plan</b></td><td>Exactly how she gets paid</td></tr>
+            <tr><td>03</td><td><b>TPB Offer Sheet</b></td><td>What she's selling</td></tr>
+            <tr><td>04</td><td><b>Academy Offer Sheet</b></td><td>What she's setting for</td></tr>
+            <tr><td>05</td><td><b>Qualification Matrix</b></td><td>TPB vs Academy vs Nurture</td></tr>
+            <tr><td>06</td><td><b>DM Playbook</b></td><td>How conversations progress</td></tr>
+            <tr><td>07</td><td><b>Message Bank</b></td><td>Openers, questions, transitions, follow-ups, objections</td></tr>
+            <tr><td>08</td><td><b>Booking &amp; Handoff SOP</b></td><td>How Austin gets a qualified appointment</td></tr>
+            <tr><td>09</td><td><b>CRM SOP</b></td><td>What must be recorded</td></tr>
+            <tr><td>10</td><td><b>Sales Call Library</b></td><td>Winning calls, losing calls, objection examples</td></tr>
+            <tr><td>11</td><td><b>Closer Training Track</b></td><td>What she must demonstrate before taking calls</td></tr>
+            <tr><td>12</td><td><b>Weekly Scoreboard</b></td><td>Her numbers</td></tr>
+          </tbody>
+        </table></div>
+        <p style="font-size:13px;color:var(--muted);margin-top:8px">That gives her an actual career system, not "go work the Instagram inbox and eventually I'll teach you to close."</p>
+      </section>
+
+      <!-- 14 30-DAY -->
+      <section id="thirty">
+        <div class="sh"><span class="n">14</span><h2>The 30-Day Pilot</h2></div>
+        <div class="cols">
+          <div class="card"><h3>Week 1 · Learn + Execute</h3><p style="font-size:13px;color:var(--mid)">Access, offer training, qualification training, scripts, CRM training; begins handling conversations. Austin reviews daily. Optimize for <b style="color:var(--ink)">correct routing</b>, not volume.</p></div>
+          <div class="card"><h3>Week 2 · Improve</h3><p style="font-size:13px;color:var(--mid)">Review which conversations became TPB, Academy, or died; where people objected; where Regina talked too much or asked too few questions. Update the playbook.</p></div>
+          <div class="card"><h3>Week 3 · Closing training</h3><p style="font-size:13px;color:var(--mid)">Shadow Austin's Academy calls. For each: why did they buy or not, the real pain, the objection, how Austin responded, would Regina have qualified them. Start role-play.</p></div>
+          <div class="card"><h3>Week 4 · Readiness review</h3><p style="font-size:13px;color:var(--mid)">Evaluate conversation quality, qualification accuracy, booked-call quality, show rate, downstream close rate, TPB conversions, revenue, follow-up and CRM discipline, coachability. Then decide — on <b style="color:var(--ink)">evidence</b>, not feel.</p></div>
+        </div>
+        <div class="callout"><b>The decision at day 30:</b> continue as Setter, or advance to Setter + Closer Apprentice.</div>
+      </section>
+
+      <!-- PITCH -->
+      <section id="pitch">
+        <div class="sh"><span class="n">15</span><h2>The Opportunity to Present to Regina</h2></div>
+        <p style="font-size:13.5px;color:var(--muted);margin:-4px 0 12px">Do not tell her "I'm giving you a $200/week Instagram job." Tell her this:</p>
+        <div class="pitch">
+          "I want to build you a path from <b>Setter to Closer</b> inside BreedWise.<br><br>
+          We're going to start by giving you ownership of inbound conversations from Instagram. Your job is to turn those conversations into the right next step: TPB when that's the right fit, or a qualified Academy call when they need deeper implementation.<br><br>
+          You'll have a weekly base plus commissions tied to the revenue you help generate. As you prove you can consistently qualify strong opportunities, I'm going to train you on the closing side as well.<br><br>
+          The long-term opportunity isn't to make $200/week answering DMs. It's to become capable of generating <b>$6,500 to $7,000+ per month</b> by becoming a full-cycle sales professional who can qualify and eventually close BreedWise customers. The income isn't guaranteed; the math has to be supported by your performance and by the lead volume we generate. But I want you to see exactly what the path looks like."
+        </div>
+        <div class="callout green" style="margin-top:14px"><b>$200/week isn't the opportunity.</b> The opportunity is that BreedWise pays her to learn the front of the sales process, pays commissions while she learns, then develops her into a 10%-of-collected-cash closer. If she can personally close ~$60K/month, that's ~$6,867/month for her, while producing ~60% of the cash for the $100K/month objective. Her comp scales when the revenue scales.</div>
+      </section>
+
+      <footer class="bf">BREEDWISE · Regina Sales Build-out — internal leadership document. Owner: Austin Shanks. External links are cited references, not endorsements.</footer>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var OK='368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875'; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function el(id){return document.getElementById(id);}
+  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Regina Sales Playbook · BreedWise';}
+  function tryUnlock(){var v=(el('pw').value||'').trim();h(v).then(function(hex){if(hex===OK){try{sessionStorage.setItem('rsp_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
+  el('unlock').addEventListener('click',tryUnlock);
+  el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('rsp_ok')==='1'){reveal();}else{el('pw').focus();}}catch(e){el('pw').focus();}
+})();
+</script>
+</body>
+</html>
