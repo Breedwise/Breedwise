@@ -91,6 +91,15 @@
   .route .disp{display:inline-block;margin-top:8px;font-size:10.5px;font-weight:700;letter-spacing:.03em;border-radius:6px;padding:3px 8px;font-family:ui-monospace,monospace}
   .route.tpb .disp{background:rgba(90,169,230,.14);color:#a9d6ff}.route.aca .disp{background:rgba(201,168,98,.14);color:var(--gold-soft)}.route.nur .disp{background:rgba(129,141,155,.14);color:var(--mid)}
 
+  ol.sop{counter-reset:s;list-style:none;padding:0;margin:0}
+  ol.sop li{position:relative;padding:10px 0 10px 34px;border-top:1px solid var(--line);font-size:13.5px;color:var(--mid)}
+  ol.sop li:first-child{border-top:0}
+  ol.sop li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:10px;width:23px;height:23px;border-radius:50%;background:var(--panel2);border:1px solid var(--line2);color:var(--blue);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  ol.sop li b{color:var(--ink)}
+  ol.sop .say-i{display:block;color:var(--gold-soft);font-style:italic;margin-top:3px}
+  ol.sop .tag2{display:inline-block;font-family:ui-monospace,monospace;font-size:11px;font-weight:700;color:#a9d6ff;background:rgba(90,169,230,.12);border:1px solid rgba(90,169,230,.25);border-radius:6px;padding:2px 7px;margin-top:4px}
+  .sopnote{background:rgba(232,105,95,.07);border:1px solid rgba(232,105,95,.24);border-radius:10px;padding:11px 13px;margin-top:12px;font-size:12.5px;color:var(--mid)}
+  .sopnote b{color:#f2a59d}
   .standard{background:linear-gradient(135deg,#1a2028,#12161c);border:1px solid rgba(201,168,98,.3);border-radius:14px;padding:18px 20px;text-align:center;margin-top:16px}
   .standard .q{font-family:var(--disp);font-size:19px;color:var(--gold-soft);font-weight:600}
   .standard .s{font-size:13px;color:var(--mid);margin-top:8px}
@@ -210,6 +219,27 @@
         </div>
       </section>
 
+      <!-- BUDGET READ -->
+      <section>
+        <div class="sh"><span class="time">Before routing</span><h2>Budget read — without naming a price</h2><span class="goal">Let them self-select. Never state the price.</span></div>
+        <div class="card">
+          <p class="lbl move">Your move</p>
+          <ul class="cues">
+            <li>Ask one self-selection question. Their answer reveals both what they can invest <b>and</b> where to route them.</li>
+            <li><b>Never name the Academy price.</b> You're reading a signal, not quoting a number. Austin handles price on the call.</li>
+          </ul>
+          <div class="say"><div class="note">Words you could use</div>
+            <p>"Last thing, and there's genuinely no wrong answer. When breeders decide to fix something like this, some want the most affordable way to get clarity and do it themselves, and others are in a spot where they'd invest more to get hands-on help and move faster. Where do you honestly see yourself right now?"</p>
+          </div>
+          <p class="lbl listen">How the answer routes</p>
+          <div class="listen"><span class="tag">"affordable / do it myself" → TPB</span><span class="tag">"ready to invest / want help" → Academy</span><span class="tag">any spend feels hard → TPB or Nurture</span></div>
+          <div class="branch">
+            <p class="lbl vague">If they ask "how much is the Academy?"</p>
+            <p class="b">"Good question, and honestly it depends on fit, which is exactly what the call with Austin is for. He'll walk you through all of it." <span style="color:var(--muted)">(For <b>TPB</b> you <b>do</b> give the price: $97/month.)</span></p>
+          </div>
+        </div>
+      </section>
+
       <!-- 7:00 ROUTE -->
       <section>
         <div class="sh"><span class="time">5:00–7:00</span><h2>Route</h2><span class="goal">Make the recommendation. One of three.</span></div>
@@ -217,7 +247,7 @@
           <div class="route tpb">
             <div class="to">→ The Profitable Breeder</div>
             <div class="when">Needs clarity, education, fundamentals, tools, a place to start. Lower-proximity support.</div>
-            <div class="say2">"I actually think The Profitable Breeder is the better place to start. It helps you see where your program stands, find the gaps holding you back, and know what to work on next. It's $97/month, cancel anytime. I'll send the link now, sound good?"</div>
+            <div class="say2">"Based on what you told me about [their problem], I actually think The Profitable Breeder is the better place for you to start. It helps you see where your program stands, find the gaps holding you back, and know what to work on next. It's $97/month, cancel anytime. I'll send the link now, sound good?"</div>
             <div class="say2" style="border-color:rgba(90,169,230,.4)">If yes: "When you get in, start with onboarding and the Scorecard, that's your baseline."</div>
             <span class="disp">TPB RECOMMENDED</span> &nbsp; <span class="disp">TPB WON — REGINA</span>
           </div>
@@ -234,6 +264,26 @@
             <div class="say2">"I don't think an Academy call is the best next step right now. I'll send you [resource / TPB info if relevant], keep following BreedWise, and when [specific condition] changes, reach back out and we'll take another look."</div>
             <span class="disp">NURTURE — NOT READY</span>
           </div>
+        </div>
+      </section>
+
+      <!-- TPB ENROLL SOP -->
+      <section>
+        <div class="sh"><span class="time">TPB · SOP</span><h2>Start them on TPB — collect payment live</h2><span class="goal">When TPB is the fit and they're interested, enroll on the call.</span></div>
+        <div class="card">
+          <ol class="sop">
+            <li><b>Confirm the fit — name their problem.</b> Tie the recommendation back to the exact thing they told you, so it lands as "this is for me."<span class="say-i">"Based on what you told me about [their problem — e.g. getting inquiries but no deposits], The Profitable Breeder is exactly where you should start."</span></li>
+            <li><b>Value + price + safety, in one breath.</b><span class="say-i">"It's $97 a month, cancel anytime, and it gives you your baseline and the exact next steps for your program."</span></li>
+            <li><b>Assume the close — offer to start now.</b><span class="say-i">"Easiest thing is to get you set up right now while we're on the phone so you're not sitting on it. Cool if I send you the signup link?"</span></li>
+            <li><b>Send the secure checkout link</b> to the number you're on (text or DM) while you stay on the call. Never read or type their card details yourself — the link keeps it secure and instant.</li>
+            <li><b>Walk them through it, stay on the line.</b><span class="say-i">"Just sent it — tap that, takes about a minute. Go ahead and pop your info in, I'll wait right here."</span></li>
+            <li><b>Handle one stall, then re-ask.</b><span class="say-i">"Totally get it — the nice part is it's month-to-month, so you get your baseline now and can cancel anytime if it's not for you. Want me to hang on while you get in?"</span></li>
+            <li><b>Confirm payment went through.</b><span class="say-i">"Perfect — you should get a confirmation email. Do you see it come through?"</span></li>
+            <li><b>Point them at step one immediately.</b><span class="say-i">"When you log in, start with the onboarding and the Profitable Breeder Scorecard — that's your baseline."</span></li>
+            <li><b>Set the next touch.</b><span class="say-i">"I'll check in on how you're finding it. If you hit anything, just message me."</span></li>
+            <li><b>Log it in the CRM.</b> Source, date, amount. <span class="tag2">TPB WON — REGINA</span></li>
+          </ol>
+          <div class="sopnote"><b>Guardrails:</b> never offer a discount, never disclose or discuss Academy pricing, never handle their card yourself (use the link). Didn't buy on the call? Send the link anyway, set a 24-hour follow-up, and disposition <span style="font-family:ui-monospace,monospace;color:#a9d6ff">TPB RECOMMENDED</span>.</div>
         </div>
       </section>
 
@@ -261,14 +311,14 @@
 <script>
 var QUAL=[
   ['Program','Where are they now?'],['Pain','The actual problem?'],['Impact','What is it costing them?'],['Attempts','What have they tried?'],
-  ['Need','Education or implementation?'],['Urgency','Why now?'],['Readiness','Ready to work on it?'],['Route','TPB / Academy / Nurture']
+  ['Need','Education or implementation?'],['Urgency','Why now?'],['Readiness','Ready to work on it?'],['Investment','Can + will they invest?'],['Route','TPB / Academy / Nurture']
 ];
 function paintQual(){
   var el=document.getElementById('qchips');
   el.innerHTML=QUAL.map(function(q,i){return '<div class="qchip" data-i="'+i+'"><span class="l">'+q[0]+'</span><span class="d">'+q[1]+'</span></div>';}).join('');
   update();
 }
-function update(){var on=document.querySelectorAll('.qchip.on').length;document.getElementById('qmeta').textContent=on+' of 8 covered'+(on===8?' · ready to route ✓':'');}
+function update(){var tot=QUAL.length;var on=document.querySelectorAll('.qchip.on').length;document.getElementById('qmeta').textContent=on+' of '+tot+' covered'+(on===tot?' · ready to route ✓':'');}
 document.addEventListener('click',function(e){var c=e.target.closest('.qchip');if(c){c.classList.toggle('on');update();}});
 function resetQual(){document.querySelectorAll('.qchip.on').forEach(function(c){c.classList.remove('on');});update();}
 
