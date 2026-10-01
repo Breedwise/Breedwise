@@ -76,6 +76,13 @@
   .chip{padding:9px 13px;background:var(--panel);border:1px solid var(--line);border-radius:20px;color:var(--mid);font-size:12.5px;cursor:pointer}
   .chip.on{background:rgba(164,129,216,.14);border-color:var(--purple);color:#d3bdf0;font-weight:600}
   .chip .r{color:var(--purple);font-weight:700;margin-right:5px}
+  .revopts{margin-top:12px}
+  .rolabel{font-size:12px;color:var(--muted);display:block;margin-bottom:7px}
+  .rochips{display:flex;flex-wrap:wrap;gap:7px}
+  .rochip{padding:8px 13px;background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--mid);font-size:12.5px;cursor:pointer;font-family:var(--sans)}
+  .rochip.on{background:rgba(201,168,98,.14);border-color:var(--gold);color:var(--gold-soft);font-weight:600}
+  .rochip:hover{border-color:var(--gold)}
+  .rochip small{color:var(--muted);font-weight:400}
 
   /* plan output */
   #plan{margin-top:30px;border-top:1px solid var(--line);padding-top:8px;display:none}
@@ -240,6 +247,10 @@
           <div class="fld" id="targetWrap"><label id="targetLbl">Your Q4 target</label><div class="money" id="targetMoney"><input type="number" id="target" placeholder="0"></div></div>
           <div class="fld"><label>Why this matters (the stakes)</label><input type="text" id="why" placeholder="What does hitting this unlock for you?"></div>
         </div>
+        <div id="revOptions" class="revopts" style="display:none">
+          <span class="rolabel">Not sure where to aim? Tap a target — it's built from your litters and price, and the Reach Score will tell you if it's realistic.</span>
+          <div class="rochips" id="roChips"></div>
+        </div>
       </section>
 
       <section>
@@ -375,6 +386,8 @@ var segState={}, picks=[];
 })();
 
 document.addEventListener('click',function(e){
+  var ro=e.target.closest('.rochip');
+  if(ro){var t=document.getElementById('target');t.value=ro.getAttribute('data-a');t.dispatchEvent(new Event('input',{bubbles:true}));return;}
   var seg=e.target.closest('.seg button');
   if(seg){var k=seg.parentElement.getAttribute('data-key');seg.parentElement.querySelectorAll('button').forEach(function(x){x.classList.remove('on');});seg.classList.add('on');segState[k]=seg.getAttribute('data-v');if(k==='goalType')updateTargetLabel();compute();save();return;}
   var chip=e.target.closest('.chip[data-l]');
@@ -383,7 +396,28 @@ document.addEventListener('click',function(e){
 function paintPicks(){document.querySelectorAll('.chip[data-l]').forEach(function(ch){var l=ch.getAttribute('data-l');var i=picks.indexOf(l);ch.classList.toggle('on',i>=0);ch.innerHTML=(i>=0?'<span class="r">'+(i+1)+'</span>':'')+l;});}
 
 var LBL={revenue:['Q4 revenue target','money'],puppies:['Puppies to place in Q4','num'],price:['Target average puppy price','money'],waitlist:['Qualified families to reach','num'],brand:['Target (optional number)','num'],systems:['Hours/week you want to free up','num']};
-function updateTargetLabel(){var g=segState.goalType||'revenue';var m=LBL[g]||LBL.revenue;document.getElementById('targetLbl').textContent=m[0];document.getElementById('targetMoney').classList.toggle('money',m[1]==='money');}
+function updateTargetLabel(){var g=segState.goalType||'revenue';var m=LBL[g]||LBL.revenue;document.getElementById('targetLbl').textContent=m[0];document.getElementById('targetMoney').classList.toggle('money',m[1]==='money');renderRevenueOptions();}
+function renderRevenueOptions(){
+  var box=document.getElementById('revOptions'); if(!box)return;
+  if((segState.goalType||'')!=='revenue'){ box.style.display='none'; return; }
+  var price=n('price'), capacity=n('avgLitter')*n('litters'), lastRev=n('lastRev'), cur=n('target');
+  var round=function(v){return Math.max(1000,Math.round(v/1000)*1000);};
+  var baseRev=capacity*price, opts=[];
+  if(baseRev>=1000){
+    opts.push({l:'Place your litters',s:'at current price',a:round(baseRev)});
+    opts.push({l:'Stretch +25%',a:round(baseRev*1.25)});
+    opts.push({l:'Push +50%',a:round(baseRev*1.5)});
+    opts.push({l:'Double it',a:round(baseRev*2)});
+  } else {
+    opts=[{l:'',a:50000},{l:'',a:75000},{l:'',a:100000},{l:'',a:150000}];
+  }
+  if(lastRev>=1000){ opts.push({l:'Beat last quarter +20%',a:round(lastRev*1.2)}); }
+  var seen={}; opts=opts.filter(function(o){if(seen[o.a])return false;seen[o.a]=1;return true;});
+  document.getElementById('roChips').innerHTML=opts.map(function(o){
+    return '<button type="button" class="rochip'+(o.a===cur?' on':'')+'" data-a="'+o.a+'">'+(o.l?o.l+' · ':'')+fmt(o.a)+(o.s?' <small>'+o.s+'</small>':'')+'</button>';
+  }).join('');
+  box.style.display='block';
+}
 
 /* ---------- helpers ---------- */
 function n(id){var el=document.getElementById(id);return el?(parseFloat(el.value)||0):0;}
@@ -474,6 +508,7 @@ function compute(){
     math:{puppiesNeeded:puppiesNeeded,littersNeeded:littersNeeded,waitNeeded:waitNeeded,revTarget:revTarget,productionGap:productionGap,demandGap:demandGap,priceToHit:priceToHit},
     reach:{score:reachScore,band:band}, gap:gap, priorities:picks.slice(), hours:n('hours'), stop:val('stop') };
   renderTracker();
+  renderRevenueOptions();
 }
 
 function renderMonths(gap, d){
