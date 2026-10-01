@@ -115,6 +115,40 @@
   ul.clean li{position:relative;padding:5px 0 5px 22px;font-size:13.5px;color:var(--mid)}
   ul.clean li::before{content:'›';position:absolute;left:4px;color:var(--gold);font-weight:700}
 
+  /* reach score */
+  .reachrow{display:flex;align-items:center;gap:18px}
+  .reachnum{font-family:var(--disp);font-size:46px;font-weight:600;line-height:1;min-width:92px}
+  .reachnum small{font-size:18px;color:var(--muted)}
+  .reachmeta{flex:1}
+  .reachband{font-family:var(--disp);font-size:18px;font-weight:600;margin-bottom:7px}
+  .reachbar{height:10px;background:#0a0e13;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+  .reachfill{height:100%;border-radius:7px;transition:width .6s ease}
+  .reachmsg{font-size:13.5px;color:var(--mid);margin:12px 0 0}
+  .rb-comfortable .reachnum,.rb-comfortable .reachband{color:var(--green)} .rb-comfortable .reachfill{background:var(--green)}
+  .rb-realistic .reachnum,.rb-realistic .reachband{color:var(--blue)} .rb-realistic .reachfill{background:var(--blue)}
+  .rb-stretch .reachnum,.rb-stretch .reachband{color:var(--amber)} .rb-stretch .reachfill{background:var(--amber)}
+  .rb-moonshot .reachnum,.rb-moonshot .reachband{color:var(--red)} .rb-moonshot .reachfill{background:var(--red)}
+  .wdetail{font-size:12.5px;color:var(--mid);margin-top:10px;padding-top:10px;border-top:1px solid rgba(201,168,98,.25)}
+  .wdetail b{color:var(--gold-soft)}
+  /* tracker */
+  .desc2{font-size:13px;color:var(--muted);font-weight:300;margin:-2px 0 12px}
+  .resume{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+  .resume input{flex:1;min-width:180px}
+  .resume #loadMsg{font-size:12px;color:var(--muted)}
+  .trow{margin:11px 0}
+  .trow .tl{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px}
+  .trow .tl .name{color:var(--mid)} .trow .tl .val{color:var(--ink);font-weight:600}
+  .trow .tl .val .pace{color:var(--muted);font-weight:400;font-size:11px}
+  .tbar{position:relative;height:12px;background:#0a0e13;border:1px solid var(--line);border-radius:7px;overflow:visible}
+  .tbar .tfill{position:absolute;left:0;top:0;bottom:0;border-radius:7px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));transition:width .5s ease}
+  .tbar .tfill.behind{background:linear-gradient(90deg,var(--amber),#efc987)}
+  .tbar .tpace{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.55}
+  .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:560px){.cgrid{grid-template-columns:1fr}}
+  .checkin{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+  .hist{margin-top:14px;font-size:12.5px}
+  .hist .h{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid var(--line);color:var(--mid)}
+  .hist .h .d{color:var(--gold)} .hist .h b{color:var(--ink)}
   .btn{display:inline-block;padding:12px 20px;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;border:0;font-family:var(--sans)}
   .btn.gold{background:var(--gold);color:#1a130a}
   .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--mid)}
@@ -223,6 +257,15 @@
         <div class="d" id="nsDesc"></div>
       </div>
 
+      <div class="card rb-realistic" id="reachCard">
+        <h3>Reach Score — is this realistic?</h3>
+        <div class="reachrow">
+          <div class="reachnum"><span id="reachScore">—</span><small>/100</small></div>
+          <div class="reachmeta"><div class="reachband" id="reachBand">—</div><div class="reachbar"><div class="reachfill" id="reachFill" style="width:0%"></div></div></div>
+        </div>
+        <p class="reachmsg" id="reachMsg"></p>
+      </div>
+
       <div class="card">
         <h3>The math behind it</h3>
         <div class="math">
@@ -253,7 +296,31 @@
       <div class="weekly">
         <div class="pl">Your weekly needle-mover</div>
         <div class="pv" id="weekly">—</div>
+        <div class="wdetail" id="weeklyDetail"></div>
         <div style="font-size:12.5px;color:var(--muted);margin-top:8px" id="stopLine"></div>
+      </div>
+
+      <div class="card" id="tracker">
+        <h3>Track your quarter</h3>
+        <p class="desc2">Save your plan, then log your running totals each week. You'll see your pace against the plan, and so will your coach.</p>
+        <div class="resume">
+          <input id="trackEmail" type="email" placeholder="you@email.com">
+          <button type="button" class="btn ghost" onclick="loadProgress()">Load my plan &amp; progress</button>
+          <span id="loadMsg"></span>
+        </div>
+        <div id="trackBars"></div>
+        <div class="checkin">
+          <div class="cgrid">
+            <div class="fld"><label>Qualified families (total)</label><input type="number" id="ciFamilies" placeholder="0"></div>
+            <div class="fld"><label>Deposits collected (total)</label><input type="number" id="ciDeposits" placeholder="0"></div>
+            <div class="fld"><label>Litters locked (total)</label><input type="number" id="ciLitters" placeholder="0"></div>
+            <div class="fld money"><label>Cash collected (total)</label><input type="number" id="ciCash" placeholder="0"></div>
+          </div>
+          <div class="fld" style="margin-top:10px"><label>This week's note (optional)</label><input type="text" id="ciNote" placeholder="Wins, blockers, what you'll do next week"></div>
+          <button type="button" class="btn gold" onclick="checkin()" style="margin-top:12px">Log this week →</button>
+          <div id="ciMsg" style="font-size:12.5px;margin-top:10px;min-height:16px;color:var(--muted)"></div>
+        </div>
+        <div class="hist" id="checkinHist"></div>
       </div>
 
       <div class="savebox">
@@ -346,6 +413,25 @@ function compute(){
   else if(gap==='conversion'){ diag='<b>Your #1 lever is conversion.</b> You have the demand and the litters — the quarter is won on follow-up and asking for the deposit. Tighten the path from inquiry to paid.'; }
   else { diag='<b>Your #1 lever is focused execution.</b> The pieces are in place. The quarter comes down to running your plan every week without drift.'; }
 
+  /* ---- Reach Score (feasibility) ---- */
+  var reachScore=100, reasons=[], lastRev=n('lastRev');
+  if(puppiesNeeded>0){
+    if(productionGap>0){ reachScore-=Math.min(55, productionGap/puppiesNeeded*90); reasons.push('needs '+productionGap+' more puppies than your litters produce'); }
+    if(demandGap>0){ reachScore-=Math.min(28, demandGap/Math.max(1,waitNeeded)*45); reasons.push('your waitlist is '+demandGap+' short of what it needs'); }
+  }
+  if(goal==='revenue'&&price>0&&priceToHit>price){ var pct=(priceToHit-price)/price; reachScore-=Math.min(30,pct*55); if(pct>0.15) reasons.push('implies a '+Math.round(pct*100)+'% price jump at your current litters'); }
+  if(goal==='price'&&price>0&&priceTarget>price){ var pj=(priceTarget-price)/price; reachScore-=Math.min(40,pj*60); if(pj>0.1) reasons.push('a '+Math.round(pj*100)+'% price increase this quarter'); }
+  if(lastRev>0&&revTarget>0){ var growth=revTarget/lastRev; if(growth>1.5){ reachScore-=Math.min(18,(growth-1.5)*20); reasons.push(Math.round((growth-1)*100)+'% growth over last quarter'); } }
+  reachScore=Math.max(5,Math.min(100,Math.round(reachScore)));
+  var band,reachMsg;
+  if(reachScore>=82){ band='Comfortable'; reachMsg='This is well within reach. Consider raising the bar — you may be aiming low for what you can do.'; }
+  else if(reachScore>=62){ band='Realistic'; reachMsg='A solid, achievable goal if you run the plan below consistently.'; }
+  else if(reachScore>=42){ band='Stretch'; reachMsg='Ambitious but possible. It '+(reasons.length?reasons.slice(0,2).join(' and '):'needs everything to go right')+'.'; }
+  else { band='Moonshot'; reachMsg='Very aggressive. It '+(reasons.length?reasons.slice(0,2).join(' and '):'leaves little margin')+'. Consider a phased target or adding capacity.'; }
+  var rc=document.getElementById('reachCard'); rc.className='card rb-'+band.toLowerCase();
+  set('reachScore',reachScore); set('reachBand',band+' goal'); set('reachMsg',reachMsg);
+  document.getElementById('reachFill').style.width=reachScore+'%';
+
   /* HUD + plan numbers */
   set('hNorth',nsNum); set('hNorthL',northLabel);
   set('hPups',puppiesNeeded); set('hLitters',littersNeeded); set('hWait',waitNeeded);
@@ -359,16 +445,17 @@ function compute(){
   set('planTitle',(val('kennel')?val('kennel')+' — ':'')+'Your Q4 Plan');
 
   renderMonths(gap, {puppiesNeeded:puppiesNeeded,waitNeeded:waitNeeded,waitlist:waitlist,demandGap:demandGap,productionGap:productionGap,priceTarget:priceTarget,price:price,goal:goal});
-  renderWeekly(gap, demandGap);
+  renderWeekly(gap, {demandGap:demandGap,puppiesNeeded:puppiesNeeded,littersNeeded:littersNeeded,revTarget:revTarget});
   renderLevers();
 
   var showable=(goal&&(target>0||goal==='brand'));
   document.getElementById('plan').classList.toggle('show', !!showable);
 
   window.PLAN={ kennel:val('kennel'), goalType:goal, northLabel:northLabel, northStar:nsNum, target:target, why:val('why'),
-    baseline:{price:price,avgLitter:avgLitter,litters:litters,waitlist:waitlist,capacity:capacity,lastRev:n('lastRev'),constraint:constraint},
+    baseline:{price:price,avgLitter:avgLitter,litters:litters,waitlist:waitlist,capacity:capacity,lastRev:lastRev,constraint:constraint},
     math:{puppiesNeeded:puppiesNeeded,littersNeeded:littersNeeded,waitNeeded:waitNeeded,revTarget:revTarget,productionGap:productionGap,demandGap:demandGap,priceToHit:priceToHit},
-    gap:gap, priorities:picks.slice(), hours:n('hours'), stop:val('stop') };
+    reach:{score:reachScore,band:band}, gap:gap, priorities:picks.slice(), hours:n('hours'), stop:val('stop') };
+  renderTracker();
 }
 
 function renderMonths(gap, d){
@@ -401,15 +488,94 @@ function renderMonths(gap, d){
 }
 function fillList(id,arr){document.getElementById(id).innerHTML=arr.slice(0,4).map(function(x){return '<li>'+x+'</li>';}).join('');}
 
-function renderWeekly(gap, demandGap){
-  var w='Run your plan: one focused block this week on your North Star.';
-  if(gap==='demand'){ w='Add about '+Math.max(1,Math.ceil(Math.max(0,demandGap)/WEEKS_LEFT))+' qualified families to your waitlist — every single week.'; }
-  else if(gap==='production'){ w='Close one open question on a litter each week (stud, timing, health check) until every Q4 litter is locked.'; }
-  else if(gap==='pricing'){ w='Publish one proof asset a week — a result, testimonial, or health win — that justifies your price.'; }
-  else if(gap==='conversion'){ w='Contact every new inquiry within 24 hours and ask for the deposit. Track your inquiry-to-deposit rate weekly.'; }
+function renderWeekly(gap, d){
+  var w='Run your plan: one focused block this week on your North Star.', detail='';
+  if(gap==='demand'){ var fpw=Math.max(1,Math.ceil(Math.max(0,d.demandGap)/WEEKS_LEFT)); var inq=Math.ceil(fpw/0.25);
+    w='Add about '+fpw+' qualified families to your waitlist — every single week.';
+    detail='That chains down to roughly <b>'+inq+' quality inquiries/week</b> (at a ~25% qualify rate), which is your content + outreach load. <b>Leading metric to watch: new qualified families this week.</b>'; }
+  else if(gap==='production'){ w='Close one open question on a litter each week (stud, timing, health check) until every Q4 litter is locked.';
+    detail='Lock all <b>'+d.littersNeeded+' litters</b> in October so November and December are pure execution. <b>Leading metric: litters fully confirmed.</b>'; }
+  else if(gap==='pricing'){ w='Publish one proof asset a week — a result, testimonial, or health win — that justifies your price.';
+    detail='Then <b>hold the price on 100% of inquiries</b>. <b>Leading metric: proof assets published + price held.</b>'; }
+  else if(gap==='conversion'){ var dpw=Math.max(1,Math.ceil(d.puppiesNeeded/WEEKS_LEFT));
+    w='Contact every new inquiry within 24 hours and ask for the deposit.';
+    detail='To place '+d.puppiesNeeded+' puppies, that is about <b>'+dpw+' deposits/week</b>. <b>Leading metric: your inquiry→deposit rate.</b>'; }
+  else { var cpw=Math.ceil(d.revTarget/WEEKS_LEFT);
+    detail='Keep steady pace — about <b>'+fmt(cpw)+'/week</b> of progress toward the goal. <b>Leading metric: your weekly focus block completed.</b>'; }
   set('weekly',w);
+  var wd=document.getElementById('weeklyDetail'); if(wd) wd.innerHTML=detail;
   var stop=val('stop');
   set('stopLine', stop?('To make room, you committed to stop: '+stop):'Name one thing to stop doing this quarter to protect this time.');
+}
+
+/* ---------- quarter tracker ---------- */
+var CHECKINS=[];
+function q4Frac(){ var s=Date.UTC(2026,9,1), e=Date.UTC(2026,11,31,23,59,59); var f=(Date.now()-s)/(e-s); return Math.max(0,Math.min(1,f)); }
+function renderTracker(){
+  var p=window.PLAN||{}, m=p.math||{};
+  var frac=q4Frac();
+  var last=CHECKINS.length?CHECKINS[CHECKINS.length-1]:null;
+  var rows=[
+    ['Qualified families', last?last.families:0, m.waitNeeded||0, false],
+    ['Deposits collected', last?last.deposits:0, m.puppiesNeeded||0, false],
+    ['Litters locked', last?last.litters:0, m.littersNeeded||0, false],
+    ['Cash collected', last?last.cash:0, m.revTarget||0, true]
+  ];
+  document.getElementById('trackBars').innerHTML=rows.map(function(r){
+    var name=r[0], act=r[1]||0, tgt=r[2]||0, money=r[3];
+    var fill=tgt>0?Math.min(100,Math.round(act/tgt*100)):0;
+    var paceVal=tgt*frac, behind=act<paceVal-0.0001;
+    var fmtV=money?fmt(act):act, fmtT=money?fmt(tgt):tgt;
+    return '<div class="trow"><div class="tl"><span class="name">'+name+'</span><span class="val">'+fmtV+' / '+fmtT+' <span class="pace">· pace '+(money?fmt(paceVal):Math.round(paceVal))+'</span></span></div>'+
+      '<div class="tbar"><div class="tfill'+(behind?' behind':'')+'" style="width:'+fill+'%"></div><div class="tpace" style="left:'+Math.round(frac*100)+'%"></div></div></div>';
+  }).join('');
+  var h=document.getElementById('checkinHist');
+  if(CHECKINS.length){
+    h.innerHTML='<div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:10px 0 4px">Check-in history</div>'+
+      CHECKINS.slice().reverse().map(function(c){var dt=new Date((c.ts||0)*1000).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+        return '<div class="h"><span class="d">'+dt+'</span><span><b>'+(c.families||0)+'</b> fam · <b>'+(c.deposits||0)+'</b> dep · <b>'+(c.litters||0)+'</b> lit · <b>'+fmt(c.cash||0)+'</b></span></div>'+(c.note?'<div style="font-size:12px;color:var(--muted);padding:0 0 6px">“'+esc(c.note)+'”</div>':'');}).join('');
+  } else h.innerHTML='';
+}
+function trackCreds(){
+  var email=(val('trackEmail')||val('saveEmail')||'').toLowerCase();
+  var code='';try{code=sessionStorage.getItem('acc_code')||'';}catch(e){}
+  if(!code){code=(prompt('Confirm your Accelerator access code:')||'').trim();if(code){try{sessionStorage.setItem('acc_code',code);}catch(e){}}}
+  return {email:email,code:code};
+}
+function checkin(){
+  var msg=document.getElementById('ciMsg');
+  var cr=trackCreds();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(cr.email)){msg.style.color='#ff6a5d';msg.textContent='Enter your email (in the tracker or the save box) first.';return;}
+  if(!cr.code)return;
+  var ci={families:n('ciFamilies'),deposits:n('ciDeposits'),litters:n('ciLitters'),cash:n('ciCash'),note:val('ciNote')};
+  msg.style.color='var(--muted)';msg.textContent='Saving…';
+  fetch('https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/q4-plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'checkin',code:cr.code,member_email:cr.email,checkin:ci})})
+    .then(function(r){return r.json();}).then(function(d){
+      if(d&&d.ok){CHECKINS=d.checkins||[];renderTracker();document.getElementById('ciNote').value='';msg.style.color='var(--green)';msg.textContent='Logged ✓ Pace updated.';}
+      else{msg.style.color='#ff6a5d';msg.textContent=(d&&d.error)||'Could not log — save your plan first.';}})
+    .catch(function(){msg.style.color='#ff6a5d';msg.textContent='Network error — try again.';});
+}
+function loadProgress(){
+  var lm=document.getElementById('loadMsg');
+  var cr=trackCreds();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(cr.email)){lm.style.color='#ff6a5d';lm.textContent='Enter your email.';return;}
+  if(!cr.code)return;
+  lm.style.color='var(--muted)';lm.textContent='Loading…';
+  fetch('https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/q4-plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'load',code:cr.code,member_email:cr.email})})
+    .then(function(r){return r.json();}).then(function(d){
+      if(d&&d.ok&&d.hasPlan){ if(d.plan)loadPlanIntoForm(d.plan); CHECKINS=d.checkins||[]; compute(); lm.style.color='var(--green)';lm.textContent='Loaded ✓ '+CHECKINS.length+' check-in(s).'; var se=document.getElementById('saveEmail'); if(se&&!se.value)se.value=cr.email; }
+      else{lm.style.color='var(--muted)';lm.textContent='No saved plan found for that email yet.';}})
+    .catch(function(){lm.style.color='#ff6a5d';lm.textContent='Network error — try again.';});
+}
+function loadPlanIntoForm(p){
+  var b=p.baseline||{};
+  function sv(id,v){var el=document.getElementById(id);if(el&&v!=null&&v!=='')el.value=v;}
+  sv('kennel',p.kennel);sv('price',b.price);sv('avgLitter',b.avgLitter);sv('litters',b.litters);sv('waitlist',b.waitlist);sv('lastRev',b.lastRev);
+  sv('target',p.target);sv('why',p.why);sv('hours',p.hours);sv('stop',p.stop);
+  segState.goalType=p.goalType||segState.goalType; segState.constraint=b.constraint||segState.constraint;
+  document.querySelectorAll('.seg[data-key="goalType"] button').forEach(function(x){x.classList.toggle('on',x.getAttribute('data-v')===segState.goalType);});
+  document.querySelectorAll('.seg[data-key="constraint"] button').forEach(function(x){x.classList.toggle('on',x.getAttribute('data-v')===segState.constraint);});
+  picks=(p.priorities||[]).slice(0,3); updateTargetLabel(); paintPicks();
 }
 function renderLevers(){
   var el=document.getElementById('planLevers');
