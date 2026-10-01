@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;
+    --ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--faint:#5a6572;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--blue:#5aa9e6;--purple:#a481d8;--amber:#e0a955;--teal:#54b8b0;
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 700px at 80% -12%,rgba(201,168,98,.06),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.5}
+
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:80}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#1a130a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:#e8695f;font-size:12.5px;min-height:16px;margin-top:10px}
+  #gate .hint{color:var(--muted);font-size:12px;margin-top:14px}
+
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),#a9863f);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 14px rgba(201,168,98,.28)}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#15100a;font-size:18px;line-height:1}
+  .logo .wm{font-size:16px;letter-spacing:.2em;font-weight:700;color:var(--ink)}
+  .logo .wm b{color:var(--gold)}
+
+  #app{display:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:30px 22px 60px}
+  header.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:8px}
+  header .k{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  header h1{font-family:var(--disp);font-size:34px;line-height:1.05;margin:8px 0 4px;font-weight:600;letter-spacing:-.4px}
+  header p{color:var(--muted);font-size:14px;margin:0;max-width:560px;font-weight:300}
+  .search{width:260px;max-width:48vw;padding:10px 14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;color:var(--ink);font-size:13px;font-family:var(--sans)}
+
+  .grouphd{font-family:var(--disp);font-size:14px;letter-spacing:.02em;color:var(--muted);font-weight:600;margin:30px 0 12px;padding-bottom:7px;border-bottom:1px solid var(--line);text-transform:uppercase}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .pcard{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+  .pcard.wide{grid-column:1/-1}
+  .person{display:flex;align-items:center;gap:11px;margin-bottom:12px}
+  .ava{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:700;font-size:16px;color:#0c0f14;flex:none}
+  .a-gold{background:linear-gradient(150deg,var(--gold),#a9863f)} .a-purple{background:linear-gradient(150deg,var(--purple),#7d5cb8)}
+  .a-blue{background:linear-gradient(150deg,var(--blue),#3f7fb8)} .a-amber{background:linear-gradient(150deg,var(--amber),#b07f2e)}
+  .a-green{background:linear-gradient(150deg,var(--green),#3d8a63)} .a-teal{background:linear-gradient(150deg,var(--teal),#357a74)}
+  .pname{font-weight:700;font-size:15px}
+  .prole{font-size:12px;color:var(--muted)}
+  .doc{display:block;text-decoration:none;border:1px solid var(--line);border-radius:11px;padding:11px 13px;margin-top:9px;transition:border-color .15s,background .15s}
+  .doc:hover{border-color:var(--gold);background:rgba(201,168,98,.05)}
+  .doc .dt{font-size:13.5px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:7px}
+  .doc .dt .arrow{color:var(--muted);font-size:12px;margin-left:auto}
+  .doc:hover .dt .arrow{color:var(--gold)}
+  .doc .dp{font-size:12px;color:var(--muted);font-weight:300;margin-top:3px}
+  .doc .code{display:inline-block;margin-top:7px;font-size:10px;letter-spacing:.04em;font-weight:700;color:var(--gold-soft);background:rgba(201,168,98,.1);border:1px solid rgba(201,168,98,.22);border-radius:6px;padding:2px 7px}
+  .doc .code.priv{color:#f2a59d;background:rgba(232,105,95,.1);border-color:rgba(232,105,95,.25)}
+  .doc .code.login{color:#a9d6ff;background:rgba(90,169,230,.1);border-color:rgba(90,169,230,.25)}
+  .empty{color:var(--muted);font-size:13px;text-align:center;padding:30px}
+  footer.bf{text-align:center;color:#59657390;font-size:11px;margin-top:40px;letter-spacing:.04em}
+  @media print{#gate{display:none!important}#app{display:block!important}body{background:#fff;color:#111}}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo mark" style="margin-bottom:18px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Open the hub →</button>
+    <div class="err" id="gate-err"></div>
+    <div class="hint">BreedWise OS · team directory</div>
+  </div></div>
+
+  <div id="app">
+    <div class="wrap">
+      <header class="hero">
+        <div>
+          <div class="k">BreedWise OS</div>
+          <h1>Team Hub</h1>
+          <p>Every playbook, guide and SOP, organized by seat. Each opens with its own code, shown on the card.</p>
+        </div>
+        <input class="search" id="q" placeholder="Search documents…">
+      </header>
+
+      <div id="hub"></div>
+      <div class="empty" id="noResults" style="display:none">No documents match that search.</div>
+
+      <footer class="bf">BREEDWISE OS · Team Hub. Access codes are shown for leadership to share the right link with the right seat. Add new documents as we build them.</footer>
+    </div>
+  </div>
+
+<script>
+/* ---- the directory. Add a row here when a new doc ships. ---- */
+var HUB=[
+  { group:'Company', cards:[
+    { name:'Company', role:'Shared · leadership', ava:'a-gold', initial:'B', docs:[
+      { t:'Operating System Playbook', p:'Austin\'s day-to-day: rhythm, quarterly rocks, accountability, scorecards, the full OS.', href:'playbook.html', code:'BWTEAM2026' },
+      { t:'Accountability Chart', p:'Who owns what across the company.', href:'accountability-chart.html', code:'BWTEAM2026' },
+      { t:'Command Center', p:'Real-time revenue wall: goal pace, funnel, pipeline, cash.', href:'command-center.html', code:'BreedWiseNumbers26' },
+      { t:'Engagement Analytics', p:'First-party traffic and page-engagement dashboard.', href:'analytics.html', code:'BreedWiseNumbers26' },
+      { t:'Metrics Dashboard', p:'Program metrics overview.', href:'dashboard.html', code:'BreedWiseNumbers26' }
+    ]}
+  ]},
+  { group:'By seat', cards:[
+    { name:'Austin', role:'CEO · Sales', ava:'a-gold', initial:'A', docs:[
+      { t:'Operating System Playbook', p:'His run-the-company manual (same as Company).', href:'playbook.html', code:'BWTEAM2026' },
+      { t:'Sales Seat Strategy', p:'Private: Regina seat comp design, legal, math, bottlenecks, day-30 evaluation.', href:'sales-buildout-internal.html', code:'BWTEAM2026', priv:true }
+    ]},
+    { name:'Jennifer', role:'Director of Member Success', ava:'a-purple', initial:'J', docs:[
+      { t:'Member Success Operating Guide', p:'Her role, SOP index, dashboard spec, SLAs, escalation — what\'s live vs. pending.', href:'member-success-guide.html', code:'MEMBERSUCCESS2026' }
+    ]},
+    { name:'Regina', role:'Inbound Sales · Setter → Closer', ava:'a-blue', initial:'R', docs:[
+      { t:'Sales Playbook', p:'Her role, pay, path, routing matrix, DM playbook, scoreboard, first 30 days.', href:'regina-sales-playbook.html', code:'REGINA2026' }
+    ]},
+    { name:'Yasmin', role:'Social Media & Content', ava:'a-amber', initial:'Y', docs:[
+      { t:'Content Engine', p:'The congruent-content playbook; Skool community as first destination.', href:'content-engine.html', code:'BreedWiseSetters26' },
+      { t:'Social Media Plan', p:'Content manager role, cadence and strategy.', href:'social-media.html', code:'SOCIAL2026' }
+    ]},
+    { name:'Setters / Team', role:'Shared sales & delivery', ava:'a-green', initial:'S', docs:[
+      { t:'Setter Playbook', p:'Inbound setter operating guide.', href:'setter-playbook.html', code:'BreedWiseSetters26' },
+      { t:'TPB → Academy Ascension SOP', p:'How TPB members move into the Academy.', href:'tpb-ascension-sop.html', code:'BreedWiseSetters26' },
+      { t:'Certification', p:'The certification standard and administration.', href:'certification.html', code:'BreedWiseSetters26' }
+    ]}
+  ]}
+];
+
+function codeClass(c){ if(/login/i.test(c))return 'login'; return ''; }
+function render(filter){
+  filter=(filter||'').toLowerCase().trim();
+  var host=document.getElementById('hub'), html='', any=false;
+  HUB.forEach(function(g){
+    var cards='';
+    g.cards.forEach(function(c){
+      var docs=c.docs.filter(function(d){ return !filter || (d.t+' '+d.p+' '+c.name+' '+c.role).toLowerCase().indexOf(filter)>=0; });
+      if(!docs.length) return;
+      any=true;
+      cards+='<div class="pcard'+(c.wide?' wide':'')+'">'+
+        '<div class="person"><span class="ava '+c.ava+'">'+c.initial+'</span><div><div class="pname">'+c.name+'</div><div class="prole">'+c.role+'</div></div></div>'+
+        docs.map(function(d){
+          var cc='code'+(d.priv?' priv':(/[a-z]/.test(d.code)&&/[A-Z]/.test(d.code)?'':''));
+          return '<a class="doc" href="'+d.href+'" target="_blank" rel="noopener"><div class="dt">'+d.t+'<span class="arrow">open ↗</span></div><div class="dp">'+d.p+'</div><span class="'+cc+'">'+(d.priv?'🔒 ':'')+d.code+'</span></a>';
+        }).join('')+'</div>';
+    });
+    if(cards){ html+='<div class="grouphd">'+g.group+'</div><div class="grid">'+cards+'</div>'; }
+  });
+  host.innerHTML=html;
+  document.getElementById('noResults').style.display=any?'none':'block';
+}
+
+/* ---- gate ---- */
+(function(){
+  var OK='368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875'; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function el(id){return document.getElementById(id);}
+  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Team Hub · BreedWise OS';render('');el('q').addEventListener('input',function(e){render(e.target.value);});}
+  function tryUnlock(){var v=(el('pw').value||'').trim().toUpperCase();h(v).then(function(hex){if(hex===OK){try{sessionStorage.setItem('hub_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
+  el('unlock').addEventListener('click',tryUnlock);
+  el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('hub_ok')==='1'){reveal();}else{el('pw').focus();}}catch(e){el('pw').focus();}
+})();
+</script>
+</body>
+</html>
