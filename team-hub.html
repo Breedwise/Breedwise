@@ -80,7 +80,7 @@
         <div>
           <div class="k">BreedWise OS</div>
           <h1>Team Hub</h1>
-          <p>Every playbook, guide and SOP, organized by seat. Each opens with its own code, shown on the card.</p>
+          <p id="subline">Every playbook, guide and SOP, organized by seat. Each opens with its own code, shown on the card.</p>
         </div>
         <input class="search" id="q" placeholder="Search documents…">
       </header>
@@ -113,7 +113,8 @@ var HUB=[
       { t:'Member Success Operating Guide', p:'Her role, SOP index, dashboard spec, SLAs, escalation — what\'s live vs. pending.', href:'member-success-guide.html', code:'MEMBERSUCCESS2026' }
     ]},
     { name:'Regina', role:'Inbound Sales · Setter → Closer', ava:'a-blue', initial:'R', docs:[
-      { t:'Sales Playbook', p:'Her role, pay, path, routing matrix, DM playbook, scoreboard, first 30 days.', href:'regina-sales-playbook.html', code:'REGINA2026' }
+      { t:'Sales Playbook', p:'Her role, pay, path, routing matrix, DM playbook, scoreboard, first 30 days.', href:'regina-sales-playbook.html', code:'REGINA2026' },
+      { t:'7-Minute Setter Call Script', p:'Live call companion: pain → fit → urgency → route, with a tick-off qualification card.', href:'regina-call-script.html', code:'REGINA2026' }
     ]},
     { name:'Yasmin', role:'Social Media & Content', ava:'a-amber', initial:'Y', docs:[
       { t:'Content Engine', p:'The congruent-content playbook; Skool community as first destination.', href:'content-engine.html', code:'BreedWiseSetters26' },
@@ -127,21 +128,31 @@ var HUB=[
   ]}
 ];
 
-function codeClass(c){ if(/login/i.test(c))return 'login'; return ''; }
+/* code hash → plaintext. Each person's code reveals only their docs; BWTEAM2026 sees all. */
+var MASTER='BWTEAM2026';
+var CODES={
+  '368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875':'BWTEAM2026',
+  '6ffb0ebcb711bb7b807af8631cda2819f45fe628a2175bb5eea7bce3d6623db5':'REGINA2026',
+  '559621627cc8f4f6b634325db97c94b584d5186ef210342720ad143db6e7bb44':'MEMBERSUCCESS2026',
+  '9885ae29c35ad5f2ea7bfd249af85902cd22c7b426f60c795f6105d4ba5a1153':'BreedWiseNumbers26',
+  '7c80836fc0ce4e3956aa136771a24b98d946bece11d70efef268e3612037234d':'BreedWiseSetters26',
+  '440edf3cb587c1bf5da0521afae877f7aff7ddcfbf727bd43bdcb1a465b2c771':'SOCIAL2026'
+};
+var CURCODE='';
+function canSee(d){ return CURCODE===MASTER || d.code===CURCODE; }
 function render(filter){
   filter=(filter||'').toLowerCase().trim();
   var host=document.getElementById('hub'), html='', any=false;
   HUB.forEach(function(g){
     var cards='';
     g.cards.forEach(function(c){
-      var docs=c.docs.filter(function(d){ return !filter || (d.t+' '+d.p+' '+c.name+' '+c.role).toLowerCase().indexOf(filter)>=0; });
+      var docs=c.docs.filter(function(d){ return canSee(d) && (!filter || (d.t+' '+d.p+' '+c.name+' '+c.role).toLowerCase().indexOf(filter)>=0); });
       if(!docs.length) return;
       any=true;
       cards+='<div class="pcard'+(c.wide?' wide':'')+'">'+
         '<div class="person"><span class="ava '+c.ava+'">'+c.initial+'</span><div><div class="pname">'+c.name+'</div><div class="prole">'+c.role+'</div></div></div>'+
         docs.map(function(d){
-          var cc='code'+(d.priv?' priv':(/[a-z]/.test(d.code)&&/[A-Z]/.test(d.code)?'':''));
-          return '<a class="doc" href="'+d.href+'" target="_blank" rel="noopener"><div class="dt">'+d.t+'<span class="arrow">open ↗</span></div><div class="dp">'+d.p+'</div><span class="'+cc+'">'+(d.priv?'🔒 ':'')+d.code+'</span></a>';
+          return '<a class="doc" href="'+d.href+'" target="_blank" rel="noopener"><div class="dt">'+d.t+'<span class="arrow">open ↗</span></div><div class="dp">'+d.p+'</div><span class="code'+(d.priv?' priv':'')+'">'+(d.priv?'🔒 ':'')+d.code+'</span></a>';
         }).join('')+'</div>';
     });
     if(cards){ html+='<div class="grouphd">'+g.group+'</div><div class="grid">'+cards+'</div>'; }
@@ -150,16 +161,20 @@ function render(filter){
   document.getElementById('noResults').style.display=any?'none':'block';
 }
 
-/* ---- gate ---- */
+/* ---- gate: resolve the entered code, reveal only what it unlocks ---- */
 (function(){
-  var OK='368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875'; /* BWTEAM2026 */
   function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
   function el(id){return document.getElementById(id);}
-  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Team Hub · BreedWise OS';render('');el('q').addEventListener('input',function(e){render(e.target.value);});}
-  function tryUnlock(){var v=(el('pw').value||'').trim().toUpperCase();h(v).then(function(hex){if(hex===OK){try{sessionStorage.setItem('hub_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
+  function resolve(v){ return Promise.all([h(v),h(v.toUpperCase())]).then(function(a){ return CODES[a[0]]||CODES[a[1]]||null; }); }
+  function reveal(){
+    var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Team Hub · BreedWise OS';
+    if(CURCODE!==MASTER) el('subline').textContent='Showing the documents for your access.';
+    render('');el('q').addEventListener('input',function(e){render(e.target.value);});
+  }
+  function tryUnlock(){var v=(el('pw').value||'').trim();resolve(v).then(function(code){if(code){CURCODE=code;try{sessionStorage.setItem('hub_code',code);}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
   el('unlock').addEventListener('click',tryUnlock);
   el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
-  try{if(sessionStorage.getItem('hub_ok')==='1'){reveal();}else{el('pw').focus();}}catch(e){el('pw').focus();}
+  try{var saved=sessionStorage.getItem('hub_code');var valid=false;for(var k in CODES){if(CODES[k]===saved)valid=true;}if(valid){CURCODE=saved;reveal();}else{el('pw').focus();}}catch(e){el('pw').focus();}
 })();
 </script>
 </body>

@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;
+    --ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--faint:#5a6572;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--red:#e8695f;--blue:#5aa9e6;--purple:#a481d8;--amber:#e0a955;
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:66px}
+  body{margin:0;background:radial-gradient(1100px 600px at 82% -10%,rgba(90,169,230,.07),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.5}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:80}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--blue);border:0;border-radius:11px;color:#06121c;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #gate .hint{color:var(--muted);font-size:12px;margin-top:14px}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),#a9863f);display:flex;align-items:center;justify-content:center}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#15100a;font-size:18px;line-height:1}
+  .logo .wm{font-size:16px;letter-spacing:.2em;font-weight:700;color:var(--ink)}
+  .logo .wm b{color:var(--gold)}
+  #app{display:none}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 20px 60px}
+  header .k{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);font-weight:700}
+  header h1{font-family:var(--disp);font-size:32px;line-height:1.08;margin:8px 0 4px;font-weight:600}
+  header p.lead{color:var(--muted);font-size:14px;margin:0;font-weight:300}
+
+  .model{background:linear-gradient(135deg,#141c26,#0f141b);border:1px solid var(--line2);border-radius:14px;padding:16px 18px;margin:16px 0}
+  .model .t{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:8px}
+  .model .chain{font-family:var(--disp);font-size:17px;color:var(--ink);line-height:1.5}
+  .model .chain b{color:var(--gold-soft)}
+  .rule{background:rgba(232,105,95,.08);border:1px solid rgba(232,105,95,.26);border-left:3px solid var(--red);border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;color:var(--mid)}
+  .rule b{color:#f2a59d}
+
+  /* live qualification card */
+  .qualcard{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:16px 0;position:sticky;top:8px;z-index:20}
+  .qualcard .h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .qualcard .h h3{font-family:var(--disp);font-size:16px;margin:0;font-weight:600}
+  .qualcard .h .reset{margin-left:auto;background:var(--panel);border:1px solid var(--line);color:var(--mid);border-radius:8px;padding:6px 11px;font-size:11.5px;cursor:pointer;font-family:var(--sans)}
+  .qchips{display:flex;flex-wrap:wrap;gap:7px}
+  .qchip{display:flex;flex-direction:column;gap:1px;padding:8px 12px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;cursor:pointer;min-width:120px;transition:.15s}
+  .qchip .l{font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--mid)}
+  .qchip .d{font-size:10.5px;color:var(--muted);font-weight:300}
+  .qchip.on{background:rgba(87,185,138,.14);border-color:rgba(87,185,138,.4)}
+  .qchip.on .l{color:#9fe3c2}
+  .qchip.on .l::before{content:'✓ '}
+  .qmeta{font-size:11.5px;color:var(--muted);margin-top:9px}
+
+  section{margin-top:22px}
+  .sh{display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--line);padding-bottom:7px;margin-bottom:14px}
+  .sh .time{font-family:var(--disp);font-size:13px;color:var(--blue);font-weight:600;white-space:nowrap}
+  .sh h2{font-family:var(--disp);font-size:20px;font-weight:600;margin:0}
+  .sh .goal{margin-left:auto;font-size:11.5px;color:var(--muted);text-align:right;max-width:46%}
+
+  .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px}
+  .lbl{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin:0 0 6px}
+  .lbl.move{color:var(--blue)} .lbl.say{color:var(--gold)} .lbl.listen{color:var(--green)} .lbl.vague{color:var(--amber)}
+  ul.cues{list-style:none;padding:0;margin:0 0 12px}
+  ul.cues li{position:relative;padding:4px 0 4px 20px;font-size:13.5px;color:var(--mid)}
+  ul.cues li::before{content:'›';position:absolute;left:3px;color:var(--blue);font-weight:700}
+  ul.cues li b{color:var(--ink)}
+  .say{background:rgba(201,168,98,.06);border:1px dashed rgba(201,168,98,.3);border-radius:10px;padding:10px 12px;margin-bottom:12px}
+  .say p{margin:5px 0;font-size:13.5px;color:var(--gold-soft);font-style:italic}
+  .say .note{font-style:normal;font-size:11px;color:var(--muted);margin-bottom:2px}
+  .listen{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+  .listen .tag{font-size:11.5px;background:rgba(87,185,138,.1);border:1px solid rgba(87,185,138,.25);color:#9fe3c2;border-radius:20px;padding:2px 10px}
+  .branch{border-top:1px solid var(--line);margin-top:10px;padding-top:10px}
+  .branch .b{font-size:13px;color:var(--mid);margin:5px 0}
+  .branch .b b{color:var(--ink)} .branch .b .arrow{color:var(--amber)}
+
+  .routes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  @media(max-width:760px){.routes{grid-template-columns:1fr}}
+  .route{border-radius:14px;padding:15px 16px;border:1px solid}
+  .route.tpb{background:rgba(90,169,230,.07);border-color:rgba(90,169,230,.28)}
+  .route.aca{background:rgba(201,168,98,.07);border-color:rgba(201,168,98,.28)}
+  .route.nur{background:rgba(129,141,155,.08);border-color:var(--line2)}
+  .route .to{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+  .route.tpb .to{color:#a9d6ff}.route.aca .to{color:var(--gold-soft)}.route.nur .to{color:var(--muted)}
+  .route .when{font-size:12px;color:var(--muted);margin-bottom:8px}
+  .route .say2{font-size:12.5px;color:var(--mid);font-style:italic;border-left:2px solid var(--line2);padding-left:9px;margin:8px 0}
+  .route .disp{display:inline-block;margin-top:8px;font-size:10.5px;font-weight:700;letter-spacing:.03em;border-radius:6px;padding:3px 8px;font-family:ui-monospace,monospace}
+  .route.tpb .disp{background:rgba(90,169,230,.14);color:#a9d6ff}.route.aca .disp{background:rgba(201,168,98,.14);color:var(--gold-soft)}.route.nur .disp{background:rgba(129,141,155,.14);color:var(--mid)}
+
+  .standard{background:linear-gradient(135deg,#1a2028,#12161c);border:1px solid rgba(201,168,98,.3);border-radius:14px;padding:18px 20px;text-align:center;margin-top:16px}
+  .standard .q{font-family:var(--disp);font-size:19px;color:var(--gold-soft);font-weight:600}
+  .standard .s{font-size:13px;color:var(--mid);margin-top:8px}
+  footer.bf{text-align:center;color:#59657390;font-size:11px;margin-top:32px}
+  @media print{#gate{display:none!important}#app{display:block!important}.qualcard{position:static}body{background:#fff;color:#111}}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo mark" style="margin-bottom:18px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Open the script →</button>
+    <div class="err" id="gate-err"></div>
+    <div class="hint">Regina · setter call companion</div>
+  </div></div>
+
+  <div id="app">
+    <div class="wrap">
+      <header>
+        <div class="k">Setter Call Companion · 7 minutes</div>
+        <h1>The Qualification Call</h1>
+        <p class="lead">A framework to reference, not a script to read. Your job: uncover pain, test fit, measure urgency, and route. You finish every call with one of three outcomes.</p>
+      </header>
+
+      <div class="model">
+        <div class="t">Your mental model (memorize this, not the words)</div>
+        <div class="chain"><b>What hurts?</b> → <b>How serious is it?</b> → <b>What do they actually need?</b> → <b>Why now?</b> → <b>Where do I send them?</b></div>
+      </div>
+
+      <div class="rule"><b>Don't interrogate. Don't coach. Don't pitch early.</b> If they give you what you need in three answers, don't ask eight more. Deepen the diagnosis, never give the prescription. This is a conversation you're steering, not a form you're filling.</div>
+
+      <!-- LIVE QUAL CARD -->
+      <div class="qualcard">
+        <div class="h"><h3>Tap as you cover each on the call</h3><button type="button" class="reset" onclick="resetQual()">↻ New call</button></div>
+        <div class="qchips" id="qchips"></div>
+        <div class="qmeta" id="qmeta">0 of 8 covered</div>
+      </div>
+
+      <!-- 0:00 OPEN -->
+      <section>
+        <div class="sh"><span class="time">0:00–0:45</span><h2>Open &amp; set the frame</h2><span class="goal">Lower resistance. This is a fit call, not a pitch.</span></div>
+        <div class="card">
+          <p class="lbl move">Your move</p>
+          <ul class="cues">
+            <li>Warm, quick, casual. Get a yes to the frame before anything else.</li>
+            <li>Frame it as "let's figure out what makes sense," <b>never</b> "I'm calling to sell you Academy."</li>
+          </ul>
+          <div class="say"><div class="note">Words you could use</div>
+            <p>"Hey [Name], it's Regina with BreedWise, how are you? I'll keep this quick. I just want to learn a bit about your program and what you're trying to improve, then point you to the BreedWise resource that actually fits where you are. Sound good?"</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2:30 PAIN -->
+      <section>
+        <div class="sh"><span class="time">0:45–2:30</span><h2>Pain</h2><span class="goal">Find the consequence, not just the topic.</span></div>
+        <div class="card">
+          <p class="lbl move">Your move</p>
+          <ul class="cues">
+            <li>Open broad, then go to the single biggest struggle. <b>Let them talk.</b></li>
+            <li>When an answer is vague, make it concrete before moving on.</li>
+            <li>End this block on impact: what is the problem actually costing them.</li>
+          </ul>
+          <div class="say"><div class="note">Words you could use</div>
+            <p>"Tell me about your program. How long have you been breeding, and what are you working on right now?"</p>
+            <p>"What's the biggest thing you're struggling with?"</p>
+            <p>"How is that affecting your program right now?" <span style="color:var(--muted);font-style:normal">(the key one)</span></p>
+          </div>
+          <p class="lbl listen">Listen for</p>
+          <div class="listen"><span class="tag">a real consequence</span><span class="tag">frustration vs. curiosity</span><span class="tag">money / buyers / direction</span></div>
+          <div class="branch">
+            <p class="lbl vague">If the answer is vague, pin it down</p>
+            <p class="b"><b>"I need more buyers"</b> <span class="arrow">→</span> "Are you not getting enough inquiries, or getting them and struggling to turn them into committed buyers?"</p>
+            <p class="b"><b>"I need to make more money"</b> <span class="arrow">→</span> "Is it pricing, expenses, filling litters, or not really knowing what you make after everything's accounted for?"</p>
+            <p class="b"><b>"I want to improve my program"</b> <span class="arrow">→</span> "What specifically makes you feel something needs to change?"</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4:00 FIT -->
+      <section>
+        <div class="sh"><span class="time">2:30–4:00</span><h2>Fit</h2><span class="goal">Where they are + education vs. implementation.</span></div>
+        <div class="card">
+          <p class="lbl move">Your move</p>
+          <ul class="cues">
+            <li>Get their scale and whether they're trying to grow or comfortable.</li>
+            <li>Ask what they've already tried (tells you how aware and how stuck they are).</li>
+            <li><b>The pivotal question:</b> do they need better information and a plan, or do they know what to change and want hands-on help implementing it?</li>
+          </ul>
+          <div class="say"><div class="note">Words you could use</div>
+            <p>"How many litters are you typically having a year right now?"</p>
+            <p>"Are you actively trying to grow or improve, or pretty comfortable where it is?"</p>
+            <p>"What have you already tried to fix [their problem]?"</p>
+            <p>"Do you mainly need better information and a clear plan, or do you already know a lot about what needs to change and want more hands-on help actually implementing it?"</p>
+          </div>
+          <p class="lbl listen">This question separates</p>
+          <div class="listen"><span class="tag">clarity &amp; education → TPB</span><span class="tag">implementation &amp; support → Academy</span></div>
+        </div>
+      </section>
+
+      <!-- 5:00 URGENCY -->
+      <section>
+        <div class="sh"><span class="time">4:00–5:00</span><h2>Urgency</h2><span class="goal">"Nice to have" or "I'm tired of this"?</span></div>
+        <div class="card">
+          <p class="lbl move">Your move</p>
+          <ul class="cues">
+            <li>Two questions, don't overdo it. You're testing motivation, not manufacturing it.</li>
+            <li>If they're clearly motivated, test timing (now vs. later).</li>
+          </ul>
+          <div class="say"><div class="note">Words you could use</div>
+            <p>"Why is fixing this important to you now?"</p>
+            <p>"What happens if nothing really changes over the next 6 to 12 months?"</p>
+            <p>"If there's a good path to solving this, are you looking to start now, or is this more of a later thing?"</p>
+          </div>
+          <p class="lbl listen">Listen for</p>
+          <div class="listen"><span class="tag">"it would be nice" (low)</span><span class="tag">"I need to fix this" (high)</span></div>
+        </div>
+      </section>
+
+      <!-- 7:00 ROUTE -->
+      <section>
+        <div class="sh"><span class="time">5:00–7:00</span><h2>Route</h2><span class="goal">Make the recommendation. One of three.</span></div>
+        <div class="routes">
+          <div class="route tpb">
+            <div class="to">→ The Profitable Breeder</div>
+            <div class="when">Needs clarity, education, fundamentals, tools, a place to start. Lower-proximity support.</div>
+            <div class="say2">"I actually think The Profitable Breeder is the better place to start. It helps you see where your program stands, find the gaps holding you back, and know what to work on next. It's $97/month, cancel anytime. I'll send the link now, sound good?"</div>
+            <div class="say2" style="border-color:rgba(90,169,230,.4)">If yes: "When you get in, start with onboarding and the Scorecard, that's your baseline."</div>
+            <span class="disp">TPB RECOMMENDED</span> &nbsp; <span class="disp">TPB WON — REGINA</span>
+          </div>
+          <div class="route aca">
+            <div class="to">→ Academy call</div>
+            <div class="when">Established breeder + real problem + wants implementation + urgency + ready + a problem Academy addresses.</div>
+            <div class="say2">"I think it makes more sense to have you talk with Austin about the Academy than send you more information. It's for breeders who want help implementing the systems their program needs. Next step isn't committing to anything, just a conversation. Would [A] or [B] work better?"</div>
+            <div class="say2" style="border-color:rgba(201,168,98,.4)">After booking: "I'll give Austin notes so you don't start from scratch. Be somewhere you can focus. Sending the confirmation now, if anything changes let me know early."</div>
+            <span class="disp">ACADEMY — QUALIFIED &amp; BOOKED</span>
+          </div>
+          <div class="route nur">
+            <div class="to">→ Nurture / not ready</div>
+            <div class="when">Not currently breeding, no urgency, not serious, or not right for either offer. Protects Austin's calendar.</div>
+            <div class="say2">"I don't think an Academy call is the best next step right now. I'll send you [resource / TPB info if relevant], keep following BreedWise, and when [specific condition] changes, reach back out and we'll take another look."</div>
+            <span class="disp">NURTURE — NOT READY</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- DEEPEN EXAMPLE -->
+      <section>
+        <div class="sh"><span class="time">Skill</span><h2>Deepen, don't prescribe</h2></div>
+        <div class="card">
+          <p style="font-size:13.5px;color:var(--mid);margin:0 0 8px">When you hear a problem, your instinct will be to solve it. Don't. Mirror it back sharper and keep diagnosing.</p>
+          <p class="b" style="font-size:13.5px;color:var(--mid);margin:6px 0"><b style="color:var(--ink)">They say:</b> "I get 30 inquiries but nobody places a deposit."</p>
+          <p class="b" style="font-size:13.5px;color:var(--amber);margin:6px 0">✗ Don't spend 4 minutes teaching them a sales process.</p>
+          <p class="b" style="font-size:13.5px;color:#9fe3c2;margin:6px 0">✓ "Got it, so it's not getting attention, it's turning the attention you already have into buyers who commit. How long has that been happening?"</p>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:8px">That's setting: deepening the diagnosis without giving away the prescription.</p>
+        </div>
+      </section>
+
+      <div class="standard">
+        <div class="q">"If Regina puts someone on my calendar, I want to take that call."</div>
+        <div class="s">That's the standard for this seat. Your metric is <b style="color:var(--ink)">routing accuracy</b>, not booking volume. Five genuinely qualified prospects beat ten mediocre ones.</div>
+      </div>
+
+      <footer class="bf">BREEDWISE · Regina's setter call companion. Reference it, don't read it. Questions on offer, pricing or policy go to Austin.</footer>
+    </div>
+  </div>
+
+<script>
+var QUAL=[
+  ['Program','Where are they now?'],['Pain','The actual problem?'],['Impact','What is it costing them?'],['Attempts','What have they tried?'],
+  ['Need','Education or implementation?'],['Urgency','Why now?'],['Readiness','Ready to work on it?'],['Route','TPB / Academy / Nurture']
+];
+function paintQual(){
+  var el=document.getElementById('qchips');
+  el.innerHTML=QUAL.map(function(q,i){return '<div class="qchip" data-i="'+i+'"><span class="l">'+q[0]+'</span><span class="d">'+q[1]+'</span></div>';}).join('');
+  update();
+}
+function update(){var on=document.querySelectorAll('.qchip.on').length;document.getElementById('qmeta').textContent=on+' of 8 covered'+(on===8?' · ready to route ✓':'');}
+document.addEventListener('click',function(e){var c=e.target.closest('.qchip');if(c){c.classList.toggle('on');update();}});
+function resetQual(){document.querySelectorAll('.qchip.on').forEach(function(c){c.classList.remove('on');});update();}
+
+(function(){
+  var OK='6ffb0ebcb711bb7b807af8631cda2819f45fe628a2175bb5eea7bce3d6623db5'; /* REGINA2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function el(id){return document.getElementById(id);}
+  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Setter Call Script · BreedWise';paintQual();}
+  function tryUnlock(){var v=(el('pw').value||'').trim().toUpperCase();h(v).then(function(hex){if(hex===OK){try{sessionStorage.setItem('rcs_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
+  el('unlock').addEventListener('click',tryUnlock);
+  el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('rcs_ok')==='1'){reveal();}else{el('pw').focus();}}catch(e){el('pw').focus();}
+})();
+</script>
+</body>
+</html>
