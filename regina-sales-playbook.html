@@ -272,7 +272,7 @@
   function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
   function el(id){return document.getElementById(id);}
   function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Your Sales Playbook · BreedWise';}
-  function tryUnlock(){var v=(el('pw').value||'').trim();h(v).then(function(hex){if(hex===OK){try{sessionStorage.setItem('rp_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
+  function tryUnlock(){var v=(el('pw').value||'').trim().toUpperCase();h(v).then(function(hex){if(hex===OK){try{sessionStorage.setItem('rp_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
   el('unlock').addEventListener('click',tryUnlock);
   el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
   try{if(sessionStorage.getItem('rp_ok')==='1'){reveal();}else{el('pw').focus();}}catch(e){el('pw').focus();}
