@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;
+    --ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--faint:#5a6572;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--red:#e8695f;--blue:#5aa9e6;--purple:#a481d8;--amber:#e0a955;
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1100px 600px at 82% -10%,rgba(224,169,85,.06),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.5}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:80}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--amber);border:0;border-radius:11px;color:#1a140a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #gate .hint{color:var(--muted);font-size:12px;margin-top:14px}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),#a9863f);display:flex;align-items:center;justify-content:center}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#15100a;font-size:18px;line-height:1}
+  .logo .wm{font-size:16px;letter-spacing:.2em;font-weight:700;color:var(--ink)}
+  .logo .wm b{color:var(--gold)}
+  #app{display:none}
+  nav.top{position:sticky;top:0;z-index:40;background:rgba(11,14,19,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav.top .in{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:11px 20px;flex-wrap:wrap}
+  nav .tabs{display:flex;gap:6px;overflow-x:auto;flex:1;scrollbar-width:none}
+  nav .tabs::-webkit-scrollbar{display:none}
+  nav .tabs button{white-space:nowrap;font-size:12.5px;color:var(--muted);background:var(--panel);border:1px solid var(--line);padding:7px 12px;border-radius:9px;font-weight:500;cursor:pointer;font-family:var(--sans)}
+  nav .tabs button.on{background:rgba(224,169,85,.14);border-color:var(--amber);color:#f0cf9a;font-weight:600}
+  nav .saved{font-size:11px;color:var(--muted)}
+  .wrap{max-width:1000px;margin:0 auto;padding:22px 20px 60px}
+  .pane{display:none}.pane.on{display:block}
+  h1.ph{font-family:var(--disp);font-size:28px;margin:4px 0 2px;font-weight:600}
+  .psub{font-size:13px;color:var(--muted);margin:0 0 16px;font-weight:300}
+  .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:15px;padding:16px 18px;margin-bottom:13px}
+  .card h3{font-family:var(--disp);font-size:16px;margin:0 0 10px;font-weight:600}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:13px}.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px}.cols4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:760px){.cols,.cols3,.cols4{grid-template-columns:1fr 1fr}}@media(max-width:480px){.cols,.cols3,.cols4{grid-template-columns:1fr}}
+  input[type=text],input[type=url],input[type=number],select,textarea{width:100%;padding:9px 11px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;color:var(--ink);font-size:13px;font-family:var(--sans)}
+  textarea{min-height:40px;resize:vertical}
+  label{font-size:11px;color:var(--muted);display:block;margin-bottom:4px}
+  .btn{display:inline-block;padding:9px 15px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:0;font-family:var(--sans)}
+  .btn.gold{background:var(--amber);color:#1a140a}.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--mid)}
+  .addrow{display:grid;gap:9px;align-items:end;margin-bottom:12px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{text-align:left;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:7px 8px;border-bottom:1px solid var(--line2)}
+  td{padding:7px 8px;border-bottom:1px solid var(--line);color:var(--mid);vertical-align:middle}
+  td a{color:var(--blue);text-decoration:none}td a:hover{text-decoration:underline}
+  tr:last-child td{border-bottom:0}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
+  .chip{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;cursor:pointer;white-space:nowrap}
+  .st-idea{background:rgba(129,141,155,.16);color:var(--mid)}.st-scripted{background:rgba(164,129,216,.16);color:#c9b4ec}
+  .st-ready{background:rgba(224,169,85,.16);color:#f0cf9a}.st-filmed{background:rgba(90,169,230,.16);color:#a9d6ff}
+  .st-editing{background:rgba(90,169,230,.16);color:#a9d6ff}.st-approved{background:rgba(87,185,138,.16);color:#9fe3c2}
+  .st-scheduled{background:rgba(87,185,138,.16);color:#9fe3c2}.st-published{background:rgba(201,168,98,.18);color:var(--gold-soft)}.st-analyzed{background:rgba(201,168,98,.12);color:var(--muted)}
+  .st-requested{background:rgba(224,169,85,.16);color:#f0cf9a}.st-done{background:rgba(87,185,138,.16);color:#9fe3c2}
+  .who{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:20px}
+  .w-austin{background:rgba(201,168,98,.16);color:var(--gold-soft)}.w-emmanuel{background:rgba(87,185,138,.16);color:#9fe3c2}.w-yasmin{background:rgba(224,169,85,.16);color:#f0cf9a}
+  .x{color:var(--faint);cursor:pointer;font-size:14px;padding:0 4px}.x:hover{color:var(--red)}
+  .empty{color:var(--muted);font-size:12.5px;text-align:center;padding:16px}
+  .stat{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:13px 14px}
+  .stat .v{font-family:var(--disp);font-size:26px;font-weight:600;line-height:1}
+  .stat .v.ok{color:var(--green)}.stat .v.bad{color:var(--red)}.stat .v.na{color:var(--muted)}
+  .stat .l{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:4px}
+  .stat .t{font-size:10.5px;color:var(--faint);margin-top:1px}
+  .chk{display:flex;align-items:center;gap:9px;padding:8px 0;border-top:1px solid var(--line);font-size:13.5px;color:var(--mid);cursor:pointer}
+  .chk:first-child{border-top:0}
+  .chk .box{width:18px;height:18px;border-radius:5px;border:1px solid var(--line2);flex:none;display:flex;align-items:center;justify-content:center;font-size:11px;color:#1a140a}
+  .chk.on .box{background:var(--amber);border-color:var(--amber)}.chk.on .box::before{content:'✓'}
+  .chk.on{color:var(--faint);text-decoration:line-through}
+  .today-focus{background:linear-gradient(135deg,#1e1810,#14110b);border:1px solid rgba(224,169,85,.3);border-left:3px solid var(--amber);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .today-focus .d{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .today-focus .f{font-family:var(--disp);font-size:19px;color:#f0cf9a;font-weight:600;margin-top:3px}
+  .flowline{font-size:12.5px;color:var(--mid);background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 13px;line-height:1.9}
+  .flowline b{color:var(--gold-soft)}
+  ul.clean{list-style:none;padding:0;margin:6px 0}ul.clean li{position:relative;padding:4px 0 4px 20px;font-size:13px;color:var(--mid)}ul.clean li::before{content:'›';position:absolute;left:3px;color:var(--amber);font-weight:700}ul.clean li b{color:var(--ink)}
+  .sh{font-family:var(--disp);font-size:20px;font-weight:600;margin:24px 0 10px;border-bottom:1px solid var(--line);padding-bottom:8px}
+  footer.bf{text-align:center;color:#59657390;font-size:11px;margin-top:36px}
+  @media print{nav.top{display:none}#app{display:block!important}#gate{display:none!important}.pane{display:block!important}}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo mark" style="margin-bottom:18px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Open my role card →</button>
+    <div class="err" id="gate-err"></div>
+    <div class="hint">Content Operations · Yasmin</div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top"><div class="in">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+      <div class="tabs" id="tabs"></div>
+      <span class="saved" id="saved">saved on this device</span>
+    </div></nav>
+
+    <div class="wrap">
+
+      <!-- ===== TODAY ===== -->
+      <div class="pane" id="t-today">
+        <h1 class="ph">Today</h1>
+        <p class="psub" id="todayDate"></p>
+        <div class="today-focus"><div class="d" id="todayDow"></div><div class="f" id="todayFocus"></div></div>
+        <div class="cols">
+          <div class="card"><h3>Daily non-negotiables</h3><div id="dailyChecks"></div></div>
+          <div class="card"><h3>Scorecard right now</h3><div class="cols" id="todayScore" style="gap:10px"></div><p style="font-size:11.5px;color:var(--muted);margin:10px 0 0">Log numbers in the <b style="color:var(--mid)">Metrics</b> tab each Friday.</p></div>
+        </div>
+        <div class="card"><h3>Quick-add an idea</h3>
+          <div class="addrow" style="grid-template-columns:2fr 1fr auto">
+            <div><label>Idea / hook</label><input type="text" id="qi_idea" placeholder="Winning hook or topic to replicate…"></div>
+            <div><label>Creator</label><select id="qi_creator"><option>Yasmin</option><option>Austin</option><option>Emmanuel</option></select></div>
+            <div><button class="btn gold" onclick="quickIdea()">Add</button></div>
+          </div>
+          <p style="font-size:12px;color:var(--muted);margin:0">Lands in <b style="color:var(--mid)">Ideas</b>. Flag Austin/Emmanuel ones for the <b style="color:var(--mid)">To Film</b> queue when they're ready.</p>
+        </div>
+      </div>
+
+      <!-- ===== IDEAS ===== -->
+      <div class="pane" id="t-ideas">
+        <h1 class="ph">Ideas</h1>
+        <p class="psub">Find signal → make more signal. Replicate what works · iterate the hook/angle · innovate something new. Click a status to advance it.</p>
+        <div class="card">
+          <div class="addrow cols" style="grid-template-columns:2fr 1.4fr 1fr 1fr">
+            <div><label>Idea / topic</label><input type="text" id="id_idea" placeholder="e.g. 'Why your puppies aren't selling' breakdown"></div>
+            <div><label>Hook</label><input type="text" id="id_hook" placeholder="The first line / scroll-stopper"></div>
+            <div><label>Type</label><select id="id_type"><option>Replicate</option><option>Iterate</option><option>Innovate</option></select></div>
+            <div><label>Format</label><input type="text" id="id_format" placeholder="Reel / Carousel / Long"></div>
+          </div>
+          <div class="addrow" style="grid-template-columns:1fr 2fr auto">
+            <div><label>Creator</label><select id="id_creator"><option>Yasmin</option><option>Austin</option><option>Emmanuel</option></select></div>
+            <div><label>Reference link (optional)</label><input type="url" id="id_link" placeholder="https:// the inspiration / brief"></div>
+            <div><button class="btn gold" onclick="addIdea()">Add idea</button></div>
+          </div>
+        </div>
+        <div class="tblwrap"><table><thead><tr><th>Idea</th><th>Hook</th><th>Type</th><th>Creator</th><th>Status</th><th>Link</th><th></th></tr></thead><tbody id="ideasBody"></tbody></table></div>
+      </div>
+
+      <!-- ===== TO FILM ===== -->
+      <div class="pane" id="t-film">
+        <h1 class="ph">To Film</h1>
+        <p class="psub">Everything Austin and Emmanuel need to film — topic, hook, and the script/brief link ready, so they show up to film, not to figure out what to film.</p>
+        <div class="card">
+          <div class="addrow cols" style="grid-template-columns:1fr 2fr 2fr">
+            <div><label>Who films it</label><select id="fm_who"><option>Austin</option><option>Emmanuel</option></select></div>
+            <div><label>Topic</label><input type="text" id="fm_topic" placeholder="What the video is about"></div>
+            <div><label>Hook</label><input type="text" id="fm_hook" placeholder="The opening line"></div>
+          </div>
+          <div class="addrow" style="grid-template-columns:2fr 1fr auto">
+            <div><label>Script / brief link</label><input type="url" id="fm_link" placeholder="https:// doc with the script, shots, CTA"></div>
+            <div><label>Batch day</label><input type="text" id="fm_batch" placeholder="e.g. Thu Oct 9"></div>
+            <div><button class="btn gold" onclick="addFilm()">Add to queue</button></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+          <button class="btn ghost" onclick="copyFilm('Austin')">Copy Austin's list</button>
+          <button class="btn ghost" onclick="copyFilm('Emmanuel')">Copy Emmanuel's list</button>
+          <span id="filmCopyMsg" style="font-size:12px;color:var(--muted);align-self:center"></span>
+        </div>
+        <div class="tblwrap"><table><thead><tr><th>Who</th><th>Topic</th><th>Hook</th><th>Brief</th><th>Batch</th><th>Status</th><th></th></tr></thead><tbody id="filmBody"></tbody></table></div>
+      </div>
+
+      <!-- ===== LINKS ===== -->
+      <div class="pane" id="t-links">
+        <h1 class="ph">Links</h1>
+        <p class="psub">Your home base — content folders, schedulers, ManyChat, analytics, brand assets, references.</p>
+        <div class="card">
+          <div class="addrow" style="grid-template-columns:1fr 1fr 2fr auto">
+            <div><label>Label</label><input type="text" id="lk_label" placeholder="e.g. Content Drive"></div>
+            <div><label>Category</label><input type="text" id="lk_cat" placeholder="Tools / Assets / Analytics"></div>
+            <div><label>URL</label><input type="url" id="lk_url" placeholder="https://"></div>
+            <div><button class="btn gold" onclick="addLink()">Add</button></div>
+          </div>
+        </div>
+        <div id="linksBody"></div>
+      </div>
+
+      <!-- ===== METRICS ===== -->
+      <div class="pane" id="t-metrics">
+        <h1 class="ph">Metrics</h1>
+        <p class="psub">Four primary numbers. Log them weekly (Friday). Everything else is diagnosis.</p>
+        <div class="cols4" id="metricTargets"></div>
+        <div class="card" style="margin-top:14px">
+          <h3>Log this week</h3>
+          <div class="addrow cols" style="grid-template-columns:1fr 1fr 1fr 1fr 1fr">
+            <div><label>Week of</label><input type="text" id="mt_week" placeholder="Oct 6"></div>
+            <div><label>Publishing %</label><input type="number" id="mt_pub" placeholder="95"></div>
+            <div><label>Pipeline (days)</label><input type="number" id="mt_pipe" placeholder="14"></div>
+            <div><label>Qualified leads</label><input type="number" id="mt_leads" placeholder="125"></div>
+            <div><label>New TPB</label><input type="number" id="mt_tpb" placeholder="25"></div>
+          </div>
+          <button class="btn gold" onclick="addMetric()">Save week</button>
+        </div>
+        <div class="sh">History</div>
+        <div class="tblwrap"><table><thead><tr><th>Week</th><th>Publish %</th><th>Pipeline</th><th>Qual. leads</th><th>New TPB</th><th></th></tr></thead><tbody id="metricsBody"></tbody></table></div>
+        <div class="card" style="margin-top:14px"><h3>Secondary (diagnosis only)</h3><p style="font-size:12.5px;color:var(--muted);margin:0">Views · Reach · Watch time · Retention · Shares · Saves · Comments · Profile visits · Follower growth · DM starts · Lead conversion rate · Lead→TPB · Content→Academy opportunities. <b style="color:var(--mid)">Don't stare at these weekly — use them to explain why the four moved.</b></p></div>
+      </div>
+
+      <!-- ===== PLAYBOOK ===== -->
+      <div class="pane" id="t-playbook">
+        <h1 class="ph">Playbook</h1>
+        <p class="psub">The operating system behind the role. You own the pipeline even when someone else owns the task.</p>
+
+        <div class="sh">The 4 daily responsibilities</div>
+        <div class="cols">
+          <div class="card"><h3>1 · Ideation</h3><p style="font-size:13px;color:var(--mid);margin:0 0 6px">Study what already works and turn signal into more signal.</p><ul class="clean" style="font-size:12.5px"><li><b>Replicate</b> — it works, make another version</li><li><b>Iterate</b> — keep the concept, improve hook/angle/format</li><li><b>Innovate</b> — test something genuinely new</li></ul><p style="font-size:12px;color:var(--muted);margin-top:4px">Sources: winning BreedWise + breeder content, adjacent industries, hooks, formats, breeder questions, objections, comments worth filming, competitor gaps, trends.</p></div>
+          <div class="card"><h3>2 · Creation</h3><div class="flowline">Idea → Hook → Script/framework → Creator assigned → Filmed → Edited → Approved → Scheduled</div><ul class="clean" style="font-size:12.5px;margin-top:8px"><li><span class="who w-austin">Austin</span> breeder / business / founder</li><li><span class="who w-emmanuel">Emmanuel</span> veterinary education</li><li><span class="who w-yasmin">Yasmin</span> brand / social / community</li></ul><p style="font-size:12px;color:var(--muted);margin-top:4px">Every batch day already has topics, hooks, scripts, CTAs ready. They show up to film, not to figure out what to film.</p></div>
+          <div class="card"><h3>3 · Distribution</h3><p style="font-size:13px;color:var(--mid);margin:0 0 6px">Daily publishing with purpose: Attention → Trust → Education → Conversion.</p><div class="flowline">Content → Engagement → DM/Lead → TPB → Academy</div><p style="font-size:12px;color:var(--muted);margin-top:6px">Not every post needs a CTA, but the system must create a path. Build ManyChat into the journey where appropriate.</p></div>
+          <div class="card"><h3>4 · Delegation &amp; accountability</h3><p style="font-size:13px;color:var(--mid);margin:0 0 6px">You own the pipeline even when someone else owns the task.</p><div class="flowline">Identify → Follow up → Escalate → Solve</div><p style="font-size:12px;color:var(--muted);margin-top:6px">Don't silently absorb missed work. If a dependency threatens the pipeline, surface it.</p></div>
+        </div>
+
+        <div class="sh">Batch production — the math for 5/day</div>
+        <div class="card"><div class="tblwrap"><table><thead><tr><th>Every 2 weeks</th><th>Output</th><th>Weekly capacity</th></tr></thead><tbody>
+          <tr><td><span class="who w-austin">Austin</span></td><td>42 Reels</td><td>21 / week</td></tr>
+          <tr><td><span class="who w-emmanuel">Emmanuel</span></td><td>28 Reels</td><td>14 / week</td></tr>
+          <tr><td><b>Total</b></td><td><b>70 short-form / 2 wks</b></td><td><b>35 / week = 5 / day</b></td></tr>
+        </tbody></table></div>
+        <p style="font-size:12.5px;color:var(--mid);margin-top:8px">5 core pieces/day distributed across IG, FB, TikTok, YouTube Shorts. <b style="color:var(--ink)">Carousels</b> 7/wk in one block · <b style="color:var(--ink)">Stories</b> a repeatable weekly framework · <b style="color:var(--ink)">Long form</b> 4 videos/2wks → 2/wk on YouTube.</p></div>
+
+        <div class="sh">Weekly rhythm · Content pipeline · Meeting</div>
+        <div class="cols">
+          <div class="card"><h3>Weekly operating rhythm</h3><ul class="clean" style="font-size:12.5px"><li><b>Mon</b> — Analytics + ideation + weekly priorities</li><li><b>Tue</b> — Scripts/frameworks + carousel batch</li><li><b>Wed</b> — Distribution + pipeline + batch prep</li><li><b>Thu</b> — Batch filming / production</li><li><b>Fri</b> — Analytics + winners/losers + next-week optimization</li></ul><p style="font-size:12px;color:var(--muted);margin-top:4px">Publishing + community monitoring continue daily. Today's content was decided two weeks ago; today's performance decides what gets made next.</p></div>
+          <div class="card"><h3>Content pipeline — keep 14+ days ready</h3><div class="flowline" style="font-size:12px">Ideas → Scripted → Ready to film → Filmed → Editing → Approved → Scheduled → Published → Analyzed</div><p style="font-size:12px;color:var(--muted);margin-top:8px">A simple sheet (or this card) is enough. Don't overbuild it.</p>
+          <h3 style="margin-top:14px">Weekly content meeting · 30–45 min</h3><ul class="clean" style="font-size:12.5px"><li>What won? (most qualified attention/leads)</li><li>Why did it win? (topic/hook/person/format/emotion/CTA)</li><li>What lost?</li><li>What do we make more of? (turn winners into series)</li><li>What's blocking production?</li></ul><p style="font-size:12px;color:var(--muted)">End with assigned owners + deadlines.</p></div>
+        </div>
+
+        <div class="sh">Quarterly strategy &amp; growth path</div>
+        <div class="cols">
+          <div class="card"><h3>Quarterly — step outside the machine</h3><p style="font-size:12.5px;color:var(--mid)">Evaluate the whole path: Audience → Content → Leads → TPB → Academy. Review pillars, creator &amp; platform performance, lead sources, top converting topics, audience quality, TPB conversion, Academy influence, bottlenecks, new formats, capacity. Then decide what to <b style="color:#9fe3c2">double down</b>, <b style="color:var(--gold-soft)">fix</b>, <b style="color:#f2a59d">stop</b>, <b style="color:#a9d6ff">test</b>.</p></div>
+          <div class="card"><h3>Growth path</h3><p style="font-size:12.5px;color:var(--mid);margin:0 0 6px">The goal isn't "someone who posts." It's someone who <b style="color:var(--ink)">operates BreedWise's organic acquisition channel</b> — increasingly directing the machine, not performing every task in it.</p><p style="font-size:12px;color:var(--muted)">Skills: content strategy · copywriting/hooks · analytics · direct response · ManyChat · lead gen · creative direction · brand strategy · AI workflows · team management.</p></div>
+        </div>
+      </div>
+
+      <footer class="bf">BREEDWISE · Content Operations role card. Your trackers save to this device. Owner: Yasmin.</footer>
+    </div>
+  </div>
+
+<script>
+var TABS=[['t-today','Today'],['t-ideas','Ideas'],['t-film','To Film'],['t-links','Links'],['t-metrics','Metrics'],['t-playbook','Playbook']];
+var FOCUS={0:'Publishing + community (light)',1:'Analytics + ideation + weekly priorities',2:'Scripts/frameworks + carousel batch',3:'Distribution + pipeline + batch prep',4:'Batch filming / production',5:'Analytics + winners/losers + next-week optimization',6:'Publishing + community (light)'};
+var DAILY=['Publish today’s scheduled content','Monitor comments + DMs (ManyChat journeys)','Move at least one idea forward a stage','Note any win worth turning into a series'];
+var TARGETS=[['pub','Publishing %','≥ 95',95,'gte','%'],['pipe','Pipeline days','≥ 14',14,'gte',''],['leads','Qualified leads','125 / wk',125,'gte',''],['tpb','New TPB','25 / wk',25,'gte','']];
+var ST=['Idea','Scripted','Ready to film','Filmed','Editing','Approved','Scheduled','Published','Analyzed'];
+function stCls(s){return 'st-'+s.toLowerCase().replace(/[^a-z]/g,'').slice(0,8).replace('readyto','ready');}
+var S={ideas:[],film:[],links:[],metrics:[],checks:{}};
+function load(){try{var o=JSON.parse(localStorage.getItem('bw_yasmin')||'null');if(o)S=Object.assign(S,o);}catch(e){}}
+function save(){try{localStorage.setItem('bw_yasmin',JSON.stringify(S));}catch(e){}var el=document.getElementById('saved');el.textContent='saved ✓';setTimeout(function(){el.textContent='saved on this device';},900);}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function val(id){var e=document.getElementById(id);return e?(e.value||'').trim():'';}
+function clr(ids){ids.forEach(function(i){var e=document.getElementById(i);if(e)e.value='';});}
+
+function showTab(id){document.querySelectorAll('.pane').forEach(function(p){p.classList.toggle('on',p.id===id);});document.querySelectorAll('#tabs button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-id')===id);});try{sessionStorage.setItem('y_tab',id);}catch(e){}window.scrollTo(0,0);}
+function buildTabs(){document.getElementById('tabs').innerHTML=TABS.map(function(t){return '<button data-id="'+t[0]+'">'+t[1]+'</button>';}).join('');document.querySelectorAll('#tabs button').forEach(function(b){b.addEventListener('click',function(){showTab(b.getAttribute('data-id'));});});}
+
+/* TODAY */
+function renderToday(){
+  var d=new Date(),dow=d.getDay();
+  document.getElementById('todayDate').textContent=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  document.getElementById('todayDow').textContent=d.toLocaleDateString('en-US',{weekday:'long'})+' focus';
+  document.getElementById('todayFocus').textContent=FOCUS[dow];
+  var dkey='chk_'+d.toISOString().slice(0,10);var state=S.checks[dkey]||{};
+  document.getElementById('dailyChecks').innerHTML=DAILY.map(function(t,i){return '<div class="chk'+(state[i]?' on':'')+'" data-i="'+i+'"><span class="box"></span><span>'+t+'</span></div>';}).join('');
+  document.querySelectorAll('#dailyChecks .chk').forEach(function(c){c.addEventListener('click',function(){var i=c.getAttribute('data-i');state[i]=!state[i];S.checks[dkey]=state;c.classList.toggle('on',!!state[i]);save();});});
+  // scorecard from latest metric
+  var m=S.metrics[0]||{};var host=document.getElementById('todayScore');
+  host.innerHTML=TARGETS.map(function(t){var v=m[t[0]];var has=v!=null&&v!=='';var ok=has&&Number(v)>=t[3];return '<div class="stat"><div class="v '+(has?(ok?'ok':'bad'):'na')+'">'+(has?v+t[5]:'—')+'</div><div class="l">'+t[1]+'</div><div class="t">target '+t[2]+'</div></div>';}).join('');
+}
+function quickIdea(){var idea=val('qi_idea');if(!idea)return;S.ideas.unshift({id:uid(),idea:idea,hook:'',type:'Replicate',format:'Reel',creator:val('qi_creator'),status:'Idea',link:''});clr(['qi_idea']);save();renderIdeas();}
+
+/* IDEAS */
+function addIdea(){var idea=val('id_idea');if(!idea)return;S.ideas.unshift({id:uid(),idea:idea,hook:val('id_hook'),type:val('id_type'),format:val('id_format'),creator:val('id_creator'),status:'Idea',link:val('id_link')});clr(['id_idea','id_hook','id_format','id_link']);save();renderIdeas();}
+function cycleStatus(id){var it=S.ideas.find(function(x){return x.id===id;});if(!it)return;var i=ST.indexOf(it.status);it.status=ST[(i+1)%ST.length];save();renderIdeas();}
+function delIdea(id){S.ideas=S.ideas.filter(function(x){return x.id!==id;});save();renderIdeas();}
+function renderIdeas(){
+  var b=document.getElementById('ideasBody');
+  if(!S.ideas.length){b.innerHTML='<tr><td colspan="7" class="empty">No ideas yet. Add one above, or quick-add from Today.</td></tr>';return;}
+  b.innerHTML=S.ideas.map(function(i){return '<tr><td><b style="color:var(--ink)">'+esc(i.idea)+'</b></td><td>'+esc(i.hook)+'</td><td>'+esc(i.type)+'</td><td><span class="who w-'+i.creator.toLowerCase()+'">'+esc(i.creator)+'</span></td>'+
+    '<td><span class="chip '+stCls(i.status)+'" onclick="cycleStatus(\''+i.id+'\')">'+esc(i.status)+'</span></td>'+
+    '<td>'+(i.link?'<a href="'+esc(i.link)+'" target="_blank" rel="noopener">open ↗</a>':'—')+'</td><td><span class="x" onclick="delIdea(\''+i.id+'\')">×</span></td></tr>';}).join('');
+}
+
+/* TO FILM */
+function addFilm(){var topic=val('fm_topic');if(!topic)return;S.film.unshift({id:uid(),who:val('fm_who'),topic:topic,hook:val('fm_hook'),link:val('fm_link'),batch:val('fm_batch'),status:'Requested'});clr(['fm_topic','fm_hook','fm_link','fm_batch']);save();renderFilm();}
+function cycleFilm(id){var it=S.film.find(function(x){return x.id===id;});if(!it)return;it.status=it.status==='Requested'?'Filmed':'Requested';save();renderFilm();}
+function delFilm(id){S.film=S.film.filter(function(x){return x.id!==id;});save();renderFilm();}
+function renderFilm(){
+  var b=document.getElementById('filmBody');
+  if(!S.film.length){b.innerHTML='<tr><td colspan="7" class="empty">No film requests yet. Add what Austin or Emmanuel needs to shoot.</td></tr>';return;}
+  b.innerHTML=S.film.map(function(f){return '<tr><td><span class="who w-'+f.who.toLowerCase()+'">'+esc(f.who)+'</span></td><td><b style="color:var(--ink)">'+esc(f.topic)+'</b></td><td>'+esc(f.hook)+'</td>'+
+    '<td>'+(f.link?'<a href="'+esc(f.link)+'" target="_blank" rel="noopener">brief ↗</a>':'—')+'</td><td>'+esc(f.batch)+'</td>'+
+    '<td><span class="chip '+(f.status==='Filmed'?'st-done':'st-requested')+'" onclick="cycleFilm(\''+f.id+'\')">'+esc(f.status)+'</span></td><td><span class="x" onclick="delFilm(\''+f.id+'\')">×</span></td></tr>';}).join('');
+}
+function copyFilm(who){
+  var list=S.film.filter(function(f){return f.who===who&&f.status!=='Filmed';});
+  if(!list.length){flashFilm('Nothing pending for '+who+'.');return;}
+  var txt='🎬 Film list for '+who+' — '+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})+'\n\n'+list.map(function(f,i){return (i+1)+'. '+f.topic+(f.hook?'\n   Hook: '+f.hook:'')+(f.batch?'\n   Batch: '+f.batch:'')+(f.link?'\n   Brief: '+f.link:'');}).join('\n\n');
+  try{navigator.clipboard.writeText(txt);flashFilm('Copied '+list.length+' for '+who+' ✓ paste it to them.');}catch(e){flashFilm('Copy failed — select manually.');}
+}
+function flashFilm(m){var el=document.getElementById('filmCopyMsg');el.textContent=m;setTimeout(function(){el.textContent='';},3000);}
+
+/* LINKS */
+function addLink(){var url=val('lk_url'),label=val('lk_label');if(!url||!label)return;S.links.push({id:uid(),label:label,cat:val('lk_cat')||'General',url:url});clr(['lk_label','lk_cat','lk_url']);save();renderLinks();}
+function delLink(id){S.links=S.links.filter(function(x){return x.id!==id;});save();renderLinks();}
+function renderLinks(){
+  var host=document.getElementById('linksBody');
+  if(!S.links.length){host.innerHTML='<div class="card"><div class="empty">No links yet. Add your content drive, scheduler, ManyChat, analytics, brand assets.</div></div>';return;}
+  var cats={};S.links.forEach(function(l){(cats[l.cat]=cats[l.cat]||[]).push(l);});
+  host.innerHTML=Object.keys(cats).map(function(c){return '<div class="card"><h3>'+esc(c)+'</h3>'+cats[c].map(function(l){return '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:13px"><a href="'+esc(l.url)+'" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none;flex:1">'+esc(l.label)+' ↗</a><span class="x" onclick="delLink(\''+l.id+'\')">×</span></div>';}).join('')+'</div>';}).join('');
+}
+
+/* METRICS */
+function renderTargets(){
+  var m=S.metrics[0]||{};
+  document.getElementById('metricTargets').innerHTML=TARGETS.map(function(t){var v=m[t[0]];var has=v!=null&&v!=='';var ok=has&&Number(v)>=t[3];return '<div class="stat"><div class="v '+(has?(ok?'ok':'bad'):'na')+'">'+(has?v+t[5]:'—')+'</div><div class="l">'+t[1]+'</div><div class="t">target '+t[2]+(m.week?' · '+esc(m.week):'')+'</div></div>';}).join('');
+}
+function addMetric(){var week=val('mt_week')||new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'});S.metrics.unshift({id:uid(),week:week,pub:val('mt_pub'),pipe:val('mt_pipe'),leads:val('mt_leads'),tpb:val('mt_tpb')});clr(['mt_week','mt_pub','mt_pipe','mt_leads','mt_tpb']);save();renderMetrics();renderTargets();renderToday();}
+function delMetric(id){S.metrics=S.metrics.filter(function(x){return x.id!==id;});save();renderMetrics();renderTargets();renderToday();}
+function renderMetrics(){
+  var b=document.getElementById('metricsBody');
+  if(!S.metrics.length){b.innerHTML='<tr><td colspan="6" class="empty">No weeks logged yet.</td></tr>';return;}
+  function cell(v,t){var ok=v!=null&&v!==''&&Number(v)>=t;return '<td style="color:'+(v===''||v==null?'var(--muted)':(ok?'#9fe3c2':'#f2a59d'))+';font-weight:600">'+(v===''||v==null?'—':v)+'</td>';}
+  b.innerHTML=S.metrics.map(function(m){return '<tr><td><b style="color:var(--ink)">'+esc(m.week)+'</b></td>'+cell(m.pub,95)+cell(m.pipe,14)+cell(m.leads,125)+cell(m.tpb,25)+'<td><span class="x" onclick="delMetric(\''+m.id+'\')">×</span></td></tr>';}).join('');
+}
+
+function renderAll(){renderToday();renderIdeas();renderFilm();renderLinks();renderMetrics();renderTargets();}
+
+(function(){
+  var OK=['440edf3cb587c1bf5da0521afae877f7aff7ddcfbf727bd43bdcb1a465b2c771', /* SOCIAL2026 */
+          '368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875']; /* BWTEAM2026 master */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function el(id){return document.getElementById(id);}
+  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Content Ops · BreedWise';load();buildTabs();renderAll();var t='t-today';try{t=sessionStorage.getItem('y_tab')||'t-today';}catch(e){}if(!document.getElementById(t))t='t-today';showTab(t);}
+  function tryUnlock(){var v=(el('pw').value||'').trim();Promise.all([h(v),h(v.toUpperCase())]).then(function(a){if(OK.indexOf(a[0])>=0||OK.indexOf(a[1])>=0){try{sessionStorage.setItem('y_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
+  el('unlock').addEventListener('click',tryUnlock);
+  el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('y_ok')==='1'){reveal();}else{el('pw').focus();}}catch(e){el('pw').focus();}
+})();
+</script>
+</body>
+</html>
