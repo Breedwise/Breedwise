@@ -82,6 +82,33 @@
   .quickrule{background:linear-gradient(135deg,#1a2028,#12161c);border:1px solid rgba(201,168,98,.3);border-radius:12px;padding:16px 18px;margin-top:16px}
   .quickrule .t{font-family:var(--disp);font-size:15px;color:var(--gold);font-weight:600;margin-bottom:8px}
   .quickrule .lrow .c{color:#d3bdf0}
+  /* analyzer */
+  .az label{display:block;font-size:11px;color:var(--muted);margin:0 0 4px;font-weight:500}
+  .az input[type=text],.az input[type=number],.az textarea{width:100%;padding:9px 11px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;color:var(--ink);font-size:13px;font-family:var(--sans)}
+  .az textarea{min-height:46px;resize:vertical}
+  .azgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:600px){.azgrid{grid-template-columns:1fr}}
+  .fld{margin-bottom:10px}
+  .scores{display:flex;flex-direction:column;gap:7px}
+  .srow{display:grid;grid-template-columns:1fr 78px;gap:10px;align-items:center}
+  .srow .sn{font-size:13px;color:var(--mid)}
+  .srow.hi .sn{color:#9fe3c2;font-weight:600}.srow.lo .sn{color:#f2a59d;font-weight:600}
+  .srow .sn .tag{font-size:10px;font-weight:700;margin-left:6px;padding:1px 6px;border-radius:5px}
+  .srow.hi .sn .tag{background:rgba(87,185,138,.16);color:#9fe3c2}.srow.lo .sn .tag{background:rgba(232,105,95,.16);color:#f2a59d}
+  .readout{background:rgba(164,129,216,.07);border:1px solid rgba(164,129,216,.25);border-radius:10px;padding:12px 14px;margin:12px 0;font-size:13px;color:var(--mid)}
+  .readout b{color:#d3bdf0}
+  .readout .q{color:var(--gold-soft);font-style:italic;margin-top:6px}
+  .sig{display:flex;flex-wrap:wrap;gap:7px}
+  .sig .s{padding:8px 12px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;font-size:12.5px;color:var(--mid);cursor:pointer}
+  .sig .s.on{background:rgba(87,185,138,.14);border-color:rgba(87,185,138,.4);color:#9fe3c2}
+  .sig .s.on::before{content:'✓ '}
+  .paths{display:flex;flex-wrap:wrap;gap:8px}
+  .paths .p{flex:1;min-width:160px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;cursor:pointer;font-size:13px;color:var(--mid)}
+  .paths .p.on{border-color:var(--purple);background:rgba(164,129,216,.1);color:#d3bdf0;font-weight:600}
+  .paths .p .d{font-size:11px;color:var(--muted);font-weight:400;margin-top:2px}
+  .btn{display:inline-block;padding:11px 18px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:0;font-family:var(--sans)}
+  .btn.gold{background:var(--gold);color:#1a130a}.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--mid)}
+  #sc-output{width:100%;min-height:200px;background:#0a0e13;border:1px solid var(--line);border-radius:10px;color:var(--mid);font-family:ui-monospace,Menlo,monospace;font-size:12px;padding:12px;white-space:pre}
   footer.bf{text-align:center;color:#59657390;font-size:11px;margin-top:36px}
   @media print{nav.top{display:none}#app{display:block!important}#gate{display:none!important}.pane{display:block!important}body{background:#fff;color:#111}}
 </style>
@@ -235,6 +262,95 @@
         <p style="font-size:12.5px;color:var(--mid);margin-top:10px">No guilt. No "catching up." No dumping more content. Reconnect the member to why they joined and give them the clearest next action.</p></div>
       </div>
 
+      <!-- ============ SOP 04 — SCORECARD ANALYZER ============ -->
+      <div class="pane" id="sop-04">
+        <div class="pane-h"><span class="num">SOP 04</span><h2>Scorecard Analyzer</h2><div class="own">Owner: <b>Jennifer</b> · Turn every completed Scorecard into a standardized insight, a next-step conversation, and a potential Academy handoff — in 3–5 minutes.</div></div>
+        <div class="core"><div class="t">Core rule</div><div class="r">The Scorecard shows where to investigate — not what to sell.</div><div class="s">Jennifer turns scores into a useful conversation and spots an implementation signal. Regina qualifies the sales opportunity. There is no "score under 60% = Academy lead."</div></div>
+
+        <section class="s"><div class="sh"><span class="n">★</span><h3>The 5-minute analyzer</h3></div>
+          <div class="card az">
+            <h4 style="font-family:var(--disp);margin:0 0 10px">Member snapshot</h4>
+            <div class="azgrid">
+              <div class="fld"><label>Member</label><input type="text" id="sc_member"></div>
+              <div class="fld"><label>Breed</label><input type="text" id="sc_breed"></div>
+              <div class="fld"><label>Next breeding / litter</label><input type="text" id="sc_next"></div>
+              <div class="fld"><label>90-day goal / stated priority</label><input type="text" id="sc_goal"></div>
+            </div>
+            <h4 style="font-family:var(--disp);margin:14px 0 8px">Scores <span style="font-weight:400;color:var(--muted);font-size:12px">— enter each (any scale); strongest &amp; biggest gap highlight automatically</span></h4>
+            <div class="scores" id="sc-scores"></div>
+            <div class="readout" id="sc-readout">Enter scores to see the strongest area, the biggest gap, the pattern, and the best question to ask.</div>
+
+            <h4 style="font-family:var(--disp);margin:14px 0 8px">The conversation</h4>
+            <div class="fld"><label>Best question to ask <span style="color:var(--muted)">(auto-filled from the gap — edit freely)</span></label><input type="text" id="sc_bestq"></div>
+            <div class="azgrid">
+              <div class="fld"><label>Important disconnect / pattern</label><input type="text" id="sc_disconnect"></div>
+              <div class="fld"><label>Problem identified</label><input type="text" id="sc_problem"></div>
+              <div class="fld"><label>Impact</label><input type="text" id="sc_impact"></div>
+              <div class="fld"><label>What they've tried</label><input type="text" id="sc_tried"></div>
+              <div class="fld"><label>Desired outcome</label><input type="text" id="sc_outcome"></div>
+              <div class="fld"><label>Urgency / why now</label><input type="text" id="sc_urgency"></div>
+            </div>
+            <div class="fld"><label>Implementation need <span style="color:var(--muted)">(the ascension question — info vs. help building it)</span></label><input type="text" id="sc_impl"></div>
+            <div class="fld"><label>Member's exact words</label><textarea id="sc_quote"></textarea></div>
+
+            <h4 style="font-family:var(--disp);margin:14px 0 8px">The 4 sales signals <span style="font-weight:400;color:var(--muted);font-size:12px">— tap each that's true</span></h4>
+            <div class="sig" id="sc-signals">
+              <div class="s" data-k="gap">Gap</div><div class="s" data-k="impact">Impact</div><div class="s" data-k="urgency">Urgency</div><div class="s" data-k="impl">Implementation need</div>
+            </div>
+            <div class="readout" id="sc-sigout" style="margin-top:10px">Tap the signals that are true. Gap alone = TPB conversation. Gap + Impact + Urgency + Implementation = potential Regina handoff.</div>
+
+            <h4 style="font-family:var(--disp);margin:14px 0 8px">Recommended path</h4>
+            <div class="paths" id="sc-paths">
+              <div class="p" data-k="tpb">🟢 TPB — clear next step<div class="d">Education / clarity / a TPB resource</div></div>
+              <div class="p" data-k="watch">🟡 Watch<div class="d">Real problem, not enough urgency/readiness yet</div></div>
+              <div class="p" data-k="regina">🔥 Regina handoff<div class="d">Gap + Impact + Urgency + Implementation</div></div>
+            </div>
+            <div class="azgrid" style="margin-top:12px">
+              <div class="fld"><label>Next action</label><input type="text" id="sc_next_action"></div>
+              <div class="fld"><label>Owner</label><input type="text" id="sc_owner" value="Jennifer"></div>
+            </div>
+            <div class="fld"><label>Due date</label><input type="text" id="sc_due" placeholder="e.g. Oct 9"></div>
+
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 12px">
+              <button type="button" class="btn gold" onclick="scGenerate()">Generate analysis →</button>
+              <button type="button" class="btn ghost" onclick="scCopy()">Copy</button>
+              <button type="button" class="btn ghost" onclick="scReset()">Clear</button>
+            </div>
+            <textarea id="sc-output" readonly placeholder="Your completed analysis appears here — copy it into the CRM. If 'Regina handoff' is selected, the handoff block is included and becomes Regina's brief."></textarea>
+          </div>
+        </section>
+
+        <section class="s"><div class="sh"><span class="n">A</span><h3>How Jennifer reads the Scorecard</h3></div>
+          <div class="tblwrap" style="border:1px solid var(--line);border-radius:12px;overflow:hidden"><table style="width:100%;border-collapse:collapse;font-size:12.5px">
+            <thead><tr><th style="text-align:left;padding:8px 10px;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line2)">Area</th><th style="text-align:left;padding:8px 10px;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line2)">A lower score MAY indicate</th><th style="text-align:left;padding:8px 10px;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line2)">Explore</th></tr></thead>
+            <tbody id="sc-cheat"></tbody>
+          </table></div>
+          <div class="callout"><b>These are conversation prompts, not conclusions.</b> A low Demand score doesn't mean "you have a marketing problem." It means "let's understand what's happening with demand."</div>
+        </section>
+
+        <section class="s"><div class="sh"><span class="n">B</span><h3>The disconnect patterns</h3></div>
+          <div class="cols">
+            <div class="card"><h4 style="font-family:var(--disp);margin:0 0 3px">1 · Low score + member knows it</h4><p style="font-size:12.5px;color:var(--mid);margin:0">Easy. They recognize it. Explore impact + urgency + what they've tried.</p></div>
+            <div class="card"><h4 style="font-family:var(--disp);margin:0 0 3px">2 · Low score + different stated priority</h4><p style="font-size:12.5px;color:var(--mid);margin:0">Create clarity, not pain: "You said more buyers is the priority — but Litter Economics stood out. How confident are you in what each litter actually costs and makes?"</p></div>
+            <div class="card"><h4 style="font-family:var(--disp);margin:0 0 3px">3 · Business strong, systems weak</h4><p style="font-size:12.5px;color:var(--mid);margin:0">Has demand/buyers/pricing but lacks repeatable preparation. Explore whether growth outpaced the systems.</p></div>
+            <div class="card"><h4 style="font-family:var(--disp);margin:0 0 3px">4 · Systems strong, business weak</h4><p style="font-size:12.5px;color:var(--mid);margin:0">"Your breeding prep is one of your stronger areas; most gaps are on the business side. Does that match your experience?"</p></div>
+            <div class="card"><h4 style="font-family:var(--disp);margin:0 0 3px">5 · Everything low</h4><p style="font-size:12.5px;color:var(--mid);margin:0">Don't dump seven problems. "If we improved just ONE area in 90 days, which makes the biggest difference?" May need TPB clarity first.</p></div>
+            <div class="card"><h4 style="font-family:var(--disp);margin:0 0 3px">6 · Everything looks good</h4><p style="font-size:12.5px;color:var(--mid);margin:0">Don't invent a problem. "What's the biggest thing keeping your program from where you want it next?" May be a happy TPB member — that's fine.</p></div>
+          </div>
+        </section>
+
+        <section class="s"><div class="sh"><span class="n">C</span><h3>The 4 sales signals &amp; the formula</h3></div>
+          <div class="card"><ul class="clean" style="font-size:13px">
+            <li><b>Gap</b> — meaningful difference between where they are and where they want to be.</li>
+            <li><b>Impact</b> — the gap is actually creating a problem (time, stress, lost buyers, low margin, uncertainty).</li>
+            <li><b>Urgency</b> — a reason it matters now (upcoming breeding/litter, puppies available, pricing change, scaling).</li>
+            <li><b>Implementation need</b> — <b style="color:var(--gold-soft)">the Academy signal</b>: "I understand what needs to change — I need help building/fixing it."</li>
+          </ul>
+          <p style="font-size:13px;color:var(--mid);margin-top:4px"><b style="color:#9fe3c2">Gap + Impact + Urgency + Implementation</b> → potential Regina handoff. <b style="color:#a9d6ff">Gap alone</b> → a TPB conversation, not a sales conversation.</p></div>
+          <div class="core" style="margin-top:4px"><div class="t">The formula to train Jennifer on</div><div class="r" style="font-size:16px">Score → Pattern → Question → Impact → Need → Next step</div><div class="s">Data says what? → What stands out? → Does the member agree? → Does it matter? → Education or implementation? → TPB (education/clarity) or Regina (implementation + impact + urgency).</div></div>
+        </section>
+      </div>
+
       <footer class="bf">BREEDWISE · Member Success SOP Library. Owner: Jennifer. The CRM is the source of truth.</footer>
     </div>
   </div>
@@ -242,7 +358,8 @@
 <script>
 var SOPS=[
   { id:'sop-02', label:'02 · Community Management' },
-  { id:'sop-03', label:'03 · Inactive Member' }
+  { id:'sop-03', label:'03 · Inactive Member' },
+  { id:'sop-04', label:'04 · Scorecard Analyzer' }
 ];
 function show(id){
   document.querySelectorAll('.pane').forEach(function(p){p.classList.toggle('on',p.id===id);});
@@ -254,12 +371,82 @@ function buildPills(){
   document.getElementById('pills').innerHTML=SOPS.map(function(s){return '<button data-id="'+s.id+'">'+s.label+'</button>';}).join('');
   document.querySelectorAll('#pills button').forEach(function(b){b.addEventListener('click',function(){show(b.getAttribute('data-id'));});});
 }
+
+/* ---------- SOP 04 Scorecard Analyzer ---------- */
+var AREAS=[
+ {k:'positioning',n:'Positioning',may:'May struggle to clearly differentiate their program',q:'What makes someone choose your program instead of another breeder?'},
+ {k:'demand',n:'Audience & Demand',may:'Inconsistent attention/inquiries or insufficient demand',q:'Do you normally have enough qualified families before puppies arrive?'},
+ {k:'waitlist',n:'Waitlist',may:"Interest isn't becoming a reliable pool of future buyers",q:'What happens between someone becoming interested and actually being ready for a puppy?'},
+ {k:'inquiries',n:'Inquiries & Sales',may:"Leads may exist but aren't consistently converting",q:"Where do you feel you're losing people after they inquire?"},
+ {k:'pricing',n:'Pricing',may:'Uncertainty around price/value or fear around pricing decisions',q:'How confident are you that your current pricing makes sense for your program?'},
+ {k:'economics',n:'Litter Economics',may:'May not know true costs/margin/profitability',q:'Do you know approximately what your last litter actually made after expenses?'},
+ {k:'systems',n:'Breeding Systems & Preparation',may:'Processes may be inconsistent, undocumented, or reactive',q:'What part of preparing for and managing a litter currently feels the least systematic?'}
+];
+var scSig={}, scPath='', scLastQ='';
+function scN(id){var e=document.getElementById(id);return e?parseFloat(e.value):NaN;}
+function scV(id){var e=document.getElementById(id);return e?(e.value||'').trim():'';}
+function initAnalyzer(){
+  var host=document.getElementById('sc-scores'); if(!host||host.getAttribute('data-built'))return; host.setAttribute('data-built','1');
+  host.innerHTML=AREAS.map(function(a){return '<div class="srow" data-k="'+a.k+'"><span class="sn">'+a.n+'</span><input type="number" id="score_'+a.k+'" placeholder="—"></div>';}).join('');
+  var ch=document.getElementById('sc-cheat'); if(ch) ch.innerHTML=AREAS.map(function(a){return '<tr><td style="padding:8px 10px;border-bottom:1px solid var(--line);color:var(--ink);font-weight:600">'+a.n+'</td><td style="padding:8px 10px;border-bottom:1px solid var(--line);color:var(--mid)">'+a.may+'</td><td style="padding:8px 10px;border-bottom:1px solid var(--line);color:var(--mid);font-style:italic">"'+a.q+'"</td></tr>';}).join('');
+  host.addEventListener('input',scCompute);
+  document.querySelectorAll('#sc-signals .s').forEach(function(s){s.addEventListener('click',function(){var k=s.getAttribute('data-k');scSig[k]=!scSig[k];s.classList.toggle('on',!!scSig[k]);scSignals();});});
+  document.querySelectorAll('#sc-paths .p').forEach(function(p){p.addEventListener('click',function(){scPath=p.getAttribute('data-k');document.querySelectorAll('#sc-paths .p').forEach(function(x){x.classList.toggle('on',x===p);});});});
+  scCompute();
+}
+function scCompute(){
+  var vals=AREAS.map(function(a){return {a:a,v:scN('score_'+a.k)};}).filter(function(x){return !isNaN(x.v);});
+  document.querySelectorAll('#sc-scores .srow').forEach(function(r){r.classList.remove('hi','lo');var k=r.getAttribute('data-k');var nm=AREAS.filter(function(a){return a.k===k;})[0].n;r.querySelector('.sn').innerHTML=nm;});
+  var out=document.getElementById('sc-readout');
+  if(vals.length<2){out.innerHTML='Enter scores to see the strongest area, the biggest gap, the pattern, and the best question to ask.';return;}
+  var mx=vals[0],mn=vals[0];vals.forEach(function(x){if(x.v>mx.v)mx=x;if(x.v<mn.v)mn=x;});
+  function mark(k,cls,tag){var r=document.querySelector('#sc-scores .srow[data-k="'+k+'"]');if(r){r.classList.add(cls);var nm=AREAS.filter(function(a){return a.k===k;})[0].n;r.querySelector('.sn').innerHTML=nm+' <span class="tag">'+tag+'</span>';}}
+  mark(mx.a.k,'hi','strongest');mark(mn.a.k,'lo','biggest gap');
+  var sysV=scN('score_systems');
+  var bizVals=['positioning','demand','waitlist','inquiries','pricing','economics'].map(function(k){return scN('score_'+k);}).filter(function(v){return !isNaN(v);});
+  var bizAvg=bizVals.length?bizVals.reduce(function(a,b){return a+b;},0)/bizVals.length:NaN;
+  var allV=vals.map(function(x){return x.v;});var hi=Math.max.apply(null,allV),lo=Math.min.apply(null,allV),avg=allV.reduce(function(a,b){return a+b;},0)/allV.length;
+  var band=Math.max(1,avg*0.12), pattern='';
+  if((hi-lo)<=band){ pattern=(avg<=hi*0.65)?'Everything is close and lower (Pattern 5) — ask which ONE area would make the biggest difference in 90 days.':'Strong and even across the board (Pattern 6) — ask what\'s keeping them from the next level; may be a happy TPB member.'; }
+  else if(!isNaN(sysV)&&!isNaN(bizAvg)&&sysV>=bizAvg+band){ pattern='Breeding systems strong, business weaker (Pattern 4) — "most gaps are on the business side, does that match?"'; }
+  else if(!isNaN(sysV)&&!isNaN(bizAvg)&&bizAvg>=sysV+band){ pattern='Business stronger, systems weaker (Pattern 3) — explore whether growth outpaced the systems.'; }
+  else { pattern='Check the biggest gap against their stated priority (Pattern 1 vs 2) — do they already know it, or is it a different priority?'; }
+  out.innerHTML='<b>Strongest:</b> '+mx.a.n+' ('+mx.v+') &nbsp;·&nbsp; <b>Biggest gap:</b> '+mn.a.n+' ('+mn.v+')<br><b>Pattern:</b> '+pattern+'<div class="q">Suggested question: "'+mn.a.q+'"</div>';
+  var bq=document.getElementById('sc_bestq'); if(bq&&(bq.value===''||bq.value===scLastQ))bq.value=mn.a.q; scLastQ=mn.a.q;
+}
+function scSignals(){
+  var all=scSig.gap&&scSig.impact&&scSig.urgency&&scSig.impl, o=document.getElementById('sc-sigout');
+  if(all)o.innerHTML='<b style="color:#9fe3c2">All four signals present</b> → potential <b>Regina handoff</b>. Confirm permission, then select the path below.';
+  else if(scSig.gap&&!(scSig.impact||scSig.urgency||scSig.impl))o.innerHTML='<b style="color:#a9d6ff">Gap only</b> → a TPB conversation, not a sales conversation.';
+  else o.innerHTML='Tap the signals that are true. Gap alone = TPB. Gap + Impact + Urgency + Implementation = potential Regina handoff.';
+}
+function scGenerate(){
+  var vals=AREAS.map(function(a){return {a:a,v:scN('score_'+a.k)};}).filter(function(x){return !isNaN(x.v);});
+  var strongest='',gap='';if(vals.length){var mx=vals[0],mn=vals[0];vals.forEach(function(x){if(x.v>mx.v)mx=x;if(x.v<mn.v)mn=x;});strongest=mx.a.n+' ('+mx.v+')';gap=mn.a.n+' ('+mn.v+')';}
+  var pathLabel={tpb:'TPB — Clear Next Step',watch:'Watch',regina:'Regina Handoff'}[scPath]||'(not set)';
+  var L=['TPB SCORECARD ANALYSIS',
+    'Member: '+scV('sc_member'),'Breed: '+scV('sc_breed'),'Next Breeding/Litter: '+scV('sc_next'),'90-Day Goal / Priority: '+scV('sc_goal'),
+    'Strongest Area: '+strongest,'Biggest Scoring Gap: '+gap,'Important Disconnect/Pattern: '+scV('sc_disconnect'),'Best Question to Ask: '+scV('sc_bestq'),
+    'Problem Identified: '+scV('sc_problem'),'Impact: '+scV('sc_impact'),"What They've Tried: "+scV('sc_tried'),'Desired Outcome: '+scV('sc_outcome'),
+    'Urgency/Why Now: '+scV('sc_urgency'),'Implementation Need: '+scV('sc_impl'),'Member\'s Exact Words: "'+scV('sc_quote')+'"',
+    'Signals: '+['gap','impact','urgency','impl'].filter(function(k){return scSig[k];}).join(', '),
+    'Recommended Path: '+pathLabel,'Next Action: '+scV('sc_next_action'),'Owner: '+scV('sc_owner'),'Due Date: '+scV('sc_due')];
+  if(scPath==='regina'){
+    L.push('','🔥 TPB → ACADEMY SIGNAL','Member: '+scV('sc_member'),'Breed: '+scV('sc_breed'),'Next Litter: '+scV('sc_next'),
+      'Strongest Area: '+strongest,'Biggest Gap: '+gap,'90-Day Goal: '+scV('sc_goal'),'Problem: '+scV('sc_problem'),'Impact: '+scV('sc_impact'),
+      'Tried: '+scV('sc_tried'),'Urgency: '+scV('sc_urgency'),'Implementation Signal: '+scV('sc_impl'),'Exact Quote: "'+scV('sc_quote')+'"',
+      'Jenn Assessment: '+(scV('sc_disconnect')||'Academy signal'),'CRM: [LINK]');
+  }
+  document.getElementById('sc-output').value=L.join('\n');
+}
+function scCopy(){var t=document.getElementById('sc-output');if(!t.value)scGenerate();try{navigator.clipboard.writeText(t.value);}catch(e){}t.select();}
+function scReset(){document.querySelectorAll('#sop-04 input,#sop-04 textarea').forEach(function(e){e.value=(e.id==='sc_owner')?'Jennifer':'';});scSig={};scPath='';document.querySelectorAll('#sc-signals .s,#sc-paths .p').forEach(function(x){x.classList.remove('on');});scCompute();scSignals();}
 (function(){
   var OK=['559621627cc8f4f6b634325db97c94b584d5186ef210342720ad143db6e7bb44', /* MEMBERSUCCESS2026 */
           '368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875']; /* BWTEAM2026 (master) */
   function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
   function el(id){return document.getElementById(id);}
-  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Member Success SOPs · BreedWise';buildPills();var last='sop-02';try{last=sessionStorage.getItem('mss_last')||'sop-02';}catch(e){}if(!document.getElementById(last))last='sop-02';show(last);}
+  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Member Success SOPs · BreedWise';buildPills();initAnalyzer();var last='sop-02';try{last=sessionStorage.getItem('mss_last')||'sop-02';}catch(e){}if(!document.getElementById(last))last='sop-02';show(last);}
   function tryUnlock(){var v=(el('pw').value||'').trim();Promise.all([h(v),h(v.toUpperCase())]).then(function(a){if(OK.indexOf(a[0])>=0||OK.indexOf(a[1])>=0){try{sessionStorage.setItem('mss_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
   el('unlock').addEventListener('click',tryUnlock);
   el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
