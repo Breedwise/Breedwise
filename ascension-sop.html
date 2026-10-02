@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;
+    --ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--faint:#5a6572;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--red:#e8695f;--blue:#5aa9e6;--purple:#a481d8;--amber:#e0a955;
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:70px}
+  body{margin:0;background:radial-gradient(1100px 600px at 82% -10%,rgba(201,168,98,.06),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.55}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:80}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#1a130a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #gate .hint{color:var(--muted);font-size:12px;margin-top:14px}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),#a9863f);display:flex;align-items:center;justify-content:center}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#15100a;font-size:18px;line-height:1}
+  .logo .wm{font-size:16px;letter-spacing:.2em;font-weight:700;color:var(--ink)}
+  .logo .wm b{color:var(--gold)}
+  #app{display:none}
+  nav.top{position:sticky;top:0;z-index:40;background:rgba(11,14,19,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav.top .in{max-width:1060px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:11px 22px}
+  nav .pills{display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+  nav .pills::-webkit-scrollbar{display:none}
+  nav .pills a{white-space:nowrap;font-size:12px;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:8px;font-weight:500}
+  nav .pills a:hover{color:var(--ink);background:var(--panel)}
+  nav .print{background:var(--panel);border:1px solid var(--line);color:var(--mid);border-radius:9px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+  .wrap{max-width:1060px;margin:0 auto;padding:26px 22px 60px}
+  header.hero{padding:14px 0 8px}
+  header .k{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  header h1{font-family:var(--disp);font-size:36px;line-height:1.06;margin:8px 0 6px;font-weight:600;letter-spacing:-.5px}
+  header .meta{color:var(--muted);font-size:12.5px;margin:2px 0 0}
+  header .meta b{color:var(--mid)}
+  section{margin-top:34px;scroll-margin-top:70px}
+  .sh{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:16px;flex-wrap:wrap}
+  .sh .n{font-family:var(--disp);font-size:15px;color:var(--gold);font-weight:600}
+  .sh h2{font-family:var(--disp);font-size:23px;font-weight:600;margin:0;letter-spacing:-.3px}
+  h3.sub{font-family:var(--disp);font-size:17px;margin:20px 0 8px;font-weight:600}
+  h3.sub .sn{color:var(--gold);font-size:13px;margin-right:6px}
+  .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:16px 19px;margin-bottom:13px}
+  .card h4{font-family:var(--disp);font-size:15px;margin:0 0 8px;font-weight:600}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:13px}.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px}
+  @media(max-width:820px){.cols,.cols3{grid-template-columns:1fr}}
+  .callout{background:rgba(201,168,98,.09);border:1px solid rgba(201,168,98,.28);border-left:3px solid var(--gold);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:14px;color:var(--mid)}
+  .callout.green{background:rgba(87,185,138,.09);border-color:rgba(87,185,138,.3);border-left-color:var(--green)}
+  .callout.red{background:rgba(232,105,95,.09);border-color:rgba(232,105,95,.3);border-left-color:var(--red)}
+  .callout.blue{background:rgba(90,169,230,.09);border-color:rgba(90,169,230,.3);border-left-color:var(--blue)}
+  .callout b{color:var(--gold-soft)}.callout.green b{color:#9fe3c2}.callout.red b{color:#f2a59d}.callout.blue b{color:#a9d6ff}
+  ul.clean{list-style:none;padding:0;margin:8px 0}
+  ul.clean li{position:relative;padding:4px 0 4px 20px;font-size:13.5px;color:var(--mid)}
+  ul.clean li::before{content:'›';position:absolute;left:3px;color:var(--gold);font-weight:700}
+  ul.clean li b{color:var(--ink)}
+  ul.chk li::before{content:'☑';left:0;color:var(--green)}
+  ul.no li::before{content:'×';color:var(--red)}
+  ol.num{counter-reset:s;list-style:none;padding:0;margin:4px 0}
+  ol.num li{position:relative;padding:7px 0 7px 32px;font-size:13.5px;color:var(--mid);border-top:1px solid var(--line)}
+  ol.num li:first-child{border-top:0}
+  ol.num li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:7px;width:22px;height:22px;border-radius:50%;background:var(--panel2);border:1px solid var(--line2);color:var(--gold);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  ol.num li b{color:var(--ink)}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;margin:4px 0}
+  th{text-align:left;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:8px 9px;border-bottom:1px solid var(--line2)}
+  td{padding:8px 9px;border-bottom:1px solid var(--line);color:var(--mid);vertical-align:top}
+  td b{color:var(--ink);font-weight:600}td.r{text-align:right;white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
+  .pill{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;white-space:nowrap}
+  .p-jen{background:rgba(164,129,216,.16);color:#c9b4ec}.p-reg{background:rgba(90,169,230,.16);color:#a9d6ff}
+  .p-aus{background:rgba(201,168,98,.16);color:var(--gold-soft)}.p-team{background:rgba(87,185,138,.16);color:#9fe3c2}
+  .msg{background:rgba(90,169,230,.06);border:1px dashed rgba(90,169,230,.28);border-radius:10px;padding:11px 13px;margin:9px 0;font-size:13px;color:var(--mid);font-style:italic}
+  .msg .nm{font-style:normal;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .fields{display:grid;grid-template-columns:1fr 1fr;gap:3px 18px;font-size:12.5px;color:var(--mid)}
+  @media(max-width:620px){.fields{grid-template-columns:1fr}}
+  .fields div{padding:3px 0;border-bottom:1px solid #1a212b}
+  .fields b{color:var(--ink)}
+  /* flow */
+  .flow{display:flex;flex-direction:column;align-items:center;gap:0}
+  .flow .step{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:9px 14px;font-size:13px;color:var(--mid);text-align:center;max-width:520px;width:100%}
+  .flow .step b{color:var(--ink)}
+  .flow .ar{color:var(--gold);font-size:14px;line-height:1.4}
+  .flow .branch{display:flex;gap:10px;width:100%;max-width:520px;justify-content:center;flex-wrap:wrap}
+  .flow .bx{flex:1;min-width:140px;border-radius:10px;padding:9px 12px;font-size:12px;text-align:center;border:1px solid}
+  .flow .bx.won{background:rgba(87,185,138,.1);border-color:rgba(87,185,138,.3);color:#9fe3c2}
+  .flow .bx.not{background:rgba(224,169,85,.1);border-color:rgba(224,169,85,.3);color:#f0cf9a}
+  .flow .bx.tpb{background:rgba(90,169,230,.1);border-color:rgba(90,169,230,.3);color:#a9d6ff}
+  .end{background:linear-gradient(135deg,#1a2028,#12161c);border:1px solid rgba(201,168,98,.3);border-radius:12px;padding:14px 16px;text-align:center;max-width:520px;width:100%}
+  .end .t{font-family:var(--disp);color:var(--gold);font-size:16px;font-weight:600}
+  footer.bf{text-align:center;color:#59657390;font-size:11px;margin-top:40px;letter-spacing:.04em}
+  @media print{nav.top{display:none}#app{display:block!important}#gate{display:none!important}body{background:#fff;color:#111}.card,.tblwrap{border-color:#ddd}}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo mark" style="margin-bottom:18px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
+    <input id="pw" type="password" placeholder="Team access code" autocomplete="off">
+    <button id="unlock">Open the SOP →</button>
+    <div class="err" id="gate-err"></div>
+    <div class="hint">Ascension team · Jennifer · Regina · Austin</div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top"><div class="in">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+      <div class="pills">
+        <a href="#principles">Principles</a><a href="#ownership">Ownership</a><a href="#actions">Member Actions</a><a href="#record">Record</a><a href="#pipeline">Pipeline</a>
+        <a href="#jennifer">Jennifer</a><a href="#handoff">Handoff</a><a href="#regina">Regina</a><a href="#brief">Call Brief</a><a href="#austin">Austin</a>
+        <a href="#followup">Follow-Up &amp; Won</a><a href="#reactivation">Reactivation</a><a href="#comms">Comms</a><a href="#cadence">Cadence</a><a href="#flow">Full Flow</a>
+      </div>
+      <button class="print" onclick="window.print()">Print</button>
+    </div></nav>
+
+    <div class="wrap">
+      <header class="hero">
+        <div class="k">The Profitable Breeder</div>
+        <h1>New Member → Academy Ascension SOP</h1>
+        <div class="meta"><b>Version 1.0</b> · Owners: <span class="pill p-jen">Jennifer</span> → <span class="pill p-reg">Regina</span> → <span class="pill p-aus">Austin</span> · Objective: move every TPB member to the right next step with maximum clarity, useful data, and qualified Academy opportunities at minimum member friction.</div>
+      </header>
+
+      <div class="callout"><b>The operating principle:</b> Jennifer discovers the need. Regina qualifies the opportunity. Austin diagnoses deeper and closes. Jennifer owns implementation after enrollment. <b>The CRM is the source of truth</b> — conversations happen elsewhere, but decisions and next actions live in the CRM. No member should ever have to re-explain their situation to BreedWise.</div>
+
+      <!-- PRINCIPLES / RULES -->
+      <section id="principles">
+        <div class="sh"><span class="n">01</span><h2>Non-Negotiable Rules</h2><span style="margin-left:auto;font-size:11px;color:var(--muted)">§41</span></div>
+        <div class="card"><ol class="num">
+          <li><b>Never</b> make a member repeat information BreedWise already has.</li>
+          <li><b>Never</b> surprise someone with the $6,000 Academy price on Austin's call.</li>
+          <li><b>Never</b> send Austin an unqualified call just to fill his calendar.</li>
+          <li><b>Never</b> pitch Academy simply because someone has a low Scorecard score.</li>
+          <li><b>Never</b> let a sales opportunity exist without an owner, next action, and date.</li>
+          <li><b>Never</b> use Slack / text / DMs as the permanent customer record.</li>
+          <li><b>Never</b> leave "Not Yet" without a reactivation trigger and date.</li>
+          <li><b>Never</b> have Jennifer turn every Member Success conversation into a sales conversation.</li>
+          <li><b>Never</b> let Regina prescribe solutions she is supposed to qualify.</li>
+          <li><b>Never</b> have Austin restart discovery from zero.</li>
+        </ol></div>
+      </section>
+
+      <!-- OWNERSHIP -->
+      <section id="ownership">
+        <div class="sh"><span class="n">02</span><h2>Ownership</h2><span style="margin-left:auto;font-size:11px;color:var(--muted)">§1</span></div>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Stage</th><th>Owner</th><th>Primary outcome</th></tr></thead>
+          <tbody>
+            <tr><td>TPB Purchase</td><td><span class="pill p-jen">Jennifer</span></td><td>Member contacted</td></tr>
+            <tr><td>Onboarding</td><td><span class="pill p-jen">Jennifer</span></td><td>Member profile completed</td></tr>
+            <tr><td>Scorecard</td><td><span class="pill p-jen">Jennifer</span></td><td>Baseline established</td></tr>
+            <tr><td>TPB Activation</td><td><span class="pill p-jen">Jennifer</span></td><td>Member knows #1 priority</td></tr>
+            <tr><td>Academy Signal</td><td><span class="pill p-jen">Jennifer</span></td><td>Implementation need identified</td></tr>
+            <tr><td>Qualification</td><td><span class="pill p-reg">Regina</span></td><td>Fit / readiness determined</td></tr>
+            <tr><td>Booking</td><td><span class="pill p-reg">Regina</span></td><td>Qualified call booked</td></tr>
+            <tr><td>Academy Call</td><td><span class="pill p-aus">Austin</span></td><td>Fit determined + decision reached</td></tr>
+            <tr><td>Sales Follow-Up</td><td><span class="pill p-reg">Regina</span></td><td>Open opportunity advanced</td></tr>
+            <tr><td>Academy Enrollment</td><td><span class="pill p-reg">Regina</span></td><td>Commercial / admin complete</td></tr>
+            <tr><td>Academy Onboarding</td><td><span class="pill p-jen">Jennifer</span></td><td>120-day implementation begins</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout red">Jennifer never becomes the closer. Regina never becomes Member Success. Austin should not perform basic setter qualification.</div>
+      </section>
+
+      <!-- MEMBER ACTIONS -->
+      <section id="actions">
+        <div class="sh"><span class="n">03</span><h2>Member Requirements &amp; Actions</h2><span style="margin-left:auto;font-size:11px;color:var(--muted)">§2, 6, 9, 20</span></div>
+        <p style="font-size:13.5px;color:var(--mid)">The member completes only <b style="color:var(--ink)">three primary information events</b> before an Academy sales call. Do not add another Academy application unless future data proves it necessary.</p>
+        <div class="cols3">
+          <div class="card"><h4>#1 · TPB Onboarding</h4><p style="font-size:12px;color:var(--muted)">Target 3–5 min</p><p style="font-size:13px;color:var(--mid)">Who they are, where their program stands, current challenges, desired outcome.</p></div>
+          <div class="card"><h4>#2 · Profitable Breeder Scorecard</h4><p style="font-size:12px;color:var(--muted)">Target ~10 min</p><p style="font-size:13px;color:var(--mid)">Creates the baseline: <b style="color:var(--ink)">Strongest Area → Biggest Gap → #1 Priority</b>.</p></div>
+          <div class="card"><h4>#3 · Academy Pre-Call Confirmation</h4><p style="font-size:12px;color:var(--muted)">Target ~60 sec</p><p style="font-size:13px;color:var(--mid)">What to implement → why now → decision process → $6K investment awareness.</p></div>
+        </div>
+
+        <h3 class="sub"><span class="sn">§6</span>Member Action #1 — Onboarding questions</h3>
+        <div class="cols">
+          <div class="card"><h4>Breeding program</h4><ul class="clean" style="font-size:13px">
+            <li>What breed(s) do you work with?</li>
+            <li>How long have you been breeding? <span style="color:var(--muted)">(haven't had first litter · &lt;1yr · 1–3 · 4–7 · 8+)</span></li>
+            <li>Litters in the last 12 months?</li>
+            <li>Litters planned in the next 12 months?</li>
+            <li>When is your next planned breeding or litter?</li>
+          </ul></div>
+          <div class="card"><h4>Business &amp; demand</h4><ul class="clean" style="font-size:13px">
+            <li>Current average puppy price?</li>
+            <li>Which best describes demand? <span style="color:var(--muted)">(not enough inquiries · plenty but unqualified · qualified but not converting · usually enough · waitlist before breeding)</span></li>
+          </ul></div>
+          <div class="card"><h4>Challenges</h4><ul class="clean" style="font-size:13px">
+            <li>Biggest challenge in your breeding program right now?</li>
+            <li>Biggest challenge on the business side right now?</li>
+          </ul></div>
+          <div class="card"><h4>Outcome &amp; contact</h4><ul class="clean" style="font-size:13px">
+            <li>If the next 90 days went extremely well, what would be different?</li>
+            <li>Phone · Email · Instagram</li>
+          </ul></div>
+        </div>
+
+        <h3 class="sub"><span class="sn">§9</span>Member Action #2 — Scorecard</h3>
+        <div class="card">
+          <p style="font-size:13px;color:var(--mid);margin:0 0 8px">Completed across: 1) Positioning · 2) Audience &amp; Demand · 3) Waitlist · 4) Inquiries &amp; Sales · 5) Pricing · 6) Litter Economics · 7) Breeding Systems &amp; Preparation. Finishes with <b style="color:var(--ink)">My strongest area / My biggest gap / My #1 priority</b>.</p>
+          <div class="callout" style="margin:0"><b>Lowest score ≠ automatic priority.</b> Jennifer weighs score + member goal + timing + upcoming breeding/litter + impact + urgency. The Scorecard establishes the baseline; it does not automatically prescribe the solution.</div>
+        </div>
+
+        <h3 class="sub"><span class="sn">§20</span>Member Action #3 — Pre-Call Confirmation (~60s)</h3>
+        <div class="card">
+          <ul class="clean" style="font-size:13px"><li>What's the #1 thing you want help implementing or improving right now?</li><li>Why is solving this important to you now?</li><li>Who besides you, if anyone, needs to be involved in the decision?</li></ul>
+          <div class="msg" style="font-style:normal;color:var(--gold-soft)">"I understand BreedWise Academy is a $6,000 implementation program, available as $6,000 upfront or 4 payments of $1,500, and I'm open to discussing enrollment if it's the right fit." ☐ Yes</div>
+          <p style="font-size:12.5px;color:var(--muted);margin:4px 0 0">No 20-question application.</p>
+        </div>
+      </section>
+
+      <!-- RECORD -->
+      <section id="record">
+        <div class="sh"><span class="n">04</span><h2>Master Member Record</h2><span style="margin-left:auto;font-size:11px;color:var(--muted)">§3</span></div>
+        <p style="font-size:13.5px;color:var(--mid)">Every TPB purchase automatically creates one member record.</p>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Category</th><th>Fields</th></tr></thead>
+          <tbody>
+            <tr><td><b>Identity</b></td><td>Name, email, phone, Instagram, program/business name</td></tr>
+            <tr><td><b>Acquisition</b></td><td>Join date, source, campaign, creative/referral where available</td></tr>
+            <tr><td><b>Program</b></td><td>Breed(s), years breeding, current breeding stage</td></tr>
+            <tr><td><b>Activity</b></td><td>Litters last 12 mo, planned next 12 mo, next breeding/litter</td></tr>
+            <tr><td><b>Economics</b></td><td>Average puppy price</td></tr>
+            <tr><td><b>Demand</b></td><td>Current demand situation</td></tr>
+            <tr><td><b>Challenges</b></td><td>Biggest breeding challenge, biggest business challenge</td></tr>
+            <tr><td><b>Goal</b></td><td>90-day desired outcome</td></tr>
+            <tr><td><b>Scorecard</b></td><td>All category scores</td></tr>
+            <tr><td><b>Diagnosis</b></td><td>Strongest area, biggest gap, #1 priority</td></tr>
+            <tr><td><b>Member Success</b></td><td>Jennifer notes, progress, engagement, Academy signals</td></tr>
+            <tr><td><b>Qualification</b></td><td>Pain, impact, attempts, need, urgency, readiness</td></tr>
+            <tr><td><b>Sales</b></td><td>Decision maker, investment awareness, call date, outcome</td></tr>
+            <tr><td><b>Follow-Up</b></td><td>Next action, owner, due date, disposition</td></tr>
+            <tr><td><b>Academy</b></td><td>Enrollment date, payment option, cash collected, start date</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout red"><b>Required rule:</b> an active record may never be left without <b>CURRENT STAGE + OWNER + NEXT ACTION + DUE DATE</b>.</div>
+      </section>
+
+      <!-- PIPELINE -->
+      <section id="pipeline">
+        <div class="sh"><span class="n">05</span><h2>Pipeline</h2><span style="margin-left:auto;font-size:11px;color:var(--muted)">§4</span></div>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Stage</th><th>Entry</th><th>Exit</th><th>Owner</th></tr></thead>
+          <tbody>
+            <tr><td><b>1. TPB — New Member</b></td><td>Successful purchase</td><td>Welcome sent</td><td><span class="pill p-jen">Jen</span></td></tr>
+            <tr><td><b>2. TPB — Onboarding</b></td><td>Welcome sent</td><td>Onboarding complete</td><td><span class="pill p-jen">Jen</span></td></tr>
+            <tr><td><b>3. TPB — Scorecard</b></td><td>Onboarding complete</td><td>Scorecard complete</td><td><span class="pill p-jen">Jen</span></td></tr>
+            <tr><td><b>4. TPB — Activated</b></td><td>Scorecard complete</td><td>Priority confirmed</td><td><span class="pill p-jen">Jen</span></td></tr>
+            <tr><td><b>5. Academy Signal — Review</b></td><td>Implementation signal</td><td>Jen approves/declines</td><td><span class="pill p-jen">Jen</span></td></tr>
+            <tr><td><b>6. Academy — Handoff</b></td><td>Member gives permission</td><td>Regina accepts</td><td><span class="pill p-jen">Jen</span>→<span class="pill p-reg">Reg</span></td></tr>
+            <tr><td><b>7. Academy — Contacted</b></td><td>Regina contacts member</td><td>Qualification complete</td><td><span class="pill p-reg">Reg</span></td></tr>
+            <tr><td><b>8. Academy — Qualified</b></td><td>Qualification gate passed</td><td>Austin booked</td><td><span class="pill p-reg">Reg</span></td></tr>
+            <tr><td><b>9. Academy — Austin Booked</b></td><td>Call booked + brief complete</td><td>Show/no-show</td><td><span class="pill p-reg">Reg</span></td></tr>
+            <tr><td><b>10. Academy — Showed</b></td><td>Member attends</td><td>Decision recorded</td><td><span class="pill p-aus">Aus</span></td></tr>
+            <tr><td><b>11. Academy — Follow-Up</b></td><td>No final decision</td><td>Decision reached</td><td><span class="pill p-reg">Reg</span></td></tr>
+            <tr><td><b>12. Academy — Won</b></td><td>Enrollment confirmed</td><td>Handoff complete</td><td><span class="pill p-reg">Reg</span>→<span class="pill p-jen">Jen</span></td></tr>
+            <tr><td><b>13. Academy — Not Yet</b></td><td>Fit but wrong timing</td><td>Reactivation date</td><td><span class="pill p-reg">Reg</span></td></tr>
+            <tr><td><b>14. Academy — Not Fit</b></td><td>Not appropriate</td><td>Returned to TPB/closed</td><td><span class="pill p-jen">Jen</span></td></tr>
+          </tbody>
+        </table></div>
+        <p style="font-size:12.5px;color:var(--muted)">Nobody manually invents pipeline stages.</p>
+      </section>
+
+      <!-- JENNIFER -->
+      <section id="jennifer">
+        <div class="sh"><span class="n">06</span><h2><span class="pill p-jen">Jennifer</span> — New Member through Activation</h2><span style="margin-left:auto;font-size:11px;color:var(--muted)">§5, 7, 8, 10, 11, 12</span></div>
+
+        <h3 class="sub"><span class="sn">§5</span>Stage 1 — New Member</h3>
+        <div class="card"><ul class="clean" style="font-size:13px">
+          <li><b>Trigger:</b> successful $97 TPB purchase. <b>Owner:</b> Jennifer. <b>SLA:</b> personal welcome within 1 business day.</li>
+          <li>Automation immediately: create CRM record · send access info · assign Stage "TPB — New Member" + Owner Jennifer · send onboarding.</li>
+        </ul></div>
+
+        <h3 class="sub"><span class="sn">§7</span>Onboarding follow-up</h3>
+        <div class="card"><ul class="clean" style="font-size:13px">
+          <li><b>Day 2:</b> reminder · <b>Day 5:</b> personal Jennifer follow-up · <b>Day 7:</b> mark <code>ONBOARDING INCOMPLETE</code></li>
+          <li>Jennifer personally investigates rather than endlessly automating reminders. This is an early member-health signal.</li>
+        </ul></div>
+
+        <h3 class="sub"><span class="sn">§8</span>Jennifer's personal welcome</h3>
+        <div class="card">
+          <p style="font-size:13px;color:var(--mid);margin:0 0 4px">Review onboarding <b style="color:var(--ink)">before</b> messaging. Never send the identical "personalized" message to everyone.</p>
+          <div class="msg"><div class="nm">Template</div>Hey [Name]! 👋 It's Jennifer with BreedWise. I wanted to personally welcome you to The Profitable Breeder. I was looking through your onboarding and saw that [SPECIFIC DETAIL]. Based on that, your next step is to complete your Profitable Breeder Scorecard — it'll give us a baseline of where your program stands so we can identify what deserves attention first. Once done, send me your strongest area, biggest gap, and #1 priority, and I'll help make sure you know where to focus. If you get stuck, message me — my job is to help you navigate and keep moving forward. 🐾</div>
+          <p style="font-size:12.5px;color:var(--muted)">Jennifer then changes stage → <b>TPB — Scorecard</b>.</p>
+        </div>
+
+        <h3 class="sub"><span class="sn">§10</span>Activation gate</h3>
+        <div class="card">
+          <p style="font-size:13px;color:var(--mid);margin:0 0 6px">A member becomes <b style="color:var(--ink)">TPB — ACTIVATED</b> only when all four are true:</p>
+          <ul class="clean chk" style="font-size:13px"><li>Onboarding complete</li><li>Scorecard complete</li><li>Strongest area identified</li><li>#1 priority established</li></ul>
+          <p style="font-size:12.5px;color:var(--muted)">Jennifer records the priority. Now TPB delivers its promise: know where you stand → understand the gaps → know what to improve next.</p>
+        </div>
+
+        <h3 class="sub"><span class="sn">§11</span>Jennifer's ascension role</h3>
+        <div class="callout blue">Jennifer does not ask "Who can I sell Academy to?" She asks: <b>"Who has moved from needing clarity to needing implementation?"</b> That is the ascension trigger.</div>
+        <div class="cols">
+          <div class="card"><h4>Academy signals</h4><ul class="clean" style="font-size:12.5px">
+            <li><b>Implementation need</b> — "I know what to change, not how to build it."</li>
+            <li><b>Complexity</b> — "I don't know how to put this all together."</li>
+            <li><b>Accountability</b> — "I need someone keeping me on track."</li>
+            <li><b>Feedback</b> — "I want someone to look at what I've built."</li>
+            <li><b>Urgency</b> — upcoming breeding, litter, launch, price increase, transition.</li>
+            <li><b>Established activity</b> — enough real activity for support to matter.</li>
+            <li><b>Meaningful impact</b> — materially affects program, time, buyers, margin, confidence.</li>
+          </ul></div>
+          <div class="card"><h4>NOT a signal by itself</h4><ul class="clean no" style="font-size:12.5px">
+            <li>Being engaged</li><li>Having money</li><li>Posting frequently</li><li>A low Scorecard score</li><li>Asking questions</li><li>Being a breeder a long time</li>
+          </ul><p style="font-size:12px;color:var(--muted);margin-top:6px">Ascension requires an identifiable <b style="color:var(--ink)">implementation need</b>.</p></div>
+        </div>
+
+        <h3 class="sub"><span class="sn">§12</span>Academy Signal gate</h3>
+        <div class="card">
+          <p style="font-size:13px;color:var(--mid);margin:0 0 6px">Before moving someone to <code>Academy Signal — Review</code>, Jennifer must be able to complete:</p>
+          <div class="fields"><div><b>Member</b></div><div><b>Current Priority</b></div><div><b>Observed Implementation Need</b></div><div><b>Why TPB alone may not be enough now</b></div><div><b>Relevant Member Quote</b></div><div><b>Timing / Urgency</b></div><div><b>Recommended Next Step</b></div></div>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:8px">If Jennifer cannot answer these, they remain in TPB.</p>
+        </div>
+      </section>
+
+      <!-- HANDOFF -->
+      <section id="handoff">
+        <div class="sh"><span class="n">07</span><h2><span class="pill p-jen">Jennifer</span> → <span class="pill p-reg">Regina</span> Handoff</h2><span style="margin-left:auto;font-size:11px;color:var(--muted)">§13, 14</span></div>
+        <div class="card">
+          <h4>First, get permission</h4>
+          <div class="msg">Based on what you've shared with me, I think it could help to have a quick conversation with Regina on our team. She works with members to understand what they're trying to improve and whether there's additional BreedWise support that makes sense beyond TPB. Want me to have her reach out?</div>
+          <p style="font-size:13px;color:var(--mid)"><b style="color:#9fe3c2">YES</b> → Jennifer completes the handoff. &nbsp; <b style="color:#f2a59d">NO</b> → no sales pursuit; Jennifer continues Member Success.</p>
+        </div>
+        <div class="card">
+          <h4>Jennifer handoff card <span style="font-weight:400;color:var(--muted);font-size:12px">— required before Regina receives ownership</span></h4>
+          <div class="fields">
+            <div><b>Member</b></div><div><b>Breed</b></div><div><b>Experience</b></div><div><b>Current stage</b></div><div><b>Litters/year</b></div><div><b>Next breeding/litter</b></div><div><b>Average puppy price</b></div><div><b>90-day goal</b></div>
+            <div><b>Scorecard:</b> strongest / gap / #1 priority</div><div><b>Academy signal</b></div><div><b>What I've observed</b></div><div><b>Member's own words</b></div><div><b>Why implementation may make sense</b></div><div><b>Urgency / timing</b></div><div><b>Anything Regina should know</b></div><div><b>Permission to contact: YES</b></div>
+          </div>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:8px">Jennifer changes Owner → Regina, Stage → <b>Academy — Handoff</b>. Regina receives an automated notification.</p>
+        </div>
+      </section>
+
+      <!-- REGINA -->
+      <section id="regina">
+        <div class="sh"><span class="n">08</span><h2><span class="pill p-reg">Regina</span> — Qualify &amp; Route</h2><span style="margin-left:auto;font-size:11px;color:var(--muted)">§15–19</span></div>
+
+        <h3 class="sub"><span class="sn">§15</span>Regina's SLA</h3>
+        <div class="card"><ul class="clean" style="font-size:13px">
+          <li>Accept the handoff <b>same business day</b> when possible. First contact <b>within 1 business day</b>.</li>
+          <li>No response: Attempt 1 (initial) · Attempt 2 (+1 day) · Attempt 3 (+3 days) · Attempt 4 (+7 days). Then disposition <b>NO RESPONSE</b>, set a reactivation date if appropriate, return ownership to Jennifer. Do not chase indefinitely.</li>
+        </ul></div>
+
+        <h3 class="sub"><span class="sn">§16</span>Regina's opening</h3>
+        <div class="card">
+          <p style="font-size:13px;color:var(--mid);margin:0 0 4px">Prove immediately that BreedWise communicates internally.</p>
+          <div class="msg">Hey Sarah, Jennifer filled me in before I reached out. I saw you're preparing for your spring litter, and one of the biggest things you've identified is building stronger qualified demand before puppies arrive. I just want to understand that a little better and see what the right next step is for you.</div>
+          <p style="font-size:13px;color:#f2a59d">Never open with "So tell me about your breeding program." BreedWise already knows.</p>
+        </div>
+
+        <h3 class="sub"><span class="sn">§17</span>Qualification call (~7–10 min) — six answers</h3>
+        <div class="card"><ul class="clean" style="font-size:13px">
+          <li><b>Pain</b> — What's specifically happening with [priority/problem] right now?</li>
+          <li><b>Impact</b> — How is that affecting your program or business?</li>
+          <li><b>Attempts</b> — What have you already tried to improve it?</li>
+          <li><b>Implementation need</b> — Mainly need information and a plan, or do you understand what to change and want hands-on help implementing it?</li>
+          <li><b>Urgency</b> — Why is fixing this important now? What happens if nothing changes in 6–12 months?</li>
+          <li><b>Readiness</b> — If Academy is the right fit, are you in a position to invest $6,000 (upfront or payment plan)?</li>
+        </ul>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:4px">No pressure. No surprise. No hiding price until Austin's call.</p></div>
+
+        <h3 class="sub"><span class="sn">§18</span>Academy Qualification gate</h3>
+        <div class="card">
+          <p style="font-size:13px;color:var(--mid);margin:0 0 6px">A lead becomes <b style="color:var(--ink)">ACADEMY — QUALIFIED</b> only when Regina confirms all eight:</p>
+          <ul class="clean chk" style="font-size:12.5px;columns:2"><li>Problem — identifiable problem exists</li><li>Impact — matters enough to solve</li><li>Implementation need — needs more than info</li><li>Urgency — legitimate reason to act</li><li>Program fit — Academy can support it</li><li>Investment awareness — knows it's $6,000</li><li>Readiness — open to investing if appropriate</li><li>Decision process — knows who must participate</li></ul>
+          <p style="font-size:13px;color:#f2a59d;margin-top:6px">If those aren't established, do not book Austin "to see what happens."</p>
+        </div>
+
+        <h3 class="sub"><span class="sn">§19</span>Regina's three routes</h3>
+        <div class="cols3">
+          <div class="card"><h4 style="color:#9fe3c2">A · Qualified</h4><p style="font-size:13px;color:var(--mid)">Book Austin immediately.</p></div>
+          <div class="card"><h4 style="color:#f0cf9a">B · Not Yet</h4><p style="font-size:13px;color:var(--mid)">Fit, but timing/readiness isn't there. Set <b style="color:var(--ink)">Reason + Trigger + Reactivation Date</b> (e.g. after current litter placed → Dec 1).</p></div>
+          <div class="card"><h4 style="color:#a9d6ff">C · TPB</h4><p style="font-size:13px;color:var(--mid)">Needs education/clarity/fundamentals, not implementation. Return ownership to Jennifer. No awkward rejection.</p></div>
+        </div>
+      </section>
+
+      <!-- BRIEF -->
+      <section id="brief">
+        <div class="sh"><span class="n">09</span><h2><span class="pill p-reg">Regina</span> → <span class="pill p-aus">Austin</span> Call Brief</h2><span style="margin-left:auto;font-size:11px;color:var(--muted)">§21</span></div>
+        <div class="callout red">Complete <b>before</b> the call. If the brief isn't complete, the handoff isn't complete.</div>
+        <div class="cols">
+          <div class="card"><h4>Member snapshot</h4><div class="fields"><div>Name</div><div>Breed</div><div>Experience</div><div>Litters/year</div><div>Avg puppy price</div><div>Next breeding/litter</div></div></div>
+          <div class="card"><h4>TPB</h4><div class="fields"><div>90-day goal</div><div>Strongest area</div><div>Biggest gap</div><div>#1 priority</div></div></div>
+          <div class="card"><h4>Sales diagnosis</h4><div class="fields"><div>Primary problem</div><div>Impact</div><div>What they've tried</div><div>Implementation need</div><div>Why now</div><div>If nothing changes</div><div>Desired outcome</div></div></div>
+          <div class="card"><h4>Buying context</h4><div class="fields"><div><b>$6K awareness: YES</b></div><div>Payment preference</div><div>Decision maker(s)</div><div>Timing</div><div>Known concern/objection</div></div></div>
+        </div>
+        <div class="card"><h4>Member's exact words + Regina's assessment</h4><div class="msg">"________________________________"</div><div class="fields"><div>Why Academy may fit</div><div>Anything Austin needs to know</div><div>Call date/time</div></div></div>
+      </section>
+
+      <!-- AUSTIN -->
+      <section id="austin">
+        <div class="sh"><span class="n">10</span><h2><span class="pill p-aus">Austin</span> — Diagnose &amp; Close</h2><span style="margin-left:auto;font-size:11px;color:var(--muted)">§22–25, 28</span></div>
+
+        <h3 class="sub"><span class="sn">§22–23</span>Opening &amp; role</h3>
+        <div class="card">
+          <p style="font-size:13px;color:var(--mid);margin:0 0 4px">Start from accumulated context, not from zero.</p>
+          <div class="msg">Sarah, I've reviewed your onboarding, Scorecard, and Regina's notes before we got on. It looks like you've got three litters planned over the next year, and while you're generating inquiries, the real issue is having enough qualified families ready before puppies arrive. With your next breeding coming up, you don't want to repeat the same cycle. Is that an accurate picture?</div>
+          <p style="font-size:13px;color:var(--mid)">If yes, go deeper. Austin owns: <b style="color:var(--ink)">Validate → Deepen → Diagnose → Fit → Prescribe → Offer → Objections → Close.</b> Not re-asking everything Regina already asked. Austin determines whether Academy is appropriate and presents it when it is; the member decides whether they buy.</p>
+        </div>
+
+        <h3 class="sub"><span class="sn">§24</span>Call outcomes — exactly one CRM disposition</h3>
+        <div class="card"><ul class="clean" style="font-size:13px;columns:2">
+          <li><b>WON</b> — enrollment completed</li><li><b>FOLLOW-UP</b> — unresolved decision + exact next step</li><li><b>NOT YET</b> — fit, but timing/readiness isn't</li><li><b>NOT FIT</b> — Academy isn't appropriate</li><li><b>LOST</b> — qualified, chose not to proceed</li><li><b>NO-SHOW</b> — didn't attend</li>
+        </ul>
+        <p style="font-size:13px;color:#f2a59d;margin-top:6px">There is no "thinking about it." If they're thinking: what specifically are they deciding, what happens next, who owns it, when?</p></div>
+
+        <h3 class="sub"><span class="sn">§25</span>Standard Lost / Not-Yet reasons (dropdowns, not notes)</h3>
+        <div class="card"><p style="font-size:13px;color:var(--mid)">Timing · Investment · Partner/Decision Maker · Insufficient Urgency · Needs TPB First · Not Implementation Ready · Program Not Appropriate · No Response · No-Show · Chose Alternative · Breeding Plans Changed · Other. <span style="color:var(--muted)">Free-text supplements the disposition; it cannot replace it.</span></p></div>
+
+        <h3 class="sub"><span class="sn">§28</span>Austin → Regina after the call <span style="font-weight:400;color:var(--muted);font-size:12px">— same business day</span></h3>
+        <div class="card"><div class="fields"><div>Outcome</div><div>Primary decision barrier</div><div>Offer made</div><div>Payment option discussed</div><div>Next step</div><div>Next date</div><div>Follow-up owner</div><div>Call recording link</div></div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:8px">Regina then owns commercial follow-up unless Austin specifically retains it.</p></div>
+      </section>
+
+      <!-- FOLLOWUP / WON -->
+      <section id="followup">
+        <div class="sh"><span class="n">11</span><h2>Follow-Up, No-Show &amp; Won</h2><span style="margin-left:auto;font-size:11px;color:var(--muted)">§26, 27, 29, 30, 31</span></div>
+
+        <h3 class="sub"><span class="sn">§26</span>Follow-up rule</h3>
+        <div class="callout red">Every open opportunity must have <b>OWNER + NEXT ACTION + DATE</b> (e.g. Regina · contact after spouse discussion · Oct 9). If any of the three is blank, the opportunity is operationally broken.</div>
+
+        <h3 class="sub"><span class="sn">§27</span>No-show SOP</h3>
+        <div class="card"><ul class="clean" style="font-size:13px">
+          <li><b>+15 min:</b> Regina contacts — "Hey Sarah, looks like we missed you for your call with Austin. Everything okay?"</li>
+          <li><b>Same day:</b> send rescheduling option · <b>+1 day:</b> follow up · <b>+3 days:</b> final active follow-up</li>
+          <li>Then <b>NO-SHOW</b> — assign a reactivation date or return to Jennifer.</li>
+        </ul></div>
+
+        <h3 class="sub"><span class="sn">§29</span>Won SOP</h3>
+        <div class="card">
+          <p style="font-size:13px;color:var(--mid);margin:0 0 6px">Regina verifies:</p>
+          <ul class="clean chk" style="font-size:12.5px;columns:2"><li>Agreement signed</li><li>Payment received / plan established</li><li>Correct CRM amount</li><li>Cash collected recorded</li><li>Start date recorded</li><li>Sales notes complete</li><li>Jennifer notified</li></ul>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:6px">Pipeline → <b>ACADEMY — WON</b>. Ownership returns to <span class="pill p-jen">Jennifer</span>.</p>
+        </div>
+
+        <h3 class="sub"><span class="sn">§30</span>Jennifer's Academy welcome <span style="font-weight:400;color:var(--muted);font-size:12px">— within 1 business day</span></h3>
+        <div class="card"><div class="msg">Sarah! I just saw the update from Austin — welcome to Academy 🎉 I've already got your TPB onboarding, Scorecard, Regina's notes, and the context from your conversation with Austin, so <b style="font-style:normal;color:#9fe3c2">we're not starting from scratch.</b> Our next step is to establish your Academy baseline and turn what we've already learned into your personalized 120-day implementation roadmap. I'll send you exactly what to complete next.</div>
+        <p style="font-size:12.5px;color:var(--muted)">Members should feel BreedWise's knowledge of them <b style="color:var(--ink)">compounds</b>.</p></div>
+
+        <h3 class="sub"><span class="sn">§31</span>Academy handoff</h3>
+        <div class="card"><p style="font-size:13px;color:var(--mid);margin:0">Jennifer begins the Academy journey: <b style="color:var(--ink)">Assess → Prioritize → Implement → Measure → Reassess.</b> The Academy baseline pulls forward existing TPB information wherever possible. Do not ask "What breed do you have?" again — only collect what's required for implementation and doesn't already exist.</p></div>
+      </section>
+
+      <!-- REACTIVATION -->
+      <section id="reactivation">
+        <div class="sh"><span class="n">12</span><h2>Reactivation Engine</h2><span style="margin-left:auto;font-size:11px;color:var(--muted)">§32</span></div>
+        <div class="callout green">A lot of future Academy revenue lives here. <b>"Not Yet" is not a graveyard.</b></div>
+        <div class="cols">
+          <div class="card"><h4>Regina records</h4><div class="fields"><div><b>Why not now</b></div><div><b>Future trigger</b></div><div><b>Reactivation date</b></div><div><b>Context to reference</b></div></div></div>
+          <div class="card"><h4>Breeder-specific triggers</h4><ul class="clean" style="font-size:12.5px"><li>Before next breeding</li><li>Pregnancy confirmed</li><li>Before upcoming litter</li><li>After puppy placement</li><li>Before next pricing change</li><li>When planning next year</li><li>After TPB priority completed</li></ul></div>
+        </div>
+        <div class="card"><div class="msg">Member wants Academy but needs to place current litter first. Trigger: puppies placed · Reactivation: November 15 · Note: wants help building demand before spring breeding.</div>
+        <p style="font-size:12.5px;color:var(--muted)">On November 15, Regina gets a task — not six months of hoping someone remembers.</p></div>
+      </section>
+
+      <!-- COMMS -->
+      <section id="comms">
+        <div class="sh"><span class="n">13</span><h2>Communication Architecture</h2><span style="margin-left:auto;font-size:11px;color:var(--muted)">§33, 34, 36</span></div>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Channel</th><th>What goes there</th><th>What does NOT</th></tr></thead>
+          <tbody>
+            <tr><td><b>CRM</b></td><td>Member data, stages, notes, decisions, next actions, dates</td><td>Casual conversation</td></tr>
+            <tr><td><b>Skool DM</b></td><td>Member Success, activation, progress</td><td>Sales pipeline management</td></tr>
+            <tr><td><b>Phone/SMS</b></td><td>Qualification, booking, follow-up</td><td>Permanent record</td></tr>
+            <tr><td><b>Zoom/Call</b></td><td>Academy sales conversation</td><td>Sole location for sales notes</td></tr>
+            <tr><td><b>#tpb-ascension</b></td><td>Internal alerts / handoffs</td><td>Full customer record</td></tr>
+            <tr><td><b>Email</b></td><td>Formal confirmations, links, docs</td><td>Internal handoffs</td></tr>
+            <tr><td><b>Call Recording</b></td><td>Coaching / context</td><td>Substitute for CRM notes</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout"><b>CRM = truth. Channels = communication.</b></div>
+
+        <h3 class="sub"><span class="sn">§34</span>Internal #tpb-ascension posts <span style="font-weight:400;color:var(--muted);font-size:12px">— only important stage changes</span></h3>
+        <div class="cols">
+          <div class="card"><div class="msg" style="font-style:normal">🟡 <b style="color:#f0cf9a">NEW ACADEMY SIGNAL</b> — Member: Sarah Smith · Priority: Qualified Demand · Why: upcoming litter + implementation need · Permission: YES · Next: Regina · CRM: [LINK]</div></div>
+          <div class="card"><div class="msg" style="font-style:normal">🟢 <b style="color:#9fe3c2">ACADEMY QUALIFIED</b> — Sarah Smith · Problem: qualified demand · Urgency: upcoming breeding · $6K aware: YES · Decision maker: self · Austin call: Oct 8 @ 2PM · CRM: [LINK]</div></div>
+          <div class="card"><div class="msg" style="font-style:normal">💰 <b style="color:var(--gold-soft)">ACADEMY WON</b> — Sarah Smith · Payment: $6K PIF · Start: Oct 10 · Next: Jennifer · CRM: [LINK]</div></div>
+          <div class="card"><div class="msg" style="font-style:normal">🟠 <b style="color:#f0cf9a">FOLLOW-UP</b> — Sarah Smith · Barrier: spouse decision · Next: joint conversation · Due: Oct 12 · Owner: Regina · CRM: [LINK]</div></div>
+        </div>
+
+        <h3 class="sub"><span class="sn">§36</span>Escalation rules</h3>
+        <div class="card"><ul class="clean" style="font-size:12.5px;columns:2">
+          <li>Scientific/vet education → appropriate expert</li><li>Member Success → <span class="pill p-jen">Jennifer</span></li><li>Qualification/sales follow-up → <span class="pill p-reg">Regina</span></li><li>Academy offer/close → <span class="pill p-aus">Austin</span></li><li>Pricing exception → <span class="pill p-aus">Austin</span></li><li>Refund/payment-policy → Austin/authorized ops</li><li>Certification admin → <span class="pill p-jen">Jennifer</span></li><li>Certification standard/science → scientific owner</li>
+        </ul><p style="font-size:12.5px;color:var(--muted);margin-top:4px">Nobody improvises outside their authority.</p></div>
+      </section>
+
+      <!-- CADENCE -->
+      <section id="cadence">
+        <div class="sh"><span class="n">14</span><h2>SLAs, Scoreboard &amp; Cadence</h2><span style="margin-left:auto;font-size:11px;color:var(--muted)">§35, 37–40</span></div>
+
+        <h3 class="sub"><span class="sn">§35</span>Service-level agreements</h3>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Event</th><th class="r">Standard</th></tr></thead>
+          <tbody>
+            <tr><td>New TPB purchase → welcome</td><td class="r">&lt;1 business day</td></tr>
+            <tr><td>Incomplete onboarding</td><td class="r">Day 2 / 5 / 7</td></tr>
+            <tr><td>Onboarding → Scorecard request</td><td class="r">Same day</td></tr>
+            <tr><td>Completed Scorecard → Jen review</td><td class="r">&lt;1 business day</td></tr>
+            <tr><td>Academy signal → Jen decision</td><td class="r">&lt;1 business day</td></tr>
+            <tr><td>Member permission → Regina handoff</td><td class="r">Same business day</td></tr>
+            <tr><td>Regina first contact</td><td class="r">&lt;1 business day</td></tr>
+            <tr><td>Qualified → booking attempt</td><td class="r">Same conversation</td></tr>
+            <tr><td>Austin call brief</td><td class="r">Before Austin call</td></tr>
+            <tr><td>No-show contact</td><td class="r">Within 15 min</td></tr>
+            <tr><td>Austin notes</td><td class="r">Same business day</td></tr>
+            <tr><td>Sales follow-up</td><td class="r">By assigned due date</td></tr>
+            <tr><td>Won → admin completion</td><td class="r">Same business day</td></tr>
+            <tr><td>Won → Jennifer notification</td><td class="r">Immediate</td></tr>
+            <tr><td>Academy welcome</td><td class="r">&lt;1 business day</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3 class="sub"><span class="sn">§37</span>Weekly ascension scoreboard</h3>
+        <div class="cols3">
+          <div class="card"><h4><span class="pill p-jen">Jennifer</span></h4><ul class="clean" style="font-size:12px"><li>New TPB members</li><li>Onboarding completion %</li><li>Scorecard completion %</li><li>7-day activation %</li><li>Academy signals</li><li>Approved handoffs</li><li>Won → Jen handoff %</li></ul></div>
+          <div class="card"><h4><span class="pill p-reg">Regina</span></h4><ul class="clean" style="font-size:12px"><li>Contact rate</li><li>Qualification rate</li><li>Qualified opportunities</li><li>Austin calls booked</li><li>Show rate</li><li>Qualified call %</li><li>Follow-up opps / overdue</li></ul></div>
+          <div class="card"><h4><span class="pill p-aus">Austin</span> / <span class="pill p-team">Team</span></h4><ul class="clean" style="font-size:12px"><li>Academy close rate</li><li>Academy cash collected</li><li>Avg days TPB → Academy</li><li>Primary lost reason</li><li>Primary ascension trigger</li></ul></div>
+        </div>
+
+        <h3 class="sub"><span class="sn">§38</span>Three numbers to watch closely</h3>
+        <div class="cols3">
+          <div class="card"><h4>1 · TPB → Activated %</h4><p style="font-size:12.5px;color:var(--mid)">If bad, don't blame sales — the onboarding/Member Success system is leaking.</p></div>
+          <div class="card"><h4>2 · Qualified Austin call %</h4><p style="font-size:12.5px;color:var(--mid)">If Austin keeps finding people who aren't serious/ready/aware, <b style="color:var(--ink)">Regina's qualification is leaking.</b></p></div>
+          <div class="card"><h4>3 · Qualified call → cash</h4><p style="font-size:12.5px;color:var(--mid)">Genuinely qualified people showing up but not enrolling → <b style="color:var(--ink)">Austin's sales process is leaking.</b></p></div>
+        </div>
+        <p style="font-size:12.5px;color:var(--muted)">Accountability without people blaming one another.</p>
+
+        <h3 class="sub"><span class="sn">§39–40</span>Weekly 20-min meeting &amp; daily check</h3>
+        <div class="cols">
+          <div class="card"><h4>Weekly 20 min — Jen + Regina + Austin</h4><ul class="clean" style="font-size:13px"><li><b>0–5:</b> numbers (new, activated, signals, qualified, booked, showed, won, cash)</li><li><b>5–15:</b> only members needing a decision — where are they, what's blocking, who's next, by when?</li><li><b>15–20:</b> one question — where did the ascension process break this week? Choose <b>one</b> improvement. End.</li></ul><p style="font-size:12px;color:var(--muted)">Not a general company meeting.</p></div>
+          <div class="card"><h4>Daily ownership check</h4><ul class="clean" style="font-size:13px"><li><span class="pill p-jen">Jennifer</span> — which members need help moving forward?</li><li><span class="pill p-reg">Regina</span> — which opportunities need a conversation or next action today?</li><li><span class="pill p-aus">Austin</span> — which qualified conversations require my involvement?</li></ul></div>
+        </div>
+      </section>
+
+      <!-- FLOW -->
+      <section id="flow">
+        <div class="sh"><span class="n">15</span><h2>The Entire System in One View</h2><span style="margin-left:auto;font-size:11px;color:var(--muted)">§42</span></div>
+        <div class="flow">
+          <div class="step"><b>$97 TPB purchase</b></div><div class="ar">↓</div>
+          <div class="step"><span class="pill p-jen">Jennifer</span> welcomes member</div><div class="ar">↓</div>
+          <div class="step">Member completes <b>Onboarding</b> → <b>Scorecard</b></div><div class="ar">↓</div>
+          <div class="step"><span class="pill p-jen">Jennifer</span> establishes baseline + #1 priority · member uses TPB</div><div class="ar">↓</div>
+          <div class="step">Implementation need appears → <b>Academy signal</b> → member gives permission</div><div class="ar">↓</div>
+          <div class="step"><span class="pill p-jen">Jennifer</span> hands complete context to <span class="pill p-reg">Regina</span></div><div class="ar">↓</div>
+          <div class="step"><span class="pill p-reg">Regina</span> qualifies: problem + impact + need + urgency + fit + readiness + decision</div><div class="ar">↓</div>
+          <div class="branch"><div class="bx tpb">NOT READY<br>TPB / Nurture / Reactivation</div><div class="bx won">QUALIFIED<br>Austin call</div></div><div class="ar">↓</div>
+          <div class="step">Member completes 60-sec confirmation → <span class="pill p-reg">Regina</span> gives <span class="pill p-aus">Austin</span> the brief</div><div class="ar">↓</div>
+          <div class="step"><span class="pill p-aus">Austin</span>: validate → deepen → diagnose → fit → present → close</div><div class="ar">↓</div>
+          <div class="branch"><div class="bx not">NOT YET<br>Regina dated follow-up</div><div class="bx tpb">NOT FIT<br>Jennifer continues TPB</div><div class="bx won">WON<br>$6K enrollment</div></div><div class="ar">↓</div>
+          <div class="step"><span class="pill p-reg">Regina</span> completes commercial handoff → <span class="pill p-jen">Jennifer</span> receives member back</div><div class="ar">↓</div>
+          <div class="end"><div class="t">120-Day Academy Implementation</div><div style="font-size:13px;color:var(--mid);margin-top:4px">Assess → Prioritize → Implement → Measure → Reassess</div></div>
+        </div>
+        <div class="callout green" style="margin-top:18px"><b>The standard:</b> the member should feel like one continuous relationship with BreedWise, even though three people own different parts. Jennifer makes them feel <b>known</b>. Regina makes them feel <b>understood and appropriately routed</b>. Austin makes them feel the recommendation is <b>based on everything BreedWise already learned</b>. Then Jennifer takes them back without resetting the relationship. That's the difference between a $97 → $6K upsell funnel and a real member ascension operating system.</div>
+      </section>
+
+      <footer class="bf">BREEDWISE · The Profitable Breeder — New Member → Academy Ascension SOP v1.0. CRM is the source of truth. Owners: Jennifer → Regina → Austin.</footer>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var OK='7c80836fc0ce4e3956aa136771a24b98d946bece11d70efef268e3612037234d'; /* BreedWiseSetters26 (exact case) */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function el(id){return document.getElementById(id);}
+  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Ascension SOP · BreedWise';}
+  function tryUnlock(){var v=(el('pw').value||'').trim();Promise.all([h(v),h(v.toUpperCase())]).then(function(a){if(a[0]===OK||a[1]===OK){try{sessionStorage.setItem('asc_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
+  el('unlock').addEventListener('click',tryUnlock);
+  el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('asc_ok')==='1'){reveal();}else{el('pw').focus();}}catch(e){el('pw').focus();}
+})();
+</script>
+</body>
+</html>

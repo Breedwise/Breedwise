@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;
+    --ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--faint:#5a6572;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--red:#e8695f;--blue:#5aa9e6;--purple:#a481d8;--amber:#e0a955;
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:radial-gradient(1100px 600px at 82% -10%,rgba(164,129,216,.06),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.55}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:80}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--purple);border:0;border-radius:11px;color:#140c1f;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #gate .hint{color:var(--muted);font-size:12px;margin-top:14px}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),#a9863f);display:flex;align-items:center;justify-content:center}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#15100a;font-size:18px;line-height:1}
+  .logo .wm{font-size:16px;letter-spacing:.2em;font-weight:700;color:var(--ink)}
+  .logo .wm b{color:var(--gold)}
+  #app{display:none}
+  nav.top{position:sticky;top:0;z-index:40;background:rgba(11,14,19,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav.top .in{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:11px 22px;flex-wrap:wrap}
+  nav .pills{display:flex;gap:6px;overflow-x:auto;flex:1;scrollbar-width:none}
+  nav .pills::-webkit-scrollbar{display:none}
+  nav .pills button{white-space:nowrap;font-size:12.5px;color:var(--muted);background:var(--panel);border:1px solid var(--line);padding:7px 12px;border-radius:9px;font-weight:500;cursor:pointer;font-family:var(--sans)}
+  nav .pills button.on{background:rgba(164,129,216,.14);border-color:var(--purple);color:#d3bdf0;font-weight:600}
+  nav .print{background:var(--panel);border:1px solid var(--line);color:var(--mid);border-radius:9px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:var(--sans)}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 22px 60px}
+  header.hero{padding:10px 0 6px}
+  header .k{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--purple);font-weight:700}
+  header h1{font-family:var(--disp);font-size:30px;line-height:1.08;margin:7px 0 2px;font-weight:600}
+  header p{color:var(--muted);font-size:13.5px;margin:0;font-weight:300}
+  .pane{display:none}
+  .pane.on{display:block}
+  .pane-h{margin:18px 0 6px}
+  .pane-h .num{font-family:var(--disp);color:var(--gold);font-size:14px;font-weight:600}
+  .pane-h h2{font-family:var(--disp);font-size:26px;margin:4px 0 2px;font-weight:600}
+  .pane-h .own{font-size:12.5px;color:var(--muted)}
+  .pane-h .own b{color:var(--mid)}
+  .core{background:linear-gradient(135deg,#1a1626,#120f1a);border:1px solid rgba(164,129,216,.3);border-left:3px solid var(--purple);border-radius:12px;padding:14px 16px;margin:14px 0}
+  .core .t{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px}
+  .core .r{font-family:var(--disp);font-size:18px;color:#d3bdf0;font-weight:600}
+  .core .s{font-size:13px;color:var(--mid);margin-top:4px}
+  section.s{margin-top:22px}
+  .sh{display:flex;align-items:baseline;gap:11px;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:13px}
+  .sh .n{font-family:var(--disp);font-size:13px;color:var(--gold);font-weight:600}
+  .sh h3{font-family:var(--disp);font-size:18px;font-weight:600;margin:0}
+  .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:15px 18px;margin-bottom:12px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  @media(max-width:700px){.cols,.cols3{grid-template-columns:1fr}}
+  .callout{background:rgba(201,168,98,.09);border:1px solid rgba(201,168,98,.28);border-left:3px solid var(--gold);border-radius:12px;padding:13px 15px;margin:13px 0;font-size:13.5px;color:var(--mid)}
+  .callout.red{background:rgba(232,105,95,.09);border-color:rgba(232,105,95,.3);border-left-color:var(--red)}
+  .callout.green{background:rgba(87,185,138,.09);border-color:rgba(87,185,138,.3);border-left-color:var(--green)}
+  .callout b{color:var(--gold-soft)}.callout.red b{color:#f2a59d}.callout.green b{color:#9fe3c2}
+  ul.clean{list-style:none;padding:0;margin:7px 0}
+  ul.clean li{position:relative;padding:4px 0 4px 20px;font-size:13.5px;color:var(--mid)}
+  ul.clean li::before{content:'›';position:absolute;left:3px;color:var(--purple);font-weight:700}
+  ul.clean li b{color:var(--ink)}
+  ul.no li::before{content:'×';color:var(--red)}ul.ok li::before{content:'✓';color:var(--green)}
+  .msg{background:rgba(164,129,216,.06);border:1px dashed rgba(164,129,216,.28);border-radius:10px;padding:11px 13px;margin:9px 0;font-size:13px;color:var(--mid);font-style:italic}
+  .msg .nm{font-style:normal;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .ladder{display:flex;flex-direction:column;gap:0}
+  .lrow{display:grid;grid-template-columns:230px 1fr;gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:13.5px}
+  .lrow:first-child{border-top:0}
+  .lrow .c{color:var(--amber);font-weight:600}.lrow .a{color:var(--mid)}
+  @media(max-width:560px){.lrow{grid-template-columns:1fr;gap:2px}}
+  .fields{display:grid;grid-template-columns:1fr 1fr;gap:3px 18px;font-size:12.5px;color:var(--mid)}
+  @media(max-width:560px){.fields{grid-template-columns:1fr}}
+  .fields div{padding:3px 0;border-bottom:1px solid #1a212b}.fields b{color:var(--ink)}
+  .quickrule{background:linear-gradient(135deg,#1a2028,#12161c);border:1px solid rgba(201,168,98,.3);border-radius:12px;padding:16px 18px;margin-top:16px}
+  .quickrule .t{font-family:var(--disp);font-size:15px;color:var(--gold);font-weight:600;margin-bottom:8px}
+  .quickrule .lrow .c{color:#d3bdf0}
+  footer.bf{text-align:center;color:#59657390;font-size:11px;margin-top:36px}
+  @media print{nav.top{display:none}#app{display:block!important}#gate{display:none!important}.pane{display:block!important}body{background:#fff;color:#111}}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo mark" style="margin-bottom:18px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Open the SOPs →</button>
+    <div class="err" id="gate-err"></div>
+    <div class="hint">Member Success · Jennifer</div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top"><div class="in">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+      <div class="pills" id="pills"></div>
+      <button class="print" onclick="window.print()">Print</button>
+    </div></nav>
+
+    <div class="wrap">
+      <header class="hero">
+        <div class="k">The Profitable Breeder · Member Success</div>
+        <h1>Member Success SOP Library</h1>
+        <p>Jennifer's operating SOPs. Pick one above. New SOPs get added here as we build them.</p>
+      </header>
+
+      <!-- ============ SOP 02 — COMMUNITY MANAGEMENT ============ -->
+      <div class="pane" id="sop-02">
+        <div class="pane-h"><span class="num">SOP 02</span><h2>Community Management</h2><div class="own">Owner: <b>Jennifer</b> · Keep The Profitable Breeder professional, helpful, respectful and safe — without over-moderating honest discussion.</div></div>
+        <div class="core"><div class="t">Core rule</div><div class="r">Moderate behavior, not opinions.</div><div class="s">Members may disagree, challenge ideas, share different experiences, ask uncomfortable questions, and discuss industry problems. Disagreement ≠ rule violation.</div></div>
+
+        <section class="s"><div class="sh"><span class="n">1</span><h3>Leave it up</h3></div>
+          <div class="card"><p style="font-size:13px;color:var(--mid);margin:0 0 6px">Do not remove a post/comment just because someone:</p>
+          <ul class="clean ok" style="font-size:13px"><li>Disagrees with BreedWise or another member</li><li>Shares constructive criticism</li><li>Has a different breeding philosophy or experience</li><li>Asks a controversial or difficult question</li><li>Expresses frustration respectfully</li></ul></div>
+        </section>
+
+        <section class="s"><div class="sh"><span class="n">2</span><h3>Remove + DM the member</h3></div>
+          <div class="card"><p style="font-size:13px;color:var(--mid);margin:0 0 6px">Remove content that includes:</p>
+          <ul class="clean no" style="font-size:13px"><li>Personal attacks, bullying, harassment, targeted insults</li><li>Spam, unauthorized promotion, solicitation, selling</li><li>Sharing someone's private info without permission</li><li>Explicit/inappropriate content unrelated to breeder education</li><li>Repeated inflammatory behavior meant to create conflict</li><li>Clear community-rule violations</li><li>Medical instructions presented as diagnosis/treatment for another member's dog</li></ul>
+          <div class="callout"><b>Medical line:</b> members can share experiences and ask educational questions. If it crosses into diagnosing or directing treatment for an individual animal, remove/redirect toward appropriate veterinary care.</div>
+          <div class="msg"><div class="nm">Message Jennifer sends (privately)</div>Hey [Name] — I removed your recent post/comment because [specific reason]. We absolutely welcome questions and different perspectives inside The Profitable Breeder. We just need conversations to stay within our community guidelines. You're welcome to repost/rephrase it without [specific issue]. If you have any questions, message me here. — Jennifer</div>
+          <p style="font-size:13px;color:#f2a59d;margin:4px 0 0">Always moderate privately. Never publicly embarrass the member.</p></div>
+        </section>
+
+        <section class="s"><div class="sh"><span class="n">3</span><h3>Remove immediately</h3></div>
+          <div class="card"><p style="font-size:13px;color:var(--mid);margin:0 0 6px">Jennifer does not wait for Austin to remove obvious:</p>
+          <ul class="clean no" style="font-size:13px;columns:2"><li>Spam/scams</li><li>Threats</li><li>Severe harassment</li><li>Privacy violations/doxxing</li><li>Explicitly inappropriate content</li><li>Dangerous content needing immediate action</li></ul>
+          <p style="font-size:13px;color:var(--mid);margin-top:6px"><b style="color:var(--ink)">Remove first. Document it. Notify Austin if serious.</b></p></div>
+        </section>
+
+        <section class="s"><div class="sh"><span class="n">4</span><h3>Escalation</h3></div>
+          <div class="card"><div class="ladder">
+            <div class="lrow"><span class="c">Normal disagreement</span><span class="a">Leave it.</span></div>
+            <div class="lrow"><span class="c">First rule violation</span><span class="a">Remove if necessary + private warning.</span></div>
+            <div class="lrow"><span class="c">Repeated violation</span><span class="a">Remove + final warning + document pattern.</span></div>
+            <div class="lrow"><span class="c">Serious/repeated behavior</span><span class="a">Suspend + notify Austin.</span></div>
+            <div class="lrow"><span class="c">Severe/persistent behavior</span><span class="a">Permanent ban with Austin's approval.</span></div>
+          </div>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:8px">If immediate action is needed to protect the community, Jennifer can suspend first and notify Austin immediately after.</p></div>
+        </section>
+
+        <section class="s"><div class="sh"><span class="n">5</span><h3>Documentation</h3></div>
+          <div class="card"><p style="font-size:12.5px;color:var(--muted);margin:0 0 6px">Any removal, warning, suspension, or ban is recorded internally:</p>
+          <div class="fields"><div><b>Member</b></div><div><b>Date</b></div><div><b>Post/comment screenshot or link</b></div><div><b>Reason</b></div><div><b>Action taken</b></div><div><b>Previous violations: Y/N</b></div><div><b>Austin notified: Y/N</b></div></div>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:6px">This prevents decisions from being based on memory.</p></div>
+        </section>
+
+        <section class="s"><div class="sh"><span class="n">6</span><h3>When to ask Austin</h3></div>
+          <div class="callout">If Jennifer isn't sure whether something actually violates a rule: <b>don't guess — screenshot it and ask Austin.</b> Also escalate threats, legal concerns, serious member disputes, repeated misconduct, refund/payment conflicts, or anything that could materially affect BreedWise's reputation.</div>
+        </section>
+
+        <div class="quickrule"><div class="t">Jennifer's 5-second rule</div><div class="ladder">
+          <div class="lrow"><span class="c">Disagreement</span><span class="a">Leave it</span></div>
+          <div class="lrow"><span class="c">Rule violation</span><span class="a">Remove + DM</span></div>
+          <div class="lrow"><span class="c">Repeated violation</span><span class="a">Final warning</span></div>
+          <div class="lrow"><span class="c">Serious/repeated</span><span class="a">Suspend + Austin</span></div>
+          <div class="lrow"><span class="c">Severe/persistent</span><span class="a">Ban with Austin approval</span></div>
+        </div>
+        <p style="font-size:12.5px;color:var(--mid);margin-top:10px">The goal isn't a community where everyone agrees. It's one where breeders can have real conversations without disrespect, misinformation, solicitation, or behavior that damages the community.</p></div>
+      </div>
+
+      <!-- ============ SOP 03 — INACTIVE MEMBER ============ -->
+      <div class="pane" id="sop-03">
+        <div class="pane-h"><span class="num">SOP 03</span><h2>Inactive Member</h2><div class="own">Owner: <b>Jennifer</b> · Spot members who've stopped engaging, understand why, and help them take one clear next step before they quietly cancel.</div></div>
+        <div class="core"><div class="t">Core rule</div><div class="r">Don't chase activity. Restore direction.</div><div class="s">The goal isn't logins for their own sake — it's helping them remember why they joined and what to do next.</div></div>
+
+        <section class="s"><div class="sh"><span class="n">1</span><h3>What counts as inactive?</h3></div>
+          <div class="cols3">
+            <div class="card"><h4 style="font-family:var(--disp);margin:0 0 4px">New member</h4><p style="font-size:13px;color:var(--mid);margin:0">No onboarding/Scorecard within <b style="color:var(--ink)">7 days</b> of joining.</p></div>
+            <div class="card"><h4 style="font-family:var(--disp);margin:0 0 4px">Existing member</h4><p style="font-size:13px;color:var(--mid);margin:0">No meaningful activity/progress for <b style="color:var(--ink)">14+ days</b>.</p></div>
+            <div class="card"><h4 style="font-family:var(--disp);margin:0 0 4px">High risk</h4><p style="font-size:13px;color:var(--mid);margin:0">No progress <b style="color:var(--ink)">30+ days</b>, or says they're overwhelmed, stuck, too busy, or considering canceling.</p></div>
+          </div>
+          <p style="font-size:12.5px;color:var(--muted)">Jennifer reviews inactive members once per week.</p>
+        </section>
+
+        <section class="s"><div class="sh"><span class="n">2</span><h3>Check before contacting</h3></div>
+          <div class="card"><div class="fields"><div><b>What did they join to accomplish?</b></div><div><b>Did they complete onboarding?</b></div><div><b>Did they complete the Scorecard?</b></div><div><b>What was their #1 priority?</b></div><div><b>What have they completed?</b></div><div><b>Last meaningful interaction?</b></div></div>
+          <p style="font-size:13px;color:#f2a59d;margin-top:8px">Never send a generic "Hey! Haven't seen you lately!" Use what BreedWise already knows.</p></div>
+        </section>
+
+        <section class="s"><div class="sh"><span class="n">3</span><h3>7-day new member follow-up</h3></div>
+          <div class="card"><div class="msg">Hey [Name]! Just checking in because I noticed you haven't finished your [Onboarding/Scorecard] yet. You mentioned that [PERSONAL GOAL/CHALLENGE] was important to you when you joined. Your best next step is to complete [ONE ACTION]. Once that's done, send me a message and I'll help point you toward what to focus on next. — Jennifer</div>
+          <p style="font-size:13px;color:var(--mid)"><b style="color:var(--ink)">Give them ONE next step.</b> Not five lessons to catch up on.</p></div>
+        </section>
+
+        <section class="s"><div class="sh"><span class="n">4</span><h3>14-day inactive follow-up</h3></div>
+          <div class="card"><div class="msg">Hey [Name]! I wanted to check in with you. Last time we connected, your main priority was [PRIORITY]. How are things going with that? If you've gotten stuck or life/breeding has gotten busy, tell me where you're at and I'll help you figure out the best next step. — Jennifer</div>
+          <p style="font-size:13px;color:var(--mid)">The objective is to <b style="color:var(--ink)">start a conversation</b>, not guilt them into engagement.</p></div>
+        </section>
+
+        <section class="s"><div class="sh"><span class="n">5</span><h3>If they respond — identify the blocker</h3></div>
+          <div class="cols">
+            <div class="card"><h4 style="font-family:var(--disp);margin:0 0 4px">"I don't know what to do"</h4><p style="font-size:13px;color:var(--mid);margin:0">Reconnect to their #1 priority + one next action.</p></div>
+            <div class="card"><h4 style="font-family:var(--disp);margin:0 0 4px">"I'm overwhelmed"</h4><p style="font-size:13px;color:var(--mid);margin:0">Simplify: "Let's ignore everything else — your next step is ______."</p></div>
+            <div class="card"><h4 style="font-family:var(--disp);margin:0 0 4px">"I've been too busy"</h4><p style="font-size:13px;color:var(--mid);margin:0">Ask when they realistically want to restart; set a follow-up date.</p></div>
+            <div class="card"><h4 style="font-family:var(--disp);margin:0 0 4px">"I don't think this is helping"</h4><p style="font-size:13px;color:var(--mid);margin:0">Ask what they expected + what's missing. Document. Escalate to Austin if appropriate.</p></div>
+            <div class="card"><h4 style="font-family:var(--disp);margin:0 0 4px">"I'm thinking about canceling"</h4><p style="font-size:13px;color:var(--mid);margin:0">Don't pressure. Understand why, document the reason, help where appropriate, follow the cancellation process if they decide to.</p></div>
+            <div class="card" style="border-color:rgba(201,168,98,.3)"><h4 style="font-family:var(--disp);margin:0 0 4px">Needs hands-on implementation</h4><p style="font-size:13px;color:var(--mid);margin:0">May be an <b style="color:var(--gold-soft)">Academy signal</b> — follow the Ascension SOP. Don't turn every inactive member into a sale.</p></div>
+          </div>
+        </section>
+
+        <section class="s"><div class="sh"><span class="n">6</span><h3>30-day high-risk follow-up</h3></div>
+          <div class="card"><div class="msg">Hey [Name] — wanted to reach out personally one more time because I don't want your membership to turn into something you're paying for but not using. Your original priority was [PRIORITY]. If that's still important, reply here and I'll help you identify the simplest next step. If your priorities have changed, that's completely fine too — just let me know where things stand. — Jennifer</div>
+          <p style="font-size:13px;color:var(--mid)">This should feel like <b style="color:var(--ink)">Member Success</b>, not retention pressure.</p></div>
+        </section>
+
+        <section class="s"><div class="sh"><span class="n">7</span><h3>If they don't respond</h3></div>
+          <div class="card"><p style="font-size:13px;color:#f2a59d;margin:0 0 6px">After the 30-day outreach, do not endlessly chase. Record:</p>
+          <div class="fields"><div><b>Status:</b> Inactive — No Response</div><div><b>Last outreach</b></div><div><b>Original priority</b></div><div><b>Last known progress</b></div><div><b>Next review</b></div></div>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:6px">They remain a member unless they cancel. Keep normal community communication; stop repeated personal outreach until there's a reason to re-engage.</p></div>
+        </section>
+
+        <section class="s"><div class="sh"><span class="n">8</span><h3>Reactivation</h3></div>
+          <div class="card"><p style="font-size:13px;color:var(--mid);margin:0 0 4px">When they come back, <b style="color:var(--ink)">don't make them feel behind.</b></p>
+          <div class="msg">Welcome back! You don't need to catch up on everything. Last time we worked together, your priority was [PRIORITY]. Is that still the biggest thing you want to improve?</div>
+          <p style="font-size:13px;color:var(--mid)"><b style="color:#9fe3c2">Yes</b> → continue from there. &nbsp; <b style="color:#f0cf9a">No</b> → update priority + point to the next step. If they've been gone long enough that their situation changed, have them retake the Scorecard.</p></div>
+        </section>
+
+        <section class="s"><div class="sh"><span class="n">9</span><h3>Documentation</h3></div>
+          <div class="card"><div class="fields"><div><b>Member</b></div><div><b>Inactive since</b></div><div><b>Current priority</b></div><div><b>Reason for inactivity</b></div><div><b>Outreach date</b></div><div><b>Response</b></div><div><b>Next action</b></div><div><b>Owner</b></div><div><b>Follow-up date</b></div><div><b>Status:</b> Active / At Risk / Inactive / Reactivated / Canceled</div></div></div>
+        </section>
+
+        <div class="quickrule"><div class="t">Jennifer's simple rule</div><div class="ladder">
+          <div class="lrow"><span class="c">7 days</span><span class="a">Get them started</span></div>
+          <div class="lrow"><span class="c">14 days</span><span class="a">Check in personally</span></div>
+          <div class="lrow"><span class="c">30 days</span><span class="a">High-risk outreach</span></div>
+          <div class="lrow"><span class="c">No response</span><span class="a">Document and stop chasing</span></div>
+          <div class="lrow"><span class="c">They return</span><span class="a">Give them ONE next step</span></div>
+        </div>
+        <p style="font-size:12.5px;color:var(--mid);margin-top:10px">No guilt. No "catching up." No dumping more content. Reconnect the member to why they joined and give them the clearest next action.</p></div>
+      </div>
+
+      <footer class="bf">BREEDWISE · Member Success SOP Library. Owner: Jennifer. The CRM is the source of truth.</footer>
+    </div>
+  </div>
+
+<script>
+var SOPS=[
+  { id:'sop-02', label:'02 · Community Management' },
+  { id:'sop-03', label:'03 · Inactive Member' }
+];
+function show(id){
+  document.querySelectorAll('.pane').forEach(function(p){p.classList.toggle('on',p.id===id);});
+  document.querySelectorAll('#pills button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-id')===id);});
+  try{sessionStorage.setItem('mss_last',id);}catch(e){}
+  window.scrollTo(0,0);
+}
+function buildPills(){
+  document.getElementById('pills').innerHTML=SOPS.map(function(s){return '<button data-id="'+s.id+'">'+s.label+'</button>';}).join('');
+  document.querySelectorAll('#pills button').forEach(function(b){b.addEventListener('click',function(){show(b.getAttribute('data-id'));});});
+}
+(function(){
+  var OK=['559621627cc8f4f6b634325db97c94b584d5186ef210342720ad143db6e7bb44', /* MEMBERSUCCESS2026 */
+          '368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875']; /* BWTEAM2026 (master) */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function el(id){return document.getElementById(id);}
+  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Member Success SOPs · BreedWise';buildPills();var last='sop-02';try{last=sessionStorage.getItem('mss_last')||'sop-02';}catch(e){}if(!document.getElementById(last))last='sop-02';show(last);}
+  function tryUnlock(){var v=(el('pw').value||'').trim();Promise.all([h(v),h(v.toUpperCase())]).then(function(a){if(OK.indexOf(a[0])>=0||OK.indexOf(a[1])>=0){try{sessionStorage.setItem('mss_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
+  el('unlock').addEventListener('click',tryUnlock);
+  el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('mss_ok')==='1'){reveal();}else{el('pw').focus();}}catch(e){el('pw').focus();}
+})();
+</script>
+</body>
+</html>
