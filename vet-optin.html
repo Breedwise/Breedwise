@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A free Breeder Science Scorecard from Dr. Emmanuel Fontaine — see your reproduction & breeding-science blind spots.">
+<title>Breeder Science Scorecard · with Dr. Emmanuel Fontaine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0f12;--panel:#111a1e;--panel2:#0d1417;--line:#20302f;--line2:#2b3f3d;
+    --ink:#eef4f3;--mid:#bccbc9;--muted:#7d938f;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--teal:#4db6a4;--teal-soft:#8fd9cb;--green:#57b98a;
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(900px 500px at 50% -10%,rgba(77,182,164,.08),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.55}
+  .bar{border-bottom:1px solid var(--line);padding:13px 20px;text-align:center}
+  .brand{font-size:13px;letter-spacing:.22em;font-weight:700;color:var(--mid)}.brand b{color:var(--gold)}
+  .brand .w{color:var(--muted);font-weight:400;letter-spacing:.03em;font-size:12px;display:block;margin-top:2px}
+  .wrap{max-width:720px;margin:0 auto;padding:36px 20px 60px;text-align:center}
+  .eyebrow{display:inline-block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-soft);font-weight:700;background:rgba(77,182,164,.1);border:1px solid rgba(77,182,164,.28);border-radius:20px;padding:5px 13px}
+  h1{font-family:var(--disp);font-size:38px;line-height:1.1;margin:16px 0 10px;font-weight:600;letter-spacing:-.5px}
+  @media(max-width:600px){h1{font-size:30px}}
+  h1 .u{color:var(--teal-soft)}
+  .lead{color:var(--mid);font-size:16px;max-width:580px;margin:0 auto;font-weight:300}
+  .video{margin:26px auto;max-width:620px;aspect-ratio:16/9;background:linear-gradient(160deg,#122024,#0d1417);border:1px solid var(--line2);border-radius:16px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--muted)}
+  .video .play{width:58px;height:58px;border-radius:50%;background:rgba(77,182,164,.15);border:1px solid rgba(77,182,164,.4);display:flex;align-items:center;justify-content:center;color:var(--teal-soft);font-size:20px}
+  .video .cap{font-size:12.5px}
+  .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:18px;padding:24px 22px;max-width:480px;margin:0 auto;text-align:left}
+  .card h2{font-family:var(--disp);font-size:20px;text-align:center;margin:0 0 4px;font-weight:600}
+  .card .sub{font-size:13px;color:var(--muted);text-align:center;margin:0 0 16px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:460px){.row2{grid-template-columns:1fr}}
+  .fld{margin-bottom:11px}
+  label{font-size:11.5px;color:var(--muted);display:block;margin-bottom:5px}
+  input{width:100%;padding:13px 14px;background:var(--panel2);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;font-family:var(--sans)}
+  input:focus{outline:none;border-color:var(--teal)}
+  .hp{position:absolute;left:-9999px}
+  .cta{width:100%;margin-top:6px;padding:15px;background:linear-gradient(135deg,var(--teal),#3f9d8d);border:0;border-radius:12px;color:#05100e;font-weight:700;font-size:16px;cursor:pointer;font-family:var(--sans)}
+  .cta:disabled{opacity:.6}
+  .msg{font-size:12.5px;margin-top:10px;min-height:16px;text-align:center;color:var(--muted)}
+  .trust{font-size:12px;color:var(--muted);margin-top:14px;text-align:center}
+  .who{display:flex;align-items:center;gap:12px;justify-content:center;margin:28px auto 0;max-width:520px}
+  .who .av{width:48px;height:48px;border-radius:50%;background:linear-gradient(150deg,var(--teal),#2f7a6e);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:700;color:#06100e;font-size:18px;flex:none}
+  .who .t{text-align:left;font-size:13px;color:var(--mid)}.who .t b{color:var(--ink)}
+  .bullets{max-width:520px;margin:22px auto 0;text-align:left}
+  .bullets li{list-style:none;position:relative;padding:6px 0 6px 26px;font-size:14px;color:var(--mid)}
+  .bullets li::before{content:'✓';position:absolute;left:0;color:var(--teal-soft);font-weight:700}
+  footer{text-align:center;color:#5a6b6880;font-size:11px;margin-top:40px;padding:0 20px}
+</style>
+</head>
+<body>
+  <div class="bar"><span class="brand">BREED<b>WISE</b><span class="w">with Dr. Emmanuel Fontaine · Reproduction Specialist</span></span></div>
+  <div class="wrap">
+    <span class="eyebrow">Free · 5-minute Breeder Science Scorecard</span>
+    <h1>Find the <span class="u">blind spots</span> in your breeding program's science</h1>
+    <p class="lead">Most breeding problems — fading puppies, missed timing, inconsistent litters — trace back to a handful of science gaps you can't see. Dr. Fontaine's scorecard shows you yours in about five minutes.</p>
+
+    <div class="video" id="video">
+      <div class="play">▶</div>
+      <div class="cap">Video from Dr. Fontaine — replace with embed</div>
+    </div>
+
+    <div class="card">
+      <h2>Send me my Scorecard</h2>
+      <div class="sub">Enter your details and we'll email it straight to you.</div>
+      <form id="f" autocomplete="on">
+        <input type="text" class="hp" id="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="row2">
+          <div class="fld"><label>First name</label><input type="text" id="first" required></div>
+          <div class="fld"><label>Last name</label><input type="text" id="last"></div>
+        </div>
+        <div class="fld"><label>Email</label><input type="email" id="email" required></div>
+        <div class="fld"><label>Phone</label><input type="tel" id="phone" required></div>
+        <button type="submit" class="cta" id="submit">Send me my Breeder Science Scorecard →</button>
+        <div class="msg" id="msg"></div>
+      </form>
+      <div class="trust">Free. From Dr. Emmanuel Fontaine. Your information stays private.</div>
+    </div>
+
+    <div class="who"><span class="av">EF</span><div class="t"><b>Dr. Emmanuel Fontaine</b> — board-certified in reproduction. He helps breeders raise healthier litters with science, not guesswork.</div></div>
+
+    <ul class="bullets">
+      <li>See exactly where your breeding science is strong — and where it's quietly costing you litters</li>
+      <li>A light, science-only read: genetics, timing, pregnancy, whelping, neonatal care, and more</li>
+      <li>Delivered to your inbox, with your clearest next step to fix the gaps</li>
+    </ul>
+
+    <footer>BreedWise · The Profitable Breeder. Educational self-assessment, not veterinary advice for an individual animal.</footer>
+  </div>
+
+<script>
+var FN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/vet-optin';
+document.getElementById('f').addEventListener('submit',function(e){
+  e.preventDefault();
+  var msg=document.getElementById('msg'),btn=document.getElementById('submit');
+  var email=(document.getElementById('email').value||'').trim();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){msg.style.color='#ff8178';msg.textContent='Please enter a valid email.';return;}
+  var phone=(document.getElementById('phone').value||'').trim();
+  if(phone.replace(/\D/g,'').length<7){msg.style.color='#ff8178';msg.textContent='Please enter a valid phone number.';return;}
+  btn.disabled=true;btn.textContent='Sending…';msg.style.color='var(--muted)';msg.textContent='';
+  var payload={first:document.getElementById('first').value.trim(),last:document.getElementById('last').value.trim(),email:email,phone:phone,company:document.getElementById('company').value};
+  fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .then(function(r){return r.json();}).then(function(d){
+      if(d&&d.ok){try{sessionStorage.setItem('vo_name',payload.first);sessionStorage.setItem('vo_email',email);}catch(e){}window.location.href='vet-thankyou.html';}
+      else{btn.disabled=false;btn.textContent='Send me my Breeder Science Scorecard →';msg.style.color='#ff8178';msg.textContent=(d&&d.error)||'Something went wrong — try again.';}
+    }).catch(function(){btn.disabled=false;btn.textContent='Send me my Breeder Science Scorecard →';msg.style.color='#ff8178';msg.textContent='Network error — try again.';});
+});
+</script>
+</body>
+</html>
