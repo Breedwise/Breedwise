@@ -13,6 +13,8 @@ const CC = Deno.env.get("CC360_TOKEN") ?? "";
 const LOC = Deno.env.get("CC360_LOCATION") ?? "";
 const GH = "https://services.leadconnectorhq.com";
 const head = { Authorization: "Bearer " + CC, Version: "2021-07-28", "Content-Type": "application/json" };
+const HOOK = Deno.env.get("SLACK_WEBHOOK") ?? "";
+async function slack(text: string) { if (!HOOK) return; await fetch(HOOK, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text }) }).catch(() => {}); }
 const cors = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "*", "Access-Control-Allow-Methods": "POST, OPTIONS" };
 const j = (o: unknown, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { "content-type": "application/json", ...cors } });
 const emailRe = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
@@ -50,15 +52,28 @@ Deno.serve(async (req) => {
     }
   } catch (_) { /* never block */ }
 
+  // First time we've seen this email? (notify once per new partial lead, not per keystroke)
+  let firstTouch = false;
+  try {
+    const { data } = await supabase.from("tool_submissions").select("id").eq("tool", "meta-attribution").eq("member_email", email).limit(1);
+    firstTouch = !data || data.length === 0;
+  } catch (_) { /* */ }
+
   // Store attribution so a later Schedule/booking still matches the ad click.
   try {
     await supabase.from("tool_submissions").insert({
       tool: "meta-attribution", tool_label: "Meta Attribution (partial)", member_email: email, member_name: name || null,
       summary: `partial · fbc:${b.fbc ? "y" : "n"}`,
-      meta: { fbp: b.fbp || null, fbc: b.fbc || null, fbclid: b.fbclid || null, event_id: b.event_id || null, partial: true, captured_at: Math.floor(Date.now() / 1000) },
+      meta: { fbp: b.fbp || null, fbc: b.fbc || null, fbclid: b.fbclid || null, event_id: b.event_id || null, phone: phone || null, breeds: b.breeds || null, reason: b.reason || null, partial: true, captured_at: Math.floor(Date.now() / 1000) },
       inputs: null, result: null,
     });
   } catch (_) { /* */ }
 
-  return j({ ok: true, cc360 });
+  // Real-time notification — only for a brand-new partial lead.
+  if (firstTouch) {
+    const who = [name, email, phone].filter(Boolean).join(" · ");
+    await slack(`⏳ *New partial Academy application*\n${who}${b.breeds ? " · " + String(b.breeds) : ""}\nStarted the application but didn't submit — follow up. (owner: Regina)`);
+  }
+
+  return j({ ok: true, cc360, notified: firstTouch });
 });
