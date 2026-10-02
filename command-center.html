@@ -224,12 +224,13 @@ function renderStrip(m,c){
   el('projEOM').textContent=usd(m.projectedEOM||0);
   el('daysLeft').textContent=Math.max(0,(m.daysInMonth||0)-(m.dayOfMonth||0));
   var nl=c.newLeads||{};
+  var s=(DATA&&DATA.sales&&DATA.sales.available)?DATA.sales:{};
   el('counters').innerHTML=
     ctr(usd(m.today||0),'cash today',m.deltaPct)+
     ctr(nl.today!=null?nl.today:'—','new leads today',nl.yesterday!=null&&nl.yesterday>0?Math.round(((nl.today||0)-nl.yesterday)/nl.yesterday*100):null)+
-    ctr(c.applications7d!=null?c.applications7d:'—','applications · 7d')+
-    ctr(c.closes7d!=null?c.closes7d:'—','closes · 7d')+
-    ctr((c.outbound&&c.outbound.available)?(c.outbound.calls24||0):'—','dials today');
+    ctr(s.submissions!=null?s.submissions:'—','submissions')+
+    ctr(s.closes!=null?s.closes:'—','closes · '+(s.academy||0)+'A / '+(s.tpb||0)+'TPB')+
+    ctr((s.closeRate!=null?s.closeRate:'—')+'%','close rate');
 }
 function ctr(v,l,d){return '<div class="ctr"><div class="v">'+v+(d!=null?arrow(d):'')+'</div><div class="l">'+l+'</div></div>';}
 
@@ -280,8 +281,14 @@ function renderFunnel(w,c,ads){
   } else {
     eff='<span class="warn">CAC / ROAS <b>needs ads token</b></span>';
   }
+  var s=(DATA&&DATA.sales&&DATA.sales.available)?DATA.sales:null;
+  var results=s?('<div class="foot" style="border-top:1px solid var(--line);margin-top:9px;padding-top:11px">'+
+    '<span>Submissions <b>'+s.submissions+'</b></span>'+
+    '<span>Partials <b style="color:var(--amber)">'+s.partialsRecoverable+'</b> recoverable</span>'+
+    '<span>Closes <b>'+s.closes+'</b> ('+(s.academy||0)+'A / '+(s.tpb||0)+'TPB)</span>'+
+    '<span>Close rate <b>'+s.closeRate+'%</b></span></div>'):'';
   b.innerHTML='<div class="funnel">'+rows+'</div>'+
-    '<div class="foot"><span>Visitor→Enrolled <b>'+v2e+'%</b></span>'+eff+'</div>';
+    '<div class="foot"><span>Visitor→Enrolled <b>'+v2e+'%</b></span>'+eff+'</div>'+results;
 }
 function renderCrm(c){
   var b=el('crm-body'), tag=el('crmTag');
