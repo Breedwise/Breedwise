@@ -37,6 +37,10 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold)}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
 .tchip{font-size:12px;font-weight:600;padding:7px 13px;border-radius:9px;border:1px solid var(--border);background:var(--card-2);color:var(--muted);cursor:pointer}
 .tchip.on{background:var(--gold-faint);color:var(--gold);border-color:var(--gold-deep)}
+.tcat{font-size:9px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);opacity:.65;align-self:center;padding:0 3px 0 10px;margin-left:3px;border-left:1px solid var(--border)}
+tr.grp td{background:var(--card-2);border-bottom:1px solid var(--gold-deep);border-top:1px solid var(--gold-deep);padding:8px 9px}
+tr.grp .gl{font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.05em;font-size:11px}
+tr.grp .gc{float:right;color:var(--muted);font-size:11px;font-weight:600}
 .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
 .kpi{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:13px}
 .kpi .v{font-family:var(--heading);font-size:24px}.kpi .l{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:2px}
@@ -112,6 +116,14 @@ const usd=n=>'$'+Number(n||0).toLocaleString('en-US');
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const dcls=s=>'d-'+String(s||'New').replace('-','');
 let ROWS=[], toolFilter='All', statusFilter='All', q='', ME=null;
+const CATS=[
+  {name:'Scorecards', tools:['program-scorecard','science-scorecard','litter-scorecard','free-scorecard','litter-snapshot']},
+  {name:'Opt-ins & Leads', tools:['litter-optin','vet-optin','optin']},
+  {name:'Applications', tools:['application-partial','vsl-apply','academy-application','puppy-application','abr-application']},
+  {name:'Revenue & Ops', tools:['sales-results','ad-metrics','q4-plan']}
+];
+function catIndex(tool){ for(let i=0;i<CATS.length;i++){ if(CATS[i].tools.includes(tool)) return i; } return CATS.length; }
+function catName(i){ return CATS[i]?CATS[i].name:'Other'; }
 
 $('#gBtn').addEventListener('click',signIn);
 $('#gPass').addEventListener('keydown',e=>{if(e.key==='Enter')signIn();});
@@ -181,8 +193,15 @@ function inTool(r){ return toolFilter==='All'||r.tool===toolFilter; }
 function counts(){ const base=ROWS.filter(inTool); const c={All:base.length}; STATUSES.forEach(s=>c[s]=base.filter(r=>(r.status||'New')===s).length); return c; }
 function render(){
   const tl=toolsList();
-  $('#tools').innerHTML=`<span class="tchip ${toolFilter==='All'?'on':''}" data-t="All">All tools · ${ROWS.length}</span>`+
-    Object.entries(tl).map(([id,label])=>`<span class="tchip ${toolFilter===id?'on':''}" data-t="${esc(id)}">${esc(label)} · ${ROWS.filter(r=>r.tool===id).length}</span>`).join('');
+  const byCat={}; Object.keys(tl).forEach(id=>{ const ci=catIndex(id); (byCat[ci]=byCat[ci]||[]).push(id); });
+  let th=`<span class="tchip ${toolFilter==='All'?'on':''}" data-t="All">All tools · ${ROWS.length}</span>`;
+  Object.keys(byCat).map(Number).sort((a,b)=>a-b).forEach(ci=>{
+    th+=`<span class="tcat">${esc(catName(ci))}</span>`;
+    byCat[ci].sort((a,b)=>(tl[a]||a).localeCompare(tl[b]||b)).forEach(id=>{
+      th+=`<span class="tchip ${toolFilter===id?'on':''}" data-t="${esc(id)}">${esc(tl[id])} · ${ROWS.filter(r=>r.tool===id).length}</span>`;
+    });
+  });
+  $('#tools').innerHTML=th;
   $('#tools').querySelectorAll('[data-t]').forEach(el=>el.addEventListener('click',()=>{toolFilter=el.getAttribute('data-t');statusFilter='All';render();}));
   drawKpis();
   const c=counts();
@@ -200,21 +219,34 @@ function visible(){
     return true;
   });
 }
+function rowHtml(r){
+  const d=r.created_at?new Date(r.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'';
+  return `<tr>
+    <td class="sub">${esc(d)}</td>
+    <td><span class="tooltag">${esc(r.tool_label||r.tool)}</span></td>
+    <td><div class="nm">${esc(r.member_name||'—')}</div><div class="sub">${esc(r.member_email||'')}</div></td>
+    <td style="max-width:260px">${esc((r.summary||'').slice(0,100))}</td>
+    <td><select class="ow" data-id="${r.id}">${OWNERS.map(o=>`<option ${((r.owner||'Unassigned')===o)?'selected':''}>${o}</option>`).join('')}</select></td>
+    <td><span class="dot ${dcls(r.status)}"></span><select class="st" data-id="${r.id}">${STATUSES.map(s=>`<option ${((r.status||'New')===s)?'selected':''}>${s}</option>`).join('')}</select></td>
+    <td><button class="open" data-open="${r.id}">Open</button></td>
+  </tr>`;
+}
 function renderRows(){
   const rows=visible();
   if(!rows.length){ $('#rows').innerHTML=`<tr><td colspan="7" class="empty">No submissions yet.</td></tr>`; return; }
-  $('#rows').innerHTML=rows.map(r=>{
-    const d=r.created_at?new Date(r.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'';
-    return `<tr>
-      <td class="sub">${esc(d)}</td>
-      <td><span class="tooltag">${esc(r.tool_label||r.tool)}</span></td>
-      <td><div class="nm">${esc(r.member_name||'—')}</div><div class="sub">${esc(r.member_email||'')}</div></td>
-      <td style="max-width:260px">${esc((r.summary||'').slice(0,100))}</td>
-      <td><select class="ow" data-id="${r.id}">${OWNERS.map(o=>`<option ${((r.owner||'Unassigned')===o)?'selected':''}>${o}</option>`).join('')}</select></td>
-      <td><span class="dot ${dcls(r.status)}"></span><select class="st" data-id="${r.id}">${STATUSES.map(s=>`<option ${((r.status||'New')===s)?'selected':''}>${s}</option>`).join('')}</select></td>
-      <td><button class="open" data-open="${r.id}">Open</button></td>
-    </tr>`;
-  }).join('');
+  let html='';
+  if(toolFilter==='All'){                                     // separate every tool into its own labelled section
+    const tl=toolsList(), groups={};
+    rows.forEach(r=>{ (groups[r.tool]=groups[r.tool]||[]).push(r); });
+    const order=Object.keys(groups).sort((a,b)=>{ const c=catIndex(a)-catIndex(b); return c||((tl[a]||a).localeCompare(tl[b]||b)); });
+    order.forEach(tool=>{
+      html+=`<tr class="grp"><td colspan="7"><span class="gl">${esc(tl[tool]||tool)}</span><span class="gc">${groups[tool].length}</span></td></tr>`;
+      html+=groups[tool].map(rowHtml).join('');
+    });
+  } else {
+    html=rows.map(rowHtml).join('');
+  }
+  $('#rows').innerHTML=html;
   $('#rows').querySelectorAll('.st').forEach(el=>el.addEventListener('change',()=>update(el.getAttribute('data-id'),{status:el.value})));
   $('#rows').querySelectorAll('.ow').forEach(el=>el.addEventListener('change',()=>update(el.getAttribute('data-id'),{owner:el.value})));
   $('#rows').querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click',()=>openSub(el.getAttribute('data-open'))));
