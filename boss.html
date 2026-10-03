@@ -12,12 +12,11 @@
   :root{
     --bg:#0b0e13;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;
     --ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;
-    --gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--blue:#8fbce6;
     --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   }
   *{box-sizing:border-box;margin:0}
   body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.6}
-  /* gate */
   #gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
   .gate-card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:16px;padding:36px 32px;max-width:420px;width:100%;text-align:center}
   .gate-card .mk{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px}
@@ -28,80 +27,122 @@
   .gate-card button{width:100%;margin-top:12px;padding:14px;background:linear-gradient(135deg,var(--gold),#a9863f);border:0;border-radius:11px;color:#1a130a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
   .gate-card .err{color:#ff8178;font-size:12.5px;margin-top:10px;min-height:16px}
   #app{display:none}
-  /* layout */
   .bar{border-bottom:1px solid var(--line);padding:13px 20px;text-align:center;position:sticky;top:0;background:rgba(11,14,19,.86);backdrop-filter:blur(8px);z-index:20}
   .brand{font-size:12.5px;letter-spacing:.22em;font-weight:700;color:var(--mid)}.brand b{color:var(--gold)}
-  .wrap{max-width:900px;margin:0 auto;padding:0 22px}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px}
   /* hero */
-  .hero{text-align:center;padding:64px 0 46px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+  .hero{text-align:center;padding:60px 0 44px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
   .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(820px 420px at 50% -20%,rgba(201,168,98,.12),transparent 60%);pointer-events:none}
   .eyebrow{display:inline-block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;background:rgba(201,168,98,.1);border:1px solid rgba(201,168,98,.28);border-radius:20px;padding:6px 15px;position:relative}
-  .hero .boss{font-family:var(--disp);font-size:88px;line-height:.95;font-weight:700;letter-spacing:-2px;margin:22px 0 4px;position:relative}
-  .hero .boss sup{font-size:26px;color:var(--gold);vertical-align:super;letter-spacing:0}
-  @media(max-width:600px){.hero .boss{font-size:58px}}
-  .hero .full{font-family:var(--disp);font-size:21px;color:var(--gold-soft);font-weight:500;position:relative}
-  .hero .sub{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:12px;position:relative}
-  .promise{max-width:620px;margin:26px auto 0;position:relative}
-  .promise p{color:var(--mid);font-size:16.5px;font-weight:300}
-  .promise .not{margin-top:16px;font-size:14.5px;color:var(--ink)}
-  .promise .not b{color:var(--gold-soft)}
-  /* flow band */
-  .flow{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;align-items:center;padding:28px 0;border-bottom:1px solid var(--line)}
-  .flow span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--mid)}
-  .flow .sep{color:var(--gold);font-size:12px}
-  /* section heading */
-  .shead{text-align:center;margin:56px 0 10px}
-  .shead .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-soft);font-weight:700}
-  .shead h2{font-family:var(--disp);font-size:30px;font-weight:600;margin-top:6px}
-  .shead p{color:var(--muted);font-size:14px;max-width:560px;margin:8px auto 0}
-  /* method step */
-  .step{position:relative;border-top:1px solid var(--line);padding:38px 0}
-  .step .ghost{position:absolute;top:22px;right:0;font-family:var(--disp);font-size:150px;line-height:1;font-weight:700;color:rgba(201,168,98,.06);letter-spacing:-4px;pointer-events:none;user-select:none}
-  @media(max-width:600px){.step .ghost{font-size:92px;top:30px}}
-  .step .no{font-family:var(--disp);font-size:15px;font-weight:700;color:var(--gold);letter-spacing:.08em}
-  .step h3{font-family:var(--disp);font-size:27px;font-weight:600;margin:4px 0 4px;position:relative}
-  .step .tag{color:var(--mid);font-size:16px;font-weight:300;margin-bottom:18px;position:relative}
-  .step .body{position:relative;max-width:640px}
-  .lab{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:8px}
-  ul.inc{list-style:none;display:grid;gap:8px}
-  ul.inc li{position:relative;padding-left:22px;font-size:14.5px;color:var(--mid)}
-  ul.inc li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;border-radius:2px;background:var(--gold);transform:rotate(45deg)}
-  ul.inc li b{color:var(--ink);font-weight:600}
-  .named{display:grid;gap:10px;margin-top:4px}
-  .named .p{display:flex;gap:12px;align-items:baseline;font-size:14.5px;color:var(--mid)}
-  .named .p b{color:var(--ink);font-weight:600;min-width:112px;display:inline-block}
-  .chainwrap{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:6px 0 2px}
-  .chainwrap .c{font-size:12.5px;color:var(--ink);background:var(--panel);border:1px solid var(--line2);border-radius:8px;padding:6px 11px;font-weight:500}
-  .chainwrap .ar{color:var(--gold);font-size:12px}
-  .output{margin-top:18px;display:flex;gap:10px;align-items:baseline;background:rgba(201,168,98,.07);border-left:2px solid var(--gold);border-radius:7px;padding:11px 14px}
-  .output .l{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;flex:none}
-  .output .t{font-size:14px;color:var(--ink)}
-  .note{margin-top:14px;font-size:12.5px;color:var(--muted);border:1px dashed var(--line2);border-radius:9px;padding:11px 13px}
+  .hero .boss{font-family:var(--disp);font-size:80px;line-height:.95;font-weight:700;letter-spacing:-2px;margin:20px 0 2px;position:relative}
+  .hero .boss sup{font-size:24px;color:var(--gold);vertical-align:super}
+  @media(max-width:600px){.hero .boss{font-size:54px}}
+  .hero .full{font-family:var(--disp);font-size:20px;color:var(--gold-soft);font-weight:500;position:relative}
+  .hero .tagline{font-family:var(--disp);font-size:30px;font-weight:600;margin-top:20px;position:relative;letter-spacing:-.4px}
+  @media(max-width:600px){.hero .tagline{font-size:23px}}
+  .hero .tagline em{color:var(--gold-soft);font-style:normal}
+  .promise{max-width:640px;margin:22px auto 0;position:relative}
+  .promise p{color:var(--mid);font-size:15.5px;font-weight:300}
+  .reframe{max-width:620px;margin:20px auto 0;position:relative;background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .reframe .x{font-size:13px;color:var(--muted)}
+  .reframe .v{font-family:var(--disp);font-size:18px;color:var(--ink);margin-top:6px;font-weight:600}
+  /* price overview */
+  .pov{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:40px}
+  @media(max-width:640px){.pov{grid-template-columns:1fr}}
+  .pcard{border-radius:16px;padding:22px;border:1px solid var(--line2)}
+  .pcard.p1{border-color:var(--gold);background:linear-gradient(162deg,rgba(201,168,98,.1),rgba(201,168,98,.02))}
+  .pcard .ph{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .pcard.p1 .ph{color:var(--gold-soft)}
+  .pcard h3{font-family:var(--disp);font-size:22px;font-weight:600;margin:6px 0 2px}
+  .pcard .price{font-family:var(--disp);font-size:34px;font-weight:700;color:var(--ink)}
+  .pcard .price small{font-size:15px;color:var(--muted);font-weight:400}
+  .pcard .terms{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .pcard .role{font-size:13.5px;color:var(--mid);margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+  .pcard .role b{color:var(--ink)}
+  /* distinction */
+  .distinct{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+  @media(max-width:640px){.distinct{grid-template-columns:1fr}}
+  .distinct .d{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:15px}
+  .distinct .d .k{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-soft);font-weight:700}
+  .distinct .d .v{font-family:var(--disp);font-size:16px;color:var(--ink);margin-top:5px;font-weight:600}
+  /* section heads */
+  .phasehead{margin:66px 0 6px;position:relative;text-align:center}
+  .phasehead .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-soft);font-weight:700}
+  .phasehead h2{font-family:var(--disp);font-size:34px;font-weight:600;margin-top:6px}
+  .phasehead .meta{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:8px}
+  .phasehead .meta b{color:var(--gold-soft)}
+  .grp{display:flex;align-items:center;gap:14px;margin:40px 0 6px}
+  .grp .l{font-family:var(--disp);font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .grp .rule{flex:1;height:1px;background:var(--line)}
+  /* component */
+  .comp{display:flex;gap:16px;padding:18px 0;border-top:1px solid var(--line)}
+  .comp .no{font-family:var(--disp);font-size:16px;font-weight:700;color:var(--gold);flex:none;min-width:30px;padding-top:2px}
+  .comp .c{flex:1}
+  .comp h4{font-family:var(--disp);font-size:19px;font-weight:600}
+  .comp .tag{color:var(--gold-soft);font-size:13.5px;font-style:italic;margin:2px 0 8px}
+  .comp .d{color:var(--mid);font-size:14px}
+  .comp .d b{color:var(--ink);font-weight:600}
+  ul.inc{list-style:none;display:grid;gap:6px;margin-top:8px}
+  ul.inc li{position:relative;padding-left:20px;font-size:13.8px;color:var(--mid)}
+  ul.inc li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:2px;background:var(--gold);transform:rotate(45deg)}
+  .chain{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0 2px}
+  .chain .c2{font-size:12px;color:var(--ink);background:var(--panel);border:1px solid var(--line2);border-radius:7px;padding:5px 9px;font-weight:500}
+  .chain .ar{color:var(--gold);font-size:11px}
+  .out{margin-top:10px;display:flex;gap:9px;align-items:baseline;background:rgba(201,168,98,.07);border-left:2px solid var(--gold);border-radius:6px;padding:9px 12px}
+  .out .l{font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;flex:none}
+  .out .t{font-size:13.3px;color:var(--ink)}
+  .note{margin-top:10px;font-size:12.3px;color:var(--muted);border:1px dashed var(--line2);border-radius:9px;padding:10px 12px}
   .note b{color:var(--mid)}
-  /* offer list */
-  .offer{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
-  @media(max-width:640px){.offer{grid-template-columns:1fr}}
-  .oi{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:12px;padding:15px 16px;display:flex;gap:13px}
-  .oi .n{font-family:var(--disp);font-size:18px;font-weight:700;color:var(--gold);flex:none;min-width:26px}
-  .oi .t b{color:var(--ink);font-size:14.5px;display:block;margin-bottom:2px}
-  .oi .t span{color:var(--muted);font-size:12.8px}
-  /* not-added */
-  .notadd{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:24px;margin-top:22px}
-  .notadd .chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
-  .notadd .chips span{font-size:12.5px;color:var(--muted);background:#0c1116;border:1px solid var(--line);border-radius:18px;padding:6px 13px;text-decoration:line-through;text-decoration-color:rgba(255,129,120,.5)}
-  .notadd .enough{color:var(--ink);font-size:14.5px;margin-top:16px;font-weight:500}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:4px 24px}
+  @media(max-width:560px){.two{grid-template-columns:1fr}}
+  .two .h{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;margin-bottom:4px}
+  /* certification */
+  .certblock{border:1px solid var(--gold);background:linear-gradient(162deg,rgba(201,168,98,.09),rgba(201,168,98,.02));border-radius:16px;padding:24px;margin-top:22px}
+  .certblock .ct{font-family:var(--disp);font-size:24px;font-weight:600}
+  .certblock .cs{color:var(--gold-soft);font-size:13.5px;font-style:italic;margin:2px 0 14px}
+  .eligible{font-size:14px;color:var(--ink);background:rgba(201,168,98,.1);border-radius:9px;padding:11px 14px;margin-bottom:16px}
+  .eligible b{color:var(--gold-soft)}
+  .gates{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media(max-width:640px){.gates{grid-template-columns:1fr 1fr}}
+  .gate{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .gate .g{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .gate .n{font-family:var(--disp);font-size:16px;color:var(--ink);margin:3px 0 5px;font-weight:600}
+  .gate .t{font-size:12.3px;color:var(--mid)}
+  .outcomes{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+  .outcomes span{font-size:12px;font-weight:700;letter-spacing:.03em;border-radius:18px;padding:6px 13px}
+  .outcomes .ok{background:rgba(87,185,138,.14);color:#8fd0a6;border:1px solid rgba(87,185,138,.3)}
+  .outcomes .cond{background:rgba(201,168,98,.14);color:var(--gold-soft);border:1px solid rgba(201,168,98,.32)}
+  .outcomes .no{background:#0c1116;color:var(--muted);border:1px solid var(--line)}
+  .certline{font-size:13.5px;color:var(--ink);margin-top:14px;font-weight:500}
+  /* timeline */
+  .timeline{max-width:560px;margin:22px auto 0;position:relative;padding-left:26px}
+  .timeline::before{content:"";position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,var(--gold),rgba(201,168,98,.2))}
+  .tl{position:relative;padding:11px 0}
+  .tl::before{content:"";position:absolute;left:-26px;top:16px;width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px var(--bg)}
+  .tl .when{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .tl .what{font-family:var(--disp);font-size:17px;color:var(--ink);font-weight:600;margin-top:2px}
+  .tl .what span{font-size:12.5px;color:var(--mid);font-weight:400;font-family:var(--sans)}
+  .tl.star .what{color:var(--gold-soft)}
+  /* final stack */
+  .stack{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px;align-items:start}
+  @media(max-width:700px){.stack{grid-template-columns:1fr}}
+  .scol{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:20px}
+  .scol.p1{border-top:3px solid var(--gold)}
+  .scol.p2{border-top:3px solid var(--line2)}
+  .scol .price{font-family:var(--disp);font-size:26px;font-weight:700}
+  .scol .price small{font-size:13px;color:var(--muted);font-weight:400}
+  .scol .sub{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:2px 0 10px}
+  .scol .gh{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;margin:12px 0 5px}
+  .scol ul{list-style:none;display:grid;gap:4px}
+  .scol ul li{font-size:13px;color:var(--mid);padding-left:16px;position:relative}
+  .scol ul li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--gold)}
   /* philosophy */
-  .philo{text-align:center;padding:56px 0 20px;border-top:1px solid var(--line);margin-top:56px}
-  .philo .big{font-family:var(--disp);font-size:30px;font-weight:600;line-height:1.25;max-width:640px;margin:0 auto}
+  .philo{text-align:center;padding:54px 0 16px;border-top:1px solid var(--line);margin-top:60px}
+  .philo .big{font-family:var(--disp);font-size:30px;font-weight:600;line-height:1.2;max-width:640px;margin:0 auto}
   .philo .big em{color:var(--gold-soft);font-style:normal}
-  .qs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:720px;margin:30px auto 0}
-  @media(max-width:640px){.qs{grid-template-columns:1fr}}
-  .qs .q{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:12px;padding:16px 14px;text-align:left}
-  .qs .q .k{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
-  .qs .q .v{font-family:var(--disp);font-size:16px;color:var(--ink);margin-top:5px;font-weight:600}
-  .creed{color:var(--mid);font-size:14.5px;max-width:620px;margin:28px auto 0;font-weight:300}
+  .creed{color:var(--mid);font-size:14.5px;max-width:620px;margin:22px auto 0;font-weight:300}
   .creed b{color:var(--gold-soft);font-weight:500}
-  footer{text-align:center;color:#59657380;font-size:11px;margin:46px 0 40px;padding:0 20px}
+  footer{text-align:center;color:#59657380;font-size:11px;margin:44px 0 40px;padding:0 20px}
 </style>
 </head>
 <body>
@@ -110,7 +151,7 @@
   <div class="gate-card">
     <div class="mk">BreedWise · Internal</div>
     <h1>BOSS™ Specification</h1>
-    <p>Internal product specification. Team access only.</p>
+    <p>Internal product &amp; pricing specification. Team access only.</p>
     <input id="pw" type="password" placeholder="Team code" autocomplete="off" spellcheck="false" aria-label="Team code">
     <button id="unlock">Open specification</button>
     <div class="err" id="gate-err"></div>
@@ -121,221 +162,259 @@
   <div class="bar"><span class="brand">BREED<b>WISE</b> · BOSS™ INTERNAL SPECIFICATION</span></div>
 
   <div class="hero"><div class="wrap">
-    <span class="eyebrow">Internal product specification</span>
+    <span class="eyebrow">Internal product &amp; pricing specification</span>
     <div class="boss">BOSS<sup>™</sup></div>
     <div class="full">BreedWise Operating System &amp; Standards</div>
-    <div class="sub">120-Day Personalized Implementation Program</div>
-    <div class="promise">
-      <p>Identify what your breeding program and business need most. Build the systems. Implement them with our team. Measure the progress.</p>
-      <p class="not"><b>BOSS is not primarily a course.</b> It is a 120-day implementation pathway supported by training, tools, technology, experts, accountability, and direct access to the BreedWise team.</p>
+    <div class="tagline">120 Days to <em>Build</em>. 12 Months to <em>Prove</em>.</div>
+    <div class="promise"><p>A personalized implementation program that helps breeders identify what their breeding program and business need most, build the systems to support it, implement those systems with the BreedWise team, and demonstrate their standards over time.</p></div>
+    <div class="reframe">
+      <div class="x">The member shouldn't perceive BOSS as a website + CRM + course + calls. They should perceive it as:</div>
+      <div class="v">We help you build the operating system behind a stronger breeding program and business.</div>
+    </div>
+
+    <div class="pov">
+      <div class="pcard p1">
+        <div class="ph">Phase 1 · Implementation</div>
+        <h3>BOSS Implementation</h3>
+        <div class="price">$6,000</div>
+        <div class="terms">120 Days · paid in full, or 4 × $1,500</div>
+        <div class="role"><b>We help you build it.</b></div>
+      </div>
+      <div class="pcard">
+        <div class="ph">Phase 2 · Continuation</div>
+        <h3>Operate • Optimize • Prove</h3>
+        <div class="price">$297<small> / month</small></div>
+        <div class="terms">Begins after the 120-day build</div>
+        <div class="role"><b>We help you operate, improve, measure &amp; prove it.</b></div>
+      </div>
+    </div>
+    <div class="distinct">
+      <div class="d"><div class="k">$6K Implementation</div><div class="v">We help you build it.</div></div>
+      <div class="d"><div class="k">$297 Continuation</div><div class="v">We operate, improve, measure &amp; prove it.</div></div>
+      <div class="d"><div class="k">Certification</div><div class="v">We verify it.</div></div>
     </div>
   </div></div>
 
   <div class="wrap">
-    <div class="flow">
-      <span>Assess</span><span class="sep">→</span><span>Prioritize</span><span class="sep">→</span><span>Build</span><span class="sep">→</span>
-      <span>Implement</span><span class="sep">→</span><span>Support</span><span class="sep">→</span><span>Measure</span><span class="sep">→</span><span>Reassess</span>
-    </div>
 
-    <div class="shead"><div class="k">The Method</div><h2>The BOSS™ Method</h2>
-      <p>Ten moves. Complex infrastructure underneath, a radically simple experience on top.</p></div>
+    <!-- ============ PHASE 1 ============ -->
+    <div class="phasehead"><div class="k">Phase 1</div><h2>BOSS™ Implementation</h2>
+      <div class="meta">120 Days · <b>$6,000</b> · paid in full or 4 × $1,500</div></div>
 
-    <!-- 01 -->
-    <div class="step"><div class="ghost">01</div>
-      <div class="no">01 — ASSESS</div><h3>Know where you stand.</h3>
-      <div class="tag">Every member begins with a structured baseline across their breeding program and business.</div>
-      <div class="body">
-        <div class="lab">Included</div>
-        <ul class="inc">
-          <li><b>BOSS Baseline Assessment</b></li>
-          <li>Business + breeding program review</li>
-          <li>Current systems inventory</li>
-          <li>KPI baseline</li>
-          <li>Priority / gap identification</li>
-          <li>Definition of the member's desired 120-day outcome</li>
-        </ul>
-        <div class="output"><span class="l">Output</span><span class="t">A documented starting point.</span></div>
+    <div class="grp"><span class="l">Build</span><span class="rule"></span></div>
+
+    <div class="comp"><div class="no">01</div><div class="c">
+      <h4>BOSS™ Baseline Assessment</h4><div class="tag">Know where you stand before deciding what to build.</div>
+      <div class="d">Establish the member's starting point across both sides of the program:</div>
+      <ul class="inc"><li>Breeding program &amp; business</li><li>Existing systems &amp; current challenges</li><li>Relevant KPIs</li><li>Upcoming breeding / litter timing</li><li>120-day goals</li><li>Highest-priority gaps</li></ul>
+      <div class="out"><span class="l">Output</span><span class="t">A documented BOSS Baseline.</span></div>
+    </div></div>
+
+    <div class="comp"><div class="no">02</div><div class="c">
+      <h4>Personalized 120-Day Implementation Pathway</h4><div class="tag">Know exactly what you're building.</div>
+      <div class="d">The baseline becomes a customized implementation pathway. Each member receives:</div>
+      <div class="chain"><span class="c2">Priority</span><span class="ar">→</span><span class="c2">System</span><span class="ar">→</span><span class="c2">Training</span><span class="ar">→</span><span class="c2">Tool</span><span class="ar">→</span><span class="c2">Implementation</span><span class="ar">→</span><span class="c2">KPI</span><span class="ar">→</span><span class="c2">Definition of Done</span></div>
+      <div class="note">The member can always answer: <b>What am I working on right now, why does it matter, and what does "done" look like?</b></div>
+    </div></div>
+
+    <div class="comp"><div class="no">03</div><div class="c">
+      <h4>BreedWise Website</h4><div class="tag">Build the digital foundation.</div>
+      <div class="d">A professional website built around the breeder's program, positioning, credibility and buyer journey.</div>
+      <div class="note">SOP defines scope separately — pages, copy responsibilities, assets required, revision limits, domain/hosting, integrations, timeline, what BreedWise builds vs. what the breeder provides, and what happens after Day 120 — so "website included" never becomes unlimited agency work.</div>
+    </div></div>
+
+    <div class="comp"><div class="no">04</div><div class="c">
+      <h4>CRM + Lead Management System</h4><div class="tag">Organize the buyer journey.</div>
+      <div class="d">Infrastructure to manage leads, inquiries, qualified buyers, follow-up, pipeline stages, buyer communication, customer records, relevant automations and sales activity.</div>
+      <div class="out"><span class="l">The value</span><span class="t">Your lead-management system configured and operating — not simply CRM access.</span></div>
+    </div></div>
+
+    <div class="comp"><div class="no">05</div><div class="c">
+      <h4>BOSS™ System Configuration</h4><div class="tag">Don't just hand them software. Help install the system.</div>
+      <div class="d">BreedWise helps configure the core systems the pathway requires: website, CRM, workflows, dashboards, tracking, templates and other applicable BreedWise systems.</div>
+      <div class="note">The strongest distinction from TPB: <b>TPB teaches and diagnoses. BOSS implements and reviews.</b></div>
+    </div></div>
+
+    <div class="grp"><span class="l">Implement</span><span class="rule"></span></div>
+
+    <div class="comp"><div class="no">06</div><div class="c">
+      <h4>BOSS™ Training Library</h4><div class="tag">Learn what you need, when you need it.</div>
+      <div class="d">Easy, complete training across the breeding and business sides. Not "here are 100 videos." Instead: "this is what we're implementing — here's the training you need to understand it." The pathway determines what they consume and when.</div>
+    </div></div>
+
+    <div class="comp"><div class="no">07</div><div class="c">
+      <h4>BOSS™ Tools &amp; Templates</h4><div class="tag">Every lesson should move toward implementation.</div>
+      <div class="chain"><span class="c2">Tools</span><span class="c2">Templates</span><span class="c2">SOPs</span><span class="c2">Checklists</span><span class="c2">Frameworks</span><span class="c2">Calculators</span><span class="c2">Trackers</span><span class="c2">Scripts</span><span class="c2">Playbooks</span><span class="c2">Dashboards</span></div>
+      <div class="two" style="margin-top:12px">
+        <div><div class="h">Better Breeding</div><div class="d" style="font-size:13px">Preparation, records, reproduction education, pregnancy/whelping preparedness, neonatal monitoring, genetics/health organization, puppy raising, client education.</div></div>
+        <div><div class="h">Better Business</div><div class="d" style="font-size:13px">Positioning, demand, waitlists, buyer qualification, sales, pricing, litter economics, marketing, operations and measurement.</div></div>
       </div>
-    </div>
+    </div></div>
 
-    <!-- 02 -->
-    <div class="step"><div class="ghost">02</div>
-      <div class="no">02 — PRIORITIZE</div><h3>Know what matters now.</h3>
-      <div class="tag">BreedWise turns the assessment into a personalized <b style="color:var(--gold-soft);font-weight:500">120-Day BOSS Implementation Pathway</b> — not the same curriculum for everyone.</div>
-      <div class="body">
-        <div class="lab">The pathway determines</div>
-        <div class="chainwrap">
-          <span class="c">What to build</span><span class="ar">→</span><span class="c">What to learn</span><span class="ar">→</span>
-          <span class="c">What tools to use</span><span class="ar">→</span><span class="c">What to implement</span><span class="ar">→</span><span class="c">What to measure</span>
-        </div>
-        <div class="output"><span class="l">Output</span><span class="t">A clear 120-day implementation roadmap with priorities, milestones, owners and deadlines.</span></div>
-        <div class="note">The pathway is an actual <b>project plan</b> — not merely access to tailored trainings.</div>
+    <div class="comp"><div class="no">08</div><div class="c">
+      <h4>Private BOSS™ Implementation Channel</h4><div class="tag">1:1 Slack access for 120 days.</div>
+      <ul class="inc"><li><b>Jennifer</b> — project management, accountability, Member Success</li><li><b>Austin</b> — business strategy and implementation decisions</li><li><b>Yasmin</b> — brand / social strategy within scope</li><li><b>Dr. Fontaine</b> — veterinary / scientific education within appropriate scope</li></ul>
+      <div class="note">The purpose isn't "access" — it's <b>get unstuck while you're implementing.</b> The private channel ends with the high-touch 120-day phase.</div>
+    </div></div>
+
+    <div class="comp"><div class="no">09</div><div class="c">
+      <h4>Jennifer — BOSS™ Project Management</h4><div class="tag">Someone keeps the pathway moving.</div>
+      <div class="chain"><span class="c2">Priorities</span><span class="ar">→</span><span class="c2">Milestones</span><span class="ar">→</span><span class="c2">Tasks</span><span class="ar">→</span><span class="c2">Roadblocks</span><span class="ar">→</span><span class="c2">Resources</span><span class="ar">→</span><span class="c2">Reviews</span><span class="ar">→</span><span class="c2">Next Actions</span></div>
+      <div class="note">Her core question: <b>What needs to happen next for this member to keep moving?</b> The member shouldn't have to project-manage BreedWise.</div>
+    </div></div>
+
+    <div class="comp"><div class="no">10</div><div class="c">
+      <h4>Monthly 1:1 with Austin</h4><div class="tag">Strategy + implementation.</div>
+      <div class="d">4 private sessions during the 120-day pathway: strategic decisions, business bottlenecks, reviewing implementation, prioritization, troubleshooting, adjusting the pathway, determining next actions.</div>
+      <div class="note">These end with the intensive 120-day phase — not continuing indefinitely at $297/month.</div>
+    </div></div>
+
+    <div class="comp"><div class="no">11</div><div class="c">
+      <h4>Quarterly 1:1 Veterinary / Scientific Session</h4><div class="tag">Direct expert education.</div>
+      <div class="d">Private access during the initial pathway for questions around breeding-program preparedness and scientific / veterinary education.</div>
+      <div class="note">Boundary: <b>education and preparedness — not diagnosis, individualized treatment, or replacement of the breeder's veterinarian.</b></div>
+    </div></div>
+
+    <div class="comp"><div class="no">12</div><div class="c">
+      <h4>BOSS™ Implementation Reviews</h4><div class="tag">Day 30 · Day 60 · Day 90 · Day 120.</div>
+      <div class="d">Formal checkpoints prevent the pathway from becoming "four months of access." Every review answers: What was supposed to happen? What was completed? What's working? What's blocked? What changed? What's next?</div>
+      <div class="out"><span class="l">Every review ends</span><span class="t">Priority → Next Action → Owner → Deadline.</span></div>
+    </div></div>
+
+    <div class="grp"><span class="l">Measure</span><span class="rule"></span></div>
+
+    <div class="comp"><div class="no">13</div><div class="c">
+      <h4>BOSS™ Progress Dashboard + KPI Tracking</h4><div class="tag">Make progress visible.</div>
+      <ul class="inc">
+        <li><b>Implementation</b> — Not Started → In Progress → Implemented → Optimizing</li>
+        <li><b>Business</b> — demand, inquiry, buyer, conversion, pricing, economics and operational metrics</li>
+        <li><b>Breeding Program</b> — preparedness, recordkeeping, monitoring consistency, process completion and other appropriate non-medical indicators</li>
+        <li><b>Pathway</b> — 30 / 60 / 90 / 120-day progress</li>
+      </ul>
+      <div class="note">Breeding indicators measure <b>preparedness and implementation</b> — never promises of pregnancy rates, litter size, puppy survival or medical outcomes. The dashboard answers: are we actually implementing what we said we would?</div>
+    </div></div>
+
+    <div class="comp"><div class="no">14</div><div class="c">
+      <h4>Day-120 BOSS™ Reassessment</h4><div class="tag">Compare Day 1 to Day 120.</div>
+      <div class="chain"><span class="c2">Where you started</span><span class="ar">→</span><span class="c2">What we identified</span><span class="ar">→</span><span class="c2">What you built</span><span class="ar">→</span><span class="c2">What you implemented</span><span class="ar">→</span><span class="c2">What changed</span><span class="ar">→</span><span class="c2">What remains</span></div>
+    </div></div>
+
+    <div class="comp"><div class="no">15</div><div class="c">
+      <h4>BOSS™ Implementation Report</h4><div class="tag">A tangible record of the transformation.</div>
+      <div class="d">At Day 120 the member receives a simple summary that makes the value of the first four months visible:</div>
+      <div class="chain"><span class="c2">Baseline</span><span class="ar">→</span><span class="c2">Systems Built</span><span class="ar">→</span><span class="c2">Systems Implemented</span><span class="ar">→</span><span class="c2">KPI Movement</span><span class="ar">→</span><span class="c2">Remaining Gaps</span><span class="ar">→</span><span class="c2">Next Priorities</span></div>
+    </div></div>
+
+    <div class="comp"><div class="no">16</div><div class="c">
+      <h4>Next BOSS™ Roadmap</h4><div class="tag">Day 120 isn't the finish line.</div>
+      <div class="d">The reassessment generates the member's next roadmap. The conversation becomes: "We've built the foundation. Now we need to operate it, improve it, measure it, and demonstrate the standard consistently." That's the transition into continuation.</div>
+    </div></div>
+
+    <!-- ============ PHASE 2 ============ -->
+    <div class="phasehead"><div class="k">Phase 2</div><h2>BOSS™ Continuation</h2>
+      <div class="meta">Operate · Optimize · Prove · <b>$297 / month</b></div>
+      <p class="promise" style="margin-top:14px"><span style="color:var(--mid);font-size:14.5px">A different phase of the same product — not a watered-down version of the $6K offer. The intensive implementation is over; now they're running what they built.</span></p></div>
+
+    <div class="grp"><span class="l">Operate &amp; Optimize</span><span class="rule"></span></div>
+
+    <div class="comp"><div class="no">17</div><div class="c"><h4>Ongoing BOSS™ Community</h4><div class="tag">The room for breeders actively building toward BreedWise standards.</div>
+      <div class="d">Not another general breeder group. Members ask questions, share implementation, discuss challenges, learn from others solving similar operational problems, and stay connected to BreedWise.</div></div></div>
+
+    <div class="comp"><div class="no">18</div><div class="c"><h4>Ongoing BOSS™ Curriculum</h4><div class="tag">Keep the education you need.</div>
+      <div class="d">Continued access to the BOSS training ecosystem, including applicable updates and new education. Members don't lose the education they need simply because their first 120 days are complete.</div></div></div>
+
+    <div class="comp"><div class="no">19</div><div class="c"><h4>Ongoing Tools, Templates &amp; Resources</h4><div class="tag">The toolkit stays in their hands.</div>
+      <div class="d">Continued access to applicable BOSS implementation resources — tools, templates, SOPs, frameworks, calculators, trackers, checklists, playbooks — plus appropriate new and updated resources released during active membership.</div></div></div>
+
+    <div class="comp"><div class="no">20</div><div class="c"><h4>Ongoing Group Coaching + Q&amp;A</h4><div class="tag">Where the private-access model transitions.</div>
+      <div class="d">Ongoing access to scheduled BOSS coaching, implementation support and Q&amp;A.</div>
+      <div class="note">Private Austin 1:1s are <b>Phase 1</b>. Ongoing access is leveraged primarily through the BOSS support environment — not unlimited private high-touch support at $297.</div></div></div>
+
+    <div class="comp"><div class="no">21</div><div class="c"><h4>Ongoing Expert Education</h4><div class="tag">Continued expert educational access.</div>
+      <div class="d">Members continue receiving access to BreedWise's expert educational ecosystem, including appropriate veterinary / scientific education.</div>
+      <div class="note">Again: <b>education ≠ individualized veterinary diagnosis or treatment.</b></div></div></div>
+
+    <div class="comp"><div class="no">22</div><div class="c"><h4>Ongoing Member Success Support</h4><div class="tag">Jennifer doesn't disappear on Day 121.</div>
+      <div class="d">What changes is the intensity. Phase 1: project management. Continuation: Member Success + progress support — helping members stay engaged, identify where they're stuck, use the resources, complete reassessments and keep moving through the BOSS pathway.</div></div></div>
+
+    <div class="comp"><div class="no">23</div><div class="c"><h4>Continued KPI + Progress Tracking</h4><div class="tag">Consistency over time — not a four-month spike.</div>
+      <div class="d">Members continue tracking the indicators that matter to their program. Their BOSS Dashboard becomes a living record rather than a 120-day artifact.</div></div></div>
+
+    <div class="comp"><div class="no">24</div><div class="c"><h4>Periodic BOSS™ Reassessments</h4><div class="tag">Always a logical next step.</div>
+      <div class="chain"><span class="c2">Assess</span><span class="ar">→</span><span class="c2">Prioritize</span><span class="ar">→</span><span class="c2">Implement</span><span class="ar">→</span><span class="c2">Measure</span><span class="ar">→</span><span class="c2">Reassess</span><span class="ar">→</span><span class="c2">Reprioritize</span></div>
+      <div class="note">The loop means there's always a next step without inventing random new content to justify retention.</div></div></div>
+
+    <div class="comp"><div class="no">25</div><div class="c"><h4>Updated BOSS™ Roadmaps</h4><div class="tag">Reassessment produces new priorities.</div>
+      <div class="d">Instead of paying $297 for "access," members are continuing through <b>Assess → Roadmap → Execute → Measure → Reassess</b>. A much stronger retention mechanism. (Continuation also keeps access to The Profitable Breeder.)</div></div></div>
+
+    <!-- CERTIFICATION -->
+    <div class="grp"><span class="l">Prove — The Certification Pathway</span><span class="rule"></span></div>
+
+    <div class="certblock">
+      <div class="ct">The BOSS™ Certification Pathway</div>
+      <div class="cs">120 Days to Build. 12 Months to Prove.</div>
+      <div class="eligible">The initial 120 days count toward the member's qualifying participation period. After at least <b>12 months of qualifying BOSS participation</b>, the member can become eligible for formal certification review. <b>12 months makes you eligible. It does not make you certified.</b></div>
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;margin-bottom:10px">Earned through: Knowledge + Verification + Implementation + Audit</div>
+      <div class="gates">
+        <div class="gate"><div class="g">Gate 1</div><div class="n">Knowledge</div><div class="t">Demonstrate competency across defined BreedWise education and standards.</div></div>
+        <div class="gate"><div class="g">Gate 2</div><div class="n">Verification</div><div class="t">Provide documentation and evidence around program practices, records, health/genetics organization, preparedness and standards.</div></div>
+        <div class="gate"><div class="g">Gate 3</div><div class="n">Implementation</div><div class="t">Show required BOSS systems and practices are actually being used — not merely understood.</div></div>
+        <div class="gate"><div class="g">Gate 4</div><div class="n">Audit</div><div class="t">BreedWise reviews the submitted evidence against the defined certification standard.</div></div>
       </div>
+      <div class="outcomes"><span class="ok">Certified</span><span class="cond">Conditional — corrections required</span><span class="no">Not yet certified</span></div>
+      <div class="certline">Certification is standards-based, not subscription-based.</div>
     </div>
 
-    <!-- 03 -->
-    <div class="step"><div class="ghost">03</div>
-      <div class="no">03 — BUILD</div><h3>Install the infrastructure.</h3>
-      <div class="tag">BreedWise helps configure the core technology and workflows, not simply hand over software.</div>
-      <div class="body">
-        <ul class="inc">
-          <li><b>BreedWise Website</b> — built around their program, positioning, credibility and buyer journey.</li>
-          <li><b>CRM + Lead Management System</b> — their buyer pipeline and lead-management infrastructure.</li>
-          <li><b>System Configuration</b> — core technology and workflows configured for implementation.</li>
-        </ul>
-        <div class="note">Scope is defined separately in the SOP: what's <b>built</b> by BreedWise / what's <b>configured</b> / what's <b>templated</b> / what the <b>member owns</b> / revisions / integrations / hosting / ongoing support — so "website built" never becomes unlimited agency work.</div>
+    <div class="comp"><div class="no">27</div><div class="c"><h4>BreedWise Certified™ Status</h4><div class="tag">A credential that compounds.</div>
+      <div class="chain"><span class="c2">Credential</span><span class="ar">→</span><span class="c2">Certification mark</span><span class="ar">→</span><span class="c2">Consumer trust</span><span class="ar">→</span><span class="c2">Directory / profile</span><span class="ar">→</span><span class="c2">Verification</span><span class="ar">→</span><span class="c2">Renewal</span></div>
+      <div class="note">Certification verifies compliance with the defined BreedWise standard. It <b>never</b> implies BreedWise guarantees pregnancy rates, litter sizes, puppy survival, absence of disease, profitability, or the medical appropriateness of an individual breeding.</div></div></div>
+
+    <div class="comp"><div class="no">28</div><div class="c"><h4>Certification Maintenance &amp; Renewal</h4><div class="tag">Membership and certification are related — but not the same product.</div>
+      <div class="d">Certification has its own term and maintenance requirements (e.g. a 12-month certification term with defined maintenance/renewal). <b>Canceling BOSS continuation does not automatically erase an already-earned certification.</b> That protects credibility.</div></div></div>
+
+    <!-- ============ JOURNEY ============ -->
+    <div class="phasehead"><div class="k">The Complete Journey</div><h2>The BOSS™ Customer Journey</h2></div>
+    <div class="timeline">
+      <div class="tl"><div class="when">Day 1</div><div class="what">Assess</div></div>
+      <div class="tl"><div class="when">Days 1–30</div><div class="what">Prioritize</div></div>
+      <div class="tl"><div class="when">Days 30–60</div><div class="what">Build</div></div>
+      <div class="tl"><div class="when">Days 60–90</div><div class="what">Implement</div></div>
+      <div class="tl"><div class="when">Days 90–120</div><div class="what">Measure + Optimize</div></div>
+      <div class="tl"><div class="when">Day 120</div><div class="what">Reassess</div></div>
+      <div class="tl"><div class="when">Months 5–12+</div><div class="what">Operate + Optimize + Prove</div></div>
+      <div class="tl"><div class="when">12+ months qualifying</div><div class="what">Certification Eligibility</div></div>
+      <div class="tl"><div class="when">Review</div><div class="what">Certification Review <span>— Knowledge + Verification + Implementation + Audit</span></div></div>
+      <div class="tl star"><div class="when">Earned</div><div class="what">BreedWise Certified™</div></div>
+      <div class="tl"><div class="when">Ongoing</div><div class="what">Maintain + Renew</div></div>
+    </div>
+
+    <!-- ============ FINAL STACK ============ -->
+    <div class="phasehead"><div class="k">On One Page</div><h2>The Final Offer Stack</h2></div>
+    <div class="stack">
+      <div class="scol p1">
+        <div class="price">$6,000</div><div class="sub">120-Day Personalized Implementation Program</div>
+        <div class="gh">Build</div><ul><li>BOSS Baseline Assessment</li><li>Personalized 120-Day Implementation Pathway</li><li>BreedWise Website</li><li>CRM + Lead Management System</li><li>System Configuration</li></ul>
+        <div class="gh">Implement</div><ul><li>BOSS Training Library</li><li>BOSS Tools &amp; Templates</li><li>Private 1:1 BOSS Slack Channel</li><li>Jennifer Project Management</li><li>4 Monthly 1:1s with Austin</li><li>Quarterly Veterinary / Scientific 1:1</li><li>30 / 60 / 90 / 120-Day Reviews</li></ul>
+        <div class="gh">Measure</div><ul><li>BOSS Progress Dashboard</li><li>KPI Tracking</li><li>Day-120 Reassessment</li><li>BOSS Implementation Report</li><li>Next BOSS Roadmap</li></ul>
       </div>
-    </div>
-
-    <!-- 04 -->
-    <div class="step"><div class="ghost">04</div>
-      <div class="no">04 — IMPLEMENT</div><h3>Learn it. Use it. Build it.</h3>
-      <div class="tag">Not "watch the entire course." Instead: this is what you're building next — here's the training you need to build it.</div>
-      <div class="body">
-        <div class="lab">BOSS Training Library</div>
-        <ul class="inc"><li>Simple, complete training organized around the systems they're actually implementing.</li></ul>
-        <div class="lab" style="margin-top:16px">BOSS Tools &amp; Templates</div>
-        <div class="chainwrap">
-          <span class="c">Frameworks</span><span class="ar">→</span><span class="c">SOPs</span><span class="ar">→</span><span class="c">Checklists</span><span class="ar">→</span>
-          <span class="c">Calculators</span><span class="ar">→</span><span class="c">Trackers</span><span class="ar">→</span><span class="c">Scripts</span><span class="ar">→</span>
-          <span class="c">Templates</span><span class="ar">→</span><span class="c">Dashboards</span><span class="ar">→</span><span class="c">Playbooks</span>
-        </div>
-        <div class="output"><span class="l">Principle</span><span class="t">Don't just teach it. Give them the tool to do it — on both the breeding and business sides.</span></div>
+      <div class="scol p2">
+        <div class="price">$297<small> / month</small></div><div class="sub">Operate · Optimize · Prove</div>
+        <div class="gh">Continuation</div><ul>
+          <li>BOSS Community</li><li>Ongoing BOSS Curriculum</li><li>Tools, Templates &amp; Updates</li><li>Group Coaching + Q&amp;A</li><li>Expert Education</li><li>Member Success Support</li><li>Continued KPI / Progress Tracking</li><li>Periodic Reassessments</li><li>Updated BOSS Roadmaps</li><li>Continued TPB access</li></ul>
+        <div class="gh">Certification</div><ul>
+          <li>BOSS Certification Pathway</li><li>Eligibility after 12 months qualifying participation</li><li>Certification review against defined standards</li><li>Certification maintenance / renewal once earned</li></ul>
       </div>
-    </div>
-
-    <!-- 05 -->
-    <div class="step"><div class="ghost">05</div>
-      <div class="no">05 — SUPPORT</div><h3>Your team, alongside theirs.</h3>
-      <div class="tag">The member's <b style="color:var(--gold-soft);font-weight:500">BOSS Implementation Channel</b> — a private 1:1 Slack channel for 120 days. Not "Slack access."</div>
-      <div class="body">
-        <div class="lab">Questions, roadblocks, feedback, decisions and progress all flow through one place</div>
-        <div class="named">
-          <div class="p"><b>Jennifer</b> Implementation, accountability, project management</div>
-          <div class="p"><b>Austin</b> Business strategy and decision-making</div>
-          <div class="p"><b>Yasmin</b> Brand / social strategy within scope</div>
-          <div class="p"><b>Dr. Fontaine</b> Veterinary / scientific education within appropriate educational boundaries</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 06 -->
-    <div class="step"><div class="ghost">06</div>
-      <div class="no">06 — COACH</div><h3>Direct access when decisions matter.</h3>
-      <div class="tag">Direct sessions to review priorities, diagnose constraints and determine next actions.</div>
-      <div class="body">
-        <ul class="inc">
-          <li><b>Monthly 1:1 with Austin</b> — four private implementation / strategy sessions across the 120 days.</li>
-          <li><b>Quarterly Veterinary / Scientific Education Session</b> — one direct session, kept educational and program-preparedness focused (not individualized diagnosis or treatment).</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- 07 -->
-    <div class="step"><div class="ghost">07</div>
-      <div class="no">07 — MANAGE</div><h3>Someone owns the implementation.</h3>
-      <div class="tag"><b style="color:var(--gold-soft);font-weight:500">Jennifer — BOSS Project Manager / Member Success.</b> The member never has to wonder "what am I supposed to do next?" — that's one of the things BOSS solves.</div>
-      <div class="body">
-        <div class="lab">Jennifer owns the member's implementation rhythm</div>
-        <div class="chainwrap">
-          <span class="c">Pathway</span><span class="ar">→</span><span class="c">Milestones</span><span class="ar">→</span><span class="c">Accountability</span><span class="ar">→</span>
-          <span class="c">Resources</span><span class="ar">→</span><span class="c">Roadblocks</span><span class="ar">→</span><span class="c">Reviews</span><span class="ar">→</span><span class="c">Next actions</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- 08 -->
-    <div class="step"><div class="ghost">08</div>
-      <div class="no">08 — REVIEW</div><h3>Progress doesn't stay subjective.</h3>
-      <div class="tag">Formal reviews at every checkpoint, each ending the same way.</div>
-      <div class="body">
-        <div class="named">
-          <div class="p"><b>30-Day</b> What started? What's complete? What's blocked?</div>
-          <div class="p"><b>60-Day</b> What's working? What's behind? What needs adjustment?</div>
-          <div class="p"><b>90-Day</b> What has been installed? What needs optimization?</div>
-          <div class="p"><b>120-Day</b> What was built? What changed? What remains?</div>
-        </div>
-        <div class="output"><span class="l">Every review ends</span><span class="t">Next priority → Next action → Owner → Deadline.</span></div>
-      </div>
-    </div>
-
-    <!-- 09 -->
-    <div class="step"><div class="ghost">09</div>
-      <div class="no">09 — MEASURE</div><h3>See the progress.</h3>
-      <div class="tag"><b style="color:var(--gold-soft);font-weight:500">BOSS Progress Dashboard</b> — one place to see everything.</div>
-      <div class="body">
-        <ul class="inc">
-          <li><b>Implementation Progress</b> — systems completed / underway / blocked</li>
-          <li><b>Business KPIs</b> — demand, inquiries, qualified buyers, conversion, pricing, litter economics and other relevant metrics</li>
-          <li><b>Breeding / Program Preparedness</b> — preparedness, recordkeeping, monitoring and system-completion indicators</li>
-          <li><b>Milestones</b> — 30 / 60 / 90 / 120</li>
-        </ul>
-        <div class="note">Breeding KPIs measure <b>preparedness and implementation</b> — never promises of pregnancy rates, litter size, puppy survival or medical outcomes.</div>
-      </div>
-    </div>
-
-    <!-- 10 -->
-    <div class="step"><div class="ghost">10</div>
-      <div class="no">10 — REASSESS</div><h3>Prove what changed. Decide what's next.</h3>
-      <div class="tag">At Day 120, the baseline is run again — and the loop closes.</div>
-      <div class="body">
-        <div class="chainwrap">
-          <span class="c">Where you started</span><span class="ar">→</span><span class="c">What you identified</span><span class="ar">→</span><span class="c">What you built</span><span class="ar">→</span>
-          <span class="c">What you implemented</span><span class="ar">→</span><span class="c">What changed</span><span class="ar">→</span><span class="c">What's still missing</span>
-        </div>
-        <div class="output"><span class="l">Then</span><span class="t">Their Next BOSS Roadmap — remaining gaps and the member's next priorities, so the first 120 days never feel artificially unfinished.</span></div>
-      </div>
-    </div>
-
-    <!-- OFFER OUTLINE -->
-    <div class="shead"><div class="k">The Offer</div><h2>The Internal BOSS™ Offer</h2>
-      <p>The stripped-down version that sits at the top of the SOP. BOSS™ — 120-Day Personalized Implementation Program.</p></div>
-    <div class="offer">
-      <div class="oi"><span class="n">1</span><span class="t"><b>BOSS Baseline Assessment</b><span>Establish the member's starting point across breeding + business.</span></span></div>
-      <div class="oi"><span class="n">2</span><span class="t"><b>Personalized 120-Day Pathway</b><span>Priorities, systems, milestones and next actions tailored to the member.</span></span></div>
-      <div class="oi"><span class="n">3</span><span class="t"><b>BreedWise Website</b><span>Website built around the breeder's program and buyer journey.</span></span></div>
-      <div class="oi"><span class="n">4</span><span class="t"><b>CRM + Lead Management</b><span>Buyer pipeline and lead-management infrastructure.</span></span></div>
-      <div class="oi"><span class="n">5</span><span class="t"><b>System Configuration</b><span>Core systems and technology configured for implementation.</span></span></div>
-      <div class="oi"><span class="n">6</span><span class="t"><b>BOSS Training Library</b><span>Clear, complete training matched to what the member is implementing.</span></span></div>
-      <div class="oi"><span class="n">7</span><span class="t"><b>BOSS Tools &amp; Templates</b><span>Frameworks, SOPs, checklists, calculators, scripts, trackers and dashboards across breeding + business.</span></span></div>
-      <div class="oi"><span class="n">8</span><span class="t"><b>Private BOSS Slack Channel</b><span>120 days of direct support from Jennifer, Yasmin, Austin and Emmanuel within their areas.</span></span></div>
-      <div class="oi"><span class="n">9</span><span class="t"><b>Jennifer — PM + Member Success</b><span>Accountability, milestones, resources, roadblocks and next actions.</span></span></div>
-      <div class="oi"><span class="n">10</span><span class="t"><b>Monthly 1:1 with Austin</b><span>Four private strategy / implementation sessions.</span></span></div>
-      <div class="oi"><span class="n">11</span><span class="t"><b>Quarterly Veterinary / Scientific Session</b><span>Direct educational access for program preparedness and scientific education.</span></span></div>
-      <div class="oi"><span class="n">12</span><span class="t"><b>30 / 60 / 90 / 120-Day Reviews</b><span>Formal progress reviews and pathway adjustments.</span></span></div>
-      <div class="oi"><span class="n">13</span><span class="t"><b>BOSS Progress Dashboard</b><span>Measure implementation and relevant breeding / business indicators.</span></span></div>
-      <div class="oi"><span class="n">14</span><span class="t"><b>120-Day Reassessment</b><span>Compare the starting point against Day 120.</span></span></div>
-      <div class="oi"><span class="n">15</span><span class="t"><b>Next BOSS Roadmap</b><span>Identify remaining gaps and establish the member's next priorities.</span></span></div>
-    </div>
-
-    <!-- NOT ADDED -->
-    <div class="shead"><div class="k">The Discipline</div><h2>What we would not add</h2>
-      <p>The premium feel comes from an integrated experience — not a bigger stack.</p></div>
-    <div class="notadd">
-      <div class="chips">
-        <span>Random bonuses</span><span>Extra calls to pad the stack</span><span>A massive resource vault</span>
-        <span>A certification promise inside 120 days</span><span>Vague "unlimited coaching"</span>
-      </div>
-      <div class="enough">You already have enough. The strength is integration: ASSESS → PRIORITIZE → BUILD → IMPLEMENT → SUPPORT → MEASURE → REASSESS.</div>
     </div>
 
     <!-- PHILOSOPHY -->
     <div class="philo">
-      <div class="k" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;margin-bottom:14px">Product Philosophy</div>
-      <div class="big">BOSS should feel like <em>one product</em> — not fifteen deliverables.</div>
-      <div class="qs">
-        <div class="q"><div class="k">Orientation</div><div class="v">Where am I?</div></div>
-        <div class="q"><div class="k">Focus</div><div class="v">What am I building?</div></div>
-        <div class="q"><div class="k">Tools</div><div class="v">What do I use?</div></div>
-        <div class="q"><div class="k">Support</div><div class="v">Who can help me?</div></div>
-        <div class="q"><div class="k">Completion</div><div class="v">How do I know it's done?</div></div>
-        <div class="q"><div class="k">Momentum</div><div class="v">What's next?</div></div>
-      </div>
-      <p class="creed">The BreedWise version of the Apple / Tesla philosophy: <b>complex infrastructure underneath, a radically simple experience on top.</b></p>
+      <div class="k" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;margin-bottom:14px">The Architecture</div>
+      <div class="big">120 days to <em>build</em>. 12 months to <em>prove</em>.</div>
+      <p class="creed">It explains why the first phase costs $6,000, why continuation exists, and why certification can't simply be handed out after four months. It turns what could look like a coaching subscription into an actual <b>BreedWise operating system + standards pathway</b> — complex infrastructure underneath, a radically simple experience on top.</p>
     </div>
   </div>
 
-  <footer>BREEDWISE · BOSS™ — BreedWise Operating System &amp; Standards · Internal product specification. Not for distribution.</footer>
+  <footer>BREEDWISE · BOSS™ — BreedWise Operating System &amp; Standards · Internal product &amp; pricing specification. Not for distribution.</footer>
 </div>
 
 <script>
