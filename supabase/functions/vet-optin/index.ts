@@ -40,6 +40,54 @@ Deno.serve(async (req) => {
   let cc360 = false, contactId: string | null = null;
   try { contactId = await ccUpsert(email, name, phone); } catch (_) { /* */ }
 
+  if (action === "litter-optin") {
+    // Healthy Litter Scorecard — early lead capture at the contact screen
+    if (contactId) { try { await ccTag(contactId, ["litter-scorecard-optin", "emmanuel-audience", "dog-edition", "owner-regina"]); cc360 = true; } catch (_) { /* */ } }
+    try {
+      await supabase.from("tool_submissions").insert({
+        tool: "litter-optin", tool_label: "Healthy Litter Scorecard Opt-in", member_name: name || null, member_email: email,
+        summary: `${name || email} · Healthy Litter Scorecard · started`,
+        meta: { phone: phone || null, source: "Healthy Litter Scorecard (Dog Edition)", partial: true, ts: Math.floor(Date.now() / 1000) },
+        inputs: null, result: null,
+      });
+    } catch (_) { /* */ }
+    return j({ ok: true, cc360 });
+  }
+
+  if (action === "litter-scorecard") {
+    // Healthy Litter Scorecard — full completion
+    const pct = Number(b.scorePct ?? 0);
+    const band = String(b.band ?? "");
+    const seg = String(b.segment ?? "");
+    const program = String(b.programShown ?? "");
+    const gaps: number[] = Array.isArray(b.gaps) ? b.gaps.map((x: any) => Number(x)) : [];
+    const notsure: number[] = Array.isArray(b.notsure) ? b.notsure.map((x: any) => Number(x)) : [];
+    const priorities: string[] = Array.isArray(b.priorities) ? b.priorities.map((x: any) => String(x)) : [];
+    if (contactId) {
+      const tags = ["litter-scorecard-complete"];
+      if (band) tags.push("litter-band-" + band);
+      if (seg) tags.push("litter-segment-" + seg);
+      if (program) tags.push("shown-" + program);
+      gaps.forEach((n) => tags.push("litter-gap-q" + n));
+      try { await ccTag(contactId, tags); cc360 = true; } catch (_) { /* */ }
+    }
+    try {
+      await supabase.from("tool_submissions").insert({
+        tool: "litter-scorecard", tool_label: "Healthy Litter Scorecard", member_name: name || null, member_email: email,
+        summary: `${pct}% · ${band} · ${seg} · shown ${program} · gaps ${gaps.length}`,
+        meta: {
+          phone: phone || null, source: "Healthy Litter Scorecard (Dog Edition)",
+          scorePct: pct, scoreRaw: b.scoreRaw ?? null, band, segment: seg, programShown: program,
+          goalStage: b.goalStage ?? null, stageScores: b.stageScores ?? null,
+          gaps, notsure, priorities, ts: Math.floor(Date.now() / 1000),
+        },
+        inputs: { answers: b.answers ?? null, qual: b.qual ?? null },
+        result: { scorePct: pct, band, segment: seg, programShown: program, priorities, gaps },
+      });
+    } catch (_) { /* */ }
+    return j({ ok: true, cc360 });
+  }
+
   if (action === "scorecard") {
     // scorecard completion — tag + log blind spots so Emmanuel's pipeline can act
     const blind = Array.isArray(b.blindspots) ? b.blindspots.map((x: any) => String(x)) : [];

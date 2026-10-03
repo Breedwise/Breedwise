@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A free 4-minute Healthy Litter Scorecard from Dr. Emmanuel Fontaine. Find the science gaps in your breeding program across the five stages of a litter.">
+<meta name="robots" content="noindex">
+<title>Healthy Litter Scorecard · Dog Edition · with Dr. Emmanuel Fontaine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;
+    --ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--red:#ff8178;
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:radial-gradient(1000px 560px at 50% -10%,rgba(201,168,98,.08),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.55}
+  .bar{border-bottom:1px solid var(--line);padding:13px 20px;text-align:center;position:sticky;top:0;background:rgba(11,14,19,.86);backdrop-filter:blur(8px);z-index:20}
+  .brand{font-size:13px;letter-spacing:.22em;font-weight:700;color:var(--mid)}.brand b{color:var(--gold)}
+  .brand .w{color:var(--muted);font-weight:400;letter-spacing:.03em;font-size:12px;display:block;margin-top:2px}
+  .wrap{max-width:720px;margin:0 auto;padding:30px 20px 70px}
+  .center{text-align:center}
+  .eyebrow{display:inline-block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;background:rgba(201,168,98,.1);border:1px solid rgba(201,168,98,.28);border-radius:20px;padding:5px 13px}
+  h1{font-family:var(--disp);font-size:36px;line-height:1.1;margin:16px 0 10px;font-weight:600;letter-spacing:-.5px}
+  @media(max-width:600px){h1{font-size:28px}}
+  h1 .u{color:var(--gold-soft)}
+  .lead{color:var(--mid);font-size:16.5px;max-width:580px;margin:0 auto;font-weight:300}
+  .cta{display:inline-block;width:100%;max-width:420px;margin:22px auto 0;padding:16px 28px;background:linear-gradient(135deg,var(--gold),#a9863f);border:0;border-radius:13px;color:#1a130a;font-weight:700;font-size:17px;cursor:pointer;font-family:var(--sans);box-shadow:0 6px 26px rgba(201,168,98,.22);text-align:center;text-decoration:none}
+  .cta:disabled{opacity:.55}
+  .cta.ghost{background:transparent;border:1px solid var(--line2);color:var(--mid);box-shadow:none;font-weight:600}
+  .undercta{font-size:12.5px;color:var(--muted);margin-top:11px;max-width:460px;margin-left:auto;margin-right:auto}
+  /* cards / panels */
+  .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:18px;padding:22px}
+  .section-title{font-family:var(--disp);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;margin:34px 0 6px}
+  .how{display:grid;gap:12px;margin-top:16px;text-align:left}
+  .how .row{display:flex;gap:13px;align-items:flex-start}
+  .how .n{flex:none;width:28px;height:28px;border-radius:50%;background:rgba(201,168,98,.14);border:1px solid rgba(201,168,98,.35);color:var(--gold-soft);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+  .how .n span{line-height:1}
+  .how .t{font-size:14.5px;color:var(--mid)}.how .t b{color:var(--ink);font-weight:600}
+  .stageslist{display:grid;gap:10px;margin-top:14px;text-align:left}
+  .stageslist .s{display:flex;gap:10px;font-size:13.5px;color:var(--mid)}
+  .stageslist .s b{color:var(--ink);font-weight:600}
+  .stageslist .k{flex:none;width:58px;color:var(--gold-soft);font-weight:700;font-size:12px}
+  .timeline{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+  .timeline .m{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:14px;padding:4px 11px}
+  .credit{font-size:13.5px;color:var(--mid);text-align:left}
+  .who{display:flex;align-items:center;gap:13px;margin:0 0 12px}
+  .who .av{width:50px;height:50px;border-radius:50%;background:linear-gradient(150deg,var(--gold),#a9863f);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:700;color:#15100a;font-size:18px;flex:none}
+  .who .t b{color:var(--ink)}.who .t{font-size:13px;color:var(--mid)}
+  .disc{font-size:11.5px;color:#6a7686;line-height:1.5;margin-top:14px}
+  .trust{font-size:12px;color:var(--muted);margin-top:14px;text-align:center}
+  /* contact form */
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:460px){.row2{grid-template-columns:1fr}}
+  .fld{margin-bottom:12px;text-align:left}
+  label{font-size:11.5px;color:var(--muted);display:block;margin-bottom:5px}
+  input,textarea{width:100%;padding:13px 14px;background:var(--panel2);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;font-family:var(--sans)}
+  textarea{min-height:92px;resize:vertical}
+  input:focus,textarea:focus{outline:none;border-color:var(--gold)}
+  .hp{position:absolute;left:-9999px}
+  .msg{font-size:12.5px;margin-top:10px;min-height:16px;text-align:center;color:var(--muted)}
+  /* progress */
+  .prog{position:sticky;top:51px;z-index:15;background:rgba(11,14,19,.86);backdrop-filter:blur(8px);padding:12px 20px 0}
+  .prog .meta{max-width:720px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--muted);letter-spacing:.04em}
+  .prog .stagename{color:var(--gold-soft);font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:11px}
+  .track{max-width:720px;margin:8px auto 0;height:4px;border-radius:3px;background:var(--line);overflow:hidden}
+  .track .fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-soft));width:0;transition:width .35s ease}
+  /* question */
+  .qnum{font-size:12px;color:var(--muted);letter-spacing:.06em;margin-bottom:6px}
+  .qtext{font-family:var(--disp);font-size:25px;line-height:1.22;font-weight:600;margin:0 0 10px}
+  @media(max-width:600px){.qtext{font-size:21px}}
+  .qexplain{font-size:14px;color:var(--muted);margin:0 0 20px;padding-left:13px;border-left:2px solid var(--line2)}
+  .opts{display:grid;gap:11px}
+  .opt{width:100%;text-align:left;padding:16px 18px;background:var(--panel);border:1px solid var(--line);border-radius:13px;color:var(--ink);font-size:16px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:border-color .15s,background .15s,transform .05s;display:flex;align-items:center;gap:13px}
+  .opt:hover{border-color:var(--line2);background:#161d26}
+  .opt.sel{border-color:var(--gold);background:rgba(201,168,98,.1)}
+  .opt .dot{flex:none;width:20px;height:20px;border-radius:50%;border:2px solid var(--line2);display:inline-block}
+  .opt.sel .dot{border-color:var(--gold);background:var(--gold);box-shadow:inset 0 0 0 3px var(--panel)}
+  .opt.ns{color:var(--mid)}
+  .navrow{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:12px}
+  .back{background:none;border:0;color:var(--muted);font-size:14px;cursor:pointer;font-family:var(--sans);padding:8px 4px}
+  .back:hover{color:var(--mid)}
+  .optnote{font-size:12px;color:var(--muted);margin-top:14px}
+  /* results */
+  .scorewrap{text-align:center;margin-top:6px}
+  .ring{position:relative;width:168px;height:168px;margin:6px auto 2px}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring .num{font-family:var(--disp);font-size:46px;font-weight:600;line-height:1}
+  .ring .den{font-size:12px;color:var(--muted);margin-top:3px;letter-spacing:.08em}
+  .band{font-family:var(--disp);font-size:24px;font-weight:600;margin:10px 0 4px}
+  .bandmsg{color:var(--mid);font-size:15px;max-width:560px;margin:0 auto}
+  .underscore{color:var(--muted);font-size:13.5px;max-width:560px;margin:14px auto 0}
+  .note{margin-top:20px;text-align:left}
+  .note .nt{font-family:var(--disp);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;margin-bottom:8px}
+  .note p{color:var(--mid);font-size:15px;margin:0 0 10px;font-style:italic}
+  .note .sig{font-size:13px;color:var(--muted);font-style:normal}
+  .startpoint{margin-top:16px;text-align:left}
+  .startpoint .p{color:var(--ink);font-size:15.5px;margin:0 0 16px}
+  .moves{display:grid;gap:12px}
+  .move{display:flex;gap:13px;align-items:flex-start;background:var(--panel2);border:1px solid var(--line);border-radius:13px;padding:15px 16px}
+  .move .mi{flex:none;width:26px;height:26px;border-radius:50%;background:var(--gold);color:#15100a;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+  .move .mt b{color:var(--ink);font-size:15px;display:block;margin-bottom:3px}
+  .move .mt span{color:var(--mid);font-size:13.5px}
+  .bridgeline{color:var(--mid);font-size:14px;margin:16px 0 4px;text-align:center}
+  /* stage dots */
+  .stagegrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}
+  @media(max-width:560px){.stagegrid{grid-template-columns:repeat(5,1fr)}}
+  .sc{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px 6px;text-align:center}
+  .sc .dots{display:flex;gap:4px;justify-content:center;margin-bottom:8px}
+  .sc .d{width:9px;height:9px;border-radius:50%;background:var(--line2)}
+  .sc .d.on{background:var(--gold)}
+  .sc .nm{font-size:10.5px;color:var(--mid);line-height:1.25;min-height:26px}
+  .sc .lb{font-size:10px;color:var(--muted);margin-top:5px;letter-spacing:.04em}
+  /* chips */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .chip{font-size:12.5px;color:#cfe9d9;background:rgba(87,185,138,.1);border:1px solid rgba(87,185,138,.3);border-radius:16px;padding:6px 12px}
+  .subtle{color:var(--muted);font-size:13px;margin-top:6px}
+  /* gap cards */
+  .stageblock{margin-top:22px}
+  .stagehead{border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:14px}
+  .stagehead .k{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .stagehead .nm{font-family:var(--disp);font-size:19px;font-weight:600;margin-top:3px}
+  .stagehead .nm em{color:var(--gold-soft);font-style:normal}
+  .stagehead .sm{font-size:13.5px;color:var(--mid);margin-top:5px}
+  .gap{border:1px solid var(--line);border-radius:14px;padding:17px 18px;margin-bottom:12px;background:var(--panel)}
+  .gap .gt{font-family:var(--disp);font-size:18px;font-weight:600;margin:0 0 10px;color:var(--ink)}
+  .gap .ns{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;color:#f0c98a;background:rgba(201,168,98,.12);border:1px solid rgba(201,168,98,.3);border-radius:12px;padding:3px 9px;margin-bottom:9px}
+  .gl{margin:0 0 9px}
+  .gl .lab{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+  .gl .tx{font-size:13.8px;color:var(--mid)}
+  .gl.win .tx{color:var(--ink)}
+  .gl.win{background:rgba(201,168,98,.06);border-left:2px solid var(--gold);padding:8px 12px;border-radius:6px}
+  .gl.vet .tx{color:var(--mid)}
+  /* programs */
+  .prog-cards{display:grid;gap:14px;margin-top:14px}
+  .pcard{border-radius:16px;padding:20px;border:1px solid var(--line2)}
+  .pcard.rec{border-color:var(--gold);background:linear-gradient(162deg,rgba(201,168,98,.1),rgba(201,168,98,.03))}
+  .pcard .tag{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+  .pcard.rec .tag{color:var(--gold-soft)}
+  .pcard .tag.alt{color:var(--muted)}
+  .pcard h3{font-family:var(--disp);font-size:21px;font-weight:600;margin:0 0 8px}
+  .pcard .desc{font-size:14px;color:var(--mid);margin:0 0 10px}
+  .pcard .fit{font-size:13.5px;color:var(--ink);margin:0 0 14px;padding-left:12px;border-left:2px solid var(--gold)}
+  .obstacle{color:var(--ink);font-size:15px;margin:0 0 10px}
+  .retake{margin-top:26px;text-align:center}
+  footer{text-align:center;color:#59657380;font-size:11px;margin-top:34px;padding:0 20px}
+  .hidden{display:none}
+  .fade{animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+  <div class="bar"><span class="brand">BREED<b>WISE</b><span class="w">Healthy Litter Scorecard · Dog Edition · with Dr. Emmanuel Fontaine</span></span></div>
+
+  <div class="prog hidden" id="prog">
+    <div class="meta"><span class="stagename" id="progStage">The Breeding</span><span id="progCount">Question 1 of 20</span></div>
+    <div class="track"><div class="fill" id="progFill"></div></div>
+  </div>
+
+  <div class="wrap" id="app"></div>
+
+  <footer>BreedWise · The Profitable Breeder &amp; Breedwise Academy. Built with Dr. Emmanuel Fontaine, DVM, PhD, Dipl. ECAR.</footer>
+
+<script>
+/* ============================ CONFIG ============================ */
+var FN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/vet-optin';
+var ACADEMY_URL='https://www.skool.com/breedwise/about';
+var TPB_URL='https://www.skool.com/theprofitablebreeder/about';
+/* A/B test later — variant headline: "Is your program ready for its next litter?" */
+
+/* ============================ DATA ============================ */
+var STAGES=[
+  {n:1,name:'The Breeding'},
+  {n:2,name:'The Pregnancy'},
+  {n:3,name:'Whelping Day'},
+  {n:4,name:'The First 21 Days'},
+  {n:5,name:'Weaning to Go-Home'}
+];
+function stageName(n){return STAGES[n-1].name;}
+function stageNoThe(n){return stageName(n).replace(/^The\s+/,'');}
+
+/* 15 best-practice questions. best:'yes'|'no' (flipped Qs best='no'). */
+var BP=[
+ {id:1,stage:1,best:'yes',
+  q:"Before every breeding, do you score your female's body condition out of 9 with your hands, not just by eye?",
+  explain:"Body condition score rates fat cover on a 1 to 9 scale by feeling the ribs, the waist and the belly.",
+  strength:"Hands-on body condition score before breeding",
+  gap:{title:"Breed her at 4 to 5 out of 9",
+   where:"Her condition before breeding is judged by eye, not scored.",
+   why:"The target for breeding is a body condition score of 4 to 5 out of 9. Extra fat settles in the uterine muscle and weakens contractions, and a coat can hide a full point either way, which is why the score is taken by hand.",
+   cost:"A female one or two points over target carries a higher risk of a difficult birth, and tends to have smaller litters with lighter puppies.",
+   change:"She starts the pregnancy in the condition that supports the easiest birth and the strongest litter.",
+   win:"Score each of your females today: ribs easy to feel under light fat, a visible waist from above, a tucked belly from the side. Write the number down.",
+   vet:"Ask your vet to score her with you once, so your hands learn the scale."}},
+ {id:2,stage:1,best:'yes',
+  q:"Do you know which machine your vet uses to measure progesterone, and the value at which ovulation shows on that machine?",
+  explain:"Reference laboratories, in-clinic analyzers and quick point-of-care tests don't all read progesterone the same way.",
+  strength:"You know your vet's progesterone machine and its ovulation range",
+  gap:{title:"Know the machine behind the number",
+   where:"Your vet's progesterone machine, and what its numbers mean, is a black box.",
+   why:"Each method reads the same blood differently. Ovulation can read around 5 to 6 ng/mL (16 to 19 nmol/L) at a reference laboratory and 10 to 12 ng/mL (32 to 38 nmol/L) on some in-clinic analyzers. Some quick point-of-care tests only estimate a range, which can lack the precision a breeding decision needs. A progesterone value only means something next to the machine that produced it.",
+   cost:"A number read against the wrong machine's ranges, from a forum, another breeder or a different clinic, can put a breeding a day or two off. Up to 75% of conception failures trace back to timing, not true infertility.",
+   change:"You read every result the way your vet does, and you can follow the conversation at the moment it matters most.",
+   win:"At your next visit, ask your vet three things: which machine runs the test, whether it gives an exact value or an estimate, and at what value ovulation usually shows on it. Write the answers on her cycle sheet.",
+   vet:"Your vet knows the machine's ranges: let them read the curve, and ask them to walk you through it."}},
+ {id:3,stage:1,best:'yes',
+  q:"When your stud has rested more than 10 days, do you collect him once before the planned breeding?",
+  explain:"Sperm stored too long in the stud age and lose quality.",
+  strength:"Pre-breeding collection after a long rest",
+  gap:{title:"Clear out stored sperm after a long rest",
+   where:"After a long rest, your stud goes straight to the breeding.",
+   why:"After more than 10 days without collection, the sperm stored in the stud age: more DNA damage and more abnormal shapes. One collection before the planned breeding clears them out, and fresh breedings work best spaced 48 to 72 hours apart.",
+   cost:"The first breeding after a long rest can use the poorest sperm of the season, on the very day you worked hardest to time right.",
+   change:"The breeding you timed so carefully uses his freshest, best sperm.",
+   win:"Check your stud's calendar and mark every planned breeding that falls after more than 10 days of rest.",
+   vet:"Plan the pre-breeding collection with your vet or reproduction service."}},
+ {id:4,stage:2,best:'no',flip:true,
+  q:"Do you rely on the calendar to judge when the puppies are ready to be born?",
+  explain:"",
+  strength:"Birth readiness confirmed by progesterone",
+  gap:{title:"Let progesterone say when they're ready",
+   where:"Birth readiness is judged by the calendar.",
+   why:"Progesterone falls below 2 ng/mL (about 6 nmol/L) in the 24 to 48 hours before labour, and that drop is when the puppies' lungs finish maturing. The calendar, even counted from ovulation, gives a window. The progesterone drop confirms the day.",
+   cost:"Puppies delivered before the drop, for example by a section booked on a date, can be born with lungs that are not ready to breathe.",
+   change:"If a section is ever needed, it happens when the puppies are ready, not when the calendar says so.",
+   win:'Add one line to your whelping plan: "Planned section only after a progesterone result below 2 ng/mL."',
+   vet:"Agree with your vet, before the due window, how progesterone will be used to time any planned section."}},
+ {id:5,stage:2,best:'no',flip:true,
+  q:"Do you increase her food as soon as you know she's pregnant?",
+  explain:"",
+  strength:"Food held steady for the first 6 weeks",
+  gap:{title:"Hold her food steady for the first 6 weeks",
+   where:"Her food goes up as soon as the pregnancy is confirmed.",
+   why:"For the first 6 weeks the puppies use very little energy, and her weight should stay flat. From week 6, food rises by about 10% a week, and she should finish at 115 to 125% of her weight before breeding.",
+   cost:"Extra food early is stored as fat, including in the uterine muscle, which weakens contractions on whelping day.",
+   change:"Her energy goes to the puppies when they actually grow, and she reaches whelping fit, not fat.",
+   win:"Write her pre-breeding weight on her chart, with her 115% and 125% targets beside it.",
+   vet:"Review the feeding plan with your vet at the pregnancy confirmation visit."}},
+ {id:6,stage:2,best:'no',flip:true,
+  q:"Do you start taking her temperature only in the last few days before she's due?",
+  explain:"",
+  strength:"Her own baseline temperature known in advance",
+  gap:{title:"Know her normal before you watch for the drop",
+   where:"Temperatures start only in the last few days, with no baseline.",
+   why:"Each female has her own normal, usually within 38 to 39 °C (100.4 to 102.2 °F). The drop before labour is about 1 °C (1.8 °F), easiest to read against her own baseline, and labour usually follows within 12 to 24 hours.",
+   cost:"Without her baseline, a small drop is easy to miss, and a normal low reading is easy to mistake for the drop.",
+   change:"You read the drop the day it happens, and plan the night around it.",
+   win:"For your next litter, start twice-daily temperatures, at the same times, at least a week before the due window, and log every reading.",
+   vet:"Call your vet if the drop comes and labour hasn't started within 24 hours."}},
+ {id:7,stage:3,best:'yes',
+  q:"During whelping, do you write down the time each puppy and each placenta arrives?",
+  explain:"",
+  strength:"A timed birth log, puppies and placentas",
+  gap:{title:"Log every puppy and every placenta",
+   where:"Births and placentas aren't logged with times.",
+   why:"Each puppy should be followed by its placenta. A timed log makes the call points visible: more than 2 hours between puppies when more are expected, or 30 minutes of strong pushing with no puppy.",
+   cost:"In the middle of the night time blurs, and a long gap or a missing placenta goes unnoticed until it has become a problem.",
+   change:"You and your vet read the same clock, and a missing placenta is spotted when it happens.",
+   win:"Print a birth log today with four columns: puppy, time born, placenta seen, weight.",
+   vet:"If the placenta count doesn't match the puppy count, tell your vet."}},
+ {id:8,stage:3,best:'yes',
+  q:"In each newborn's first minutes, do you give it a vitality score (an Apgar score) and write it down?",
+  explain:"The Apgar score rates colour, heart rate, reflexes, movement and breathing, from 0 to 10.",
+  strength:"Apgar score for every newborn",
+  gap:{title:"Score every newborn in its first minutes",
+   where:"Newborns are judged by eye, without a score.",
+   why:"An Apgar score of 7 or more means a vigorous puppy. 4 to 7 needs active warming, stimulation and close watching, and below 4 is an emergency for your vet. The score stays useful for the first 8 hours.",
+   cost:"Without a score, the quiet, weaker puppy in a busy litter can look fine until its first feeds have been missed.",
+   change:"The puppies who need help are identified in their first minutes, not their first day.",
+   win:"Add an Apgar column to your birth log.",
+   vet:"Agree with your vet which scores mean call straight away."}},
+ {id:9,stage:3,best:'yes',
+  q:"In the first hours, do you check that every puppy has actually taken in colostrum, by weighing it before and after it nurses?",
+  explain:"Colostrum is the first milk, the one that carries the mother's antibodies.",
+  strength:"Colostrum intake checked on the scale",
+  gap:{title:"Weigh the colostrum in",
+   where:"Colostrum intake is assumed when a puppy is seen nursing.",
+   why:"About 90% of a puppy's maternal antibodies arrive through colostrum, and the gut stops absorbing them 16 to 24 hours after birth. A puppy needs about 1.5 mL per 100 g of body weight, which shows on a gram scale as roughly 1.5 g gained per 100 g.",
+   cost:"A puppy that latches but drinks little looks the same as one that fills up, until the absorption window has closed.",
+   change:"Every puppy leaves day one with the protection it needs, and the ones that don't are found while there's still time.",
+   win:"Next litter, weigh one puppy just before and just after a feed in its first hours, to see what a good feed looks like on the scale.",
+   vet:"If a puppy hasn't gained after its first feeds, call your vet within those first hours."}},
+ {id:10,stage:4,best:'no',flip:true,
+  q:"If a newborn weighs more than yesterday, is that enough for you to consider it on track?",
+  explain:"",
+  strength:"Daily gain read as a percentage",
+  gap:{title:"Read daily gain as a percentage",
+   where:"Any gain is read as good news.",
+   why:"Gain is read as a percentage of yesterday's weight. Under about 1.5% on day 1 or 2.7% on day 2 is too slow, and a loss of more than 4% in the first 48 hours makes a puppy about 8 times more likely to be lost.",
+   cost:"A puppy gaining a little every day can be falling behind for days before anyone notices.",
+   change:"You spot the slow starter on day 1 or 2, not on day 5.",
+   win:"Add a daily-change column to your weight sheet: today's weight minus yesterday's, divided by yesterday's, times 100.",
+   vet:"If a puppy is under those lines, call your vet early."}},
+ {id:11,stage:4,best:'yes',
+  q:"Do you check each newborn's rectal temperature at 12, 24 and 48 hours after birth?",
+  explain:"",
+  strength:"Newborn temperatures at 12, 24 and 48 hours",
+  gap:{title:"Take three temperatures in the first two days",
+   where:"Newborn temperatures aren't checked at set times.",
+   why:"A newborn starts near 35 to 36 °C (95 to 96.8 °F) and climbs to adult values by 3 weeks. A reading below 36 °C (96.8 °F) at 12, 24 or 48 hours is linked to a clearly higher risk of losing that puppy, and below 34 °C (93.2 °F) the gut stops working.",
+   cost:"A puppy can feel warm in your hand and still be too cold inside, and a cold puppy stops digesting before it stops crying.",
+   change:"Three quick readings per puppy catch the cold ones while warming still works.",
+   win:"Add three columns to your birth log: temperature at 12, 24 and 48 hours.",
+   vet:"Ask your vet to show you how to take a newborn's temperature safely."}},
+ {id:12,stage:4,best:'yes',
+  q:"Do you know the birth weight under which a puppy of your breed's size counts as low birth weight?",
+  explain:"",
+  strength:"Low-birth-weight line known for your breed size",
+  gap:{title:"Know your low-birth-weight line",
+   where:"There's no set weight that flags a puppy as low birth weight.",
+   why:"Approximate lines: under 70 g (2.5 oz) for small breeds, 150 g (5.3 oz) for medium, 250 g (8.8 oz) for large and 450 g (15.9 oz) for giant breeds. Puppies born in their breed's lightest quarter carry a 12 to 13 times higher risk of being lost.",
+   cost:'A low-birth-weight puppy passes as "the small one" and gets the same care as its littermates, when it needs more.',
+   change:"The puppies at highest risk get extra feeds, warmth and attention from their first hour.",
+   win:"Write your breed size's line at the top of the birth-weight column of your birth log.",
+   vet:"Agree with your vet, before the birth, the extra care plan for a puppy born under the line."}},
+ {id:13,stage:5,best:'yes',
+  q:"Do you plot each puppy's weight on a growth chart, from birth to the day it goes home?",
+  explain:"Writing weights down is a good start. Plotting them on a chart is what shows the trend.",
+  strength:"Growth charts to go-home day",
+  gap:{title:"Plot every puppy on a growth chart",
+   where:"Weights are recorded, or not, but not plotted as a curve.",
+   why:"A puppy that drops across two centile lines on a growth chart is falling behind, even if it is still gaining. One that climbs two lines is growing faster than is healthy, which matters for its joints later on.",
+   cost:"A puppy can keep gaining and still fall off its curve, unnoticed until it is clearly smaller, and a puppy growing too fast goes unnoticed too.",
+   change:"Each puppy's curve shows the trend a column of numbers hides, and it goes home with the puppy.",
+   win:"Plot your last litter's weights on graph paper, one line per puppy, and look for the line that bends away.",
+   vet:"Send the chart home with each puppy, so the new owner's vet sees the whole curve."}},
+ {id:14,stage:5,best:'yes',
+  q:"Before her next breeding, do you wait until the mother is back to a body condition score of 4 to 5 out of 9?",
+  explain:"",
+  strength:"Mother back in condition before the next breeding",
+  gap:{title:"Get her back in condition first",
+   where:"The next breeding isn't tied to her body condition.",
+   why:"Peak lactation can raise her energy needs to 2 to 4 times normal, and many mothers finish weaning below their best condition. The aim is to bring her back to 4 to 5 out of 9, usually 4 to 6 weeks after weaning, before she is bred again.",
+   cost:"A female bred again before she has recovered starts the next pregnancy behind: poorer conception, and less in reserve for the next litter's milk.",
+   change:"Every litter starts from a mother in full condition, not from what the last litter left.",
+   win:"Score each mother at weaning, then note the date she is back to 4 to 5 out of 9.",
+   vet:"Review her condition with your vet before you plan the next breeding."}},
+ {id:15,stage:5,best:'yes',
+  q:"Do you track your losses as three separate numbers: stillborn, lost before 3 weeks, and lost before weaning?",
+  explain:"Each one divided by the number of puppies born.",
+  strength:"Losses tracked as three numbers",
+  gap:{title:"Split your losses into three numbers",
+   where:"Losses aren't tracked, or are tracked as a single number.",
+   why:"Stillbirths, losses before 3 weeks and losses before weaning have different causes, so each points to a different stage. In kennels, losses from birth to 3 weeks run between 10 and 20%: 20% is the long-standing figure, and recent studies report closer to 10 to 15%.",
+   cost:"One blended number can't show where the losses happen, so changes get made in the wrong stage.",
+   change:"Your numbers point to the stage that needs work, and show whether each change worked.",
+   win:"For your last 3 litters, write down the three numbers. That is your baseline.",
+   vet:"Share the three numbers with your vet: they show where to look first."}}
+];
+
+/* qualifying questions 16-20 */
+var QUAL=[
+ {id:16,q:"How many litters do you raise in a typical year?",
+  opts:["I'm planning my first litter","1 to 2","3 to 5","6 or more"]},
+ {id:17,q:"In the next 90 days, what matters most for your program?",
+  opts:["A successful breeding and a good-size litter","A safe, calm whelping","Every puppy through the first 3 weeks","Healthy, thriving puppies on go-home day","A program that runs on systems, not guesswork"]},
+ {id:18,q:"What has made this hardest so far?",
+  opts:["Conflicting advice online and in breeder groups","Finding a vet with reproduction experience","Not knowing which numbers to track","Losses I could never explain","Finding the time"]},
+ {id:19,q:"How would you like to close these gaps?",
+  opts:["On my own, at my own pace","With a clear plan and a community of serious breeders","With a structured program and expert support every week","Not sure yet"]},
+ {id:20,q:"Is there anything else you'd like us to know?",free:true,
+  note:"Please keep questions about a specific dog for your own veterinarian. This scorecard is educational and can't advise on an individual animal."}
+];
+
+/* Q17 → goal stage (number), or 0 = use weakest */
+var GOAL_STAGE={0:1,1:3,2:4,3:5,4:0};
+
+/* bands */
+var BANDS=[
+ {min:70,label:"Strong foundation",
+  msg:"You already follow most of the practices the research supports. What's left is fine-tuning, and each remaining gap is listed below.",
+  note:"You already work at a level that takes years to build. The gaps left are small, and they are exactly the kind that separate a good litter from a great one. Close them one at a time, measure each one, and they become part of your program for good."},
+ {min:40,label:"Solid, with clear next gains",
+  msg:"Good foundations are in place, and day to day things work. A few stages still rely on judging by eye, and that is what holds the program back from its best results.",
+  note:"Your foundations are solid. A few stages still run on judgment rather than measurement, and that is where your next litters will gain the most. Every gap on this page is one habit, and none of them has to be worked on alone."},
+ {min:0,label:"Most room to grow",
+  msg:"Your next gains sit in a handful of habits that are rarely taught. Start with the three moves below, then work through your weakest stage.",
+  note:"If your score is lower than you expected, it is not a verdict on your program. These 15 practices go past what most breeders are ever taught. What matters is your next litter, and every gap here is something you can start on this week."}
+];
+var UNDERSCORE="These 15 practices go past the basics most breeders are taught. Every gap below is one habit to add, and each comes with a first step.";
+var NOTSURE_WHERE="This is a practice you weren't sure about, so it counts as a gap for now.";
+
+/* stage score → label + message */
+var STAGEMSG={
+ 3:{label:"In place",msg:""},
+ 2:{label:"Nearly there",msg:"Strong foundations, with one habit left to add."},
+ 1:{label:"Next gain",msg:"Some foundations are in place. The two habits below are where this stage has the most room."},
+ 0:{label:"Start here",msg:"This stage has the most room in your program. Focus on these three foundations before anything more advanced."}
+};
+
+/* obstacle lines by Q18 index */
+var OBSTACLE=[
+ "You said conflicting advice has made this hardest. The fix is one consistent, science-based plan, worked through with breeders applying the same one.",
+ "You said finding a vet with reproduction experience has been hard. Knowing these numbers changes that conversation: you arrive with the right questions, and your vet can work with you on them.",
+ "You said not knowing which numbers to track has been the hardest part. These 15 are a starting point, and each one comes with the threshold that matters.",
+ "You said losses you could never explain have been the hardest part. That is exactly where measurement starts: your three loss numbers, then the stage they point to.",
+ "You said time is the hardest part. That is why the plan works one habit at a time over 90 days, not everything at once."
+];
+var BRIDGE="You now know where the gaps are and what the science says about each one. Knowing the path is the first half. Walking it, one habit at a time and litter after litter, is easier with a plan and serious breeders around you.";
+
+/* programs */
+var PROGRAMS={
+ academy:{name:"Breedwise Academy",url:ACADEMY_URL,
+  desc:"For breeders ready to build these systems into their program with expert support: a personalised 90-day implementation plan, five live calls a week across breeding and reproduction, business and sales, and veterinary education from Dr. Fontaine.",
+  button:"See how Breedwise Academy works",
+  fitStrong:"Your foundations are strong. What's left is fine-tuning, and that is best done with expert feedback every week.",
+  fitOther:"Your answers point to a program ready for structured, weekly support to close these gaps."},
+ tpb:{name:"The Profitable Breeder",url:TPB_URL,
+  desc:"Get your next litter ready with a clearer plan: the 90-day Profitable Breeder Blueprint, weekly live sessions and vet-backed breeding and reproduction education, in a community of serious breeders.",
+  button:"See what's inside The Profitable Breeder",
+  fit:"Your three moves above are the start. The Profitable Breeder gives you the 90-day framework and the people to see them through."}
+};
+
+/* ============================ STATE ============================ */
+var A={first:"",last:"",email:"",phone:"",bp:{},q16:null,q17:null,q18:null,q19:null,q20:""};
+var STEPS=[]; // 'landing','contact', bp ids(1..15), qual ids(16..20), 'results'
+(function(){STEPS.push('landing','contact');BP.forEach(function(x){STEPS.push('bp'+x.id);});QUAL.forEach(function(x){STEPS.push('q'+x.id);});STEPS.push('results');})();
+var step=0, completionSent=false, optinSent=false;
+var app=document.getElementById('app');
+var emailRe=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+function show(){
+  var s=STEPS[step];
+  window.scrollTo(0,0);
+  var isQ=(s.charAt(0)==='b'&&s.substr(0,2)==='bp')||(s.charAt(0)==='q');
+  document.getElementById('prog').classList.toggle('hidden',!isQ);
+  if(isQ)renderProgress();
+  if(s==='landing')return renderLanding();
+  if(s==='contact')return renderContact();
+  if(s.substr(0,2)==='bp')return renderBP(parseInt(s.substr(2),10));
+  if(s.charAt(0)==='q'&&s!=='results')return renderQual(parseInt(s.substr(1),10));
+  if(s==='results')return renderResults();
+}
+function go(n){step=Math.max(0,Math.min(STEPS.length-1,n));show();}
+function qIndexOf(){ // 1..20 for question screens
+  var done=0;for(var i=2;i<=step;i++){var s=STEPS[i];if((s.substr(0,2)==='bp')||(s.charAt(0)==='q'&&s!=='results'))done++;}
+  return done;
+}
+function renderProgress(){
+  var idx=qIndexOf();var s=STEPS[step];var st=1;
+  if(s.substr(0,2)==='bp'){st=BP[parseInt(s.substr(2),10)-1].stage;}
+  var label=(s.substr(0,2)==='bp')?stageName(st):"About you";
+  document.getElementById('progStage').textContent=label;
+  document.getElementById('progCount').textContent="Question "+idx+" of 20";
+  document.getElementById('progFill').style.width=(idx/20*100)+"%";
+}
+
+/* ---------- landing ---------- */
+function renderLanding(){
+  app.className='wrap';
+  app.innerHTML=
+  '<div class="center fade">'
+   +'<span class="eyebrow">Free · 20 quick questions · about 4 minutes</span>'
+   +'<h1>Doing everything right, and your litters still <span class="u">surprise you</span>?</h1>'
+   +'<p class="lead">Answer 20 quick questions to find out why, and what to do about it. The scorecard measures the five stages of a litter, from the breeding to go-home day, and gives you your first three moves for the next 90 days.</p>'
+   +'<button class="cta" id="startBtn">Start the scorecard</button>'
+   +'<div class="undercta">100% free. About 4 minutes. Your personal results and next steps appear on screen the moment you finish.</div>'
+  +'</div>'
+  +'<div class="section-title center">How it works</div>'
+  +'<div class="card"><div class="how">'
+    +'<div class="row"><div class="n"><span>1</span></div><div class="t"><b>Answer:</b> 20 questions; most are yes or no, and "Not sure" is always an option.</div></div>'
+    +'<div class="row"><div class="n"><span>2</span></div><div class="t"><b>See your score:</b> an overall score plus a score for each of the five stages.</div></div>'
+    +'<div class="row"><div class="n"><span>3</span></div><div class="t"><b>Get your first three moves:</b> your top priorities for the next 90 days, plus every gap explained.</div></div>'
+  +'</div></div>'
+  +'<div class="section-title center">The five stages</div>'
+  +'<div class="card"><div class="stageslist">'
+    +'<div class="s"><span class="k">Stage 1</span><span><b>The Breeding:</b> her condition, the progesterone machine, the stud.</span></div>'
+    +'<div class="s"><span class="k">Stage 2</span><span><b>The Pregnancy:</b> feeding, her baseline, birth readiness.</span></div>'
+    +'<div class="s"><span class="k">Stage 3</span><span><b>Whelping Day:</b> birth log, newborn scoring, colostrum.</span></div>'
+    +'<div class="s"><span class="k">Stage 4</span><span><b>The First 21 Days:</b> growth rates, temperatures, birth weight.</span></div>'
+    +'<div class="s"><span class="k">Stage 5</span><span><b>Weaning to Go-Home:</b> growth curves, the mother\'s recovery, your numbers.</span></div>'
+    +'</div>'
+    +'<div class="timeline"><span class="m">Heat</span><span class="m">Ovulation</span><span class="m">Birth</span><span class="m">Day 21</span><span class="m">Week 8</span></div>'
+  +'</div>'
+  +'<div class="section-title center">Why this scorecard</div>'
+  +'<div class="card"><p class="credit">Up to 75% of conception failures trace back to timing, not true infertility, and kennel losses from birth to 3 weeks still run between 10 and 20%. This scorecard checks the measurements behind both numbers, and whether you are already taking them.</p></div>'
+  +'<div class="card" style="margin-top:14px">'
+    +'<div class="who"><span class="av">EF</span><div class="t"><b>Dr. Emmanuel Fontaine</b> — DVM, PhD, Dipl. ECAR</div></div>'
+    +'<p class="credit">Built by Dr. Emmanuel Fontaine: veterinarian and European board-certified specialist in animal reproduction (Diplomate ECAR), PhD from AgroParisTech, 14 years in veterinary education and scientific communication. The thresholds in this scorecard are the same ones he presents to breeders and veterinarians in four languages.</p>'
+    +'<p class="disc">An educational self-assessment. Dr. Fontaine is not acting as your veterinarian, and nothing here is veterinary advice for an individual animal. Decisions about your dogs stay with your own veterinarian.</p>'
+  +'</div>'
+  +'<div class="center"><button class="cta" id="startBtn2">Start the scorecard</button></div>';
+  document.getElementById('startBtn').onclick=function(){go(step+1);};
+  document.getElementById('startBtn2').onclick=function(){go(step+1);};
+}
+
+/* ---------- contact ---------- */
+function renderContact(){
+  app.className='wrap';
+  app.innerHTML=
+   '<div class="center fade" style="max-width:480px;margin:0 auto">'
+   +'<span class="eyebrow">Almost there</span>'
+   +'<h1>Where should we keep your <span class="u">results</span>?</h1>'
+   +'<p class="lead">Your results appear on screen as soon as you finish. Your details stay private.</p>'
+   +'<div class="card" style="margin-top:22px;text-align:left">'
+    +'<input type="text" class="hp" id="company" tabindex="-1" autocomplete="off" aria-hidden="true">'
+    +'<div class="row2">'
+      +'<div class="fld"><label>First name</label><input type="text" id="first" autocomplete="given-name" required></div>'
+      +'<div class="fld"><label>Last name <span style="color:#5b6775">(optional)</span></label><input type="text" id="last" autocomplete="family-name"></div>'
+    +'</div>'
+    +'<div class="fld"><label>Email</label><input type="email" id="email" autocomplete="email" required></div>'
+    +'<div class="fld"><label>Phone <span style="color:#5b6775">(optional)</span></label><input type="tel" id="phone" autocomplete="tel"></div>'
+    +'<button class="cta" id="c_next" style="margin-top:4px">Start question 1</button>'
+    +'<div class="msg" id="c_msg"></div>'
+    +'<div class="trust">Free. From Dr. Emmanuel Fontaine. Your information stays private.</div>'
+   +'</div>'
+   +'<div class="navrow" style="justify-content:flex-start"><button class="back" id="c_back">&larr; Back</button></div>'
+  +'</div>';
+  var f=document.getElementById('first');if(A.first)f.value=A.first;
+  document.getElementById('last').value=A.last||'';
+  document.getElementById('email').value=A.email||'';
+  document.getElementById('phone').value=A.phone||'';
+  document.getElementById('c_back').onclick=function(){go(step-1);};
+  document.getElementById('c_next').onclick=submitContact;
+}
+function submitContact(){
+  var msg=document.getElementById('c_msg');
+  var first=document.getElementById('first').value.trim();
+  var email=document.getElementById('email').value.trim();
+  var phone=document.getElementById('phone').value.trim();
+  if(!first){msg.style.color='var(--red)';msg.textContent='Please add your first name.';return;}
+  if(!emailRe.test(email)){msg.style.color='var(--red)';msg.textContent='Please enter a valid email.';return;}
+  A.first=first;A.last=document.getElementById('last').value.trim();A.email=email;A.phone=phone;
+  A.company=document.getElementById('company').value;
+  // early lead capture (fire and forget)
+  if(!optinSent){optinSent=true;
+    try{fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'litter-optin',first:A.first,last:A.last,email:A.email,phone:A.phone,company:A.company})}).catch(function(){});}catch(e){}
+  }
+  go(step+1);
+}
+
+/* ---------- best-practice question ---------- */
+function renderBP(id){
+  var Q=BP[id-1];app.className='wrap';
+  var cur=A.bp[id]||null;
+  var opts=[['yes','Yes'],['no','No'],['notsure','Not sure']];
+  var html='<div class="fade"><div class="qnum">Stage '+Q.stage+' · '+stageName(Q.stage)+'</div>'
+    +'<p class="qtext">'+Q.q+'</p>'
+    +(Q.explain?'<p class="qexplain">'+Q.explain+'</p>':'')
+    +'<div class="opts">';
+  opts.forEach(function(o){
+    html+='<button class="opt'+(cur===o[0]?' sel':'')+(o[0]==='notsure'?' ns':'')+'" data-v="'+o[0]+'"><span class="dot"></span>'+o[1]+'</button>';
+  });
+  html+='</div><div class="navrow"><button class="back" id="b_back">&larr; Back</button></div></div>';
+  app.innerHTML=html;
+  document.getElementById('b_back').onclick=function(){go(step-1);};
+  Array.prototype.forEach.call(app.querySelectorAll('.opt'),function(b){
+    b.onclick=function(){A.bp[id]=b.getAttribute('data-v');
+      Array.prototype.forEach.call(app.querySelectorAll('.opt'),function(x){x.classList.remove('sel');});
+      b.classList.add('sel');
+      setTimeout(function(){go(step+1);},170);
+    };
+  });
+}
+
+/* ---------- qualifying question ---------- */
+function renderQual(id){
+  var Q=QUAL[id-16];app.className='wrap';
+  var key='q'+id;var cur=A[key];
+  if(Q.free){
+    app.innerHTML='<div class="fade"><div class="qnum">About you · last one</div>'
+      +'<p class="qtext">'+Q.q+'</p>'
+      +'<div class="fld"><textarea id="freeTxt" placeholder="Optional">'+(cur||'')+'</textarea></div>'
+      +'<p class="optnote">'+Q.note+'</p>'
+      +'<button class="cta" id="q_done">See my results</button>'
+      +'<div class="navrow"><button class="back" id="q_back">&larr; Back</button></div></div>';
+    document.getElementById('q_back').onclick=function(){go(step-1);};
+    document.getElementById('q_done').onclick=function(){A.q20=document.getElementById('freeTxt').value.trim();go(step+1);};
+    return;
+  }
+  var html='<div class="fade"><div class="qnum">About you</div><p class="qtext">'+Q.q+'</p><div class="opts">';
+  Q.opts.forEach(function(o,i){
+    html+='<button class="opt'+(cur===i?' sel':'')+'" data-i="'+i+'"><span class="dot"></span>'+o+'</button>';
+  });
+  html+='</div><div class="navrow"><button class="back" id="q_back">&larr; Back</button></div></div>';
+  app.innerHTML=html;
+  document.getElementById('q_back').onclick=function(){go(step-1);};
+  Array.prototype.forEach.call(app.querySelectorAll('.opt'),function(b){
+    b.onclick=function(){A[key]=parseInt(b.getAttribute('data-i'),10);
+      Array.prototype.forEach.call(app.querySelectorAll('.opt'),function(x){x.classList.remove('sel');});
+      b.classList.add('sel');setTimeout(function(){go(step+1);},170);
+    };
+  });
+}
+
+/* ============================ SCORING ============================ */
+function isBest(Q){return A.bp[Q.id]===Q.best;}
+function isGap(Q){return A.bp[Q.id]!==Q.best;}
+function stageScore(st){var c=0;BP.forEach(function(Q){if(Q.stage===st&&isBest(Q))c++;});return c;}
+function weakestStage(){var best=1,bestScore=99;for(var st=1;st<=5;st++){var s=stageScore(st);if(s<bestScore){bestScore=s;best=st;}}return best;}
+function routeProgram(){
+  var q19=A.q19,q16=A.q16,score=overallPct();
+  if(q19===2)return 'academy';                         // structured program
+  if(q19===1){                                         // community
+    if(q16===3)return 'academy';                       // 6 or more
+    if(q16===2&&score>=70)return 'academy';            // 3 to 5 & 70+
+    return 'tpb';
+  }
+  return 'tpb';                                         // on my own / not sure yet
+}
+function segment(){
+  if(A.q19===2)return 'hot';
+  if(A.q19===1||A.q16===2||A.q16===3)return 'warm';
+  return 'cold';
+}
+function overallRaw(){var c=0;BP.forEach(function(Q){if(isBest(Q))c++;});return c;}
+function overallPct(){return Math.round(overallRaw()/15*100);}
+function bandFor(p){for(var i=0;i<BANDS.length;i++){if(p>=BANDS[i].min)return BANDS[i];}return BANDS[BANDS.length-1];}
+function bandKey(p){return p>=70?'strong':(p>=40?'solid':'grow');}
+
+/* ============================ RESULTS ============================ */
+function renderResults(){
+  app.className='wrap';
+  var pct=overallPct();var raw=overallRaw();var band=bandFor(pct);var goalStageSel=GOAL_STAGE[A.q17];
+  var goalStage=goalStageSel===0?weakestStage():goalStageSel;
+  var weak=weakestStage();
+  var gaps=BP.filter(isGap);
+  var program=routeProgram();var seg=segment();
+
+  /* 90-day starting point sentence */
+  var goalPhrase=lc(QUAL[1].opts[A.q17]);
+  var sp='';
+  if(gaps.length===0){
+    sp="All 15 practices are in place. Your next 90 days are about tracking your own numbers across litters.";
+  }else if(goalStageSel===0){
+    sp="You told us your priority is "+goalPhrase+". Your weakest stage is "+stageNoThe(weak)+" ("+stageScore(weak)+" of 3), so that is where your 90 days start.";
+  }else if(stageScore(goalStage)===3){
+    sp="You told us your priority is "+goalPhrase+". Your "+stageNoThe(goalStage)+" stage is already fully in place, so the fastest gains toward that goal sit in your "+stageNoThe(weak)+" stage ("+stageScore(weak)+" of 3).";
+  }else{
+    sp="You told us your priority is "+goalPhrase+". Your "+stageNoThe(goalStage)+" stage scored "+stageScore(goalStage)+" of 3, so that is where your 90 days start.";
+  }
+
+  /* first three moves: goal-stage gaps first (cycle order), then rest by stage score asc then id asc */
+  var moves=orderedGaps(goalStage).slice(0,3);
+
+  /* strengths */
+  var strengths=BP.filter(isBest);
+
+  /* gap stages: weakest first (tie cycle order), only stages with gaps */
+  var gapStages=[1,2,3,4,5].filter(function(st){return stageScore(st)<3;})
+    .sort(function(a,b){return stageScore(a)-stageScore(b)||a-b;});
+
+  var P=PROGRAMS[program];
+  var firstFit= program==='academy' ? (pct>=70?P.fitStrong:P.fitOther) : P.fit;
+
+  var html='<div class="fade">';
+
+  /* 1. title */
+  html+='<h1 class="center" style="margin-top:4px">'+esc(A.first)+', here\'s where your program stands.</h1>';
+
+  /* 2. score */
+  html+='<div class="scorewrap">'+ring(pct)
+    +'<div class="band">'+band.label+'</div>'
+    +'<p class="bandmsg">'+band.msg+'</p>'
+    +'<p class="underscore">'+UNDERSCORE+'</p></div>';
+
+  /* 3. note from Dr. Fontaine */
+  html+='<div class="card note" style="margin-top:20px"><div class="nt">A note from Dr. Fontaine</div>'
+    +'<p>'+band.note+'</p><div class="sig">Dr. Emmanuel Fontaine, DVM, PhD, Dipl. ECAR</div></div>';
+
+  /* 4. 90-day starting point */
+  html+='<div class="section-title">Your 90-day starting point</div><div class="card startpoint">'
+    +'<p class="p">'+sp+'</p>';
+  if(moves.length){
+    html+='<div class="moves">';
+    moves.forEach(function(Q,i){html+='<div class="move"><div class="mi">'+(i+1)+'</div><div class="mt"><b>'+Q.gap.title+'</b><span>'+Q.gap.win+'</span></div></div>';});
+    html+='</div>';
+    html+='<p class="bridgeline">Want help turning these moves into a full 90-day plan, with breeders working on the same thing?</p>'
+      +'<a class="cta" href="'+P.url+'" target="_blank" rel="noopener">'+P.button+'</a>';
+  }
+  html+='</div>';
+
+  /* 5. five stages */
+  html+='<div class="section-title">Your five stages</div><div class="stagegrid">';
+  for(var st=1;st<=5;st++){
+    var ss=stageScore(st);var dots='';for(var d=0;d<3;d++){dots+='<span class="d'+(d<ss?' on':'')+'"></span>';}
+    html+='<div class="sc"><div class="dots">'+dots+'</div><div class="nm">'+stageName(st)+'</div><div class="lb">'+STAGEMSG[ss].label+'</div></div>';
+  }
+  html+='</div>';
+
+  /* 6. already in place */
+  if(strengths.length){
+    html+='<div class="section-title">Already in place</div>'
+      +'<div class="chips">';
+    strengths.forEach(function(Q){html+='<span class="chip">'+Q.strength+'</span>';});
+    html+='</div><p class="subtle">These habits are already at the level the research supports. Keep them.</p>';
+  }
+
+  /* 7. gaps stage by stage */
+  if(gapStages.length){
+    html+='<div class="section-title">Your gaps, stage by stage</div>';
+    gapStages.forEach(function(st){
+      var ss=stageScore(st);var sm=STAGEMSG[ss];
+      html+='<div class="stageblock"><div class="stagehead"><div class="k">Stage '+st+' · '+ss+' of 3 in place</div>'
+        +'<div class="nm">'+stageName(st)+': <em>'+sm.label+'</em></div>'
+        +(sm.msg?'<div class="sm">'+sm.msg+'</div>':'')+'</div>';
+      BP.filter(function(Q){return Q.stage===st&&isGap(Q);}).forEach(function(Q){html+=gapCard(Q);});
+      html+='</div>';
+    });
+  }
+
+  /* 8. your next step */
+  html+='<div class="section-title">Your next step</div><div class="card">';
+  html+='<p class="obstacle">'+OBSTACLE[A.q18]+'</p>';
+  html+='<p class="bandmsg" style="text-align:left;margin:0 0 4px">'+BRIDGE+'</p>';
+  html+='<div class="prog-cards">'+programCard(program,true,firstFit)+programCard(program==='academy'?'tpb':'academy',false,null)+'</div>';
+  html+='</div>';
+
+  /* 9. retake + disclaimer */
+  html+='<div class="retake"><button class="cta ghost" id="retake">Retake the scorecard</button></div>';
+  html+='<p class="disc center" style="max-width:560px;margin:18px auto 0">An educational self-assessment. Dr. Fontaine is not acting as your veterinarian, and nothing here is veterinary advice for an individual animal. Decisions about your dogs stay with your own veterinarian.</p>';
+
+  html+='</div>';
+  app.innerHTML=html;
+  document.getElementById('retake').onclick=function(){A.bp={};A.q16=A.q17=A.q18=A.q19=null;A.q20="";completionSent=false;step=0;show();};
+
+  sendCompletion(pct,raw,band,goalStage,moves,program,seg,gaps);
+}
+
+function orderedGaps(goalStage){
+  var gaps=BP.filter(isGap);
+  var g1=gaps.filter(function(Q){return Q.stage===goalStage;}).sort(function(a,b){return a.id-b.id;});
+  var g2=gaps.filter(function(Q){return Q.stage!==goalStage;}).sort(function(a,b){return stageScore(a.stage)-stageScore(b.stage)||a.id-b.id;});
+  return g1.concat(g2);
+}
+function gapCard(Q){
+  var ns=(A.bp[Q.id]==='notsure');
+  var where=ns?NOTSURE_WHERE:Q.gap.where;
+  var h='<div class="gap">'+(ns?'<span class="ns">You answered ‘Not sure’</span>':'')
+    +'<div class="gt">'+Q.gap.title+'</div>'
+    +gl('Where you are',where)
+    +gl('Why it matters',Q.gap.why)
+    +gl('The cost of leaving it',Q.gap.cost)
+    +gl('What changes when you close it',Q.gap.change)
+    +'<div class="gl win"><span class="lab">Quick win this week</span><span class="tx">'+Q.gap.win+'</span></div>'
+    +'<div class="gl vet"><span class="lab">With your vet</span><span class="tx">'+Q.gap.vet+'</span></div>'
+    +'</div>';
+  return h;
+}
+function gl(lab,tx){return '<div class="gl"><span class="lab">'+lab+'</span><span class="tx">'+tx+'</span></div>';}
+function programCard(key,rec,fit){
+  var P=PROGRAMS[key];
+  var h='<div class="pcard'+(rec?' rec':'')+'">'
+    +'<div class="tag'+(rec?'':' alt')+'">'+(rec?'Recommended for you':'Also an option')+'</div>'
+    +'<h3>'+P.name+'</h3>'
+    +'<p class="desc">'+P.desc+'</p>';
+  if(rec&&fit)h+='<p class="fit">'+fit+'</p>';
+  h+='<a class="cta" href="'+P.url+'" target="_blank" rel="noopener">'+P.button+'</a></div>';
+  return h;
+}
+function ring(pct){
+  var r=76,c=2*Math.PI*r,off=c*(1-pct/100);
+  return '<div class="ring"><svg width="168" height="168" viewBox="0 0 168 168">'
+    +'<circle cx="84" cy="84" r="'+r+'" fill="none" stroke="#212b36" stroke-width="11"/>'
+    +'<circle cx="84" cy="84" r="'+r+'" fill="none" stroke="url(#g)" stroke-width="11" stroke-linecap="round" stroke-dasharray="'+c+'" stroke-dashoffset="'+off+'"/>'
+    +'<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c9a862"/><stop offset="1" stop-color="#e4cf9a"/></linearGradient></defs>'
+    +'</svg><div class="val"><div class="num">'+pct+'</div><div class="den">OUT OF 100</div></div></div>';
+}
+function lc(s){return s?s.charAt(0).toLowerCase()+s.slice(1):s;}
+function esc(s){return (s||'').replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
+
+/* ============================ STORE COMPLETION ============================ */
+function sendCompletion(pct,raw,band,goalStage,moves,program,seg,gaps){
+  if(completionSent)return;completionSent=true;
+  var answers={};BP.forEach(function(Q){answers['q'+Q.id]=A.bp[Q.id]||null;});
+  var payload={action:'litter-scorecard',
+    first:A.first,last:A.last,email:A.email,phone:A.phone,company:A.company||'',
+    scorePct:pct,scoreRaw:raw,band:bandKey(pct),
+    stageScores:{1:stageScore(1),2:stageScore(2),3:stageScore(3),4:stageScore(4),5:stageScore(5)},
+    gaps:gaps.map(function(Q){return Q.id;}),
+    notsure:BP.filter(function(Q){return A.bp[Q.id]==='notsure';}).map(function(Q){return Q.id;}),
+    priorities:moves.map(function(Q){return Q.gap.title;}),
+    goalStage:goalStage,segment:seg,programShown:program,
+    answers:answers,
+    qual:{q16:A.q16,q17:A.q17,q18:A.q18,q19:A.q19,q20:A.q20}
+  };
+  try{fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(){});}catch(e){}
+}
+
+/* ============================ BOOT ============================ */
+show();
+</script>
+</body>
+</html>
