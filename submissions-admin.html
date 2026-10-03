@@ -128,8 +128,8 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;',
 const dcls=s=>'d-'+String(s||'New').replace('-','');
 let ROWS=[], toolFilter='All', statusFilter='All', q='', ME=null;
 const CATS=[
-  {name:'Scorecards', tools:['program-scorecard','science-scorecard','litter-scorecard','free-scorecard','litter-snapshot']},
-  {name:'Opt-ins & Leads', tools:['litter-optin','vet-optin','optin','program-scorecard-optin']},
+  {name:'Scorecards', tools:['program-scorecard','pb-scorecard','science-scorecard','litter-scorecard','free-scorecard','litter-snapshot']},
+  {name:'Opt-ins & Leads', tools:['litter-optin','vet-optin','optin','program-scorecard-optin','pb-scorecard-optin']},
   {name:'Applications', tools:['application-partial','vsl-apply','academy-application','puppy-application','abr-application']},
   {name:'Revenue & Ops', tools:['sales-results','ad-metrics','q4-plan']}
 ];
@@ -654,9 +654,65 @@ function kvPretty(obj,depth){
     return `<div class="arow"><span class="q">${esc(humanLabel(k))}</span><span>${humanVal(v)}</span></div>`;
   }).join('');
 }
+/* ── Profitable Breeder Scorecard (quiz lead magnet) ────────────── */
+const PB_SECTIONS=['Demand & Brand','Sales & Buyer Experience','Pricing & Profit','Breeding Foundations','Systems & Data'];
+const PB_Q=[
+  {id:1,sec:1,best:'yes',q:'Buyers come to them by name or referral'},
+  {id:2,sec:1,best:'yes',q:'Clear one-sentence positioning vs other breeders'},
+  {id:3,sec:1,best:'yes',q:'Keeps a deposit-backed waitlist'},
+  {id:4,sec:2,best:'yes',q:'Runs every inquiry through one sales process'},
+  {id:5,sec:2,best:'no',q:'Answers buyer questions off the cuff, text by text'},
+  {id:6,sec:2,best:'yes',q:'Tracks inquiry-to-deposit conversion'},
+  {id:7,sec:3,best:'yes',q:'Prices on value delivered, not the breed market'},
+  {id:8,sec:3,best:'yes',q:'Knows true cost and profit per litter'},
+  {id:9,sec:3,best:'no',q:'Held the same puppy price for 2+ years'},
+  {id:10,sec:4,best:'yes',q:'Completes full health testing before breeding'},
+  {id:11,sec:4,best:'yes',q:'Times breedings with progesterone'},
+  {id:12,sec:4,best:'yes',q:'Has a vet-agreed whelping / emergency plan'},
+  {id:13,sec:5,best:'yes',q:'Tracks outcomes and economics litter to litter'},
+  {id:14,sec:5,best:'no',q:'Program lives in their head and phone notes'},
+  {id:15,sec:5,best:'yes',q:'Knows core numbers (litters/yr, price, revenue, margin)'}
+];
+const PB_QUAL={
+  q16:["Planning first litter","1 to 2 litters/yr","3 to 5 litters/yr","6 or more litters/yr"],
+  q17:["Not enough demand","Pricing & profit","Sales & closing buyers","Breeding outcomes","Systems & time"],
+  q18:["Consistent premium demand","Higher price per puppy","A program that runs without them","Stronger breeding outcomes","Finally knowing their numbers"],
+  q19:["On their own, at their own pace","A clear plan + community","Structured coaching + support","Not sure yet"]
+};
+const PB_BAND={scale:'Built to scale',solid:'Solid, with clear next gains',grow:'Most room to grow'};
+function renderPbScorecard(r){
+  const i=r.inputs||{}, m=r.meta||{}, res=r.result||{};
+  const ans=i.answers||{}, qual=i.qual||{};
+  const pct=(m.scorePct!=null?m.scorePct:res.scorePct);
+  const bandLabel=PB_BAND[m.band||res.band]||m.band||res.band||'';
+  const seg=m.segment||res.segment||'';
+  const prios=m.priorities||res.priorities||[];
+  let secHtml='';
+  for(let s=1;s<=5;s++){
+    const sc=m.secScores?m.secScores[s]:null;
+    secHtml+=`<div class="sgrp">Area ${s} · ${esc(PB_SECTIONS[s-1])}${sc!=null?`<span class="sc">${sc}/3 in place</span>`:''}</div>`;
+    secHtml+=PB_Q.filter(q=>q.sec===s).map(q=>
+      `<div class="arow"><span class="q">${esc(q.q)}</span>${answerChip(ans['q'+q.id],q.best)}</div>`).join('');
+  }
+  const qualRows=[[16,'Litters per year'],[17,'Biggest bottleneck'],[18,'12-month game-changer'],[19,'How they want to grow']].map(([id,label])=>{
+    const idx=qual['q'+id]; const opts=PB_QUAL['q'+id];
+    const val=(idx!=null&&opts&&opts[idx]!=null)?opts[idx]:'—';
+    return `<div class="kvrow"><b>${esc(label)}:</b> ${esc(val)}</div>`;
+  }).join('');
+  const free=qual.q20;
+  return `
+    <div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold)">Profitable Breeder Scorecard</div>
+      <div class="big">${pct!=null?pct:'–'}<span style="font-size:15px;color:var(--muted)">/100</span></div>
+      <div style="color:var(--mid);font-size:12.5px;margin-top:2px">${esc(bandLabel)}${seg?` · ${esc(seg)} lead`:''}</div></div>
+    ${prios.length?`<div class="block"><h3>Their first three moves</h3><ul class="li">${prios.map(p=>`<li>${esc(p)}</li>`).join('')}</ul></div>`:''}
+    <div class="block"><h3>Answers, by area</h3>${secHtml}</div>
+    <div class="block"><h3>About them</h3>${qualRows}</div>
+    ${free&&String(free).trim()?`<div class="block"><h3>Anything else they shared</h3><p>${esc(free)}</p></div>`:''}`;
+}
 function renderBody(r,forExport){
   if(r.tool==='litter-scorecard') return renderLitterScorecard(r);
-  if(r.tool==='litter-optin'||r.tool==='vet-optin'||r.tool==='optin'||r.tool==='program-scorecard-optin') return renderOptin(r);
+  if(r.tool==='pb-scorecard') return renderPbScorecard(r);
+  if(r.tool==='litter-optin'||r.tool==='vet-optin'||r.tool==='optin'||r.tool==='program-scorecard-optin'||r.tool==='pb-scorecard-optin') return renderOptin(r);
   if(r.tool==='program-scorecard'&&r.result) return renderScorecard(r,forExport);
   if(r.tool==='implementation-assessment') return renderAssessment(r);
   if(r.tool==='niche-blueprint'&&r.result) return renderBlueprint(r.result,r.inputs||{});
