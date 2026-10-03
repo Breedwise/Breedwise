@@ -328,7 +328,7 @@ function renderAds(a){
     }
     return;
   }
-  tag.textContent='today · 7d';
+  tag.textContent=(a.source==='synced'?'synced':'live')+' · today · 7d';
   var t=a.today||{}, d=a.last7d||{};
   var closes=(DATA.crm&&DATA.crm.closes7d)||0;
   var cac=closes>0?(d.spend||0)/closes:0;

@@ -80,8 +80,8 @@ async function website() {
 
 /* ---------- 2) META ADS ---------- */
 async function ads() {
-  if (!META_ADS) return { available: false, need: "META_ADS_TOKEN", account: META_ACCT };
   const acct = META_ACCT.replace(/^act_/, "");
+  if (!META_ADS) { const s = await storedAds(); if (s) return s; return { available: false, need: "META_ADS_TOKEN", account: acct }; }
   const fields = "spend,impressions,clicks,ctr,cpc,actions,action_values,cost_per_action_type";
   async function pull(preset: string) {
     const u = `https://graph.facebook.com/v21.0/act_${acct}/insights?date_preset=${preset}&fields=${fields}&access_token=${encodeURIComponent(META_ADS)}`;
@@ -97,8 +97,16 @@ async function ads() {
   }
   try {
     const [today, d7] = await Promise.all([pull("today"), pull("last_7d")]);
-    return { available: true, account: acct, today, last7d: d7 };
-  } catch (e) { return { available: false, error: String((e as Error).message || e), account: acct }; }
+    return { available: true, source: "live", account: acct, today, last7d: d7 };
+  } catch (e) { const s = await storedAds(); if (s) return s; return { available: false, error: String((e as Error).message || e), account: acct }; }
+}
+// Fallback: ad metrics synced into the store by a scheduled pull (no user token needed).
+async function storedAds() {
+  try {
+    const { data } = await supabase.from("tool_submissions").select("meta,updated_at,created_at").eq("tool", "ad-metrics").order("created_at", { ascending: false }).limit(1);
+    if (data && data[0] && data[0].meta) { const m: any = data[0].meta; return { available: true, source: "synced", as_of: data[0].updated_at || data[0].created_at, account: META_ACCT, today: m.today || {}, last7d: m.last7d || {} }; }
+  } catch (_) { /* */ }
+  return null;
 }
 
 /* ---------- 3) CC360 pipeline + outbound ---------- */
@@ -252,6 +260,16 @@ Deno.serve(async (req) => {
   if (req.method === "POST") {
     let body: any = {}; try { body = await req.json(); } catch { /* */ }
     if (!DASH || body.secret !== DASH) return j({ error: "unauthorized" }, 401);
+    if (body.action === "set-ads") {
+      // store the latest ad metrics (synced from the Meta Ads MCP; no user token needed)
+      const meta = { today: body.today ?? {}, last7d: body.last7d ?? {}, account: body.account ?? META_ACCT };
+      try {
+        const { data } = await supabase.from("tool_submissions").select("id").eq("tool", "ad-metrics").order("created_at", { ascending: false }).limit(1);
+        if (data && data[0]) await supabase.from("tool_submissions").update({ meta, summary: `spend 7d $${(meta.last7d as any)?.spend ?? "?"} · leads ${(meta.last7d as any)?.leads ?? "?"}`, updated_at: new Date().toISOString() }).eq("id", data[0].id);
+        else await supabase.from("tool_submissions").insert({ tool: "ad-metrics", tool_label: "Ad Metrics (synced)", summary: `spend 7d $${(meta.last7d as any)?.spend ?? "?"}`, meta });
+        return j({ ok: true, stored: meta });
+      } catch (e) { return j({ error: String((e as Error).message || e) }, 500); }
+    }
     if (body.action === "set-sales") {
       const meta = { academy: Number(body.academy) || 0, tpb: Number(body.tpb) || 0, academyCash: Number(body.academyCash) || 0 };
       const summary = `Academy ${meta.academy} · TPB ${meta.tpb}`;
