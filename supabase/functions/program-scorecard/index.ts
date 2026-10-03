@@ -320,7 +320,7 @@ Deno.serve(async (req) => {
       } catch (_) { /* never block the start */ }
       try {
         await supabase.from("tool_submissions").insert({
-          tool: "program-scorecard-optin", tool_label: "Program Scorecard Opt-in",
+          tool: "program-scorecard-optin", tool_label: "Program Assessment Opt-in",
           member_name: name || null, member_email: email,
           summary: `${name || email} · started the Program Scorecard`,
           meta: { phone: phone || null, kennel: kennel || null, source: "Program Scorecard", partial: true, ts: Math.floor(Date.now() / 1000) },
@@ -388,7 +388,7 @@ Deno.serve(async (req) => {
       try {
         const { error } = await supabase.from("tool_submissions").insert({
           tool: "program-scorecard",
-          tool_label: "Program Scorecard",
+          tool_label: "Program Assessment",
           member_name: name || null,
           member_email: email || null,
           summary: `${result.overall}/100 · weakest: ${[...result.scores].sort((x: any, y: any) => x.score - y.score)[0]?.label ?? "—"}`,

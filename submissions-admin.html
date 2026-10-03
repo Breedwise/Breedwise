@@ -128,7 +128,8 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;',
 const dcls=s=>'d-'+String(s||'New').replace('-','');
 let ROWS=[], toolFilter='All', statusFilter='All', q='', ME=null;
 const CATS=[
-  {name:'Scorecards', tools:['program-scorecard','pb-scorecard','science-scorecard','litter-scorecard','free-scorecard','litter-snapshot']},
+  {name:'Assessments', tools:['program-scorecard','implementation-assessment']},
+  {name:'Scorecards', tools:['pb-scorecard','science-scorecard','litter-scorecard','free-scorecard','litter-snapshot']},
   {name:'Opt-ins & Leads', tools:['litter-optin','vet-optin','optin','program-scorecard-optin','pb-scorecard-optin']},
   {name:'Applications', tools:['application-partial','vsl-apply','academy-application','puppy-application','abr-application']},
   {name:'Revenue & Ops', tools:['sales-results','ad-metrics','q4-plan']}
@@ -163,6 +164,8 @@ async function load(){
     .order('created_at',{ascending:false}).limit(2000);
   if(error){ $('#rows').innerHTML=`<tr><td colspan="7" class="empty">Couldn't load (${esc(error.message)}). If this is the first run, the submissions table may not be set up yet.</td></tr>`; return; }
   const raw=data||[];
+  // Program Scorecard was renamed to Program Assessment — normalize old rows' labels for display.
+  raw.forEach(r=>{ if(r.tool==='program-scorecard') r.tool_label='Program Assessment'; else if(r.tool==='program-scorecard-optin') r.tool_label='Program Assessment Opt-in'; });
   // Build the set of emails that completed a full application (from completed attribution rows).
   const completed=new Set();
   raw.forEach(r=>{ if(r.tool==='meta-attribution'){ const isP=(r.meta&&r.meta.partial===true)||/partial/i.test(r.tool_label||''); if(!isP){ const e=(r.member_email||'').toLowerCase(); if(e) completed.add(e); } } });
@@ -309,7 +312,7 @@ function downloadOne(r){
   <body><div class="paper">
     <div style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">${
       r.tool==='program-scorecard'
-        ? 'BreedWise<br><span style="letter-spacing:.14em;color:var(--mid)">The Profitable Breeder · Program Scorecard</span>'
+        ? 'BreedWise<br><span style="letter-spacing:.14em;color:var(--mid)">The Profitable Breeder · Program Assessment</span>'
         : 'Breedwise · Accelerator'}</div>
     <h2>${title}</h2>
     <div class="who" style="margin:0 0 6px"><span class="tooltag">${esc(r.tool_label||r.tool)}</span>${r.member_email?' · '+esc(r.member_email):''}${date?' · '+esc(date):''}</div>
@@ -521,7 +524,7 @@ function renderAssessment(r){
       ${(rm.priorities||[]).map((p,n)=>`<p style="margin-top:6px"><b style="color:var(--gold)">0${n+1} ${esc(p.title)}</b> — ${esc(p.work_toward)}</p>`).join('')}
       <p style="margin-top:6px;color:var(--muted)">${esc(rm.next_steps||'')}</p></div>`;
 }
-/* ── BreedWise Program Scorecard™ ───────────────────────────────── */
+/* ── BreedWise Program Assessment (tool key: program-scorecard) ──── */
 function renderScorecard(r,forExport){
   const res=r.result||{}, inp=r.inputs||{};
   const all=res.scores||[];

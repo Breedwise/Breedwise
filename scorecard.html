@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BreedWise Program Scorecard™</title>
+<title>BreedWise Program Assessment</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -115,14 +115,14 @@ main{padding:22px 0 60px}
 <!-- social share -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="BreedWise">
-<meta property="og:title" content="BreedWise Program Scorecard">
+<meta property="og:title" content="BreedWise Program Assessment">
 <meta property="og:description" content="See exactly where your program stands across your business and breeding engines, then what to fix first.">
 <meta property="og:url" content="https://review.breedwise.io/scorecard.html">
 <meta property="og:image" content="https://review.breedwise.io/og/program-scorecard.png">
 <meta property="og:image:width" content="2400">
 <meta property="og:image:height" content="1260">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="BreedWise Program Scorecard">
+<meta name="twitter:title" content="BreedWise Program Assessment">
 <meta name="twitter:description" content="See exactly where your program stands across your business and breeding engines, then what to fix first.">
 <meta name="twitter:image" content="https://review.breedwise.io/og/program-scorecard.png">
 </head>
@@ -131,10 +131,10 @@ main{padding:22px 0 60px}
 <div id="gate">
   <div class="gate-inner">
     <div class="gate-mark">The Profitable Breeder · BreedWise</div>
-    <h1>Program Scorecard™</h1>
+    <h1>Program Assessment</h1>
     <p>A short conversation about how your program actually runs — then a clear picture of where it stands and what deserves your attention next.</p>
     <input id="code" type="password" placeholder="Passcode" autocomplete="off" spellcheck="false" aria-label="Passcode">
-    <button class="btn" id="enter" style="width:100%;margin-top:12px">Begin my scorecard</button>
+    <button class="btn" id="enter" style="width:100%;margin-top:12px">Begin my assessment</button>
     <div class="err" id="gErr" style="text-align:center;margin-top:10px"></div>
   </div>
 </div>
@@ -142,7 +142,7 @@ main{padding:22px 0 60px}
 <div id="app">
   <header class="masthead"><div class="wrap">
     <div class="eyebrow">The Profitable Breeder · BreedWise</div>
-    <h1>BreedWise Program Scorecard™</h1>
+    <h1>BreedWise Program Assessment</h1>
     <p class="sub">Ten areas across your business engine and your breeding engine. Answer in your own words — rough numbers are fine, and specifics score better than adjectives. About 10 minutes.</p>
   </div></header>
   <main><div class="wrap">
@@ -231,7 +231,7 @@ async function turn(userText){
     if(d.focus)FOCUS=d.focus;
     if(d.vet_flag){
       $('#vet').innerHTML='<div class="vetwarn"><b>Please contact your veterinarian.</b> '+
-        'It sounds like there may be an active concern with a dog or a puppy. This scorecard is educational and cannot assess a medical situation — '+
+        'It sounds like there may be an active concern with a dog or a puppy. This assessment is educational and cannot assess a medical situation — '+
         'call your veterinarian or an emergency veterinary service now. Your answers are saved; come back when things are settled.</div>';
     }
     if(d.ready_to_score){
@@ -273,7 +273,7 @@ function prevBlock(res){
     '<div class="ar">&rarr;</div>'+
     '<div class="col now"><div class="k">Today</div><div class="v">'+(res.overall||0)+'</div></div>'+
     '</div><p class="closing" style="text-align:center">'+
-    (d>0?'Up '+d+' points since your first scorecard.':d<0?'Down '+Math.abs(d)+' points \u2014 worth looking at what changed.':'Level with your first scorecard.')+
+    (d>0?'Up '+d+' points since your first assessment.':d<0?'Down '+Math.abs(d)+' points \u2014 worth looking at what changed.':'Level with your first assessment.')+
     '</p></div>';
 }
 function renderCard(res){
@@ -281,7 +281,7 @@ function renderCard(res){
     return '<div class="item"><b>'+esc(x.area||x.priority)+'</b><p>'+esc(x.why||'')+'</p></div>';}).join('');};
   var sn=res.snapshot||{};
   $('#out').innerHTML=
-    '<div class="hero"><div class="k">BreedWise Program Scorecard™</div>'+
+    '<div class="hero"><div class="k">BreedWise Program Assessment</div>'+
       '<h2>'+esc(res.kennel_name||KENNEL||'Your Program')+'</h2>'+
       '<div class="tot"><b>'+(res.overall||0)+'</b>/100 overall — the pattern across categories matters more than the total.</div></div>'+
     '<div class="block">'+group(res.scores||[],'business','Business Engine')+
@@ -296,10 +296,10 @@ function renderCard(res){
       '<div class="item"><b>Biggest opportunities</b><p>'+esc(sn.opportunities||sn.biggest_opportunities||'')+'</p></div>'+
       '<div class="item"><b>Start here</b><p>'+esc(sn.start_here||sn.improve_first||'')+'</p></div>'+
       (sn.synthesis?'<p class="snap" style="margin-top:14px">'+esc(sn.synthesis)+'</p>':'')+
-      '<p class="closing">Your Scorecard is a snapshot of where your program stands today, not a grade \u2014 so you can stop guessing what needs attention and start prioritizing intentionally.</p></div>'+
+      '<p class="closing">Your Program Assessment is a snapshot of where your program stands today, not a grade \u2014 so you can stop guessing what needs attention and start prioritizing intentionally.</p></div>'+
     prevBlock(res)+
     '<div class="block prio"><h3>Your next step</h3>'+
-      '<p>Take this Scorecard into your <b style="color:var(--ink)">90-Day Profitable Breeder Blueprint</b>. As you work through the program, you will learn what each of these systems needs, why it matters, and what to measure.</p>'+
+      '<p>Take this assessment into your <b style="color:var(--ink)">90-Day Profitable Breeder Blueprint</b>. As you work through the program, you will learn what each of these systems needs, why it matters, and what to measure.</p>'+
       '<div class="steps"><span>See it</span><span>Understand it</span><span>Measure it</span><span>Prioritize it</span></div>'+
       '<p class="closing" style="text-align:center">Come back and reassess at Day 90 \u2014 we will show you exactly what moved.</p></div>'+
     '<div class="actions"><button class="btn" onclick="window.print()">Save / print</button>'+
@@ -319,7 +319,7 @@ async function buildScorecard(){
     renderCard(d.result||{});
   }catch(e){
     thinking(false);
-    bubble('assistant','I couldn’t build the scorecard: '+e.message+'\n\nReassess in a moment — your answers are saved.');
+    bubble('assistant','I couldn’t build the assessment: '+e.message+'\n\nReassess in a moment — your answers are saved.');
   }
   BUSY=false;
 }
