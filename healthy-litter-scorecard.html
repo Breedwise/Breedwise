@@ -504,7 +504,7 @@ function renderContact(){
       +'<div class="fld"><label>Last name <span style="color:#5b6775">(optional)</span></label><input type="text" id="last" autocomplete="family-name"></div>'
     +'</div>'
     +'<div class="fld"><label>Email</label><input type="email" id="email" autocomplete="email" required></div>'
-    +'<div class="fld"><label>Phone <span style="color:#5b6775">(optional)</span></label><input type="tel" id="phone" autocomplete="tel"></div>'
+    +'<div class="fld"><label>Phone</label><input type="tel" id="phone" autocomplete="tel" required></div>'
     +'<button class="cta" id="c_next" style="margin-top:4px">Start question 1</button>'
     +'<div class="msg" id="c_msg"></div>'
     +'<div class="trust">Free. From Dr. Emmanuel Fontaine. Your information stays private.</div>'
@@ -525,6 +525,7 @@ function submitContact(){
   var phone=document.getElementById('phone').value.trim();
   if(!first){msg.style.color='var(--red)';msg.textContent='Please add your first name.';return;}
   if(!emailRe.test(email)){msg.style.color='var(--red)';msg.textContent='Please enter a valid email.';return;}
+  if(phone.replace(/\D/g,'').length<7){msg.style.color='var(--red)';msg.textContent='Please enter a valid phone number.';return;}
   A.first=first;A.last=document.getElementById('last').value.trim();A.email=email;A.phone=phone;
   A.company=document.getElementById('company').value;
   // early lead capture (fire and forget)
