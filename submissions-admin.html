@@ -156,7 +156,11 @@ async function boot(){
   $('#gate').classList.add('hide');$('#app').classList.add('on'); load();
 }
 async function load(){
-  const {data,error}=await sb.from('tool_submissions').select('*').order('created_at',{ascending:false});
+  // Exclude pure-analytics rows at the query level. They are hidden from view anyway, but
+  // left in they flood the row budget and push real submissions out of the fetch window.
+  const {data,error}=await sb.from('tool_submissions').select('*')
+    .not('tool','in','(site-session,site-pageview)')
+    .order('created_at',{ascending:false}).limit(2000);
   if(error){ $('#rows').innerHTML=`<tr><td colspan="7" class="empty">Couldn't load (${esc(error.message)}). If this is the first run, the submissions table may not be set up yet.</td></tr>`; return; }
   const raw=data||[];
   // Build the set of emails that completed a full application (from completed attribution rows).
