@@ -111,7 +111,7 @@ ul.li{margin:4px 0 0 18px;color:var(--mid);font-size:13px}ul.li li{margin:3px 0}
   <div class="toolbar" id="tools"></div>
   <div class="kpis" id="kpis"></div>
   <div class="chips" id="chips"></div>
-  <div class="tblwrap"><table><thead><tr><th>Date</th><th>Tool</th><th>Member</th><th>Summary</th><th>Owner</th><th>Status</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+  <div class="tblwrap"><table><thead><tr><th>When</th><th>Tool</th><th>Member</th><th>Summary</th><th>Owner</th><th>Status</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
 </div></div>
 
 <div id="modal" class="modal hide"><div class="sheet" id="sheet"></div></div>
@@ -235,9 +235,11 @@ function visible(){
   });
 }
 function rowHtml(r){
-  const d=r.created_at?new Date(r.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'';
+  const dt=r.created_at?new Date(r.created_at):null;
+  const d=dt?dt.toLocaleDateString('en-US',{month:'short',day:'numeric'}):'';
+  const tm=dt?dt.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}):'';
   return `<tr>
-    <td class="sub">${esc(d)}</td>
+    <td class="sub" style="white-space:nowrap">${esc(d)}${tm?`<div style="font-size:11px;color:var(--muted)">${esc(tm)}</div>`:''}</td>
     <td><span class="tooltag">${esc(r.tool_label||r.tool)}</span></td>
     <td><div class="nm">${esc(r.member_name||'—')}</div><div class="sub">${esc(r.member_email||'')}</div></td>
     <td style="max-width:260px">${esc((r.summary||'').slice(0,100))}</td>
@@ -282,11 +284,11 @@ function download(filename,text,mime){
 function csvExport(){
   const rows=visible();
   if(!rows.length){ alert('Nothing to export in the current view.'); return; }
-  const cols=['Date','Tool','Member','Email','Summary','Price low','Price high','Status','Owner','Notes'];
+  const cols=['When','Tool','Member','Email','Summary','Price low','Price high','Status','Owner','Notes'];
   const cq=v=>{ v=String(v==null?'':v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; };
   const lines=[cols.join(',')];
   rows.forEach(r=>{ const m=r.meta||{}; lines.push([
-    r.created_at?new Date(r.created_at).toISOString().slice(0,10):'',
+    r.created_at?new Date(r.created_at).toLocaleString('en-US',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'',
     r.tool_label||r.tool, r.member_name||'', r.member_email||'', r.summary||'',
     m.price_low||'', m.price_high||'', r.status||'New', r.owner||'', r.notes||''
   ].map(cq).join(',')); });
@@ -801,7 +803,7 @@ function openSub(id){
   $('#sheet').innerHTML=`
     <button class="close" id="mClose">×</button>
     <h2>${esc(r.member_name||r.tool_label||'Submission')}</h2>
-    <div class="who"><span class="tooltag">${esc(r.tool_label||r.tool)}</span>${r.member_email?' · '+esc(r.member_email):''}</div>
+    <div class="who"><span class="tooltag">${esc(r.tool_label||r.tool)}</span>${r.member_email?' · '+esc(r.member_email):''}${r.created_at?' · '+esc(new Date(r.created_at).toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'})):''}</div>
     ${body}
     <div class="mgmt">
       <div><label>Status</label><select id="m_status">${STATUSES.map(s=>`<option ${((r.status||'New')===s)?'selected':''}>${s}</option>`).join('')}</select></div>
