@@ -75,6 +75,8 @@ main{padding:22px 0 60px}
 .srow:last-child{border-bottom:0}
 .srow .nm{font-size:14.5px;font-weight:600}
 .srow .ev{font-size:12.5px;color:var(--muted);margin-top:3px}
+.srow .std{font-size:12.5px;color:var(--mid);margin-top:8px;padding-left:11px;border-left:2px solid var(--gold-faint)}
+.srow .std b{color:var(--gold);font-weight:600;letter-spacing:.04em}
 .srow .bar{height:5px;border-radius:3px;background:var(--card);margin-top:7px;overflow:hidden}
 .srow .bar i{display:block;height:100%;border-radius:3px}
 .srow .num{font-family:var(--heading);font-size:19px;text-align:right}
@@ -144,9 +146,10 @@ main{padding:22px 0 60px}
         <h3>One last thing</h3>
         <p style="color:var(--mid);font-size:14px;margin-bottom:14px">So we can save your baseline and show you what moved when you reassess at Day 90.</p>
         <div class="f2">
-          <div class="field"><label>Kennel name</label><input id="mName" placeholder="Your kennel"></div>
-          <div class="field"><label>Email</label><input id="mEmail" type="email" placeholder="you@kennel.com"></div>
+          <div class="field"><label>Your name</label><input id="mFirst" placeholder="First and last name" autocomplete="name"></div>
+          <div class="field"><label>Email</label><input id="mEmail" type="email" placeholder="you@kennel.com" autocomplete="email"></div>
         </div>
+        <div class="field" style="margin-top:12px"><label>Kennel name <span style="opacity:.55">(optional)</span></label><input id="mName" placeholder="Your kennel"></div>
         <button class="btn" id="finish" style="width:100%">Build my scorecard</button>
         <div class="err" id="fErr"></div>
       </div>
@@ -253,7 +256,9 @@ function group(scores,engine,title){
     var dl=(typeof s.delta==='number'&&s.delta!==0)
       ? '<span class="delta '+(s.delta>0?'up':'dn')+'">'+(s.delta>0?'+':'')+s.delta+'</span>' : '';
     return '<div class="srow"><div><div class="nm">'+esc(s.label)+dl+'</div>'+bar(Number(s.score)||0)+
-      '<div class="ev">'+esc(s.evidence)+'</div></div><div class="num">'+(Number(s.score)||0)+'</div></div>';}).join('');
+      '<div class="ev">'+esc(s.evidence)+'</div>'+
+      (s.standard?'<div class="std"><b>Strong looks like</b> '+esc(s.standard)+'</div>':'')+
+      '</div><div class="num">'+(Number(s.score)||0)+'</div></div>';}).join('');
   var sum=scores.filter(function(s){return s.engine===engine;}).reduce(function(a,s){return a+(Number(s.score)||0);},0);
   var max=(engine==='business'?60:40);
   return '<div class="engine">'+title+' · '+sum+'/'+max+'</div>'+rows;
@@ -305,12 +310,14 @@ async function finish(){
   if(BUSY)return; BUSY=true;
   $('#finish').disabled=true; $('#finish').textContent='Scoring your program…';
   try{
-    var nEl=document.getElementById('mName'), eEl=document.getElementById('mEmail');
-    var nm=(nEl&&nEl.value.trim())||KENNEL, em=(eEl&&eEl.value.trim())||'';
-    if(!em){$('#fErr').textContent='Enter your email so we can save your baseline.';
+    var fEl=document.getElementById('mFirst'), nEl=document.getElementById('mName'), eEl=document.getElementById('mEmail');
+    var person=(fEl&&fEl.value.trim())||'', kennel=(nEl&&nEl.value.trim())||'', em=(eEl&&eEl.value.trim())||'';
+    if(!person){$('#fErr').textContent='Enter your name so we can save your baseline.';
       $('#finish').disabled=false;$('#finish').textContent='Build my scorecard';BUSY=false;return;}
-    KENNEL=nm;
-    var d=await api({action:'score',messages:MSGS,member_name:nm,member_email:em});
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){$('#fErr').textContent='Enter a valid email so we can save your baseline.';
+      $('#finish').disabled=false;$('#finish').textContent='Build my scorecard';BUSY=false;return;}
+    if(kennel)KENNEL=kennel;
+    var d=await api({action:'score',messages:MSGS,member_name:person,member_kennel:kennel||KENNEL,member_email:em});
     $('#finishWrap').style.display='none';
     $('#thread').style.display='none';
     rail();
