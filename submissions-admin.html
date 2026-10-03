@@ -47,6 +47,17 @@ tr.grp .gc{float:right;color:var(--muted);font-size:11px;font-weight:600}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
 .chip{font-size:12px;font-weight:600;padding:6px 12px;border-radius:20px;border:1px solid var(--border);background:var(--card-2);color:var(--muted);cursor:pointer}
 .chip.on{background:var(--gold-faint);color:var(--gold);border-color:var(--gold-deep)}
+.arow{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--border)}
+.arow:last-child{border-bottom:0}
+.arow .q{font-size:13px;color:var(--mid);line-height:1.4}
+.achip{font-size:11px;font-weight:700;border-radius:20px;padding:4px 11px;white-space:nowrap;flex:none}
+.achip.ok{background:rgba(109,191,144,.16);color:#8fd0a6}
+.achip.gap{background:rgba(224,128,126,.16);color:var(--fu)}
+.achip.ns{background:var(--gold-faint);color:var(--gold)}
+.achip.neutral{background:var(--card-2);color:var(--mid);border:1px solid var(--border)}
+.sgrp{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:15px 0 3px}
+.sgrp:first-child{margin-top:2px}
+.sgrp .sc{color:var(--muted);font-weight:600;margin-left:6px}
 .search{margin-left:auto;min-width:190px}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th,td{text-align:left;padding:10px 9px;border-bottom:1px solid var(--border);vertical-align:middle}
@@ -542,7 +553,110 @@ function renderScorecard(r,forExport){
       (${(res.overall-res.previous.overall)>=0?'+':''}${res.overall-res.previous.overall} points since their first scorecard)</p></div>`:''}
     ${(tx&&!forExport)?`<div class="block"><h3>Interview transcript</h3><pre style="white-space:pre-wrap;font-family:var(--body);font-size:12.5px;color:var(--mid);margin:0">${esc(tx)}</pre></div>`:''}`;
 }
+/* ── Healthy Litter Scorecard ───────────────────────────────────── */
+const LITTER_STAGES=['The Breeding','The Pregnancy','Whelping Day','The First 21 Days','Weaning to Go-Home'];
+const LITTER_Q=[
+  {id:1,stage:1,best:'yes',q:'Scores her body condition (1–9) by hand before breeding'},
+  {id:2,stage:1,best:'yes',q:"Knows the vet's progesterone machine and its ovulation value"},
+  {id:3,stage:1,best:'yes',q:'Collects the stud once after a long (10+ day) rest'},
+  {id:4,stage:2,best:'no',q:'Relies on the calendar to judge when puppies are ready'},
+  {id:5,stage:2,best:'no',q:'Increases her food as soon as pregnancy is confirmed'},
+  {id:6,stage:2,best:'no',q:'Starts temperatures only in the last few days (no baseline)'},
+  {id:7,stage:3,best:'yes',q:'Logs the time each puppy and placenta arrives'},
+  {id:8,stage:3,best:'yes',q:'Gives each newborn an Apgar vitality score'},
+  {id:9,stage:3,best:'yes',q:'Checks colostrum intake by weighing before and after nursing'},
+  {id:10,stage:4,best:'no',q:'Treats "heavier than yesterday" as on track'},
+  {id:11,stage:4,best:'yes',q:'Checks newborn temperature at 12, 24 and 48 hours'},
+  {id:12,stage:4,best:'yes',q:'Knows the low-birth-weight line for their breed size'},
+  {id:13,stage:5,best:'yes',q:'Plots each puppy on a growth chart to go-home day'},
+  {id:14,stage:5,best:'yes',q:'Waits for the dam to return to BCS 4–5 before the next breeding'},
+  {id:15,stage:5,best:'yes',q:'Tracks losses as three separate numbers'}
+];
+const LITTER_QUAL={
+  q16:["Planning first litter","1 to 2 litters/yr","3 to 5 litters/yr","6 or more litters/yr"],
+  q17:["A successful breeding & good-size litter","A safe, calm whelping","Every puppy through the first 3 weeks","Healthy puppies on go-home day","A program that runs on systems"],
+  q18:["Conflicting advice online / in groups","Finding a repro-experienced vet","Not knowing which numbers to track","Losses they couldn't explain","Finding the time"],
+  q19:["On their own, at their own pace","A clear plan + community of serious breeders","A structured program + weekly expert support","Not sure yet"]
+};
+const LITTER_BAND={strong:'Strong foundation',solid:'Solid, with clear next gains',grow:'Most room to grow'};
+function answerChip(v,best){
+  const lab=v==='yes'?'Yes':(v==='no'?'No':(v==='notsure'?'Not sure':'—'));
+  if(v==null||v==='') return `<span class="achip neutral">—</span>`;
+  const isBest=v===best;
+  const cls=isBest?'ok':(v==='notsure'?'ns':'gap');
+  return `<span class="achip ${cls}">${isBest?'✓ ':''}${lab}</span>`;
+}
+function renderLitterScorecard(r){
+  const i=r.inputs||{}, m=r.meta||{}, res=r.result||{};
+  const ans=i.answers||{}, qual=i.qual||{};
+  const pct=(m.scorePct!=null?m.scorePct:res.scorePct);
+  const bandLabel=LITTER_BAND[m.band||res.band]||m.band||res.band||'';
+  const seg=m.segment||res.segment||'';
+  const prog=m.programShown||res.programShown||'';
+  const progLabel=prog==='academy'?'Breedwise Academy':(prog==='tpb'?'The Profitable Breeder':prog);
+  const prios=m.priorities||res.priorities||[];
+  let stagesHtml='';
+  for(let st=1;st<=5;st++){
+    const sc=m.stageScores?m.stageScores[st]:null;
+    stagesHtml+=`<div class="sgrp">Stage ${st} · ${esc(LITTER_STAGES[st-1])}${sc!=null?`<span class="sc">${sc}/3 in place</span>`:''}</div>`;
+    stagesHtml+=LITTER_Q.filter(q=>q.stage===st).map(q=>
+      `<div class="arow"><span class="q">${esc(q.q)}</span>${answerChip(ans['q'+q.id],q.best)}</div>`).join('');
+  }
+  const qualRows=[[16,'Litters per year'],[17,'90-day priority'],[18,'Hardest part so far'],[19,'How they want to close gaps']].map(([id,label])=>{
+    const idx=qual['q'+id]; const opts=LITTER_QUAL['q'+id];
+    const val=(idx!=null&&opts&&opts[idx]!=null)?opts[idx]:'—';
+    return `<div class="kvrow"><b>${esc(label)}:</b> ${esc(val)}</div>`;
+  }).join('');
+  const free=qual.q20;
+  return `
+    <div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold)">Healthy Litter Scorecard · Dog Edition</div>
+      <div class="big">${pct!=null?pct:'–'}<span style="font-size:15px;color:var(--muted)">/100</span></div>
+      <div style="color:var(--mid);font-size:12.5px;margin-top:2px">${esc(bandLabel)}${seg?` · ${esc(seg)} lead`:''}${progLabel?` · routed to ${esc(progLabel)}`:''}</div></div>
+    ${prios.length?`<div class="block"><h3>Their first three moves</h3><ul class="li">${prios.map(p=>`<li>${esc(p)}</li>`).join('')}</ul></div>`:''}
+    <div class="block"><h3>Answers, by stage</h3>${stagesHtml}</div>
+    <div class="block"><h3>About them</h3>${qualRows}</div>
+    ${free&&String(free).trim()?`<div class="block"><h3>Anything else they shared</h3><p>${esc(free)}</p></div>`:''}`;
+}
+function renderOptin(r){
+  const m=r.meta||{};
+  const kvrow=(k,v)=> (v!=null&&String(v).trim())?`<div class="kvrow"><b>${esc(k)}:</b> ${esc(v)}</div>`:'';
+  return `
+    <div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--del)">${esc(r.tool_label||'Opt-in')}</div>
+      <div class="big" style="font-size:20px">${esc(r.member_name||r.member_email||'New lead')}</div>
+      <p style="color:var(--mid);font-size:12.5px;margin-top:6px">${esc(m.source||'Lead capture')}${m.partial?' · started the scorecard':''}</p></div>
+    <div class="block"><h3>Contact</h3>
+      ${kvrow('Name',r.member_name)}
+      ${kvrow('Email',r.member_email)}
+      ${kvrow('Phone',m.phone)}
+      ${kvrow('Source',m.source)}
+    </div>`;
+}
+/* ── universal humanizer (clean fallback for any tool) ──────────── */
+function humanLabel(k){
+  return String(k).replace(/[_\-]+/g,' ').replace(/([a-z0-9])([A-Z])/g,'$1 $2')
+    .replace(/\bq(\d+)\b/gi,'Q$1').replace(/\s+/g,' ').trim().replace(/^./,c=>c.toUpperCase());
+}
+function humanVal(v){
+  if(v===true||v==='yes'||v==='Yes') return '<span class="achip ok">Yes</span>';
+  if(v===false||v==='no'||v==='No') return '<span class="achip gap">No</span>';
+  if(v==='notsure'||v==='Not sure'||v==='not sure') return '<span class="achip ns">Not sure</span>';
+  return esc(String(v));
+}
+function emptyVal(v){ return v==null || (typeof v==='string'&&!v.trim()) || (Array.isArray(v)&&!v.length) || (typeof v==='object'&&!Array.isArray(v)&&v&&!Object.keys(v).length); }
+function kvPretty(obj,depth){
+  depth=depth||0;
+  return Object.entries(obj||{}).filter(([k,v])=>!emptyVal(v)).map(([k,v])=>{
+    if(Array.isArray(v)){
+      if(v.every(x=>typeof x!=='object')) return `<div class="kvrow"><b>${esc(humanLabel(k))}:</b> ${v.map(x=>esc(String(x))).join(', ')}</div>`;
+      return `<div class="sgrp">${esc(humanLabel(k))}</div>${v.map(x=>typeof x==='object'?kvPretty(x,depth+1):`<div class="kvrow">${esc(String(x))}</div>`).join('')}`;
+    }
+    if(typeof v==='object') return `<div class="sgrp">${esc(humanLabel(k))}</div>${kvPretty(v,depth+1)}`;
+    return `<div class="arow"><span class="q">${esc(humanLabel(k))}</span><span>${humanVal(v)}</span></div>`;
+  }).join('');
+}
 function renderBody(r,forExport){
+  if(r.tool==='litter-scorecard') return renderLitterScorecard(r);
+  if(r.tool==='litter-optin'||r.tool==='vet-optin'||r.tool==='optin') return renderOptin(r);
   if(r.tool==='program-scorecard'&&r.result) return renderScorecard(r,forExport);
   if(r.tool==='implementation-assessment') return renderAssessment(r);
   if(r.tool==='niche-blueprint'&&r.result) return renderBlueprint(r.result,r.inputs||{});
@@ -607,11 +721,18 @@ function renderLitterSnapshot(r){
     ${ansBlocks?`<div class="block" style="background:none;border:0;padding:14px 0 0"><h3>Full answers (exactly what they entered)</h3></div>${ansBlocks}`:`<div class="block"><p style="color:var(--muted)">Full itemized answers weren't captured for this submission (saved before the update).</p></div>`}`;
 }
 function renderGeneric(r){
-  const inp=r.inputs, res=r.result;
+  const inp=r.inputs, res=r.result, m=r.meta||{};
   let out='';
   if(r.summary) out+=`<div class="block"><h3>Summary</h3><p>${esc(r.summary)}</p></div>`;
-  if(inp&&typeof inp==='object') out+=`<div class="block"><h3>Submitted</h3>${kv(inp)||'<p>—</p>'}</div>`;
-  if(res!=null){ const body=(typeof res==='object'&&!Array.isArray(res))?kv(res):`<pre style="white-space:pre-wrap;font-size:12px;color:var(--mid)">${esc(JSON.stringify(res,null,2))}</pre>`; out+=`<div class="block"><h3>Result</h3>${body}</div>`; }
+  const contact=kvPretty({name:r.member_name,email:r.member_email,phone:m.phone});
+  if(contact) out+=`<div class="block"><h3>Contact</h3>${contact}</div>`;
+  const inpBody=(inp&&typeof inp==='object')?kvPretty(inp):'';
+  if(inpBody) out+=`<div class="block"><h3>Their answers</h3>${inpBody}</div>`;
+  const resBody=(res&&typeof res==='object'&&!Array.isArray(res))?kvPretty(res):'';
+  if(resBody) out+=`<div class="block"><h3>Result</h3>${resBody}</div>`;
+  const extras={}; ['source','scorePct','band','segment'].forEach(k=>{ if(!emptyVal(m[k])) extras[k]=m[k]; });
+  const exBody=kvPretty(extras);
+  if(exBody&&!resBody&&!inpBody) out+=`<div class="block"><h3>Details</h3>${exBody}</div>`;
   return out||'<div class="block"><p>No detail recorded.</p></div>';
 }
 function openSub(id){
