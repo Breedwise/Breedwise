@@ -22,7 +22,8 @@ button{font-family:var(--body);cursor:pointer}
 .wrap{max-width:820px;margin:0 auto;padding:0 20px}
 
 /* gate */
-#gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+#gate,#optin{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+#optin .stack input{margin-top:10px}
 .gate-inner{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:14px;padding:34px 30px;max-width:420px;width:100%}
 .gate-mark{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px}
 .gate-inner h1{font-size:26px;margin-bottom:8px}
@@ -126,6 +127,22 @@ main{padding:22px 0 60px}
   </div>
 </div>
 
+<div id="optin" style="display:none">
+  <div class="gate-inner">
+    <div class="gate-mark">The Profitable Breeder · BreedWise</div>
+    <h1>Before we begin</h1>
+    <p>Where should we send your scorecard? We save your baseline so you can see exactly what moved when you reassess at Day 90.</p>
+    <div class="stack">
+      <input id="oFirst" placeholder="First and last name" autocomplete="name">
+      <input id="oEmail" type="email" placeholder="Email" autocomplete="email">
+      <input id="oPhone" type="tel" placeholder="Phone" autocomplete="tel">
+      <input id="oKennel" placeholder="Kennel name (optional)">
+    </div>
+    <button class="btn" id="oStart" style="width:100%;margin-top:14px">Start my scorecard</button>
+    <div class="err" id="oErr" style="text-align:center;margin-top:10px"></div>
+  </div>
+</div>
+
 <div id="app">
   <header class="masthead"><div class="wrap">
     <div class="eyebrow">The Profitable Breeder · BreedWise</div>
@@ -140,19 +157,6 @@ main{padding:22px 0 60px}
     <div class="composer" id="composer">
       <textarea id="say" rows="2" placeholder="Type your answer…" aria-label="Your answer"></textarea>
       <button class="btn" id="send">Send</button>
-    </div>
-    <div id="finishWrap" style="display:none">
-      <div class="block" style="margin-top:4px">
-        <h3>One last thing</h3>
-        <p style="color:var(--mid);font-size:14px;margin-bottom:14px">So we can save your baseline and show you what moved when you reassess at Day 90.</p>
-        <div class="f2">
-          <div class="field"><label>Your name</label><input id="mFirst" placeholder="First and last name" autocomplete="name"></div>
-          <div class="field"><label>Email</label><input id="mEmail" type="email" placeholder="you@kennel.com" autocomplete="email"></div>
-        </div>
-        <div class="field" style="margin-top:12px"><label>Kennel name <span style="opacity:.55">(optional)</span></label><input id="mName" placeholder="Your kennel"></div>
-        <button class="btn" id="finish" style="width:100%">Build my scorecard</button>
-        <div class="err" id="fErr"></div>
-      </div>
     </div>
     <div id="out"></div>
   </div></main>
@@ -175,6 +179,8 @@ var sb=window.supabase.createClient(SB_URL,SB_KEY);
 var CATS=['Demand','Brand & Positioning','Social Media & Content','Buyer Experience & Sales','Pricing',
           'Profitability','Breeding & Reproductive Prep','Whelping & Neonatal','Data & Recordkeeping','Operations & Systems'];
 var CODE='', MSGS=[], CAT=1, BUSY=false, DONE=false, KENNEL='', SEEN={}, FOCUS='';
+var MFIRST='', MEMAIL='', MPHONE='', MKENNEL='', LEADSENT=false;
+var emailRe=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 function $(s){return document.querySelector(s);}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){
@@ -236,8 +242,9 @@ async function turn(userText){
     if(d.ready_to_score){
       DONE=true; for(var q=1;q<=10;q++)SEEN[q]=true;
       $('#composer').style.display='none';
-      $('#finishWrap').style.display='block';
-      if(document.getElementById('mName')&&KENNEL)document.getElementById('mName').value=KENNEL;
+      rail();
+      buildScorecard();
+      return;
     }
     rail();
   }catch(e){
@@ -306,45 +313,66 @@ function renderCard(res){
   $('#out').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-async function finish(){
+async function buildScorecard(){
   if(BUSY)return; BUSY=true;
-  $('#finish').disabled=true; $('#finish').textContent='Scoring your program…';
+  thinking(true);
   try{
-    var fEl=document.getElementById('mFirst'), nEl=document.getElementById('mName'), eEl=document.getElementById('mEmail');
-    var person=(fEl&&fEl.value.trim())||'', kennel=(nEl&&nEl.value.trim())||'', em=(eEl&&eEl.value.trim())||'';
-    if(!person){$('#fErr').textContent='Enter your name so we can save your baseline.';
-      $('#finish').disabled=false;$('#finish').textContent='Build my scorecard';BUSY=false;return;}
-    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){$('#fErr').textContent='Enter a valid email so we can save your baseline.';
-      $('#finish').disabled=false;$('#finish').textContent='Build my scorecard';BUSY=false;return;}
-    if(kennel)KENNEL=kennel;
-    var d=await api({action:'score',messages:MSGS,member_name:person,member_kennel:kennel||KENNEL,member_email:em});
-    $('#finishWrap').style.display='none';
+    var d=await api({action:'score',messages:MSGS,member_name:MFIRST||KENNEL,member_kennel:MKENNEL||KENNEL,member_email:MEMAIL});
+    thinking(false);
     $('#thread').style.display='none';
     rail();
     renderCard(d.result||{});
   }catch(e){
-    $('#finish').disabled=false; $('#finish').textContent='Build my scorecard';
-    bubble('assistant','I couldn’t build the scorecard: '+e.message+'\n\nTry again in a moment.');
+    thinking(false);
+    bubble('assistant','I couldn’t build the scorecard: '+e.message+'\n\nReassess in a moment — your answers are saved.');
   }
   BUSY=false;
 }
 
 function reset(){
-  MSGS=[];CAT=1;DONE=false;KENNEL='';SEEN={};FOCUS='';
+  MSGS=[];CAT=1;DONE=false;SEEN={};FOCUS='';
   $('#thread').innerHTML='';$('#thread').style.display='';$('#out').innerHTML='';$('#vet').innerHTML='';
-  $('#composer').style.display='';$('#finishWrap').style.display='none';
-  $('#finish').disabled=false;$('#finish').textContent='Build my scorecard';
+  $('#composer').style.display='';
   rail(); turn('');
 }
 
 $('#send').onclick=function(){var v=$('#say').value.trim(); if(v)turn(v);};
 $('#say').addEventListener('keydown',function(e){
   if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$('#send').click();}});
-$('#finish').onclick=finish;
 $('#startOver').onclick=reset;
 
+function showOptin(){
+  $('#gate').style.display='none'; $('#optin').style.display='flex';
+  try{
+    if(!$('#oFirst').value)$('#oFirst').value=localStorage.getItem('bw-sc-first')||'';
+    if(!$('#oEmail').value)$('#oEmail').value=localStorage.getItem('bw-sc-email')||'';
+    if(!$('#oPhone').value)$('#oPhone').value=localStorage.getItem('bw-sc-phone')||'';
+    if(!$('#oKennel').value)$('#oKennel').value=localStorage.getItem('bw-sc-kennel')||'';
+  }catch(e){}
+  $('#oFirst').focus();
+}
+async function submitOptin(){
+  var first=$('#oFirst').value.trim(), em=$('#oEmail').value.trim(), ph=$('#oPhone').value.trim(), kn=$('#oKennel').value.trim();
+  if(!first){$('#oErr').textContent='Please add your name.';return;}
+  if(!emailRe.test(em)){$('#oErr').textContent='Please enter a valid email.';return;}
+  if(ph.replace(/\D/g,'').length<7){$('#oErr').textContent='Please enter a valid phone number.';return;}
+  MFIRST=first;MEMAIL=em;MPHONE=ph;MKENNEL=kn; if(kn)KENNEL=kn;
+  try{localStorage.setItem('bw-sc-first',first);localStorage.setItem('bw-sc-email',em);
+    localStorage.setItem('bw-sc-phone',ph);localStorage.setItem('bw-sc-kennel',kn);}catch(e){}
+  if(!LEADSENT){LEADSENT=true;                                      // capture the lead up front; never block the start
+    api({action:'lead',member_name:first,member_email:em,member_phone:ph,member_kennel:kn}).catch(function(){});
+  }
+  $('#optin').style.display='none';
+  openApp();
+}
+$('#oStart').onclick=submitOptin;
+['oFirst','oEmail','oPhone','oKennel'].forEach(function(id){
+  var el=document.getElementById(id);
+  if(el)el.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();submitOptin();}});
+});
+
 async function openApp(){
-  $('#gate').style.display='none'; $('#app').style.display='block';
+  $('#gate').style.display='none'; $('#optin').style.display='none'; $('#app').style.display='block';
   rail(); await turn('');
 }
 $('#enter').onclick=async function(){
@@ -352,7 +380,7 @@ $('#enter').onclick=async function(){
   if(!raw){$('#gErr').textContent='Enter your passcode.';return;}
   if(await sha256(raw)===PASS_HASH||await sha256(raw)==='25e7b557235afa23f4d1ae0ac108bfdfefa7ea58ea50bd986321cbd0034c52dc'){
     CODE=raw; try{localStorage.setItem('bw-scorecard-code',raw);}catch(e){}
-    openApp();
+    showOptin();
   }else{$('#gErr').textContent='That passcode did not match. Check your Profitable Breeder welcome for the current code.';$('#code').value='';$('#code').focus();}
 };
 $('#code').addEventListener('keydown',function(e){if(e.key==='Enter')$('#enter').click();});
@@ -361,7 +389,7 @@ $('#code').addEventListener('keydown',function(e){if(e.key==='Enter')$('#enter')
   try{var r=await sb.from('access_config').select('passcode_hash').eq('key','scorecard').maybeSingle();
     if(r&&r.data&&r.data.passcode_hash)PASS_HASH=r.data.passcode_hash;}catch(e){}
   var saved=null; try{saved=localStorage.getItem('bw-scorecard-code');}catch(e){}
-  if(saved&&await sha256(saved)===PASS_HASH){CODE=saved;openApp();}else $('#code').focus();
+  if(saved&&await sha256(saved)===PASS_HASH){CODE=saved;showOptin();}else $('#code').focus();
 })();
 })();
 </script>

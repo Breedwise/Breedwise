@@ -299,6 +299,37 @@ Deno.serve(async (req) => {
   const history = Array.isArray(b.messages) ? b.messages.slice(-60) : [];
 
   try {
+    if (b.action === "lead") {
+      // Up-front opt-in: capture the breeder before they start the scorecard,
+      // so the lead is saved even if they don't finish.
+      const email = String(b.member_email ?? "").trim().toLowerCase();
+      const name = String(b.member_name ?? "").trim();
+      const phone = String(b.member_phone ?? "").trim();
+      const kennel = String(b.member_kennel ?? "").trim();
+      if (!email) return j({ error: "Email required." }, 400);
+      let cc360 = false;
+      try {
+        if (CC && CC_LOC) {
+          const up = await fetch(`${GH}/contacts/upsert`, { method: "POST", headers: ccHead, body: JSON.stringify({ locationId: CC_LOC, email, ...(name ? { name } : {}), ...(phone ? { phone } : {}), source: "Program Scorecard" }) }).catch(() => null);
+          if (up && up.ok) {
+            const uj = await up.json().catch(() => ({} as any));
+            const id = uj?.contact?.id || uj?.id;
+            if (id) { await fetch(`${GH}/contacts/${id}/tags`, { method: "POST", headers: ccHead, body: JSON.stringify({ tags: ["tpb-scorecard-started", "owner-jennifer"] }) }).catch(() => {}); cc360 = true; }
+          }
+        }
+      } catch (_) { /* never block the start */ }
+      try {
+        await supabase.from("tool_submissions").insert({
+          tool: "program-scorecard-optin", tool_label: "Program Scorecard Opt-in",
+          member_name: name || null, member_email: email,
+          summary: `${name || email} · started the Program Scorecard`,
+          meta: { phone: phone || null, kennel: kennel || null, source: "Program Scorecard", partial: true, ts: Math.floor(Date.now() / 1000) },
+          inputs: null, result: null,
+        });
+      } catch (_) { /* */ }
+      return j({ ok: true, cc360 });
+    }
+
     if (b.action === "chat") {
       const msgs = history.length ? history : [{ role: "user", content: "Start the scorecard." }];
       const out = await callClaude(CHAT_SYSTEM, CHAT_SCHEMA, msgs, 1500, "low");

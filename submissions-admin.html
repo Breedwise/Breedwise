@@ -129,7 +129,7 @@ const dcls=s=>'d-'+String(s||'New').replace('-','');
 let ROWS=[], toolFilter='All', statusFilter='All', q='', ME=null;
 const CATS=[
   {name:'Scorecards', tools:['program-scorecard','science-scorecard','litter-scorecard','free-scorecard','litter-snapshot']},
-  {name:'Opt-ins & Leads', tools:['litter-optin','vet-optin','optin']},
+  {name:'Opt-ins & Leads', tools:['litter-optin','vet-optin','optin','program-scorecard-optin']},
   {name:'Applications', tools:['application-partial','vsl-apply','academy-application','puppy-application','abr-application']},
   {name:'Revenue & Ops', tools:['sales-results','ad-metrics','q4-plan']}
 ];
@@ -656,7 +656,7 @@ function kvPretty(obj,depth){
 }
 function renderBody(r,forExport){
   if(r.tool==='litter-scorecard') return renderLitterScorecard(r);
-  if(r.tool==='litter-optin'||r.tool==='vet-optin'||r.tool==='optin') return renderOptin(r);
+  if(r.tool==='litter-optin'||r.tool==='vet-optin'||r.tool==='optin'||r.tool==='program-scorecard-optin') return renderOptin(r);
   if(r.tool==='program-scorecard'&&r.result) return renderScorecard(r,forExport);
   if(r.tool==='implementation-assessment') return renderAssessment(r);
   if(r.tool==='niche-blueprint'&&r.result) return renderBlueprint(r.result,r.inputs||{});
