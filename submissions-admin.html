@@ -130,9 +130,13 @@ let ROWS=[], toolFilter='All', statusFilter='All', q='', ME=null;
 const CATS=[
   {name:'Assessments', tools:['program-scorecard','implementation-assessment']},
   {name:'Scorecards', tools:['pb-scorecard','science-scorecard','litter-scorecard','free-scorecard','litter-snapshot']},
+  {name:'Member Tools', tools:['niche-blueprint','value-architect','business','social-media']},
+  {name:'Expert Consults', tools:['genetics-consult','repro-coaching','vet-relations']},
   {name:'Opt-ins & Leads', tools:['litter-optin','vet-optin','optin','program-scorecard-optin','pb-scorecard-optin']},
   {name:'Applications', tools:['application-partial','vsl-apply','academy-application','puppy-application','abr-application']},
-  {name:'Revenue & Ops', tools:['sales-results','ad-metrics','q4-plan']}
+  {name:'Feedback', tools:['feedback']},
+  {name:'Revenue & Ops', tools:['sales-results','ad-metrics','q4-plan']},
+  {name:'Tests', tools:['_probe','niche-test-probe']}
 ];
 function catIndex(tool){ for(let i=0;i<CATS.length;i++){ if(CATS[i].tools.includes(tool)) return i; } return CATS.length; }
 function catName(i){ return CATS[i]?CATS[i].name:'Other'; }
