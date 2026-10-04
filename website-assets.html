@@ -15,37 +15,44 @@
   .bar{border-bottom:1px solid var(--line);padding:13px 20px;text-align:center}
   .brand{font-size:13px;letter-spacing:.22em;font-weight:700;color:var(--mid)}.brand b{color:var(--gold)}
   .brand .w{color:var(--muted);font-weight:400;letter-spacing:.03em;font-size:12px;display:block;margin-top:2px}
-  .wrap{max-width:680px;margin:0 auto;padding:34px 20px 70px}
+  .wrap{max-width:700px;margin:0 auto;padding:34px 20px 70px}
   .eyebrow{display:inline-block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;background:rgba(201,168,98,.1);border:1px solid rgba(201,168,98,.28);border-radius:20px;padding:5px 13px}
   h1{font-family:var(--disp);font-size:34px;line-height:1.1;margin:14px 0 10px;font-weight:600;letter-spacing:-.4px}
   @media(max-width:600px){h1{font-size:27px}}
   h1 .u{color:var(--gold-soft)}
   .lead{color:var(--mid);font-size:16px;max-width:560px;font-weight:300}
-  .sec{margin-top:26px}
-  .sec .st{font-family:var(--disp);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;margin-bottom:4px}
+  .sec{margin-top:28px}
+  .sec .st{font-family:var(--disp);font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;margin-bottom:4px}
   .sec .sd{font-size:13px;color:var(--muted);margin-bottom:12px}
   .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:20px}
+  .entry{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line2);border-radius:14px;padding:17px 18px;margin-bottom:12px;position:relative}
+  .entry .ehead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .entry .en{font-family:var(--disp);font-size:16px;font-weight:600;color:var(--gold-soft)}
+  .entry .rm{background:none;border:0;color:var(--muted);font-size:12.5px;cursor:pointer;font-family:var(--sans)}
+  .entry .rm:hover{color:var(--red)}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   @media(max-width:520px){.row2{grid-template-columns:1fr}}
-  .fld{margin-bottom:13px}
+  .fld{margin-bottom:12px}
   label{font-size:11.5px;color:var(--muted);display:block;margin-bottom:5px;letter-spacing:.02em}
-  input,textarea{width:100%;padding:12px 13px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;color:var(--ink);font-size:15px;font-family:var(--sans)}
-  textarea{min-height:90px;resize:vertical}
-  input:focus,textarea:focus{outline:none;border-color:var(--gold)}
+  input,textarea,select{width:100%;padding:12px 13px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;color:var(--ink);font-size:15px;font-family:var(--sans)}
+  textarea{min-height:74px;resize:vertical}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gold)}
+  select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 55%,calc(100% - 13px) 55%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
   .hp{position:absolute;left:-9999px}
-  .drop{display:block;border:1.5px dashed var(--line2);border-radius:13px;padding:18px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;margin-bottom:12px}
+  .drop{display:block;border:1.5px dashed var(--line2);border-radius:12px;padding:15px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s}
   .drop:hover{border-color:var(--gold);background:rgba(201,168,98,.05)}
-  .drop .ic{font-size:22px;color:var(--gold-soft)}
-  .drop .t{font-size:14px;color:var(--ink);font-weight:600;margin-top:6px}
+  .drop .ic{font-size:20px;color:var(--gold-soft)}
+  .drop .t{font-size:13.5px;color:var(--ink);font-weight:600;margin-top:5px}
   .drop .s{font-size:12px;color:var(--muted);margin-top:2px}
   .drop input[type=file]{display:none}
-  .picked{font-size:12.5px;color:var(--green);margin-top:8px;display:none}
-  .filelist{margin-top:10px;display:grid;gap:6px}
-  .fi{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 11px}
+  .filelist{margin-top:9px;display:grid;gap:6px}
+  .fi{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 11px}
   .fi .n{color:var(--mid);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .fi .s{flex:none;font-weight:700}
-  .fi .s.wait{color:var(--muted)}.fi .s.up{color:var(--gold-soft)}.fi .s.ok{color:var(--green)}.fi .s.err{color:var(--red)}
-  .cta{display:block;width:100%;margin-top:24px;padding:16px;background:linear-gradient(135deg,var(--gold),#a9863f);border:0;border-radius:13px;color:#1a130a;font-weight:700;font-size:17px;cursor:pointer;font-family:var(--sans);box-shadow:0 6px 26px rgba(201,168,98,.22)}
+  .fi .x{flex:none;color:var(--muted);cursor:pointer;font-weight:700}
+  .fi .x:hover{color:var(--red)}
+  .addbtn{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,98,.08);border:1px solid rgba(201,168,98,.3);color:var(--gold-soft);border-radius:11px;padding:11px 16px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--sans)}
+  .addbtn:hover{background:rgba(201,168,98,.14)}
+  .cta{display:block;width:100%;margin-top:26px;padding:16px;background:linear-gradient(135deg,var(--gold),#a9863f);border:0;border-radius:13px;color:#1a130a;font-weight:700;font-size:17px;cursor:pointer;font-family:var(--sans);box-shadow:0 6px 26px rgba(201,168,98,.22)}
   .cta:disabled{opacity:.55}
   .msg{font-size:13px;margin-top:12px;min-height:16px;text-align:center;color:var(--muted)}
   .msg.err{color:var(--red)}
@@ -60,7 +67,7 @@
   <div class="wrap" id="app">
     <span class="eyebrow">Your website build</span>
     <h1>Upload <span class="u">everything</span> for your website</h1>
-    <p class="lead">Send us your brand and your best content in one place. The more you give us, the stronger your site. Nothing here is public until you approve it.</p>
+    <p class="lead">Add your dogs and your litters one by one, with photos for each — plus your brand and your story. The more you give us, the stronger your site. Nothing here is public until you approve it.</p>
 
     <input type="text" class="hp" id="company" tabindex="-1" autocomplete="off" aria-hidden="true">
 
@@ -74,47 +81,52 @@
           <div class="fld"><label>Email</label><input type="email" id="email" autocomplete="email"></div>
           <div class="fld"><label>Phone</label><input type="tel" id="phone" autocomplete="tel"></div>
         </div>
-        <div class="fld"><label>Breed(s) you raise</label><input type="text" id="breeds"></div>
+        <div class="fld" style="margin-bottom:0"><label>Breed(s) you raise</label><input type="text" id="breeds"></div>
       </div>
     </div>
 
     <div class="sec"><div class="st">Your story</div>
       <div class="card">
         <div class="fld"><label>Tell us about your program — who you are, how long you've been breeding, what you care about</label><textarea id="about"></textarea></div>
-        <div class="fld"><label>What makes you different from other breeders?</label><textarea id="different"></textarea></div>
+        <div class="fld" style="margin-bottom:0"><label>What makes you different from other breeders?</label><textarea id="different"></textarea></div>
       </div>
     </div>
 
-    <div class="sec"><div class="st">Your logo</div><div class="sd">If you have one. PNG or JPG. If you don't, skip it — we'll help.</div>
-      <label class="drop"><div class="ic">⬆</div><div class="t">Add your logo</div><div class="s">PNG, JPG, SVG</div>
-        <input type="file" id="f_logo" accept="image/*"></label>
+    <div class="sec"><div class="st">Your dogs</div><div class="sd">Add each of your adult / breeding dogs. Give us info and photos for each one — this becomes your "Our Dogs" page.</div>
+      <div id="dogs"></div>
+      <button class="addbtn" id="addDog">＋ Add a dog</button>
+    </div>
+
+    <div class="sec"><div class="st">Puppies &amp; litters</div><div class="sd">Add each litter — available now, upcoming, or past. Info and photos per litter so we can build your puppy pages.</div>
+      <div id="litters"></div>
+      <button class="addbtn" id="addLitter">＋ Add a litter</button>
+    </div>
+
+    <div class="sec"><div class="st">Your logo</div><div class="sd">If you have one. PNG, JPG or SVG. No logo? Skip it — we'll help.</div>
+      <label class="drop"><div class="ic">⬆</div><div class="t">Add your logo</div><div class="s">PNG, JPG, SVG</div><input type="file" id="f_logo" accept="image/*"></label>
       <div class="filelist" id="list_logo"></div>
     </div>
 
-    <div class="sec"><div class="st">Photos</div><div class="sd">Your dogs, puppies, your setup — your best shots. Add as many as you like.</div>
-      <label class="drop"><div class="ic">⬆</div><div class="t">Add photos</div><div class="s">Select multiple — JPG, PNG, HEIC</div>
-        <input type="file" id="f_photos" accept="image/*" multiple></label>
+    <div class="sec"><div class="st">Other photos</div><div class="sd">Your kennel, your setup, you and your family — anything not tied to one dog or litter.</div>
+      <label class="drop"><div class="ic">⬆</div><div class="t">Add photos</div><div class="s">Select multiple</div><input type="file" id="f_photos" accept="image/*" multiple></label>
       <div class="filelist" id="list_photos"></div>
     </div>
 
     <div class="sec"><div class="st">Videos</div><div class="sd">Clips of your dogs, your program, a welcome message — anything.</div>
-      <label class="drop"><div class="ic">⬆</div><div class="t">Add videos</div><div class="s">MP4, MOV — large files may take a while</div>
-        <input type="file" id="f_videos" accept="video/*" multiple></label>
+      <label class="drop"><div class="ic">⬆</div><div class="t">Add videos</div><div class="s">MP4, MOV — large files may take a while</div><input type="file" id="f_videos" accept="video/*" multiple></label>
       <div class="filelist" id="list_videos"></div>
-      <div class="fld" style="margin-top:10px"><label>Or paste video links (Google Drive, Dropbox, YouTube) — good for very large videos</label><textarea id="videolinks" style="min-height:64px" placeholder="One link per line"></textarea></div>
+      <div class="fld" style="margin-top:10px"><label>Or paste video links (Google Drive, Dropbox, YouTube) — best for very large videos</label><textarea id="videolinks" style="min-height:60px" placeholder="One link per line"></textarea></div>
     </div>
 
     <div class="sec"><div class="st">Testimonials &amp; reviews</div><div class="sd">Screenshots of happy-buyer messages, reviews, or references.</div>
-      <label class="drop"><div class="ic">⬆</div><div class="t">Add testimonials</div><div class="s">Screenshots or images</div>
-        <input type="file" id="f_testimonials" accept="image/*" multiple></label>
+      <label class="drop"><div class="ic">⬆</div><div class="t">Add testimonials</div><div class="s">Screenshots or images</div><input type="file" id="f_testimonials" accept="image/*" multiple></label>
       <div class="filelist" id="list_testimonials"></div>
     </div>
 
     <div class="sec"><div class="st">Links</div>
       <div class="card">
         <div class="fld"><label>Current website (if any)</label><input type="text" id="website" placeholder="yourkennel.com"></div>
-        <div class="fld"><label>Social links — Instagram, Facebook, TikTok, YouTube</label><textarea id="social" style="min-height:64px" placeholder="One link per line"></textarea></div>
-        <div class="fld" style="margin-bottom:0"><label>Anything else we should know</label><textarea id="notes" style="min-height:64px"></textarea></div>
+        <div class="fld" style="margin-bottom:0"><label>Social links — Instagram, Facebook, TikTok, YouTube</label><textarea id="social" style="min-height:60px" placeholder="One link per line"></textarea></div>
       </div>
     </div>
 
@@ -131,53 +143,111 @@ var SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
 var FN=SB_URL+'/functions/v1/asset-upload';
 var sb=window.supabase.createClient(SB_URL,SB_KEY);
 var emailRe=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-function $(s){return document.querySelector(s);}
 function el(id){return document.getElementById(id);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
+function fmtSize(b){ if(b<1024)return b+' B'; if(b<1048576)return (b/1024).toFixed(0)+' KB'; return (b/1048576).toFixed(1)+' MB'; }
 
-/* picked files per field */
+/* ── fixed single/multi file pickers ── */
 var PICK={logo:[],photos:[],videos:[],testimonials:[]};
 ['logo','photos','videos','testimonials'].forEach(function(field){
   el('f_'+field).addEventListener('change',function(e){
     var files=Array.prototype.slice.call(e.target.files||[]);
     if(field==='logo')PICK.logo=files.slice(0,1); else PICK[field]=PICK[field].concat(files);
-    renderList(field);
+    renderFixed(field); e.target.value='';
   });
 });
-function fmtSize(b){ if(b<1024)return b+' B'; if(b<1048576)return (b/1024).toFixed(0)+' KB'; return (b/1048576).toFixed(1)+' MB'; }
-function renderList(field){
+function renderFixed(field){
   var box=el('list_'+field);
   box.innerHTML=PICK[field].map(function(f,i){
-    return '<div class="fi" data-f="'+field+'" data-i="'+i+'"><span class="n">'+esc(f.name)+' · '+fmtSize(f.size)+'</span><span class="s wait" id="st_'+field+'_'+i+'">remove ✕</span></div>';
+    return '<div class="fi"><span class="n">'+esc(f.name)+' · '+fmtSize(f.size)+'</span><span class="x" data-i="'+i+'">✕</span></div>';
   }).join('');
-  Array.prototype.forEach.call(box.querySelectorAll('.fi'),function(row){
-    row.querySelector('.s').addEventListener('click',function(){
-      var fl=row.getAttribute('data-f'),idx=+row.getAttribute('data-i');
-      PICK[fl].splice(idx,1);renderList(fl);
-    });
+  Array.prototype.forEach.call(box.querySelectorAll('.x'),function(x){
+    x.addEventListener('click',function(){ PICK[field].splice(+x.getAttribute('data-i'),1); renderFixed(field); });
   });
 }
-function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
 
+/* ── repeatable entries (dogs / litters) ── */
+var DOG_FIELDS=[
+  {k:'name',l:'Name / call name'},{k:'sex',l:'Sex',type:'select',opts:['','Female','Male']},
+  {k:'breed',l:'Breed'},{k:'color',l:'Color / markings'},
+  {k:'dob',l:'Date of birth or age'},{k:'weight',l:'Weight / size'},
+  {k:'health',l:'Health testing done (OFA, DNA, etc.)',type:'textarea',wide:1},
+  {k:'titles',l:'Titles / achievements',type:'textarea',wide:1},
+  {k:'notes',l:'Anything notable about this dog',type:'textarea',wide:1}
+];
+var LITTER_FIELDS=[
+  {k:'status',l:'Status',type:'select',opts:['','Available now','Upcoming','Reserved','Past litter']},
+  {k:'breed',l:'Breed'},
+  {k:'sire',l:'Sire (father)'},{k:'dam',l:'Dam (mother)'},
+  {k:'born',l:'Born / due date'},{k:'available',l:'Puppies available'},
+  {k:'price',l:'Price range'},{k:'count',l:'Litter size'},
+  {k:'notes',l:'Notes — colors, temperament, what to know',type:'textarea',wide:1}
+];
+var DOGS=[], LITTERS=[];
+function makeEntry(kind,fields,list){
+  var entry={files:[],inputs:{}};
+  var card=document.createElement('div');card.className='entry';
+  var title=(kind==='dog'?'Dog':'Litter');
+  card.innerHTML='<div class="ehead"><span class="en">'+title+' '+(list.length+1)+'</span><button type="button" class="rm">Remove</button></div>';
+  var grid=document.createElement('div');
+  fields.forEach(function(f){
+    var wrap=document.createElement('div');wrap.className='fld';if(f.wide)wrap.style.gridColumn='1 / -1';
+    var inp;
+    if(f.type==='select'){inp=document.createElement('select');f.opts.forEach(function(o){var op=document.createElement('option');op.value=o;op.textContent=o||'Select…';inp.appendChild(op);});}
+    else if(f.type==='textarea'){inp=document.createElement('textarea');}
+    else{inp=document.createElement('input');inp.type='text';}
+    wrap.innerHTML='<label>'+esc(f.l)+'</label>';wrap.appendChild(inp);entry.inputs[f.k]=inp;grid.appendChild(wrap);
+  });
+  grid.className='row2';card.appendChild(grid);
+  // photo picker for this entry
+  var drop=document.createElement('label');drop.className='drop';drop.style.marginTop='4px';
+  drop.innerHTML='<div class="ic">⬆</div><div class="t">Add photos of this '+(kind==='dog'?'dog':'litter')+'</div><div class="s">Select multiple</div>';
+  var fin=document.createElement('input');fin.type='file';fin.accept='image/*';fin.multiple=true;drop.appendChild(fin);
+  card.appendChild(drop);
+  var flist=document.createElement('div');flist.className='filelist';card.appendChild(flist);
+  function renderFiles(){
+    flist.innerHTML=entry.files.map(function(f,i){return '<div class="fi"><span class="n">'+esc(f.name)+' · '+fmtSize(f.size)+'</span><span class="x" data-i="'+i+'">✕</span></div>';}).join('');
+    Array.prototype.forEach.call(flist.querySelectorAll('.x'),function(x){x.addEventListener('click',function(){entry.files.splice(+x.getAttribute('data-i'),1);renderFiles();});});
+  }
+  fin.addEventListener('change',function(e){entry.files=entry.files.concat(Array.prototype.slice.call(e.target.files||[]));renderFiles();e.target.value='';});
+  card.querySelector('.rm').addEventListener('click',function(){
+    var idx=list.indexOf(entry);if(idx>=0)list.splice(idx,1);card.remove();renumber(kind);
+  });
+  entry.el=card;entry.get=function(){var o={};fields.forEach(function(f){o[f.k]=(entry.inputs[f.k].value||'').trim();});return o;};
+  list.push(entry);el(kind==='dog'?'dogs':'litters').appendChild(card);
+  return entry;
+}
+function renumber(kind){
+  var list=kind==='dog'?DOGS:LITTERS, title=kind==='dog'?'Dog':'Litter';
+  list.forEach(function(e,i){ e.el.querySelector('.en').textContent=title+' '+(i+1); });
+}
+el('addDog').addEventListener('click',function(){makeEntry('dog',DOG_FIELDS,DOGS);});
+el('addLitter').addEventListener('click',function(){makeEntry('litter',LITTER_FIELDS,LITTERS);});
+makeEntry('dog',DOG_FIELDS,DOGS);        // start with one of each
+makeEntry('litter',LITTER_FIELDS,LITTERS);
+
+/* ── submit ── */
 el('submit').onclick=submit;
 async function submit(){
   var msg=el('msg');msg.className='msg';msg.textContent='';
-  if(el('company').value)return; // honeypot
+  if(el('company').value)return;
   var name=el('name').value.trim(),kennel=el('kennel').value.trim(),email=el('email').value.trim(),phone=el('phone').value.trim();
   if(!kennel){msg.className='msg err';msg.textContent='Please add your kennel / program name.';return;}
   if(!emailRe.test(email)){msg.className='msg err';msg.textContent='Please enter a valid email.';return;}
-  // gather files in order (logo, photos, videos, testimonials)
-  var all=[];
+
+  var all=[], dogs=[], litters=[];
   ['logo','photos','videos','testimonials'].forEach(function(field){ PICK[field].forEach(function(f){ all.push({field:field,file:f}); }); });
+  DOGS.forEach(function(e,idx){ var g=e.get(); if(hasAny(g)||e.files.length){ dogs.push(g); e.files.forEach(function(f){ all.push({field:'dog-'+(idx+1),file:f}); }); } });
+  LITTERS.forEach(function(e,idx){ var g=e.get(); if(hasAny(g)||e.files.length){ litters.push(g); e.files.forEach(function(f){ all.push({field:'litter-'+(idx+1),file:f}); }); } });
 
   el('submit').disabled=true;el('submit').textContent='Sending…';
   try{
     var uploaded=[],folder='';
     if(all.length){
       msg.textContent='Preparing upload…';
-      var signResp=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},
+      var sr=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({action:'sign',email:email,kennel:kennel,files:all.map(function(x){return {field:x.field,name:x.file.name,type:x.file.type};})})});
-      var sd=await signResp.json();
-      if(!sd||!sd.ok)throw new Error((sd&&sd.error)||'Could not prepare upload.');
+      var sd=await sr.json(); if(!sd||!sd.ok)throw new Error((sd&&sd.error)||'Could not prepare upload.');
       folder=sd.folder;
       for(var i=0;i<sd.uploads.length;i++){
         var u=sd.uploads[i], file=all[i].file;
@@ -189,21 +259,24 @@ async function submit(){
     }
     msg.textContent='Saving…';
     var fields={breeds:el('breeds').value.trim(),about:el('about').value.trim(),different:el('different').value.trim(),
-      website:el('website').value.trim(),social:el('social').value.trim(),videolinks:el('videolinks').value.trim(),notes:el('notes').value.trim()};
-    var saveResp=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},
+      website:el('website').value.trim(),social:el('social').value.trim(),videolinks:el('videolinks').value.trim(),
+      dogs:dogs,litters:litters};
+    var svr=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({action:'save',name:name,kennel:kennel,email:email,phone:phone,folder:folder,files:uploaded,fields:fields})});
-    var sv=await saveResp.json();
-    if(!sv||!sv.ok)throw new Error((sv&&sv.error)||'Could not save. Your files uploaded — please tell your BreedWise contact.');
-    done(kennel,uploaded.length);
+    var sv=await svr.json(); if(!sv||!sv.ok)throw new Error((sv&&sv.error)||'Could not save. Your files uploaded — please tell your BreedWise contact.');
+    done(kennel,uploaded.length,dogs.length,litters.length);
   }catch(e){
     el('submit').disabled=false;el('submit').textContent='Send my content';
     msg.className='msg err';msg.textContent=e.message||'Something went wrong. Please try again.';
   }
 }
-function done(kennel,n){
+function hasAny(o){ return Object.keys(o).some(function(k){return o[k]&&String(o[k]).trim();}); }
+function done(kennel,n,nd,nl){
   el('app').innerHTML='<div class="done"><div class="ic">✓</div>'
     +'<h1 style="font-size:28px">Got it — thank you!</h1>'
-    +'<p class="lead" style="margin:10px auto 0;max-width:460px">We received your content'+(n?(' ('+n+' file'+(n===1?'':'s')+')'):'')+' for <b style="color:var(--ink)">'+esc(kennel)+'</b>. Your BreedWise team will take it from here and reach out with next steps.</p>'
+    +'<p class="lead" style="margin:10px auto 0;max-width:470px">We received your content for <b style="color:var(--ink)">'+esc(kennel)+'</b>'
+    +(nd?(' — '+nd+' dog'+(nd===1?'':'s')):'')+(nl?(', '+nl+' litter'+(nl===1?'':'s')):'')+(n?(', '+n+' file'+(n===1?'':'s')):'')+'. '
+    +'Your BreedWise team will take it from here and reach out with next steps.</p>'
     +'<div class="trust">You can close this page.</div></div>';
   window.scrollTo(0,0);
 }

@@ -732,23 +732,34 @@ function renderWebsiteAssets(r){
   const kvrow=(k,v)=> (v!=null&&String(v).trim())?`<div class="kvrow"><b>${esc(k)}:</b> ${esc(v)}</div>`:'';
   const blk=(lbl,v)=> (v&&String(v).trim())?`<div class="block"><h3>${esc(lbl)}</h3><p style="white-space:pre-wrap">${esc(v)}</p></div>`:'';
   const byField={}; files.forEach(x=>{(byField[x.field||'file']=byField[x.field||'file']||[]).push(x);});
-  const fileSection = files.length
-    ? `<div class="block"><h3>Files (${files.length})</h3>`
-      + Object.keys(byField).map(fld=>`<div class="sgrp">${esc(fld)}</div>`
-        + byField[fld].map(x=>`<div class="kvrow" data-apath="${esc(x.path)}">${esc(x.name)}${x.size?` <span style="color:var(--muted)">· ${Math.round(x.size/1024)} KB</span>`:''}</div>`).join('')).join('')
-      + `<button class="btn" id="dlLinks" style="margin-top:12px">Get download links</button><div id="dlOut" style="margin-top:10px;font-size:12.5px"></div></div>`
-    : `<div class="block"><p style="color:var(--muted)">No files uploaded (text and links only).</p></div>`;
+  const fileRows=arr=> (arr||[]).map(x=>`<div class="kvrow" data-apath="${esc(x.path)}">${esc(x.name)}${x.size?` <span style="color:var(--muted)">· ${Math.round(x.size/1024)} KB</span>`:''}</div>`).join('');
+  const dogs=Array.isArray(f.dogs)?f.dogs:[], litters=Array.isArray(f.litters)?f.litters:[];
+  const info=(pairs)=>pairs.filter(x=>x[1]&&String(x[1]).trim()).map(x=>kvrow(x[0],x[1])).join('');
+  const dogsBlock=dogs.length?`<div class="block"><h3>Dogs (${dogs.length})</h3>`+dogs.map((d,idx)=>{
+    const ff=byField['dog-'+(idx+1)]||[];
+    return `<div class="sgrp">${esc(d.name||('Dog '+(idx+1)))}${d.sex?' · '+esc(d.sex):''}${d.breed?' · '+esc(d.breed):''}${ff.length?' · '+ff.length+' photo'+(ff.length===1?'':'s'):''}</div>`
+      +info([['Sex',d.sex],['Breed',d.breed],['Color',d.color],['DOB/age',d.dob],['Weight/size',d.weight],['Health testing',d.health],['Titles',d.titles],['Notes',d.notes]])+fileRows(ff);
+  }).join('')+`</div>`:'';
+  const littersBlock=litters.length?`<div class="block"><h3>Litters (${litters.length})</h3>`+litters.map((l,idx)=>{
+    const ff=byField['litter-'+(idx+1)]||[];
+    return `<div class="sgrp">${esc(l.status||('Litter '+(idx+1)))}${l.breed?' · '+esc(l.breed):''}${ff.length?' · '+ff.length+' photo'+(ff.length===1?'':'s'):''}</div>`
+      +info([['Sire',l.sire],['Dam',l.dam],['Breed',l.breed],['Born/due',l.born],['Available',l.available],['Price',l.price],['Litter size',l.count],['Notes',l.notes]])+fileRows(ff);
+  }).join('')+`</div>`:'';
+  const general=['logo','photos','videos','testimonials'].filter(k=>byField[k]&&byField[k].length);
+  const generalBlock=general.length?`<div class="block"><h3>Other files</h3>`+general.map(k=>`<div class="sgrp">${esc(k)}</div>`+fileRows(byField[k])).join('')+`</div>`:'';
   return `
     <div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold)">Website Assets</div>
       <div class="big" style="font-size:20px">${esc(m.kennel||r.member_name||'Member')}</div>
-      <p style="color:var(--mid);font-size:12.5px;margin-top:6px">${esc(r.member_email||'')}${m.phone?' · '+esc(m.phone):''} · ${files.length} file${files.length===1?'':'s'}</p></div>
+      <p style="color:var(--mid);font-size:12.5px;margin-top:6px">${esc(r.member_email||'')}${m.phone?' · '+esc(m.phone):''} · ${dogs.length} dog${dogs.length===1?'':'s'} · ${litters.length} litter${litters.length===1?'':'s'} · ${files.length} file${files.length===1?'':'s'}</p></div>
     <div class="block"><h3>Contact</h3>${kvrow('Name',r.member_name)}${kvrow('Kennel',m.kennel)}${kvrow('Email',r.member_email)}${kvrow('Phone',m.phone)}${kvrow('Breed(s)',f.breeds)}</div>
     ${blk('About their program',f.about)}
     ${blk('What makes them different',f.different)}
+    ${dogsBlock}
+    ${littersBlock}
     ${(f.website||f.social)?`<div class="block"><h3>Links</h3>${kvrow('Website',f.website)}${f.social?`<div class="kvrow"><b>Social:</b><br><span style="white-space:pre-wrap">${esc(f.social)}</span></div>`:''}</div>`:''}
     ${blk('Video links',f.videolinks)}
-    ${blk('Anything else',f.notes)}
-    ${fileSection}`;
+    ${generalBlock}
+    ${files.length?`<div class="block"><button class="btn" id="dlLinks">Get download links (all files)</button><div id="dlOut" style="margin-top:10px;font-size:12.5px"></div></div>`:`<div class="block"><p style="color:var(--muted)">No files uploaded (text and links only).</p></div>`}`;
 }
 async function getAssetLinks(btn){
   const paths=Array.prototype.map.call(document.querySelectorAll('#sheet [data-apath]'),el=>el.getAttribute('data-apath'));
