@@ -747,6 +747,11 @@ function renderWebsiteAssets(r){
   }).join('')+`</div>`:'';
   const general=['logo','photos','videos','testimonials'].filter(k=>byField[k]&&byField[k].length);
   const generalBlock=general.length?`<div class="block"><h3>Other files</h3>`+general.map(k=>`<div class="sgrp">${esc(k)}</div>`+fileRows(byField[k])).join('')+`</div>`:'';
+  const colorsHtml=(f.colors&&Object.keys(f.colors).length)?Object.entries(f.colors).map(([k,v])=>`<span style="display:inline-flex;align-items:center;gap:6px;margin:0 12px 6px 0"><span style="width:18px;height:18px;border-radius:5px;border:1px solid var(--line2);background:${esc(v)};display:inline-block"></span><span style="font-size:12px;color:var(--mid)">${esc(k)} ${esc(v)}</span></span>`).join(''):'';
+  const hasBrand=f.tagline||f.domain||(f.feel&&f.feel.length)||(f.fonts&&f.fonts.length)||colorsHtml||f.colorsdesc||f.inspiration;
+  const brandBlock=hasBrand?`<div class="block"><h3>Brand</h3>${kvrow('Tagline',f.tagline)}${kvrow('Preferred domain',f.domain)}${(f.feel&&f.feel.length)?kvrow('Feel',f.feel.join(', ')):''}${(f.fonts&&f.fonts.length)?kvrow('Typography',f.fonts.join(', ')):''}${colorsHtml?`<div class="kvrow"><b>Colors:</b><br>${colorsHtml}</div>`:''}${kvrow('Colors (described)',f.colorsdesc)}${f.inspiration?`<div class="kvrow"><b>Inspiration:</b><br><span style="white-space:pre-wrap">${esc(f.inspiration)}</span></div>`:''}</div>`:'';
+  const hasShow=f.show_email||f.show_phone||f.location||f.hours;
+  const showBlock=hasShow?`<div class="block"><h3>Show on site</h3>${kvrow('Email',f.show_email)}${kvrow('Phone',f.show_phone)}${kvrow('Location / area',f.location)}${kvrow('Availability',f.hours)}</div>`:'';
   return `
     <div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold)">Website Assets</div>
       <div class="big" style="font-size:20px">${esc(m.kennel||r.member_name||'Member')}</div>
@@ -754,6 +759,8 @@ function renderWebsiteAssets(r){
     <div class="block"><h3>Contact</h3>${kvrow('Name',r.member_name)}${kvrow('Kennel',m.kennel)}${kvrow('Email',r.member_email)}${kvrow('Phone',m.phone)}${kvrow('Breed(s)',f.breeds)}</div>
     ${blk('About their program',f.about)}
     ${blk('What makes them different',f.different)}
+    ${brandBlock}
+    ${showBlock}
     ${dogsBlock}
     ${littersBlock}
     ${(f.website||f.social)?`<div class="block"><h3>Links</h3>${kvrow('Website',f.website)}${f.social?`<div class="kvrow"><b>Social:</b><br><span style="white-space:pre-wrap">${esc(f.social)}</span></div>`:''}</div>`:''}

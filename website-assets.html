@@ -52,6 +52,19 @@
   .fi .x:hover{color:var(--red)}
   .addbtn{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,98,.08);border:1px solid rgba(201,168,98,.3);color:var(--gold-soft);border-radius:11px;padding:11px 16px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--sans)}
   .addbtn:hover{background:rgba(201,168,98,.14)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip-t{font-size:13px;color:var(--mid);background:var(--panel2);border:1px solid var(--line);border-radius:20px;padding:8px 14px;cursor:pointer;transition:border-color .12s,background .12s,color .12s;user-select:none}
+  .chip-t:hover{border-color:var(--line2)}
+  .chip-t.on{background:rgba(201,168,98,.14);border-color:var(--gold);color:var(--gold-soft);font-weight:600}
+  .colors{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+  .cslot{display:flex;align-items:center;gap:9px;background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:7px 13px 7px 8px;cursor:pointer}
+  .cslot:hover{border-color:var(--line2)}
+  .cslot .sw{width:26px;height:26px;border-radius:7px;border:1.5px dashed var(--line2);background:transparent;flex:none}
+  .cslot.set .sw{border-style:solid;border-color:rgba(255,255,255,.22)}
+  .cslot .lbl{font-size:12.5px;color:var(--mid)}
+  .cslot .hex{font-size:11px;color:var(--muted);font-family:ui-monospace,SFMono-Regular,monospace}
+  .cslot .ci{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+  label.sub{color:var(--muted);text-transform:none;letter-spacing:0;font-weight:400}
   .cta{display:block;width:100%;margin-top:26px;padding:16px;background:linear-gradient(135deg,var(--gold),#a9863f);border:0;border-radius:13px;color:#1a130a;font-weight:700;font-size:17px;cursor:pointer;font-family:var(--sans);box-shadow:0 6px 26px rgba(201,168,98,.22)}
   .cta:disabled{opacity:.55}
   .msg{font-size:13px;margin-top:12px;min-height:16px;text-align:center;color:var(--muted)}
@@ -89,6 +102,41 @@
       <div class="card">
         <div class="fld"><label>Tell us about your program — who you are, how long you've been breeding, what you care about</label><textarea id="about"></textarea></div>
         <div class="fld" style="margin-bottom:0"><label>What makes you different from other breeders?</label><textarea id="different"></textarea></div>
+      </div>
+    </div>
+
+    <div class="sec"><div class="st">Your brand</div><div class="sd">This decides how your site looks and feels. Not sure? Pick what you like — we'll shape the rest.</div>
+      <div class="card">
+        <div class="fld"><label>Tagline or slogan <span class="sub">(if you have one)</span></label><input type="text" id="tagline" placeholder="e.g. Health-tested pugs, raised in our home"></div>
+        <div class="fld"><label>Preferred website name / domain <span class="sub">(if you have one in mind)</span></label><input type="text" id="domain" placeholder="e.g. lunapughaven.com"></div>
+
+        <div class="fld"><label>The feeling you want your site to give <span class="sub">— pick any</span></label><div class="chips" id="feelChips"></div></div>
+
+        <div class="fld"><label>Your brand colors <span class="sub">— tap to set the ones you have</span></label>
+          <div class="colors" id="colors">
+            <div class="cslot" data-k="Primary"><span class="sw"></span><span class="lbl">Primary</span><span class="hex"></span><input type="color" class="ci"></div>
+            <div class="cslot" data-k="Secondary"><span class="sw"></span><span class="lbl">Secondary</span><span class="hex"></span><input type="color" class="ci"></div>
+            <div class="cslot" data-k="Accent"><span class="sw"></span><span class="lbl">Accent</span><span class="hex"></span><input type="color" class="ci"></div>
+          </div>
+          <input type="text" id="colorsdesc" placeholder="Or describe your colors — e.g. warm gold &amp; charcoal, soft and premium" style="margin-top:10px">
+        </div>
+
+        <div class="fld"><label>Typography / font style you like <span class="sub">— pick any</span></label><div class="chips" id="fontChips"></div></div>
+
+        <div class="fld" style="margin-bottom:0"><label>Websites or brands you love <span class="sub">— paste links, it shows us your taste</span></label><textarea id="inspo" style="min-height:62px" placeholder="One link per line"></textarea></div>
+      </div>
+    </div>
+
+    <div class="sec"><div class="st">What to show on your site</div><div class="sd">How buyers will reach you. Only what you want public.</div>
+      <div class="card">
+        <div class="row2">
+          <div class="fld"><label>Contact email to show</label><input type="email" id="show_email"></div>
+          <div class="fld"><label>Phone to show <span class="sub">(optional)</span></label><input type="tel" id="show_phone"></div>
+        </div>
+        <div class="row2">
+          <div class="fld"><label>Area / location you serve</label><input type="text" id="location" placeholder="e.g. Dallas, TX — ships nationwide"></div>
+          <div class="fld" style="margin-bottom:0"><label>Availability / hours <span class="sub">(optional)</span></label><input type="text" id="hours" placeholder="e.g. Replies within 24h"></div>
+        </div>
       </div>
     </div>
 
@@ -165,6 +213,20 @@ function renderFixed(field){
     x.addEventListener('click',function(){ PICK[field].splice(+x.getAttribute('data-i'),1); renderFixed(field); });
   });
 }
+
+/* ── brand: feel/font chips + color pickers ── */
+var FEELS=['Luxury / premium','Modern & clean','Warm & family','Bold & strong','Classic & timeless','Playful & fun','Natural & rustic','Minimal'];
+var FONTS=['Elegant serif','Clean & modern','Handwritten / script','Strong & bold','Not sure yet'];
+var feelSel=new Set(), fontSel=new Set();
+function renderChips(box,opts,sel){ box.innerHTML=opts.map(function(o){return '<span class="chip-t" data-v="'+esc(o)+'">'+esc(o)+'</span>';}).join('');
+  Array.prototype.forEach.call(box.querySelectorAll('.chip-t'),function(c){c.addEventListener('click',function(){var v=c.getAttribute('data-v');if(sel.has(v)){sel.delete(v);c.classList.remove('on');}else{sel.add(v);c.classList.add('on');}});}); }
+renderChips(el('feelChips'),FEELS,feelSel); renderChips(el('fontChips'),FONTS,fontSel);
+var COLORS={};
+Array.prototype.forEach.call(document.querySelectorAll('.cslot'),function(slot){
+  var k=slot.getAttribute('data-k'), ci=slot.querySelector('.ci');
+  slot.addEventListener('click',function(e){ if(e.target!==ci)ci.click(); });
+  ci.addEventListener('input',function(){ COLORS[k]=ci.value; slot.classList.add('set'); slot.querySelector('.sw').style.background=ci.value; slot.querySelector('.hex').textContent=ci.value; });
+});
 
 /* ── repeatable entries (dogs / litters) ── */
 var DOG_FIELDS=[
@@ -260,6 +322,10 @@ async function submit(){
     msg.textContent='Saving…';
     var fields={breeds:el('breeds').value.trim(),about:el('about').value.trim(),different:el('different').value.trim(),
       website:el('website').value.trim(),social:el('social').value.trim(),videolinks:el('videolinks').value.trim(),
+      tagline:el('tagline').value.trim(),domain:el('domain').value.trim(),
+      feel:Array.from(feelSel),fonts:Array.from(fontSel),colors:COLORS,colorsdesc:el('colorsdesc').value.trim(),
+      inspiration:el('inspo').value.trim(),
+      show_email:el('show_email').value.trim(),show_phone:el('show_phone').value.trim(),location:el('location').value.trim(),hours:el('hours').value.trim(),
       dogs:dogs,litters:litters};
     var svr=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({action:'save',name:name,kennel:kennel,email:email,phone:phone,folder:folder,files:uploaded,fields:fields})});
