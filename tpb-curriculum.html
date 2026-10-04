@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>TPB 90-Day Curriculum System · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0e13;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;--ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--blue:#8fbce6;--disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif}
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.6}
+  #gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .gate-card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:16px;padding:36px 32px;max-width:420px;width:100%;text-align:center}
+  .gate-card .mk{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px}
+  .gate-card h1{font-family:var(--disp);font-size:26px;font-weight:600;margin-bottom:6px}
+  .gate-card p{color:var(--muted);font-size:13.5px;margin-bottom:20px}
+  .gate-card input{width:100%;padding:13px 14px;background:var(--panel2);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em}
+  .gate-card input:focus{outline:none;border-color:var(--gold)}
+  .gate-card button{width:100%;margin-top:12px;padding:14px;background:linear-gradient(135deg,var(--gold),#a9863f);border:0;border-radius:11px;color:#1a130a;font-weight:700;font-size:15px;cursor:pointer}
+  .gate-card .err{color:#ff8178;font-size:12.5px;margin-top:10px;min-height:16px}
+  #app{display:none}
+  .bar{border-bottom:1px solid var(--line);padding:13px 20px;text-align:center;position:sticky;top:0;background:rgba(11,14,19,.86);backdrop-filter:blur(8px);z-index:20}
+  .brand{font-size:12.5px;letter-spacing:.22em;font-weight:700;color:var(--mid)}.brand b{color:var(--gold)}
+  .wrap{max-width:960px;margin:0 auto;padding:0 22px}
+  .hero{text-align:center;padding:56px 0 40px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(820px 420px at 50% -20%,rgba(201,168,98,.12),transparent 60%);pointer-events:none}
+  .eyebrow{display:inline-block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;background:rgba(201,168,98,.1);border:1px solid rgba(201,168,98,.28);border-radius:20px;padding:6px 15px;position:relative}
+  .hero h1{font-family:var(--disp);font-size:46px;line-height:1.05;margin:18px 0 6px;font-weight:600;letter-spacing:-.8px;position:relative}
+  @media(max-width:600px){.hero h1{font-size:33px}}
+  .hero h1 .u{color:var(--gold-soft)}
+  .hero .sub{font-size:16px;color:var(--mid);max-width:620px;margin:10px auto 0;font-weight:300;position:relative}
+  .shead{text-align:center;margin:56px 0 8px}
+  .shead .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-soft);font-weight:700}
+  .shead h2{font-family:var(--disp);font-size:30px;font-weight:600;margin-top:6px}
+  .shead p{color:var(--muted);font-size:14px;max-width:620px;margin:8px auto 0}
+  /* principle */
+  .principle{background:linear-gradient(162deg,rgba(201,168,98,.1),rgba(201,168,98,.02));border:1px solid var(--gold);border-radius:18px;padding:26px;margin-top:22px;text-align:center}
+  .principle .big{font-family:var(--disp);font-size:24px;font-weight:600;line-height:1.3;max-width:720px;margin:0 auto}
+  .principle .big em{color:var(--gold-soft);font-style:normal}
+  .split{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:stretch;margin-top:22px;max-width:760px;margin-left:auto;margin-right:auto}
+  @media(max-width:620px){.split{grid-template-columns:1fr}.split .arrow{display:none}}
+  .sidecard{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:18px;text-align:left}
+  .sidecard.tpb{border-color:var(--line2)}
+  .sidecard.aca{border-color:var(--gold)}
+  .sidecard .t{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+  .sidecard.tpb .t{color:var(--mid)}.sidecard.aca .t{color:var(--gold-soft)}
+  .sidecard .v{font-family:var(--disp);font-size:17px;color:var(--ink);font-weight:600;margin-bottom:6px}
+  .sidecard p{font-size:13px;color:var(--muted)}
+  .arrow{display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:22px}
+  /* template steps */
+  .tmpl{display:grid;gap:10px;margin-top:20px}
+  .step{display:flex;gap:15px;background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:13px;padding:16px 18px}
+  .step .n{flex:none;width:30px;height:30px;border-radius:50%;background:var(--gold);color:#15100a;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;font-family:var(--disp)}
+  .step .c h4{font-family:var(--disp);font-size:17px;font-weight:600}
+  .step .c p{font-size:13.5px;color:var(--mid);margin-top:2px}
+  .step .c .tag{font-size:12px;color:var(--gold-soft);margin-top:5px;font-weight:600}
+  /* week cards */
+  .weeks{display:grid;gap:12px;margin-top:20px}
+  .wk{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:16px 18px;position:relative}
+  .wk.anchor{border-color:var(--gold-deep,#6f5a2e);border-left:3px solid var(--gold)}
+  .wk .hd{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .wk .wn{font-family:var(--disp);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:.05em;flex:none}
+  .wk .area{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .wk h3{font-family:var(--disp);font-size:19px;font-weight:600;margin-top:4px}
+  .wk .grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 22px;margin-top:9px}
+  @media(max-width:620px){.wk .grid{grid-template-columns:1fr}}
+  .wk .kv{font-size:13px;color:var(--mid)}
+  .wk .kv b{color:var(--ink);font-weight:600}
+  .wk .kv .lab{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;display:block;margin-bottom:1px}
+  .pill{display:inline-block;font-size:10.5px;font-weight:700;border-radius:12px;padding:2px 8px;margin-left:6px;vertical-align:middle}
+  .pill.live{background:rgba(87,185,138,.16);color:#8fd0a6}
+  .pill.build{background:rgba(201,168,98,.14);color:var(--gold-soft)}
+  .wk .asc{margin-top:10px;font-size:12.5px;color:var(--blue);background:rgba(143,188,230,.07);border-left:2px solid rgba(143,188,230,.4);border-radius:6px;padding:8px 12px}
+  .wk .asc b{color:#bcd9f5;font-weight:600}
+  /* audit */
+  .audit{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:20px}
+  @media(max-width:760px){.audit{grid-template-columns:1fr}}
+  .acol{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:18px}
+  .acol.live{border-top:3px solid var(--green)}
+  .acol.build{border-top:3px solid var(--gold)}
+  .acol.aca{border-top:3px solid var(--blue)}
+  .acol h4{font-family:var(--disp);font-size:16px;font-weight:600;margin-bottom:3px}
+  .acol .sub{font-size:11.5px;color:var(--muted);margin-bottom:12px}
+  .acol ul{list-style:none;display:grid;gap:7px}
+  .acol ul li{font-size:13px;color:var(--mid);padding-left:16px;position:relative}
+  .acol ul li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:2px;transform:rotate(45deg)}
+  .acol.live ul li::before{background:var(--green)}.acol.build ul li::before{background:var(--gold)}.acol.aca ul li::before{background:var(--blue)}
+  .guard{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:22px;margin-top:20px}
+  .guard ul{list-style:none;display:grid;gap:10px;margin-top:6px}
+  .guard li{font-size:14px;color:var(--mid);padding-left:22px;position:relative}
+  .guard li::before{content:"✓";position:absolute;left:0;color:var(--gold-soft);font-weight:700}
+  .guard li b{color:var(--ink)}
+  footer{text-align:center;color:#59657380;font-size:11px;margin:44px 0 40px;padding:0 20px}
+</style>
+</head>
+<body>
+<div id="gate">
+  <div class="gate-card">
+    <div class="mk">BreedWise · Internal</div>
+    <h1>TPB Curriculum System</h1>
+    <p>90-day module &amp; tool map. Team access only.</p>
+    <input id="pw" type="password" placeholder="Team code" autocomplete="off" spellcheck="false">
+    <button id="unlock">Open</button>
+    <div class="err" id="gate-err"></div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="bar"><span class="brand">BREED<b>WISE</b> · TPB 90-DAY CURRICULUM SYSTEM</span></div>
+
+  <div class="hero"><div class="wrap">
+    <span class="eyebrow">Internal · The Profitable Breeder</span>
+    <h1>One module. One tool. <span class="u">Every week.</span></h1>
+    <p class="sub">A 90-day path that diagnoses a breeder's whole program, then closes one area a week — delivering real wins while making the full build its own reason to ascend to the Academy.</p>
+  </div></div>
+
+  <div class="wrap">
+
+    <!-- PRINCIPLE -->
+    <div class="shead"><div class="k">The rule that governs everything</div><h2>Transformation, not completion</h2>
+      <p>TPB has one job: get a breeder a real result, then make them feel the ceiling. Give enough to prove it works — never enough to remove the reason to go up.</p></div>
+    <div class="principle">
+      <div class="big">TPB gives them <em>clarity and starter wins they can do themselves.</em> The Academy is where we <em>build it with them.</em></div>
+      <div class="split">
+        <div class="sidecard tpb"><div class="t">The Profitable Breeder · $97</div><div class="v">See it &amp; do the first move</div><p>Diagnose your program, learn the one lever that matters in each area, and use a tool to get a starter win — on your own.</p></div>
+        <div class="arrow">→</div>
+        <div class="sidecard aca"><div class="t">Breedwise Academy</div><div class="v">Build it with our team</div><p>The website, the CRM, the systems, the economics dashboard — installed and implemented with you. TPB shows the path; the Academy walks it with you.</p></div>
+      </div>
+    </div>
+
+    <!-- WEEKLY TEMPLATE -->
+    <div class="shead"><div class="k">Every module, same shape</div><h2>The Weekly Module Template</h2>
+      <p>So the 90 days feel like one product, not twelve lessons. Every week follows these five beats.</p></div>
+    <div class="tmpl">
+      <div class="step"><div class="n">1</div><div class="c"><h4>The why</h4><p>What this area is, what it's quietly costing them, and why it matters now. Make them feel the gap.</p></div></div>
+      <div class="step"><div class="n">2</div><div class="c"><h4>The one lever</h4><p>Not the masterclass — the single highest-leverage move in this area. Enough to act this week. <span class="tag">Depth and the full system are the Academy.</span></p></div></div>
+      <div class="step"><div class="n">3</div><div class="c"><h4>The tool</h4><p>Apply the lever to their own program with a self-serve tool. This is where the week produces something real.</p></div></div>
+      <div class="step"><div class="n">4</div><div class="c"><h4>This week's win</h4><p>One tangible output they walk away with — and the exact assessment score it moves.</p></div></div>
+      <div class="step"><div class="n">5</div><div class="c"><h4>The ceiling</h4><p>Show what this looks like fully built, done with the team. Honest, not a pitch: "You just did the DIY version — the Academy builds the whole thing with you."</p></div></div>
+    </div>
+
+    <!-- 12-WEEK MAP -->
+    <div class="shead"><div class="k">The arc</div><h2>The 90-Day Map</h2>
+      <p>Twelve weeks, mapped 1:1 to the ten areas of the Program Assessment. Diagnose → close each gap → re-score. <span style="color:#8fd0a6">Live</span> tools exist today; <span style="color:var(--gold-soft)">Build</span> tools are the gaps to create.</p></div>
+    <div class="weeks">
+
+      <div class="wk anchor"><div class="hd"><span class="wn">Week 1</span><span class="area">Foundation · both engines</span></div>
+        <h3>Why Great Breeders Still Struggle</h3>
+        <div class="grid">
+          <div class="kv"><span class="lab">Tool</span>Program Assessment <span class="pill live">Live</span></div>
+          <div class="kv"><span class="lab">This week's win</span>Your baseline score + your #1 area to start</div>
+        </div>
+        <div class="asc"><b>Ceiling → Academy:</b> the full BOSS Baseline Assessment and a built, personalized 120-day plan.</div>
+      </div>
+
+      <div class="wk"><div class="hd"><span class="wn">Week 2</span><span class="area">Business · Demand</span></div>
+        <h3>Getting Found — where your buyers actually come from</h3>
+        <div class="grid"><div class="kv"><span class="lab">Tool</span>Buyer Source Tracker <span class="pill build">Build</span></div>
+          <div class="kv"><span class="lab">Win</span>Your #1 buyer source, counted (not guessed)</div></div>
+        <div class="asc"><b>Ceiling → Academy:</b> we build your lead-gen and a website that pulls buyers to you.</div></div>
+
+      <div class="wk"><div class="hd"><span class="wn">Week 3</span><span class="area">Business · Brand &amp; Positioning</span></div>
+        <h3>Why You, Not the Breeder Down the Road</h3>
+        <div class="grid"><div class="kv"><span class="lab">Tool</span>Positioning One-Liner builder <span class="pill build">Build</span></div>
+          <div class="kv"><span class="lab">Win</span>Your one-sentence positioning + who you're not for</div></div>
+        <div class="asc"><b>Ceiling → Academy:</b> your full brand identity and website built with you.</div></div>
+
+      <div class="wk"><div class="hd"><span class="wn">Week 4</span><span class="area">Business · Social &amp; Content</span></div>
+        <h3>Content That Actually Sells Puppies</h3>
+        <div class="grid"><div class="kv"><span class="lab">Tool</span>2-Week Content Plan template <span class="pill build">Build</span></div>
+          <div class="kv"><span class="lab">Win</span>A ready-to-post 2-week content plan</div></div>
+        <div class="asc"><b>Ceiling → Academy:</b> Yasmin builds your content engine with you, within scope.</div></div>
+
+      <div class="wk"><div class="hd"><span class="wn">Week 5</span><span class="area">Business · Buyer Experience &amp; Sales</span></div>
+        <h3>Turning Inquiries into Deposits</h3>
+        <div class="grid"><div class="kv"><span class="lab">Tool</span>Buyer Reply Scripts + Inquiry Tracker <span class="pill build">Build</span></div>
+          <div class="kv"><span class="lab">Win</span>Saved answers to your top 10 questions + your conversion rate</div></div>
+        <div class="asc"><b>Ceiling → Academy:</b> we configure your CRM and your full sales pipeline.</div></div>
+
+      <div class="wk"><div class="hd"><span class="wn">Week 6</span><span class="area">Business · Pricing</span></div>
+        <h3>Charging What You're Worth</h3>
+        <div class="grid"><div class="kv"><span class="lab">Tool</span>Value Architect <span class="pill live">Live</span></div>
+          <div class="kv"><span class="lab">Win</span>Your defensible target price + the case for it</div></div>
+        <div class="asc"><b>Ceiling → Academy:</b> we rebuild your offer and pricing together, end to end.</div></div>
+
+      <div class="wk anchor"><div class="hd"><span class="wn">Week 7</span><span class="area">Business · Profitability</span></div>
+        <h3>Know Your Litter Profits</h3>
+        <div class="grid"><div class="kv"><span class="lab">Tool</span>Litter Snapshot <span class="pill live">Live</span></div>
+          <div class="kv"><span class="lab">Win</span>Real profit per litter &amp; per puppy, break-even, $/hour</div></div>
+        <div class="asc"><b>Ceiling → Academy:</b> your full economics dashboard with ongoing KPI tracking.</div></div>
+
+      <div class="wk"><div class="hd"><span class="wn">Week 8</span><span class="area">Breeding · Reproductive Prep</span></div>
+        <h3>Breed on the Right Day</h3>
+        <div class="grid"><div class="kv"><span class="lab">Tool</span>Pre-Breeding Checklist <span class="pill build">Build</span></div>
+          <div class="kv"><span class="lab">Win</span>A written pre-breeding checklist for your next litter</div></div>
+        <div class="asc"><b>Ceiling → Academy:</b> direct reproductive / scientific education with Dr. Fontaine.</div></div>
+
+      <div class="wk"><div class="hd"><span class="wn">Week 9</span><span class="area">Breeding · Whelping &amp; Neonatal</span></div>
+        <h3>A Calm, Prepared Whelping</h3>
+        <div class="grid"><div class="kv"><span class="lab">Tool</span>Whelping Plan + Newborn Tracker <span class="pill build">Build</span> · Healthy Litter Scorecard <span class="pill live">Live</span></div>
+          <div class="kv"><span class="lab">Win</span>A vet-agreed whelping plan before the due date</div></div>
+        <div class="asc"><b>Ceiling → Academy:</b> deeper vet education and your protocols reviewed within scope.</div></div>
+
+      <div class="wk"><div class="hd"><span class="wn">Week 10</span><span class="area">Breeding · Data &amp; Recordkeeping</span></div>
+        <h3>Get It Out of Your Head</h3>
+        <div class="grid"><div class="kv"><span class="lab">Tool</span>Litter Records Tracker template <span class="pill build">Build</span></div>
+          <div class="kv"><span class="lab">Win</span>One sheet with your last litters' numbers</div></div>
+        <div class="asc"><b>Ceiling → Academy:</b> we build your records / CRM system with you.</div></div>
+
+      <div class="wk"><div class="hd"><span class="wn">Week 11</span><span class="area">Breeding · Operations &amp; Systems</span></div>
+        <h3>A Program That Runs Without You</h3>
+        <div class="grid"><div class="kv"><span class="lab">Tool</span>SOP / Checklist Builder <span class="pill build">Build</span></div>
+          <div class="kv"><span class="lab">Win</span>One written SOP for the thing you most often drop</div></div>
+        <div class="asc"><b>Ceiling → Academy:</b> we build your full operating system with you.</div></div>
+
+      <div class="wk anchor"><div class="hd"><span class="wn">Week 12</span><span class="area">Reassess &amp; ascend</span></div>
+        <h3>What Moved — and What's Next</h3>
+        <div class="grid"><div class="kv"><span class="lab">Tool</span>Program Assessment (retake) <span class="pill live">Live</span></div>
+          <div class="kv"><span class="lab">Win</span>Day-1 → Day-90 delta + your next-90 roadmap</div></div>
+        <div class="asc"><b>Ceiling → Academy:</b> the natural conversation — "you've built the foundation on your own; now operate it, build the rest with us, and prove it."</div></div>
+
+    </div>
+
+    <!-- TOOL AUDIT -->
+    <div class="shead"><div class="k">The honest gap</div><h2>Tool-Coverage Audit</h2>
+      <p>"One tool per week" is only true if the tools exist. Here's what's live, what we build for TPB, and what stays Academy-only on purpose.</p></div>
+    <div class="audit">
+      <div class="acol live"><h4>Live today</h4><div class="sub">Already built — ready to slot in</div>
+        <ul><li>Program Assessment (Wk 1 &amp; 12)</li><li>Value Architect (Wk 6)</li><li>Litter Snapshot (Wk 7)</li><li>Healthy Litter Scorecard (Wk 9 diagnostic)</li><li>Niche Blueprint (supports Wk 2–3)</li></ul></div>
+      <div class="acol build"><h4>Build for TPB</h4><div class="sub">Lightweight, self-serve, win-producing</div>
+        <ul><li>Buyer Source Tracker</li><li>Positioning One-Liner builder</li><li>2-Week Content Plan template</li><li>Buyer Reply Scripts + Inquiry Tracker</li><li>Pre-Breeding Checklist</li><li>Whelping Plan + Newborn Tracker</li><li>Litter Records Tracker</li><li>SOP / Checklist Builder</li></ul></div>
+      <div class="acol aca"><h4>Academy-only (on purpose)</h4><div class="sub">The ceiling — never in TPB</div>
+        <ul><li>The actual website build</li><li>CRM setup, configuration &amp; automations</li><li>Done-with-you implementation</li><li>Live Progress Dashboard</li><li>1:1 Slack + weekly coaching</li><li>Full systems install</li><li>Certification pathway</li></ul></div>
+    </div>
+
+    <!-- GUARDRAILS -->
+    <div class="shead"><div class="k">Build rules</div><h2>Guardrails for every module</h2></div>
+    <div class="guard"><ul>
+      <li><b>One lever, not the masterclass.</b> Teach the 80/20 move for the week. Enough for a win; the full depth and the build are the Academy. This is how we preserve ascension.</li>
+      <li><b>Every module ends the same way:</b> the weekly win (a tangible output) → the assessment score it moves → the ceiling (what fully built looks like, with us).</li>
+      <li><b>State the map out loud.</b> Every module opens with "This is [Area] — one of the ten from your assessment," so the breeder always knows where they are.</li>
+      <li><b>Breeding modules measure preparedness and systems</b> — never promises of pregnancy rates, litter size, survival or medical outcomes. That stays with their vet.</li>
+      <li><b>The pull to Academy is structural, not salesy.</b> DIY vs. done-with-you does the selling. We never have to hard-pitch.</li>
+    </ul></div>
+
+  </div>
+  <footer>BREEDWISE · The Profitable Breeder — 90-Day Curriculum System · Internal. Not for distribution.</footer>
+</div>
+
+<script>
+(function(){
+  var OK='368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875'; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function el(id){return document.getElementById(id);}
+  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';}
+  function tryUnlock(){var v=(el('pw').value||'').trim();Promise.all([h(v),h(v.toUpperCase())]).then(function(a){if(a[0]===OK||a[1]===OK){try{sessionStorage.setItem('tpbc_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
+  el('unlock').addEventListener('click',tryUnlock);
+  el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('tpbc_ok')==='1'){reveal();}else{el('pw').focus();}}catch(e){el('pw').focus();}
+})();
+</script>
+</body>
+</html>
