@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Why Great Breeders Still Struggle · The Profitable Breeder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0e13;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;--ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif}
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%}
+  body{background:radial-gradient(1100px 620px at 50% -12%,rgba(201,168,98,.10),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+  .top{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid var(--line);background:rgba(11,14,19,.72);backdrop-filter:blur(8px)}
+  .brand{font-size:12.5px;letter-spacing:.22em;font-weight:700;color:var(--mid)}.brand b{color:var(--gold)}
+  .topmod{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .prog{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));width:0;z-index:40;transition:width .35s ease}
+  .stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:70px 26px 92px}
+  .slide{max-width:860px;width:100%;opacity:0;transform:translateY(14px);transition:opacity .4s ease,transform .4s ease;pointer-events:none;position:absolute;left:50%;top:50%;translate:-50% -50%;padding:0 26px}
+  .slide.on{opacity:1;transform:none;pointer-events:auto}
+  .kicker{display:inline-block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;background:rgba(201,168,98,.1);border:1px solid rgba(201,168,98,.28);border-radius:20px;padding:6px 14px;margin-bottom:22px}
+  h1{font-family:var(--disp);font-weight:600;font-size:52px;line-height:1.08;letter-spacing:-.6px}
+  @media(max-width:720px){h1{font-size:34px}}
+  h1 .u{color:var(--gold-soft)}
+  .body{margin-top:20px;font-size:21px;line-height:1.55;color:var(--mid);font-weight:300;max-width:740px}
+  @media(max-width:720px){.body{font-size:17px}}
+  .foot{margin-top:20px;font-size:15px;color:var(--muted);font-style:italic}
+  .chip{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-size:13.5px;color:var(--gold-soft);background:rgba(201,168,98,.08);border:1px solid rgba(201,168,98,.3);border-radius:10px;padding:9px 14px;font-weight:600}
+  .chip::before{content:"→";color:var(--gold)}
+  ul.pts{list-style:none;margin-top:24px;display:grid;gap:13px;max-width:760px}
+  ul.pts li{position:relative;padding-left:28px;font-size:18.5px;color:var(--mid);line-height:1.45}
+  @media(max-width:720px){ul.pts li{font-size:16px}}
+  ul.pts li::before{content:"";position:absolute;left:0;top:10px;width:9px;height:9px;border-radius:2px;background:var(--gold);transform:rotate(45deg)}
+  ul.pts li b{color:var(--ink);font-weight:600}
+  .slide.title .big{font-family:var(--disp);font-size:68px;line-height:1.02;font-weight:700;letter-spacing:-1.4px}
+  @media(max-width:720px){.slide.title .big{font-size:42px}}
+  .slide.title .sub{margin-top:20px;font-size:22px;color:var(--mid);font-weight:300;max-width:640px}
+  .cta-btn{display:inline-block;margin-top:30px;padding:17px 34px;background:linear-gradient(135deg,var(--gold),#a9863f);border:0;border-radius:13px;color:#1a130a;font-weight:700;font-size:18px;cursor:pointer;font-family:var(--sans);text-decoration:none;box-shadow:0 8px 30px rgba(201,168,98,.22)}
+  .nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-top:1px solid var(--line);background:rgba(11,14,19,.72);backdrop-filter:blur(8px)}
+  .nbtn{background:var(--panel2);border:1px solid var(--line2);color:var(--mid);border-radius:10px;width:42px;height:42px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .12s,color .12s}
+  .nbtn:hover{border-color:var(--gold);color:var(--gold-soft)}
+  .nbtn:disabled{opacity:.35;cursor:default}
+  .count{font-size:13px;color:var(--muted);letter-spacing:.06em}
+  .count b{color:var(--ink);font-family:var(--disp);font-size:16px}
+  .dots{display:flex;gap:6px;align-items:center}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--line2);cursor:pointer}
+  .dot.on{background:var(--gold);transform:scale(1.25)}
+  @media(max-width:720px){.dots{display:none}}
+  .zone{position:fixed;top:56px;bottom:74px;width:22%;z-index:20;cursor:pointer}
+  .zone.l{left:0}.zone.r{right:0}
+  .hint{position:fixed;bottom:76px;left:50%;translate:-50% 0;font-size:11px;color:#59657390;z-index:25;letter-spacing:.06em}
+</style>
+</head>
+<body>
+  <div class="prog" id="prog"></div>
+  <div class="top"><span class="brand">BREED<b>WISE</b></span><span class="topmod">The Profitable Breeder · Module</span></div>
+
+  <div class="zone l" id="zl"></div>
+  <div class="zone r" id="zr"></div>
+  <div class="stage" id="stage"></div>
+  <div class="hint">Use ← → arrows, click the sides, or swipe</div>
+
+  <div class="nav">
+    <button class="nbtn" id="prev">‹</button>
+    <div class="dots" id="dots"></div>
+    <div class="count"><b id="cur">1</b> / <span id="tot">15</span></div>
+    <button class="nbtn" id="next">›</button>
+  </div>
+
+<script>
+var TOOL_URL='scorecard.html';
+var SLIDES=[
+ {type:'title',big:'Why Great Breeders <span class="u">Still Struggle</span>',kicker:'The Profitable Breeder · Module',
+  sub:"Being great with dogs is half the job. Let's talk about the other half."},
+
+ {kicker:'01 · Say it out loud',
+  h:"If you're this good with dogs, <span class=\"u\">why is it still this hard</span>?",
+  body:"You health test. You raise healthy, good-looking litters. People love your dogs. And you're still stressed about money, still chasing buyers, still feel like you start from scratch every litter."},
+
+ {kicker:"02 · It's not a dog problem",
+  h:"You don't have a <span class=\"u\">dog problem</span>.",
+  body:"When it's hard, most breeders think they need to get better at breeding — more knowledge, more litters, better dogs. That's almost never it. The problem is everything around the dogs that nobody ever showed you."},
+
+ {kicker:'03 · Breeding is really two jobs',
+  h:'Breeding is really <span class="u">two jobs</span>.',
+  pts:["<b>The dog side</b> — getting your girl bred right, a safe whelping, healthy pups, health testing, your records.",
+       "<b>The business side</b> — getting buyers to come to you, knowing your worth and pricing for it, selling without chasing, keeping track, running it like a real operation."],
+  foot:"A program that works runs on both. Most great breeders have the dog side down — and the business side was never built.",
+  chip:"The assessment scores both sides"},
+
+ {kicker:'04 · The ten things that decide it',
+  h:'Ten things decide whether you <span class="u">make it</span>.',
+  body:"On the dog side: your breeding prep, whelping and newborn care, your records. On the business side: getting found, how you come across, your content, buyers, pricing, and whether you actually make money. Most are great at two or three — and never looked at the other seven.",
+  chip:"Those are the ten the assessment scores you on"},
+
+ {kicker:"05 · Your score isn't a report card",
+  h:"Read the picture, <span class=\"u\">not the grade</span>.",
+  body:"A great dog side with nothing on business can look 'okay' on paper and still be struggling. And a low score with one obvious problem is the easiest to fix. It's not the total that matters — it's the picture.",
+  chip:"The score on each of the ten parts is the real gold"},
+
+ {kicker:"06 · Five breeders you'll recognize",
+  h:'Which one is <span class="u">you</span>?',
+  pts:["<b>The great breeder who's broke</b> — amazing dogs, nothing on business. Undercharges, overworks.",
+       "<b>The best-kept secret</b> — the dogs are great, but nobody knows you exist.",
+       "<b>The one who undercharges</b> — busy every litter and still can't get ahead.",
+       "<b>The one who runs it from memory</b> — it's all in their head. Can't grow, can't rest, can't hand anything off.",
+       "<b>The one growing too fast</b> — buyers are fine, but the records and the back end are a mess."],
+  foot:"The assessment tells you which one is you — with real numbers, not a gut feeling."},
+
+ {kicker:'07 · Why it keeps happening',
+  h:"You can't fix what you <span class=\"u\">can't see</span>.",
+  body:"Nobody ever handed you a mirror for your whole program — just other breeders who are guessing too. And being busy hides it. You're so deep in the work you can't step back and see where it's leaking."},
+
+ {kicker:'08 · Stop guessing, start seeing',
+  h:'They know their numbers. <span class="u">You can too.</span>',
+  body:"The breeders who get ahead aren't working harder than you. They just know their numbers and have a few systems. The first move isn't more work — it's seeing clearly where you really stand right now."},
+
+ {kicker:'09 · Meet the Program Assessment',
+  h:"It's not a quiz. It's a <span class=\"u\">mirror</span>.",
+  body:"A quick back-and-forth — about ten minutes — about how your program actually runs. Both sides, all ten parts, scored out of 100. By the end you can see exactly where you stand."},
+
+ {kicker:'10 · What you get back',
+  h:'A clear picture and a <span class="u">first move</span>.',
+  pts:["Your overall number, split between the business side and the dog side",
+       "A score on each of the ten parts — your pattern",
+       "What you're already doing well",
+       "Where you're leaving puppies and money on the table",
+       "The one thing to fix first",
+       "Where to start this week"]},
+
+ {kicker:'11 · How to read yours',
+  h:'Three things to look at.',
+  pts:["Which side is dragging — the dogs or the business?",
+       "What's the single biggest thing holding you back?",
+       "What's the one move you can make this week?"],
+  foot:"Don't try to fix ten things. Fix the one that frees up the rest."},
+
+ {kicker:'12 · Your starting line in The Profitable Breeder',
+  h:'Start with <span class="u">one area</span>. Then move it.',
+  body:"Your assessment points you to the one area to start with, so you're not drinking from a firehose. Work that area with the lessons in here, then take the assessment again and watch your number move.",
+  foot:"On the dog side it looks at whether you're prepared and organized — not promises about pregnancies, litter size or pups surviving. That stays between you and your vet."},
+
+ {kicker:'13 · Knowing it vs. doing it',
+  h:'Knowing it is the <span class="u">easy half</span>.',
+  body:"Your assessment shows you the path. Walking it — one area at a time, with a plan and a room full of serious breeders doing the same — is what The Profitable Breeder is for."},
+
+ {type:'cta',kicker:'Do this now',
+  h:'See where your program <span class="u">really stands</span>.',
+  body:"Take your Program Assessment — your number, your picture, and your first move, in about ten minutes. Then open the lesson that matches it.",
+  cta:'Take the Program Assessment'}
+];
+
+var i=0;
+var stage=document.getElementById('stage'),dots=document.getElementById('dots');
+document.getElementById('tot').textContent=SLIDES.length;
+function render(){
+  stage.innerHTML=SLIDES.map(function(s,n){
+    var cls='slide'+(s.type==='title'?' title':'')+(s.type==='cta'?' cta':'');
+    var inner='';
+    if(s.type==='title'){ inner='<span class="kicker">'+s.kicker+'</span><div class="big">'+s.big+'</div><div class="sub">'+s.sub+'</div>'; }
+    else{
+      inner='<span class="kicker">'+s.kicker+'</span><h1>'+s.h+'</h1>';
+      if(s.body)inner+='<p class="body">'+s.body+'</p>';
+      if(s.pts)inner+='<ul class="pts">'+s.pts.map(function(p){return '<li>'+p+'</li>';}).join('')+'</ul>';
+      if(s.chip)inner+='<div class="chip">'+s.chip+'</div>';
+      if(s.foot)inner+='<p class="foot">'+s.foot+'</p>';
+      if(s.type==='cta')inner+='<div><a class="cta-btn" href="'+TOOL_URL+'">'+s.cta+' →</a></div>';
+    }
+    return '<div class="'+cls+(n===0?' on':'')+'" data-n="'+n+'">'+inner+'</div>';
+  }).join('');
+  dots.innerHTML=SLIDES.map(function(_,n){return '<span class="dot'+(n===0?' on':'')+'" data-g="'+n+'"></span>';}).join('');
+  Array.prototype.forEach.call(dots.querySelectorAll('.dot'),function(d){d.addEventListener('click',function(){go(+d.getAttribute('data-g'));});});
+  update();
+}
+function update(){
+  Array.prototype.forEach.call(stage.querySelectorAll('.slide'),function(el){el.classList.toggle('on',+el.getAttribute('data-n')===i);});
+  Array.prototype.forEach.call(dots.querySelectorAll('.dot'),function(el,n){el.classList.toggle('on',n===i);});
+  document.getElementById('cur').textContent=i+1;
+  document.getElementById('prog').style.width=((i)/(SLIDES.length-1)*100)+'%';
+  document.getElementById('prev').disabled=(i===0);
+  document.getElementById('next').disabled=(i===SLIDES.length-1);
+}
+function go(n){ i=Math.max(0,Math.min(SLIDES.length-1,n)); update(); }
+document.getElementById('next').onclick=function(){go(i+1);};
+document.getElementById('prev').onclick=function(){go(i-1);};
+document.getElementById('zr').onclick=function(){go(i+1);};
+document.getElementById('zl').onclick=function(){go(i-1);};
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(i+1);}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(i-1);}
+  else if(e.key==='Home'){go(0);} else if(e.key==='End'){go(SLIDES.length-1);}
+});
+var tx=0;
+document.addEventListener('touchstart',function(e){tx=e.changedTouches[0].clientX;},{passive:true});
+document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){dx<0?go(i+1):go(i-1);}},{passive:true});
+render();
+</script>
+</body>
+</html>
