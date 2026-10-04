@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Know Your Litter Profits · The Profitable Breeder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0e13;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;--ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif}
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%}
+  body{background:radial-gradient(1100px 620px at 50% -12%,rgba(201,168,98,.10),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+  .top{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid var(--line);background:rgba(11,14,19,.72);backdrop-filter:blur(8px)}
+  .brand{font-size:12.5px;letter-spacing:.22em;font-weight:700;color:var(--mid)}.brand b{color:var(--gold)}
+  .topmod{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .prog{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));width:0;z-index:40;transition:width .35s ease}
+  .stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:70px 26px 92px}
+  .slide{max-width:860px;width:100%;opacity:0;transform:translateY(14px);transition:opacity .4s ease,transform .4s ease;pointer-events:none;position:absolute;left:50%;top:50%;translate:-50% -50%;padding:0 26px}
+  .slide.on{opacity:1;transform:none;pointer-events:auto}
+  .kicker{display:inline-block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;background:rgba(201,168,98,.1);border:1px solid rgba(201,168,98,.28);border-radius:20px;padding:6px 14px;margin-bottom:22px}
+  h1{font-family:var(--disp);font-weight:600;font-size:52px;line-height:1.08;letter-spacing:-.6px}
+  @media(max-width:720px){h1{font-size:34px}}
+  h1 .u{color:var(--gold-soft)}
+  .body{margin-top:20px;font-size:21px;line-height:1.55;color:var(--mid);font-weight:300;max-width:740px}
+  @media(max-width:720px){.body{font-size:17px}}
+  .foot{margin-top:20px;font-size:15px;color:var(--muted);font-style:italic}
+  .chip{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-size:13.5px;color:var(--gold-soft);background:rgba(201,168,98,.08);border:1px solid rgba(201,168,98,.3);border-radius:10px;padding:9px 14px;font-weight:600}
+  .chip::before{content:"→";color:var(--gold)}
+  ul.pts{list-style:none;margin-top:24px;display:grid;gap:13px;max-width:760px}
+  ul.pts li{position:relative;padding-left:28px;font-size:18.5px;color:var(--mid);line-height:1.45}
+  @media(max-width:720px){ul.pts li{font-size:16px}}
+  ul.pts li::before{content:"";position:absolute;left:0;top:10px;width:9px;height:9px;border-radius:2px;background:var(--gold);transform:rotate(45deg)}
+  ul.pts li b{color:var(--ink);font-weight:600}
+  /* title + cta */
+  .slide.title .big{font-family:var(--disp);font-size:72px;line-height:1;font-weight:700;letter-spacing:-1.5px}
+  @media(max-width:720px){.slide.title .big{font-size:46px}}
+  .slide.title .sub{margin-top:20px;font-size:22px;color:var(--mid);font-weight:300;max-width:620px}
+  .cta-btn{display:inline-block;margin-top:30px;padding:17px 34px;background:linear-gradient(135deg,var(--gold),#a9863f);border:0;border-radius:13px;color:#1a130a;font-weight:700;font-size:18px;cursor:pointer;font-family:var(--sans);text-decoration:none;box-shadow:0 8px 30px rgba(201,168,98,.22)}
+  /* nav */
+  .nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-top:1px solid var(--line);background:rgba(11,14,19,.72);backdrop-filter:blur(8px)}
+  .nbtn{background:var(--panel2);border:1px solid var(--line2);color:var(--mid);border-radius:10px;width:42px;height:42px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .12s,color .12s}
+  .nbtn:hover{border-color:var(--gold);color:var(--gold-soft)}
+  .nbtn:disabled{opacity:.35;cursor:default}
+  .count{font-size:13px;color:var(--muted);letter-spacing:.06em}
+  .count b{color:var(--ink);font-family:var(--disp);font-size:16px}
+  .dots{display:flex;gap:6px;align-items:center}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--line2);cursor:pointer}
+  .dot.on{background:var(--gold);transform:scale(1.25)}
+  @media(max-width:720px){.dots{display:none}}
+  .zone{position:fixed;top:56px;bottom:74px;width:22%;z-index:20;cursor:pointer}
+  .zone.l{left:0}.zone.r{right:0}
+  .hint{position:fixed;bottom:76px;left:50%;translate:-50% 0;font-size:11px;color:#59657390;z-index:25;letter-spacing:.06em}
+</style>
+</head>
+<body>
+  <div class="prog" id="prog"></div>
+  <div class="top"><span class="brand">BREED<b>WISE</b></span><span class="topmod">The Profitable Breeder · Module</span></div>
+
+  <div class="zone l" id="zl"></div>
+  <div class="zone r" id="zr"></div>
+  <div class="stage" id="stage"></div>
+  <div class="hint">Use ← → arrows, click the sides, or swipe</div>
+
+  <div class="nav">
+    <button class="nbtn" id="prev">‹</button>
+    <div class="dots" id="dots"></div>
+    <div class="count"><b id="cur">1</b> / <span id="tot">15</span></div>
+    <button class="nbtn" id="next">›</button>
+  </div>
+
+<script>
+var TOOL_URL='litter-snapshot.html';
+var SLIDES=[
+ {type:'title',big:'Know Your <span class="u">Litter Profits</span>',kicker:'The Profitable Breeder · Module',
+  sub:"What the puppies sold for isn't what you made. Let's find the real number."},
+
+ {kicker:'01 · The question nobody answers',
+  h:'How much did your last litter actually <span class="u">put in your pocket</span>?',
+  body:"Not what the puppies sold for — what was left after everything. Most breeders have never run that number. And when they guess, they guess high."},
+
+ {kicker:"02 · Revenue isn't profit",
+  h:"What came in isn't what you made.",
+  body:"Eight puppies at $2,500 feels like twenty grand. That's just what came in. What you made is what's left after the litter is paid for — and after what your dogs cost you all year."},
+
+ {kicker:'03 · The three kinds of money a litter eats',
+  h:'Three piles of cost. <span class="u">Most breeders count one.</span>',
+  pts:["<b>This litter's bills</b> — stud fee, progesterone, ultrasound, a possible C-section, whelping supplies, extra food, shots, dewormer, microchips, registration, vet visits.",
+       "<b>Your dogs' year-round costs</b> — feed and upkeep, health testing, the girl that didn't take, your whelping room, insurance.",
+       "<b>Your own time</b> — the weeks of round-the-clock work, valued at what you'd pay someone else."],
+  foot:"Most count the first, forget the second, and never think about the third."},
+
+ {kicker:'04 · Two honest numbers',
+  h:'Did the litter pay off? Does your <span class="u">program</span> pay off?',
+  body:"Number one: what's left after just this litter's bills — tells you the litter was worth it. Number two: what's left after your year-round costs and your time — tells you your program is.",
+  chip:"The Snapshot walks you through both"},
+
+ {kicker:'05 · What each puppy really made',
+  h:'The number that should <span class="u">set your price</span>.',
+  body:"Split what's left across the puppies — that's what each one really made you. And know this one by heart: the lowest you can sell a puppy for without losing money. Price on that, not on a hunch.",
+  chip:"Profit per puppy + your break-even price"},
+
+ {kicker:'06 · The one that stings',
+  h:'What did you make <span class="u">per hour</span>?',
+  body:"Take what you made, divide by the hours the litter ate. That's your pay per hour. For a lot of great breeders it's a few bucks an hour — and they had no idea. Not a slap. A starting line."},
+
+ {kicker:'07 · Guess vs. reality',
+  h:'The gap is the size of your <span class="u">blind spot</span>.',
+  body:"The Snapshot asks what you think you made before it shows you. The space between your guess and the truth is the most useful number in the whole exercise."},
+
+ {kicker:'08 · Why it’s the whole ballgame',
+  h:"You can't fix what you can't see.",
+  body:"You can't price right, can't tell which girls are worth breeding, and can't cut the right costs until you know this number. Breeders who undercharge almost never know it — they just feel broke and can't figure out why."},
+
+ {kicker:'09 · What the tool usually catches',
+  h:"If this is you, you're <span class=\"u\">not doing it wrong</span>.",
+  pts:["Looks fine on the litter — in the red once you add your year-round costs.",
+       "The break-even price you need is higher than what you've been charging.",
+       "Your pay works out to a few dollars an hour.",
+       "One dog's health testing ate a whole litter's profit."],
+  foot:"If one of these is you, you just found the first thing to fix."},
+
+ {kicker:'10 · Meet the tool',
+  h:'The <span class="u">Litter Snapshot</span>.',
+  body:"A few minutes, one real litter, your own numbers in and out. It does the math most of us dodge — and hands you a profit number you can finally trust."},
+
+ {kicker:'11 · What it hands you back',
+  h:'Everything you need to <span class="u">decide</span>.',
+  pts:["What the litter really made you (and how much you kept)",
+       "What each puppy made you",
+       "Your break-even price",
+       "Your hours — and your pay per hour",
+       "Your guess vs. the real number",
+       "Where your money's quietly leaking",
+       "The one money move to make next litter"]},
+
+ {kicker:'12 · How to read yours',
+  h:'Three things to look at.',
+  pts:["Are you still in the black after year-round costs <b>and</b> your time?",
+       "Is your break-even under what you charge — and by how much?",
+       "What's the one move: charge more, cut a cost, or be pickier about litters?"],
+  foot:"Don't fix it all. Fix the one it flags first."},
+
+ {kicker:'13 · Your starting line',
+  h:'Run your last litter. Then <span class="u">move the number</span>.',
+  body:"That's your baseline. Open the pricing lessons for whatever it flagged, change one thing, and run it again on your next litter to watch the number move.",
+  foot:"This is a tool to understand your own numbers — not accounting or financial advice."},
+
+ {type:'cta',kicker:'Do this now',
+  h:'Find out what you <span class="u">really made</span>.',
+  body:"Run the Litter Snapshot on your last litter — your real profit, your profit per puppy, and your pay per hour.",
+  cta:'Open the Litter Snapshot'}
+];
+
+var i=0;
+var stage=document.getElementById('stage'),dots=document.getElementById('dots');
+document.getElementById('tot').textContent=SLIDES.length;
+function render(){
+  stage.innerHTML=SLIDES.map(function(s,n){
+    var cls='slide'+(s.type==='title'?' title':'')+(s.type==='cta'?' cta':'');
+    var inner='';
+    if(s.type==='title'){ inner='<span class="kicker">'+s.kicker+'</span><div class="big">'+s.big+'</div><div class="sub">'+s.sub+'</div>'; }
+    else{
+      inner='<span class="kicker">'+s.kicker+'</span><h1>'+s.h+'</h1>';
+      if(s.body)inner+='<p class="body">'+s.body+'</p>';
+      if(s.pts)inner+='<ul class="pts">'+s.pts.map(function(p){return '<li>'+p+'</li>';}).join('')+'</ul>';
+      if(s.chip)inner+='<div class="chip">'+s.chip+'</div>';
+      if(s.foot)inner+='<p class="foot">'+s.foot+'</p>';
+      if(s.type==='cta')inner+='<div><a class="cta-btn" href="'+TOOL_URL+'">'+s.cta+' →</a></div>';
+    }
+    return '<div class="'+cls+(n===0?' on':'')+'" data-n="'+n+'">'+inner+'</div>';
+  }).join('');
+  dots.innerHTML=SLIDES.map(function(_,n){return '<span class="dot'+(n===0?' on':'')+'" data-g="'+n+'"></span>';}).join('');
+  Array.prototype.forEach.call(dots.querySelectorAll('.dot'),function(d){d.addEventListener('click',function(){go(+d.getAttribute('data-g'));});});
+  update();
+}
+function update(){
+  Array.prototype.forEach.call(stage.querySelectorAll('.slide'),function(el){el.classList.toggle('on',+el.getAttribute('data-n')===i);});
+  Array.prototype.forEach.call(dots.querySelectorAll('.dot'),function(el,n){el.classList.toggle('on',n===i);});
+  document.getElementById('cur').textContent=i+1;
+  document.getElementById('prog').style.width=((i)/(SLIDES.length-1)*100)+'%';
+  document.getElementById('prev').disabled=(i===0);
+  document.getElementById('next').disabled=(i===SLIDES.length-1);
+}
+function go(n){ i=Math.max(0,Math.min(SLIDES.length-1,n)); update(); }
+document.getElementById('next').onclick=function(){go(i+1);};
+document.getElementById('prev').onclick=function(){go(i-1);};
+document.getElementById('zr').onclick=function(){go(i+1);};
+document.getElementById('zl').onclick=function(){go(i-1);};
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(i+1);}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(i-1);}
+  else if(e.key==='Home'){go(0);} else if(e.key==='End'){go(SLIDES.length-1);}
+});
+/* swipe */
+var tx=0;
+document.addEventListener('touchstart',function(e){tx=e.changedTouches[0].clientX;},{passive:true});
+document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){dx<0?go(i+1):go(i-1);}},{passive:true});
+render();
+</script>
+</body>
+</html>
