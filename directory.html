@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Page Directory · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0e13;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;--ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif}
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.55}
+  #gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .gate-card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:16px;padding:36px 32px;max-width:420px;width:100%;text-align:center}
+  .gate-card .mk{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px}
+  .gate-card h1{font-family:var(--disp);font-size:26px;font-weight:600;margin-bottom:6px}
+  .gate-card p{color:var(--muted);font-size:13.5px;margin-bottom:20px}
+  .gate-card input{width:100%;padding:13px 14px;background:var(--panel2);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em}
+  .gate-card input:focus{outline:none;border-color:var(--gold)}
+  .gate-card button{width:100%;margin-top:12px;padding:14px;background:linear-gradient(135deg,var(--gold),#a9863f);border:0;border-radius:11px;color:#1a130a;font-weight:700;font-size:15px;cursor:pointer}
+  .gate-card .err{color:#ff8178;font-size:12.5px;margin-top:10px;min-height:16px}
+  #app{display:none}
+  .bar{border-bottom:1px solid var(--line);padding:13px 20px;text-align:center;position:sticky;top:0;background:rgba(11,14,19,.9);backdrop-filter:blur(8px);z-index:20}
+  .brand{font-size:12.5px;letter-spacing:.22em;font-weight:700;color:var(--mid)}.brand b{color:var(--gold)}
+  .wrap{max-width:1000px;margin:0 auto;padding:26px 20px 70px}
+  .top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+  h1{font-family:var(--disp);font-size:30px;font-weight:600;letter-spacing:-.3px}
+  .sub{color:var(--muted);font-size:13.5px;margin-top:4px}
+  .count{font-size:12px;color:var(--muted)}.count b{color:var(--gold-soft);font-family:var(--disp);font-size:15px}
+  .controls{position:sticky;top:48px;z-index:15;background:rgba(11,14,19,.92);backdrop-filter:blur(8px);padding:14px 0 10px}
+  .search{width:100%;padding:12px 14px;background:var(--panel2);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;font-family:var(--sans)}
+  .search:focus{outline:none;border-color:var(--gold)}
+  .tabs{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+  .tab{font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:20px;border:1px solid var(--line);background:var(--panel2);color:var(--muted);cursor:pointer;transition:border-color .12s,color .12s,background .12s}
+  .tab:hover{border-color:var(--line2)}
+  .tab.on{background:rgba(201,168,98,.14);color:var(--gold-soft);border-color:var(--gold)}
+  .grp{margin-top:26px}
+  .grp .gt{font-family:var(--disp);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;display:flex;align-items:center;gap:10px}
+  .grp .gt::after{content:"";flex:1;height:1px;background:var(--line)}
+  .grp .gt .gc{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.04em}
+  .list{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+  @media(max-width:700px){.list{grid-template-columns:1fr}}
+  .row{display:flex;align-items:flex-start;gap:12px;background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:12px;padding:13px 15px;text-decoration:none;transition:border-color .12s,transform .05s}
+  .row:hover{border-color:var(--gold);transform:translateY(-1px)}
+  .row .ic{flex:none;width:34px;height:34px;border-radius:9px;background:rgba(201,168,98,.1);border:1px solid rgba(201,168,98,.28);display:flex;align-items:center;justify-content:center;color:var(--gold-soft);font-size:15px;font-family:var(--disp);font-weight:700}
+  .row .c{flex:1;min-width:0}
+  .row .t{font-size:14.5px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:7px}
+  .row .t .open{font-size:11px;color:var(--muted);font-weight:400}
+  .row:hover .t .open{color:var(--gold-soft)}
+  .row .d{font-size:12.3px;color:var(--mid);margin-top:2px}
+  .row .meta{display:flex;align-items:center;gap:8px;margin-top:5px;flex-wrap:wrap}
+  .row .f{font-size:11px;color:var(--muted);font-family:ui-monospace,SFMono-Regular,monospace}
+  .code{font-size:10px;font-weight:700;letter-spacing:.03em;color:var(--gold-soft);background:rgba(201,168,98,.1);border:1px solid rgba(201,168,98,.3);border-radius:10px;padding:2px 8px}
+  .code.open{color:var(--green);background:rgba(87,185,138,.12);border-color:rgba(87,185,138,.3)}
+  .empty{color:var(--muted);text-align:center;padding:40px 0;font-size:14px}
+  .note{color:#6a7686;font-size:11.5px;margin-top:28px;text-align:center;line-height:1.6}
+  footer{text-align:center;color:#59657380;font-size:11px;margin:30px 0 40px;padding:0 20px}
+</style>
+</head>
+<body>
+<div id="gate">
+  <div class="gate-card">
+    <div class="mk">BreedWise · Internal</div>
+    <h1>Page Directory</h1>
+    <p>Every BreedWise page in one place. Team access only.</p>
+    <input id="pw" type="password" placeholder="Team code" autocomplete="off" spellcheck="false">
+    <button id="unlock">Open</button>
+    <div class="err" id="gate-err"></div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="bar"><span class="brand">BREED<b>WISE</b> · PAGE DIRECTORY</span></div>
+  <div class="wrap">
+    <div class="top">
+      <div><h1>Page Directory</h1><div class="sub">A living index of every page we've built. Click any to open. Search or filter by type.</div></div>
+      <div class="count"><b id="cnt">0</b> pages</div>
+    </div>
+    <div class="controls">
+      <input class="search" id="search" placeholder="Search by name, file, or keyword…">
+      <div class="tabs" id="tabs"></div>
+    </div>
+    <div id="out"></div>
+    <div class="note">Living document — when a new page ships, add one row to the <code>DATA</code> list in this file. Access codes shown are for gated pages (this directory is itself team-gated). Admin tools marked “sign-in” use the Supabase admin login, not a code.</div>
+  </div>
+  <footer>BREEDWISE · Internal page directory. Not for distribution.</footer>
+</div>
+
+<script>
+/* ============ CATEGORIES ============ */
+var CATS=[
+ ['FUNNEL','Funnels & Landing'],
+ ['APPLY','Applications'],
+ ['SCORE','Scorecards & Assessments'],
+ ['TOOL','Member Tools & Guides'],
+ ['TPB','TPB Curriculum'],
+ ['SPEC','Strategy & Specs'],
+ ['DASH','Dashboards & Admin'],
+ ['TEAM','Team Docs & SOPs'],
+ ['CLIENT','Client & White-label Sites'],
+ ['OTHER','Other']
+];
+var CATLABEL={}; CATS.forEach(function(c){CATLABEL[c[0]]=c[1];});
+
+/* ============ THE LIVING LIST ============ */
+var DATA=[
+ /* Funnels & Landing */
+ {t:'Standard Review (main funnel)',f:'index.html',c:'FUNNEL'},
+ {t:'VSL',f:'vsl.html',c:'FUNNEL'},
+ {t:'Free Vet-Backed Training opt-in',f:'optin.html',c:'FUNNEL'},
+ {t:'Watch & Apply landing',f:'landing-page.html',c:'FUNNEL'},
+ {t:'Book a Fit Call',f:'book.html',c:'FUNNEL'},
+ {t:'Roadmap Call onboarding',f:'onboarding.html',c:'FUNNEL'},
+ {t:'The Profitable Breeder — starting point',f:'the-profitable-breeder.html',c:'FUNNEL'},
+ {t:'BreedWise Home',f:'breedwise-home.html',c:'FUNNEL'},
+ {t:'90-Day Done-For-You Intensive',f:'intensive.html',c:'FUNNEL'},
+ {t:'Partner Welcome / Spotlight',f:'spotlight.html',c:'FUNNEL'},
+ {t:'Dr. Fontaine — Advisory Board',f:'fontaine.html',c:'FUNNEL'},
+ {t:'Profitable Breeder Summit',f:'profitable-breeder-summit.html',c:'FUNNEL'},
+ {t:'Summit — editorial',f:'profitable-breeder-summit-editorial.html',c:'FUNNEL'},
+ {t:'Summit — workshop',f:'profitable-breeder-summit-workshop.html',c:'FUNNEL'},
+ {t:'Summit — Privacy',f:'privacy.html',c:'FUNNEL'},
+ {t:'Summit — Terms',f:'terms.html',c:'FUNNEL'},
+
+ /* Applications */
+ {t:'Apply to BreedWise Academy (current)',f:'academy-application.html',c:'APPLY'},
+ {t:'Apply to Academy (v2 — legacy)',f:'academy-application-v2.html',c:'APPLY'},
+ {t:'Academy Application (older)',f:'breedwise-apply.html',c:'APPLY'},
+ {t:'Apply to the Academy (older)',f:'breedwise-academy-apply.html',c:'APPLY'},
+ {t:'Application Received (confirmation)',f:'application-received.html',c:'APPLY'},
+
+ /* Scorecards & Assessments */
+ {t:'Program Assessment (member)',f:'scorecard.html',c:'SCORE',code:'SCORECARD2026',d:'The deep ~10-min AI diagnostic. Formerly "Program Scorecard".'},
+ {t:'Profitable Breeder Scorecard (cold lead magnet)',f:'profitable-breeder-scorecard.html',c:'SCORE',open:1},
+ {t:'Healthy Litter Scorecard (Dr. Fontaine)',f:'healthy-litter-scorecard.html',c:'SCORE',open:1},
+ {t:'Breeder Science Scorecard',f:'science-scorecard.html',c:'SCORE',open:1},
+ {t:'2-Minute Free Scorecard',f:'free-scorecard.html',c:'SCORE',open:1},
+ {t:'Academy Implementation Assessment',f:'assessment.html',c:'SCORE'},
+ {t:'Science Funnel opt-in',f:'vet-optin.html',c:'SCORE',open:1},
+ {t:'Science Funnel thank-you / scorecard delivery',f:'vet-thankyou.html',c:'SCORE',open:1},
+
+ /* Member Tools & Guides */
+ {t:'Niche Blueprint (finder)',f:'niche-finder.html',c:'TOOL'},
+ {t:'Niche Blueprint offer',f:'blueprint-offer.html',c:'TOOL'},
+ {t:'Value Architect',f:'value-architect.html',c:'TOOL'},
+ {t:'Litter Snapshot',f:'litter-snapshot.html',c:'TOOL'},
+ {t:'Business & Sales Strategy Session',f:'business.html',c:'TOOL'},
+ {t:'Social Media Strategy Session',f:'social-media.html',c:'TOOL'},
+ {t:'Genetics Pre-Consultation',f:'genetics-consult.html',c:'TOOL'},
+ {t:'Repro Coaching (Dr. Fontaine)',f:'repro-coaching.html',c:'TOOL'},
+ {t:'Veterinary Relations',f:'vet-relations.html',c:'TOOL'},
+ {t:'Academy Feedback',f:'feedback.html',c:'TOOL'},
+ {t:'Breeder Standards & 90-Day Launch checklist',f:'standards-checklist.html',c:'TOOL'},
+ {t:'Prenatal Deworming Protocol guide',f:'deworming-protocol.html',c:'TOOL'},
+
+ /* TPB Curriculum */
+ {t:'TPB 90-Day Curriculum System',f:'tpb-curriculum.html',c:'TPB',code:'BWTEAM2026',d:'Weekly template, 12-week map, tool audit, ascension design.'},
+ {t:'Module · Why Great Breeders Still Struggle (W1)',f:'why-breeders-struggle-module.html',c:'TPB',open:1},
+ {t:'Module · Know Your Litter Profits (W2)',f:'litter-profits-module.html',c:'TPB',open:1},
+
+ /* Strategy & Specs */
+ {t:'BOSS™ Product Specification',f:'boss.html',c:'SPEC',code:'BWTEAM2026'},
+ {t:'Member Pathways',f:'member-pathways.html',c:'SPEC'},
+ {t:'The Academy Journey',f:'academy-journey.html',c:'SPEC'},
+ {t:'How Sales Works',f:'sales-process.html',c:'SPEC'},
+ {t:'Contributor Payouts',f:'contributor-payouts.html',c:'SPEC'},
+
+ /* Dashboards & Admin */
+ {t:'Command Center (revenue wall)',f:'command-center.html',c:'DASH',code:'BreedWiseNumbers26'},
+ {t:'Engagement Analytics',f:'analytics.html',c:'DASH',code:'BreedWiseNumbers26'},
+ {t:'Acquisition Scoreboard',f:'dashboard.html',c:'DASH',code:'BreedWiseNumbers26'},
+ {t:'Tool Submissions (the vault)',f:'submissions-admin.html',c:'DASH',signin:1},
+ {t:'Director of Member Success HQ',f:'director-dashboard.html',c:'DASH'},
+ {t:'Member Success OS',f:'member-success-os.html',c:'DASH'},
+ {t:'Academy Member Success (OS)',f:'academy-os.html',c:'DASH'},
+ {t:'Niche Blueprints admin',f:'niche-admin.html',c:'DASH'},
+ {t:'Breeder Asset Review (admin)',f:'breeder-assets-admin.html',c:'DASH'},
+ {t:'Advisor Portal / Audit',f:'audit.html',c:'DASH'},
+ {t:'Accelerator Clients OS',f:'accelerator.html',c:'DASH'},
+ {t:'Accelerator Vault',f:'accelerator-vault.html',c:'DASH',code:'ACCELERATOR2026'},
+ {t:'Kennel OS (white-label)',f:'kennel-os.html',c:'DASH'},
+ {t:'Accelerator Client File',f:'breedwise-client-file.html',c:'DASH'},
+ {t:'Breeder Asset Intake',f:'breedwise-breeder-intake.html',c:'DASH'},
+ {t:'Member Intake (admin)',f:'member-intake.html',c:'DASH',signin:1},
+ {t:'Website Content Upload portal',f:'website-assets.html',c:'DASH',open:1,d:'Members upload logo/photos/videos/brand for their website build.'},
+ {t:'Member OS login',f:'os.html',c:'DASH'},
+
+ /* Team Docs & SOPs */
+ {t:'Team Hub',f:'team-hub.html',c:'TEAM',code:'BWTEAM2026'},
+ {t:'Access Codes (passwords)',f:'passwords.html',c:'TEAM',code:'BWTEAM2026'},
+ {t:'Operating System Playbook',f:'playbook.html',c:'TEAM',code:'BWTEAM2026'},
+ {t:'Accountability Chart',f:'accountability-chart.html',c:'TEAM',code:'BWTEAM2026'},
+ {t:'Sales Seat Strategy (private)',f:'sales-buildout-internal.html',c:'TEAM',code:'BWTEAM2026'},
+ {t:'New Member → Academy Ascension SOP',f:'ascension-sop.html',c:'TEAM',code:'BreedWiseSetters26'},
+ {t:'TPB → Academy Ascension SOP (legacy)',f:'tpb-ascension-sop.html',c:'TEAM',code:'BreedWiseSetters26'},
+ {t:'Setter Playbook',f:'setter-playbook.html',c:'TEAM',code:'BreedWiseSetters26'},
+ {t:'Content Engine',f:'content-engine.html',c:'TEAM',code:'BreedWiseSetters26'},
+ {t:'Certification standard',f:'certification.html',c:'TEAM',code:'BreedWiseSetters26'},
+ {t:'Regina Sales Playbook',f:'regina-sales-playbook.html',c:'TEAM',code:'REGINA2026'},
+ {t:'7-Minute Setter Call Script',f:'regina-call-script.html',c:'TEAM',code:'REGINA2026'},
+ {t:'Member Success Operating Guide',f:'member-success-guide.html',c:'TEAM',code:'MEMBERSUCCESS2026'},
+ {t:'Member Success SOP Library',f:'member-success-sops.html',c:'TEAM',code:'MEMBERSUCCESS2026'},
+ {t:'Content Ops Role Card (Yasmin)',f:'content-ops.html',c:'TEAM',code:'SOCIAL2026'},
+ {t:'Social Media Management Plan',f:'social-media-management-plan.html',c:'TEAM'},
+ {t:'Sales OS — Team Manual',f:'sales-manual.html',c:'TEAM'},
+ {t:'Member Success OS — Team Manual',f:'team-manual.html',c:'TEAM'},
+ {t:'Weekly Operating Meeting',f:'weekly-meeting.html',c:'TEAM'},
+ {t:"Founder's Week (internal)",f:'founders-week.html',c:'TEAM'},
+ {t:'Accelerator Boost Checklist',f:'accelerator-boost-checklist.html',c:'TEAM'},
+ {t:'Q4 Focus Plan',f:'q4-focus.html',c:'TEAM',code:'ACCELERATOR2026'},
+
+ /* Client & White-label */
+ {t:'Jungle Bully Family — homepage',f:'jbk-homepage.html',c:'CLIENT'},
+ {t:'JBK — The JBK Standard',f:'jbk-standard.html',c:'CLIENT'},
+ {t:'JBK — dog profile (Casanova)',f:'jbk-dog-profile.html',c:'CLIENT'},
+ {t:'JBK — planned breeding profile',f:'jbk-breeding-profile.html',c:'CLIENT'},
+ {t:'ABR Kennels — site',f:'abr-kennels.html',c:'CLIENT'},
+ {t:'ABR Kennels — puppy application',f:'abr-application.html',c:'CLIENT'},
+ {t:'W3 Gods Boerboels — guide opt-in',f:'w3-boerboel-guide-optin.html',c:'CLIENT'},
+ {t:'Buyer Deck Preview',f:'buyer-deck-preview.html',c:'CLIENT'},
+
+ /* Other */
+ {t:'Aston Nova — Funding Calculator',f:'funding-calculator.html',c:'OTHER'},
+ {t:'Aston Nova — Funding Readiness Quiz',f:'funding-quiz.html',c:'OTHER'},
+ {t:'Triad — Payment Checkup Calculator',f:'payment-calculator.html',c:'OTHER'},
+ {t:'OS variant — sales',f:'sales.html',c:'OTHER'},
+ {t:'OS variant — team',f:'team.html',c:'OTHER'}
+];
+
+/* ============ RENDER ============ */
+var filter='ALL', q='';
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
+function matches(r){
+  if(filter!=='ALL'&&r.c!==filter)return false;
+  if(q){var hay=(r.t+' '+r.f+' '+(r.d||'')+' '+(CATLABEL[r.c]||'')+' '+(r.code||'')).toLowerCase();if(hay.indexOf(q)<0)return false;}
+  return true;
+}
+function rowHtml(r){
+  var badge=r.open?'<span class="code open">Public</span>':(r.signin?'<span class="code">admin sign-in</span>':(r.code?'<span class="code">'+esc(r.code)+'</span>':''));
+  var letter=esc((r.t||'?').replace(/[^A-Za-z0-9]/,'').charAt(0)||'•').toUpperCase();
+  return '<a class="row" href="'+esc(r.f)+'" target="_blank" rel="noopener">'
+    +'<span class="ic">'+letter+'</span>'
+    +'<span class="c"><span class="t">'+esc(r.t)+' <span class="open">open ↗</span></span>'
+    +(r.d?'<span class="d">'+esc(r.d)+'</span>':'')
+    +'<span class="meta"><span class="f">'+esc(r.f)+'</span>'+badge+'</span></span></a>';
+}
+function render(){
+  var out=document.getElementById('out');
+  var rows=DATA.filter(matches);
+  document.getElementById('cnt').textContent=rows.length;
+  if(!rows.length){out.innerHTML='<div class="empty">No pages match.</div>';return;}
+  var html='';
+  CATS.forEach(function(c){
+    var items=rows.filter(function(r){return r.c===c[0];});
+    if(!items.length)return;
+    html+='<div class="grp"><div class="gt">'+esc(c[1])+' <span class="gc">'+items.length+'</span></div><div class="list">'+items.map(rowHtml).join('')+'</div></div>';
+  });
+  out.innerHTML=html;
+}
+function buildTabs(){
+  var t=document.getElementById('tabs');
+  var counts={}; DATA.forEach(function(r){counts[r.c]=(counts[r.c]||0)+1;});
+  var html='<span class="tab'+(filter==='ALL'?' on':'')+'" data-c="ALL">All · '+DATA.length+'</span>';
+  CATS.forEach(function(c){ if(counts[c[0]])html+='<span class="tab'+(filter===c[0]?' on':'')+'" data-c="'+c[0]+'">'+esc(c[1])+' · '+counts[c[0]]+'</span>'; });
+  t.innerHTML=html;
+  Array.prototype.forEach.call(t.querySelectorAll('.tab'),function(el){el.addEventListener('click',function(){filter=el.getAttribute('data-c');buildTabs();render();});});
+}
+document.getElementById('search').addEventListener('input',function(e){q=e.target.value.toLowerCase().trim();render();});
+function boot(){ buildTabs(); render(); }
+
+/* gate */
+(function(){
+  var OK='368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875'; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function el(id){return document.getElementById(id);}
+  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';boot();}
+  function tryUnlock(){var v=(el('pw').value||'').trim();Promise.all([h(v),h(v.toUpperCase())]).then(function(a){if(a[0]===OK||a[1]===OK){try{sessionStorage.setItem('dir_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
+  el('unlock').addEventListener('click',tryUnlock);
+  el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('dir_ok')==='1'){reveal();}else{el('pw').focus();}}catch(e){el('pw').focus();}
+})();
+</script>
+</body>
+</html>
