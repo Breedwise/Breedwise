@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Upload Your Content · BreedWise Website Build</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0e13;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;--ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--red:#ff8178;--disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,sans-serif}
+  *{box-sizing:border-box;margin:0}
+  body{background:radial-gradient(1000px 560px at 50% -10%,rgba(201,168,98,.08),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.55}
+  .bar{border-bottom:1px solid var(--line);padding:13px 20px;text-align:center}
+  .brand{font-size:13px;letter-spacing:.22em;font-weight:700;color:var(--mid)}.brand b{color:var(--gold)}
+  .brand .w{color:var(--muted);font-weight:400;letter-spacing:.03em;font-size:12px;display:block;margin-top:2px}
+  .wrap{max-width:680px;margin:0 auto;padding:34px 20px 70px}
+  .eyebrow{display:inline-block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;background:rgba(201,168,98,.1);border:1px solid rgba(201,168,98,.28);border-radius:20px;padding:5px 13px}
+  h1{font-family:var(--disp);font-size:34px;line-height:1.1;margin:14px 0 10px;font-weight:600;letter-spacing:-.4px}
+  @media(max-width:600px){h1{font-size:27px}}
+  h1 .u{color:var(--gold-soft)}
+  .lead{color:var(--mid);font-size:16px;max-width:560px;font-weight:300}
+  .sec{margin-top:26px}
+  .sec .st{font-family:var(--disp);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;margin-bottom:4px}
+  .sec .sd{font-size:13px;color:var(--muted);margin-bottom:12px}
+  .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:20px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:520px){.row2{grid-template-columns:1fr}}
+  .fld{margin-bottom:13px}
+  label{font-size:11.5px;color:var(--muted);display:block;margin-bottom:5px;letter-spacing:.02em}
+  input,textarea{width:100%;padding:12px 13px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;color:var(--ink);font-size:15px;font-family:var(--sans)}
+  textarea{min-height:90px;resize:vertical}
+  input:focus,textarea:focus{outline:none;border-color:var(--gold)}
+  .hp{position:absolute;left:-9999px}
+  .drop{display:block;border:1.5px dashed var(--line2);border-radius:13px;padding:18px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;margin-bottom:12px}
+  .drop:hover{border-color:var(--gold);background:rgba(201,168,98,.05)}
+  .drop .ic{font-size:22px;color:var(--gold-soft)}
+  .drop .t{font-size:14px;color:var(--ink);font-weight:600;margin-top:6px}
+  .drop .s{font-size:12px;color:var(--muted);margin-top:2px}
+  .drop input[type=file]{display:none}
+  .picked{font-size:12.5px;color:var(--green);margin-top:8px;display:none}
+  .filelist{margin-top:10px;display:grid;gap:6px}
+  .fi{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 11px}
+  .fi .n{color:var(--mid);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .fi .s{flex:none;font-weight:700}
+  .fi .s.wait{color:var(--muted)}.fi .s.up{color:var(--gold-soft)}.fi .s.ok{color:var(--green)}.fi .s.err{color:var(--red)}
+  .cta{display:block;width:100%;margin-top:24px;padding:16px;background:linear-gradient(135deg,var(--gold),#a9863f);border:0;border-radius:13px;color:#1a130a;font-weight:700;font-size:17px;cursor:pointer;font-family:var(--sans);box-shadow:0 6px 26px rgba(201,168,98,.22)}
+  .cta:disabled{opacity:.55}
+  .msg{font-size:13px;margin-top:12px;min-height:16px;text-align:center;color:var(--muted)}
+  .msg.err{color:var(--red)}
+  .done{text-align:center;padding:40px 10px}
+  .done .ic{width:70px;height:70px;border-radius:50%;background:rgba(87,185,138,.12);border:1px solid rgba(87,185,138,.35);display:flex;align-items:center;justify-content:center;font-size:32px;color:var(--green);margin:0 auto 18px}
+  .trust{font-size:12px;color:var(--muted);text-align:center;margin-top:16px}
+  footer{text-align:center;color:#59657380;font-size:11px;margin-top:36px;padding:0 20px}
+</style>
+</head>
+<body>
+  <div class="bar"><span class="brand">BREED<b>WISE</b><span class="w">Website Build · Content Upload</span></span></div>
+  <div class="wrap" id="app">
+    <span class="eyebrow">Your website build</span>
+    <h1>Upload <span class="u">everything</span> for your website</h1>
+    <p class="lead">Send us your brand and your best content in one place. The more you give us, the stronger your site. Nothing here is public until you approve it.</p>
+
+    <input type="text" class="hp" id="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <div class="sec"><div class="st">About you</div>
+      <div class="card">
+        <div class="row2">
+          <div class="fld"><label>Your name</label><input type="text" id="name" autocomplete="name"></div>
+          <div class="fld"><label>Kennel / program name</label><input type="text" id="kennel"></div>
+        </div>
+        <div class="row2">
+          <div class="fld"><label>Email</label><input type="email" id="email" autocomplete="email"></div>
+          <div class="fld"><label>Phone</label><input type="tel" id="phone" autocomplete="tel"></div>
+        </div>
+        <div class="fld"><label>Breed(s) you raise</label><input type="text" id="breeds"></div>
+      </div>
+    </div>
+
+    <div class="sec"><div class="st">Your story</div>
+      <div class="card">
+        <div class="fld"><label>Tell us about your program — who you are, how long you've been breeding, what you care about</label><textarea id="about"></textarea></div>
+        <div class="fld"><label>What makes you different from other breeders?</label><textarea id="different"></textarea></div>
+      </div>
+    </div>
+
+    <div class="sec"><div class="st">Your logo</div><div class="sd">If you have one. PNG or JPG. If you don't, skip it — we'll help.</div>
+      <label class="drop"><div class="ic">⬆</div><div class="t">Add your logo</div><div class="s">PNG, JPG, SVG</div>
+        <input type="file" id="f_logo" accept="image/*"></label>
+      <div class="filelist" id="list_logo"></div>
+    </div>
+
+    <div class="sec"><div class="st">Photos</div><div class="sd">Your dogs, puppies, your setup — your best shots. Add as many as you like.</div>
+      <label class="drop"><div class="ic">⬆</div><div class="t">Add photos</div><div class="s">Select multiple — JPG, PNG, HEIC</div>
+        <input type="file" id="f_photos" accept="image/*" multiple></label>
+      <div class="filelist" id="list_photos"></div>
+    </div>
+
+    <div class="sec"><div class="st">Videos</div><div class="sd">Clips of your dogs, your program, a welcome message — anything.</div>
+      <label class="drop"><div class="ic">⬆</div><div class="t">Add videos</div><div class="s">MP4, MOV — large files may take a while</div>
+        <input type="file" id="f_videos" accept="video/*" multiple></label>
+      <div class="filelist" id="list_videos"></div>
+      <div class="fld" style="margin-top:10px"><label>Or paste video links (Google Drive, Dropbox, YouTube) — good for very large videos</label><textarea id="videolinks" style="min-height:64px" placeholder="One link per line"></textarea></div>
+    </div>
+
+    <div class="sec"><div class="st">Testimonials &amp; reviews</div><div class="sd">Screenshots of happy-buyer messages, reviews, or references.</div>
+      <label class="drop"><div class="ic">⬆</div><div class="t">Add testimonials</div><div class="s">Screenshots or images</div>
+        <input type="file" id="f_testimonials" accept="image/*" multiple></label>
+      <div class="filelist" id="list_testimonials"></div>
+    </div>
+
+    <div class="sec"><div class="st">Links</div>
+      <div class="card">
+        <div class="fld"><label>Current website (if any)</label><input type="text" id="website" placeholder="yourkennel.com"></div>
+        <div class="fld"><label>Social links — Instagram, Facebook, TikTok, YouTube</label><textarea id="social" style="min-height:64px" placeholder="One link per line"></textarea></div>
+        <div class="fld" style="margin-bottom:0"><label>Anything else we should know</label><textarea id="notes" style="min-height:64px"></textarea></div>
+      </div>
+    </div>
+
+    <button class="cta" id="submit">Send my content</button>
+    <div class="msg" id="msg"></div>
+    <div class="trust">Your files are private and used only to build your website. We never share them.</div>
+  </div>
+  <footer>BreedWise · The Profitable Breeder — Website Build.</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+var SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+var FN=SB_URL+'/functions/v1/asset-upload';
+var sb=window.supabase.createClient(SB_URL,SB_KEY);
+var emailRe=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+function $(s){return document.querySelector(s);}
+function el(id){return document.getElementById(id);}
+
+/* picked files per field */
+var PICK={logo:[],photos:[],videos:[],testimonials:[]};
+['logo','photos','videos','testimonials'].forEach(function(field){
+  el('f_'+field).addEventListener('change',function(e){
+    var files=Array.prototype.slice.call(e.target.files||[]);
+    if(field==='logo')PICK.logo=files.slice(0,1); else PICK[field]=PICK[field].concat(files);
+    renderList(field);
+  });
+});
+function fmtSize(b){ if(b<1024)return b+' B'; if(b<1048576)return (b/1024).toFixed(0)+' KB'; return (b/1048576).toFixed(1)+' MB'; }
+function renderList(field){
+  var box=el('list_'+field);
+  box.innerHTML=PICK[field].map(function(f,i){
+    return '<div class="fi" data-f="'+field+'" data-i="'+i+'"><span class="n">'+esc(f.name)+' · '+fmtSize(f.size)+'</span><span class="s wait" id="st_'+field+'_'+i+'">remove ✕</span></div>';
+  }).join('');
+  Array.prototype.forEach.call(box.querySelectorAll('.fi'),function(row){
+    row.querySelector('.s').addEventListener('click',function(){
+      var fl=row.getAttribute('data-f'),idx=+row.getAttribute('data-i');
+      PICK[fl].splice(idx,1);renderList(fl);
+    });
+  });
+}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
+
+el('submit').onclick=submit;
+async function submit(){
+  var msg=el('msg');msg.className='msg';msg.textContent='';
+  if(el('company').value)return; // honeypot
+  var name=el('name').value.trim(),kennel=el('kennel').value.trim(),email=el('email').value.trim(),phone=el('phone').value.trim();
+  if(!kennel){msg.className='msg err';msg.textContent='Please add your kennel / program name.';return;}
+  if(!emailRe.test(email)){msg.className='msg err';msg.textContent='Please enter a valid email.';return;}
+  // gather files in order (logo, photos, videos, testimonials)
+  var all=[];
+  ['logo','photos','videos','testimonials'].forEach(function(field){ PICK[field].forEach(function(f){ all.push({field:field,file:f}); }); });
+
+  el('submit').disabled=true;el('submit').textContent='Sending…';
+  try{
+    var uploaded=[],folder='';
+    if(all.length){
+      msg.textContent='Preparing upload…';
+      var signResp=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action:'sign',email:email,kennel:kennel,files:all.map(function(x){return {field:x.field,name:x.file.name,type:x.file.type};})})});
+      var sd=await signResp.json();
+      if(!sd||!sd.ok)throw new Error((sd&&sd.error)||'Could not prepare upload.');
+      folder=sd.folder;
+      for(var i=0;i<sd.uploads.length;i++){
+        var u=sd.uploads[i], file=all[i].file;
+        msg.textContent='Uploading '+(i+1)+' of '+sd.uploads.length+' — '+file.name;
+        var up=await sb.storage.from(sd.bucket).uploadToSignedUrl(u.path,u.token,file,{contentType:file.type||'application/octet-stream',upsert:true});
+        if(up.error)throw new Error('Upload failed on '+file.name+'. Try again, or paste it as a video link for large files.');
+        uploaded.push({field:all[i].field,name:file.name,path:u.path,size:file.size,type:file.type});
+      }
+    }
+    msg.textContent='Saving…';
+    var fields={breeds:el('breeds').value.trim(),about:el('about').value.trim(),different:el('different').value.trim(),
+      website:el('website').value.trim(),social:el('social').value.trim(),videolinks:el('videolinks').value.trim(),notes:el('notes').value.trim()};
+    var saveResp=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'save',name:name,kennel:kennel,email:email,phone:phone,folder:folder,files:uploaded,fields:fields})});
+    var sv=await saveResp.json();
+    if(!sv||!sv.ok)throw new Error((sv&&sv.error)||'Could not save. Your files uploaded — please tell your BreedWise contact.');
+    done(kennel,uploaded.length);
+  }catch(e){
+    el('submit').disabled=false;el('submit').textContent='Send my content';
+    msg.className='msg err';msg.textContent=e.message||'Something went wrong. Please try again.';
+  }
+}
+function done(kennel,n){
+  el('app').innerHTML='<div class="done"><div class="ic">✓</div>'
+    +'<h1 style="font-size:28px">Got it — thank you!</h1>'
+    +'<p class="lead" style="margin:10px auto 0;max-width:460px">We received your content'+(n?(' ('+n+' file'+(n===1?'':'s')+')'):'')+' for <b style="color:var(--ink)">'+esc(kennel)+'</b>. Your BreedWise team will take it from here and reach out with next steps.</p>'
+    +'<div class="trust">You can close this page.</div></div>';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

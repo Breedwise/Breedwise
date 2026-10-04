@@ -121,6 +121,8 @@ const $=s=>document.querySelector(s);
 const SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
 const SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
 const sb=supabase.createClient(SB_URL,SB_KEY);
+const ASSET_FN=SB_URL+'/functions/v1/asset-upload';
+const ASSET_SECRET='bw_assets_7Hq2';
 const STATUSES=['New','Reviewed','Delivered','Follow-up'];
 const OWNERS=['Unassigned','Austin','Jennifer','Madison','Yasmin','Derek','Jake','Regina','Angela Hughes','Dr. Fontaine','Dr. Mahoney'];
 const usd=n=>'$'+Number(n||0).toLocaleString('en-US');
@@ -130,6 +132,7 @@ let ROWS=[], toolFilter='All', statusFilter='All', q='', ME=null;
 const CATS=[
   {name:'Assessments', tools:['program-scorecard','implementation-assessment']},
   {name:'Scorecards', tools:['pb-scorecard','science-scorecard','litter-scorecard','free-scorecard','litter-snapshot']},
+  {name:'Website Assets', tools:['website-assets']},
   {name:'Member Tools', tools:['niche-blueprint','value-architect','business','social-media']},
   {name:'Expert Consults', tools:['genetics-consult','repro-coaching','vet-relations']},
   {name:'Opt-ins & Leads', tools:['litter-optin','vet-optin','optin','program-scorecard-optin','pb-scorecard-optin']},
@@ -722,7 +725,45 @@ function renderPbScorecard(r){
     <div class="block"><h3>About them</h3>${qualRows}</div>
     ${free&&String(free).trim()?`<div class="block"><h3>Anything else they shared</h3><p>${esc(free)}</p></div>`:''}`;
 }
+function renderWebsiteAssets(r){
+  const i=r.inputs||{}, m=r.meta||{}, res=r.result||{};
+  const f=i.fields||{};
+  const files=(i.files&&i.files.length?i.files:(res.files||[]));
+  const kvrow=(k,v)=> (v!=null&&String(v).trim())?`<div class="kvrow"><b>${esc(k)}:</b> ${esc(v)}</div>`:'';
+  const blk=(lbl,v)=> (v&&String(v).trim())?`<div class="block"><h3>${esc(lbl)}</h3><p style="white-space:pre-wrap">${esc(v)}</p></div>`:'';
+  const byField={}; files.forEach(x=>{(byField[x.field||'file']=byField[x.field||'file']||[]).push(x);});
+  const fileSection = files.length
+    ? `<div class="block"><h3>Files (${files.length})</h3>`
+      + Object.keys(byField).map(fld=>`<div class="sgrp">${esc(fld)}</div>`
+        + byField[fld].map(x=>`<div class="kvrow" data-apath="${esc(x.path)}">${esc(x.name)}${x.size?` <span style="color:var(--muted)">· ${Math.round(x.size/1024)} KB</span>`:''}</div>`).join('')).join('')
+      + `<button class="btn" id="dlLinks" style="margin-top:12px">Get download links</button><div id="dlOut" style="margin-top:10px;font-size:12.5px"></div></div>`
+    : `<div class="block"><p style="color:var(--muted)">No files uploaded (text and links only).</p></div>`;
+  return `
+    <div class="money"><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold)">Website Assets</div>
+      <div class="big" style="font-size:20px">${esc(m.kennel||r.member_name||'Member')}</div>
+      <p style="color:var(--mid);font-size:12.5px;margin-top:6px">${esc(r.member_email||'')}${m.phone?' · '+esc(m.phone):''} · ${files.length} file${files.length===1?'':'s'}</p></div>
+    <div class="block"><h3>Contact</h3>${kvrow('Name',r.member_name)}${kvrow('Kennel',m.kennel)}${kvrow('Email',r.member_email)}${kvrow('Phone',m.phone)}${kvrow('Breed(s)',f.breeds)}</div>
+    ${blk('About their program',f.about)}
+    ${blk('What makes them different',f.different)}
+    ${(f.website||f.social)?`<div class="block"><h3>Links</h3>${kvrow('Website',f.website)}${f.social?`<div class="kvrow"><b>Social:</b><br><span style="white-space:pre-wrap">${esc(f.social)}</span></div>`:''}</div>`:''}
+    ${blk('Video links',f.videolinks)}
+    ${blk('Anything else',f.notes)}
+    ${fileSection}`;
+}
+async function getAssetLinks(btn){
+  const paths=Array.prototype.map.call(document.querySelectorAll('#sheet [data-apath]'),el=>el.getAttribute('data-apath'));
+  if(!paths.length)return;
+  btn.disabled=true;btn.textContent='Getting links…';
+  try{
+    const r=await fetch(ASSET_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'links',secret:ASSET_SECRET,paths})});
+    const d=await r.json();
+    if(!d||!d.ok)throw new Error((d&&d.error)||'Failed');
+    $('#dlOut').innerHTML=(d.links||[]).map(l=>l.url?`<div style="padding:4px 0"><a href="${esc(l.url)}" target="_blank" rel="noopener" style="color:var(--gold)">${esc(l.path.split('/').pop())}</a></div>`:`<div style="color:var(--muted)">${esc(l.path.split('/').pop())} — unavailable</div>`).join('');
+    btn.textContent='Links ready (valid 6h)';
+  }catch(e){ btn.disabled=false;btn.textContent='Get download links'; $('#dlOut').innerHTML=`<span style="color:#e8695f">${esc(e.message)}</span>`; }
+}
 function renderBody(r,forExport){
+  if(r.tool==='website-assets') return renderWebsiteAssets(r);
   if(r.tool==='litter-scorecard') return renderLitterScorecard(r);
   if(r.tool==='pb-scorecard') return renderPbScorecard(r);
   if(r.tool==='litter-optin'||r.tool==='vet-optin'||r.tool==='optin'||r.tool==='program-scorecard-optin'||r.tool==='pb-scorecard-optin') return renderOptin(r);
@@ -824,6 +865,7 @@ function openSub(id){
   $('#mDownload').onclick=()=>downloadOne(r);
   $('#mDelete').onclick=()=>deleteSub(id);
   $('#mSave').onclick=async()=>{ await update(id,{status:$('#m_status').value,owner:$('#m_owner').value,notes:$('#m_notes').value.trim()||null}); closeModal(); renderRows(); };
+  const _dl=document.getElementById('dlLinks'); if(_dl)_dl.onclick=()=>getAssetLinks(_dl);
 }
 async function deleteSub(id){
   const r=ROWS.find(x=>x.id===id);
