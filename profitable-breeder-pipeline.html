@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The Profitable Breeder · Lead Pipeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1b1b20; --surface:#111114; --card:#26262c; --card-2:#212127;
+    --border:#34343c; --gold:#d6ba76; --gold-deep:#b89c47; --gold-faint:rgba(214,186,118,0.10);
+    --ink:#f2efe8; --mid:#bab5aa; --muted:#88847c;
+    --good:#6dbf90; --warn:#d8a75b; --bad:#e0807e;
+    --heading:'Playfair Display',Georgia,serif; --body:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:var(--heading);font-weight:600;letter-spacing:-.01em}
+  /* gate */
+  #gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:24px}
+  .gbox{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:14px;padding:32px 28px;max-width:400px;width:100%;text-align:center}
+  .gbox .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .gbox h2{font-size:22px;margin:12px 0 6px}
+  .gbox p{color:var(--mid);font-size:13px;margin-bottom:16px}
+  .gbox input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 14px;font-size:15px;color:var(--ink);font-family:var(--body);text-align:center;letter-spacing:.04em}
+  .gbox input:focus{outline:none;border-color:var(--gold)}
+  .gbox button{width:100%;margin-top:10px;background:var(--gold);color:#1b1b20;border:0;border-radius:9px;padding:13px;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;font-family:var(--body)}
+  .gerr{color:var(--bad);font-size:12.5px;margin-top:10px;min-height:16px}
+  #app{display:none}
+  .wrap{max-width:860px;margin:0 auto;padding:36px 20px 100px}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  h1.title{font-size:clamp(28px,5vw,44px);margin:12px 0 8px}
+  .sub{color:var(--mid);font-size:16px;max-width:660px}
+  /* principle */
+  .principle{background:var(--card);border:1px solid var(--gold-deep);border-left:3px solid var(--gold);border-radius:12px;padding:20px 22px;margin:24px 0}
+  .principle .pl{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+  .principle p{font-family:var(--heading);font-size:clamp(18px,2.6vw,23px);line-height:1.4;color:var(--ink)}
+  /* lead definition */
+  .leaddef{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:18px 0}
+  @media(max-width:640px){.leaddef{grid-template-columns:1fr}}
+  .ld{background:var(--card-2);border:1px solid var(--border);border-radius:11px;padding:15px 16px}
+  .ld.hot{border-color:var(--gold-deep);background:var(--gold-faint)}
+  .ld .lt{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px}
+  .ld.hot .lt{color:var(--gold)}
+  .ld .lv{font-family:var(--heading);font-size:16px;color:var(--ink);margin-bottom:4px}
+  .ld p{font-size:12.5px;color:var(--mid);line-height:1.45}
+  /* pipeline visual */
+  .pipe{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:20px 0 6px;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:12px}
+  .chip{font-size:11.5px;font-weight:600;padding:8px 11px;border-radius:8px;border:1px solid var(--border);color:var(--mid);white-space:nowrap}
+  .chip.conv{border-style:dashed}
+  .chip.qual{border-color:var(--gold-deep);color:var(--gold);background:var(--gold-faint)}
+  .chip.won{background:var(--gold);color:#1b1b20;border-color:var(--gold)}
+  .pipe .ar{color:var(--muted);font-size:11px}
+  .pipe .line{display:flex;align-items:center;gap:6px;color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;border-left:2px solid var(--gold);padding-left:8px;margin:0 2px}
+  /* section */
+  h2.sec{font-size:22px;margin:34px 0 4px}
+  .secnote{color:var(--mid);font-size:13.5px;margin-bottom:12px}
+  .lineband{display:flex;align-items:center;gap:12px;margin:22px 0 6px}
+  .lineband span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:800;white-space:nowrap}
+  .lineband i{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold-deep),transparent)}
+  /* stage cards */
+  .stage{background:var(--card-2);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-top:12px}
+  .stage.q{border-left:3px solid var(--gold)}
+  .stage.hot{border:1px solid var(--gold-deep);border-left:3px solid var(--gold);background:var(--gold-faint)}
+  .stage.hold{border-style:dashed}
+  .sh{display:flex;align-items:baseline;gap:12px;margin-bottom:4px;flex-wrap:wrap}
+  .sh .n{font-family:var(--heading);font-size:22px;color:var(--gold);min-width:30px}
+  .sh h3{font-size:18px}
+  .sh .own{margin-left:auto;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;border:1px solid var(--border);border-radius:20px;padding:4px 10px}
+  .state{color:var(--mid);font-size:13.5px;font-style:italic;margin:4px 0 12px}
+  .fields{display:grid;grid-template-columns:1fr 1fr;gap:10px 22px}
+  @media(max-width:640px){.fields{grid-template-columns:1fr}}
+  .fld{font-size:13px}
+  .fld .fl{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;display:block;margin-bottom:2px}
+  .fld .fv{color:var(--ink);line-height:1.45}
+  .fld.wide{grid-column:1 / -1}
+  .cc{font-family:var(--body);font-size:12px;color:var(--mid);background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:3px 8px;display:inline-block;margin-top:3px}
+  /* metrics */
+  .kpi{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  @media(max-width:640px){.kpi{grid-template-columns:1fr}}
+  .kp{background:var(--card-2);border:1px solid var(--border);border-radius:11px;padding:13px 15px}
+  .kp.head{border-color:var(--gold-deep);background:var(--gold-faint)}
+  .kp b{font-family:var(--heading);font-size:15px;color:var(--ink);display:block;margin-bottom:2px}
+  .kp.head b{color:var(--gold)}
+  .kp span{font-size:12.5px;color:var(--mid);line-height:1.45}
+  .diag{display:grid;gap:8px;margin-top:12px}
+  .dg{font-size:13px;color:var(--mid);border:1px solid var(--border);border-radius:9px;padding:10px 13px}
+  .dg b{color:var(--gold);font-weight:600}
+  ul.impl{list-style:none;display:grid;gap:9px;margin-top:12px}
+  ul.impl li{font-size:13.5px;color:var(--mid);padding-left:20px;position:relative;line-height:1.5}
+  ul.impl li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;background:var(--gold);border-radius:50%}
+  ul.impl li b{color:var(--ink);font-weight:600}
+  .foot{margin-top:30px;padding-top:18px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted);line-height:1.6}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="gbox">
+    <div class="k">BreedWise · Internal</div>
+    <h2>The Profitable Breeder · Lead Pipeline</h2>
+    <p>Team access only. Enter your team code.</p>
+    <input id="code" type="password" placeholder="Team code" autocomplete="off" autofocus>
+    <button id="go">Unlock</button>
+    <div class="gerr" id="gerr"></div>
+  </div></div>
+
+  <div id="app"><div class="wrap">
+    <div class="eyebrow">The Profitable Breeder · Sales Ops</div>
+    <h1 class="title">The Lead Pipeline</h1>
+    <p class="sub">Every conversation, from first contact through the Program Assessment to joining The Profitable Breeder — in one pipeline, so we can see who is actually moving and where it stalls.</p>
+
+    <div class="principle">
+      <div class="pl">The operating rule</div>
+      <p>The scorecard is the line. A conversation is not a lead until the Program Assessment is complete. We measure lead volume by assessments completed, not by how many chats we have open.</p>
+    </div>
+
+    <div class="leaddef">
+      <div class="ld"><div class="lt">Conversation</div><div class="lv">Anyone we're talking to</div><p>Inbound, DM, comment, referral. Interest, but unqualified.</p></div>
+      <div class="ld hot"><div class="lt">Qualified lead</div><div class="lv">A completed assessment</div><p>They finished the Program Assessment. We have scored results and a readiness verdict.</p></div>
+      <div class="ld"><div class="lt">Member</div><div class="lv">Enrolled in TPB</div><p>They joined The Profitable Breeder.</p></div>
+    </div>
+
+    <div class="pipe">
+      <span class="chip conv">1 · New conversation</span><span class="ar">&rarr;</span>
+      <span class="chip conv">2 · Connected</span><span class="ar">&rarr;</span>
+      <span class="chip conv">3 · Assessment invited</span><span class="ar">&rarr;</span>
+      <span class="chip conv">4 · Assessment started</span>
+      <span class="line">▏The line</span>
+      <span class="chip qual">5 · Assessment completed</span><span class="ar">&rarr;</span>
+      <span class="chip qual">6 · Results debrief</span><span class="ar">&rarr;</span>
+      <span class="chip qual">7 · TPB offer</span><span class="ar">&rarr;</span>
+      <span class="chip won">8 · Enrolled</span>
+    </div>
+
+    <h2 class="sec">Stage by stage</h2>
+    <div class="secnote">Each stage has one owner, a clear entry and exit, the number we track, and the CC360 tag or stage it maps to (CC360 is the system of record).</div>
+    <div class="lineband" style="margin-top:14px"><span>Conversation · pre-scorecard</span><i></i></div>
+    <div id="pre"></div>
+    <div class="lineband"><span>▏The line · a qualified lead begins here</span><i></i></div>
+    <div id="post"></div>
+    <div class="lineband"><span>Holding lanes</span><i></i></div>
+    <div id="hold"></div>
+
+    <h2 class="sec">The scoreboard</h2>
+    <div class="secnote">Report lead volume as assessments completed. The conversation-to-assessment rate is the number that tells us whether we're actually turning interest into qualified leads.</div>
+    <div class="kpi">
+      <div class="kp head"><b>Assessments completed = qualified leads</b><span>The headline number. This is how we count leads.</span></div>
+      <div class="kp head"><b>Conversation → assessment %</b><span>The key funnel metric: are we getting people to complete the scorecard?</span></div>
+      <div class="kp"><b>Conversations started (by source)</b><span>Top of funnel, so we know where conversations come from.</span></div>
+      <div class="kp"><b>Assessment → debrief %</b><span>Are we booking debriefs off every completion?</span></div>
+      <div class="kp"><b>Debrief → offer %</b><span>Are we connecting their gaps to TPB?</span></div>
+      <div class="kp"><b>Offer → enrolled %</b><span>Close rate once the offer is made.</span></div>
+      <div class="kp"><b>Assessment → enrolled %</b><span>True quality of a qualified lead.</span></div>
+      <div class="kp"><b>Avg days: conversation → assessment, assessment → enrolled</b><span>Speed through the pipeline.</span></div>
+    </div>
+    <div class="secnote" style="margin-top:16px">Where the pipeline leaks:</div>
+    <div class="diag">
+      <div class="dg"><b>Conversation → assessment weak</b> — we're not getting people to complete the scorecard. Fix the invite framing and the follow-up on started-but-not-finished.</div>
+      <div class="dg"><b>Assessment → debrief weak</b> — completions aren't being turned into booked debriefs fast enough.</div>
+      <div class="dg"><b>Debrief → offer weak</b> — we're not connecting their assessment gaps to what TPB solves.</div>
+      <div class="dg"><b>Offer → enrolled weak</b> — a value, trust or certainty problem at the offer.</div>
+    </div>
+
+    <h2 class="sec">Make it real in CC360</h2>
+    <ul class="impl">
+      <li>Build a CC360 pipeline named <b>The Profitable Breeder</b> with these eight stages plus Nurture and Not a Fit.</li>
+      <li>Send the assessment link with the lead's email pre-filled — <b>scorecard.html?email=&amp;name=</b> — so a completion maps back to their contact and can auto-advance the stage.</li>
+      <li>The scorecard already tags <span class="cc">tpb-scorecard-complete</span> plus a verdict (<span class="cc">academy-ready</span> / <span class="cc">watch</span> / <span class="cc">nurture</span>) on completion. Use that tag to move a contact across the line, and the verdict to order the debrief queue.</li>
+      <li>In reporting, define <b>lead = a contact with the tpb-scorecard-complete tag.</b> Everything before it is a conversation, not a lead.</li>
+      <li>The verdict decides urgency: <b>academy-ready</b> debriefs first, <b>watch</b> next, <b>nurture</b> stays in follow-up until something changes.</li>
+    </ul>
+
+    <div class="foot">BreedWise internal sales operating document. The Profitable Breeder lead pipeline. CC360 is the system of record; the Program Assessment (scorecard.html) is the qualification gate. Owners: Setter runs conversation to completion; Closer runs debrief to enrollment; Member Success onboards after enrollment.</div>
+  </div></div>
+
+<script>
+var STAGES={
+ pre:[
+  {n:1,name:'New conversation',own:'Setter',state:'Someone just started talking to us — inbound form, DM, comment, or referral.',obj:'Capture them as a contact and open a real two-way conversation.',enter:'First inbound touch of any kind.',exit:'They have replied and a conversation is live.',track:'Conversations started, by source.',cc:'Contact created · tag tpb-conversation · source set'},
+  {n:2,name:'Connected',own:'Setter',state:'They are replying and we understand roughly who they are and what they breed.',obj:'Learn enough about their situation to position the assessment as valuable to them.',enter:'Two-way conversation established.',exit:'Assessment link sent.',track:'Connect rate (connected ÷ conversations).',cc:'Stage: Connected'},
+  {n:3,name:'Assessment invited',own:'Setter',state:'We have sent the Program Assessment and framed why it helps them.',obj:'Get them to start it. Frame it as a free program diagnostic, not a sales step.',enter:'Assessment link sent with their email pre-filled.',exit:'They start or complete the assessment.',track:'Invite → start rate.',cc:'Stage: Assessment Invited · tag scorecard-invited'},
+  {n:4,name:'Assessment started',own:'Setter',state:'They opened it and answered some, but have not finished.',obj:'Nudge them to completion — this is the moment most leads are lost.',enter:'Assessment started (partial capture).',exit:'Completed (crosses the line) or stalls (to Nurture).',track:'Start → completion rate.',cc:'tag scorecard-started'}
+ ],
+ post:[
+  {n:5,name:'Assessment completed',own:'Setter → Closer',hot:true,state:'They finished the Program Assessment. We have their scored results and readiness verdict. This is a qualified lead — count it.',obj:'Record the lead and book the results debrief while interest is high.',enter:'Scorecard scored and logged (tag tpb-scorecard-complete + verdict).',exit:'Debrief booked.',track:'COMPLETED ASSESSMENTS = qualified leads. Plus conversation → completion rate.',cc:'Stage: Qualified · tag tpb-scorecard-complete + verdict'},
+  {n:6,name:'Results debrief',own:'Closer',state:'We walk them through their assessment — strengths, biggest gaps, their #1 priority.',obj:'Tie their gaps to what The Profitable Breeder solves. Build fit and desire from their own results.',enter:'Debrief scheduled.',exit:'Offer presented, or not ready (to Nurture).',track:'Completion → debrief held rate.',cc:'Stage: Debrief'},
+  {n:7,name:'TPB offer',own:'Closer',state:'We present The Profitable Breeder as the clear next step from their assessment.',obj:'Make a clean offer and ask for the decision, grounded in their scorecard.',enter:'Offer presented.',exit:'Enrolled, not yet, or no.',track:'Debrief → offer rate and offer → close rate.',cc:'Stage: Offer'},
+  {n:8,name:'Enrolled',own:'Closer → Member Success',won:true,state:'They joined The Profitable Breeder.',obj:'Clean handoff to onboarding and member success.',enter:'Payment / enrollment complete.',exit:'Onboarded into TPB.',track:'Enrolled count · overall conversation → enrolled · assessment → enrolled.',cc:'Stage: Enrolled / Won · tag tpb-member · hand to onboarding'}
+ ],
+ hold:[
+  {n:'N',name:'Nurture',own:'Setter',hold:true,state:'In conversation but no completed assessment yet, or completed but not ready to move.',obj:'Keep moving them toward the next gate — the scorecard if pre-line, the offer if post-line. Never let anyone sit silent.',enter:'Stalls at any stage.',exit:'Re-engages and advances, or becomes Not a Fit.',track:'Nurture size and re-activation rate. Every record has a next action and date.',cc:'Stage: Nurture'},
+  {n:'X',name:'Not a fit',own:'Setter / Closer',hold:true,state:'Wrong stage, wrong needs, or not the right program right now.',obj:'Close respectfully and record why, so we learn from lost-reason patterns.',enter:'Clearly not a fit at any stage.',exit:'Closed with a reason recorded.',track:'Lost reasons, grouped.',cc:'Stage: Not a Fit · lost reason recorded'}
+ ]
+};
+function card(s,cls){
+  return '<div class="stage '+cls+(s.hot?' hot':'')+(s.won?'':'')+(s.hold?' hold':'')+'">'+
+    '<div class="sh"><span class="n">'+s.n+'</span><h3>'+s.name+'</h3><span class="own">'+s.own+'</span></div>'+
+    '<div class="state">'+s.state+'</div>'+
+    '<div class="fields">'+
+      '<div class="fld"><span class="fl">Objective</span><span class="fv">'+s.obj+'</span></div>'+
+      '<div class="fld"><span class="fl">Track</span><span class="fv">'+s.track+'</span></div>'+
+      '<div class="fld"><span class="fl">Enters when</span><span class="fv">'+s.enter+'</span></div>'+
+      '<div class="fld"><span class="fl">Exits when</span><span class="fv">'+s.exit+'</span></div>'+
+      '<div class="fld wide"><span class="fl">CC360</span><span class="cc">'+s.cc+'</span></div>'+
+    '</div></div>';
+}
+function build(){
+  document.getElementById('pre').innerHTML=STAGES.pre.map(function(s){return card(s,'');}).join('');
+  document.getElementById('post').innerHTML=STAGES.post.map(function(s){return card(s,'q');}).join('');
+  document.getElementById('hold').innerHTML=STAGES.hold.map(function(s){return card(s,'');}).join('');
+}
+
+(function(){
+  var HASHES=['368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875', // BWTEAM2026
+              '7c80836fc0ce4e3956aa136771a24b98d946bece11d70efef268e3612037234d']; // BreedWiseSetters26
+  var gate=document.getElementById('gate'),app=document.getElementById('app'),gerr=document.getElementById('gerr');
+  function sha(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function open(){gate.style.display='none';app.style.display='block';build();}
+  try{var saved=sessionStorage.getItem('tpbpipe_ok');}catch(e){}
+  if(saved==='1')open();
+  function tryCode(){
+    var v=(document.getElementById('code').value||'').trim();if(!v)return;
+    Promise.all([sha(v),sha(v.toUpperCase())]).then(function(hs){
+      if(HASHES.indexOf(hs[0])>=0||HASHES.indexOf(hs[1])>=0){try{sessionStorage.setItem('tpbpipe_ok','1');}catch(e){}open();}
+      else gerr.textContent='That code did not match.';
+    });
+  }
+  document.getElementById('go').onclick=tryCode;
+  document.getElementById('code').addEventListener('keydown',function(e){if(e.key==='Enter')tryCode();});
+})();
+</script>
+</body>
+</html>
