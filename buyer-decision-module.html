@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>BOSS™ · Stop Losing Buyers After They Inquire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080808;--ink:#F7F5F0;--gray:#A7A7A7;--dim:#6f6f6f;
+    --gold:#D4AF37;--gold-soft:#f0dd9a;--gold-deep:#9e7b24;
+    --line:rgba(247,245,240,.12);--line2:rgba(247,245,240,.22);--gline:rgba(212,175,55,.38);
+    --disp:'Manrope',-apple-system,sans-serif;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Manrope',-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%}
+  body{background:radial-gradient(1200px 760px at 50% -14%,#17130a,#080808 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+  body.pure{background:#050505}
+  .gold{background:linear-gradient(162deg,#f3e2a6 0%,#D4AF37 44%,#9e7b24 70%,#eccf82 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .serif{font-family:var(--serif);font-style:italic;font-weight:600}
+  .top{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:15px 24px;border-bottom:1px solid var(--line);background:rgba(8,8,8,.62);backdrop-filter:blur(10px)}
+  .brand{font-family:var(--disp);font-size:13px;letter-spacing:.26em;font-weight:800;color:var(--ink)}
+  .topR{display:flex;align-items:center;gap:14px}
+  .topmod{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .ntog{font-family:var(--disp);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:700;border:1px solid var(--line);border-radius:7px;padding:5px 9px;cursor:pointer;background:transparent}
+  .ntog:hover{color:var(--gold);border-color:var(--gline)}
+  body.notes-on .ntog{color:var(--gold);border-color:var(--gline)}
+  .prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold-deep),var(--gold-soft));width:0;z-index:40;transition:width .4s ease}
+  .stage{position:absolute;inset:0}
+  .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:84px 30px 96px;opacity:0;transform:translateY(16px) scale(.995);transition:opacity .5s cubic-bezier(.2,.7,.2,1),transform .5s cubic-bezier(.2,.7,.2,1);pointer-events:none}
+  .slide.on{opacity:1;transform:none;pointer-events:auto}
+  .inner{max-width:940px;width:100%}
+  .kick{display:inline-block;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:22px}
+  h1{font-family:var(--disp);font-weight:800;font-size:clamp(28px,5vw,54px);line-height:1.05;letter-spacing:-1.1px}
+  .huge{font-family:var(--disp);font-weight:800;font-size:clamp(36px,7.4vw,96px);line-height:.99;letter-spacing:-2.6px}
+  .lead{margin-top:20px;font-size:clamp(15px,2.1vw,20px);color:var(--gray);font-weight:400;line-height:1.5;max-width:720px;margin-left:auto;margin-right:auto}
+  .lead b{color:var(--ink);font-weight:700}
+  .foot{margin-top:24px;font-size:14px;color:var(--gray);line-height:1.55;max-width:740px;margin-left:auto;margin-right:auto}
+  .foot b{color:var(--ink);font-weight:700}
+  .editorial{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(20px,3.2vw,36px);line-height:1.2;margin-top:16px}
+  .big-line{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3.4vw,38px);letter-spacing:-.8px;margin-top:26px;line-height:1.1}
+  .neq{color:var(--gold)}
+  .q-asked{font-family:var(--serif);font-style:italic;color:var(--gold-soft);font-size:clamp(20px,3vw,32px);margin-top:6px}
+  .hero-sub{font-family:var(--disp);font-size:clamp(14px,2vw,19px);color:var(--gray);font-weight:600;margin-top:16px;letter-spacing:.01em;max-width:680px;margin-left:auto;margin-right:auto}
+  .pills{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:24px}
+  .pill{font-size:12px;color:var(--ink);border:1px solid var(--line2);border-radius:30px;padding:9px 16px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+  .mini{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:20px;align-items:center}
+  .mini span{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:700}
+  .mini span.a{color:var(--gold)}
+  .mini i{color:var(--line2);font-style:normal;font-size:10px}
+  ul.pts{list-style:none;display:grid;gap:9px;margin-top:20px;max-width:620px;margin-left:auto;margin-right:auto;text-align:left}
+  ul.pts.cols2{grid-template-columns:1fr 1fr;max-width:760px;gap:9px 26px}
+  @media(max-width:620px){ul.pts.cols2{grid-template-columns:1fr}}
+  ul.pts li{position:relative;padding-left:24px;font-size:clamp(13.5px,1.8vw,16px);color:var(--gray);line-height:1.45}
+  ul.pts li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;background:var(--gold);border-radius:1px;transform:rotate(45deg)}
+  ul.pts li b{color:var(--ink);font-weight:700}
+  .railflow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin-top:22px;max-width:860px;margin-left:auto;margin-right:auto}
+  .railflow span{font-family:var(--disp);font-size:12.5px;font-weight:700;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:9px 13px;letter-spacing:.05em}
+  .railflow span.a{border-color:var(--gline);color:var(--gold-soft);background:rgba(212,175,55,.06)}
+  .railflow i{color:var(--gold);font-style:normal;font-size:12px}
+  .funnel{display:grid;gap:8px;max-width:460px;margin:22px auto 0}
+  .fb{border:1px solid var(--line);border-radius:11px;padding:11px 16px;display:flex;justify-content:space-between;align-items:center}
+  .fb .fn{font-family:var(--disp);font-weight:800;color:var(--gold-soft);font-size:19px;min-width:56px;text-align:left}
+  .fb .fl{color:var(--gray);font-size:13px;text-align:right}
+  .fcap{margin-top:14px;font-family:var(--serif);font-style:italic;color:var(--gold-soft);font-size:clamp(17px,2.4vw,22px)}
+  .cmp2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;max-width:720px;margin-left:auto;margin-right:auto;text-align:left}
+  @media(max-width:600px){.cmp2{grid-template-columns:1fr}}
+  .cmp2 .bad,.cmp2 .good{border-radius:13px;padding:15px 17px;font-size:14px;line-height:1.45}
+  .cmp2 .bad{border:1px dashed var(--line2);color:var(--dim)}
+  .cmp2 .good{border:1px solid var(--gline);color:var(--ink)}
+  .cmp2 .lab{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:7px}
+  .cmp2 .bad .lab{color:var(--dim)}.cmp2 .good .lab{color:var(--gold)}
+  .dod{display:inline-flex;align-items:center;gap:9px;margin-top:22px;border:1px solid var(--gline);border-radius:30px;padding:9px 18px;background:rgba(212,175,55,.05)}
+  .dod .dl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:800}
+  .dod .dv{font-size:13.5px;color:var(--ink);font-weight:600}
+  .steps4{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:22px}
+  .steps4 .s{border:1px solid var(--line2);border-radius:12px;padding:12px 16px;min-width:150px;text-align:left}
+  .steps4 .s b{font-family:var(--disp);font-size:14px;font-weight:700;display:block;letter-spacing:.06em}
+  .steps4 .s span{font-size:12px;color:var(--gray)}
+  .gates{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:20px}
+  .gate{font-family:var(--disp);font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);border:1px solid var(--gline);border-radius:11px;padding:11px 16px}
+  .gate.neg{border-color:rgba(190,120,120,.4);color:#d9b3b3}
+  .vflow{display:grid;gap:0;max-width:440px;margin:20px auto 0;text-align:center}
+  .vf{font-size:13.5px;color:var(--ink);border:1px solid var(--line);border-radius:11px;padding:11px 14px}
+  .vf b{font-family:var(--disp);font-weight:700;color:var(--gold-soft)}
+  .vf span{color:var(--gray);font-size:12px}
+  .va{color:var(--gold);font-size:13px;margin:3px 0}
+  .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px;text-align:left}
+  @media(max-width:700px){.three{grid-template-columns:1fr}}
+  .tcard{border:1px solid var(--line);border-radius:13px;padding:15px 16px}
+  .tcard b{font-family:var(--disp);font-size:14px;font-weight:800;display:block;margin-bottom:4px}
+  .tcard.yes b{color:var(--gold-soft)}.tcard.may b{color:var(--ink)}.tcard.no b{color:var(--gray)}
+  .tcard span{font-size:12.5px;color:var(--gray);line-height:1.45}
+  .diag{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;max-width:760px;margin-left:auto;margin-right:auto;text-align:left}
+  @media(max-width:600px){.diag{grid-template-columns:1fr}}
+  .diag .d{border:1px solid var(--line);border-radius:11px;padding:12px 14px;font-size:13px;color:var(--gray)}
+  .diag .d b{color:var(--gold-soft);font-weight:700;display:block;font-size:12px;letter-spacing:.03em;margin-bottom:3px}
+  .cta-btn{display:inline-block;margin-top:26px;padding:15px 32px;border-radius:13px;border:0;color:#120d02;font-family:var(--disp);font-weight:700;font-size:16px;cursor:pointer;text-decoration:none;background:linear-gradient(180deg,#f3e2a6,#D4AF37);box-shadow:0 10px 36px rgba(212,175,55,.18)}
+  .promise .p2{font-family:var(--disp);font-size:clamp(26px,4.6vw,50px);font-weight:800;letter-spacing:-1.4px;line-height:1.08}
+  .promise .p2 .dim{color:var(--dim)}
+  .nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-top:1px solid var(--line);background:rgba(8,8,8,.62);backdrop-filter:blur(10px)}
+  .nbtn{background:transparent;border:1px solid var(--line2);color:var(--gray);border-radius:10px;width:42px;height:42px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .12s,color .12s}
+  .nbtn:hover{border-color:var(--gold);color:var(--gold-soft)}
+  .nbtn:disabled{opacity:.3;cursor:default}
+  .count{font-size:12.5px;color:var(--dim);letter-spacing:.06em}.count b{color:var(--ink);font-family:var(--disp);font-size:15px}
+  .dots{display:flex;gap:4px;align-items:center;flex-wrap:wrap;max-width:60%}.dot{width:6px;height:6px;border-radius:50%;background:var(--line2);cursor:pointer;transition:.15s}.dot.on{background:var(--gold);transform:scale(1.3)}
+  @media(max-width:860px){.dots{display:none}}
+  .notes{position:fixed;left:0;right:0;bottom:74px;z-index:28;background:rgba(6,6,6,.97);border-top:1px solid var(--gline);padding:16px 26px 18px;max-height:42vh;overflow:auto;display:none}
+  body.notes-on .notes{display:block}
+  .notes .nlab{font-family:var(--disp);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+  .notes .ntext{font-size:13.5px;line-height:1.62;color:#cfccc4;white-space:pre-line;max-width:900px}
+  .zone{position:fixed;top:56px;bottom:74px;width:16%;z-index:20;cursor:pointer}.zone.l{left:0}.zone.r{right:0}
+  .hint{position:fixed;bottom:76px;left:50%;translate:-50% 0;font-size:10px;color:#3a3a36;z-index:25;letter-spacing:.08em}
+  body.notes-on .hint{display:none}
+</style>
+</head>
+<body>
+  <div class="prog" id="prog"></div>
+  <div class="top"><span class="brand">BREEDWISE</span><span class="topR"><button class="ntog" id="ntog" title="Toggle script (N)">Script</button><span class="topmod">BOSS™ · Buyer Decision System</span></span></div>
+  <div class="zone l" id="zl"></div><div class="zone r" id="zr"></div>
+  <div class="stage" id="stage"></div>
+  <div class="notes" id="notes"><div class="nlab">Teleprompter script</div><div class="ntext" id="ntext"></div></div>
+  <div class="hint">← → · click sides · swipe · press N for script</div>
+  <div class="nav"><button class="nbtn" id="prev">‹</button><div class="dots" id="dots"></div><div class="count"><b id="cur">1</b> / <span id="tot">25</span></div><button class="nbtn" id="next">›</button></div>
+
+<script>
+var SLIDES=[
+ {html:'<span class="kick">BOSS™ · Business Engine</span>'
+   +'<h1>Stop losing buyers<br>after they <span class="gold">inquire</span>.</h1>'
+   +'<div class="hero-sub">Build a buyer journey that turns qualified inquiries into confident decisions.</div>',
+  note:`Most breeders think selling puppies means answering questions about price and availability. It doesn't. The sale starts by understanding how a buyer actually makes a decision.
+
+This module isn't "how to close more puppy sales." That's too transactional for how we operate. The goal isn't to convince someone to buy a puppy. The goal is to help the right buyer become confident enough to make the right decision. Build the journey that does that, and the sales take care of themselves.`},
+
+ {html:'<span class="kick">The real problem</span>'
+   +'<div class="huge">MORE INQUIRIES<br><span class="neq">&ne;</span> MORE BUYERS.</div>'
+   +'<div class="funnel"><div class="fb"><span class="fn">20</span><span class="fl">inquiries</span></div><div class="fb"><span class="fn">2</span><span class="fl">meaningful conversations</span></div><div class="fb"><span class="fn">1</span><span class="fl">deposit</span></div></div>'
+   +'<div class="fcap">Where did the other 18 go?</div>',
+  note:`Here's something most breeders never stop to look at. You may not need more leads. You may be losing the leads you already have.
+
+Picture twenty inquiries that turn into two real conversations and one deposit. Before you go chase more followers, more ads, more content, ask the harder question: where did the other eighteen go? That's the question this module answers.`},
+
+ {html:'<span class="kick">Buyer psychology</span>'
+   +'<h1>People don\'t buy just because they <span class="gold">like the puppy</span>.</h1>'
+   +'<div class="big-line">A buyer is making <span class="gold">five decisions</span>.</div>'
+   +'<div class="railflow" style="margin-top:22px"><span>DESIRE</span><i>→</i><span>FIT</span><i>→</i><span>TRUST</span><i>→</i><span>CERTAINTY</span><i>→</i><span>DECISION</span></div>'
+   +'<p class="foot">Your job isn\'t to push someone left to right. It\'s to find <b>where this buyer is stuck.</b></p>',
+  note:`A buyer doesn't purchase simply because they like the puppy. Underneath the visible decision, there are really five decisions happening.
+
+Desire: do I want this? Fit: is this right for me? Trust: do I trust this breeder? Certainty: do I understand what happens if I say yes? And decision: am I ready to move forward? We're going to walk through all five. And here's the sophisticated part: your job isn't to push someone from left to right. Your job is to identify where this specific buyer is stuck, and resolve that.`},
+
+ {html:'<div class="mini"><span class="a">Desire</span><i>·</i><span>Fit</span><i>·</i><span>Trust</span><i>·</i><span>Certainty</span><i>·</i><span>Decision</span></div>'
+   +'<div class="huge" style="font-size:clamp(44px,9vw,110px)">DESIRE</div>'
+   +'<div class="q-asked">&ldquo;Do I want this?&rdquo;</div>'
+   +'<p class="foot">Emotional. They\'re imagining the puppy in their home, their kids with it, the dog growing up with their family. Pictures, stories, temperament and breeding information live here. <b>Help them imagine their puppy, not just browse inventory.</b></p>'
+   +'<div class="editorial gold">Desire gets attention. It doesn\'t finish the sale.</div>',
+  note:`The first decision is desire. Do I want this? This one is emotional. They're imagining the puppy in their house, their children with it, the dog growing up with their family, the personality they want, the look they love, the lifestyle they picture.
+
+This is where pictures, stories, temperament and breeding information matter. Language like "selecting the color of your dreams" or "the temperament of your dreams" works because it gets the buyer imagining their puppy instead of just looking at inventory. That's good psychology. But understand its limit: desire gets attention. It does not finish the sale.`},
+
+ {html:'<div class="mini"><span>Desire</span><i>·</i><span class="a">Fit</span><i>·</i><span>Trust</span><i>·</i><span>Certainty</span><i>·</i><span>Decision</span></div>'
+   +'<div class="huge" style="font-size:clamp(44px,9vw,110px)">FIT</div>'
+   +'<div class="q-asked">&ldquo;Is this right for me?&rdquo;</div>'
+   +'<p class="foot">This is where breeders slip: they start selling (&ldquo;she\'s a lilac tri, dad\'s 140 lbs, they\'re $7,500, two spots left&rdquo;) while the buyer is still wondering if this breed, this temperament, this litter fits their household. <b>Diagnose before you prescribe.</b></p>'
+   +'<div class="big-line gold" style="font-size:clamp(18px,2.6vw,26px)">Don\'t match a buyer to a puppy until you understand the buyer.</div>',
+  note:`The second decision is fit. Is this right for me? This is where a lot of breeders slip. They immediately start selling: she's a lilac tri, dad is a hundred and forty pounds, they're seventy-five hundred, we only have two spots left.
+
+But the buyer is still quietly wondering: will this breed fit my household? What temperament fits us? Are we ready for this? Which litter makes sense? Does this breeder even care where the puppy goes? The breeder should be diagnosing before prescribing. Here's the BOSS standard: don't match a buyer to a puppy until you understand the buyer. That one standard immediately elevates your whole process.`},
+
+ {html:'<div class="mini"><span>Desire</span><i>·</i><span>Fit</span><i>·</i><span class="a">Trust</span><i>·</i><span>Certainty</span><i>·</i><span>Decision</span></div>'
+   +'<div class="huge" style="font-size:clamp(44px,9vw,110px)">TRUST</div>'
+   +'<div class="q-asked">&ldquo;Do I trust this breeder?&rdquo;</div>'
+   +'<p class="foot">A puppy at $5K, $7,500, $10K+ is not an impulse buy. They\'re evaluating you: are these people legitimate, do they care about the dogs, will they disappear after I pay, why do they charge more? <b>Answer with evidence, not claims.</b></p>'
+   +'<div class="editorial gold">At premium prices, they\'re buying confidence in the breeder as much as the puppy.</div>',
+  note:`Third decision: trust. Do I trust this breeder? A puppy is not an impulse purchase, especially at five thousand, seventy-five hundred, ten thousand and up. The buyer isn't just evaluating the dog. They're evaluating you.
+
+Subconsciously they're asking: are these people legitimate? Do they know what they're doing? Do they care about the dogs? Will they disappear after I pay? Can I trust what they're telling me? Why are they charging more than another breeder? This is where evidence matters, not just claims. Don't say "we breed quality dogs," show what quality means. Don't say "health is important," show the practices and documentation you can stand behind. At premium prices, they're buying confidence in the breeder as much as they're buying the puppy.`},
+
+ {html:'<div class="mini"><span>Desire</span><i>·</i><span>Fit</span><i>·</i><span>Trust</span><i>·</i><span class="a">Certainty</span><i>·</i><span>Decision</span></div>'
+   +'<div class="huge" style="font-size:clamp(42px,8.4vw,100px)">CERTAINTY</div>'
+   +'<div class="q-asked">&ldquo;Do I understand what happens next?&rdquo;</div>'
+   +'<p class="foot">A buyer can want the puppy and trust you and still freeze, because they don\'t understand selection, timing, the deposit, the contract, go-home day, transportation or support. <b>Uncertainty feels like risk.</b></p>'
+   +'<div class="big-line gold" style="font-size:clamp(18px,2.6vw,26px)">Confusion creates friction. Clarity creates confidence.</div>',
+  note:`Fourth decision: certainty. Do I understand what happens if I say yes? Uncertainty kills decisions. A buyer can want the puppy and trust the breeder and still hesitate, because they don't understand what happens next.
+
+How does selection work? When are puppies expected? When do they go home? What does the deposit do? What am I signing? What will I receive? What does transportation look like? What support exists between deposit and go-home day? When those answers are missing, the buyer fills the gap with risk. So make this a principle: confusion creates friction, clarity creates confidence.`},
+
+ {html:'<div class="mini"><span>Desire</span><i>·</i><span>Fit</span><i>·</i><span>Trust</span><i>·</i><span>Certainty</span><i>·</i><span class="a">Decision</span></div>'
+   +'<div class="huge" style="font-size:clamp(44px,9vw,110px)">DECISION</div>'
+   +'<div class="q-asked">&ldquo;Am I ready to move forward?&rdquo;</div>'
+   +'<p class="foot">If everything before it was done right, the close isn\'t a sudden &ldquo;so... do you want to send the deposit?&rdquo; It\'s the natural next step in a decision they\'ve already been making. Asking isn\'t pressure. <b>Ambiguity isn\'t service.</b></p>'
+   +'<div class="editorial gold">A professional sales process ends with a clear next step.</div>',
+  note:`Fifth decision: decision. Am I ready to move forward? Only now do we get to the actual close. And the close shouldn't suddenly become "so, do you want to send the deposit?"
+
+If everything before it was done correctly, asking for the decision should feel like the natural next step in a decision the buyer has already been making. Asking for a decision isn't pressure. Leaving someone in ambiguity isn't service. A professional sales process ends with a clear next step.`},
+
+ {html:'<span class="kick">Why buyers ghost</span>'
+   +'<div class="huge">GHOSTING IS<br>A SYMPTOM.</div>'
+   +'<div class="gates" style="margin-top:22px"><span class="gate">Desire</span><span class="gate">Fit</span><span class="gate">Trust</span><span class="gate">Certainty</span><span class="gate">Timing</span><span class="gate">Money</span><span class="gate">Decision-maker</span></div>'
+   +'<p class="foot">Sometimes people are flaky. But often the process simply failed to resolve one of these. <b>Stop saying &ldquo;people are just flaky&rdquo; and start asking which one broke.</b></p>',
+  note:`Let's talk about ghosting, because every breeder deals with it. Ghosting is a symptom, not a cause. When a qualified buyer goes quiet, usually something was left unresolved: desire, fit, trust, certainty, timing, money, or the real decision-maker was never in the room.
+
+Sometimes people genuinely are flaky, that's real. But sometimes the sales process failed to resolve something, and we never find out because we wrote it off as "people are just flaky." The breeder who diagnoses which one broke is the breeder who stops losing those buyers.`},
+
+ {html:'<span class="kick">The most important sales lesson</span>'
+   +'<div class="big-line" style="font-size:clamp(22px,3.4vw,38px);margin-top:0">An objection is often an<br><span class="gold">unresolved decision</span>.</div>'
+   +'<div class="cmp2" style="margin-top:24px"><div class="bad"><div class="lab">Don\'t</div>Memorize objection comebacks and scripts built to corner someone.</div><div class="good"><div class="lab">Do</div>Diagnose which of the five decisions hasn\'t been resolved yet.</div></div>'
+   +'<div class="say-wrap"></div>'
+   +'<p class="foot">&ldquo;I need to think about it&rdquo; doesn\'t tell you the problem. Ask: <b>&ldquo;Absolutely. What specifically do you feel you still need to think through?&rdquo;</b></p>',
+  note:`This is the most important sales lesson in the module. An objection is often an unresolved decision. "It's too expensive" could be value or trust. "I need to talk to my spouse" could be fit or alignment. "I need to think about it" could be uncertainty. "What if the breeding doesn't take?" could be risk and process certainty. "I'm looking at another breeder" could be differentiation or trust.
+
+So don't teach yourself to memorize objection comebacks or scripts designed to corner someone. That's not us. Teach yourself to diagnose which decision hasn't been resolved. When someone says "I need to think about it," don't fight it. Say: "Absolutely. What specifically do you feel like you still need to think through?" Then handle the real thing.`},
+
+ {html:'<span class="kick">The framework</span>'
+   +'<div class="big-line gold" style="font-size:clamp(20px,3vw,32px);margin-top:0">The BOSS™ Buyer Path</div>'
+   +'<div class="railflow" style="margin-top:20px"><span>CONNECT</span><i>→</i><span>DISCOVER</span><i>→</i><span>MATCH</span><i>→</i><span>PROVE</span><i>→</i><span>CLARIFY</span><i>→</i><span>DECIDE</span></div>'
+   +'<p class="foot">The system every qualified buyer should move through. Works in DMs, text, phone, Zoom, an application, or in person.</p>',
+  note:`So here's the framework. We call it the BOSS Buyer Path, and it has six stages: connect, discover, match, prove, clarify, decide. This is the system every qualified buyer should move through.
+
+It doesn't matter whether the conversation happens in Instagram DMs, over text, on the phone, on a Zoom, through your application process, or in person. Same six stages. Simple enough to remember, sophisticated enough to tell you exactly where your sales are breaking down. Let's walk each one.`},
+
+ {html:'<span class="kick">Stage 1 of 6</span>'
+   +'<div class="railflow" style="margin-bottom:6px"><span class="a">CONNECT</span><i>→</i><span>DISCOVER</span><i>→</i><span>MATCH</span><i>→</i><span>PROVE</span><i>→</i><span>CLARIFY</span><i>→</i><span>DECIDE</span></div>'
+   +'<h1 style="margin-top:14px">Why did they <span class="gold">reach out</span>?</h1>'
+   +'<p class="lead">Turn an inquiry into a conversation. Not &ldquo;puppies are $7,500, deposit is $2K.&rdquo; Instead: &ldquo;What caught your attention about this breeding?&rdquo; &ldquo;What are you hoping to find in your next dog?&rdquo;</p>'
+   +'<div class="dod"><span class="dl">Done when</span><span class="dv">We understand why the buyer reached out.</span></div>',
+  note:`Stage one is connect. The objective is to turn an inquiry into a conversation. The wrong first move is leading with "puppies are seventy-five hundred, deposit is two thousand." That ends the conversation before it starts.
+
+Instead, establish what prompted them to reach out. "What caught your attention about this breeding?" "What are you hoping to find in your next dog?" "Tell me a little about what you're looking for." This isn't pointless small talk, it's context. This stage is done when you understand why the buyer reached out.`},
+
+ {html:'<span class="kick">Stage 2 of 6</span>'
+   +'<div class="railflow" style="margin-bottom:6px"><span>CONNECT</span><i>→</i><span class="a">DISCOVER</span><i>→</i><span>MATCH</span><i>→</i><span>PROVE</span><i>→</i><span>CLARIFY</span><i>→</i><span>DECIDE</span></div>'
+   +'<h1 style="margin-top:12px">Understand before you <span class="gold">recommend</span>.</h1>'
+   +'<ul class="pts cols2"><li><b>Household</b> who will the dog live with?</li><li><b>Experience</b> with the breed and dogs</li><li><b>Lifestyle</b> what daily life looks like</li><li><b>Purpose</b> companion, show, prospect</li><li><b>Temperament</b> what matters to them</li><li><b>Preferences</b> sex, look, timing</li><li><b>Timeline</b> when they\'re really looking</li><li><b>Decision-makers</b> who\'s involved</li><li><b>Readiness</b> are they prepared?</li><li><b>Concerns</b> what makes it hard</li></ul>'
+   +'<div class="dod"><span class="dl">Done when</span><span class="dv">We know who they are, what they want, and whether we may be a fit.</span></div>',
+  note:`Stage two is discover, and this is where the sophistication lives. Understand the buyer before you recommend anything. Use a standardized discovery framework. Understand their household, who the dog will live with. Their experience with the breed and with dogs. Their lifestyle and what everyday life looks like. Their purpose, companion, show, or an appropriate prospect. The temperament and characteristics that matter to them. Their preferences on sex, appearance and timing. Their real timeline. Who the decision-makers are. Whether they're realistically ready. And what questions or concerns are making the decision difficult.
+
+This stage is done when you know who they are, what they want, and whether you may be a fit. And remember, qualification goes both directions. The buyer is deciding whether to buy from you. You're deciding whether this is the right home. That's a very BreedWise way to sell.`},
+
+ {html:'<span class="kick">Stage 3 of 6</span>'
+   +'<div class="railflow" style="margin-bottom:6px"><span>CONNECT</span><i>→</i><span>DISCOVER</span><i>→</i><span class="a">MATCH</span><i>→</i><span>PROVE</span><i>→</i><span>CLARIFY</span><i>→</i><span>DECIDE</span></div>'
+   +'<div class="big-line" style="margin-top:12px">Prescribe. <span class="gold">Don\'t present.</span></div>'
+   +'<div class="cmp2"><div class="bad"><div class="lab">Bad</div>&ldquo;Here are all our litters and every color and option.&rdquo;</div><div class="good"><div class="lab">Better</div>&ldquo;Based on what you\'ve told me, here\'s the breeding I\'d have you consider, and here\'s why.&rdquo;</div></div>'
+   +'<p class="foot">Don\'t show everything you sell. <b>Show what fits.</b> Your presentation becomes powerful when it comes <i>after</i> discovery.</p>',
+  note:`Stage three is match. Prescribe, don't present. This is where most buyer presentations get it backwards. Instead of showing every color, every litter and every option up front, you say: "based on what you've told me, here's what I'd recommend."
+
+Then you show the relevant breeding, the timing, the temperament considerations, the specific placement option, and the process. Your presentation material doesn't disappear, it just comes after discovery, when the information is actually relevant to this buyer. The principle: don't show everything you sell, show what fits. This stage is done when the buyer understands which path fits them and why.`},
+
+ {html:'<span class="kick">Stage 4 of 6</span>'
+   +'<div class="railflow" style="margin-bottom:6px"><span>CONNECT</span><i>→</i><span>DISCOVER</span><i>→</i><span>MATCH</span><i>→</i><span class="a">PROVE</span><i>→</i><span>CLARIFY</span><i>→</i><span>DECIDE</span></div>'
+   +'<div class="big-line" style="margin-top:12px">Don\'t say you\'re different.<br><span class="gold">Show them.</span></div>'
+   +'<ul class="pts cols2"><li>Standards</li><li>Health testing / documentation where applicable</li><li>Program practices</li><li>Parent information</li><li>Temperament philosophy</li><li>Placement process</li><li>Contracts</li><li>Support, before and after go-home</li><li>Appropriate social proof</li><li>Buyer experience</li></ul>'
+   +'<div class="editorial gold">Claims create interest. Evidence creates trust.</div>',
+  note:`Stage four is prove. Don't say you're different, show them. This answers the question "why you?" Replace claims with evidence.
+
+Show your standards. Show relevant health testing and documentation where it applies. Show your program practices, your parent information, your temperament philosophy, your buyer experience, your placement process, your contracts, and the support that exists before and after go-home. Use appropriate testimonials and social proof. Claims create interest. Evidence creates trust. This stage is done when the buyer understands why you operate differently and has real evidence behind the claims that matter.`},
+
+ {html:'<span class="kick">Stage 5 of 6</span>'
+   +'<div class="railflow" style="margin-bottom:6px"><span>CONNECT</span><i>→</i><span>DISCOVER</span><i>→</i><span>MATCH</span><i>→</i><span>PROVE</span><i>→</i><span class="a">CLARIFY</span><i>→</i><span>DECIDE</span></div>'
+   +'<h1 style="margin-top:12px">Remove the <span class="gold">unknown</span>.</h1>'
+   +'<ul class="pts cols2"><li>Price</li><li>Deposit</li><li>Timeline</li><li>Selection</li><li>Contract</li><li>What\'s included</li><li>Transportation where applicable</li><li>Buyer responsibilities</li><li>Breeder responsibilities</li><li>Next steps</li></ul>'
+   +'<p class="foot">Price should never appear out of nowhere. By the time it does, they should already know <b>what they\'re buying, why it fits, who they\'re buying from, and what happens after payment.</b></p>',
+  note:`Stage five is clarify. Remove the unknown before you ask for a decision. Walk through price, deposit, timeline, selection, the contract, what's included, transportation where it applies, the buyer's responsibilities, your responsibilities, the next steps, and any remaining questions.
+
+The price should never appear out of nowhere. By the time you name it, the buyer should already understand what they're buying, why it fits, who they're buying from, what makes your program different, and what happens after payment. This stage is done when the buyer understands the economics and the process with no material unanswered questions.`},
+
+ {html:'<span class="kick">Stage 6 of 6</span>'
+   +'<div class="railflow" style="margin-bottom:6px"><span>CONNECT</span><i>→</i><span>DISCOVER</span><i>→</i><span>MATCH</span><i>→</i><span>PROVE</span><i>→</i><span>CLARIFY</span><i>→</i><span class="a">DECIDE</span></div>'
+   +'<h1 style="margin-top:12px">Ask for the <span class="gold">decision</span>.</h1>'
+   +'<div class="q-asked" style="margin-top:14px">&ldquo;Based on everything we\'ve discussed, does this feel like the right fit for your family?&rdquo;</div>'
+   +'<div class="three" style="margin-top:22px"><div class="tcard yes"><b>Yes</b><span>&ldquo;Great. The next step is ______.&rdquo;</span></div><div class="tcard may"><b>Not yet</b><span>&ldquo;What are you still unsure about?&rdquo;</span></div><div class="tcard no"><b>No</b><span>That\'s okay. Respect the decision.</span></div></div>',
+  note:`Stage six is decide. Ask clearly for a decision, without manipulation. Something as simple as: "based on everything we've gone through, does this feel like the right fit for your family?"
+
+If it's yes: "great, the next step is blank." If they're uncertain: "what are you still unsure about?" and you go resolve it. If it's no, that's okay, because the objective was never to close everyone. The objective is to help the right buyer make a confident decision. This stage is done when the buyer is clearly one of three things: ready, follow-up required, or not a fit. Not ghosted somewhere in your Instagram DMs.`},
+
+ {html:'<span class="kick">Follow-up is part of sales</span>'
+   +'<div class="huge" style="font-size:clamp(30px,5.4vw,60px)">NO INQUIRY<br>WITHOUT A <span class="gold">NEXT ACTION</span>.</div>'
+   +'<ul class="pts cols2" style="margin-top:22px"><li>Status</li><li>Last contact</li><li>Next action</li><li>Next action date</li><li>Primary concern</li><li>Recommended breeding / puppy</li><li>Decision status</li></ul>',
+  note:`Follow-up is not separate from sales, it is sales. The discipline is simple: no inquiry without a next action. Every qualified prospect should have a status, a last-contact date, a defined next action, a date for that next action, their primary concern, the breeding or puppy you recommended, and their decision status.
+
+If every active lead has those fields filled in, you never lose someone just because you forgot to circle back. That's CRM discipline, and it's where a lot of lost sales quietly hide.`},
+
+ {html:'<span class="kick">Build the pipeline</span>'
+   +'<h1 style="margin-bottom:6px">Standardized <span class="gold">CRM stages</span></h1>'
+   +'<div class="railflow" style="margin-top:16px"><span>NEW INQUIRY</span><i>→</i><span>CONTACTED</span><i>→</i><span>DISCOVERY</span><i>→</i><span>QUALIFIED</span><i>→</i><span>MATCHED</span><i>→</i><span>DECISION</span><i>→</i><span>DEPOSIT / WAITLIST</span><i>→</i><span>PLACED</span></div>'
+   +'<div class="gates" style="margin-top:18px"><span class="gate">+ Nurture</span><span class="gate neg">+ Not a fit</span></div>'
+   +'<p class="foot">Now your CRM reflects the <b>actual buyer journey</b>, not a pile of names.</p>',
+  note:`Now build the pipeline. These are the standardized BOSS CRM stages: new inquiry, contacted, discovery, qualified, matched, decision, deposit or waitlist, and placed. Plus two holding lanes: nurture, for good buyers who aren't ready yet, and not a fit, for homes that aren't right.
+
+When your CRM is built this way, it stops being a pile of names and starts mirroring the actual buyer journey. You can see exactly where every person is, which means you can see exactly where things stall.`},
+
+ {html:'<span class="kick">Measure the system</span>'
+   +'<div class="big-line" style="margin-top:0">Don\'t say &ldquo;sales are slow.&rdquo;<br><span class="gold">Know where they\'re breaking.</span></div>'
+   +'<div class="funnel" style="max-width:420px"><div class="fb"><span class="fn">100</span><span class="fl">inquiries</span></div><div class="fb"><span class="fn">60</span><span class="fl">contacted</span></div><div class="fb"><span class="fn">35</span><span class="fl">qualified</span></div><div class="fb"><span class="fn">25</span><span class="fl">matched</span></div><div class="fb"><span class="fn">15</span><span class="fl">decisions</span></div><div class="fb"><span class="fn">10</span><span class="fl">deposits</span></div></div>'
+   +'<div class="diag"><div class="d"><b>Inquiry → contacted weak</b>Response / follow-up problem.</div><div class="d"><b>Contacted → qualified weak</b>Lead quality or discovery problem.</div><div class="d"><b>Qualified → matched weak</b>Offer, availability or fit problem.</div><div class="d"><b>Matched → deposit weak</b>Trust, value, certainty or decision problem.</div></div>',
+  note:`Once the pipeline exists, you can measure it. Stop saying "sales are slow." Know exactly where they're breaking. Picture a hundred inquiries that become sixty contacted, thirty-five qualified, twenty-five matched, fifteen decisions, and ten deposits.
+
+Now you can diagnose instead of guess. If inquiry to contacted is weak, you have a response and follow-up problem. If contacted to qualified is weak, it's lead quality or your discovery. If qualified to matched is weak, it's an offer, availability or fit problem. If matched to deposit is weak, it's trust, value, certainty or the decision itself. That is BOSS thinking: the number tells you which system to fix.`},
+
+ {html:'<span class="kick">Your buyer presentation</span>'
+   +'<h1 style="margin-bottom:4px">From brochure to <span class="gold">sales system</span></h1>'
+   +'<div class="cmp2" style="max-width:760px;margin-top:18px"><div class="bad"><div class="lab">Before</div>About us → puppies → puppies → puppies → price.</div><div class="good"><div class="lab">After</div><b style="color:var(--gold-soft)">You</b> → Fit → Recommendation → Why us → Process → Investment → Decision</div></div>'
+   +'<div class="vflow" style="margin-top:18px;max-width:360px"><div class="vf"><b>You</b> <span>what are you looking for?</span></div><div class="va">↓</div><div class="vf"><b>Fit</b> <span>what matters for your household?</span></div><div class="va">↓</div><div class="vf"><b>Recommendation</b> <span>what option fits?</span></div><div class="va">↓</div><div class="vf"><b>Why us</b> <span>standards + evidence</span></div><div class="va">↓</div><div class="vf"><b>Process → Investment → Decision</b></div></div>',
+  note:`Now let's fix the buyer presentation itself. Most breeder decks go: about us, then puppies, puppies, puppies, then price. That's a brochure.
+
+Restructure it to follow the buyer path. Start with you, the buyer: what are you looking for? Then fit: what matters for your household? Then the recommendation: which breeding or option fits, and why. Then why us: standards and evidence. Then the process: what happens next. Then the investment: price and deposit. And finally the decision: the appropriate next step. Same slides you already have, reordered around how people actually decide. That's the difference between a brochure and a sales system.`},
+
+ {cls:'pure',html:'<div class="inner"><span class="kick">The BOSS standard</span>'
+   +'<div class="gates" style="justify-content:center;gap:10px"><span class="gate neg">Never pressure someone into a puppy</span><span class="gate neg">Never hide material information</span><span class="gate neg">Never create false scarcity</span><span class="gate neg">Never match the wrong home for a deposit</span></div>'
+   +'<div class="big-line gold" style="margin-top:26px;font-size:clamp(26px,4.4vw,44px)">Qualify both ways.</div></div>',
+  note:`Before we go further, the ethical standard, because this is what keeps BreedWise different. Never pressure someone into a puppy. Never hide material information to get a sale. Never create false scarcity. And never match the wrong home just to collect a deposit.
+
+Instead, qualify both ways. The buyer is deciding about you, and you are deciding about them. A sale you shouldn't have made is not a win. Protecting the dog and the right home is the standard, and it's also, over time, what builds the reputation that lets you charge what you charge.`},
+
+ {html:'<span class="kick">Your implementation assignment</span>'
+   +'<h1>Build your <span class="gold">buyer path</span>.</h1>'
+   +'<ul class="pts cols2"><li>Map your current inquiry journey</li><li>Create your CRM stages</li><li>Write your discovery questions</li><li>Create qualification criteria</li><li>Build or revise your buyer presentation</li><li>Define your follow-up cadence</li><li>Define your next-step options</li><li>Start tracking conversion</li></ul>'
+   +'<p class="editorial gold">Clarity before activity.</p>',
+  note:`Here's your assignment coming out of this module. Build your buyer path. Map your current inquiry journey, honestly, as it happens today. Create your CRM stages. Write your discovery questions. Create your qualification criteria. Build or revise your buyer presentation around the new order. Define your follow-up cadence and your next-step options. And start tracking your conversion.
+
+Don't try to do all eight tonight. Start with the one that's leaking the most. Clarity before activity.`},
+
+ {html:'<span class="kick">Definition of done</span>'
+   +'<div class="big-line" style="margin-top:0;font-size:clamp(20px,3vw,32px)">This module is <span class="gold">not done</span><br>when you watch it.</div>'
+   +'<ul class="pts" style="margin-top:20px"><li>Every qualified inquiry has a process</li><li>Every active lead has a status</li><li>Every active lead has a next action</li><li>You know your conversion rate</li><li>You know where buyers are dropping out</li><li>Your team knows exactly what happens next</li></ul>'
+   +'<div class="big-line gold" style="font-size:clamp(20px,3vw,30px)">Then you have a sales system.</div>',
+  note:`And this is the part that makes it BOSS. This module is not done because you watched it. Built is not implemented.
+
+It's done when every qualified inquiry has a process, every active lead has a status, every active lead has a next action, you know your conversion rate, you know where buyers are dropping out, and your team knows exactly what happens next. When those things are true, you don't have a lesson you watched. You have a sales system.`},
+
+ {html:'<span class="kick">Closing</span>'
+   +'<div class="huge" style="font-size:clamp(28px,5.2vw,62px)">Don\'t chase more leads<br>until you know what happens<br>to the ones you <span class="gold">already have</span>.</div>'
+   +'<div class="railflow" style="margin-top:24px"><span>CONNECT</span><i>→</i><span>DISCOVER</span><i>→</i><span>MATCH</span><i>→</i><span>PROVE</span><i>→</i><span>CLARIFY</span><i>→</i><span>DECIDE</span></div>'
+   +'<a class="cta-btn" href="scorecard.html">Assess your program →</a>',
+  note:`Here's where I want to leave you. Before you decide you need more followers, more ads, more content or more inquiries, understand what's happening to the people already raising their hands.
+
+A stronger breeder business doesn't just generate attention. It has a system for turning the right attention into the right buyers. Connect. Discover. Match. Prove. Clarify. Decide. Then measure it. That's how BOSS approaches sales, and it's how you stop losing buyers after they inquire.`}
+];
+
+var i=0;
+var stage=document.getElementById('stage'),dots=document.getElementById('dots');
+document.getElementById('tot').textContent=SLIDES.length;
+function render(){
+  stage.innerHTML=SLIDES.map(function(s,n){
+    return '<div class="slide'+(s.cls?' '+s.cls:'')+(n===0?' on':'')+'" data-n="'+n+'">'+ (/^\s*<div class="inner/.test(s.html)?s.html:'<div class="inner">'+s.html+'</div>') +'</div>';
+  }).join('');
+  dots.innerHTML=SLIDES.map(function(_,n){return '<span class="dot'+(n===0?' on':'')+'" data-g="'+n+'"></span>';}).join('');
+  Array.prototype.forEach.call(dots.querySelectorAll('.dot'),function(d){d.addEventListener('click',function(){go(+d.getAttribute('data-g'));});});
+  update();
+}
+function update(){
+  Array.prototype.forEach.call(stage.querySelectorAll('.slide'),function(el){el.classList.toggle('on',+el.getAttribute('data-n')===i);});
+  Array.prototype.forEach.call(dots.querySelectorAll('.dot'),function(el,n){el.classList.toggle('on',n===i);});
+  document.body.classList.toggle('pure', !!SLIDES[i].cls);
+  document.getElementById('ntext').textContent=SLIDES[i].note||'';
+  document.getElementById('cur').textContent=i+1;
+  document.getElementById('prog').style.width=((i)/(SLIDES.length-1)*100)+'%';
+  document.getElementById('prev').disabled=(i===0);
+  document.getElementById('next').disabled=(i===SLIDES.length-1);
+}
+function go(n){i=Math.max(0,Math.min(SLIDES.length-1,n));update();var sl=stage.querySelector('.slide.on');if(sl)sl.scrollTop=0;document.getElementById('notes').scrollTop=0;}
+document.getElementById('next').onclick=function(){go(i+1);};
+document.getElementById('prev').onclick=function(){go(i-1);};
+document.getElementById('zr').onclick=function(){go(i+1);};
+document.getElementById('zl').onclick=function(){go(i-1);};
+document.getElementById('ntog').onclick=function(){document.body.classList.toggle('notes-on');};
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key==='PageDown'){e.preventDefault();go(i+1);}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(i-1);}
+  else if(e.key==='Home'){go(0);} else if(e.key==='End'){go(SLIDES.length-1);}
+  else if(e.key==='n'||e.key==='N'){document.body.classList.toggle('notes-on');}
+});
+var tx=0;
+document.addEventListener('touchstart',function(e){tx=e.changedTouches[0].clientX;},{passive:true});
+document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>60){dx<0?go(i+1):go(i-1);}},{passive:true});
+render();
+</script>
+</body>
+</html>
