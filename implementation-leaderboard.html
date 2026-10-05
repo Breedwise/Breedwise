@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>BreedWise Monthly Implementation Leaderboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --black: #080808;
+      --charcoal: #141414;
+      --charcoal-light: #1d1d1d;
+      --gold: #d4af37;
+      --gold-soft: #f0dd9a;
+      --warm-gold: #c89b3c;
+      --cream: #f7f5f0;
+      --gray: #a7a7a7;
+      --border: #333333;
+      --green: #6fba82;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: radial-gradient(1100px 620px at 50% -10%, #16130a, #080808 60%), var(--black);
+      color: var(--cream);
+      font-family: "Manrope", "Inter", Arial, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3 {
+      font-family: "Manrope", "Inter", Arial, sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .gold-metal {
+      background: linear-gradient(162deg, #f3e2a6, #d4af37 45%, #9e7b24 72%, #eccf82);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 60px 0 100px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 70px 30px;
+      border: 1px solid var(--gold);
+      border-radius: 20px;
+      background: linear-gradient(145deg, #16130a 0%, #080808 45%, #111111 100%);
+      margin-bottom: 50px;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    h1 {
+      font-size: clamp(36px, 6vw, 64px);
+      line-height: 1.05;
+      margin: 15px 0;
+    }
+
+    .hero-subtitle {
+      color: var(--gray);
+      font-size: 18px;
+      max-width: 700px;
+      margin: 0 auto 30px;
+    }
+
+    .statement {
+      font-size: 22px;
+      font-weight: 700;
+      margin-top: 30px;
+    }
+
+    .statement span { color: var(--gold); }
+
+    section { margin: 65px 0; }
+
+    h2 { font-size: 32px; margin-bottom: 10px; }
+    h3 { font-size: 22px; margin-bottom: 8px; }
+
+    .section-intro {
+      color: var(--gray);
+      max-width: 800px;
+      margin-bottom: 30px;
+    }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .score-card {
+      background: var(--charcoal);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 25px 18px;
+      text-align: center;
+    }
+
+    .score-number {
+      font-size: 38px;
+      font-weight: 800;
+      display: block;
+    }
+
+    .score-label { font-size: 14px; font-weight: 700; }
+
+    .category {
+      background: var(--charcoal);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 30px;
+      margin: 25px 0;
+    }
+
+    .category-number {
+      color: var(--gold);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .max-points { color: var(--gold); font-weight: 800; }
+
+    .path {
+      text-align: center;
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: 1px;
+      padding: 20px;
+      margin: 20px 0;
+      background: #0c0c0c;
+      border-radius: 10px;
+    }
+
+    .point-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 25px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .point-row:last-child { border-bottom: none; }
+
+    .points { color: var(--gold); font-weight: 800; white-space: nowrap; }
+
+    .boss-rule {
+      margin-top: 25px;
+      border-left: 4px solid var(--gold);
+      padding: 20px 25px;
+      background: #11100c;
+    }
+
+    .boss-rule strong { color: var(--gold); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th { color: var(--gold); background: #101010; }
+
+    .rules-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .rule-card {
+      background: var(--charcoal);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+    }
+
+    .rule-card strong { color: var(--gold); }
+
+    .recognition {
+      text-align: center;
+      padding: 50px 30px;
+      border: 1px solid var(--gold);
+      border-radius: 18px;
+      background: linear-gradient(145deg, #17130a, #0a0a0a);
+    }
+
+    .podium {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 35px;
+      align-items: start;
+    }
+
+    .podium-card {
+      padding: 25px;
+      background: var(--charcoal);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .podium-card.first { border-color: var(--gold); }
+    .podium-card h3 { color: var(--gold); }
+    .medal { font-size: 35px; }
+
+    .footer-message {
+      text-align: center;
+      max-width: 800px;
+      margin: 70px auto 0;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .footer-message span { color: var(--gold); }
+
+    .brandline {
+      text-align: center;
+      margin-top: 36px;
+      font-size: 12px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gray);
+      font-weight: 700;
+    }
+
+    @media (max-width: 800px) {
+      .score-grid { grid-template-columns: 1fr 1fr; }
+      .podium, .rules-grid { grid-template-columns: 1fr; }
+      .point-row { flex-direction: column; gap: 5px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="eyebrow">Academy + BOSS Members</div>
+
+    <h1>BreedWise Monthly<br><span class="gold-metal">Implementation Leaderboard</span></h1>
+
+    <p class="hero-subtitle">
+      Earn points for putting what you learn into practice,
+      making measurable progress, and helping other breeders improve.
+    </p>
+
+    <div class="statement">
+      Skool measures engagement.<br>
+      <span>BreedWise measures implementation and progress.</span>
+    </div>
+  </header>
+
+
+  <!-- HOW IT WORKS -->
+  <section>
+    <div class="eyebrow">How It Works</div>
+    <h2>100 Points. Reset Every Month.</h2>
+
+    <p class="section-intro">
+      Every active Academy and BOSS member can earn up to 100 points each
+      month. The leaderboard resets on the 1st.
+      <strong>60 of the 100 available points come directly from
+      implementation and measurable progress.</strong>
+      The goal isn't to reward whoever posts the most. It's to recognize
+      members who are putting what they learn into practice.
+    </p>
+
+    <div class="score-grid">
+      <div class="score-card">
+        <span class="score-number gold-metal">40</span>
+        <div class="score-label">System Implementation</div>
+      </div>
+      <div class="score-card">
+        <span class="score-number gold-metal">20</span>
+        <div class="score-label">Measured Progress</div>
+      </div>
+      <div class="score-card">
+        <span class="score-number gold-metal">15</span>
+        <div class="score-label">Live Participation</div>
+      </div>
+      <div class="score-card">
+        <span class="score-number gold-metal">15</span>
+        <div class="score-label">Member Contribution</div>
+      </div>
+      <div class="score-card">
+        <span class="score-number gold-metal">10</span>
+        <div class="score-label">Community Engagement</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- SYSTEM IMPLEMENTATION -->
+  <section class="category">
+    <div class="category-number">Category 01</div>
+    <h2>System Implementation <span class="max-points">— 40 Points</span></h2>
+    <p>
+      The heart of the leaderboard. Earn points by building systems,
+      putting them into operation, and measuring how they're working.
+    </p>
+
+    <div class="path">BUILD → IMPLEMENT → MEASURE</div>
+
+    <div class="point-row">
+      <div><strong>BUILD</strong><br>
+        Create or document a system, process, tool, SOP, tracker,
+        marketing plan, buyer process, pricing structure, etc.
+      </div>
+      <div class="points">+3 Points</div>
+    </div>
+    <div class="point-row">
+      <div><strong>IMPLEMENT</strong><br>
+        Put the system into active use inside your breeding program
+        or business.
+      </div>
+      <div class="points">+4 Points</div>
+    </div>
+    <div class="point-row">
+      <div><strong>MEASURE</strong><br>
+        Review the system after using it and provide evidence,
+        feedback, or a relevant KPI.
+      </div>
+      <div class="points">+3 Points</div>
+    </div>
+
+    <div class="boss-rule">
+      <strong>Academy + BOSS Fairness Rule:</strong><br>
+      Points are awarded for member implementation — not simply because
+      BreedWise created an asset for you. BOSS members do not automatically
+      receive points because the BreedWise team builds or configures a system.
+      Points are earned when you complete your responsibilities, adopt the
+      system, put it into operation, and measure it.
+    </div>
+  </section>
+
+
+  <!-- MEASURED PROGRESS -->
+  <section class="category">
+    <div class="category-number">Category 02</div>
+    <h2>Measured Progress &amp; Milestones <span class="max-points">— 20 Points</span></h2>
+    <p>
+      Progress is measured against your own starting point — not against
+      the size, revenue, or experience of another breeder.
+    </p>
+
+    <div class="point-row">
+      <div><strong>Documented Progress</strong><br>
+        A meaningful KPI, process, or area of the program moves
+        in the right direction.
+      </div>
+      <div class="points">5 Points</div>
+    </div>
+    <div class="point-row">
+      <div><strong>Significant Improvement</strong><br>
+        Clear, measurable improvement connected to actions you've taken.
+      </div>
+      <div class="points">10 Points</div>
+    </div>
+    <div class="point-row">
+      <div><strong>Major Milestone</strong><br>
+        A significant business or program milestone supported by evidence.
+      </div>
+      <div class="points">15 Points</div>
+    </div>
+
+    <div class="boss-rule">
+      <strong>Important:</strong><br>
+      Biological outcomes alone are not used as measures of better
+      implementation. BreedWise rewards the systems, preparation,
+      documentation, monitoring, decision-making, and business improvements
+      members can meaningfully influence.
+    </div>
+  </section>
+
+
+  <!-- LIVE PARTICIPATION -->
+  <section class="category">
+    <div class="category-number">Category 03</div>
+    <h2>Live Call Participation <span class="max-points">— 15 Points</span></h2>
+    <p>
+      Only eligible shared BreedWise community calls count toward leaderboard
+      points so Academy and BOSS members compete on equal footing.
+    </p>
+
+    <div class="point-row">
+      <div><strong>Attend an eligible live call</strong></div>
+      <div class="points">3 Each · Max 9</div>
+    </div>
+    <div class="point-row">
+      <div><strong>Actively participate</strong><br>
+        Ask a question, take a hot seat, or share an implementation update.
+      </div>
+      <div class="points">2 Each · Max 6</div>
+    </div>
+  </section>
+
+
+  <!-- MEMBER CONTRIBUTION -->
+  <section class="category">
+    <div class="category-number">Category 04</div>
+    <h2>Member Contribution <span class="max-points">— 15 Points</span></h2>
+
+    <div class="point-row">
+      <div><strong>Helpful Answer</strong><br>
+        Give another member a thoughtful answer that helps them move forward.
+      </div>
+      <div class="points">2 Points</div>
+    </div>
+    <div class="point-row">
+      <div><strong>Share a Resource or Lesson</strong><br>
+        Share a useful template, resource, experience, or lesson learned.
+      </div>
+      <div class="points">3 Points</div>
+    </div>
+    <div class="point-row">
+      <div><strong>Member or Staff Recognition</strong><br>
+        Receive recognition for going above and beyond to help another member.
+      </div>
+      <div class="points">3 Points</div>
+    </div>
+  </section>
+
+
+  <!-- COMMUNITY ENGAGEMENT -->
+  <section class="category">
+    <div class="category-number">Category 05</div>
+    <h2>Community Engagement <span class="max-points">— 10 Points</span></h2>
+    <p>
+      Your monthly Skool activity contributes to your leaderboard score,
+      but engagement alone cannot win the leaderboard.
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Monthly Skool Points</th>
+          <th>Leaderboard Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>0–49</td><td>0</td></tr>
+        <tr><td>50–99</td><td>2</td></tr>
+        <tr><td>100–199</td><td>4</td></tr>
+        <tr><td>200–299</td><td>6</td></tr>
+        <tr><td>300–399</td><td>8</td></tr>
+        <tr><td>400+</td><td>10</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+
+  <!-- RULES -->
+  <section>
+    <div class="eyebrow">Leaderboard Standards</div>
+    <h2>Rules &amp; Safeguards</h2>
+
+    <div class="rules-grid">
+      <div class="rule-card">
+        <strong>Proof Required</strong><br>
+        Implementation and progress must be demonstrated in Skool,
+        through an approved submission, or on an eligible call.
+      </div>
+      <div class="rule-card">
+        <strong>Implementation &gt; Consumption</strong><br>
+        Watching a module alone earns zero leaderboard points.
+        What you do with it matters.
+      </div>
+      <div class="rule-card">
+        <strong>No BOSS Advantage</strong><br>
+        Done-with-you assets do not automatically earn points.
+        Member adoption and implementation do.
+      </div>
+      <div class="rule-card">
+        <strong>No Double-Dipping</strong><br>
+        The same action cannot be repeatedly submitted across categories.
+      </div>
+      <div class="rule-card">
+        <strong>Progress Is Relative</strong><br>
+        A newer or smaller breeder can outperform an established breeder
+        by making more meaningful progress from their own baseline.
+      </div>
+      <div class="rule-card">
+        <strong>Quality Over Volume</strong><br>
+        BreedWise may reject low-value submissions, repetitive activity,
+        or obvious point farming.
+      </div>
+    </div>
+
+    <div class="boss-rule">
+      <strong>Tie-Breaker:</strong><br>
+      If two members finish with the same score, the member with the highest
+      combined System Implementation + Measured Progress score ranks higher.
+    </div>
+  </section>
+
+
+  <!-- TIMELINE -->
+  <section class="category">
+    <div class="category-number">Monthly Cycle</div>
+    <h2>Leaderboard Timeline</h2>
+
+    <div class="point-row">
+      <div><strong>1st of the Month</strong><br>
+        Leaderboard resets. Everyone begins at zero.
+      </div>
+    </div>
+    <div class="point-row">
+      <div><strong>Throughout the Month</strong><br>
+        Build, implement, measure, participate, contribute, and submit proof.
+      </div>
+    </div>
+    <div class="point-row">
+      <div><strong>Last Day of the Month</strong><br>
+        Final submission cutoff.
+      </div>
+    </div>
+    <div class="point-row">
+      <div><strong>By the 5th</strong><br>
+        Scores are finalized, the leaderboard is published,
+        and top members are recognized.
+      </div>
+    </div>
+  </section>
+
+
+  <!-- RECOGNITION -->
+  <section class="recognition">
+    <div class="eyebrow">Monthly Recognition</div>
+    <h2>BreedWise Operator of the Month</h2>
+    <p>
+      Recognition goes to the members who demonstrate the strongest
+      combination of implementation, progress, participation, and contribution.
+    </p>
+
+    <div class="podium">
+      <div class="podium-card first">
+        <div class="medal">🥇</div>
+        <h3>#1</h3>
+        <strong>BreedWise Operator of the Month</strong>
+        <p>Monthly recognition + featured member spotlight +
+          priority implementation hot seat/review.</p>
+      </div>
+      <div class="podium-card">
+        <div class="medal">🥈</div>
+        <h3>#2</h3>
+        <strong>Implementation Excellence</strong>
+        <p>Monthly recognition + priority implementation hot seat.</p>
+      </div>
+      <div class="podium-card">
+        <div class="medal">🥉</div>
+        <h3>#3</h3>
+        <strong>Implementation Excellence</strong>
+        <p>Monthly recognition + priority implementation hot seat.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- FINAL MESSAGE -->
+  <div class="footer-message">
+    Whether you're an Academy member implementing what you're learning
+    yourself or a BOSS member working through your implementation plan,
+    <span>the standard is the same:</span>
+    <br><br>
+    <span class="gold-metal">BUILD → IMPLEMENT → MEASURE → IMPROVE</span>
+    <br><br>
+    Progress comes from what gets put into practice.
+  </div>
+
+  <div class="brandline">BreedWise · Operating System &amp; Standards</div>
+
+</div>
+
+</body>
+</html>
