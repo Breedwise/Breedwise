@@ -312,7 +312,7 @@ async function buildScorecard(){
   if(BUSY)return; BUSY=true;
   thinking(true);
   try{
-    var d=await api({action:'score',messages:MSGS,member_name:MFIRST||KENNEL,member_kennel:MKENNEL||KENNEL,member_email:MEMAIL});
+    var d=await api({action:'score',messages:MSGS,member_name:MFIRST,member_kennel:MKENNEL||KENNEL,member_email:MEMAIL});
     thinking(false);
     $('#thread').style.display='none';
     rail();
