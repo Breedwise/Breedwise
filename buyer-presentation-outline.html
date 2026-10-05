@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>BOSS™ Buyer Presentation Outline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0c;--card:#121216;--card2:#17171c;--ink:#F7F5F0;--gray:#A7A7A7;--dim:#6f6f6f;
+    --gold:#D4AF37;--gold-soft:#f0dd9a;--gold-deep:#9e7b24;
+    --line:rgba(247,245,240,.1);--line2:rgba(247,245,240,.2);--gline:rgba(212,175,55,.36);
+    --ok:#6bbf7a;--disp:'Manrope',-apple-system,sans-serif;--serif:'Cormorant Garamond',Georgia,serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:radial-gradient(1100px 560px at 50% -12%,#17130a,#0a0a0c 55%),var(--bg);color:var(--ink);font-family:var(--disp);-webkit-font-smoothing:antialiased;line-height:1.5}
+  .goldgrad{background:linear-gradient(162deg,#f3e2a6,#D4AF37 45%,#9e7b24 72%,#eccf82);-webkit-background-clip:text;background-clip:text;color:transparent}
+  #gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:24px}
+  #gate .box{max-width:370px;width:100%;text-align:center}
+  #gate .lk{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  #gate h2{font-size:22px;font-weight:800;margin:14px 0 6px;letter-spacing:-.4px}
+  #gate p{color:var(--gray);font-size:13px;margin-bottom:18px}
+  #gate input{width:100%;background:var(--card);border:1px solid var(--line2);color:var(--ink);border-radius:11px;padding:13px 15px;font-family:var(--disp);font-size:15px;text-align:center;letter-spacing:.06em}
+  #gate input:focus{outline:none;border-color:var(--gold)}
+  #gate button{width:100%;margin-top:10px;background:linear-gradient(180deg,#f3e2a6,#D4AF37);color:#120d02;border:0;border-radius:11px;padding:13px;font-family:var(--disp);font-weight:700;font-size:15px;cursor:pointer}
+  #gate .err{color:#d98c8c;font-size:12.5px;margin-top:10px;min-height:16px}
+  #app{display:none}
+  .hd{position:sticky;top:0;z-index:40;background:rgba(10,10,12,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .hdin{max-width:860px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .hdin .ttl{font-size:14px;font-weight:800;letter-spacing:-.2px}
+  .hdin .ttl small{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .prog{flex:1;min-width:140px;display:flex;align-items:center;gap:10px}
+  .bar{flex:1;height:7px;background:#23232a;border-radius:20px;overflow:hidden;min-width:90px}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold-deep),var(--gold-soft));transition:width .3s}
+  .pct{font-size:12px;color:var(--gray);font-weight:700;min-width:48px}
+  .status{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;border:1px solid var(--line2);border-radius:30px;padding:6px 12px;color:var(--gray);white-space:nowrap}
+  .status.building{color:var(--gold-soft);border-color:var(--gline)}
+  .status.built{color:#0d0d0d;background:linear-gradient(180deg,#f3e2a6,#D4AF37);border-color:transparent}
+  .hbtns{display:flex;gap:8px}
+  .btn{border:0;border-radius:10px;padding:10px 16px;font-family:var(--disp);font-weight:700;font-size:13px;cursor:pointer}
+  .btn.p{background:linear-gradient(180deg,#f3e2a6,#D4AF37);color:#120d02}
+  .btn.g{background:transparent;border:1px solid var(--line2);color:var(--gray)}
+  .btn.g:hover{border-color:var(--gold);color:var(--gold-soft)}
+  .saved{font-size:11px;color:var(--dim);align-self:center}
+  .saved.on{color:var(--ok)}
+  main{max-width:860px;margin:0 auto;padding:18px 20px 120px}
+  .intro{color:var(--gray);font-size:15px;margin:8px 0 6px;max-width:700px}
+  .intro .path{font-weight:700;color:var(--ink)}
+  .ba{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 6px}
+  @media(max-width:620px){.ba{grid-template-columns:1fr}}
+  .ba div{border-radius:12px;padding:13px 15px;font-size:13.5px}
+  .ba .b{border:1px dashed var(--line2);color:var(--dim)}
+  .ba .g{border:1px solid var(--gline);color:var(--ink)}
+  .ba .lab{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+  .ba .b .lab{color:var(--dim)}.ba .g .lab{color:var(--gold)}
+  .card{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:20px;margin-top:16px;scroll-margin-top:110px}
+  .ch{display:flex;align-items:baseline;gap:12px}
+  .ch .nn{font-family:var(--disp);font-weight:800;font-size:22px;color:var(--gold);line-height:1;min-width:34px}
+  .ch h2{font-size:19px;font-weight:800;letter-spacing:-.3px}
+  .ch .bq{margin-left:auto;font-family:var(--serif);font-style:italic;color:var(--gold-soft);font-size:15px;text-align:right}
+  .purpose{color:var(--gray);font-size:13.5px;margin:8px 0 12px}
+  .hints{display:grid;grid-template-columns:1fr 1fr;gap:6px 20px;margin-bottom:12px}
+  @media(max-width:620px){.hints{grid-template-columns:1fr}}
+  .hints .inc,.hints .avo{font-size:12.5px;line-height:1.4}
+  .hints .ht{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:5px}
+  .hints .inc .ht{color:var(--gold)}.hints .avo .ht{color:#b98a8a}
+  .hints ul{list-style:none;display:grid;gap:4px}
+  .hints .inc li{color:var(--gray);padding-left:16px;position:relative}
+  .hints .inc li::before{content:"+";position:absolute;left:0;color:var(--gold);font-weight:800}
+  .hints .avo li{color:var(--dim);padding-left:16px;position:relative}
+  .hints .avo li::before{content:"–";position:absolute;left:0;color:#8a5a5a;font-weight:800}
+  label.f{display:block;font-size:12px;color:var(--ink);font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin:4px 0 6px}
+  textarea.t,input.t{width:100%;background:var(--card2);border:1px solid var(--line2);color:var(--ink);border-radius:10px;padding:11px 13px;font-family:var(--disp);font-size:14px;resize:vertical;line-height:1.55}
+  textarea.t{min-height:84px}
+  textarea.t:focus,input.t:focus{outline:none;border-color:var(--gold)}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:620px){.row3,.row2{grid-template-columns:1fr}}
+  .done{border:1px solid var(--gline);background:rgba(212,175,55,.05);border-radius:14px;padding:18px 20px;margin-top:18px}
+  .done .dh{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:800;margin-bottom:10px}
+  .done ul{list-style:none;display:grid;gap:7px}
+  .done li{font-size:13.5px;color:var(--gray);padding-left:20px;position:relative}
+  .done li::before{content:"→";position:absolute;left:0;color:var(--gold)}
+  .subwrap{text-align:center;margin-top:24px}
+  .subwrap .msg{font-size:13px;margin-top:10px;min-height:18px}
+  .subwrap .msg.ok{color:var(--ok)}.subwrap .msg.err{color:#d98c8c}
+  .foot{margin-top:26px;font-size:11.5px;color:var(--dim);line-height:1.6;text-align:center}
+  @media print{.hd,.hbtns,.subwrap,.foot{display:none!important}body{background:#fff;color:#111}.card,.done{border:1px solid #ccc;background:#fff;break-inside:avoid}textarea.t,input.t{background:#fff;color:#111;border:1px solid #bbb}.goldgrad{color:#8a6d12!important;-webkit-text-fill-color:#8a6d12}}
+</style>
+</head>
+<body>
+  <div id="gate">
+    <div class="box">
+      <div class="lk">BreedWise · Member tool</div>
+      <h2>BOSS™ Buyer Presentation Outline</h2>
+      <p>Members only. Enter your member access code.</p>
+      <input id="code" type="password" placeholder="Member code" autocomplete="off" autofocus>
+      <button id="go">Unlock</button>
+      <div class="err" id="err"></div>
+    </div>
+  </div>
+
+  <div id="app">
+    <div class="hd"><div class="hdin">
+      <div class="ttl"><small>BOSS™ · Academy member tool</small>Buyer Presentation Outline</div>
+      <div class="prog"><div class="bar"><i id="barfill"></i></div><span class="pct" id="pctlbl">0 / 7</span></div>
+      <div class="status" id="statuspill">Not started</div>
+      <div class="hbtns"><button class="btn g" id="printBtn">Export</button><button class="btn p" id="saveBtn">Save outline</button></div>
+      <span class="saved" id="savedlbl">Autosaving locally</span>
+    </div></div>
+    <main id="main"></main>
+  </div>
+
+<script>
+var SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+var SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+var FN=SB_URL+'/functions/v1/log-submission';
+var FALLBACK_HASH='25e7b557235afa23f4d1ae0ac108bfdfefa7ea58ea50bd986321cbd0034c52dc'; // sha256("ACCELERATOR2026")
+var PASS_HASH=FALLBACK_HASH, MEMBER_CODE='';
+var DATAKEY='bw-presoutline-data', CODEKEY='bw-presoutline-code';
+function sha256(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+
+var SECTIONS=[
+ {k:'you',n:'YOU',bq:'“Did they get me?”',purpose:'Open on the buyer, not your program. Make them feel understood before you say anything about yourself.',
+  inc:['An opening question: “What are you hoping to find in your next dog?”','Acknowledge what prompted them to reach out','Set the tone that you place carefully'],
+  avo:['Leading with price or availability','Opening with “about us”'],
+  ph:'Your opening lines + the first question you ask…'},
+ {k:'fit',n:'FIT',bq:'“Is this right for me?”',purpose:'Show you are matching to the home, not pushing a puppy. Qualify both ways.',
+  inc:['The 2–3 fit questions you will ask','What a good fit looks like for your breed','That you are also deciding if it is the right home'],
+  avo:['Recommending anything before you understand them'],
+  ph:'How you surface fit, and the questions that matter most…'},
+ {k:'reco',n:'RECOMMENDATION',bq:'“Which option is right for me?”',purpose:'Prescribe the path that fits. Don’t present everything you sell.',
+  inc:['“Based on what you told me, here’s what I’d consider…”','The breeding / litter / placement that fits + why','Timing and temperament considerations'],
+  avo:['Dumping every color, litter and option at once'],
+  ph:'How you connect their answers to a specific recommendation…'},
+ {k:'proof',n:'PROOF',bq:'“Why should I trust you?”',purpose:'Replace claims with evidence. Claims create interest; evidence creates trust.',
+  inc:['Standards and practices','Health testing / documentation where applicable','Parent info, temperament philosophy','Testimonials and what support looks like'],
+  avo:['Generic claims you can’t substantiate (“we breed quality dogs”)'],
+  ph:'The specific proof you will show for each claim you make…'},
+ {k:'process',n:'PROCESS',bq:'“What exactly happens?”',purpose:'Remove uncertainty. Confusion creates friction; clarity creates confidence.',
+  inc:['Timeline and selection','Deposit and contract','Go-home process','Communication and post-placement support'],
+  avo:['Leaving them to guess what happens after they say yes'],
+  ph:'The step-by-step of what happens from here to go-home…'},
+ {k:'invest',n:'INVESTMENT',bq:'“Is it worth it?”',purpose:'Name the number after value is established, with confidence and context.',
+  inc:['Price and deposit','What’s included','Why it reflects your standards'],
+  avo:['Dropping price out of nowhere','Apologizing for your price'],
+  ph:'How you present price and deposit, in context…'},
+ {k:'decide',n:'DECISION',bq:'“Am I moving forward?”',purpose:'Ask for a decision without pressure. Ambiguity isn’t service.',
+  inc:['Your decision question: “Does this feel like the right fit for your family?”','Yes → the clear next step','Not yet → what’s still unresolved','No → respected'],
+  avo:['Ending vague (“let me know!”)'],
+  ph:'Your decision question and how you handle yes / not yet / no…'}
+];
+
+function render(){
+  var m=document.getElementById('main');
+  m.innerHTML=
+  `<p class="intro">Rebuild your buyer presentation around how people actually decide. Same raw material you already use (your dogs, breedings, process, proof, price), reordered into the sequence that moves a buyer to a confident decision: <span class="path">YOU → FIT → RECOMMENDATION → PROOF → PROCESS → INVESTMENT → DECISION</span>.</p>
+  <div class="ba"><div class="b"><div class="lab">Before · a brochure</div>About us → puppies → puppies → puppies → price.</div><div class="g"><div class="lab">After · a sales system</div>You → Fit → Recommendation → Proof → Process → Investment → Decision.</div></div>
+
+  <div class="card" id="c_head"><div class="ch"><span class="nn">◆</span><h2>Set up your outline</h2></div>
+    <div class="row3" style="margin-top:12px">
+      <div><label class="f">Your name</label><input class="t" data-k="name" type="text"></div>
+      <div><label class="f">Email</label><input class="t" data-k="email" type="text"></div>
+      <div><label class="f">Kennel / program</label><input class="t" data-k="kennel" type="text"></div>
+    </div>
+    <div class="row2" style="margin-top:12px">
+      <div><label class="f">Presentation name</label><input class="t" data-k="presname" type="text" placeholder="e.g. Jungle Bully · Buyer Walkthrough"></div>
+      <div><label class="f">The one promise of your program</label><input class="t" data-k="promise" type="text" placeholder="the single thing a buyer gets with you"></div>
+    </div>
+  </div>
+
+  ${SECTIONS.map(function(s,i){return `<div class="card" id="c_${s.k}"><div class="ch"><span class="nn">${i+1}</span><h2>${s.n}</h2><span class="bq">${s.bq}</span></div>
+    <div class="purpose">${s.purpose}</div>
+    <div class="hints"><div class="inc"><div class="ht">Include</div><ul>${s.inc.map(function(x){return `<li>${x}</li>`;}).join('')}</ul></div><div class="avo"><div class="ht">Avoid</div><ul>${s.avo.map(function(x){return `<li>${x}</li>`;}).join('')}</ul></div></div>
+    <label class="f">Draft your ${s.n} section</label><textarea class="t" data-k="sec_${s.k}" placeholder="${s.ph}"></textarea>
+    </div>`;}).join('')}
+
+  <div class="done"><div class="dh">Your presentation is ready when…</div><ul>
+    <li>It opens on the buyer, not on you</li>
+    <li>You understand fit before you recommend anything</li>
+    <li>Every asset earns its place (it helps a decision, or it’s cut)</li>
+    <li>Price appears after value, not out of nowhere</li>
+    <li>It ends with a clear next step, not “let me know”</li>
+  </ul></div>
+
+  <div class="subwrap">
+    <button class="btn p" id="saveBtn2" style="padding:14px 30px;font-size:15px">Save my outline</button>
+    <button class="btn g" id="printBtn2" style="padding:14px 24px;font-size:15px;margin-left:8px">Export / print</button>
+    <div class="msg" id="submsg"></div>
+  </div>
+  <div class="foot">BreedWise member tool. Your outline autosaves in this browser. “Save my outline” also records it to your BreedWise account. This is the DIY version of your buyer presentation; BOSS Implementation members have this built with them.</div>`;
+
+  load(); bind(); recompute();
+}
+
+function allFields(){return document.querySelectorAll('#main [data-k]');}
+function collect(){var o={};allFields().forEach(function(el){o[el.getAttribute('data-k')]=el.value;});return o;}
+function load(){var raw;try{raw=localStorage.getItem(DATAKEY);}catch(e){}if(!raw)return;var o;try{o=JSON.parse(raw);}catch(e){return;}allFields().forEach(function(el){var k=el.getAttribute('data-k');if(k in o&&o[k]!=null)el.value=o[k];});}
+var savedT;
+function save(){try{localStorage.setItem(DATAKEY,JSON.stringify(collect()));}catch(e){}var s=document.getElementById('savedlbl');if(s){s.textContent='Saved';s.classList.add('on');clearTimeout(savedT);savedT=setTimeout(function(){s.textContent='Autosaving locally';s.classList.remove('on');},1200);}}
+function sectionsDone(){var n=0;SECTIONS.forEach(function(s){var el=document.querySelector('#main [data-k="sec_'+s.k+'"]');if(el&&el.value.trim())n++;});return n;}
+function recompute(){
+  var n=sectionsDone(),tot=SECTIONS.length;
+  document.getElementById('barfill').style.width=Math.round(n/tot*100)+'%';
+  document.getElementById('pctlbl').textContent=n+' / '+tot;
+  var level=n===0?0:(n<tot?1:2);
+  var names=['Not started','Building','Built'];
+  var pill=document.getElementById('statuspill');pill.textContent=names[level];pill.className='status '+['','building','built'][level];
+}
+function bind(){
+  allFields().forEach(function(el){el.addEventListener('input',function(){save();recompute();});});
+  document.getElementById('saveBtn').addEventListener('click',submit);
+  var s2=document.getElementById('saveBtn2');if(s2)s2.addEventListener('click',submit);
+  document.getElementById('printBtn').addEventListener('click',function(){window.print();});
+  var p2=document.getElementById('printBtn2');if(p2)p2.addEventListener('click',function(){window.print();});
+}
+async function submit(){
+  var inputs=collect(),msg=document.getElementById('submsg');
+  var name=inputs.name||'',email=inputs.email||'';
+  if(!name||!email){ if(msg){msg.className='msg err';msg.textContent='Add your name and email at the top so we can save it to your account.';} document.getElementById('c_head').scrollIntoView({behavior:'smooth'}); return; }
+  var n=sectionsDone(),tot=SECTIONS.length;
+  var status=n===0?'Not started':(n<tot?'Building':'Built');
+  if(msg){msg.className='msg';msg.textContent='Saving…';}
+  try{
+    var r=await fetch(FN,{method:'POST',headers:{'content-type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},
+      body:JSON.stringify({passcode:MEMBER_CODE,tool:'buyer-presentation-outline',tool_label:'Buyer Presentation Outline',member_name:name,member_email:email,
+      summary:status+' · '+n+'/'+tot+' sections drafted',
+      meta:{kennel:inputs.kennel||'',status:status,sections_done:n+'/'+tot},
+      inputs:inputs,result:{status:status,sections_done:n+'/'+tot}})});
+    var d=await r.json();
+    if(r.ok&&!d.error){ if(msg){msg.className='msg ok';msg.textContent='Saved to your account ('+n+'/'+tot+' sections). Export it to turn it into your slides.';} }
+    else{ if(msg){msg.className='msg err';msg.textContent=(d.error||('Could not save ('+r.status+').'))+' Your work is still saved in this browser.';} }
+  }catch(e){ if(msg){msg.className='msg err';msg.textContent='Network error. Your work is still saved in this browser.';} }
+}
+(function(){
+  var gate=document.getElementById('gate'),app=document.getElementById('app'),err=document.getElementById('err');
+  function open(){gate.style.display='none';app.style.display='block';render();}
+  try{var saved=localStorage.getItem(CODEKEY);}catch(e){}
+  fetch(SB_URL+'/rest/v1/access_config?key=eq.member&select=passcode_hash',{headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}})
+    .then(function(r){return r.json();}).then(function(a){if(a&&a[0]&&a[0].passcode_hash)PASS_HASH=a[0].passcode_hash;})
+    .catch(function(){}).finally(function(){
+      if(saved) Promise.all([sha256(saved),sha256(saved.toUpperCase())]).then(function(hs){if(hs[0]===PASS_HASH||hs[1]===PASS_HASH){MEMBER_CODE=saved;open();}});
+    });
+  function tryCode(){
+    var v=(document.getElementById('code').value||'').trim();if(!v)return;
+    Promise.all([sha256(v),sha256(v.toUpperCase())]).then(function(hs){
+      if(hs[0]===PASS_HASH||hs[1]===PASS_HASH){MEMBER_CODE=v;try{localStorage.setItem(CODEKEY,v);}catch(e){}open();}
+      else err.textContent='That code did not match.';
+    });
+  }
+  document.getElementById('go').onclick=tryCode;
+  document.getElementById('code').addEventListener('keydown',function(e){if(e.key==='Enter')tryCode();});
+})();
+</script>
+</body>
+</html>
