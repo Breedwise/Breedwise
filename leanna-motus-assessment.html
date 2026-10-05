@@ -5,67 +5,68 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Program Assessment · XOE Pugs (Leanna Motus)</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@1,600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0a0a0c;--card:#121216;--ink:#F7F5F0;--gray:#A7A7A7;--dim:#6f6f6f;
-    --gold:#D4AF37;--gold-soft:#f0dd9a;--gold-deep:#9e7b24;
-    --bad:#c06b6b;--warn:#d4a24a;--good:#6bbf7a;
-    --line:rgba(247,245,240,.1);--line2:rgba(247,245,240,.2);--gline:rgba(212,175,55,.36);
-    --disp:'Manrope',-apple-system,sans-serif;--serif:'Cormorant Garamond',Georgia,serif;
+    --bg:#1b1b20; --surface:#111114; --card:#26262c; --card-2:#212127;
+    --border:#34343c; --gold:#d6ba76; --gold-deep:#b89c47; --gold-faint:rgba(214,186,118,0.10);
+    --ink:#f2efe8; --mid:#bab5aa; --muted:#88847c;
+    --good:#6dbf90; --warn:#d8a75b; --bad:#e0807e;
+    --heading:'Playfair Display',Georgia,serif; --body:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
   }
   *{box-sizing:border-box;margin:0}
-  body{background:radial-gradient(1100px 560px at 50% -12%,#17130a,#0a0a0c 55%),var(--bg);color:var(--ink);font-family:var(--disp);-webkit-font-smoothing:antialiased;line-height:1.55}
-  .wrap{max-width:820px;margin:0 auto;padding:40px 22px 90px}
-  .goldgrad{background:linear-gradient(162deg,#f3e2a6,#D4AF37 45%,#9e7b24 72%,#eccf82);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .hero{text-align:center;padding-bottom:26px;border-bottom:1px solid var(--line);margin-bottom:8px}
-  .k{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700}
-  .hero h1{font-size:clamp(30px,5vw,46px);font-weight:800;letter-spacing:-1.1px;margin:12px 0 2px}
-  .hero .who{color:var(--gray);font-size:15px}
-  .tot{margin-top:18px;font-size:14.5px;color:var(--gray)}
-  .tot b{font-family:var(--disp);font-size:40px;font-weight:800;color:var(--ink);vertical-align:-2px}
-  .tot .s{color:var(--dim)}
-  .block{border-top:1px solid var(--line);padding-top:22px;margin-top:24px}
-  .block h3{font-size:18px;font-weight:800;letter-spacing:-.3px;margin-bottom:14px}
-  .engine{font-family:var(--disp);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:800;margin:18px 0 10px}
-  .srow{display:flex;gap:16px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--line)}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:var(--heading);font-weight:600;letter-spacing:-.01em}
+  .wrap{max-width:740px;margin:0 auto;padding:30px 20px 90px}
+  .eyebrow{text-align:center;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:18px}
+  .hero{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:14px;padding:26px 24px;text-align:center}
+  .hero .k{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .hero h1{font-size:clamp(30px,5vw,44px);margin:8px 0 4px}
+  .hero .who{color:var(--mid);font-size:14.5px}
+  .hero .tot{font-family:var(--heading);font-size:15px;color:var(--mid);margin-top:16px}
+  .hero .tot b{font-size:38px;color:var(--ink);font-weight:700}
+  .engine{font-family:var(--body);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:18px 0 8px;padding-top:4px}
+  .block{background:var(--card-2);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-top:14px}
+  .block h3{font-size:19px;margin-bottom:12px}
+  .srow{display:flex;gap:16px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--border)}
   .srow:last-child{border-bottom:0}
   .srow>div:first-child{flex:1}
-  .nm{font-size:15px;font-weight:700;margin-bottom:7px}
-  .bar{display:block;height:7px;background:#23232a;border-radius:20px;overflow:hidden;max-width:360px}
+  .nm{font-size:15px;font-weight:600;margin-bottom:2px}
+  .bar{display:block;height:5px;border-radius:3px;background:var(--card);margin-top:7px;overflow:hidden;max-width:340px}
   .bar i{display:block;height:100%}
-  .ev{font-size:13px;color:var(--gray);margin-top:8px;line-height:1.5}
-  .std{font-size:12.5px;color:var(--dim);margin-top:7px;line-height:1.5;border-left:2px solid var(--gline);padding-left:10px}
-  .std b{color:var(--gold-soft);font-weight:700}
-  .num{font-family:var(--disp);font-size:26px;font-weight:800;min-width:46px;text-align:right}
-  .item{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;background:var(--card)}
-  .item b{font-family:var(--disp);font-size:14.5px;font-weight:700;display:block;margin-bottom:4px}
-  .item p{font-size:13.5px;color:var(--gray);line-height:1.5}
-  .prio .item{border-color:var(--gline);background:rgba(212,175,55,.05)}
-  .snapgrid .item b{color:var(--gold-soft)}
-  .syn{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--gold-soft);margin-top:14px;line-height:1.4}
-  .closing{font-size:13px;color:var(--gray);margin-top:14px;line-height:1.55}
+  .ev{font-size:13px;color:var(--mid);margin-top:9px;line-height:1.55}
+  .std{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.55;border-left:2px solid var(--gold-deep);padding-left:11px}
+  .std b{color:var(--gold);font-weight:600}
+  .num{font-family:var(--heading);font-size:22px;min-width:40px;text-align:right}
+  .item{padding:11px 0;border-bottom:1px solid var(--border)}
+  .item:last-child{border-bottom:0}
+  .item b{color:var(--ink);font-weight:600;font-family:var(--heading);font-size:15.5px;display:block;margin-bottom:3px}
+  .item p{font-size:13.5px;color:var(--mid);line-height:1.55}
+  .prio{background:var(--card);border:1px solid var(--gold-deep);border-left:3px solid var(--gold)}
+  .snap{font-family:var(--heading);font-size:16.5px;line-height:1.7;color:var(--ink);margin-top:12px}
+  .closing{font-size:13.5px;color:var(--mid);line-height:1.6;margin-top:4px}
   .steps{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .steps span{font-size:11.5px;font-weight:700;letter-spacing:.06em;color:var(--ink);border:1px solid var(--line2);border-radius:9px;padding:8px 13px}
-  .actions{margin-top:28px;text-align:center}
-  .btn{background:linear-gradient(180deg,#f3e2a6,#D4AF37);color:#120d02;border:0;border-radius:11px;padding:13px 26px;font-family:var(--disp);font-weight:700;font-size:15px;cursor:pointer}
-  .foot{margin-top:24px;font-size:11px;color:var(--dim);text-align:center;line-height:1.6}
-  @media print{body{background:#fff;color:#111}.goldgrad{color:#8a6d12!important;-webkit-text-fill-color:#8a6d12}.item{background:#fff;border-color:#ccc}.actions{display:none}.std,.ev,.closing,.hero .who{color:#444}}
+  .steps span{font-size:11px;font-weight:600;letter-spacing:.05em;color:var(--mid);border:1px solid var(--border);border-radius:8px;padding:8px 13px}
+  .actions{margin-top:26px;text-align:center}
+  .btn{background:var(--gold);color:#1b1b20;border:0;border-radius:9px;padding:13px 24px;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;font-family:var(--body)}
+  .btn:hover{background:var(--gold-deep)}
+  .foot{margin-top:22px;font-size:11px;color:var(--muted);text-align:center;line-height:1.6}
+  @media print{body{background:#fff;color:#000}.hero,.block{border-color:#ccc;background:#fff}.ev,.std,.item p,.closing,.hero .who,.hero .tot{color:#333}.actions{display:none}}
 </style>
 </head>
 <body>
 <div class="wrap">
+  <div class="eyebrow">The Profitable Breeder · BreedWise</div>
   <div class="hero">
-    <div class="k">BreedWise Program Assessment</div>
-    <h1 class="goldgrad">XOE Pugs</h1>
+    <div class="k">Program Assessment</div>
+    <h1>XOE Pugs</h1>
     <div class="who">Leanna Motus · Pugs · completed Oct 2026</div>
-    <div class="tot"><b id="overall">48</b><span class="s">/100 overall</span> — the pattern across categories matters more than the total.</div>
+    <div class="tot"><b id="overall">48</b>/100 overall — the pattern across categories matters more than the total.</div>
   </div>
   <div id="out"></div>
   <div class="actions"><button class="btn" onclick="window.print()">Save / print</button></div>
-  <div class="foot">An educational snapshot of where the program stands today, not a grade or a veterinary assessment. Generated by the BreedWise Program Assessment.</div>
+  <div class="foot">An educational snapshot of where your program stands today, not a grade or a veterinary assessment. Generated by the BreedWise Program Assessment.</div>
 </div>
 
 <script>
@@ -122,13 +123,13 @@ document.getElementById('out').innerHTML=
   '<div class="block">'+group('business','Business Engine')+group('breeding','Breeding Engine')+'</div>'+
   '<div class="block"><h3>What\'s working</h3>'+items(RES.working)+'</div>'+
   '<div class="block"><h3>Your biggest opportunities</h3>'+items(RES.gaps)+'</div>'+
-  '<div class="block prio"><h3>Your #1 priority</h3><div class="item"><b>'+esc(RES.priority.area)+'</b><p>'+esc(RES.priority.reasoning)+'</p></div></div>'+
+  '<div class="block prio"><h3>Your #1 priority</h3><div class="item" style="border-bottom:0"><b>'+esc(RES.priority.area)+'</b><p>'+esc(RES.priority.reasoning)+'</p></div></div>'+
   '<div class="block"><h3>What to focus on next</h3>'+items(RES.focus)+'</div>'+
-  '<div class="block snapgrid"><h3>Your BreedWise snapshot</h3>'+
+  '<div class="block"><h3>Your BreedWise snapshot</h3>'+
     '<div class="item"><b>Strongest</b><p>'+esc(sn.strongest)+'</p></div>'+
     '<div class="item"><b>Biggest opportunities</b><p>'+esc(sn.opportunities)+'</p></div>'+
-    '<div class="item"><b>Start here</b><p>'+esc(sn.start_here)+'</p></div>'+
-    '<div class="syn">'+esc(sn.synthesis)+'</div></div>'+
+    '<div class="item" style="border-bottom:0"><b>Start here</b><p>'+esc(sn.start_here)+'</p></div>'+
+    '<div class="snap">'+esc(sn.synthesis)+'</div></div>'+
   '<div class="block prio"><h3>Your next step</h3><p class="closing">Take this assessment into your 90-Day Profitable Breeder Blueprint. As you work through the program, you will learn what each of these systems needs, why it matters, and what to measure. Come back and reassess at Day 90 to see exactly what moved.</p>'+
     '<div class="steps"><span>See it</span><span>Understand it</span><span>Measure it</span><span>Prioritize it</span></div></div>';
 </script>
