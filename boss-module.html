@@ -7,128 +7,171 @@
 <title>Welcome to BOSS™ · BreedWise Operating System &amp; Standards</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#060608;--ink:#f5f5f7;--mid:#a1a1a6;--dim:#6e6e73;--faint:#48484c;
-    --line:rgba(255,255,255,.12);--line2:rgba(255,255,255,.22);
-    --disp:'Space Grotesk',-apple-system,sans-serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    --bg:#080808;--ink:#F7F5F0;--gray:#A7A7A7;--dim:#6f6f6f;
+    --gold:#D4AF37;--gold-soft:#f0dd9a;--gold-deep:#9e7b24;
+    --line:rgba(247,245,240,.12);--line2:rgba(247,245,240,.22);--gline:rgba(212,175,55,.38);
+    --disp:'Manrope',-apple-system,sans-serif;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Manrope',-apple-system,sans-serif;
   }
   *{box-sizing:border-box;margin:0}
   html,body{height:100%}
-  body{background:radial-gradient(1200px 760px at 50% -14%,#1c1c21,#060608 62%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
-  body.pure{background:#000}
-  .metal{background:linear-gradient(162deg,#ffffff 0%,#e9e9ee 26%,#9a9aa2 54%,#cfcfd6 72%,#f4f4f8 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 1px 1px rgba(0,0,0,.45))}
-  /* chrome / top bar */
-  .top{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:15px 24px;border-bottom:1px solid var(--line);background:rgba(6,6,8,.6);backdrop-filter:blur(10px)}
-  .brand{font-family:var(--disp);font-size:13px;letter-spacing:.26em;font-weight:700;color:var(--mid)}
-  .topmod{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);font-weight:500}
-  .prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,#6e6e73,#f5f5f7);width:0;z-index:40;transition:width .4s ease}
-  /* stage + slides */
+  body{background:radial-gradient(1200px 760px at 50% -14%,#17130a,#080808 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+  body.pure{background:#050505}
+  .gold{background:linear-gradient(162deg,#f3e2a6 0%,#D4AF37 44%,#9e7b24 70%,#eccf82 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .serif{font-family:var(--serif);font-style:italic;font-weight:600}
+  .top{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:15px 24px;border-bottom:1px solid var(--line);background:rgba(8,8,8,.62);backdrop-filter:blur(10px)}
+  .brand{font-family:var(--disp);font-size:13px;letter-spacing:.26em;font-weight:800;color:var(--ink)}
+  .topmod{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold-deep),var(--gold-soft));width:0;z-index:40;transition:width .4s ease}
   .stage{position:absolute;inset:0}
   .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:84px 30px 96px;opacity:0;transform:translateY(16px) scale(.995);transition:opacity .5s cubic-bezier(.2,.7,.2,1),transform .5s cubic-bezier(.2,.7,.2,1);pointer-events:none}
   .slide.on{opacity:1;transform:none;pointer-events:auto}
-  .inner{max-width:920px;width:100%}
-  .kick{display:inline-block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:24px}
-  h1{font-family:var(--disp);font-weight:600;font-size:clamp(30px,5.4vw,60px);line-height:1.04;letter-spacing:-1.4px}
-  .lead{margin-top:20px;font-size:clamp(16px,2.2vw,21px);color:var(--mid);font-weight:300;line-height:1.5;max-width:720px;margin-left:auto;margin-right:auto}
-  .lead.strike{text-decoration:line-through;text-decoration-color:var(--faint);color:var(--dim)}
-  .foot{margin-top:26px;font-size:14.5px;color:var(--mid);font-weight:300;line-height:1.55;max-width:720px;margin-left:auto;margin-right:auto}
-  .foot.big{font-family:var(--disp);font-size:clamp(18px,2.6vw,24px);color:var(--ink);font-weight:500}
-  .big-line{font-family:var(--disp);font-weight:600;font-size:clamp(24px,3.6vw,40px);letter-spacing:-.8px;margin-top:34px;line-height:1.1}
-  .neq{color:var(--dim)}
+  .inner{max-width:940px;width:100%}
+  .kick{display:inline-block;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:22px}
+  h1{font-family:var(--disp);font-weight:800;font-size:clamp(30px,5.4vw,58px);line-height:1.05;letter-spacing:-1.2px}
+  .huge{font-family:var(--disp);font-weight:800;font-size:clamp(42px,9vw,112px);line-height:.98;letter-spacing:-3px}
+  .lead{margin-top:20px;font-size:clamp(15px,2.1vw,20px);color:var(--gray);font-weight:400;line-height:1.5;max-width:720px;margin-left:auto;margin-right:auto}
+  .lead.strike{text-decoration:line-through;text-decoration-color:var(--dim);color:var(--dim)}
+  .foot{margin-top:26px;font-size:14px;color:var(--gray);font-weight:400;line-height:1.55;max-width:740px;margin-left:auto;margin-right:auto}
+  .foot b{color:var(--ink);font-weight:700}
+  .editorial{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(22px,3.4vw,38px);line-height:1.2;margin-top:16px}
+  .big-line{font-family:var(--disp);font-weight:800;font-size:clamp(24px,3.6vw,40px);letter-spacing:-.8px;margin-top:30px;line-height:1.08}
+  .neq{color:var(--gold)}
+  .small-gold{margin-top:16px;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}
   /* hero */
-  .wordmark{font-family:var(--disp);font-weight:700;font-size:clamp(84px,17vw,170px);line-height:.9;letter-spacing:-5px}
-  .wordmark .tm{font-size:.26em;vertical-align:super;letter-spacing:0}
-  .full{font-family:var(--disp);font-size:clamp(16px,2.4vw,23px);color:var(--mid);font-weight:400;letter-spacing:.02em;margin-top:18px}
-  .tagline{margin-top:20px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600}
+  .wordmark{font-family:var(--disp);font-weight:800;font-size:clamp(84px,17vw,168px);line-height:.9;letter-spacing:-5px}
+  .wordmark .tm{font-size:.24em;vertical-align:super;letter-spacing:0}
+  .full{font-family:var(--disp);font-size:clamp(15px,2.3vw,22px);color:var(--gray);font-weight:600;letter-spacing:.02em;margin-top:18px;text-transform:uppercase;letter-spacing:.08em}
+  .tagline{margin-top:18px}
+  .tagline.serif{font-size:clamp(18px,2.6vw,26px);color:var(--gold-soft)}
   /* pills / lists */
   .pills{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:24px}
-  .pill{font-size:13px;color:var(--mid);border:1px solid var(--line2);border-radius:30px;padding:9px 16px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.01));font-weight:500}
-  ul.pts,ol.pts{list-style:none;counter-reset:n;display:grid;gap:11px;margin-top:24px;max-width:640px;margin-left:auto;margin-right:auto;text-align:left}
-  ul.pts li,ol.pts li{position:relative;padding-left:26px;font-size:clamp(15px,2vw,18px);color:var(--mid);line-height:1.4}
-  ul.pts li::before{content:"";position:absolute;left:0;top:10px;width:7px;height:7px;background:linear-gradient(180deg,#fff,#8a8a90);border-radius:1px;transform:rotate(45deg)}
-  ol.pts{counter-reset:n}ol.pts li{padding-left:34px}
-  ol.pts li::before{counter-increment:n;content:counter(n,decimal-leading-zero);position:absolute;left:0;top:1px;font-family:var(--disp);font-size:13px;color:var(--ink);font-weight:600}
-  ul.pts li b,ol.pts li b{color:var(--ink);font-weight:600}
-  /* chain / rail flow */
-  .chainflat{display:inline-block;font-family:var(--disp);font-size:clamp(13px,1.8vw,16px);color:var(--ink);letter-spacing:.01em;border:1px solid var(--line);border-radius:12px;padding:13px 18px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01))}
-  .chainflat.metalborder{border-color:var(--line2);background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.02))}
-  .railflow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin-top:24px;max-width:760px;margin-left:auto;margin-right:auto}
-  .railflow span{font-family:var(--disp);font-size:13px;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:8px 12px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.01))}
-  .railflow i{color:var(--dim);font-style:normal;font-size:12px}
-  .vs{display:grid;gap:14px;margin-top:26px;max-width:720px;margin-left:auto;margin-right:auto}
-  .vscol .vt{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:8px}
-  .vscol.old .vt{color:var(--faint)}.vscol.new .vt{color:var(--mid)}
+  .pill{font-size:12px;color:var(--ink);border:1px solid var(--line2);border-radius:30px;padding:9px 16px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+  ul.pts,ol.pts{list-style:none;counter-reset:n;display:grid;gap:10px;margin-top:22px;max-width:640px;margin-left:auto;margin-right:auto;text-align:left}
+  ul.pts li,ol.pts li{position:relative;padding-left:26px;font-size:clamp(14px,1.9vw,17px);color:var(--gray);line-height:1.4}
+  ul.pts li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;background:var(--gold);border-radius:1px;transform:rotate(45deg)}
+  ol.pts li{padding-left:34px}ol.pts li::before{counter-increment:n;content:counter(n,decimal-leading-zero);position:absolute;left:0;top:1px;font-family:var(--disp);font-size:13px;color:var(--gold);font-weight:700}
+  ul.pts li b,ol.pts li b{color:var(--ink);font-weight:700}
+  ul.inc,ul.exc{list-style:none;display:grid;gap:8px;margin-top:20px;max-width:620px;margin-left:auto;margin-right:auto;text-align:left}
+  ul.inc li,ul.exc li{font-size:14.5px;padding-left:28px;position:relative;color:var(--gray)}
+  ul.inc li::before{content:"✓";position:absolute;left:0;color:var(--gold);font-weight:800}
+  ul.exc li::before{content:"✕";position:absolute;left:0;color:#8a5a5a;font-weight:800}
+  /* chain flow */
+  .railflow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin-top:22px;max-width:760px;margin-left:auto;margin-right:auto}
+  .railflow span{font-family:var(--disp);font-size:12.5px;font-weight:600;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:8px 12px;letter-spacing:.04em}
+  .railflow i{color:var(--gold);font-style:normal;font-size:12px}
+  .vs{display:grid;gap:14px;margin-top:24px;max-width:720px;margin-left:auto;margin-right:auto}
+  .vt{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+  .vscol.old .vt{color:var(--dim)}.vscol.new .vt{color:var(--gold)}
+  .chainflat{display:inline-block;font-family:var(--disp);font-weight:600;font-size:clamp(13px,1.8vw,16px);letter-spacing:.06em;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:13px 18px}
   .vscol.old .chainflat{color:var(--dim);border-style:dashed}
+  .vscol.new .chainflat{border-color:var(--gline);color:var(--ink)}
   /* engines */
-  .two{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:stretch;margin-top:26px;max-width:800px;margin-left:auto;margin-right:auto}
+  .two{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:stretch;margin-top:24px;max-width:820px;margin-left:auto;margin-right:auto}
   @media(max-width:640px){.two{grid-template-columns:1fr}.two .plus{display:none}}
-  .eng,.opt{border:1px solid var(--line2);border-radius:16px;padding:22px;text-align:left;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.012))}
-  .eng .et{font-family:var(--disp);font-size:18px;font-weight:600;margin-bottom:8px}
-  .eng .ed{font-size:13px;color:var(--mid);line-height:1.5}
-  .plus{display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:26px;color:var(--dim)}
+  .eng,.opt{border:1px solid var(--line2);border-radius:16px;padding:22px;text-align:left}
+  .eng .et{font-family:var(--disp);font-size:18px;font-weight:700;margin-bottom:8px}
+  .eng .ed{font-size:12.5px;color:var(--gray);line-height:1.5;letter-spacing:.02em}
+  .plus{display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:26px;color:var(--gold)}
   /* loop */
-  .loop{display:grid;gap:0;max-width:560px;margin:26px auto 0;text-align:left}
-  .lstep{display:flex;gap:16px;align-items:center;padding:12px 0}
-  .lstep .ln{flex:none;width:42px;height:42px;border-radius:50%;border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:600;font-size:15px;background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(255,255,255,.02));color:var(--ink)}
-  .lstep b{font-family:var(--disp);font-size:17px;font-weight:600;display:inline-block;min-width:118px}
-  .lstep span{color:var(--mid);font-size:14px}
-  .lconn{width:1px;height:12px;background:var(--line2);margin-left:21px}
-  .lrepeat{display:inline-flex;align-items:center;gap:8px;margin-left:8px;margin-top:8px;font-family:var(--disp);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
-  /* compare */
-  .cmp{display:grid;gap:12px;margin-top:24px;max-width:780px;margin-left:auto;margin-right:auto}
+  .loop{display:grid;gap:0;max-width:560px;margin:24px auto 0;text-align:left}
+  .lstep{display:flex;gap:16px;align-items:center;padding:11px 0}
+  .lstep .ln{flex:none;width:42px;height:42px;border-radius:50%;border:1px solid var(--gline);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:700;font-size:14px;color:var(--gold)}
+  .lstep b{font-family:var(--disp);font-size:15px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;display:inline-block;min-width:140px}
+  .lstep span{color:var(--gray);font-size:13.5px}
+  .lconn{width:1px;height:11px;background:var(--gline);margin-left:21px}
+  .lrepeat{display:inline-flex;align-items:center;gap:8px;margin-left:6px;margin-top:8px;font-family:var(--disp);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+  /* compare rows */
+  .cmp{display:grid;gap:12px;margin-top:22px;max-width:780px;margin-left:auto;margin-right:auto}
   .cr{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   @media(max-width:620px){.cr{grid-template-columns:1fr}}
-  .cr .know{font-size:14px;color:var(--dim);border:1px dashed var(--line);border-radius:12px;padding:14px 16px;text-align:left;font-style:italic}
-  .cr .boss{font-size:14px;color:var(--ink);border:1px solid var(--line2);border-radius:12px;padding:14px 16px;text-align:left;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.015))}
+  .cr .know{font-size:13.5px;color:var(--dim);border:1px dashed var(--line);border-radius:12px;padding:13px 15px;text-align:left;font-style:italic}
+  .cr .boss{font-size:13.5px;color:var(--ink);border:1px solid var(--gline);border-radius:12px;padding:13px 15px;text-align:left}
   /* timeline */
-  .tl{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:26px}
+  .tl{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px}
   @media(max-width:720px){.tl{grid-template-columns:1fr 1fr}}
-  .tc{border:1px solid var(--line);border-radius:14px;padding:16px;text-align:left;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.01))}
-  .tc .td{font-family:var(--disp);font-size:12px;color:var(--dim);letter-spacing:.06em}
-  .tc .tt{font-family:var(--disp);font-size:16px;font-weight:600;margin:5px 0 4px}
-  .tc .tp{font-size:12.5px;color:var(--mid);line-height:1.45}
-  .steps4{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:24px}
-  .steps4 .s{border:1px solid var(--line2);border-radius:12px;padding:12px 16px;min-width:140px;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.012))}
-  .steps4 .s b{font-family:var(--disp);font-size:15px;display:block}
-  .steps4 .s span{font-size:12px;color:var(--mid)}
-  /* gates */
-  .gates{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:24px}
-  .gate{font-family:var(--disp);font-size:14px;color:var(--ink);border:1px solid var(--line2);border-radius:12px;padding:12px 18px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.015));letter-spacing:.01em}
-  /* grid4 */
-  .grid4{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px;max-width:780px;margin-left:auto;margin-right:auto;text-align:left}
+  .tc{border:1px solid var(--line);border-radius:14px;padding:16px;text-align:left}
+  .tc .td{font-family:var(--disp);font-size:11.5px;color:var(--gold);letter-spacing:.06em;font-weight:700}
+  .tc .tt{font-family:var(--disp);font-size:15px;font-weight:700;margin:5px 0 4px}
+  .tc .tp{font-size:12px;color:var(--gray);line-height:1.45}
+  .steps4{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:22px}
+  .steps4 .s{border:1px solid var(--line2);border-radius:12px;padding:12px 16px;min-width:146px}
+  .steps4 .s b{font-family:var(--disp);font-size:14px;font-weight:700;display:block;letter-spacing:.1em;text-transform:uppercase}
+  .steps4 .s span{font-size:12px;color:var(--gray)}
+  .gates{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:22px}
+  .gate{font-family:var(--disp);font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);border:1px solid var(--gline);border-radius:12px;padding:12px 18px}
+  /* grid cards */
+  .grid4{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px;max-width:800px;margin-left:auto;margin-right:auto;text-align:left}
   @media(max-width:620px){.grid4{grid-template-columns:1fr}}
-  .grid4 .g{border:1px solid var(--line);border-radius:13px;padding:16px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01))}
-  .grid4 .g b{font-family:var(--disp);font-size:15px;display:block;margin-bottom:4px}
-  .grid4 .g span{font-size:13px;color:var(--mid);line-height:1.45}
-  .opt{position:relative}
-  .opt .on{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:700}
-  .opt .ot{font-family:var(--disp);font-size:19px;font-weight:600;margin:4px 0 6px}
-  .opt p{font-size:13px;color:var(--mid);line-height:1.5}
-  .opt.hot{border-color:rgba(255,255,255,.4)}
-  .opt .price{margin-top:12px;font-family:var(--disp);font-size:14px;color:var(--ink)}
+  .grid4 .g{border:1px solid var(--line);border-radius:13px;padding:16px}
+  .grid4 .g b{font-family:var(--disp);font-size:14.5px;font-weight:700;display:block;margin-bottom:4px}
+  .grid4 .g span{font-size:12.5px;color:var(--gray);line-height:1.45}
+  .opt .on{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .opt .ot{font-family:var(--disp);font-size:19px;font-weight:700;margin:4px 0 6px}
+  .opt p{font-size:12.5px;color:var(--gray);line-height:1.5}
+  .opt.hot{border-color:var(--gline)}
+  .opt .price{margin-top:12px;font-family:var(--disp);font-size:14px;font-weight:700;color:var(--gold-soft)}
   .opt .price small{color:var(--dim);font-weight:400;font-size:12px}
-  /* promise (black) */
-  .promise .p1{font-family:var(--disp);font-size:clamp(26px,4.4vw,46px);font-weight:500;letter-spacing:-1px;line-height:1.1}
+  /* comparison table */
+  .tblwrap{margin-top:20px;max-height:62vh;overflow:auto;border:1px solid var(--line);border-radius:14px}
+  table.lanes{width:100%;border-collapse:collapse;font-size:12.5px;min-width:620px}
+  table.lanes th,table.lanes td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line)}
+  table.lanes thead th{position:sticky;top:0;background:#0d0d0d;font-family:var(--disp);font-weight:700;font-size:11px;letter-spacing:.04em;color:var(--ink)}
+  table.lanes thead th.up{color:var(--gold)}
+  table.lanes td.rl{color:var(--gray);font-weight:500}
+  table.lanes td{color:var(--gray)}
+  .yes{color:var(--gold);font-weight:800}.no{color:#6a6a6a}
+  .up-col{background:rgba(212,175,55,.05)}
+  /* upgrade stack */
+  .stack{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px;max-width:800px;margin-left:auto;margin-right:auto;text-align:left}
+  @media(max-width:640px){.stack{grid-template-columns:1fr}}
+  .st{border:1px solid var(--line);border-radius:13px;padding:15px 16px}
+  .st .sh{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:7px}
+  .st ul{list-style:none;display:grid;gap:5px}
+  .st ul li{font-size:12.8px;color:var(--gray);padding-left:14px;position:relative}
+  .st ul li::before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;background:var(--gold);border-radius:50%}
+  /* pricing */
+  .prices{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px;max-width:640px;margin-left:auto;margin-right:auto}
+  @media(max-width:560px){.prices{grid-template-columns:1fr}}
+  .pc{border:1px solid var(--line2);border-radius:16px;padding:22px;text-align:left}
+  .pc.legacy{border-color:var(--gline)}
+  .pc .pl{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);font-weight:700}
+  .pc .pt{font-family:var(--disp);font-size:16px;font-weight:700;margin:4px 0 8px}
+  .pc .pp{font-family:var(--disp);font-size:34px;font-weight:800}
+  .pc.legacy .pp{color:var(--gold-soft)}
+  /* vertical flow */
+  .vflow{display:grid;gap:0;max-width:430px;margin:20px auto 0;text-align:center}
+  .vf{font-size:13.5px;color:var(--ink);border:1px solid var(--line);border-radius:11px;padding:11px 14px}
+  .vf b{font-family:var(--disp);font-weight:700}
+  .vf.sub{color:var(--gray);font-size:12.5px;border-style:dashed}
+  .vf.gold{border-color:var(--gline);color:var(--gold-soft)}
+  .va{color:var(--gold);font-size:13px;margin:4px 0}
+  /* three choices */
+  .choices{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px;text-align:left}
+  @media(max-width:760px){.choices{grid-template-columns:1fr}}
+  .ch{border:1px solid var(--line);border-radius:14px;padding:18px}
+  .ch.mid{border-color:var(--gline)}
+  .ch .cn{font-family:var(--disp);font-size:11px;letter-spacing:.1em;color:var(--gold);font-weight:700}
+  .ch .ct{font-family:var(--disp);font-size:16px;font-weight:700;margin:6px 0 2px}
+  .ch .cp{font-size:11.5px;color:var(--gray);line-height:1.45;margin-top:6px}
+  .ch .cprice{font-family:var(--disp);font-size:13px;color:var(--gold-soft);font-weight:700;margin-top:6px}
+  .ch .cline{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--gold-soft);margin-top:8px}
+  .promise .p1{font-family:var(--disp);font-size:clamp(26px,4.4vw,46px);font-weight:600;letter-spacing:-1px;line-height:1.12}
   .promise .p1 .dim{color:var(--dim)}
-  .promise .p2{font-family:var(--disp);font-size:clamp(30px,5.2vw,58px);font-weight:700;letter-spacing:-1.6px;line-height:1.05;margin-top:18px}
-  .promise .tagline{margin-top:28px}
-  /* cta */
-  .cta-btn{display:inline-block;margin-top:30px;padding:16px 34px;border-radius:13px;border:1px solid var(--line2);color:#060608;font-family:var(--disp);font-weight:600;font-size:17px;cursor:pointer;text-decoration:none;background:linear-gradient(180deg,#ffffff,#d3d3d9);box-shadow:0 10px 36px rgba(255,255,255,.1)}
-  /* nav */
-  .nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-top:1px solid var(--line);background:rgba(6,6,8,.6);backdrop-filter:blur(10px)}
-  .nbtn{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border:1px solid var(--line2);color:var(--mid);border-radius:10px;width:42px;height:42px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .12s,color .12s}
-  .nbtn:hover{border-color:#fff;color:#fff}
+  .promise .p2{font-family:var(--disp);font-size:clamp(30px,5.2vw,56px);font-weight:800;letter-spacing:-1.6px;line-height:1.05;margin-top:16px}
+  .cta-btn{display:inline-block;margin-top:28px;padding:16px 34px;border-radius:13px;border:0;color:#120d02;font-family:var(--disp);font-weight:700;font-size:17px;cursor:pointer;text-decoration:none;background:linear-gradient(180deg,#f3e2a6,#D4AF37);box-shadow:0 10px 36px rgba(212,175,55,.18)}
+  .disc{margin-top:16px;font-size:10.5px;color:var(--dim);letter-spacing:.02em;max-width:620px;margin-left:auto;margin-right:auto}
+  .nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-top:1px solid var(--line);background:rgba(8,8,8,.62);backdrop-filter:blur(10px)}
+  .nbtn{background:transparent;border:1px solid var(--line2);color:var(--gray);border-radius:10px;width:42px;height:42px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .12s,color .12s}
+  .nbtn:hover{border-color:var(--gold);color:var(--gold-soft)}
   .nbtn:disabled{opacity:.3;cursor:default}
-  .count{font-size:12.5px;color:var(--dim);letter-spacing:.06em}
-  .count b{color:var(--ink);font-family:var(--disp);font-size:15px}
-  .dots{display:flex;gap:6px;align-items:center}
-  .dot{width:6px;height:6px;border-radius:50%;background:var(--line2);cursor:pointer;transition:background .15s,transform .15s}
-  .dot.on{background:#fff;transform:scale(1.4)}
-  @media(max-width:720px){.dots{display:none}}
-  .zone{position:fixed;top:56px;bottom:74px;width:22%;z-index:20;cursor:pointer}.zone.l{left:0}.zone.r{right:0}
-  .hint{position:fixed;bottom:76px;left:50%;translate:-50% 0;font-size:10.5px;color:#3a3a3e;z-index:25;letter-spacing:.08em}
+  .count{font-size:12.5px;color:var(--dim);letter-spacing:.06em}.count b{color:var(--ink);font-family:var(--disp);font-size:15px}
+  .dots{display:flex;gap:5px;align-items:center}.dot{width:6px;height:6px;border-radius:50%;background:var(--line2);cursor:pointer;transition:.15s}.dot.on{background:var(--gold);transform:scale(1.35)}
+  @media(max-width:760px){.dots{display:none}}
+  .zone{position:fixed;top:56px;bottom:74px;width:20%;z-index:20;cursor:pointer}.zone.l{left:0}.zone.r{right:0}
+  .hint{position:fixed;bottom:76px;left:50%;translate:-50% 0;font-size:10px;color:#3a3a36;z-index:25;letter-spacing:.08em}
 </style>
 </head>
 <body>
@@ -137,44 +180,37 @@
   <div class="zone l" id="zl"></div><div class="zone r" id="zr"></div>
   <div class="stage" id="stage"></div>
   <div class="hint">← → · click sides · swipe</div>
-  <div class="nav">
-    <button class="nbtn" id="prev">‹</button>
-    <div class="dots" id="dots"></div>
-    <div class="count"><b id="cur">1</b> / <span id="tot">18</span></div>
-    <button class="nbtn" id="next">›</button>
-  </div>
+  <div class="nav"><button class="nbtn" id="prev">‹</button><div class="dots" id="dots"></div><div class="count"><b id="cur">1</b> / <span id="tot">25</span></div><button class="nbtn" id="next">›</button></div>
 
 <script>
 var SLIDES=[
  {html:'<span class="kick">BreedWise presents</span>'
-   +'<div class="wordmark metal">BOSS<span class="tm">™</span></div>'
+   +'<div class="wordmark gold">BOSS<span class="tm">™</span></div>'
    +'<div class="full">BreedWise Operating System &amp; Standards</div>'
-   +'<div class="tagline">Better Breeding · Better Business · Stronger Programs</div>'},
+   +'<div class="tagline serif gold">Better Breeding. Better Business. Stronger Programs.</div>'},
 
- {html:'<div class="inner"><span class="kick">Why we built it</span>'
-   +'<h1>Information was never the <span class="metal">end goal</span>.</h1>'
-   +'<p class="lead">Breeders don\'t need another folder of videos. They need to know:</p>'
-   +'<ul class="pts"><li>What needs attention?</li><li>What should I do first?</li><li>What system solves it?</li><li>Did I actually implement it?</li><li>Is it working?</li></ul>'
-   +'<div class="big-line">Knowing <span class="neq">&ne;</span> <span class="metal">Implementing</span></div></div>'},
+ {html:'<span class="kick">Why we built it</span>'
+   +'<div class="huge">KNOWING <span class="neq">&ne;</span><br>IMPLEMENTING.</div>'
+   +'<p class="foot" style="margin-top:34px">Breeders don\'t need another folder of videos. They need to know what deserves attention, what to do first, what system solves it, whether they implemented it, and whether it\'s working.</p>'},
 
- {html:'<div class="inner"><span class="kick">The evolution</span>'
-   +'<h1>BreedWise has <span class="metal">evolved</span>.</h1>'
-   +'<div class="vs"><div class="vscol old"><div class="vt">The old model</div><div class="chainflat">Learn → Learn → Learn → Ask → Learn more</div></div>'
-   +'<div class="vscol new"><div class="vt">The BOSS model</div><div class="chainflat metalborder">Assess → Prioritize → Implement → Measure → Reassess</div></div></div>'
-   +'<p class="foot">Education still matters. BOSS isn\'t organized around how much information we can give you — it\'s organized around how much of the <b style="color:var(--ink)">right</b> information you actually turn into a stronger program.</p></div>'},
+ {html:'<span class="kick">The evolution</span>'
+   +'<h1>BreedWise has <span class="gold">evolved</span>.</h1>'
+   +'<div class="vs"><div class="vscol old"><div class="vt">The old model</div><div class="chainflat">LEARN → LEARN → LEARN → ASK → LEARN MORE</div></div>'
+   +'<div class="vscol new"><div class="vt">The BOSS model</div><div class="chainflat">ASSESS → PRIORITIZE → IMPLEMENT → MEASURE → REASSESS</div></div></div>'
+   +'<p class="foot">Education still matters. BOSS isn\'t organized around how much information we can give you. It\'s organized around how much of the <b>right</b> information you actually turn into a stronger program.</p>'},
 
- {html:'<div class="inner"><span class="kick">What it is</span>'
-   +'<h1>An operating system for your <span class="metal">breeding program</span>.</h1>'
+ {html:'<span class="kick">What it is</span>'
+   +'<h1>An operating system for your <span class="gold">breeding program</span>.</h1>'
    +'<div class="pills"><span class="pill">Breeding</span><span class="pill">Business</span><span class="pill">Systems</span><span class="pill">Standards</span><span class="pill">Measurement</span><span class="pill">Implementation</span></div>'
-   +'<p class="foot big" style="margin-top:30px">Your breeding program shouldn\'t live entirely <span class="metal">in your head</span>.</p></div>'},
+   +'<p class="editorial gold" style="margin-top:28px">Your breeding program shouldn\'t live entirely in your head.</p>'},
 
- {html:'<div class="inner"><span class="kick">One program. Two engines.</span>'
+ {html:'<span class="kick">One program. Two engines.</span>'
    +'<div class="two"><div class="eng"><div class="et">Breeding Engine</div><div class="ed">Science · Preparation · Systems · Records · Standards</div></div>'
    +'<div class="plus">+</div>'
    +'<div class="eng"><div class="et">Business Engine</div><div class="ed">Positioning · Demand · Buyers · Sales · Economics · Operations</div></div></div>'
-   +'<p class="foot">BOSS doesn\'t treat these like two separate businesses. We build the system that lets them work <b style="color:var(--ink)">together</b>.</p></div>'},
+   +'<p class="foot">BOSS doesn\'t treat these like two separate businesses. We build the system that lets them work <b>together</b>.</p>'},
 
- {html:'<div class="inner"><span class="kick">The BOSS™ Loop</span>'
+ {html:'<span class="kick">The BOSS™ Loop</span>'
    +'<div class="loop">'
    +'<div class="lstep"><span class="ln">01</span><div><b>Assess</b><span>Where are you now?</span></div></div><div class="lconn"></div>'
    +'<div class="lstep"><span class="ln">02</span><div><b>Prioritize</b><span>What matters most?</span></div></div><div class="lconn"></div>'
@@ -182,77 +218,140 @@ var SLIDES=[
    +'<div class="lstep"><span class="ln">04</span><div><b>Measure</b><span>Is it actually working?</span></div></div><div class="lconn"></div>'
    +'<div class="lstep"><span class="ln">05</span><div><b>Reassess</b><span>What\'s the next constraint?</span></div></div>'
    +'<div class="lrepeat">&#8635; Repeat</div></div>'
-   +'<p class="foot big">Your breeding program is never &ldquo;finished.&rdquo; It becomes <span class="metal">better operated</span>.</p></div>'},
+   +'<p class="editorial gold">Your program is never &ldquo;finished.&rdquo; It becomes better operated.</p>'},
 
- {html:'<div class="inner"><span class="kick">This changes how we teach</span>'
-   +'<h1>No more <span class="metal">random</span> implementation.</h1>'
-   +'<div class="railflow"><span>Problem</span><i>→</i><span>Standard</span><i>→</i><span>System</span><i>→</i><span>Training</span><i>→</i><span>Tool</span><i>→</i><span>Implementation</span><i>→</i><span>Measurement</span><i>→</i><span>Definition of done</span></div>'
-   +'<p class="foot">If we teach you something, you\'ll know why it matters, what to do with it, what tool supports it, and how to know when you\'ve actually implemented it.</p></div>'},
+ {html:'<span class="kick">This changes how we teach</span>'
+   +'<h1>No more <span class="gold">random</span> implementation.</h1>'
+   +'<div class="railflow"><span>PROBLEM</span><i>→</i><span>STANDARD</span><i>→</i><span>SYSTEM</span><i>→</i><span>TRAINING</span><i>→</i><span>TOOL</span><i>→</i><span>IMPLEMENTATION</span><i>→</i><span>MEASUREMENT</span><i>→</i><span>DEFINITION OF DONE</span></div>'
+   +'<p class="foot">If we teach you something, you\'ll know why it matters, what to do with it, what tool supports it, and how to know when you\'ve actually implemented it.</p>'},
 
- {html:'<div class="inner"><span class="kick">Build vs. know</span>'
+ {html:'<span class="kick">Build vs. know</span>'
    +'<div class="cmp">'
    +'<div class="cr"><div class="know">&ldquo;I know I need a better follow-up process.&rdquo;</div><div class="boss">My follow-up process is documented, configured, used and measured.</div></div>'
    +'<div class="cr"><div class="know">&ldquo;I know I should track my litter numbers.&rdquo;</div><div class="boss">My numbers are recorded consistently and I use them to make decisions.</div></div>'
-   +'<div class="cr"><div class="know">&ldquo;I know preparation matters.&rdquo;</div><div class="boss">My preparation system exists before I need it.</div></div>'
-   +'</div><div class="big-line">Knowledge is potential. <span class="metal">Implementation is the asset.</span></div></div>'},
+   +'<div class="cr"><div class="know">&ldquo;I know preparation matters.&rdquo;</div><div class="boss">My preparation system exists before I need it.</div></div></div>'
+   +'<div class="big-line">KNOWLEDGE IS POTENTIAL.</div><div class="editorial gold">Implementation is the asset.</div></div>'},
 
- {html:'<div class="inner"><span class="kick">The build phase</span>'
-   +'<h1>120 days to <span class="metal">build</span>.</h1>'
-   +'<div class="tl">'
-   +'<div class="tc"><div class="td">Days 1–30</div><div class="tt">Assess + Prioritize</div><div class="tp">Know the baseline. Find the constraints. Build the roadmap.</div></div>'
-   +'<div class="tc"><div class="td">Days 31–60</div><div class="tt">Build + Implement</div><div class="tp">Put the priority systems into operation.</div></div>'
-   +'<div class="tc"><div class="td">Days 61–90</div><div class="tt">Implement + Measure</div><div class="tp">Use them. Track them. Find the friction.</div></div>'
-   +'<div class="tc"><div class="td">Days 91–120</div><div class="tt">Optimize + Reassess</div><div class="tp">Review what works. Close gaps. Set the next priorities.</div></div></div>'
-   +'<p class="foot">New BOSS enrollments: this is the core implementation phase. As a legacy Academy member, this is simply the architecture BreedWise now organizes around.</p></div>'},
+ {html:'<span class="kick">The build phase</span>'
+   +'<div class="huge">120 DAYS<br>TO BUILD.</div>'
+   +'<div class="tl" style="margin-top:30px">'
+   +'<div class="tc"><div class="td">DAYS 1–30</div><div class="tt">Assess + Prioritize</div><div class="tp">Baseline. Constraints. Roadmap.</div></div>'
+   +'<div class="tc"><div class="td">DAYS 31–60</div><div class="tt">Build + Implement</div><div class="tp">Put priority systems into operation.</div></div>'
+   +'<div class="tc"><div class="td">DAYS 61–90</div><div class="tt">Implement + Measure</div><div class="tp">Use them. Track them. Find friction.</div></div>'
+   +'<div class="tc"><div class="td">DAYS 91–120</div><div class="tt">Optimize + Reassess</div><div class="tp">Close gaps. Set next priorities.</div></div></div></div>'},
 
- {html:'<div class="inner"><span class="kick">The proof phase</span>'
-   +'<h1>120 days to build. <span class="metal">12 months to prove.</span></h1>'
-   +'<div class="steps4"><div class="s"><b>Build it</b><span>System exists.</span></div><div class="s"><b>Use it</b><span>System becomes operational.</span></div><div class="s"><b>Measure it</b><span>Evidence exists.</span></div><div class="s"><b>Prove it</b><span>Standards demonstrated over time.</span></div></div>'
-   +'<p class="foot">Building something once doesn\'t prove it\'s how you operate.</p></div>'},
+ {html:'<span class="kick">The proof phase</span>'
+   +'<div class="huge">120 TO BUILD.</div><div class="small-gold">12 MONTHS TO PROVE.</div>'
+   +'<div class="steps4" style="margin-top:28px"><div class="s"><b>Build it</b><span>System exists.</span></div><div class="s"><b>Use it</b><span>It becomes operational.</span></div><div class="s"><b>Measure it</b><span>Evidence exists.</span></div><div class="s"><b>Prove it</b><span>Standards, demonstrated over time.</span></div></div>'
+   +'<p class="editorial gold">Building something once doesn\'t prove it\'s how you operate.</p></div>'},
 
- {html:'<div class="inner"><span class="kick">Certification</span>'
-   +'<h1>Certification should <span class="metal">mean something</span>.</h1>'
+ {html:'<span class="kick">Certification</span>'
+   +'<h1>Certification should <span class="gold">mean something</span>.</h1>'
    +'<p class="lead strike">Paid → Watched videos → Got a badge.</p>'
    +'<div class="gates"><span class="gate">Knowledge</span><span class="gate">Verification</span><span class="gate">Implementation</span><span class="gate">Audit</span></div>'
-   +'<p class="foot">The direction we\'re taking certification is standards-based — it should demonstrate how a program operates, not how long someone has been paying us. If you\'re already an Academy member, your existing certification eligibility stays governed by your Academy enrollment. We\'re not moving the goalposts.</p></div>'},
+   +'<p class="foot">Standards-based: it demonstrates how a program operates, not how long someone has paid us. If you\'re already an Academy member, your existing certification eligibility stays governed by your Academy enrollment. <b>We\'re not moving the goalposts.</b></p></div>'},
 
- {html:'<div class="inner"><span class="kick">For Academy members</span>'
-   +'<h1 class="metal">You\'re grandfathered in.</h1>'
-   +'<div class="grid4">'
-   +'<div class="g"><b>Your Academy doesn\'t disappear.</b><span>Your existing term and applicable commitments remain in place.</span></div>'
-   +'<div class="g"><b>You get BOSS Legacy Access.</b><span>Access to the BOSS curriculum &amp; applicable resources through the remainder of your current term.</span></div>'
-   +'<div class="g"><b>BOSS is a separate offer.</b><span>New BOSS enrollments operate under a separate offer, scope and agreement.</span></div>'
-   +'<div class="g"><b>Nothing automatically converts.</b><span>When your term ends, you decide. Nothing auto-renews.</span></div></div></div>'},
+ /* ===== TRANSITION ===== */
+ {html:'<span class="kick">Before we go further</span>'
+   +'<h1>Academy is <span class="gold">not</span> being renamed BOSS.</h1>'
+   +'<p class="lead">Getting access to the BOSS curriculum does <b style="color:var(--ink)">not</b> mean you\'ve automatically been enrolled into the new BOSS Implementation offer. You\'re grandfathered into access because you\'re already an Academy member, and your existing Academy agreement stays intact.</p>'
+   +'<p class="editorial gold">Access to the system is not the same as buying the build.</p></div>'},
 
- {html:'<div class="inner"><span class="kick">What Legacy Access includes</span>'
-   +'<h1>BOSS <span class="metal">Legacy Access</span>.</h1>'
-   +'<ul class="pts"><li>BOSS curriculum releases</li><li>BOSS tools + templates</li><li>BOSS standards &amp; frameworks</li><li>Applicable Academy / BOSS group education</li><li>Access through your current Academy term</li></ul>'
-   +'<p class="foot">Legacy Access does not automatically create a new 120-day BOSS enrollment, or add deliverables that were not included in your existing Academy agreement.</p></div>'},
+ {html:'<div class="inner"><span class="kick">Three lanes · no confusion</span>'
+   +'<h1 style="font-size:clamp(24px,4vw,40px)">What each member actually gets</h1>'
+   +'<div class="tblwrap"><table class="lanes"><thead><tr><th></th><th>Academy Legacy</th><th class="up">BOSS Implementation Upgrade</th><th>BOSS Continuation</th></tr></thead><tbody>'
+   +'<tr><td class="rl">Cost</td><td>No additional</td><td class="up-col">Paid upgrade</td><td>$297 / mo</td></tr>'
+   +'<tr><td class="rl">Duration</td><td>Through Academy term*</td><td class="up-col">Fresh 120 days</td><td>Month-to-month</td></tr>'
+   +'<tr><td class="rl">BOSS curriculum + tools</td><td class="yes">✓</td><td class="up-col yes">✓</td><td class="yes">✓</td></tr>'
+   +'<tr><td class="rl">Community + group support</td><td class="yes">✓</td><td class="up-col yes">✓</td><td class="yes">✓</td></tr>'
+   +'<tr><td class="rl">Personalized 120-day roadmap</td><td class="no">—</td><td class="up-col yes">✓</td><td>Updated roadmaps</td></tr>'
+   +'<tr><td class="rl">Jennifer as BOSS PM</td><td class="no">—</td><td class="up-col yes">✓</td><td>Member Success</td></tr>'
+   +'<tr><td class="rl">Private implementation channel</td><td class="no">—</td><td class="up-col yes">✓</td><td class="no">—</td></tr>'
+   +'<tr><td class="rl">Monthly Austin 1:1 (×4)</td><td class="no">—</td><td class="up-col yes">✓</td><td class="no">—</td></tr>'
+   +'<tr><td class="rl">Website build</td><td class="no">—</td><td class="up-col yes">✓</td><td class="no">—</td></tr>'
+   +'<tr><td class="rl">CRM + lead-mgmt setup</td><td class="no">—</td><td class="up-col yes">✓</td><td class="no">—</td></tr>'
+   +'<tr><td class="rl">30/60/90/120 reviews</td><td class="no">—</td><td class="up-col yes">✓</td><td>Periodic reassess</td></tr>'
+   +'<tr><td class="rl">Implementation Report</td><td class="no">—</td><td class="up-col yes">✓</td><td class="no">—</td></tr>'
+   +'<tr><td class="rl">Automatic conversion</td><td class="no">—</td><td class="up-col no">—</td><td>Opt-in only</td></tr>'
+   +'</tbody></table></div><p class="disc">*Minimum transition window applies if a term expires shortly after launch. Draft: pending counsel review of legacy agreement language.</p></div>'},
 
- {html:'<div class="inner"><span class="kick">At the end of your term</span>'
-   +'<h1 class="metal">You choose.</h1>'
+ {html:'<span class="kick">What you\'re getting</span>'
+   +'<h1>As an Academy member, you get <span class="gold">BOSS Legacy Access</span>.</h1>'
+   +'<ul class="inc"><li>New BOSS curriculum as it\'s released</li><li>BOSS frameworks and standards</li><li>Applicable BOSS tools, templates and resources</li><li>Your existing Academy community, calls &amp; support</li><li>Existing expert education included in Academy</li><li>Access through your existing term / defined transition window</li></ul>'
+   +'<p class="editorial gold">We\'re not taking anything away. We\'re adding the new system to your experience.</p>'},
+
+ {html:'<span class="kick">The most important distinction</span>'
+   +'<div class="huge">ACCESS <span class="neq">&ne;</span><br>IMPLEMENTATION.</div>'
+   +'<p class="foot" style="margin-top:26px"><b>Legacy Access does not automatically include:</b></p>'
+   +'<ul class="exc" style="margin-top:12px"><li>A new 120-day BOSS Implementation enrollment</li><li>A newly built BreedWise website</li><li>CRM + lead-management configuration</li><li>Done-with-you system configuration</li><li>A private BOSS implementation channel</li><li>Four private Austin strategy sessions</li><li>Dedicated BOSS project management with Jennifer</li><li>Private expert sessions beyond your Academy scope</li><li>BOSS 30/60/90/120 reviews or a personalized Implementation Report</li></ul>'
+   +'<p class="editorial gold">You\'re getting the operating system, not the service that builds it for you.</p>'},
+
+ {html:'<span class="kick">So what is the upgrade?</span>'
+   +'<div class="wordmark gold" style="font-size:clamp(40px,8vw,84px);letter-spacing:-3px">BOSS IMPLEMENTATION™</div>'
+   +'<div class="small-gold">120 DAYS TO BUILD · WE BUILD IT WITH YOU</div>'
+   +'<div class="stack" style="margin-top:22px">'
+   +'<div class="st"><div class="sh">Personalized</div><ul><li>BOSS Baseline Assessment</li><li>120-Day Implementation Pathway</li><li>Priorities + milestones + KPIs</li></ul></div>'
+   +'<div class="st"><div class="sh">Built + configured</div><ul><li>BreedWise website</li><li>CRM + lead-management</li><li>Workflows &amp; progress dashboard</li></ul></div>'
+   +'<div class="st"><div class="sh">High-touch implementation</div><ul><li>Private implementation channel</li><li>Jennifer as project manager</li><li>4 monthly Austin 1:1s</li><li>Private vet / scientific session</li><li>30/60/90/120 reviews</li></ul></div>'
+   +'<div class="st"><div class="sh">Measured</div><ul><li>KPI tracking</li><li>Day-120 reassessment</li><li>BOSS Implementation Report</li><li>Next BOSS Roadmap</li></ul></div></div></div>'},
+
+ {cls:'pure',html:'<div class="inner promise">'
+   +'<div class="p1">Legacy Access = <span class="gold">you get the system.</span></div>'
+   +'<div class="p2 gold">Upgrade = we help you build it.</div></div>'},
+
+ {html:'<span class="kick">The upgrade</span>'
+   +'<h1>Academy → <span class="gold">BOSS Implementation</span> upgrade</h1>'
+   +'<div class="prices"><div class="pc"><div class="pl">New customer</div><div class="pt">BOSS Implementation</div><div class="pp">$6,000</div></div>'
+   +'<div class="pc legacy"><div class="pl">Current Academy member</div><div class="pt">Implementation Upgrade</div><div class="pp">+$3,000</div></div></div>'
+   +'<p class="foot">You already bought much of the education, community and tools that overlap with BOSS. The upgrade charges only for the incremental high-touch implementation layer, not for everything again.</p>'
+   +'<p class="disc">Pricing is a strategic recommendation, not supported by the existing agreement. Existing Academy payment obligations stay governed by the existing agreement unless counsel drafts a signed amendment. Lock after confirming fulfillment economics.</p></div>'},
+
+ {html:'<span class="kick">What happens if I upgrade?</span>'
+   +'<div class="vflow">'
+   +'<div class="vf">Today · <b>Academy member</b></div><div class="va">↓</div>'
+   +'<div class="vf gold">Opt in + sign BOSS agreement</div><div class="va">↓</div>'
+   +'<div class="vf"><b>Day 1</b> · new BOSS Baseline</div><div class="va">↓</div>'
+   +'<div class="vf sub">Days 1–30 Assess · 31–60 Build · 61–90 Measure · 91–120 Optimize</div><div class="va">↓</div>'
+   +'<div class="vf"><b>Day 120</b> · Implementation Report + Next Roadmap</div><div class="va">↓</div>'
+   +'<div class="vf gold">Then you choose: conclude, or continue at $297/mo</div></div>'
+   +'<p class="foot">A fresh 120-day clock from your upgrade date. We don\'t count prior Academy months as if you already received the new implementation deliverables.</p></div>'},
+
+ {html:'<span class="kick">What if I don\'t upgrade?</span>'
+   +'<div class="huge">NOTHING BAD<br>HAPPENS.</div>'
+   +'<ul class="inc" style="margin-top:26px"><li>You remain an Academy member; your agreement continues</li><li>You keep receiving everything Academy promised</li><li>You receive BOSS Legacy Access as defined</li><li>You can use the new curriculum, frameworks and applicable tools</li><li>You are <b>not required</b> to upgrade</li></ul>'
+   +'<p class="editorial gold">BOSS isn\'t a fee added to Academy. It\'s a separate option for members who want us more directly involved.</p>'},
+
+ {html:'<span class="kick">When my Academy term ends</span>'
+   +'<h1>Two paths. <span class="gold">You choose.</span></h1>'
    +'<div class="two" style="grid-template-columns:1fr 1fr">'
-   +'<div class="opt"><div class="on">Option 1</div><div class="ot">Conclude</div><p>Complete your existing Academy term and conclude your active membership.</p></div>'
-   +'<div class="opt hot"><div class="on">Option 2</div><div class="ot">BOSS Continuation</div><p>Operate · Optimize · Prove — ongoing curriculum, community, group coaching, tools, reassessments, updated roadmaps &amp; the applicable certification pathway.</p><div class="price">$297<small> / month</small> · opt-in · no automatic conversion</div></div></div></div>'},
+   +'<div class="opt"><div class="on">Path 1</div><div class="ot">Conclude</div><p>Your Academy term ends per your agreement. No automatic BOSS charge. No automatic $297 subscription.</p></div>'
+   +'<div class="opt hot"><div class="on">Path 2</div><div class="ot">Continue · BOSS Continuation</div><p>Operate · Optimize · Prove. Ongoing curriculum, community, group coaching, tools, Member Success, reassessments, updated roadmaps &amp; applicable certification pathway.</p><div class="price">$297<small> / month · opt-in</small></div></div></div></div>'},
 
- {html:'<div class="inner"><span class="kick">How we operate</span>'
-   +'<h1>Less consumption. <span class="metal">More implementation.</span></h1>'
-   +'<ol class="pts"><li>Understand the standard.</li><li>Identify whether you have the gap.</li><li>Use the tool / system.</li><li>Implement it in your program.</li><li>Document what you\'ve done.</li><li>Measure whether it\'s working.</li></ol>'
-   +'<div class="big-line">Don\'t ask &ldquo;Did I watch it?&rdquo; Ask <span class="metal">&ldquo;Did I implement it?&rdquo;</span></div></div>'},
+ {html:'<span class="kick">Certification</span>'
+   +'<h1>We are <span class="gold">not</span> moving the goalposts.</h1>'
+   +'<div class="grid4" style="grid-template-columns:1fr 1fr 1fr">'
+   +'<div class="g"><b>Existing Academy members</b><span>Your certification eligibility stays governed by the Academy terms applicable to your enrollment.</span></div>'
+   +'<div class="g"><b>New BOSS members</b><span>BOSS certification follows the new BOSS standards and eligibility requirements.</span></div>'
+   +'<div class="g"><b>Academy member who upgrades</b><span>The BOSS agreement states how prior Academy participation is credited and which track governs going forward.</span></div></div>'
+   +'<p class="disc">The third category is defined explicitly in the upgrade agreement, not left ambiguous.</p></div>'},
 
- {html:'<div class="inner"><span class="kick">Your first assignment</span>'
-   +'<h1>Build your <span class="metal">BOSS Baseline</span>.</h1>'
-   +'<ul class="pts"><li>Where is my program today?</li><li>What\'s already working?</li><li>What\'s currently held together by me?</li><li>What isn\'t documented?</li><li>What do I know I should be doing but haven\'t implemented?</li><li>What\'s the <b>one</b> system that would make the biggest difference right now?</li></ul></div>'},
+ {html:'<div class="inner"><span class="kick">The simplest summary</span>'
+   +'<h1>Three choices. <span class="gold">No confusion.</span></h1>'
+   +'<div class="choices">'
+   +'<div class="ch"><div class="cn">01 · Stay in Academy</div><div class="ct">$0 additional</div><div class="cp">Keep your existing membership. Receive BOSS Legacy Access through the applicable period.</div></div>'
+   +'<div class="ch mid"><div class="cn">02 · Upgrade to BOSS Implementation</div><div class="ct">Paid upgrade</div><div class="cp">Start a new 120-day personalized implementation journey.</div><div class="cline">We help you build it.</div></div>'
+   +'<div class="ch"><div class="cn">03 · Continue after your term</div><div class="ct">$297 / month · opt-in</div><div class="cp">Ongoing support, optimization, measurement and standards.</div><div class="cline">We help you operate &amp; prove it.</div></div></div>'
+   +'<div class="big-line" style="font-size:clamp(20px,3vw,30px);margin-top:26px">Nothing automatically converts. <span class="gold">You choose what\'s next.</span></div></div>'},
 
  {cls:'pure',html:'<div class="inner promise">'
    +'<div class="p1">We\'re not building more breeders who <span class="dim">know more</span>.</div>'
-   +'<div class="p2 metal">We\'re building better-operated breeding programs.</div>'
-   +'<div class="tagline">Better Breeding · Better Business · Stronger Programs</div></div>'},
+   +'<div class="p2 gold">We\'re building better-operated breeding programs.</div>'
+   +'<div class="tagline serif gold" style="margin-top:26px;font-size:clamp(17px,2.4vw,24px)">Better Breeding. Better Business. Stronger Programs.</div></div>'},
 
- {html:'<div class="inner"><span class="kick">Your next step</span>'
-   +'<h1>Complete your <span class="metal">BOSS Baseline</span>.</h1>'
-   +'<p class="lead">Over the coming weeks we\'ll release BOSS piece by piece. Don\'t rush ahead — don\'t try to rebuild your whole program this week. Assess where you are, find the priority, and we build from there.</p>'
-   +'<div class="big-line">120 days to build. 12 months to prove.</div>'
+ {html:'<span class="kick">Your next step</span>'
+   +'<h1>Complete your <span class="gold">BOSS Baseline</span>.</h1>'
+   +'<p class="lead">Over the coming weeks we\'ll release BOSS piece by piece. Don\'t rush ahead. Assess where you are, find the priority, and we build from there.</p>'
+   +'<div class="editorial gold" style="margin-top:22px">120 days to build. 12 months to prove.</div>'
    +'<a class="cta-btn" href="scorecard.html">Start your baseline →</a></div>'}
 ];
 
@@ -261,7 +360,7 @@ var stage=document.getElementById('stage'),dots=document.getElementById('dots');
 document.getElementById('tot').textContent=SLIDES.length;
 function render(){
   stage.innerHTML=SLIDES.map(function(s,n){
-    return '<div class="slide'+(s.cls?' '+s.cls:'')+(n===0?' on':'')+'" data-n="'+n+'">'+ (/^\s*<div class="inner"/.test(s.html)?s.html:'<div class="inner">'+s.html+'</div>') +'</div>';
+    return '<div class="slide'+(s.cls?' '+s.cls:'')+(n===0?' on':'')+'" data-n="'+n+'">'+ (/^\s*<div class="inner/.test(s.html)?s.html:'<div class="inner">'+s.html+'</div>') +'</div>';
   }).join('');
   dots.innerHTML=SLIDES.map(function(_,n){return '<span class="dot'+(n===0?' on':'')+'" data-g="'+n+'"></span>';}).join('');
   Array.prototype.forEach.call(dots.querySelectorAll('.dot'),function(d){d.addEventListener('click',function(){go(+d.getAttribute('data-g'));});});
@@ -276,19 +375,19 @@ function update(){
   document.getElementById('prev').disabled=(i===0);
   document.getElementById('next').disabled=(i===SLIDES.length-1);
 }
-function go(n){i=Math.max(0,Math.min(SLIDES.length-1,n));update();}
+function go(n){i=Math.max(0,Math.min(SLIDES.length-1,n));update();var sl=stage.querySelector('.slide.on');if(sl)sl.scrollTop=0;}
 document.getElementById('next').onclick=function(){go(i+1);};
 document.getElementById('prev').onclick=function(){go(i-1);};
 document.getElementById('zr').onclick=function(){go(i+1);};
 document.getElementById('zl').onclick=function(){go(i-1);};
 document.addEventListener('keydown',function(e){
-  if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(i+1);}
+  if(e.key==='ArrowRight'||e.key==='PageDown'){e.preventDefault();go(i+1);}
   else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(i-1);}
   else if(e.key==='Home'){go(0);} else if(e.key==='End'){go(SLIDES.length-1);}
 });
 var tx=0;
 document.addEventListener('touchstart',function(e){tx=e.changedTouches[0].clientX;},{passive:true});
-document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){dx<0?go(i+1):go(i-1);}},{passive:true});
+document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>60){dx<0?go(i+1):go(i-1);}},{passive:true});
 render();
 </script>
 </body>
