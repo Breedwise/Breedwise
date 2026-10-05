@@ -23,7 +23,11 @@
   .serif{font-family:var(--serif);font-style:italic;font-weight:600}
   .top{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:15px 24px;border-bottom:1px solid var(--line);background:rgba(8,8,8,.62);backdrop-filter:blur(10px)}
   .brand{font-family:var(--disp);font-size:13px;letter-spacing:.26em;font-weight:800;color:var(--ink)}
+  .topR{display:flex;align-items:center;gap:14px}
   .topmod{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .ntog{font-family:var(--disp);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:700;border:1px solid var(--line);border-radius:7px;padding:5px 9px;cursor:pointer;background:transparent}
+  .ntog:hover{color:var(--gold);border-color:var(--gline)}
+  body.notes-on .ntog{color:var(--gold);border-color:var(--gline)}
   .prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold-deep),var(--gold-soft));width:0;z-index:40;transition:width .4s ease}
   .stage{position:absolute;inset:0}
   .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:84px 30px 96px;opacity:0;transform:translateY(16px) scale(.995);transition:opacity .5s cubic-bezier(.2,.7,.2,1),transform .5s cubic-bezier(.2,.7,.2,1);pointer-events:none}
@@ -31,35 +35,27 @@
   .inner{max-width:940px;width:100%}
   .kick{display:inline-block;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:22px}
   h1{font-family:var(--disp);font-weight:800;font-size:clamp(30px,5.4vw,58px);line-height:1.05;letter-spacing:-1.2px}
-  .huge{font-family:var(--disp);font-weight:800;font-size:clamp(42px,9vw,112px);line-height:.98;letter-spacing:-3px}
+  .huge{font-family:var(--disp);font-weight:800;font-size:clamp(40px,8.4vw,104px);line-height:.98;letter-spacing:-3px}
   .lead{margin-top:20px;font-size:clamp(15px,2.1vw,20px);color:var(--gray);font-weight:400;line-height:1.5;max-width:720px;margin-left:auto;margin-right:auto}
   .lead.strike{text-decoration:line-through;text-decoration-color:var(--dim);color:var(--dim)}
   .foot{margin-top:26px;font-size:14px;color:var(--gray);font-weight:400;line-height:1.55;max-width:740px;margin-left:auto;margin-right:auto}
   .foot b{color:var(--ink);font-weight:700}
   .editorial{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(22px,3.4vw,38px);line-height:1.2;margin-top:16px}
-  .big-line{font-family:var(--disp);font-weight:800;font-size:clamp(24px,3.6vw,40px);letter-spacing:-.8px;margin-top:30px;line-height:1.08}
+  .big-line{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3.4vw,38px);letter-spacing:-.8px;margin-top:28px;line-height:1.1}
   .neq{color:var(--gold)}
   .small-gold{margin-top:16px;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}
-  /* hero */
   .wordmark{font-family:var(--disp);font-weight:800;font-size:clamp(84px,17vw,168px);line-height:.9;letter-spacing:-5px}
   .wordmark .tm{font-size:.24em;vertical-align:super;letter-spacing:0}
-  .full{font-family:var(--disp);font-size:clamp(15px,2.3vw,22px);color:var(--gray);font-weight:600;letter-spacing:.02em;margin-top:18px;text-transform:uppercase;letter-spacing:.08em}
+  .full{font-family:var(--disp);font-size:clamp(14px,2.1vw,20px);color:var(--gray);font-weight:600;margin-top:18px;text-transform:uppercase;letter-spacing:.14em}
   .tagline{margin-top:18px}
   .tagline.serif{font-size:clamp(18px,2.6vw,26px);color:var(--gold-soft)}
-  /* pills / lists */
   .pills{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:24px}
   .pill{font-size:12px;color:var(--ink);border:1px solid var(--line2);border-radius:30px;padding:9px 16px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
-  ul.pts,ol.pts{list-style:none;counter-reset:n;display:grid;gap:10px;margin-top:22px;max-width:640px;margin-left:auto;margin-right:auto;text-align:left}
-  ul.pts li,ol.pts li{position:relative;padding-left:26px;font-size:clamp(14px,1.9vw,17px);color:var(--gray);line-height:1.4}
+  ul.pts{list-style:none;display:grid;gap:10px;margin-top:22px;max-width:640px;margin-left:auto;margin-right:auto;text-align:left}
+  ul.pts li{position:relative;padding-left:26px;font-size:clamp(14px,1.9vw,17px);color:var(--gray);line-height:1.45}
   ul.pts li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;background:var(--gold);border-radius:1px;transform:rotate(45deg)}
-  ol.pts li{padding-left:34px}ol.pts li::before{counter-increment:n;content:counter(n,decimal-leading-zero);position:absolute;left:0;top:1px;font-family:var(--disp);font-size:13px;color:var(--gold);font-weight:700}
-  ul.pts li b,ol.pts li b{color:var(--ink);font-weight:700}
-  ul.inc,ul.exc{list-style:none;display:grid;gap:8px;margin-top:20px;max-width:620px;margin-left:auto;margin-right:auto;text-align:left}
-  ul.inc li,ul.exc li{font-size:14.5px;padding-left:28px;position:relative;color:var(--gray)}
-  ul.inc li::before{content:"✓";position:absolute;left:0;color:var(--gold);font-weight:800}
-  ul.exc li::before{content:"✕";position:absolute;left:0;color:#8a5a5a;font-weight:800}
-  /* chain flow */
-  .railflow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin-top:22px;max-width:760px;margin-left:auto;margin-right:auto}
+  ul.pts li b{color:var(--ink);font-weight:700}
+  .railflow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin-top:22px;max-width:820px;margin-left:auto;margin-right:auto}
   .railflow span{font-family:var(--disp);font-size:12.5px;font-weight:600;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:8px 12px;letter-spacing:.04em}
   .railflow i{color:var(--gold);font-style:normal;font-size:12px}
   .vs{display:grid;gap:14px;margin-top:24px;max-width:720px;margin-left:auto;margin-right:auto}
@@ -68,291 +64,272 @@
   .chainflat{display:inline-block;font-family:var(--disp);font-weight:600;font-size:clamp(13px,1.8vw,16px);letter-spacing:.06em;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:13px 18px}
   .vscol.old .chainflat{color:var(--dim);border-style:dashed}
   .vscol.new .chainflat{border-color:var(--gline);color:var(--ink)}
-  /* engines */
   .two{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:stretch;margin-top:24px;max-width:820px;margin-left:auto;margin-right:auto}
   @media(max-width:640px){.two{grid-template-columns:1fr}.two .plus{display:none}}
-  .eng,.opt{border:1px solid var(--line2);border-radius:16px;padding:22px;text-align:left}
-  .eng .et{font-family:var(--disp);font-size:18px;font-weight:700;margin-bottom:8px}
-  .eng .ed{font-size:12.5px;color:var(--gray);line-height:1.5;letter-spacing:.02em}
+  .eng{border:1px solid var(--line2);border-radius:16px;padding:22px;text-align:left}
+  .eng .et{font-family:var(--disp);font-size:16px;font-weight:700;margin-bottom:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-soft)}
+  .eng ul{list-style:none;display:grid;gap:6px}
+  .eng ul li{font-size:12.8px;color:var(--gray);padding-left:14px;position:relative}
+  .eng ul li::before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;background:var(--gold);border-radius:50%}
   .plus{display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:26px;color:var(--gold)}
-  /* loop */
   .loop{display:grid;gap:0;max-width:560px;margin:24px auto 0;text-align:left}
-  .lstep{display:flex;gap:16px;align-items:center;padding:11px 0}
+  .lstep{display:flex;gap:16px;align-items:center;padding:10px 0}
   .lstep .ln{flex:none;width:42px;height:42px;border-radius:50%;border:1px solid var(--gline);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:700;font-size:14px;color:var(--gold)}
   .lstep b{font-family:var(--disp);font-size:15px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;display:inline-block;min-width:140px}
   .lstep span{color:var(--gray);font-size:13.5px}
-  .lconn{width:1px;height:11px;background:var(--gline);margin-left:21px}
+  .lconn{width:1px;height:10px;background:var(--gline);margin-left:21px}
   .lrepeat{display:inline-flex;align-items:center;gap:8px;margin-left:6px;margin-top:8px;font-family:var(--disp);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
-  /* compare rows */
-  .cmp{display:grid;gap:12px;margin-top:22px;max-width:780px;margin-left:auto;margin-right:auto}
-  .cr{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media(max-width:620px){.cr{grid-template-columns:1fr}}
-  .cr .know{font-size:13.5px;color:var(--dim);border:1px dashed var(--line);border-radius:12px;padding:13px 15px;text-align:left;font-style:italic}
-  .cr .boss{font-size:13.5px;color:var(--ink);border:1px solid var(--gline);border-radius:12px;padding:13px 15px;text-align:left}
-  /* timeline */
   .tl{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px}
   @media(max-width:720px){.tl{grid-template-columns:1fr 1fr}}
   .tc{border:1px solid var(--line);border-radius:14px;padding:16px;text-align:left}
   .tc .td{font-family:var(--disp);font-size:11.5px;color:var(--gold);letter-spacing:.06em;font-weight:700}
-  .tc .tt{font-family:var(--disp);font-size:15px;font-weight:700;margin:5px 0 4px}
-  .tc .tp{font-size:12px;color:var(--gray);line-height:1.45}
+  .tc .tt{font-family:var(--disp);font-size:14.5px;font-weight:700;margin:5px 0 4px}
   .steps4{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:22px}
-  .steps4 .s{border:1px solid var(--line2);border-radius:12px;padding:12px 16px;min-width:146px}
+  .steps4 .s{border:1px solid var(--line2);border-radius:12px;padding:12px 16px;min-width:150px}
   .steps4 .s b{font-family:var(--disp);font-size:14px;font-weight:700;display:block;letter-spacing:.1em;text-transform:uppercase}
   .steps4 .s span{font-size:12px;color:var(--gray)}
   .gates{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:22px}
   .gate{font-family:var(--disp);font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);border:1px solid var(--gline);border-radius:12px;padding:12px 18px}
-  /* grid cards */
-  .grid4{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px;max-width:800px;margin-left:auto;margin-right:auto;text-align:left}
-  @media(max-width:620px){.grid4{grid-template-columns:1fr}}
-  .grid4 .g{border:1px solid var(--line);border-radius:13px;padding:16px}
-  .grid4 .g b{font-family:var(--disp);font-size:14.5px;font-weight:700;display:block;margin-bottom:4px}
-  .grid4 .g span{font-size:12.5px;color:var(--gray);line-height:1.45}
-  .opt .on{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700}
-  .opt .ot{font-family:var(--disp);font-size:19px;font-weight:700;margin:4px 0 6px}
-  .opt p{font-size:12.5px;color:var(--gray);line-height:1.5}
-  .opt.hot{border-color:var(--gline)}
-  .opt .price{margin-top:12px;font-family:var(--disp);font-size:14px;font-weight:700;color:var(--gold-soft)}
-  .opt .price small{color:var(--dim);font-weight:400;font-size:12px}
-  /* comparison table */
-  .tblwrap{margin-top:20px;max-height:62vh;overflow:auto;border:1px solid var(--line);border-radius:14px}
-  table.lanes{width:100%;border-collapse:collapse;font-size:12.5px;min-width:620px}
-  table.lanes th,table.lanes td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line)}
-  table.lanes thead th{position:sticky;top:0;background:#0d0d0d;font-family:var(--disp);font-weight:700;font-size:11px;letter-spacing:.04em;color:var(--ink)}
-  table.lanes thead th.up{color:var(--gold)}
-  table.lanes td.rl{color:var(--gray);font-weight:500}
-  table.lanes td{color:var(--gray)}
-  .yes{color:var(--gold);font-weight:800}.no{color:#6a6a6a}
-  .up-col{background:rgba(212,175,55,.05)}
-  /* upgrade stack */
-  .stack{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px;max-width:800px;margin-left:auto;margin-right:auto;text-align:left}
-  @media(max-width:640px){.stack{grid-template-columns:1fr}}
-  .st{border:1px solid var(--line);border-radius:13px;padding:15px 16px}
-  .st .sh{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:7px}
-  .st ul{list-style:none;display:grid;gap:5px}
-  .st ul li{font-size:12.8px;color:var(--gray);padding-left:14px;position:relative}
-  .st ul li::before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;background:var(--gold);border-radius:50%}
-  /* pricing */
-  .prices{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px;max-width:640px;margin-left:auto;margin-right:auto}
-  @media(max-width:560px){.prices{grid-template-columns:1fr}}
-  .pc{border:1px solid var(--line2);border-radius:16px;padding:22px;text-align:left}
-  .pc.legacy{border-color:var(--gline)}
-  .pc .pl{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);font-weight:700}
-  .pc .pt{font-family:var(--disp);font-size:16px;font-weight:700;margin:4px 0 8px}
-  .pc .pp{font-family:var(--disp);font-size:34px;font-weight:800}
-  .pc.legacy .pp{color:var(--gold-soft)}
-  /* vertical flow */
-  .vflow{display:grid;gap:0;max-width:430px;margin:20px auto 0;text-align:center}
-  .vf{font-size:13.5px;color:var(--ink);border:1px solid var(--line);border-radius:11px;padding:11px 14px}
-  .vf b{font-family:var(--disp);font-weight:700}
-  .vf.sub{color:var(--gray);font-size:12.5px;border-style:dashed}
-  .vf.gold{border-color:var(--gline);color:var(--gold-soft)}
-  .va{color:var(--gold);font-size:13px;margin:4px 0}
-  /* three choices */
-  .choices{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px;text-align:left}
-  @media(max-width:760px){.choices{grid-template-columns:1fr}}
-  .ch{border:1px solid var(--line);border-radius:14px;padding:18px}
-  .ch.mid{border-color:var(--gline)}
-  .ch .cn{font-family:var(--disp);font-size:11px;letter-spacing:.1em;color:var(--gold);font-weight:700}
-  .ch .ct{font-family:var(--disp);font-size:16px;font-weight:700;margin:6px 0 2px}
-  .ch .cp{font-size:11.5px;color:var(--gray);line-height:1.45;margin-top:6px}
-  .ch .cprice{font-family:var(--disp);font-size:13px;color:var(--gold-soft);font-weight:700;margin-top:6px}
-  .ch .cline{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--gold-soft);margin-top:8px}
-  .promise .p1{font-family:var(--disp);font-size:clamp(26px,4.4vw,46px);font-weight:600;letter-spacing:-1px;line-height:1.12}
+  .lines3{display:grid;gap:12px;margin-top:24px;max-width:640px;margin-left:auto;margin-right:auto}
+  .lines3 div{font-size:clamp(14px,2vw,18px);color:var(--gray);border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+  .lines3 b{color:var(--ink);font-weight:700}
+  .qs{display:grid;gap:14px;margin-top:26px;max-width:640px;margin-left:auto;margin-right:auto;text-align:left}
+  .qrow{display:flex;gap:16px;align-items:baseline}
+  .qrow .qn{font-family:var(--disp);font-weight:800;font-size:clamp(26px,4vw,40px);color:var(--gold);line-height:1;min-width:46px}
+  .qrow .qt{font-family:var(--disp);font-weight:700;font-size:clamp(17px,2.4vw,24px);color:var(--ink)}
+  .qrow .qs2{display:block;font-size:12.5px;color:var(--gray);font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-top:3px}
+  .disc{margin-top:18px;font-size:10.5px;color:var(--dim);letter-spacing:.02em;max-width:660px;margin-left:auto;margin-right:auto;line-height:1.5}
+  .promise .p1{font-family:var(--disp);font-size:clamp(24px,4vw,42px);font-weight:600;letter-spacing:-1px;line-height:1.14}
   .promise .p1 .dim{color:var(--dim)}
   .promise .p2{font-family:var(--disp);font-size:clamp(30px,5.2vw,56px);font-weight:800;letter-spacing:-1.6px;line-height:1.05;margin-top:16px}
   .cta-btn{display:inline-block;margin-top:28px;padding:16px 34px;border-radius:13px;border:0;color:#120d02;font-family:var(--disp);font-weight:700;font-size:17px;cursor:pointer;text-decoration:none;background:linear-gradient(180deg,#f3e2a6,#D4AF37);box-shadow:0 10px 36px rgba(212,175,55,.18)}
-  .disc{margin-top:16px;font-size:10.5px;color:var(--dim);letter-spacing:.02em;max-width:620px;margin-left:auto;margin-right:auto}
   .nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-top:1px solid var(--line);background:rgba(8,8,8,.62);backdrop-filter:blur(10px)}
   .nbtn{background:transparent;border:1px solid var(--line2);color:var(--gray);border-radius:10px;width:42px;height:42px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .12s,color .12s}
   .nbtn:hover{border-color:var(--gold);color:var(--gold-soft)}
   .nbtn:disabled{opacity:.3;cursor:default}
   .count{font-size:12.5px;color:var(--dim);letter-spacing:.06em}.count b{color:var(--ink);font-family:var(--disp);font-size:15px}
   .dots{display:flex;gap:5px;align-items:center}.dot{width:6px;height:6px;border-radius:50%;background:var(--line2);cursor:pointer;transition:.15s}.dot.on{background:var(--gold);transform:scale(1.35)}
-  @media(max-width:760px){.dots{display:none}}
-  .zone{position:fixed;top:56px;bottom:74px;width:20%;z-index:20;cursor:pointer}.zone.l{left:0}.zone.r{right:0}
+  @media(max-width:860px){.dots{display:none}}
+  .notes{position:fixed;left:0;right:0;bottom:74px;z-index:28;background:rgba(6,6,6,.97);border-top:1px solid var(--gline);padding:16px 26px 18px;max-height:42vh;overflow:auto;display:none}
+  body.notes-on .notes{display:block}
+  .notes .nlab{font-family:var(--disp);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+  .notes .ntext{font-size:13.5px;line-height:1.62;color:#cfccc4;white-space:pre-line;max-width:900px}
+  .zone{position:fixed;top:56px;bottom:74px;width:18%;z-index:20;cursor:pointer}.zone.l{left:0}.zone.r{right:0}
   .hint{position:fixed;bottom:76px;left:50%;translate:-50% 0;font-size:10px;color:#3a3a36;z-index:25;letter-spacing:.08em}
+  body.notes-on .hint{display:none}
 </style>
 </head>
 <body>
   <div class="prog" id="prog"></div>
-  <div class="top"><span class="brand">BREEDWISE</span><span class="topmod">BOSS™ · Week 1</span></div>
+  <div class="top"><span class="brand">BREEDWISE</span><span class="topR"><button class="ntog" id="ntog" title="Toggle script (N)">Script</button><span class="topmod">BOSS™ · Unveiling</span></span></div>
   <div class="zone l" id="zl"></div><div class="zone r" id="zr"></div>
   <div class="stage" id="stage"></div>
-  <div class="hint">← → · click sides · swipe</div>
-  <div class="nav"><button class="nbtn" id="prev">‹</button><div class="dots" id="dots"></div><div class="count"><b id="cur">1</b> / <span id="tot">25</span></div><button class="nbtn" id="next">›</button></div>
+  <div class="notes" id="notes"><div class="nlab">Teleprompter script</div><div class="ntext" id="ntext"></div></div>
+  <div class="hint">← → · click sides · swipe · press N for script</div>
+  <div class="nav"><button class="nbtn" id="prev">‹</button><div class="dots" id="dots"></div><div class="count"><b id="cur">1</b> / <span id="tot">22</span></div><button class="nbtn" id="next">›</button></div>
 
 <script>
 var SLIDES=[
  {html:'<span class="kick">BreedWise presents</span>'
    +'<div class="wordmark gold">BOSS<span class="tm">™</span></div>'
    +'<div class="full">BreedWise Operating System &amp; Standards</div>'
-   +'<div class="tagline serif gold">Better Breeding. Better Business. Stronger Programs.</div>'},
+   +'<div class="tagline serif gold">Better Breeding. Better Business. Stronger Programs.</div>',
+  note:`Welcome to BOSS, the BreedWise Operating System and Standards. This is something we've been building toward for a long time, and if you've been inside BreedWise Academy, you've actually helped us build it.
 
- {html:'<span class="kick">Why we built it</span>'
-   +'<div class="huge">KNOWING <span class="neq">&ne;</span><br>IMPLEMENTING.</div>'
-   +'<p class="foot" style="margin-top:34px">Breeders don\'t need another folder of videos. They need to know what deserves attention, what to do first, what system solves it, whether they implemented it, and whether it\'s working.</p>'},
+Over the last few years we've learned a tremendous amount working directly with breeders. We've seen what people understand, what people struggle with, and what actually gets implemented. We've seen the difference between a breeder who knows what they should be doing and a breeder who has the systems to actually do it consistently.
 
- {html:'<span class="kick">The evolution</span>'
-   +'<h1>BreedWise has <span class="gold">evolved</span>.</h1>'
-   +'<div class="vs"><div class="vscol old"><div class="vt">The old model</div><div class="chainflat">LEARN → LEARN → LEARN → ASK → LEARN MORE</div></div>'
-   +'<div class="vscol new"><div class="vt">The BOSS model</div><div class="chainflat">ASSESS → PRIORITIZE → IMPLEMENT → MEASURE → REASSESS</div></div></div>'
-   +'<p class="foot">Education still matters. BOSS isn\'t organized around how much information we can give you. It\'s organized around how much of the <b>right</b> information you actually turn into a stronger program.</p>'},
+That realization is what led us here. BOSS is the next evolution of BreedWise. In this module I want to show you exactly what it is, why we built it, how it's going to change the way we teach, and most importantly what this means for you as an existing BreedWise member.`},
 
- {html:'<span class="kick">What it is</span>'
+ {html:'<span class="kick">Why BOSS</span>'
+   +'<div class="huge">INFORMATION WAS<br>NEVER THE<br>END GOAL.</div>'
+   +'<div class="editorial gold" style="margin-top:22px">Knowing &ne; Implementing.</div>',
+  note:`One of the biggest things we've learned is that most breeders don't simply have an information problem. You can know you need better follow-up. You can know you should understand your litter economics. You can know your records need to be better, that you should prepare differently before a litter, that your buyer process isn't where it needs to be. But knowing those things doesn't mean they're fixed.
+
+That's the distinction I want you to remember throughout everything we do with BOSS: knowing is not the same thing as implementing. Information matters. Education matters. But information was never supposed to be the finish line. The finish line is a better-operated breeding program.`},
+
+ {html:'<span class="kick">The evolution of BreedWise</span>'
+   +'<div class="vs"><div class="vscol old"><div class="vt">Before</div><div class="chainflat">LEARN → LEARN → ASK QUESTIONS → LEARN MORE</div></div>'
+   +'<div class="vscol new"><div class="vt">BOSS</div><div class="chainflat">ASSESS → PRIORITIZE → IMPLEMENT → MEASURE → REASSESS</div></div></div>'
+   +'<p class="foot">We\'re organizing everything around an operating loop, not a growing library of lessons.</p>',
+  note:`We're changing the way we think about education inside BreedWise. The traditional model is basically: learn something, learn something else, ask some questions, watch another lesson, and eventually you have a giant library of information.
+
+BOSS is different. We organize everything around an operating loop. Assess: where are you actually at? Prioritize: what matters most right now? Implement: what needs to change? Measure: did you actually implement it, and is it working? And then reassess, because once you improve one area, your next priority may change. That's BOSS.`},
+
+ {html:'<span class="kick">What BOSS actually is</span>'
    +'<h1>An operating system for your <span class="gold">breeding program</span>.</h1>'
-   +'<div class="pills"><span class="pill">Breeding</span><span class="pill">Business</span><span class="pill">Systems</span><span class="pill">Standards</span><span class="pill">Measurement</span><span class="pill">Implementation</span></div>'
-   +'<p class="editorial gold" style="margin-top:28px">Your breeding program shouldn\'t live entirely in your head.</p>'},
+   +'<div class="pills"><span class="pill">Breeding</span><span class="pill">Business</span><span class="pill">Systems</span><span class="pill">Standards</span><span class="pill">Measurement</span></div>'
+   +'<p class="editorial gold" style="margin-top:26px">Your program shouldn\'t live entirely in your head.</p>',
+  note:`BOSS stands for BreedWise Operating System and Standards. I want you to think about the words operating system very intentionally.
+
+Your breeding program shouldn't exist entirely inside your head. You shouldn't have to remember every follow-up, every preparation step, every number, every process, every buyer, every important record, every single thing that has to happen. Because eventually the breeder becomes the system, and when you're the system, everything depends on you remembering what to do next.
+
+BOSS is about creating structure around the way the program actually operates. Breeding. Business. Systems. Standards. Measurement. And implementation.`},
 
  {html:'<span class="kick">One program. Two engines.</span>'
-   +'<div class="two"><div class="eng"><div class="et">Breeding Engine</div><div class="ed">Science · Preparation · Systems · Records · Standards</div></div>'
+   +'<div class="two"><div class="eng"><div class="et">Breeding Engine</div><ul><li>Preparation</li><li>Reproduction</li><li>Pregnancy</li><li>Whelping</li><li>Neonatal care</li><li>Genetics + health</li><li>Records + standards</li></ul></div>'
    +'<div class="plus">+</div>'
-   +'<div class="eng"><div class="et">Business Engine</div><div class="ed">Positioning · Demand · Buyers · Sales · Economics · Operations</div></div></div>'
-   +'<p class="foot">BOSS doesn\'t treat these like two separate businesses. We build the system that lets them work <b>together</b>.</p>'},
+   +'<div class="eng"><div class="et">Business Engine</div><ul><li>Positioning</li><li>Demand</li><li>Qualified buyers</li><li>Sales</li><li>Economics</li><li>Follow-up</li><li>Operations</li></ul></div></div>'
+   +'<p class="foot">Not two separate businesses. <b>One breeding program.</b></p>',
+  note:`BOSS recognizes something we've been teaching for a long time: your breeding program has two engines.
 
- {html:'<span class="kick">The BOSS™ Loop</span>'
+There's the breeding engine: preparation, reproduction, pregnancy, whelping, neonatal care, genetics and health, records and standards. And there's the business engine: positioning, demand, qualified buyers, sales, economics, follow-up and operations.
+
+These aren't two separate businesses. They're one breeding program. A strong business gives you the resources to reinvest into your breeding. And strong breeding practices protect the reputation and long-term strength of your business. BOSS brings those two engines together.`},
+
+ {html:'<span class="kick">The BOSS Loop</span>'
    +'<div class="loop">'
    +'<div class="lstep"><span class="ln">01</span><div><b>Assess</b><span>Where are you now?</span></div></div><div class="lconn"></div>'
-   +'<div class="lstep"><span class="ln">02</span><div><b>Prioritize</b><span>What matters most?</span></div></div><div class="lconn"></div>'
-   +'<div class="lstep"><span class="ln">03</span><div><b>Implement</b><span>Build the system.</span></div></div><div class="lconn"></div>'
-   +'<div class="lstep"><span class="ln">04</span><div><b>Measure</b><span>Is it actually working?</span></div></div><div class="lconn"></div>'
+   +'<div class="lstep"><span class="ln">02</span><div><b>Prioritize</b><span>What matters most right now?</span></div></div><div class="lconn"></div>'
+   +'<div class="lstep"><span class="ln">03</span><div><b>Implement</b><span>What needs to change?</span></div></div><div class="lconn"></div>'
+   +'<div class="lstep"><span class="ln">04</span><div><b>Measure</b><span>Did it happen? Is it working?</span></div></div><div class="lconn"></div>'
    +'<div class="lstep"><span class="ln">05</span><div><b>Reassess</b><span>What\'s the next constraint?</span></div></div>'
    +'<div class="lrepeat">&#8635; Repeat</div></div>'
-   +'<p class="editorial gold">Your program is never &ldquo;finished.&rdquo; It becomes better operated.</p>'},
+   +'<p class="editorial gold">BOSS doesn\'t build everything. BOSS builds what matters next.</p>',
+  note:`This is the loop I want you to start memorizing. Assess. Prioritize. Implement. Measure. Reassess.
+
+BOSS is not about trying to fix everything at once. In fact, one of the principles we operate by is: BOSS doesn't build everything, BOSS builds what matters next. You might have ten things that could be better. That doesn't mean you work on all ten today. We need to understand which constraint matters most right now, what system is needed to address it, and what supporting pieces need to be built around it. Then we implement. Then we measure. Then we reassess.`},
 
  {html:'<span class="kick">This changes how we teach</span>'
    +'<h1>No more <span class="gold">random</span> implementation.</h1>'
-   +'<div class="railflow"><span>PROBLEM</span><i>→</i><span>STANDARD</span><i>→</i><span>SYSTEM</span><i>→</i><span>TRAINING</span><i>→</i><span>TOOL</span><i>→</i><span>IMPLEMENTATION</span><i>→</i><span>MEASUREMENT</span><i>→</i><span>DEFINITION OF DONE</span></div>'
-   +'<p class="foot">If we teach you something, you\'ll know why it matters, what to do with it, what tool supports it, and how to know when you\'ve actually implemented it.</p>'},
+   +'<div class="railflow"><span>PROBLEM</span><i>→</i><span>STANDARD</span><i>→</i><span>SYSTEM</span><i>→</i><span>TRAINING</span><i>→</i><span>TOOL</span><i>→</i><span>IMPLEMENTATION</span><i>→</i><span>KPI</span><i>→</i><span>DEFINITION OF DONE</span></div>'
+   +'<p class="foot">Not &ldquo;did you watch the lesson?&rdquo; but <b>&ldquo;did something change in your program because of it?&rdquo;</b></p>',
+  note:`This changes the way you see education released inside BreedWise. If we teach you something, I want you to be able to answer: Why does this matter? What does good look like? What system supports it? What do I need to learn? What tool helps me do it? What do I actually need to implement? How are we going to measure it? And when can I say this is actually done?
 
- {html:'<span class="kick">Build vs. know</span>'
-   +'<div class="cmp">'
-   +'<div class="cr"><div class="know">&ldquo;I know I need a better follow-up process.&rdquo;</div><div class="boss">My follow-up process is documented, configured, used and measured.</div></div>'
-   +'<div class="cr"><div class="know">&ldquo;I know I should track my litter numbers.&rdquo;</div><div class="boss">My numbers are recorded consistently and I use them to make decisions.</div></div>'
-   +'<div class="cr"><div class="know">&ldquo;I know preparation matters.&rdquo;</div><div class="boss">My preparation system exists before I need it.</div></div></div>'
-   +'<div class="big-line">KNOWLEDGE IS POTENTIAL.</div><div class="editorial gold">Implementation is the asset.</div></div>'},
+That's a completely different way of learning. Because we're not just asking, did you watch the lesson. We're asking, did something change inside your breeding program because of the lesson.`},
+
+ {html:'<span class="kick">A critical distinction</span>'
+   +'<div class="huge">BUILT <span class="neq">&ne;</span> IMPLEMENTED.</div>'
+   +'<div class="lines3"><div>A CRM nobody uses is <b>not implemented.</b></div><div>A checklist nobody follows is <b>not implemented.</b></div><div>A process that lives only in your head is <b>not a system.</b></div></div>',
+  note:`There's another distinction that's going to become extremely important. Built does not mean implemented.
+
+You can have a beautiful CRM. If nobody uses it, it isn't implemented. You can have a whelping preparation checklist. If you don't actually follow it, it isn't implemented. You can have a spreadsheet for your litter economics. If you never enter your numbers, it isn't implemented. You can have an SOP sitting in Google Drive. If the way you actually operate is completely different, it isn't implemented.
+
+BOSS isn't about collecting more files. It's about changing the way the program operates.`},
+
+ {html:'<span class="kick">The simplest way to say it</span>'
+   +'<div class="big-line" style="font-size:clamp(30px,5vw,56px)">KNOWLEDGE IS POTENTIAL.</div>'
+   +'<div class="editorial gold" style="font-size:clamp(24px,3.8vw,42px)">Implementation is the asset.</div>',
+  note:`This is probably the simplest way I can explain the shift. Knowledge is potential. Implementation is the asset.
+
+Knowing you need better follow-up has potential. Having an inquiry enter your CRM, move through a defined process, receive the appropriate follow-up and get tracked through a measurable pipeline? That's an asset.
+
+Knowing you should understand your litter economics has potential. Actually knowing what your litter produced, what it cost, what you kept, and how that should influence future decisions? That's an asset. That's the difference BOSS is designed to create.`},
 
  {html:'<span class="kick">The build phase</span>'
-   +'<div class="huge">120 DAYS<br>TO BUILD.</div>'
-   +'<div class="tl" style="margin-top:30px">'
-   +'<div class="tc"><div class="td">DAYS 1–30</div><div class="tt">Assess + Prioritize</div><div class="tp">Baseline. Constraints. Roadmap.</div></div>'
-   +'<div class="tc"><div class="td">DAYS 31–60</div><div class="tt">Build + Implement</div><div class="tp">Put priority systems into operation.</div></div>'
-   +'<div class="tc"><div class="td">DAYS 61–90</div><div class="tt">Implement + Measure</div><div class="tp">Use them. Track them. Find friction.</div></div>'
-   +'<div class="tc"><div class="td">DAYS 91–120</div><div class="tt">Optimize + Reassess</div><div class="tp">Close gaps. Set next priorities.</div></div></div></div>'},
+   +'<div class="huge">120 DAYS TO BUILD.</div>'
+   +'<div class="tl" style="margin-top:28px">'
+   +'<div class="tc"><div class="td">DAYS 1–30</div><div class="tt">Assess + Prioritize</div></div>'
+   +'<div class="tc"><div class="td">DAYS 31–60</div><div class="tt">Build + Implement</div></div>'
+   +'<div class="tc"><div class="td">DAYS 61–90</div><div class="tt">Implement + Measure</div></div>'
+   +'<div class="tc"><div class="td">DAYS 91–120</div><div class="tt">Optimize + Reassess</div></div></div>'
+   +'<p class="foot">This is the <b>architecture</b> of how BreedWise thinks about implementation.</p>',
+  note:`For the full BOSS Implementation experience, we organize the work around a 120-day cycle. The first 30 days are assessing and prioritizing. Days 31 through 60 are building and implementing. Days 61 through 90 are using those systems and beginning to measure them. And days 91 through 120 are optimizing, reassessing and determining what comes next.
+
+Now, because you're an existing Academy member, I don't want you to hear this and assume you've just been automatically enrolled into a new 120-day service. You haven't. I'll explain that distinction in a minute. I'm showing you the architecture because this is how BreedWise is going to begin thinking about implementation.`},
 
  {html:'<span class="kick">The proof phase</span>'
    +'<div class="huge">120 TO BUILD.</div><div class="small-gold">12 MONTHS TO PROVE.</div>'
-   +'<div class="steps4" style="margin-top:28px"><div class="s"><b>Build it</b><span>System exists.</span></div><div class="s"><b>Use it</b><span>It becomes operational.</span></div><div class="s"><b>Measure it</b><span>Evidence exists.</span></div><div class="s"><b>Prove it</b><span>Standards, demonstrated over time.</span></div></div>'
-   +'<p class="editorial gold">Building something once doesn\'t prove it\'s how you operate.</p></div>'},
+   +'<div class="steps4" style="margin-top:28px"><div class="s"><b>Build it</b></div><div class="s"><b>Use it</b></div><div class="s"><b>Measure it</b></div><div class="s"><b>Prove it</b></div></div>'
+   +'<p class="editorial gold">Doing something once doesn\'t prove that\'s how you operate.</p>',
+  note:`But there's a second half to this. 120 days to build. 12 months to prove. Why? Because doing something once doesn't prove that's how you operate. You can create a system today. Consistency is what tells us whether it has actually become part of your program.
+
+That's why the longer-term BOSS philosophy isn't simply about implementation. It's about operating, optimizing, measuring, and eventually being able to demonstrate the standards by which you actually run your breeding program. And that brings us to certification.`},
 
  {html:'<span class="kick">Certification</span>'
    +'<h1>Certification should <span class="gold">mean something</span>.</h1>'
    +'<p class="lead strike">Paid → Watched videos → Got a badge.</p>'
-   +'<div class="gates"><span class="gate">Knowledge</span><span class="gate">Verification</span><span class="gate">Implementation</span><span class="gate">Audit</span></div>'
-   +'<p class="foot">Standards-based: it demonstrates how a program operates, not how long someone has paid us. If you\'re already an Academy member, your existing certification eligibility stays governed by your Academy enrollment. <b>We\'re not moving the goalposts.</b></p></div>'},
+   +'<div class="gates"><span class="gate">Knowledge</span><span class="gate">Verification</span><span class="gate">Implementation</span><span class="gate">Audit</span></div>',
+  note:`Certification has always mattered to me, and as BreedWise evolves I want it to mean even more. I don't want BreedWise certification to mean: you paid us, you watched some videos, here's a badge. I want certification to stand for something.
 
- /* ===== TRANSITION ===== */
- {html:'<span class="kick">Before we go further</span>'
-   +'<h1>Academy is <span class="gold">not</span> being renamed BOSS.</h1>'
-   +'<p class="lead">Getting access to the BOSS curriculum does <b style="color:var(--ink)">not</b> mean you\'ve automatically been enrolled into the new BOSS Implementation offer. You\'re grandfathered into access because you\'re already an Academy member, and your existing Academy agreement stays intact.</p>'
-   +'<p class="editorial gold">Access to the system is not the same as buying the build.</p></div>'},
+Our direction with BOSS is a standards-based model built around four ideas. Knowledge: do you understand the relevant principles? Verification: can the appropriate information or documentation be verified? Implementation: are the applicable systems and practices actually being used? And audit: can we evaluate those things against defined BreedWise standards? That's the direction we're building toward.`},
 
- {html:'<div class="inner"><span class="kick">Three lanes · no confusion</span>'
-   +'<h1 style="font-size:clamp(24px,4vw,40px)">What each member actually gets</h1>'
-   +'<div class="tblwrap"><table class="lanes"><thead><tr><th></th><th>Academy Legacy</th><th class="up">BOSS Implementation Upgrade</th><th>BOSS Continuation</th></tr></thead><tbody>'
-   +'<tr><td class="rl">Cost</td><td>No additional</td><td class="up-col">Paid upgrade</td><td>$297 / mo</td></tr>'
-   +'<tr><td class="rl">Duration</td><td>Through Academy term*</td><td class="up-col">Fresh 120 days</td><td>Month-to-month</td></tr>'
-   +'<tr><td class="rl">BOSS curriculum + tools</td><td class="yes">✓</td><td class="up-col yes">✓</td><td class="yes">✓</td></tr>'
-   +'<tr><td class="rl">Community + group support</td><td class="yes">✓</td><td class="up-col yes">✓</td><td class="yes">✓</td></tr>'
-   +'<tr><td class="rl">Personalized 120-day roadmap</td><td class="no">—</td><td class="up-col yes">✓</td><td>Updated roadmaps</td></tr>'
-   +'<tr><td class="rl">Jennifer as BOSS PM</td><td class="no">—</td><td class="up-col yes">✓</td><td>Member Success</td></tr>'
-   +'<tr><td class="rl">Private implementation channel</td><td class="no">—</td><td class="up-col yes">✓</td><td class="no">—</td></tr>'
-   +'<tr><td class="rl">Monthly Austin 1:1 (×4)</td><td class="no">—</td><td class="up-col yes">✓</td><td class="no">—</td></tr>'
-   +'<tr><td class="rl">Website build</td><td class="no">—</td><td class="up-col yes">✓</td><td class="no">—</td></tr>'
-   +'<tr><td class="rl">CRM + lead-mgmt setup</td><td class="no">—</td><td class="up-col yes">✓</td><td class="no">—</td></tr>'
-   +'<tr><td class="rl">30/60/90/120 reviews</td><td class="no">—</td><td class="up-col yes">✓</td><td>Periodic reassess</td></tr>'
-   +'<tr><td class="rl">Implementation Report</td><td class="no">—</td><td class="up-col yes">✓</td><td class="no">—</td></tr>'
-   +'<tr><td class="rl">Automatic conversion</td><td class="no">—</td><td class="up-col no">—</td><td>Opt-in only</td></tr>'
-   +'</tbody></table></div><p class="disc">*Minimum transition window applies if a term expires shortly after launch. Draft: pending counsel review of legacy agreement language.</p></div>'},
-
- {html:'<span class="kick">What you\'re getting</span>'
-   +'<h1>As an Academy member, you get <span class="gold">BOSS Legacy Access</span>.</h1>'
-   +'<ul class="inc"><li>New BOSS curriculum as it\'s released</li><li>BOSS frameworks and standards</li><li>Applicable BOSS tools, templates and resources</li><li>Your existing Academy community, calls &amp; support</li><li>Existing expert education included in Academy</li><li>Access through your existing term / defined transition window</li></ul>'
-   +'<p class="editorial gold">We\'re not taking anything away. We\'re adding the new system to your experience.</p>'},
-
- {html:'<span class="kick">The most important distinction</span>'
-   +'<div class="huge">ACCESS <span class="neq">&ne;</span><br>IMPLEMENTATION.</div>'
-   +'<p class="foot" style="margin-top:26px"><b>Legacy Access does not automatically include:</b></p>'
-   +'<ul class="exc" style="margin-top:12px"><li>A new 120-day BOSS Implementation enrollment</li><li>A newly built BreedWise website</li><li>CRM + lead-management configuration</li><li>Done-with-you system configuration</li><li>A private BOSS implementation channel</li><li>Four private Austin strategy sessions</li><li>Dedicated BOSS project management with Jennifer</li><li>Private expert sessions beyond your Academy scope</li><li>BOSS 30/60/90/120 reviews or a personalized Implementation Report</li></ul>'
-   +'<p class="editorial gold">You\'re getting the operating system, not the service that builds it for you.</p>'},
-
- {html:'<span class="kick">So what is the upgrade?</span>'
-   +'<div class="wordmark gold" style="font-size:clamp(40px,8vw,84px);letter-spacing:-3px">BOSS IMPLEMENTATION™</div>'
-   +'<div class="small-gold">120 DAYS TO BUILD · WE BUILD IT WITH YOU</div>'
-   +'<div class="stack" style="margin-top:22px">'
-   +'<div class="st"><div class="sh">Personalized</div><ul><li>BOSS Baseline Assessment</li><li>120-Day Implementation Pathway</li><li>Priorities + milestones + KPIs</li></ul></div>'
-   +'<div class="st"><div class="sh">Built + configured</div><ul><li>BreedWise website</li><li>CRM + lead-management</li><li>Workflows &amp; progress dashboard</li></ul></div>'
-   +'<div class="st"><div class="sh">High-touch implementation</div><ul><li>Private implementation channel</li><li>Jennifer as project manager</li><li>4 monthly Austin 1:1s</li><li>Private vet / scientific session</li><li>30/60/90/120 reviews</li></ul></div>'
-   +'<div class="st"><div class="sh">Measured</div><ul><li>KPI tracking</li><li>Day-120 reassessment</li><li>BOSS Implementation Report</li><li>Next BOSS Roadmap</li></ul></div></div></div>'},
-
- {cls:'pure',html:'<div class="inner promise">'
-   +'<div class="p1">Legacy Access = <span class="gold">you get the system.</span></div>'
-   +'<div class="p2 gold">Upgrade = we help you build it.</div></div>'},
-
- {html:'<span class="kick">The upgrade</span>'
-   +'<h1>Academy → <span class="gold">BOSS Implementation</span> upgrade</h1>'
-   +'<div class="prices"><div class="pc"><div class="pl">New customer</div><div class="pt">BOSS Implementation</div><div class="pp">$6,000</div></div>'
-   +'<div class="pc legacy"><div class="pl">Current Academy member</div><div class="pt">Implementation Upgrade</div><div class="pp">+$3,000</div></div></div>'
-   +'<p class="foot">You already bought much of the education, community and tools that overlap with BOSS. The upgrade charges only for the incremental high-touch implementation layer, not for everything again.</p>'
-   +'<p class="disc">Pricing is a strategic recommendation, not supported by the existing agreement. Existing Academy payment obligations stay governed by the existing agreement unless counsel drafts a signed amendment. Lock after confirming fulfillment economics.</p></div>'},
-
- {html:'<span class="kick">What happens if I upgrade?</span>'
-   +'<div class="vflow">'
-   +'<div class="vf">Today · <b>Academy member</b></div><div class="va">↓</div>'
-   +'<div class="vf gold">Opt in + sign BOSS agreement</div><div class="va">↓</div>'
-   +'<div class="vf"><b>Day 1</b> · new BOSS Baseline</div><div class="va">↓</div>'
-   +'<div class="vf sub">Days 1–30 Assess · 31–60 Build · 61–90 Measure · 91–120 Optimize</div><div class="va">↓</div>'
-   +'<div class="vf"><b>Day 120</b> · Implementation Report + Next Roadmap</div><div class="va">↓</div>'
-   +'<div class="vf gold">Then you choose: conclude, or continue at $297/mo</div></div>'
-   +'<p class="foot">A fresh 120-day clock from your upgrade date. We don\'t count prior Academy months as if you already received the new implementation deliverables.</p></div>'},
-
- {html:'<span class="kick">What if I don\'t upgrade?</span>'
-   +'<div class="huge">NOTHING BAD<br>HAPPENS.</div>'
-   +'<ul class="inc" style="margin-top:26px"><li>You remain an Academy member; your agreement continues</li><li>You keep receiving everything Academy promised</li><li>You receive BOSS Legacy Access as defined</li><li>You can use the new curriculum, frameworks and applicable tools</li><li>You are <b>not required</b> to upgrade</li></ul>'
-   +'<p class="editorial gold">BOSS isn\'t a fee added to Academy. It\'s a separate option for members who want us more directly involved.</p>'},
-
- {html:'<span class="kick">When my Academy term ends</span>'
-   +'<h1>Two paths. <span class="gold">You choose.</span></h1>'
-   +'<div class="two" style="grid-template-columns:1fr 1fr">'
-   +'<div class="opt"><div class="on">Path 1</div><div class="ot">Conclude</div><p>Your Academy term ends per your agreement. No automatic BOSS charge. No automatic $297 subscription.</p></div>'
-   +'<div class="opt hot"><div class="on">Path 2</div><div class="ot">Continue · BOSS Continuation</div><p>Operate · Optimize · Prove. Ongoing curriculum, community, group coaching, tools, Member Success, reassessments, updated roadmaps &amp; applicable certification pathway.</p><div class="price">$297<small> / month · opt-in</small></div></div></div></div>'},
-
- {html:'<span class="kick">Certification</span>'
+ {html:'<span class="kick">For existing Academy members</span>'
    +'<h1>We are <span class="gold">not</span> moving the goalposts.</h1>'
-   +'<div class="grid4" style="grid-template-columns:1fr 1fr 1fr">'
-   +'<div class="g"><b>Existing Academy members</b><span>Your certification eligibility stays governed by the Academy terms applicable to your enrollment.</span></div>'
-   +'<div class="g"><b>New BOSS members</b><span>BOSS certification follows the new BOSS standards and eligibility requirements.</span></div>'
-   +'<div class="g"><b>Academy member who upgrades</b><span>The BOSS agreement states how prior Academy participation is credited and which track governs going forward.</span></div></div>'
-   +'<p class="disc">The third category is defined explicitly in the upgrade agreement, not left ambiguous.</p></div>'},
+   +'<p class="lead">Your existing Academy certification pathway is still honored.</p>'
+   +'<p class="foot">If you joined Academy with a certification pathway, your eligibility remains governed by the terms applicable to your Academy enrollment. The evolution of BreedWise does <b>not</b> erase what you already purchased.</p>',
+  note:`This next part is extremely important for everyone already inside Academy. We are not moving the goalposts on something you've already purchased.
 
- {html:'<div class="inner"><span class="kick">The simplest summary</span>'
-   +'<h1>Three choices. <span class="gold">No confusion.</span></h1>'
-   +'<div class="choices">'
-   +'<div class="ch"><div class="cn">01 · Stay in Academy</div><div class="ct">$0 additional</div><div class="cp">Keep your existing membership. Receive BOSS Legacy Access through the applicable period.</div></div>'
-   +'<div class="ch mid"><div class="cn">02 · Upgrade to BOSS Implementation</div><div class="ct">Paid upgrade</div><div class="cp">Start a new 120-day personalized implementation journey.</div><div class="cline">We help you build it.</div></div>'
-   +'<div class="ch"><div class="cn">03 · Continue after your term</div><div class="ct">$297 / month · opt-in</div><div class="cp">Ongoing support, optimization, measurement and standards.</div><div class="cline">We help you operate &amp; prove it.</div></div></div>'
-   +'<div class="big-line" style="font-size:clamp(20px,3vw,30px);margin-top:26px">Nothing automatically converts. <span class="gold">You choose what\'s next.</span></div></div>'},
+If you joined BreedWise Academy with a certification pathway as part of your enrollment, your existing Academy certification eligibility remains governed by the terms and requirements applicable to your Academy enrollment. We're not going to suddenly tell you everything changed, start over. That's not what BOSS means.
+
+As we build the new BOSS certification standards, we'll explain that pathway separately and clearly. But I want you to hear this directly from me: the evolution of BreedWise does not mean we're erasing the certification opportunity you already purchased through Academy.`},
+
+ {html:'<span class="kick">What BOSS certification will represent</span>'
+   +'<div class="gates" style="margin-bottom:8px"><span class="gate">Knowledge</span><span class="gate">Verification</span><span class="gate">Implementation</span><span class="gate">Audit</span></div>'
+   +'<div class="big-line gold">Certification is earned.</div>'
+   +'<p class="disc">Evaluates knowledge, preparedness, documented practices, systems, records, implementation, ethics and defined BreedWise standards. It is <b style="color:var(--gray)">not</b> a guarantee of pregnancy, litter size, puppy health or profitability.</p>',
+  note:`Going forward, the goal is for BOSS certification to represent something deeper. Not perfection, and absolutely not a guarantee of biological outcomes. A certification cannot guarantee pregnancy. It cannot guarantee litter size. It cannot guarantee that a puppy will never become sick. It cannot guarantee profitability. That's not what responsible certification means.
+
+What we can evaluate are things like knowledge, preparedness, documented practices, systems, records, implementation, ethics and defined BreedWise standards. Certification should be earned through evidence. And if we're going to put the BreedWise name behind something, I want that name to carry weight.`},
+
+ {html:'<span class="kick">What this means for you</span>'
+   +'<h1>Academy is <span class="gold">not</span> being renamed BOSS.</h1>'
+   +'<p class="lead">You keep your Academy. We\'re adding <b style="color:var(--ink)">BOSS Legacy Access</b>.</p>'
+   +'<p class="editorial gold" style="margin-top:22px">We\'re adding to your experience, not taking Academy away.</p>',
+  note:`Now let's talk about what all of this means for you. The first thing I want to make extremely clear is: Academy is not simply being renamed BOSS. BOSS is a new BreedWise offer and operating model.
+
+You purchased Academy. We're honoring Academy. Your existing Academy experience doesn't disappear because we created something new. Instead, as an existing member, we're giving you BOSS Legacy Access so you can benefit from the new education, frameworks and applicable resources we're releasing as BreedWise evolves. That's something we're adding to your experience. We're not taking Academy away from you.`},
+
+ {html:'<span class="kick">The distinction to remember</span>'
+   +'<div class="huge" style="font-size:clamp(34px,7vw,88px)">ACCESS <span class="neq">&ne;</span><br>IMPLEMENTATION.</div>'
+   +'<div class="two" style="margin-top:28px;grid-template-columns:1fr auto 1fr"><div class="eng"><div class="et">Legacy Access</div><ul><li>Learn the system</li><li>Use the frameworks</li><li>Apply what you learn</li></ul></div><div class="plus">&ne;</div><div class="eng"><div class="et">BOSS Implementation</div><ul><li>We build it with you</li><li>Configure the systems</li><li>Support, measure, reassess</li></ul></div></div>'
+   +'<p class="foot">A separate service. <b>Not automatic. Not required.</b> We\'ll explain that opportunity separately.</p>',
+  note:`There's a distinction I need to make now so there isn't confusion later. Access is not the same thing as implementation.
+
+As an existing Academy member, you're getting access to the new BOSS education as we roll it out. You can learn it. You can use the frameworks. You can apply what you're learning.
+
+The full BOSS Implementation experience is different. That's where our team works directly with a breeder to assess the program, determine the primary constraint, build a personalized implementation plan, configure the applicable systems, support adoption, measure implementation and reassess progress. That is a separate service. You're not automatically purchasing it. You're not required to purchase it. And simply receiving BOSS Legacy Access does not mean you've been automatically enrolled into it. We'll explain that opportunity separately for anyone who wants that level of implementation.`},
+
+ {html:'<span class="kick">Three different questions</span>'
+   +'<div class="qs">'
+   +'<div class="qrow"><div class="qn">1</div><div><div class="qt">What do I need to know?</div><div class="qs2">Education</div></div></div>'
+   +'<div class="qrow"><div class="qn">2</div><div><div class="qt">What do I need to build?</div><div class="qs2">Implementation</div></div></div>'
+   +'<div class="qrow"><div class="qn">3</div><div><div class="qt">What do I need to prove?</div><div class="qs2">Evidence · Consistency · Standards</div></div></div></div>'
+   +'<p class="foot">Most education stops at number one. <b>BOSS connects all three.</b></p>',
+  note:`As you go through BOSS, I want you to start thinking in three different layers. First: what do I need to know? That's education. Second: what do I need to build? That's implementation. And third: what do I need to prove? That's evidence, consistency and eventually standards.
+
+A lot of education stops at number one. BOSS is being designed to connect all three.`},
+
+ {html:'<span class="kick">How I want you to use BOSS</span>'
+   +'<div class="big-line" style="font-size:clamp(26px,4.4vw,48px)">LESS CONSUMPTION.</div>'
+   +'<div class="editorial gold" style="font-size:clamp(26px,4.4vw,48px);margin-top:4px">More implementation.</div>'
+   +'<div class="railflow" style="margin-top:26px"><span>UNDERSTAND</span><i>→</i><span>IDENTIFY</span><i>→</i><span>IMPLEMENT</span><i>→</i><span>DOCUMENT</span><i>→</i><span>MEASURE</span></div>'
+   +'<p class="foot">Not &ldquo;did I finish the module?&rdquo; but <b>&ldquo;is this actually how I operate now?&rdquo;</b></p>',
+  note:`Here's what I want from you as we start releasing BOSS. Don't binge it. Seriously, this isn't Netflix. I would rather you watch one lesson and change something meaningful inside your breeding program than watch twenty lessons and implement nothing.
+
+When a lesson drops: understand the standard, identify your gap, find the system or tool, implement what applies to you, document it, measure it. And then ask: is this actually how I operate now? Not, did I finish the module. That's the behavior change I want BOSS to create.`},
+
+ {html:'<span class="kick">Your first BOSS assignment</span>'
+   +'<h1>Build your <span class="gold">baseline</span>.</h1>'
+   +'<ul class="pts"><li>What\'s already working?</li><li>What\'s inconsistent?</li><li>What\'s undocumented?</li><li>What depends entirely on me remembering it?</li><li>What do I know I should be doing that I still haven\'t implemented?</li><li><b>If I could improve one system right now, which would make the biggest difference?</b></li></ul>'
+   +'<p class="editorial gold">Clarity before activity.</p>',
+  note:`I want to give you one assignment coming out of this module. Before you start trying to fix everything, establish your baseline. Look at your program and ask: What's already working? What's inconsistent? What's undocumented? What depends entirely on me remembering it? What do I know I should be doing that I still haven't implemented?
+
+And then one final question: if I could improve one system inside my breeding program right now, which one would create the biggest difference? Don't worry about having the perfect answer. The purpose is to start thinking like an operator. Because the first principle of BOSS is clarity before activity.`},
+
+ {html:'<span class="kick">What\'s coming next</span>'
+   +'<h1>Don\'t rebuild <span class="gold">everything</span>.</h1>'
+   +'<div class="steps4" style="margin-top:24px"><div class="s"><b>Assess</b><span>Understand where you are</span></div><div class="s"><b>Prioritize</b><span>Find what matters most</span></div><div class="s"><b>Build from there</b><span>One system at a time</span></div></div>'
+   +'<p class="foot">Strong programs aren\'t built through random activity. They\'re built through <b>intentional implementation.</b></p>',
+  note:`Over the coming weeks we're going to start releasing BOSS piece by piece. Don't interpret that as permission to tear your entire breeding program apart overnight. That's the opposite of what I want.
+
+Assess first. Understand where you are. Identify what matters most. Then build from there. One priority at a time. One system at a time. One improvement at a time. Because strong programs aren't built through random activity. They're built through intentional implementation.`},
 
  {cls:'pure',html:'<div class="inner promise">'
-   +'<div class="p1">We\'re not building more breeders who <span class="dim">know more</span>.</div>'
-   +'<div class="p2 gold">We\'re building better-operated breeding programs.</div>'
-   +'<div class="tagline serif gold" style="margin-top:26px;font-size:clamp(17px,2.4vw,24px)">Better Breeding. Better Business. Stronger Programs.</div></div>'},
+   +'<div class="p1">We\'re not building breeders who <span class="dim">simply know more</span>.</div>'
+   +'<div class="p2 gold">We\'re building better-operated breeding programs.</div></div>',
+  note:`Ultimately, that's what BOSS represents to me. We're not trying to build breeders who simply know more. Knowledge matters, but that's not enough.
 
- {html:'<span class="kick">Your next step</span>'
-   +'<h1>Complete your <span class="gold">BOSS Baseline</span>.</h1>'
-   +'<p class="lead">Over the coming weeks we\'ll release BOSS piece by piece. Don\'t rush ahead. Assess where you are, find the priority, and we build from there.</p>'
-   +'<div class="editorial gold" style="margin-top:22px">120 days to build. 12 months to prove.</div>'
-   +'<a class="cta-btn" href="scorecard.html">Start your baseline →</a></div>'}
+We're trying to build breeders who understand their programs. Who know their numbers. Who recognize their gaps. Who have systems. Who prepare intentionally. Who document what matters. Who can measure what they're doing. Who know what needs attention next. And who can eventually demonstrate the standards by which they operate. That's the future of BreedWise.`},
+
+ {html:'<span class="kick">Welcome to BOSS</span>'
+   +'<div class="wordmark gold" style="font-size:clamp(64px,13vw,128px)">BOSS<span class="tm">™</span></div>'
+   +'<div class="full">BreedWise Operating System &amp; Standards</div>'
+   +'<div class="small-gold" style="margin-top:18px">120 DAYS TO BUILD · 12 MONTHS TO PROVE</div>'
+   +'<div class="tagline serif gold" style="margin-top:14px">Better Breeding. Better Business. Stronger Programs.</div>'
+   +'<a class="cta-btn" href="scorecard.html">Build your baseline →</a>',
+  note:`So welcome to BOSS. BreedWise Operating System and Standards. If you're an Academy member, you're part of the group that helped us get here. We're going to honor what you've already purchased. We're going to give you access to where BreedWise is going. And for those who eventually want us more directly involved in implementing the system with you, we'll explain exactly what that opportunity looks like separately.
+
+For right now, your job is simple. Don't try to fix everything. Assess. Prioritize. Implement. Measure. Reassess. Remember: BOSS doesn't build everything, BOSS builds what matters next. 120 days to build. 12 months to prove. Better breeding. Better business. Stronger programs. Welcome to BOSS.`}
 ];
 
 var i=0;
@@ -370,20 +347,23 @@ function update(){
   Array.prototype.forEach.call(stage.querySelectorAll('.slide'),function(el){el.classList.toggle('on',+el.getAttribute('data-n')===i);});
   Array.prototype.forEach.call(dots.querySelectorAll('.dot'),function(el,n){el.classList.toggle('on',n===i);});
   document.body.classList.toggle('pure', !!SLIDES[i].cls);
+  document.getElementById('ntext').textContent=SLIDES[i].note||'';
   document.getElementById('cur').textContent=i+1;
   document.getElementById('prog').style.width=((i)/(SLIDES.length-1)*100)+'%';
   document.getElementById('prev').disabled=(i===0);
   document.getElementById('next').disabled=(i===SLIDES.length-1);
 }
-function go(n){i=Math.max(0,Math.min(SLIDES.length-1,n));update();var sl=stage.querySelector('.slide.on');if(sl)sl.scrollTop=0;}
+function go(n){i=Math.max(0,Math.min(SLIDES.length-1,n));update();var sl=stage.querySelector('.slide.on');if(sl)sl.scrollTop=0;document.getElementById('notes').scrollTop=0;}
 document.getElementById('next').onclick=function(){go(i+1);};
 document.getElementById('prev').onclick=function(){go(i-1);};
 document.getElementById('zr').onclick=function(){go(i+1);};
 document.getElementById('zl').onclick=function(){go(i-1);};
+document.getElementById('ntog').onclick=function(){document.body.classList.toggle('notes-on');};
 document.addEventListener('keydown',function(e){
   if(e.key==='ArrowRight'||e.key==='PageDown'){e.preventDefault();go(i+1);}
   else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(i-1);}
   else if(e.key==='Home'){go(0);} else if(e.key==='End'){go(SLIDES.length-1);}
+  else if(e.key==='n'||e.key==='N'){document.body.classList.toggle('notes-on');}
 });
 var tx=0;
 document.addEventListener('touchstart',function(e){tx=e.changedTouches[0].clientX;},{passive:true});
