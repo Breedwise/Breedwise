@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>BOSS™ Buyer Path Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0c;--card:#121216;--card2:#17171c;--ink:#F7F5F0;--gray:#A7A7A7;--dim:#6f6f6f;
+    --gold:#D4AF37;--gold-soft:#f0dd9a;--gold-deep:#9e7b24;
+    --line:rgba(247,245,240,.1);--line2:rgba(247,245,240,.2);--gline:rgba(212,175,55,.36);
+    --ok:#6bbf7a;--disp:'Manrope',-apple-system,sans-serif;--serif:'Cormorant Garamond',Georgia,serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:radial-gradient(1100px 560px at 50% -12%,#17130a,#0a0a0c 55%),var(--bg);color:var(--ink);font-family:var(--disp);-webkit-font-smoothing:antialiased;line-height:1.5}
+  .gold{color:var(--gold)}
+  .goldgrad{background:linear-gradient(162deg,#f3e2a6,#D4AF37 45%,#9e7b24 72%,#eccf82);-webkit-background-clip:text;background-clip:text;color:transparent}
+  /* gate */
+  #gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:24px}
+  #gate .box{max-width:370px;width:100%;text-align:center}
+  #gate .lk{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  #gate h2{font-size:23px;font-weight:800;margin:14px 0 6px;letter-spacing:-.4px}
+  #gate p{color:var(--gray);font-size:13px;margin-bottom:18px}
+  #gate input{width:100%;background:var(--card);border:1px solid var(--line2);color:var(--ink);border-radius:11px;padding:13px 15px;font-family:var(--disp);font-size:15px;text-align:center;letter-spacing:.06em}
+  #gate input:focus{outline:none;border-color:var(--gold)}
+  #gate button{width:100%;margin-top:10px;background:linear-gradient(180deg,#f3e2a6,#D4AF37);color:#120d02;border:0;border-radius:11px;padding:13px;font-family:var(--disp);font-weight:700;font-size:15px;cursor:pointer}
+  #gate .err{color:#d98c8c;font-size:12.5px;margin-top:10px;min-height:16px}
+  #app{display:none}
+  /* sticky header */
+  .hd{position:sticky;top:0;z-index:40;background:rgba(10,10,12,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .hdin{max-width:900px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .hdin .ttl{font-size:14px;font-weight:800;letter-spacing:-.2px}
+  .hdin .ttl small{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .prog{flex:1;min-width:140px;display:flex;align-items:center;gap:10px}
+  .bar{flex:1;height:7px;background:#23232a;border-radius:20px;overflow:hidden;min-width:90px}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold-deep),var(--gold-soft));transition:width .3s}
+  .pct{font-size:12px;color:var(--gray);font-weight:700;min-width:34px}
+  .status{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;border:1px solid var(--line2);border-radius:30px;padding:6px 12px;color:var(--gray);white-space:nowrap}
+  .status.building{color:var(--gold-soft);border-color:var(--gline)}
+  .status.implemented{color:var(--gold);border-color:var(--gold)}
+  .status.measured{color:#0d0d0d;background:linear-gradient(180deg,#f3e2a6,#D4AF37);border-color:transparent}
+  .hbtns{display:flex;gap:8px}
+  .btn{border:0;border-radius:10px;padding:10px 16px;font-family:var(--disp);font-weight:700;font-size:13px;cursor:pointer}
+  .btn.p{background:linear-gradient(180deg,#f3e2a6,#D4AF37);color:#120d02}
+  .btn.g{background:transparent;border:1px solid var(--line2);color:var(--gray)}
+  .btn.g:hover{border-color:var(--gold);color:var(--gold-soft)}
+  .saved{font-size:11px;color:var(--dim);align-self:center}
+  .saved.on{color:var(--ok)}
+  /* part nav */
+  .pnav{max-width:900px;margin:0 auto;padding:10px 20px 0;display:flex;gap:6px;flex-wrap:wrap}
+  .pnav a{font-size:11px;font-weight:700;color:var(--gray);border:1px solid var(--line);border-radius:8px;padding:6px 9px;text-decoration:none}
+  .pnav a:hover{border-color:var(--gline);color:var(--gold-soft)}
+  main{max-width:900px;margin:0 auto;padding:18px 20px 120px}
+  .intro{color:var(--gray);font-size:15px;margin:8px 0 10px;max-width:680px}
+  .intro .path{font-weight:700;color:var(--ink)}
+  section.part{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:22px;margin-top:20px;scroll-margin-top:120px}
+  .ph{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+  .ph .pn{font-family:var(--disp);font-weight:800;font-size:13px;color:var(--gold);letter-spacing:.1em}
+  .ph h2{font-size:20px;font-weight:800;letter-spacing:-.4px}
+  .psub{color:var(--gray);font-size:13.5px;margin-bottom:16px}
+  .lbl{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;margin:18px 0 9px}
+  label.f{display:block;font-size:13px;color:var(--ink);font-weight:600;margin:12px 0 5px}
+  label.f .h{color:var(--dim);font-weight:400;font-size:12px}
+  input.t,textarea.t,select.t{width:100%;background:var(--card2);border:1px solid var(--line2);color:var(--ink);border-radius:10px;padding:10px 12px;font-family:var(--disp);font-size:14px;resize:vertical}
+  input.t:focus,textarea.t:focus,select.t:focus{outline:none;border-color:var(--gold)}
+  textarea.t{min-height:62px;line-height:1.5}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .row4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media(max-width:620px){.row,.row3,.row4{grid-template-columns:1fr}}
+  .numrow{display:flex;align-items:center;gap:10px;margin:8px 0}
+  .numrow label{flex:1;font-size:13.5px;color:var(--ink)}
+  .numrow input{width:120px}
+  .funnel{display:grid;gap:7px;margin:14px 0;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .frow{display:flex;justify-content:space-between;align-items:center;font-size:13px}
+  .frow .fl{color:var(--gray)}
+  .frow .fv{font-family:var(--disp);font-weight:700}
+  .frow .fp{color:var(--gold-soft);font-weight:800;min-width:54px;text-align:right}
+  .note{border:1px solid var(--gline);background:rgba(212,175,55,.05);border-radius:11px;padding:12px 14px;font-size:13px;color:var(--gold-soft);margin-top:10px;display:none}
+  .note.on{display:block}
+  .pill-say{font-family:var(--serif);font-style:italic;color:var(--gold-soft);font-size:17px;margin:14px 0 4px}
+  /* stage cards */
+  .stage{border:1px solid var(--line);border-radius:13px;padding:16px;margin-top:12px;background:var(--card2)}
+  .stage .sh{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .stage .sh b{font-family:var(--disp);font-weight:800;font-size:14px;letter-spacing:.08em}
+  .stage .sh .bq{font-family:var(--serif);font-style:italic;color:var(--gold-soft);font-size:14px}
+  .cks{display:grid;gap:9px;margin-top:6px}
+  .ck{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--ink);cursor:pointer;line-height:1.4}
+  .ck input{margin-top:2px;width:17px;height:17px;accent-color:var(--gold);flex:none}
+  .cks.two{grid-template-columns:1fr 1fr;display:grid}
+  @media(max-width:620px){.cks.two{grid-template-columns:1fr}}
+  table.proof{width:100%;border-collapse:collapse;margin-top:10px}
+  table.proof th{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);text-align:left;padding:6px 8px;font-weight:700}
+  table.proof td{padding:5px 6px;vertical-align:top}
+  table.proof td.c{font-weight:700;color:var(--ink);font-size:13px;white-space:nowrap;padding-top:14px}
+  .obox{border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px;background:var(--card2)}
+  .obox .oq{font-weight:700;color:var(--ink);font-size:14px;margin-bottom:8px}
+  .obox .oq em{color:var(--gold-soft);font-style:normal}
+  .diag-flow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px;font-size:12px}
+  .diag-flow .ok{border:1px solid var(--gline);color:var(--gold-soft);border-radius:8px;padding:6px 10px;font-weight:700}
+  .diag-flow .bad{border:1px dashed var(--line2);color:var(--dim);border-radius:8px;padding:6px 10px}
+  .ic{display:grid;gap:10px;margin-top:8px}
+  .statusbox{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+  .sb{flex:1;min-width:120px;text-align:center;border:1px solid var(--line);border-radius:11px;padding:12px 8px;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--dim);text-transform:uppercase}
+  .sb.on{color:#0d0d0d;background:linear-gradient(180deg,#f3e2a6,#D4AF37);border-color:transparent}
+  .sb.reached{color:var(--gold);border-color:var(--gline)}
+  .loopline{text-align:center;margin-top:16px;font-family:var(--disp);font-weight:700;font-size:13px;letter-spacing:.06em;color:var(--gray)}
+  .loopline b{color:var(--gold)}
+  .foot{margin-top:28px;font-size:11.5px;color:var(--dim);line-height:1.6;text-align:center}
+  .subwrap{text-align:center;margin-top:26px}
+  .subwrap .msg{font-size:13px;margin-top:10px;min-height:18px}
+  .subwrap .msg.ok{color:var(--ok)}.subwrap .msg.err{color:#d98c8c}
+  @media print{
+    .hd,.pnav,.hbtns,.foot,.subwrap{display:none!important}
+    body{background:#fff;color:#111}
+    section.part{border:1px solid #ccc;background:#fff;break-inside:avoid}
+    input.t,textarea.t,select.t{background:#fff;color:#111;border:1px solid #bbb}
+    .goldgrad,.gold,.gold-soft{color:#8a6d12!important;-webkit-text-fill-color:#8a6d12}
+  }
+</style>
+</head>
+<body>
+  <div id="gate">
+    <div class="box">
+      <div class="lk">BreedWise · Member tool</div>
+      <h2>BOSS™ Buyer Path Builder</h2>
+      <p>Members only. Enter your member access code.</p>
+      <input id="code" type="password" placeholder="Member code" autocomplete="off" autofocus>
+      <button id="go">Unlock</button>
+      <div class="err" id="err"></div>
+    </div>
+  </div>
+
+  <div id="app">
+    <div class="hd">
+      <div class="hdin">
+        <div class="ttl"><small>BOSS™ Business Engine</small>Buyer Path Builder</div>
+        <div class="prog"><div class="bar"><i id="barfill"></i></div><span class="pct" id="pctlbl">0%</span></div>
+        <div class="status" id="statuspill">Not started</div>
+        <div class="hbtns"><button class="btn g" id="printBtn">Export</button><button class="btn p" id="saveBtn">Save blueprint</button></div>
+        <span class="saved" id="savedlbl">Autosaving locally</span>
+      </div>
+      <div class="pnav" id="pnav"></div>
+    </div>
+
+    <main id="main"></main>
+  </div>
+
+<script>
+var SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+var SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+var FN=SB_URL+'/functions/v1/log-submission';
+var FALLBACK_HASH='25e7b557235afa23f4d1ae0ac108bfdfefa7ea58ea50bd986321cbd0034c52dc'; // sha256("ACCELERATOR2026")
+var PASS_HASH=FALLBACK_HASH, MEMBER_CODE='';
+var DATAKEY='bw-buyerpath-data', CODEKEY='bw-buyerpath-code';
+
+function sha256(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+
+/* ---------- field helpers (template literals -> no escaping headaches) ---------- */
+function ti(k,label,hint){return `<label class="f">${label}${hint?` <span class="h">${hint}</span>`:''}</label><input class="t" data-k="${k}" type="text">`;}
+function num(k,label){return `<div class="numrow"><label>${label}</label><input class="t" data-k="${k}" type="number" min="0" inputmode="numeric"></div>`;}
+function ta(k,label,hint,ph){return `<label class="f">${label}${hint?` <span class="h">${hint}</span>`:''}</label><textarea class="t" data-k="${k}" placeholder="${ph||''}"></textarea>`;}
+function sel(k,label,opts){return `<label class="f">${label}</label><select class="t" data-k="${k}"><option value="">Select…</option>${opts.map(function(o){return `<option value="${o}">${o}</option>`;}).join('')}</select>`;}
+function ck(k,label){return `<label class="ck"><input type="checkbox" data-k="${k}"><span>${label}</span></label>`;}
+
+/* ---------- the six buyer-path stages ---------- */
+var STAGES=[
+ ['CONNECT','“Should I talk to them?”','Start the conversation and understand the inquiry','e.g. DM / text / email response','Reason for inquiry identified'],
+ ['DISCOVER','“Could this be a fit?”','Understand the buyer and their home','e.g. discovery questions / application','Needs, readiness and fit understood'],
+ ['MATCH','“Which option is right for me?”','Make an appropriate recommendation','e.g. breeding / puppy presentation','Recommended path understood'],
+ ['PROVE','“Why should I trust them?”','Substantiate the material claims','e.g. evidence, process, docs, testimonials','Buyer understands your differentiation'],
+ ['CLARIFY','“What exactly happens?”','Remove uncertainty','e.g. price / process / contract / deposit','Material questions answered'],
+ ['DECIDE','“Am I moving forward?”','Reach a clear next step','e.g. deposit / waitlist / follow-up','Yes, nurture, or not a fit']
+];
+var CRM=[
+ ['New inquiry','Someone reaches out','First response sent'],
+ ['Contacted','First response sent','Two-way conversation started'],
+ ['Discovery','Conversation started','Discovery questions answered'],
+ ['Qualified','Discovery completed and buyer meets placement criteria','Appropriate breeding / puppy / path recommended'],
+ ['Matched','A recommendation has been made','Buyer understands the recommended fit'],
+ ['Decision','Price and process clarified','Buyer gives a yes / not yet / no'],
+ ['Deposit / Waitlist','Buyer says yes','Payment or waitlist spot secured'],
+ ['Placed','Puppy goes home','Placement complete, moves to post-placement'],
+ ['Nurture','Good buyer, not ready yet','Re-engaged or moved to a fit'],
+ ['Not a fit','Home or timing not appropriate','Closed with reason recorded']
+];
+var PCATS=[['you','YOU','What are you looking for? (opening, buyer-first framing)'],
+ ['fit','FIT','What matters for your household? (qualification)'],
+ ['reco','RECOMMENDATION','Which breeding / option fits, and why'],
+ ['proof','PROOF','Standards, evidence, documentation, testimonials'],
+ ['process','PROCESS','What happens next: timeline, selection, go-home'],
+ ['invest','INVESTMENT','Price and deposit'],
+ ['decide','DECISION','The clear next step']];
+var ICHECK=[
+ ['ic1','Buyer journey documented'],['ic2','Discovery questions established'],['ic3','Qualification criteria established'],
+ ['ic4','CRM stages configured'],['ic5','Buyer presentation aligned to the journey'],['ic6','Proof assets identified'],
+ ['ic7','Deposit / next-step process documented'],['ic8','Follow-up process established'],
+ ['ic9','Every active buyer has a status'],['ic10','Every active buyer has a next action'],['ic11','Conversion KPIs are being tracked']
+];
+
+function render(){
+  var m=document.getElementById('main');
+  m.innerHTML=
+  `<p class="intro">Build the system that takes a qualified inquiry from first contact to a confident decision. By the end you will have the blueprint to drop into your CRM, DMs, calls, follow-up and buyer presentation: <span class="path">CONNECT → DISCOVER → MATCH → PROVE → CLARIFY → DECIDE</span>.</p>
+
+  <section class="part" id="p0"><div class="ph"><span class="pn">YOU</span><h2>Your program</h2></div>
+    <div class="row3">
+      <div>${ti('name','Your name')}</div>
+      <div>${ti('email','Email')}</div>
+      <div>${ti('kennel','Kennel / program')}</div>
+    </div>
+  </section>
+
+  <section class="part" id="p1"><div class="ph"><span class="pn">PART 1</span><h2>Current-state diagnosis</h2></div>
+    <div class="psub">Where are buyers getting stuck? Numbers from the last 90 days.</div>
+    ${num('p1_total','Total inquiries')}
+    ${num('p1_qual','Qualified inquiries')}
+    ${num('p1_convo','Buyer conversations')}
+    ${num('p1_app','Applications')}
+    ${num('p1_dep','Deposits')}
+    ${num('p1_placed','Puppies placed')}
+    ${num('p1_price','Average puppy price ($)')}
+    ${num('p1_lost','Known lost opportunities')}
+    <div class="funnel" id="p1funnel"></div>
+    ${ta('p1_afterprice','What usually happens after someone asks “How much?”','',' ')}
+    ${sel('p1_die','Where do most conversations die?',['Before we respond','After price is shared','After initial conversation','After application','After recommendation / match','After deposit is explained','After “I need to think about it”','We don’t know'])}
+    <div class="note" id="p1note">“We don’t know” means you don’t currently have a measurable sales system. That is exactly what this tool builds.</div>
+  </section>
+
+  <section class="part" id="p2"><div class="ph"><span class="pn">PART 2</span><h2>Buyer decision diagnostic</h2></div>
+    <div class="psub">The five decisions every buyer makes underneath the visible one.</div>
+    <div class="lbl">Desire · “Do I want this?”</div>
+    ${ta('d_desire1','What creates desire in our process?')}
+    ${ta('d_desire2','What do buyers usually care about most?')}
+    <div class="lbl">Fit · “Is this right for me?”</div>
+    ${ta('d_fit1','How do we determine fit?')}
+    ${ta('d_fit2','What do we gather before recommending a puppy / breeding?')}
+    <div class="lbl">Trust · “Do I trust you?”</div>
+    ${ta('d_trust1','What claims do we make?')}
+    ${ta('d_trust2','What evidence supports those claims?')}
+    <div class="lbl">Certainty · can a buyer clearly explain…</div>
+    <div class="cks two">${['How selection works','Deposit terms','Pricing','Timeline','Contract process','What’s included','Go-home process','Communication expectations','Support after placement'].map(function(x,i){return ck('cert'+i,x);}).join('')}</div>
+    <div class="lbl">Decision · “Am I ready to move forward?”</div>
+    ${ta('d_decide1','How do we currently ask someone to move forward?')}
+  </section>
+
+  <section class="part" id="p3"><div class="ph"><span class="pn">PART 3</span><h2>Build your BOSS Buyer Path</h2></div>
+    <div class="psub">The centerpiece. Define all six stages. Fill in your objective, action, supporting system and definition of done.</div>
+    ${STAGES.map(function(s,i){return `<div class="stage"><div class="sh"><b class="gold">${i+1} · ${s[0]}</b><span class="bq">${s[1]}</span></div>
+      ${ta('st'+i+'_obj','Objective',' ',s[2])}
+      ${ta('st'+i+'_act','What we actually do')}
+      ${ta('st'+i+'_sys','System / asset that supports it',' ',s[3])}
+      ${ta('st'+i+'_dod','Definition of done',' ',s[4])}</div>`;}).join('')}
+  </section>
+
+  <section class="part" id="p4"><div class="ph"><span class="pn">PART 4</span><h2>Buyer discovery builder</h2></div>
+    <div class="psub">Develop what you need to learn in each category, then pick your 7 core questions. Your process, not a canned script.</div>
+    ${ta('disc_house','Household','what do we need to know about where the puppy will live?')}
+    ${ta('disc_exp','Experience','previous dog / breed experience')}
+    ${ta('disc_life','Lifestyle','what does daily life look like?')}
+    ${ta('disc_purpose','Purpose','what are they looking for in the dog?')}
+    ${ta('disc_temp','Temperament','which characteristics matter most?')}
+    ${ta('disc_pref','Preferences','sex, appearance, timing')}
+    ${ta('disc_time','Timeline','when are they actually prepared to bring a puppy home?')}
+    ${ta('disc_dm','Decision','who else is involved in this decision?')}
+    ${ta('disc_ready','Readiness','what must be true for this to be an appropriate placement?')}
+    <div class="lbl">Our 7 core discovery questions</div>
+    ${[1,2,3,4,5,6,7].map(function(n){return `<input class="t" data-k="dq${n}" type="text" placeholder="${n}." style="margin-bottom:8px">`;}).join('')}
+  </section>
+
+  <section class="part" id="p5"><div class="ph"><span class="pn">PART 5</span><h2>Proof builder</h2></div>
+    <div class="psub">Turn marketing claims into evidence. If you can’t substantiate it, don’t build your sales process around saying it.</div>
+    <table class="proof"><thead><tr><th>Claim</th><th>What does it mean?</th><th>Evidence we can show</th></tr></thead><tbody>
+    ${[['quality','Quality'],['health','Health'],['temper','Temperament'],['service','Service'],['support','Support']].map(function(r){return `<tr><td class="c">${r[1]}</td><td><textarea class="t" data-k="pf_${r[0]}_m" rows="2"></textarea></td><td><textarea class="t" data-k="pf_${r[0]}_e" rows="2"></textarea></td></tr>`;}).join('')}
+    ${[1,2].map(function(n){return `<tr><td class="c"><input class="t" data-k="pf_custom${n}_c" type="text" placeholder="Your claim" style="width:120px"></td><td><textarea class="t" data-k="pf_custom${n}_m" rows="2"></textarea></td><td><textarea class="t" data-k="pf_custom${n}_e" rows="2"></textarea></td></tr>`;}).join('')}
+    </tbody></table>
+    <div class="pill-say">If you can’t prove it, don’t sell on it.</div>
+  </section>
+
+  <section class="part" id="p6"><div class="ph"><span class="pn">PART 6</span><h2>Objection diagnostic</h2></div>
+    <div class="psub">Don’t answer the objection yet. Diagnose what’s unresolved underneath it.</div>
+    <div class="obox"><div class="oq">Buyer says: <em>“I need to think about it.”</em></div>
+      <div class="lbl" style="margin-top:0">What could actually be unresolved?</div>
+      <div class="cks two">${['Desire','Fit','Trust','Certainty','Money / value','Timing','Other decision-maker','Unknown'].map(function(x,i){return ck('ob1_'+i,x);}).join('')}</div>
+      ${ta('ob1_q','Your diagnostic question','',"Absolutely. What specifically do you feel you still need to think through?")}</div>
+    <div class="obox"><div class="oq">Buyer says: <em>“That’s more than I expected.”</em></div>
+      <div class="lbl" style="margin-top:0">What could actually be unresolved?</div>
+      <div class="cks two">${['Desire','Fit','Trust','Certainty','Money / value','Timing','Other decision-maker','Unknown'].map(function(x,i){return ck('ob2_'+i,x);}).join('')}</div>
+      ${ta('ob2_q','Your diagnostic question','',"When you say more than expected, is the concern the total investment, or whether what we offer justifies it?")}</div>
+    <div class="obox"><div class="oq">Your own most common objection</div>
+      ${ti('ob3_obj','The objection you hear most')}
+      <div class="lbl">What’s usually unresolved underneath it?</div>
+      <div class="cks two">${['Desire','Fit','Trust','Certainty','Money / value','Timing','Other decision-maker','Unknown'].map(function(x,i){return ck('ob3_'+i,x);}).join('')}</div>
+      ${ta('ob3_q','Your diagnostic question')}</div>
+    <div class="diag-flow"><span class="ok">DIAGNOSE → UNDERSTAND → RESPOND</span><span class="bad">not OBJECT → SCRIPT → PRESSURE</span></div>
+  </section>
+
+  <section class="part" id="p7"><div class="ph"><span class="pn">PART 7</span><h2>Follow-up system</h2></div>
+    <div class="psub">Decide what happens when someone isn’t ready. BOSS standard: every qualified buyer has a status and a next action.</div>
+    ${ta('fu_cadence','Your follow-up cadence','',"e.g. respond within 1 hour, follow up every 3 days until a decision")}
+    <div class="lbl">The fields every active buyer record must carry</div>
+    <div class="cks two">${['Status','Why they haven’t decided','Last contact','Next action','Next action date','Information they still need'].map(function(x,i){return ck('fu'+i,x);}).join('')}</div>
+    ${ta('fu_statuses','Your status options','',"e.g. New, Contacted, Discovery, Qualified, Matched, Decision, Deposit, Nurture, Not a fit")}
+  </section>
+
+  <section class="part" id="p8"><div class="ph"><span class="pn">PART 8</span><h2>CRM build sheet</h2></div>
+    <div class="psub">Define the entry and exit condition for every stage. That is what keeps a CRM from becoming arbitrary columns.</div>
+    ${CRM.map(function(c,i){return `<div class="stage"><div class="sh"><b class="gold">${c[0]}</b></div>
+      ${ti('crm'+i+'_in','Enters when')}
+      ${ti('crm'+i+'_out','Exits when')}
+      <div style="font-size:11.5px;color:var(--dim);margin-top:6px">Suggested — enters: ${c[1]}; exits: ${c[2]}</div></div>`;}).join('')}
+  </section>
+
+  <section class="part" id="p9"><div class="ph"><span class="pn">PART 9</span><h2>Buyer presentation builder</h2></div>
+    <div class="psub">Audit every slide / page / asset you use today and sort it into the right psychological sequence. For each: does it help the buyer decide, or is it here because we wanted to say it?</div>
+    ${PCATS.map(function(p){return ta('pres_'+p[0],p[1],p[2]);}).join('')}
+    ${ta('pres_cut','Assets to cut','',"anything that doesn’t help a buyer make a decision")}
+  </section>
+
+  <section class="part" id="p10"><div class="ph"><span class="pn">PART 10</span><h2>Sales scoreboard</h2></div>
+    <div class="psub">Weekly BOSS buyer KPIs. The numbers tell you where the pipeline is leaking.</div>
+    ${num('k_inq','New inquiries')}
+    <div id="kpibox"></div>
+    ${num('k_days','Average days: inquiry → decision')}
+    ${num('k_fup','Follow-ups completed (%)')}
+    ${num('k_lost','Lost')}
+    ${ta('k_lostreason','Top lost reason')}
+    ${ta('k_leak','Where is the pipeline leaking?')}
+    ${ta('k_next','What needs to change next?')}
+    <div class="loopline"><b>ASSESS → PRIORITIZE → IMPLEMENT → MEASURE → REASSESS</b></div>
+  </section>
+
+  <section class="part" id="pdone"><div class="ph"><span class="pn">DEFINITION OF DONE</span><h2>Implementation check</h2></div>
+    <div class="psub">This module isn’t done when you watch it. It’s done when these are true.</div>
+    <div class="ic">${ICHECK.map(function(c){return ck(c[0],c[1]);}).join('')}</div>
+    <div class="statusbox" id="statusbox">
+      <div class="sb" data-s="0">Not started</div><div class="sb" data-s="1">Building</div><div class="sb" data-s="2">Implemented</div><div class="sb" data-s="3">Measured</div>
+    </div>
+    <div class="loopline" style="margin-top:14px">BOSS isn’t about checking off lessons. It’s moving systems from <b>Not Started → Building → Implemented → Measured.</b></div>
+  </section>
+
+  <div class="subwrap">
+    <button class="btn p" id="saveBtn2" style="padding:14px 30px;font-size:15px">Save my blueprint</button>
+    <button class="btn g" id="printBtn2" style="padding:14px 24px;font-size:15px;margin-left:8px">Export / print</button>
+    <div class="msg" id="submsg"></div>
+  </div>
+
+  <div class="foot">BreedWise member tool. Your blueprint autosaves in this browser as you work. “Save my blueprint” also records it to your BreedWise account so your progress is tracked. Build the proof you can substantiate: don’t market claims you can’t support.</div>`;
+
+  // build part nav
+  var pn=[['p1','1'],['p2','2'],['p3','3'],['p4','4'],['p5','5'],['p6','6'],['p7','7'],['p8','8'],['p9','9'],['p10','10'],['pdone','Done']];
+  document.getElementById('pnav').innerHTML=pn.map(function(x){return `<a href="#${x[0]}">${x[1]}</a>`;}).join('');
+  // build kpi sub-rows (percent of inquiries)
+  document.getElementById('kpibox').innerHTML=[['k_contacted','Contacted'],['k_discovery','Discovery completed'],['k_qualified','Qualified'],['k_matched','Matched'],['k_decisions','Decisions reached'],['k_deposits','Deposits']].map(function(r){return `<div class="numrow"><label>${r[1]} <span id="pc_${r[0]}" style="color:var(--gold-soft);font-weight:800"></span></label><input class="t" data-k="${r[0]}" type="number" min="0" inputmode="numeric"></div>`;}).join('');
+
+  load(); bind(); recompute();
+}
+
+/* ---------- state ---------- */
+function allFields(){return document.querySelectorAll('#main [data-k]');}
+function collect(){var o={};allFields().forEach(function(el){o[el.getAttribute('data-k')]=(el.type==='checkbox')?el.checked:el.value;});return o;}
+function load(){var raw;try{raw=localStorage.getItem(DATAKEY);}catch(e){}if(!raw)return;var o;try{o=JSON.parse(raw);}catch(e){return;}allFields().forEach(function(el){var k=el.getAttribute('data-k');if(!(k in o))return;if(el.type==='checkbox')el.checked=!!o[k];else el.value=o[k]==null?'':o[k];});}
+var savedT;
+function save(){try{localStorage.setItem(DATAKEY,JSON.stringify(collect()));}catch(e){}var s=document.getElementById('savedlbl');if(s){s.textContent='Saved';s.classList.add('on');clearTimeout(savedT);savedT=setTimeout(function(){s.textContent='Autosaving locally';s.classList.remove('on');},1200);}}
+function nv(k){var el=document.querySelector('#main [data-k="'+k+'"]');var n=el?parseFloat(el.value):NaN;return isNaN(n)?0:n;}
+function rate(a,b){return b>0?Math.round(a/b*100)+'%':'—';}
+
+function recompute(){
+  // Part 1 funnel
+  var t=nv('p1_total'),q=nv('p1_qual'),c=nv('p1_convo'),a=nv('p1_app'),d=nv('p1_dep'),pl=nv('p1_placed');
+  var rows=[['Inquiries',t,''],['Qualified',q,rate(q,t)],['Conversations',c,rate(c,q)],['Applications',a,rate(a,c)],['Deposits',d,rate(d,c)],['Placed',pl,rate(pl,d)],['Overall inquiry → deposit',d,rate(d,t)]];
+  var fn=document.getElementById('p1funnel');
+  if(fn)fn.innerHTML=rows.map(function(r){return `<div class="frow"><span class="fl">${r[0]}</span><span><span class="fv">${r[1]||0}</span> <span class="fp">${r[2]}</span></span></div>`;}).join('');
+  var dieEl=document.querySelector('#main [data-k="p1_die"]');var note=document.getElementById('p1note');
+  if(note)note.classList.toggle('on', dieEl && dieEl.value==='We don’t know');
+  // Part 10 kpi %
+  var inq=nv('k_inq');
+  ['k_contacted','k_discovery','k_qualified','k_matched','k_decisions','k_deposits'].forEach(function(k){var el=document.getElementById('pc_'+k);if(el)el.textContent=inq>0?('· '+rate(nv(k),inq)+' of inquiries'):'';});
+  // Definition of done -> status
+  var checked=0;ICHECK.forEach(function(c){var el=document.querySelector('#main [data-k="'+c[0]+'"]');if(el&&el.checked)checked++;});
+  var total=ICHECK.length;
+  var kpiTracked=(document.querySelector('#main [data-k="ic11"]')||{}).checked;
+  var scoreboard=(nv('k_inq')+nv('k_contacted')+nv('k_deposits'))>0;
+  var level=0;
+  if(checked===0&&!scoreboard)level=0;
+  else if(checked<total)level=1;
+  else if(checked===total&&!(kpiTracked&&scoreboard))level=2;
+  else level=3;
+  var pct=Math.round(checked/total*100);
+  document.getElementById('barfill').style.width=pct+'%';
+  document.getElementById('pctlbl').textContent=pct+'%';
+  var names=['Not started','Building','Implemented','Measured'];
+  var pill=document.getElementById('statuspill');pill.textContent=names[level];
+  pill.className='status '+['','building','implemented','measured'][level];
+  var sbs=document.querySelectorAll('#statusbox .sb');
+  sbs.forEach(function(el){var s=+el.getAttribute('data-s');el.classList.toggle('on',s===level);el.classList.toggle('reached',s<level);});
+}
+
+function bind(){
+  allFields().forEach(function(el){var ev=(el.tagName==='SELECT'||el.type==='checkbox')?'change':'input';el.addEventListener(ev,function(){save();recompute();});});
+  document.getElementById('saveBtn').addEventListener('click',submit);
+  var s2=document.getElementById('saveBtn2');if(s2)s2.addEventListener('click',submit);
+  document.getElementById('printBtn').addEventListener('click',function(){window.print();});
+  var p2=document.getElementById('printBtn2');if(p2)p2.addEventListener('click',function(){window.print();});
+}
+
+async function submit(){
+  var inputs=collect();
+  var msg=document.getElementById('submsg');
+  var name=inputs.name||'', email=inputs.email||'';
+  if(!name||!email){ if(msg){msg.className='msg err';msg.textContent='Add your name and email at the top (Your program) so we can save it to your account.';} document.getElementById('p0').scrollIntoView({behavior:'smooth'}); return; }
+  var checked=0;ICHECK.forEach(function(c){if(inputs[c[0]])checked++;});
+  var statusName=['Not started','Building','Implemented','Measured'][ (checked===0?0:(checked<ICHECK.length?1:((inputs.ic11&&(nv('k_inq')+nv('k_deposits'))>0)?3:2))) ];
+  var pct=Math.round(checked/ICHECK.length*100);
+  if(msg){msg.className='msg';msg.textContent='Saving…';}
+  try{
+    var r=await fetch(FN,{method:'POST',headers:{'content-type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},
+      body:JSON.stringify({passcode:MEMBER_CODE,tool:'buyer-path-builder',tool_label:'Buyer Path Builder',member_name:name,member_email:email,
+      summary:'BOSS status: '+statusName+' ('+pct+'% of the implementation checklist)',
+      meta:{kennel:inputs.kennel||'',boss_status:statusName,completion_pct:pct},
+      inputs:inputs,
+      result:{boss_status:statusName,completion_pct:pct,checklist_done:checked+'/'+ICHECK.length}})});
+    var d=await r.json();
+    if(r.ok&&!d.error){ if(msg){msg.className='msg ok';msg.textContent='Saved to your account. BOSS status: '+statusName+'. Your blueprint is yours to keep building.';} }
+    else{ if(msg){msg.className='msg err';msg.textContent=(d.error||('Could not save ('+r.status+').'))+' Your work is still saved in this browser.';} }
+  }catch(e){ if(msg){msg.className='msg err';msg.textContent='Network error. Your work is still saved in this browser.';} }
+}
+
+/* ---------- gate ---------- */
+(function(){
+  var gate=document.getElementById('gate'),app=document.getElementById('app'),err=document.getElementById('err');
+  function open(){gate.style.display='none';app.style.display='block';render();}
+  try{var saved=localStorage.getItem(CODEKEY);}catch(e){}
+  // refresh the member hash from server (so a rotated code still works), fallback is fine
+  fetch(SB_URL+'/rest/v1/access_config?key=eq.member&select=passcode_hash',{headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}})
+    .then(function(r){return r.json();}).then(function(a){if(a&&a[0]&&a[0].passcode_hash)PASS_HASH=a[0].passcode_hash;})
+    .catch(function(){}).finally(function(){
+      if(saved) Promise.all([sha256(saved),sha256(saved.toUpperCase())]).then(function(hs){if(hs[0]===PASS_HASH||hs[1]===PASS_HASH){MEMBER_CODE=saved;open();}});
+    });
+  function tryCode(){
+    var v=(document.getElementById('code').value||'').trim();if(!v)return;
+    Promise.all([sha256(v),sha256(v.toUpperCase())]).then(function(hs){
+      if(hs[0]===PASS_HASH||hs[1]===PASS_HASH){MEMBER_CODE=v;try{localStorage.setItem(CODEKEY,v);}catch(e){}open();}
+      else err.textContent='That code did not match.';
+    });
+  }
+  document.getElementById('go').onclick=tryCode;
+  document.getElementById('code').addEventListener('keydown',function(e){if(e.key==='Enter')tryCode();});
+})();
+</script>
+</body>
+</html>
