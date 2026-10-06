@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>BOSS™ Buyer Presentation Outline</title>
+<title>Academy Buyer Presentation Outline</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@1,600&display=swap" rel="stylesheet">
@@ -105,7 +105,7 @@
 
   <div id="app">
     <div class="hd"><div class="hdin">
-      <div class="ttl"><small>BOSS™ · Academy member tool</small>Buyer Presentation Outline</div>
+      <div class="ttl"><small>BreedWise Academy · member tool</small>Buyer Presentation Outline</div>
       <div class="prog"><div class="bar"><i id="barfill"></i></div><span class="pct" id="pctlbl">0 / 7</span></div>
       <div class="status" id="statuspill">Not started</div>
       <div class="hbtns"><button class="btn g" id="printBtn">Export</button><button class="btn p" id="saveBtn">Save outline</button></div>
@@ -191,7 +191,7 @@ function render(){
     <button class="btn g" id="printBtn2" style="padding:14px 24px;font-size:15px;margin-left:8px">Export / print</button>
     <div class="msg" id="submsg"></div>
   </div>
-  <div class="foot">BreedWise member tool. Your outline autosaves in this browser. “Save my outline” also records it to your BreedWise account. This is the DIY version of your buyer presentation; BOSS Implementation members have this built with them.</div>`;
+  <div class="foot">BreedWise Academy member tool. Your outline autosaves in this browser, and “Save my outline” also records it to your BreedWise account. Export it to turn it into your slides.</div>`;
 
   load(); bind(); recompute();
 }
@@ -226,7 +226,7 @@ async function submit(){
   if(msg){msg.className='msg';msg.textContent='Saving…';}
   try{
     var r=await fetch(FN,{method:'POST',headers:{'content-type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},
-      body:JSON.stringify({passcode:MEMBER_CODE,tool:'buyer-presentation-outline',tool_label:'Buyer Presentation Outline',member_name:name,member_email:email,
+      body:JSON.stringify({tool:'buyer-presentation-outline',tool_label:'Buyer Presentation Outline',member_name:name,member_email:email,
       summary:status+' · '+n+'/'+tot+' sections drafted',
       meta:{kennel:inputs.kennel||'',status:status,sections_done:n+'/'+tot},
       inputs:inputs,result:{status:status,sections_done:n+'/'+tot}})});
@@ -236,23 +236,10 @@ async function submit(){
   }catch(e){ if(msg){msg.className='msg err';msg.textContent='Network error. Your work is still saved in this browser.';} }
 }
 (function(){
-  var gate=document.getElementById('gate'),app=document.getElementById('app'),err=document.getElementById('err');
-  function open(){gate.style.display='none';app.style.display='block';render();}
-  try{var saved=localStorage.getItem(CODEKEY);}catch(e){}
-  fetch(SB_URL+'/rest/v1/access_config?key=eq.member&select=passcode_hash',{headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}})
-    .then(function(r){return r.json();}).then(function(a){if(a&&a[0]&&a[0].passcode_hash)PASS_HASH=a[0].passcode_hash;})
-    .catch(function(){}).finally(function(){
-      if(saved) Promise.all([sha256(saved),sha256(saved.toUpperCase())]).then(function(hs){if(hs[0]===PASS_HASH||hs[1]===PASS_HASH){MEMBER_CODE=saved;open();}});
-    });
-  function tryCode(){
-    var v=(document.getElementById('code').value||'').trim();if(!v)return;
-    Promise.all([sha256(v),sha256(v.toUpperCase())]).then(function(hs){
-      if(hs[0]===PASS_HASH||hs[1]===PASS_HASH){MEMBER_CODE=v;try{localStorage.setItem(CODEKEY,v);}catch(e){}open();}
-      else err.textContent='That code did not match.';
-    });
-  }
-  document.getElementById('go').onclick=tryCode;
-  document.getElementById('code').addEventListener('keydown',function(e){if(e.key==='Enter')tryCode();});
+  // Open directly — no access code. This is the Academy member tool.
+  var gate=document.getElementById('gate'); if(gate)gate.style.display='none';
+  document.getElementById('app').style.display='block';
+  render();
 })();
 </script>
 </body>
