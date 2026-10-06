@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Buyer Presentation Template · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#100d0a;--panel:#1a1511;--panel2:#221b15;--line:#352a20;--line2:#473626;
+    --ink:#f5efe6;--mid:#cabfb0;--muted:#8d8072;
+    --gold:#c9a86a;--gold-soft:#e6cf9c;--brown:#6b513a;
+    --disp:'Playfair Display',Georgia,serif;--sans:'Inter',-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%}
+  body{background:radial-gradient(1100px 620px at 50% -12%,rgba(201,168,106,.10),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+  .gold{color:var(--gold)}
+  .serif{font-family:var(--disp)}
+  .top{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--line);background:rgba(16,13,10,.66);backdrop-filter:blur(10px)}
+  .brand{font-size:12px;letter-spacing:.24em;font-weight:700;color:var(--mid);text-transform:uppercase}
+  .brand b{color:var(--gold)}
+  .topR{display:flex;align-items:center;gap:13px}
+  .topmod{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .ntog{font-family:var(--sans);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;border:1px solid var(--line);border-radius:7px;padding:5px 9px;cursor:pointer;background:transparent}
+  .ntog:hover{color:var(--gold);border-color:var(--line2)}
+  body.notes-on .ntog{color:var(--gold);border-color:var(--gold)}
+  .prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--brown),var(--gold-soft));width:0;z-index:40;transition:width .4s ease}
+  .stage{position:absolute;inset:0}
+  .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:78px 34px 92px;opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease;pointer-events:none}
+  .slide.on{opacity:1;transform:none;pointer-events:auto}
+  .inner{max-width:860px;width:100%}
+  /* slide chrome: a premium deck mock */
+  .tag{display:inline-block;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;border:1px solid var(--line2);border-radius:20px;padding:6px 14px;margin-bottom:20px}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(30px,5.2vw,54px);line-height:1.08;letter-spacing:-.4px}
+  h1 .ph{color:var(--gold-soft);font-style:italic}
+  .sub{margin-top:16px;font-size:clamp(15px,2vw,19px);color:var(--mid);font-weight:300;line-height:1.55;max-width:640px;margin-left:auto;margin-right:auto}
+  .ph{color:var(--gold-soft)}
+  ul.list{list-style:none;display:grid;gap:11px;margin:24px auto 0;max-width:600px;text-align:left}
+  ul.list li{position:relative;padding-left:22px;font-size:clamp(14px,1.9vw,17px);color:var(--ink);line-height:1.45}
+  ul.list li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;background:var(--gold);border-radius:50%}
+  ul.list li span{color:var(--muted);font-size:13px;display:block;font-weight:300;margin-top:2px}
+  .q{font-family:var(--disp);font-style:italic;font-size:clamp(18px,2.6vw,26px);color:var(--gold-soft);line-height:1.3;margin-top:8px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px;text-align:left}
+  @media(max-width:640px){.two{grid-template-columns:1fr}}
+  .cardm{border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--panel)}
+  .cardm .ct{font-family:var(--disp);font-size:18px;color:var(--ink);margin-bottom:7px}
+  .cardm ul{list-style:none;display:grid;gap:5px}
+  .cardm ul li{font-size:13px;color:var(--mid);padding-left:13px;position:relative}
+  .cardm ul li::before{content:"";position:absolute;left:0;top:7px;width:4px;height:4px;background:var(--gold);border-radius:50%}
+  .flow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin-top:24px}
+  .flow .st{border:1px solid var(--line2);border-radius:11px;padding:11px 15px;min-width:120px}
+  .flow .st b{font-size:13px;color:var(--ink);font-weight:600;display:block}
+  .flow .st span{font-size:11px;color:var(--muted)}
+  .flow i{color:var(--gold);font-style:normal}
+  .price{font-family:var(--disp);font-size:clamp(40px,8vw,72px);color:var(--gold-soft);margin-top:10px}
+  .price small{display:block;font-family:var(--sans);font-size:14px;color:var(--muted);font-weight:400;letter-spacing:.02em}
+  .incl{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:20px}
+  .incl span{font-size:12px;color:var(--mid);border:1px solid var(--line);border-radius:20px;padding:7px 14px}
+  .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:24px;text-align:left}
+  @media(max-width:700px){.three{grid-template-columns:1fr}}
+  .tc{border:1px solid var(--line);border-radius:13px;padding:16px;background:var(--panel)}
+  .tc b{font-family:var(--disp);font-size:16px;display:block;margin-bottom:4px}
+  .tc.yes b{color:var(--gold-soft)}.tc.may b{color:var(--ink)}.tc.no b{color:var(--muted)}
+  .tc p{font-size:12.5px;color:var(--mid);line-height:1.45}
+  .cover-name{font-family:var(--disp);font-size:clamp(40px,8vw,76px);font-weight:600;letter-spacing:-.5px;line-height:1}
+  .cover-sub{margin-top:18px;font-size:clamp(15px,2.2vw,20px);color:var(--mid);font-weight:300}
+  .cover-meta{margin-top:22px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .logo-ph{width:84px;height:84px;margin:0 auto 24px;border-radius:50%;border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:var(--panel)}
+  .cta-btn{display:inline-block;margin-top:26px;padding:14px 30px;border-radius:12px;border:0;color:#1a130a;font-family:var(--sans);font-weight:700;font-size:15px;cursor:pointer;text-decoration:none;background:linear-gradient(135deg,#e6cf9c,#b2894f)}
+  .pairnote{margin-top:18px;font-size:13px;color:var(--muted);max-width:560px;margin-left:auto;margin-right:auto;line-height:1.5}
+  .pairnote a{color:var(--gold-soft);font-weight:600}
+  .nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:15px 24px;border-top:1px solid var(--line);background:rgba(16,13,10,.66);backdrop-filter:blur(10px)}
+  .nbtn{background:transparent;border:1px solid var(--line2);color:var(--mid);border-radius:10px;width:42px;height:42px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.12s}
+  .nbtn:hover{border-color:var(--gold);color:var(--gold-soft)}.nbtn:disabled{opacity:.3;cursor:default}
+  .count{font-size:12.5px;color:var(--muted)}.count b{color:var(--ink);font-size:15px}
+  .dots{display:flex;gap:5px}.dot{width:6px;height:6px;border-radius:50%;background:var(--line2);cursor:pointer;transition:.15s}.dot.on{background:var(--gold);transform:scale(1.3)}
+  @media(max-width:820px){.dots{display:none}}
+  .notes{position:fixed;left:0;right:0;bottom:72px;z-index:28;background:rgba(14,11,8,.97);border-top:1px solid var(--gold);padding:15px 26px 17px;max-height:40vh;overflow:auto;display:none}
+  body.notes-on .notes{display:block}
+  .notes .nl{font-family:var(--sans);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:7px}
+  .notes .nt{font-size:13.5px;line-height:1.6;color:#d8cebf;white-space:pre-line;max-width:880px}
+  .zone{position:fixed;top:54px;bottom:72px;width:17%;z-index:20;cursor:pointer}.zone.l{left:0}.zone.r{right:0}
+  .hint{position:fixed;bottom:74px;left:50%;translate:-50% 0;font-size:10px;color:#4a3d2f;z-index:25;letter-spacing:.08em}
+  body.notes-on .hint{display:none}
+</style>
+</head>
+<body>
+  <div class="prog" id="prog"></div>
+  <div class="top"><span class="brand"><b>BreedWise</b> · Buyer Presentation Template</span><span class="topR"><button class="ntog" id="ntog" title="What to put on this slide (N)">Fill-in guide</button><span class="topmod">BOSS Buyer Systems</span></span></div>
+  <div class="zone l" id="zl"></div><div class="zone r" id="zr"></div>
+  <div class="stage" id="stage"></div>
+  <div class="notes" id="notes"><div class="nl">What goes on this slide</div><div class="nt" id="ntext"></div></div>
+  <div class="hint">← → · click sides · press N for the fill-in guide</div>
+  <div class="nav"><button class="nbtn" id="prev">‹</button><div class="dots" id="dots"></div><div class="count"><b id="cur">1</b> / <span id="tot">12</span></div><button class="nbtn" id="next">›</button></div>
+
+<script>
+var SLIDES=[
+ {html:'<div class="logo-ph">Your logo</div>'
+   +'<div class="cover-name"><span class="ph">[ Your Kennel Name ]</span></div>'
+   +'<div class="cover-sub serif" style="font-style:italic">Thoughtfully bred <span class="ph">[breed]</span>, placed with the right families.</div>'
+   +'<div class="cover-meta"><span class="ph">[ Breed ]</span> &middot; <span class="ph">[ Location ]</span></div>',
+  note:`SLIDE 1 — COVER
+Your name or logo, and ONE promise. That is it.
+Do NOT open with "about us" or your family story. One clean line on who you are and who you place with.
+Replace: kennel name, your one-line promise, breed, location, logo.
+Why: the old brochure deck opened with the story. A buyer-first deck opens with a promise, then puts the spotlight on them (next slide).`},
+
+ {html:'<span class="tag">01 &middot; You</span>'
+   +'<h1>Let\'s start with <span class="gold">you</span>.</h1>'
+   +'<p class="sub">Before we talk about puppies, I want to understand what you\'re looking for.</p>'
+   +'<ul class="list"><li>What are you hoping to find in your next dog?</li><li>What does everyday life look like in your home?</li><li>What matters most to you in the breeder you choose?</li></ul>',
+  note:`SLIDE 2 — YOU
+Open on the buyer, not on you. These questions make them feel understood and give you what you need to recommend well.
+Replace: swap in the 2–3 questions you actually ask (pull them from your Buyer Path Builder, Discovery stage).
+Why: this is the "You" step the module teaches. Desire and fit start here, before any inventory.`},
+
+ {html:'<span class="tag">02 &middot; Fit</span>'
+   +'<h1>Is this the right <span class="gold">fit</span>?</h1>'
+   +'<div class="two"><div class="cardm"><div class="ct">Our dogs do best with</div><ul><li><span class="ph">[ e.g. active families, experienced owners ]</span></li><li><span class="ph">[ homes ready for a large breed ]</span></li></ul></div>'
+   +'<div class="cardm"><div class="ct">We may not be the right fit if</div><ul><li><span class="ph">[ you need a puppy this week ]</span></li><li><span class="ph">[ you\'re comparing on price alone ]</span></li></ul></div></div>'
+   +'<p class="sub" style="margin-top:22px">We place carefully. A great match matters more to us than a fast sale.</p>',
+  note:`SLIDE 3 — FIT
+Show you match to the home, not push a puppy. Being clear about who it is NOT for actually builds trust and pre-qualifies buyers.
+Replace: your "right fit" criteria and your honest "not a fit" lines.
+Why: this is the missing Fit slide. The old deck had none. "Don't match a buyer to a puppy until you understand the buyer."`},
+
+ {html:'<span class="tag">03 &middot; Recommendation</span>'
+   +'<h1 class="serif">Based on what you told me&hellip;</h1>'
+   +'<p class="sub">Here\'s the placement I\'d recommend for you.</p>'
+   +'<div class="cardm" style="max-width:560px;margin:22px auto 0;text-align:left"><div class="ct"><span class="ph">[ Litter / breeding name ]</span> &middot; expected <span class="ph">[ date ]</span></div><ul><li>Why it fits you: <span class="ph">[ temperament, timing, structure ]</span></li><li>What to expect: <span class="ph">[ size, availability, pick order ]</span></li></ul></div>',
+  note:`SLIDE 4 — RECOMMENDATION
+Prescribe, don't present everything you have. Connect their answers from slide 2 to ONE recommended path.
+Replace: the specific litter/placement and the 1–2 reasons it fits this buyer.
+Why: this is the missing Recommendation slide. "Don't show everything you sell. Show what fits."`},
+
+ {html:'<span class="tag">04 &middot; Proof</span>'
+   +'<h1>How we <span class="gold">breed</span></h1>'
+   +'<p class="sub">Standards and health, with the proof behind them.</p>'
+   +'<div class="two"><div class="cardm"><div class="ct">Health testing</div><ul><li><span class="ph">[ OFA / genetic panel ]</span></li><li><span class="ph">[ cardiac, eyes, etc. ]</span></li><li>Results on <span class="ph">[ OFA public / your database ]</span></li></ul></div>'
+   +'<div class="cardm"><div class="ct">How we raise them</div><ul><li><span class="ph">[ whelping / neonatal protocol ]</span></li><li><span class="ph">[ early socialization ]</span></li><li><span class="ph">[ vet checks, vaccines ]</span></li></ul></div></div>',
+  note:`SLIDE 5 — PROOF (1 of 3): Standards & Health
+Proof means evidence, not claims. Show your testing and documentation, and where it can be verified.
+Replace: your actual panel, protocols, and where results live.
+Why: "Claims create interest. Evidence creates trust." Don't say "health is important" — show it.`},
+
+ {html:'<span class="tag">04 &middot; Proof</span>'
+   +'<h1>Meet the <span class="gold">parents</span></h1>'
+   +'<div class="two"><div class="cardm"><div class="ct">Sire &middot; <span class="ph">[ name ]</span></div><ul><li>Health: <span class="ph">[ clearances ]</span></li><li>Temperament: <span class="ph">[ traits ]</span></li><li><span class="ph">[ titles / pedigree ]</span></li></ul></div>'
+   +'<div class="cardm"><div class="ct">Dam &middot; <span class="ph">[ name ]</span></div><ul><li>Health: <span class="ph">[ clearances ]</span></li><li>Temperament: <span class="ph">[ traits ]</span></li><li><span class="ph">[ titles / pedigree ]</span></li></ul></div></div>'
+   +'<p class="sub" style="margin-top:20px">We breed for <span class="ph">[ your temperament / structure philosophy ]</span>.</p>',
+  note:`SLIDE 6 — PROOF (2 of 3): The Parents
+Parents, temperament philosophy, pedigree. This is where a buyer sees the thought behind the breeding.
+Replace: sire/dam details and your one-line breeding philosophy.
+Why: still Proof. Photos of the parents go here (swap the cards for images in your real deck).`},
+
+ {html:'<span class="tag">04 &middot; Proof</span>'
+   +'<h1>Families <span class="gold">like yours</span></h1>'
+   +'<div class="three"><div class="tc"><b class="serif">&ldquo;</b><p><span class="ph">[ Testimonial: what changed for them ]</span></p><p style="color:var(--muted);margin-top:8px">— <span class="ph">[ Family, location ]</span></p></div>'
+   +'<div class="tc"><b class="serif">&ldquo;</b><p><span class="ph">[ Testimonial ]</span></p><p style="color:var(--muted);margin-top:8px">— <span class="ph">[ Family ]</span></p></div>'
+   +'<div class="tc"><b class="serif">&ldquo;</b><p><span class="ph">[ Testimonial ]</span></p><p style="color:var(--muted);margin-top:8px">— <span class="ph">[ Family ]</span></p></div></div>'
+   +'<p class="sub" style="margin-top:20px"><span class="ph">[ # ]</span> families placed &middot; <span class="ph">[ # ]</span> five-star reviews</p>',
+  note:`SLIDE 7 — PROOF (3 of 3): Social proof
+Testimonials, reviews and past placements belong HERE — inside Proof, BEFORE the price.
+Replace: 2–3 real testimonials and your placement/review numbers.
+Why: this is the single biggest fix to the old deck, where testimonials came AFTER the price. Proof earns the price; it can't follow it.`},
+
+ {html:'<span class="tag">05 &middot; Process</span>'
+   +'<h1>What happens <span class="gold">next</span></h1>'
+   +'<p class="sub">No surprises. Here is the full path from today to go-home day.</p>'
+   +'<div class="flow"><div class="st"><b>Apply</b><span>we review fit</span></div><i>&rarr;</i><div class="st"><b>Deposit</b><span>reserve a spot</span></div><i>&rarr;</i><div class="st"><b>Selection</b><span>pick order</span></div><i>&rarr;</i><div class="st"><b>Go-home</b><span><span class="ph">[ age ]</span> weeks</span></div><i>&rarr;</i><div class="st"><b>Support</b><span>for life</span></div></div>'
+   +'<p class="sub" style="margin-top:22px">What\'s included: <span class="ph">[ contract, health guarantee, records, go-home kit ]</span>.</p>',
+  note:`SLIDE 8 — PROCESS
+Remove uncertainty. Walk the whole path: application, deposit, selection, go-home, support. Spell out timing and what's included.
+Replace: your steps, your go-home age, your inclusions.
+Why: "Confusion creates friction. Clarity creates confidence." Certainty is a decision the buyer has to make yes to.`},
+
+ {html:'<span class="tag">06 &middot; Investment</span>'
+   +'<h1>Your <span class="gold">investment</span></h1>'
+   +'<div class="price"><span class="ph">[ $ price ]</span><small><span class="ph">[ $ deposit ]</span> to reserve &middot; balance due at <span class="ph">[ milestone ]</span></small></div>'
+   +'<div class="incl"><span class="ph">[ Health guarantee ]</span><span class="ph">[ Registration ]</span><span class="ph">[ Go-home kit ]</span><span class="ph">[ Lifetime support ]</span></div>',
+  note:`SLIDE 9 — INVESTMENT
+The price appears AFTER value is established, stated with confidence and context. Show what's included so it's an investment, not just a number.
+Replace: your price, deposit terms, and inclusions.
+Why: by now the buyer understands what they're buying, why it fits, who you are, and your proof. The number lands differently here than on slide 2.`},
+
+ {html:'<span class="tag">07 &middot; Decision</span>'
+   +'<h1 class="serif">Does this feel like the right fit<br>for your family?</h1>'
+   +'<div class="three" style="margin-top:28px"><div class="tc yes"><b>Yes</b><p>Great. The next step is <span class="ph">[ application + deposit ]</span>.</p></div>'
+   +'<div class="tc may"><b>Not yet</b><p>What are you still unsure about? Let\'s talk it through.</p></div>'
+   +'<div class="tc no"><b>Not a fit</b><p>That\'s okay. The right match matters more than the sale.</p></div></div>',
+  note:`SLIDE 10 — DECISION
+Ask for the decision, clearly and without pressure. Give the three honest outcomes.
+Replace: your exact next step for a yes.
+Why: a professional process ends with a clear next step, not "let me know." A legitimate no is a good outcome.`},
+
+ {html:'<span class="tag">Next step</span>'
+   +'<h1>Ready to move <span class="gold">forward</span>?</h1>'
+   +'<p class="sub">Reserve your spot or ask me anything.</p>'
+   +'<ul class="list" style="max-width:460px"><li>Apply / reserve: <span class="ph">[ link ]</span></li><li>Questions: <span class="ph">[ email / phone ]</span></li><li>Follow along: <span class="ph">[ social ]</span></li></ul>'
+   +'<a class="cta-btn" href="buyer-path-builder.html">Build the system behind this deck &rarr;</a>'
+   +'<p class="pairnote">This is your template. Duplicate it, apply your brand, and fill in each slide in this order. Then pair it with your <a href="buyer-path-builder.html">Buyer Path Builder</a> so every buyer who sees this deck moves through a tracked path, not an inbox.</p>',
+  note:`SLIDE 11 — NEXT STEP
+End with the single next action and exactly how to take it.
+Replace: your application link, contact, and socials.
+Then: this deck is the front stage. The Buyer Path Builder is the back stage. Build both so a "yes" on slide 10 actually gets captured and followed up — the module's definition of done.`}
+];
+
+var i=0;
+var stage=document.getElementById('stage'),dots=document.getElementById('dots');
+document.getElementById('tot').textContent=SLIDES.length;
+function render(){
+  stage.innerHTML=SLIDES.map(function(s,n){
+    return '<div class="slide'+(n===0?' on':'')+'" data-n="'+n+'"><div class="inner">'+s.html+'</div></div>';
+  }).join('');
+  dots.innerHTML=SLIDES.map(function(_,n){return '<span class="dot'+(n===0?' on':'')+'" data-g="'+n+'"></span>';}).join('');
+  Array.prototype.forEach.call(dots.querySelectorAll('.dot'),function(d){d.addEventListener('click',function(){go(+d.getAttribute('data-g'));});});
+  update();
+}
+function update(){
+  Array.prototype.forEach.call(stage.querySelectorAll('.slide'),function(el){el.classList.toggle('on',+el.getAttribute('data-n')===i);});
+  Array.prototype.forEach.call(dots.querySelectorAll('.dot'),function(el,n){el.classList.toggle('on',n===i);});
+  document.getElementById('ntext').textContent=SLIDES[i].note||'';
+  document.getElementById('cur').textContent=i+1;
+  document.getElementById('prog').style.width=((i)/(SLIDES.length-1)*100)+'%';
+  document.getElementById('prev').disabled=(i===0);
+  document.getElementById('next').disabled=(i===SLIDES.length-1);
+}
+function go(n){i=Math.max(0,Math.min(SLIDES.length-1,n));update();document.getElementById('notes').scrollTop=0;}
+document.getElementById('next').onclick=function(){go(i+1);};
+document.getElementById('prev').onclick=function(){go(i-1);};
+document.getElementById('zr').onclick=function(){go(i+1);};
+document.getElementById('zl').onclick=function(){go(i-1);};
+document.getElementById('ntog').onclick=function(){document.body.classList.toggle('notes-on');};
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key==='PageDown'){e.preventDefault();go(i+1);}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(i-1);}
+  else if(e.key==='Home'){go(0);}else if(e.key==='End'){go(SLIDES.length-1);}
+  else if(e.key==='n'||e.key==='N'){document.body.classList.toggle('notes-on');}
+});
+var tx=0;
+document.addEventListener('touchstart',function(e){tx=e.changedTouches[0].clientX;},{passive:true});
+document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>60){dx<0?go(i+1):go(i-1);}},{passive:true});
+render();
+</script>
+</body>
+</html>
