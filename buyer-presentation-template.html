@@ -17,36 +17,56 @@
   }
   *{box-sizing:border-box;margin:0}
   html,body{height:100%}
-  body{background:radial-gradient(1100px 620px at 50% -12%,rgba(201,168,106,.10),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+  body{background:radial-gradient(1100px 620px at 50% -12%,rgba(201,168,106,.12),transparent 60%),#100d0a;color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
   .gold{color:var(--gold)}
   .serif{font-family:var(--disp)}
-  /* editable field */
   .f{color:var(--gold-soft);outline:none;border-radius:3px;cursor:text;transition:background .1s}
   .f:hover{background:rgba(201,168,106,.09)}
   .f:focus{background:rgba(201,168,106,.14);box-shadow:0 0 0 1px var(--gline)}
   .f.filled{color:inherit}
   .f.ex{color:var(--mid);font-style:italic}
-  .top{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line);background:rgba(16,13,10,.72);backdrop-filter:blur(10px)}
-  .brand{font-size:11.5px;letter-spacing:.2em;font-weight:700;color:var(--mid);text-transform:uppercase}
+  .top{position:fixed;top:0;left:0;right:0;z-index:35;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--line);background:rgba(16,13,10,.72);backdrop-filter:blur(10px)}
+  .brand{font-size:11px;letter-spacing:.18em;font-weight:700;color:var(--mid);text-transform:uppercase}
   .brand b{color:var(--gold)}
-  .topR{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-  .tbtn{font-family:var(--sans);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;border:1px solid var(--line);border-radius:7px;padding:6px 10px;cursor:pointer;background:transparent}
+  .topR{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+  .tbtn{font-family:var(--sans);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;border:1px solid var(--line);border-radius:7px;padding:6px 9px;cursor:pointer;background:transparent}
   .tbtn:hover{color:var(--gold);border-color:var(--line2)}
   .tbtn.on{color:var(--gold);border-color:var(--gold)}
-  .tbtn.p{color:#1a130a;background:linear-gradient(135deg,#e6cf9c,#b2894f);border-color:transparent}
+  .tbtn.p{color:#1a130a;background:linear-gradient(135deg,var(--gold-soft),var(--brown));border-color:transparent}
   .saved{font-size:10px;color:var(--muted);align-self:center;margin-left:2px}
   .saved.on{color:#8fbf8a}
+  /* theme panel */
+  .themepanel{position:fixed;top:50px;right:14px;z-index:40;background:var(--panel2);border:1px solid var(--line2);border-radius:14px;padding:16px 18px;width:264px;display:none;box-shadow:0 22px 54px rgba(0,0,0,.55)}
+  .themepanel.on{display:block}
+  .themepanel h4{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+  .themepanel .hint2{font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.4}
+  .themerow{display:flex;align-items:center;justify-content:space-between;margin:9px 0;font-size:13px;color:var(--mid)}
+  .themerow input[type=color]{width:44px;height:28px;border:1px solid var(--line2);border-radius:6px;background:none;cursor:pointer;padding:0}
+  .presets{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+  .sw{width:30px;height:30px;border-radius:7px;cursor:pointer;border:1px solid var(--line2);display:flex;align-items:center;justify-content:center}
+  .sw i{width:12px;height:12px;border-radius:50%;display:block}
   .prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--brown),var(--gold-soft));width:0;z-index:40;transition:width .4s ease}
   .stage{position:absolute;inset:0}
   .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:78px 32px 90px;opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease;pointer-events:none}
   .slide.on{opacity:1;transform:none;pointer-events:auto}
-  .inner{max-width:860px;width:100%}
+  .slide .cover-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.3;z-index:0;display:none}
+  .slide.hascover .cover-bg{display:block}
+  .inner{max-width:860px;width:100%;position:relative;z-index:1}
   .tag{display:inline-block;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;border:1px solid var(--line2);border-radius:20px;padding:6px 14px;margin-bottom:18px}
   h1{font-family:var(--disp);font-weight:600;font-size:clamp(28px,4.8vw,50px);line-height:1.08;letter-spacing:-.4px}
   .sub{margin-top:14px;font-size:clamp(14px,1.9vw,18px);color:var(--mid);font-weight:300;line-height:1.55;max-width:640px;margin-left:auto;margin-right:auto}
   .say{font-family:var(--disp);font-style:italic;font-size:clamp(17px,2.4vw,24px);color:var(--gold-soft);line-height:1.3;margin-top:18px}
   .pills-line{margin-top:16px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600}
-  .logo-ph{width:80px;height:80px;margin:0 auto 22px;border-radius:50%;border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;background:var(--panel)}
+  /* image slots */
+  .imgslot{position:relative;cursor:pointer;overflow:hidden;background:var(--panel);border:1px dashed var(--line2);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:10px;letter-spacing:.08em;text-transform:uppercase;text-align:center}
+  .imgslot:hover{border-color:var(--gold)}
+  .imgslot img{width:100%;height:100%;object-fit:cover;display:block}
+  .imgslot.has{border-style:solid;border-color:var(--line)}
+  .imgslot .rm{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.6);color:#fff;border-radius:50%;width:22px;height:22px;display:none;align-items:center;justify-content:center;font-size:14px;line-height:1;border:0;cursor:pointer;z-index:2}
+  .imgslot.has:hover .rm{display:flex}
+  .logo-slot{width:88px;height:88px;border-radius:50%;margin:0 auto 22px}
+  .hero-slot{width:min(380px,86%);height:184px;border-radius:13px;margin:24px auto 0}
+  .parent-photo{width:100%;height:148px;border-radius:10px;margin-bottom:12px}
   .fields{display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;margin:22px auto 0;max-width:620px;text-align:left}
   @media(max-width:600px){.fields{grid-template-columns:1fr}}
   .fr{border-bottom:1px solid var(--line);padding-bottom:9px}
@@ -58,8 +78,8 @@
   .pil .d{display:block;font-size:12.5px;color:var(--mid);font-weight:300;margin-top:2px}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px;text-align:left}
   @media(max-width:640px){.two{grid-template-columns:1fr}}
-  .cardm{border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--panel)}
-  .cardm .ct{font-family:var(--disp);font-size:18px;color:var(--ink);margin-bottom:8px}
+  .cardm{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--panel)}
+  .cardm .ct{font-family:var(--disp);font-size:18px;color:var(--ink);margin-bottom:6px}
   .cardm .meta{font-size:12px;color:var(--mid);letter-spacing:.04em;margin-bottom:8px}
   .cardm ul{list-style:none;display:grid;gap:5px}
   .cardm ul li{font-size:12.5px;color:var(--mid);padding-left:13px;position:relative}
@@ -77,7 +97,7 @@
   .prow .n{font-family:var(--disp);font-size:18px;color:var(--gold);min-width:32px}
   .prow b{font-size:15px;color:var(--ink);font-weight:600}
   .prow .d{color:var(--muted);font-size:13px;display:block;font-weight:300;margin-top:1px}
-  .incl{display:grid;gap:8px;margin:0;text-align:left}
+  .incl{display:grid;gap:8px;text-align:left}
   .incl .ic{font-size:14px;color:var(--ink);padding-left:24px;position:relative}
   .incl .ic::before{content:"\2713";position:absolute;left:0;color:var(--gold);font-weight:700}
   .price{font-family:var(--disp);font-size:clamp(34px,6.2vw,56px);color:var(--ink);margin-top:4px}
@@ -109,16 +129,17 @@
   body.notes-on .notes{display:block}
   .notes .nl{font-family:var(--sans);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:7px}
   .notes .nt{font-size:13.5px;line-height:1.6;color:#d8cebf;white-space:pre-line;max-width:880px}
-  .zone{position:fixed;top:54px;bottom:72px;width:13%;z-index:20;cursor:pointer}.zone.l{left:0}.zone.r{right:0}
+  .zone{position:fixed;top:54px;bottom:72px;width:12%;z-index:20;cursor:pointer}.zone.l{left:0}.zone.r{right:0}
   .hint{position:fixed;bottom:74px;left:50%;translate:-50% 0;font-size:10px;color:#4a3d2f;z-index:25;letter-spacing:.07em;text-align:center}
   body.notes-on .hint{display:none}
   @media print{
     @page{size:landscape;margin:0}
-    .top,.nav,.hint,.notes,.zone,.prog{display:none!important}
-    body{overflow:visible;background:#100d0a!important;height:auto;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .top,.nav,.hint,.notes,.zone,.prog,.themepanel,.imgslot .rm{display:none!important}
+    body{overflow:visible;height:auto;-webkit-print-color-adjust:exact;print-color-adjust:exact}
     .stage{position:static}
     .slide{position:static!important;opacity:1!important;transform:none!important;display:flex!important;min-height:100vh;page-break-after:always;break-after:page}
     .slide:last-child{page-break-after:auto}
+    .imgslot:not(.has){display:none}
     .f{box-shadow:none!important;background:none!important}
   }
 </style>
@@ -127,32 +148,44 @@
   <div class="prog" id="prog"></div>
   <div class="top"><span class="brand"><b>BreedWise</b> · Buyer Presentation Template</span>
     <span class="topR">
+      <button class="tbtn" id="themeBtn" title="Change colors">Theme</button>
       <button class="tbtn" id="exBtn" title="Show a worked example">Show example</button>
-      <button class="tbtn" id="ntog" title="What to put on this slide (N)">Fill-in guide</button>
-      <button class="tbtn" id="resetBtn" title="Clear everything you typed">Reset</button>
+      <button class="tbtn" id="ntog" title="What to put on this slide (N)">Guide</button>
+      <button class="tbtn" id="resetBtn" title="Clear everything you added">Reset</button>
       <button class="tbtn p" id="pdfBtn" title="Download / print to PDF">Download PDF</button>
       <span class="saved" id="savedlbl">Autosaves</span>
     </span>
   </div>
+  <div class="themepanel" id="themePanel">
+    <h4>Brand colors</h4>
+    <div class="hint2">Pick your accent and background. Text adapts automatically.</div>
+    <div class="themerow"><span>Accent</span><input type="color" id="cAccent" value="#c9a86a"></div>
+    <div class="themerow"><span>Background</span><input type="color" id="cBg" value="#100d0a"></div>
+    <h4 style="margin-top:14px">Quick palettes</h4>
+    <div class="presets" id="presets"></div>
+  </div>
+  <input type="file" id="imgInput" accept="image/*" style="display:none">
   <div class="zone l" id="zl"></div><div class="zone r" id="zr"></div>
   <div class="stage" id="stage"></div>
   <div class="notes" id="notes"><div class="nl">What goes on this slide</div><div class="nt" id="ntext"></div></div>
-  <div class="hint">Click any gold text to type · ← → to move · N for the guide · Download PDF when done</div>
+  <div class="hint">Click gold text to type · click a photo box to upload · Theme for colors · ← → to move · N for guide</div>
   <div class="nav"><button class="nbtn" id="prev">‹</button><div class="dots" id="dots"></div><div class="count"><b id="cur">1</b> / <span id="tot">12</span></div><button class="nbtn" id="next">›</button></div>
 
 <script>
 function F(ex,txt){return '<span class="f" data-ex="'+ex+'">'+txt+'</span>';}
+function IMG(key,label){return '<div class="imgslot" data-img="'+key+'" data-label="'+label+'"><span class="add">+ '+label+'</span></div>';}
 var SLIDES=[
  /* 1 */
- {html:'<div class="logo-ph">Your logo</div>'
+ {html:'<div class="imgslot logo-slot" data-img="logo" data-label="Logo"><span class="add">Logo</span></div>'
    +'<h1>Finding the Right '+F('Golden Retriever','[ Puppy ]')+'<br>for Your Family</h1>'
-   +'<div class="pills-line">'+F('Quality · Temperament · Health · Service · Family','[ Your pillars ]')+'</div>',
+   +'<div class="pills-line">'+F('Quality · Temperament · Health · Service · Family','[ Your pillars ]')+'</div>'
+   +'<div class="imgslot hero-slot" data-img="hero" data-label="Add a photo"><span class="add">+ Add a photo</span></div>',
   note:`SLIDE 1 — WELCOME / THE OUTCOME
 Make it about THEM, not just you. The headline is the outcome the buyer wants, not your story.
-Fill in: your breed word and your own pillars. (Your logo goes in the circle in your real deck.)
+Upload your logo and a hero photo. Fill in your breed word and your own pillars. Use the Theme button to set your brand colors.
 Rule for the whole deck: never send it cold. Run discovery first, then customize the next slides around what the buyer told you.`},
 
- /* 2 — Fit (home) */
+ /* 2 */
  {html:'<span class="tag">01 · Fit · your home</span>'
    +'<h1>Is this the right <span class="gold">fit</span> for your home?</h1>'
    +'<p class="sub">From our conversation, here\'s what matters most to you:</p>'
@@ -167,10 +200,9 @@ Rule for the whole deck: never send it cold. Run discovery first, then customize
    +'<p class="say">You told me what you need. Now let me show you what I recommend.</p>',
   note:`SLIDE 2 — FIT: the HOME (the biggest thing most decks miss)
 Fill these in live, from your discovery call. This slide is about the home and the buyer, not the puppy yet.
-It flips the psychology from "look at our puppies" to "you told me what you need." This is why the deck can't go out cold.
-Keep it distinct from slide 8 (Matching), which is about the puppy.`},
+It flips the psychology from "look at our puppies" to "you told me what you need." This is why the deck can't go out cold.`},
 
- /* 3 — Standard */
+ /* 3 */
  {html:'<span class="tag">02 · Our Standard</span>'
    +'<h1>Our <span class="gold">standard</span></h1>'
    +'<div class="pillars">'
@@ -184,7 +216,7 @@ Keep it distinct from slide 8 (Matching), which is about the puppy.`},
 Use your own pillars, but add a one-line PROOF under each. CLAIM to EVIDENCE.
 Without proof, pillar words are just claims. The proof line is what makes them believable.`},
 
- /* 4 — Recommendation */
+ /* 4 */
  {html:'<span class="tag">03 · Recommendation</span>'
    +'<h1 class="serif">Based on what you told us,<br>here\'s our recommendation</h1>'
    +'<div class="reco">'+F('Ranger','[ Sire ]')+' <span class="gold">&times;</span> '+F('Willow','[ Dam ]')+'</div>'
@@ -193,19 +225,19 @@ Without proof, pillar words are just claims. The proof line is what makes them b
 You act as the professional and recommend, instead of asking the buyer to figure out which litter they want.
 Fill in: the pairing, and the 2 to 3 preferences from slide 2 that it matches.`},
 
- /* 5 — Pairing & Parents */
+ /* 5 */
  {html:'<span class="tag">04 · Proof · the pairing</span>'
    +'<h1>Meet the parents, and <span class="gold">why this pairing</span></h1>'
    +'<p class="whyline"><b>Why we chose it:</b> '+F('healthy, steady family companions','[ breeding goal ]')+', to produce '+F('a calm temperament and sound structure','[ temperament / type ]')+', suited to '+F('an active family home','[ the home it fits ]')+'.</p>'
    +'<div class="two">'
-   +'<div class="cardm"><div class="ct">'+F('Ranger','[ Sire name ]')+'</div><div class="meta">'+F('24 in','[ height ]')+' · '+F('70 lbs','[ weight ]')+' · '+F('AKC','[ registry ]')+'</div><ul><li>'+F('OFA hips Good, elbows normal','[ health testing ]')+'</li><li>'+F('Steady, biddable','[ temperament ]')+'</li><li>'+F('Champions in 3 generations','[ pedigree / titles ]')+'</li></ul></div>'
-   +'<div class="cardm"><div class="ct">'+F('Willow','[ Dam name ]')+'</div><div class="meta">'+F('22 in','[ height ]')+' · '+F('60 lbs','[ weight ]')+' · '+F('AKC','[ registry ]')+'</div><ul><li>'+F('OFA clearances complete','[ health testing ]')+'</li><li>'+F('Gentle, attentive','[ temperament ]')+'</li><li>'+F('Health-tested dam line','[ pedigree / titles ]')+'</li></ul></div>'
+   +'<div class="cardm"><div class="imgslot parent-photo" data-img="sire" data-label="Sire photo"><span class="add">+ Sire photo</span></div><div class="ct">'+F('Ranger','[ Sire name ]')+'</div><div class="meta">'+F('24 in','[ height ]')+' · '+F('70 lbs','[ weight ]')+' · '+F('AKC','[ registry ]')+'</div><ul><li>'+F('OFA hips Good, elbows normal','[ health testing ]')+'</li><li>'+F('Steady, biddable','[ temperament ]')+'</li><li>'+F('Champions in 3 generations','[ pedigree / titles ]')+'</li></ul></div>'
+   +'<div class="cardm"><div class="imgslot parent-photo" data-img="dam" data-label="Dam photo"><span class="add">+ Dam photo</span></div><div class="ct">'+F('Willow','[ Dam name ]')+'</div><div class="meta">'+F('22 in','[ height ]')+' · '+F('60 lbs','[ weight ]')+' · '+F('AKC','[ registry ]')+'</div><ul><li>'+F('OFA clearances complete','[ health testing ]')+'</li><li>'+F('Gentle, attentive','[ temperament ]')+'</li><li>'+F('Health-tested dam line','[ pedigree / titles ]')+'</li></ul></div>'
    +'</div>',
   note:`SLIDE 5 — THE PAIRING & THE PARENTS (this is PROVE)
-One slide for the reasoning AND the parents, so you are not saying the same thing twice. Lead with why you chose the pairing, then show the parents with stats plus verified info only.
-Add only what you can substantiate. Parent photos go here in your real deck.`},
+Upload the sire and dam photos. Lead with why you chose the pairing, then show the parents with stats plus verified info only.
+Add only what you can substantiate.`},
 
- /* 6 — Health & Promise */
+ /* 6 */
  {html:'<span class="tag">05 · Proof · health &amp; promise</span>'
    +'<h1>How we protect <span class="gold">health</span>, and our promise</h1>'
    +'<div class="two">'
@@ -214,10 +246,10 @@ Add only what you can substantiate. Parent photos go here in your real deck.`},
    +'</div>'
    +'<p class="sub">The honest answer to the question every buyer is quietly asking: what happens if something goes wrong?</p>',
   note:`SLIDE 6 — HEALTH & OUR PROMISE
-The risk-reduction beat. A premium buyer's loudest unspoken fear is "what if something goes wrong?" Answer it on its own slide, do not bury it in a bullet.
-Fill in: your real testing, your guarantee terms, and exactly what happens if there is a problem. Be specific and honest.`},
+The risk-reduction beat. A premium buyer's loudest unspoken fear is "what if something goes wrong?" Answer it on its own slide.
+Fill in: your real testing, your guarantee terms, and exactly what happens if there is a problem.`},
 
- /* 7 — Social proof */
+ /* 7 */
  {html:'<span class="tag">06 · Proof · families</span>'
    +'<h1>Families <span class="gold">like yours</span></h1>'
    +'<div class="three">'
@@ -227,27 +259,26 @@ Fill in: your real testing, your guarantee terms, and exactly what happens if th
    +'</div>'
    +'<p class="sub">'+F('120+','[ # ]')+' families placed · '+F('40+','[ # ]')+' five-star reviews</p>',
   note:`SLIDE 7 — FAMILIES LIKE YOURS (social proof)
-Testimonials, reviews and placement numbers belong HERE, inside Proof, BEFORE the price. At a premium price, third-party proof is one of your strongest trust drivers.
-Fill in: 2 to 3 real testimonials and your real numbers. Proof earns the price; it can't follow it.`},
+Testimonials, reviews and placement numbers belong HERE, inside Proof, BEFORE the price.
+Fill in: 2 to 3 real testimonials and your real numbers.`},
 
- /* 8 — Matching (puppy) */
+ /* 8 */
  {html:'<span class="tag">07 · Matching · the puppy</span>'
    +'<h1>Finding the right puppy<br><span class="gold">within the litter</span></h1>'
    +'<div class="flow"><div class="st"><b>Temperament</b></div><i>&rarr;</i><div class="st"><b>Lifestyle</b></div><i>&rarr;</i><div class="st"><b>Purpose</b></div><i>&rarr;</i><div class="st"><b>Preferences</b></div></div>'
    +'<p class="sub">We\'ll consider your look and color preferences while matching the puppy that best fits what you\'re looking for.</p>',
   note:`SLIDE 8 — MATCHING: the PUPPY
-This is the puppy, not the home (slide 2 was the home). Match on temperament, lifestyle and purpose first; color and look are preferences, not the primary criterion.
-This reads far more professional than making color the headline decision.`},
+This is the puppy, not the home (slide 2 was the home). Match on temperament, lifestyle and purpose first; color and look are preferences.`},
 
- /* 9 — Timeline */
+ /* 9 */
  {html:'<span class="tag">08 · Timeline</span>'
    +'<h1>What happens <span class="gold">from here</span></h1>'
    +'<div class="flow"><div class="st"><b>Breeding</b><span class="dt">'+F('Mar 3','[ date ]')+'</span></div><i>&rarr;</i><div class="st"><b>Confirmation</b><span class="dt">'+F('Mar 28','[ date ]')+'</span></div><i>&rarr;</i><div class="st"><b>Birth</b><span class="dt">'+F('May 5','[ date ]')+'</span></div><i>&rarr;</i><div class="st"><b>Development</b><span class="dt">'+F('8 weeks','[ weeks ]')+'</span></div><i>&rarr;</i><div class="st"><b>Selection</b><span class="dt">'+F('Jun 20','[ date ]')+'</span></div><i>&rarr;</i><div class="st"><b>Go-home</b><span class="dt">'+F('week 8','[ week ]')+'</span></div></div>'
    +'<p class="sub">So you always know what comes next.</p>',
   note:`SLIDE 9 — WHAT HAPPENS FROM HERE
-Turn your timeline into a visual journey with dates. This answers the biggest unspoken question, "what happens after I give you money?" That's certainty.`},
+Turn your timeline into a visual journey with dates. Answers the biggest unspoken question, "what happens after I give you money?"`},
 
- /* 10 — Process */
+ /* 10 */
  {html:'<span class="tag">09 · Process</span>'
    +'<h1>Our puppy <span class="gold">placement process</span></h1>'
    +'<div class="proc">'
@@ -259,19 +290,18 @@ Turn your timeline into a visual journey with dates. This answers the biggest un
    +'<div class="prow"><span class="n">06</span><div><b>Go-home &amp; support</b></div></div>'
    +'</div>',
   note:`SLIDE 10 — OUR PLACEMENT PROCESS
-Make your steps sequential, 01 to 06, and customize to your own system. This is the transaction path (how they become an owner), distinct from slide 9 (the litter's calendar).`},
+Make your steps sequential, 01 to 06, and customize to your own system.`},
 
- /* 11 — Investment */
+ /* 11 */
  {html:'<span class="tag">10 · Investment</span>'
    +'<h1>Your <span class="gold">investment</span></h1>'
    +'<div class="price">'+F('$3,500 to $4,500','[ price range ]')+'<small>Depending on the placement</small></div>'
    +'<div class="two" style="margin-top:22px"><div class="cardm"><div class="ct">What\'s included</div><div class="incl"><div class="ic">'+F('AKC registration','[ item ]')+'</div><div class="ic">'+F('2-year health guarantee','[ item ]')+'</div><div class="ic">'+F('Go-home kit','[ item ]')+'</div><div class="ic">Ongoing support: '+F('training guide + lifetime help','[ _ ]')+'</div></div></div>'
    +'<div class="cardm"><div class="ct">Terms</div><ul><li>Reservation: '+F('$500','[ amount ]')+'</li><li>Balance due: '+F('at 6 weeks','[ when ]')+'</li><li>Transportation: '+F('pickup or ground transport','[ options ]')+'</li><li>Contract &amp; terms: '+F('spay/neuter agreement','[ _ ]')+'</li></ul></div></div>',
   note:`SLIDE 11 — INVESTMENT & WHAT'S INCLUDED (this is CLARIFY)
-Price and what's included sit together, so the number lands in context. Keep it transparent: range, reservation, balance, transportation, terms.
-Don't hide price until a "magical final moment." By now the buyer understands what they're considering.`},
+Price and what's included sit together, so the number lands in context. Keep it transparent.`},
 
- /* 12 — Decision */
+ /* 12 */
  {html:'<span class="tag">11 · Decision</span>'
    +'<h1>Which next step is <span class="gold">right for you</span>?</h1>'
    +'<div class="decide2">'
@@ -282,19 +312,69 @@ Don't hide price until a "magical final moment." By now the buyer understands wh
    +'<p class="pairnote">Your deck is the front stage. Pair it with your <a href="buyer-path-builder.html">Buyer Path Builder</a> so every &ldquo;yes&rdquo; here is captured and followed up, not lost in an inbox.</p>',
   note:`SLIDE 12 — YOUR DECISION / NEXT STEP (this is DECIDE)
 Offer the two clear paths, then ask: "Does this feel like the right fit for you and your family?"
-No pressure, just clarity. Not "so are you putting down a deposit?" A legitimate no is a good outcome.
-The deck runs Match to Prove to Clarify to Decide; Connect and Discover happen on the call before you ever send it.`}
+No pressure, just clarity. A legitimate no is a good outcome.`}
 ];
 
-var i=0,exOn=false,saved={},saveT;
+var i=0,exOn=false,saved={},images={},theme={accent:'#c9a86a',bg:'#100d0a'},saveT,curImgKey=null;
 var stage=document.getElementById('stage'),dots=document.getElementById('dots');
 document.getElementById('tot').textContent=SLIDES.length;
 try{saved=JSON.parse(localStorage.getItem('bw-bpt-deck')||'{}')||{};}catch(e){saved={};}
-function persist(){try{localStorage.setItem('bw-bpt-deck',JSON.stringify(saved));}catch(e){}var s=document.getElementById('savedlbl');if(s){s.textContent='Saved';s.classList.add('on');clearTimeout(saveT);saveT=setTimeout(function(){s.textContent='Autosaves';s.classList.remove('on');},1100);}}
+try{images=JSON.parse(localStorage.getItem('bw-bpt-img')||'{}')||{};}catch(e){images={};}
+try{var t=JSON.parse(localStorage.getItem('bw-bpt-theme')||'null'); if(t&&t.accent)theme=t;}catch(e){}
 
+/* ---- color helpers ---- */
+function hx(h){h=(h||'').replace('#','');if(h.length===3)h=h.split('').map(function(c){return c+c;}).join('');return {r:parseInt(h.substr(0,2),16)||0,g:parseInt(h.substr(2,2),16)||0,b:parseInt(h.substr(4,2),16)||0};}
+function p2(n){n=Math.max(0,Math.min(255,Math.round(n)));return ('0'+n.toString(16)).slice(-2);}
+function toHex(r,g,b){return '#'+p2(r)+p2(g)+p2(b);}
+function mix(hex,t){var c=hx(hex),tg=t>0?255:0,a=Math.abs(t);return toHex(c.r+(tg-c.r)*a,c.g+(tg-c.g)*a,c.b+(tg-c.b)*a);}
+function rgba(hex,a){var c=hx(hex);return 'rgba('+c.r+','+c.g+','+c.b+','+a+')';}
+function lum(hex){var c=hx(hex);return (0.299*c.r+0.587*c.g+0.114*c.b)/255;}
+function applyTheme(accent,bg){
+  var R=document.documentElement.style;
+  R.setProperty('--gold',accent); R.setProperty('--gold-soft',mix(accent,.35));
+  R.setProperty('--gline',rgba(accent,.4)); R.setProperty('--brown',mix(accent,-.3));
+  var dark=lum(bg)<0.45; var ink=dark?'#f5efe6':'#1c1610';
+  R.setProperty('--bg',bg); R.setProperty('--ink',ink);
+  R.setProperty('--mid',rgba(ink,.74)); R.setProperty('--muted',rgba(ink,.5));
+  R.setProperty('--panel',dark?mix(bg,.06):mix(bg,-.045));
+  R.setProperty('--panel2',dark?mix(bg,.10):mix(bg,-.075));
+  R.setProperty('--line',rgba(ink,.12)); R.setProperty('--line2',rgba(ink,.22));
+  document.body.style.background='radial-gradient(1100px 620px at 50% -12%,'+rgba(accent,.12)+',transparent 60%),'+bg;
+  theme={accent:accent,bg:bg};
+  var ca=document.getElementById('cAccent'),cb=document.getElementById('cBg'); if(ca)ca.value=accent; if(cb)cb.value=bg;
+  try{localStorage.setItem('bw-bpt-theme',JSON.stringify(theme));}catch(e){}
+}
+var PRESETS=[['#c9a86a','#100d0a'],['#d4af37','#0a0a0a'],['#b9975b','#f6f1e8'],['#9fb79a','#0f1411'],['#8fb4d6','#0b1016'],['#cf9a93','#f6eeee']];
+
+/* ---- images ---- */
+function persistImg(){try{localStorage.setItem('bw-bpt-img',JSON.stringify(images));}catch(e){alert('That image was too large to save. Try a smaller photo.');}}
+function renderImg(key){
+  var slot=document.querySelector('.imgslot[data-img="'+key+'"]'); if(!slot)return;
+  if(images[key]){slot.classList.add('has'); slot.innerHTML='<img src="'+images[key]+'" alt=""><button class="rm" data-rm="'+key+'">&times;</button>';}
+  else{slot.classList.remove('has'); slot.innerHTML='<span class="add">+ '+(slot.getAttribute('data-label')||'photo')+'</span>';}
+}
+function renderAllImg(){Array.prototype.forEach.call(document.querySelectorAll('.imgslot'),function(s){renderImg(s.getAttribute('data-img'));});}
+function compress(file,cb){
+  var r=new FileReader();
+  r.onload=function(){var img=new Image(); img.onload=function(){
+    var max=1000,w=img.width,h=img.height;
+    if(w>max||h>max){if(w>h){h=h*max/w;w=max;}else{w=w*max/h;h=max;}}
+    var c=document.createElement('canvas'); c.width=w;c.height=h;
+    c.getContext('2d').drawImage(img,0,0,w,h);
+    try{cb(c.toDataURL('image/jpeg',0.78));}catch(e){cb(r.result);}
+  }; img.onerror=function(){cb(r.result);}; img.src=r.result;};
+  r.readAsDataURL(file);
+}
+document.getElementById('imgInput').addEventListener('change',function(e){
+  var file=e.target.files&&e.target.files[0]; if(!file||!curImgKey)return;
+  compress(file,function(url){images[curImgKey]=url; renderImg(curImgKey); persistImg(); curImgKey=null;});
+  e.target.value='';
+});
+
+/* ---- deck ---- */
 function render(){
   stage.innerHTML=SLIDES.map(function(s,n){
-    return '<div class="slide'+(n===0?' on':'')+'" data-n="'+n+'"><div class="inner">'+s.html+'</div></div>';
+    return '<div class="slide'+(n===0?' on':'')+'" data-n="'+n+'"><div class="cover-bg"></div><div class="inner">'+s.html+'</div></div>';
   }).join('');
   dots.innerHTML=SLIDES.map(function(_,n){return '<span class="dot'+(n===0?' on':'')+'" data-g="'+n+'"></span>';}).join('');
   Array.prototype.forEach.call(dots.querySelectorAll('.dot'),function(d){d.addEventListener('click',function(){go(+d.getAttribute('data-g'));});});
@@ -306,6 +386,7 @@ function render(){
     el.addEventListener('keydown',function(e){ e.stopPropagation(); if(e.key==='Enter'){e.preventDefault(); el.blur();} });
     el.addEventListener('focus',function(){ if(el.classList.contains('ex')){ el.textContent=''; el.classList.remove('ex'); } });
   });
+  renderAllImg();
   update();
 }
 function update(){
@@ -318,15 +399,24 @@ function update(){
   document.getElementById('next').disabled=(i===SLIDES.length-1);
 }
 function go(n){i=Math.max(0,Math.min(SLIDES.length-1,n));update();document.getElementById('notes').scrollTop=0;}
+function persist(){try{localStorage.setItem('bw-bpt-deck',JSON.stringify(saved));}catch(e){}var s=document.getElementById('savedlbl');if(s){s.textContent='Saved';s.classList.add('on');clearTimeout(saveT);saveT=setTimeout(function(){s.textContent='Autosaves';s.classList.remove('on');},1100);}}
 function setExample(on){
-  exOn=on; document.getElementById('exBtn').classList.toggle('on',on);
-  document.getElementById('exBtn').textContent=on?'Hide example':'Show example';
+  exOn=on; var b=document.getElementById('exBtn'); b.classList.toggle('on',on); b.textContent=on?'Hide example':'Show example';
   Array.prototype.forEach.call(document.querySelectorAll('.f'),function(el){
     if(el.classList.contains('filled'))return;
     if(on && el.getAttribute('data-ex')){el.textContent=el.getAttribute('data-ex'); el.classList.add('ex');}
     else {el.textContent=el.getAttribute('data-def'); el.classList.remove('ex');}
   });
 }
+
+/* clicks: image slots + remove (delegated) */
+document.addEventListener('click',function(e){
+  var rm=e.target.closest&&e.target.closest('.rm');
+  if(rm){e.stopPropagation(); var k=rm.getAttribute('data-rm'); delete images[k]; renderImg(k); persistImg(); return;}
+  var slot=e.target.closest&&e.target.closest('.imgslot');
+  if(slot){curImgKey=slot.getAttribute('data-img'); document.getElementById('imgInput').click();}
+});
+
 document.getElementById('next').onclick=function(){go(i+1);};
 document.getElementById('prev').onclick=function(){go(i-1);};
 document.getElementById('zr').onclick=function(){go(i+1);};
@@ -334,11 +424,16 @@ document.getElementById('zl').onclick=function(){go(i-1);};
 document.getElementById('ntog').onclick=function(){document.body.classList.toggle('notes-on');};
 document.getElementById('exBtn').onclick=function(){setExample(!exOn);};
 document.getElementById('pdfBtn').onclick=function(){window.print();};
+document.getElementById('themeBtn').onclick=function(){var p=document.getElementById('themePanel');p.classList.toggle('on');this.classList.toggle('on');};
+document.getElementById('cAccent').addEventListener('input',function(){applyTheme(this.value,theme.bg);});
+document.getElementById('cBg').addEventListener('input',function(){applyTheme(theme.accent,this.value);});
+document.getElementById('presets').innerHTML=PRESETS.map(function(p){return '<div class="sw" data-a="'+p[0]+'" data-b="'+p[1]+'" style="background:'+p[1]+'"><i style="background:'+p[0]+'"></i></div>';}).join('');
+Array.prototype.forEach.call(document.querySelectorAll('.sw'),function(s){s.addEventListener('click',function(){applyTheme(s.getAttribute('data-a'),s.getAttribute('data-b'));});});
 document.getElementById('resetBtn').onclick=function(){
-  if(!confirm('Clear everything you have typed into this deck? This cannot be undone.'))return;
-  saved={}; try{localStorage.removeItem('bw-bpt-deck');}catch(e){}
+  if(!confirm('Clear everything you have added (text, photos, colors)? This cannot be undone.'))return;
+  saved={};images={}; try{localStorage.removeItem('bw-bpt-deck');localStorage.removeItem('bw-bpt-img');localStorage.removeItem('bw-bpt-theme');}catch(e){}
   Array.prototype.forEach.call(document.querySelectorAll('.f'),function(el){el.classList.remove('filled','ex'); el.textContent=el.getAttribute('data-def');});
-  exOn=false; document.getElementById('exBtn').classList.remove('on'); document.getElementById('exBtn').textContent='Show example';
+  renderAllImg(); applyTheme('#c9a86a','#100d0a'); exOn=false; document.getElementById('exBtn').classList.remove('on'); document.getElementById('exBtn').textContent='Show example';
 };
 document.addEventListener('keydown',function(e){
   if(document.activeElement && document.activeElement.isContentEditable) return;
@@ -351,6 +446,7 @@ var tx=0;
 document.addEventListener('touchstart',function(e){tx=e.changedTouches[0].clientX;},{passive:true});
 document.addEventListener('touchend',function(e){if(document.activeElement&&document.activeElement.isContentEditable)return;var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>60){dx<0?go(i+1):go(i-1);}},{passive:true});
 render();
+applyTheme(theme.accent,theme.bg);
 </script>
 </body>
 </html>
