@@ -40,18 +40,15 @@
   .say{font-family:var(--disp);font-style:italic;font-size:clamp(17px,2.4vw,24px);color:var(--gold-soft);line-height:1.3;margin-top:18px}
   .pills-line{margin-top:16px;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:600}
   .logo-ph{width:80px;height:80px;margin:0 auto 22px;border-radius:50%;border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;background:var(--panel)}
-  /* field grids */
   .fields{display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;margin:22px auto 0;max-width:620px;text-align:left}
   @media(max-width:600px){.fields{grid-template-columns:1fr}}
   .fr{border-bottom:1px solid var(--line);padding-bottom:9px}
   .fr .l{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block}
   .fr .v{font-size:15px;color:var(--ink);margin-top:3px}
-  /* pillars */
-  .pillars{display:grid;gap:13px;margin:22px auto 0;max-width:640px;text-align:left}
+  .pillars{display:grid;gap:12px;margin:22px auto 0;max-width:640px;text-align:left}
   .pil{border-left:2px solid var(--gold);padding-left:15px}
   .pil b{font-family:var(--disp);font-size:16px;color:var(--ink);letter-spacing:.02em}
   .pil span{display:block;font-size:12.5px;color:var(--mid);font-weight:300;margin-top:2px}
-  /* cards */
   .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px;text-align:left}
   @media(max-width:640px){.two{grid-template-columns:1fr}}
   .cardm{border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--panel)}
@@ -61,33 +58,38 @@
   .cardm ul li{font-size:12.5px;color:var(--mid);padding-left:13px;position:relative}
   .cardm ul li::before{content:"";position:absolute;left:0;top:7px;width:4px;height:4px;background:var(--gold);border-radius:50%}
   .reco{font-family:var(--disp);font-size:clamp(26px,4.4vw,40px);color:var(--gold-soft);margin-top:4px;letter-spacing:.01em}
-  /* flow / journey */
+  .whyline{margin-top:14px;font-size:14px;color:var(--mid);font-weight:300;max-width:620px;margin-left:auto;margin-right:auto}
+  .whyline b{color:var(--gold-soft);font-weight:600}
   .flow{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;align-items:center;margin-top:22px}
   .flow .st{border:1px solid var(--line2);border-radius:11px;padding:10px 13px;min-width:92px}
   .flow .st b{font-size:12px;color:var(--ink);font-weight:600;display:block}
   .flow .st span{font-size:10.5px;color:var(--muted)}
   .flow i{color:var(--gold);font-style:normal;font-size:12px}
-  /* numbered process */
   .proc{display:grid;gap:11px;margin:22px auto 0;max-width:600px;text-align:left}
   .prow{display:flex;gap:14px;align-items:baseline}
   .prow .n{font-family:var(--disp);font-size:18px;color:var(--gold);min-width:32px}
   .prow b{font-size:15px;color:var(--ink);font-weight:600}
   .prow span{color:var(--muted);font-size:13px;display:block;font-weight:300;margin-top:1px}
-  /* inclusions */
-  .incl{display:grid;gap:9px;margin:22px auto 0;max-width:520px;text-align:left}
-  .incl div{font-size:14.5px;color:var(--ink);padding-left:26px;position:relative}
+  .incl{display:grid;gap:8px;margin:18px auto 0;max-width:520px;text-align:left}
+  .incl div{font-size:14px;color:var(--ink);padding-left:24px;position:relative}
   .incl div::before{content:"\2713";position:absolute;left:0;color:var(--gold);font-weight:700}
-  /* investment */
-  .price{font-family:var(--disp);font-size:clamp(38px,7vw,64px);color:var(--gold-soft);margin-top:6px}
-  .price small{display:block;font-family:var(--sans);font-size:14px;color:var(--muted);font-weight:400;margin-top:4px}
-  /* decision */
+  .price{font-family:var(--disp);font-size:clamp(34px,6.2vw,56px);color:var(--gold-soft);margin-top:4px}
+  .price small{display:block;font-family:var(--sans);font-size:13px;color:var(--muted);font-weight:400;margin-top:4px}
+  .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px;text-align:left}
+  @media(max-width:700px){.three{grid-template-columns:1fr}}
+  .tc{border:1px solid var(--line);border-radius:13px;padding:16px;background:var(--panel)}
+  .tc .quo{font-family:var(--disp);font-size:26px;color:var(--gold);line-height:.6}
+  .tc p{font-size:12.5px;color:var(--mid);line-height:1.45;margin-top:6px}
+  .tc .who{color:var(--muted);font-size:12px;margin-top:8px}
+  .tc.yes b{color:var(--gold-soft)}.tc.may b{color:var(--ink)}.tc.no b{color:var(--muted)}
+  .tc b{font-family:var(--disp);font-size:16px;display:block;margin-bottom:3px}
   .decide2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px;text-align:left}
   @media(max-width:560px){.decide2{grid-template-columns:1fr}}
   .do{border:1px solid var(--line2);border-radius:14px;padding:20px;background:var(--panel)}
   .do.hot{border-color:var(--gold)}
   .do .k{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700}
   .do .t{font-family:var(--disp);font-size:19px;margin:5px 0 2px;color:var(--ink)}
-  .do .amt{font-family:var(--disp);font-size:30px;color:var(--gold-soft)}
+  .do .amt{font-family:var(--disp);font-size:26px;color:var(--gold-soft)}
   .do .amt small{font-family:var(--sans);font-size:12px;color:var(--muted);font-weight:400}
   .decide-q{font-family:var(--disp);font-style:italic;font-size:clamp(18px,2.6vw,26px);color:var(--gold-soft);margin-top:24px}
   .pairnote{margin-top:18px;font-size:12px;color:var(--muted);max-width:560px;margin-left:auto;margin-right:auto;line-height:1.5}
@@ -113,155 +115,152 @@
   <div class="zone l" id="zl"></div><div class="zone r" id="zr"></div>
   <div class="stage" id="stage"></div>
   <div class="notes" id="notes"><div class="nl">What goes on this slide</div><div class="nt" id="ntext"></div></div>
-  <div class="hint">← → · click sides · press N for the fill-in guide · example: Jungle Bully</div>
+  <div class="hint">← → · click sides · press N for the fill-in guide</div>
   <div class="nav"><button class="nbtn" id="prev">‹</button><div class="dots" id="dots"></div><div class="count"><b id="cur">1</b> / <span id="tot">12</span></div><button class="nbtn" id="next">›</button></div>
 
 <script>
 var SLIDES=[
- /* 1 */
+ /* 1 — Welcome / Outcome */
  {html:'<div class="logo-ph">Your logo</div>'
-   +'<h1>Finding the Right <span class="ph">[ Jungle Bully ]</span><br>for Your Family</h1>'
-   +'<div class="pills-line">Quality &middot; Temperament &middot; Health &middot; Service &middot; Family</div>',
+   +'<h1>Finding the Right <span class="ph">[ Puppy ]</span><br>for Your Family</h1>'
+   +'<div class="pills-line"><span class="ph">[ Your pillars ]</span> &middot; e.g. Quality &middot; Temperament &middot; Health &middot; Service &middot; Family</div>',
   note:`SLIDE 1 — WELCOME / THE OUTCOME
-Make it about THEM, not just you. Keep your warm family positioning, but the headline is the outcome the buyer wants.
-Example: "Finding the Right Jungle Bully for Your Family" with the five pillars underneath.
-Replace: your kennel name. Keep your pillars line.
-Rule for the whole deck: do NOT send this cold. Complete discovery first, then customize the next slides around what the buyer told you.`},
+Make it about THEM, not just you. The headline is the outcome the buyer wants, not your story.
+Replace: your logo, your breed word, and your own set of pillars.
+Rule for the whole deck: never send it cold. Run discovery first, then customize the next slides around what the buyer told you.`},
 
- /* 2 */
- {html:'<span class="tag">01 &middot; Fit</span>'
-   +'<h1>Let\'s start with the <span class="gold">right fit</span></h1>'
-   +'<p class="sub">Based on our conversation, here\'s what matters most to you:</p>'
+ /* 2 — Fit (the home) */
+ {html:'<span class="tag">01 &middot; Fit &middot; your home</span>'
+   +'<h1>Is this the right <span class="gold">fit</span> for your home?</h1>'
+   +'<p class="sub">From our conversation, here\'s what matters most to you:</p>'
    +'<div class="fields">'
-   +'<div class="fr"><span class="l">Purpose</span><div class="v">Family companion</div></div>'
-   +'<div class="fr"><span class="l">Temperament</span><div class="v">Calm &amp; balanced</div></div>'
-   +'<div class="fr"><span class="l">Preference</span><div class="v">Female</div></div>'
-   +'<div class="fr"><span class="l">Color</span><div class="v ph">[ their preference ]</div></div>'
-   +'<div class="fr"><span class="l">Timeline</span><div class="v ph">[ spring ]</div></div>'
-   +'<div class="fr"><span class="l">Household</span><div class="v ph">[ family with kids ]</div></div>'
+   +'<div class="fr"><span class="l">Purpose</span><div class="v ph">[ companion / family / ... ]</div></div>'
+   +'<div class="fr"><span class="l">Temperament</span><div class="v ph">[ calm / balanced / active ]</div></div>'
+   +'<div class="fr"><span class="l">Household</span><div class="v ph">[ who the dog lives with ]</div></div>'
+   +'<div class="fr"><span class="l">Lifestyle</span><div class="v ph">[ daily life ]</div></div>'
+   +'<div class="fr"><span class="l">Timeline</span><div class="v ph">[ when ]</div></div>'
+   +'<div class="fr"><span class="l">Preferences</span><div class="v ph">[ sex, look, etc. ]</div></div>'
    +'</div>'
    +'<p class="say">You told me what you need. Now let me show you what I recommend.</p>',
-  note:`SLIDE 2 — WHAT YOU'RE LOOKING FOR (the biggest thing most decks are missing)
-Fill these in from your discovery call: purpose, temperament, sex preference, color, timeline, household.
-This is the bridge from DISCOVER to MATCH. It flips the psychology from "look at our puppies" to "you told me what you need, now let me recommend."
-This is why the deck can't go out cold. These fields come from the conversation.`},
+  note:`SLIDE 2 — FIT: the HOME (the biggest thing most decks miss)
+Fill these in from your discovery call. This slide is about the home and the buyer, not the puppy yet.
+It bridges DISCOVER to MATCH and flips the psychology from "look at our puppies" to "you told me what you need." This is why the deck can't go out cold.
+Keep it distinct from slide 8 (Matching), which is about the puppy.`},
 
- /* 3 */
+ /* 3 — Our Standard (claim -> evidence) */
  {html:'<span class="tag">02 &middot; Our Standard</span>'
-   +'<h1>Why <span class="ph">[ Jungle Bully ]</span></h1>'
+   +'<h1>Our <span class="gold">standard</span></h1>'
    +'<div class="pillars">'
-   +'<div class="pil"><b>Quality</b><span><span class="ph">[ What quality means in your program ]</span> &mdash; proof: <span class="ph">[ evidence ]</span></span></div>'
-   +'<div class="pil"><b>Temperament</b><span><span class="ph">[ What you intentionally produce ]</span> &mdash; proof: <span class="ph">[ evidence ]</span></span></div>'
-   +'<div class="pil"><b>Health</b><span><span class="ph">[ Standards and processes you follow ]</span> &mdash; proof: <span class="ph">[ testing / docs ]</span></span></div>'
-   +'<div class="pil"><b>Service</b><span><span class="ph">[ What buyers can expect from you ]</span> &mdash; proof: <span class="ph">[ evidence ]</span></span></div>'
-   +'<div class="pil"><b>Family</b><span><span class="ph">[ What happens after go-home ]</span> &mdash; proof: <span class="ph">[ support you provide ]</span></span></div>'
+   +'<div class="pil"><b class="ph">[ Pillar 1 ]</b><span>What it means: <span class="ph">[ claim ]</span> &mdash; proof: <span class="ph">[ evidence ]</span></span></div>'
+   +'<div class="pil"><b class="ph">[ Pillar 2 ]</b><span>What it means: <span class="ph">[ claim ]</span> &mdash; proof: <span class="ph">[ evidence ]</span></span></div>'
+   +'<div class="pil"><b class="ph">[ Pillar 3 ]</b><span>What it means: <span class="ph">[ claim ]</span> &mdash; proof: <span class="ph">[ evidence ]</span></span></div>'
+   +'<div class="pil"><b class="ph">[ Pillar 4 ]</b><span>What it means: <span class="ph">[ claim ]</span> &mdash; proof: <span class="ph">[ evidence ]</span></span></div>'
+   +'<div class="pil"><b class="ph">[ Pillar 5 ]</b><span>What it means: <span class="ph">[ claim ]</span> &mdash; proof: <span class="ph">[ evidence ]</span></span></div>'
    +'</div>',
   note:`SLIDE 3 — OUR STANDARD
-Keep your five pillars, but add a one-line PROOF under each. CLAIM → EVIDENCE.
-Without proof, "Quality / Temperament / Health / Service / Family" are just words. The proof line is what makes them believable.`},
+Use your own pillars, but add a one-line PROOF under each. CLAIM to EVIDENCE.
+Without proof, pillar words are just claims. The proof line is what makes them believable.`},
 
- /* 4 */
+ /* 4 — Recommendation */
  {html:'<span class="tag">03 &middot; Recommendation</span>'
    +'<h1 class="serif">Based on what you told us,<br>here\'s our recommendation</h1>'
-   +'<div class="reco">MARATHON <span class="gold">&times;</span> GRCH GRIMM</div>'
-   +'<p class="sub">We believe this breeding could be a strong fit based on your preferences for <span class="ph">[ temperament ]</span>, <span class="ph">[ size ]</span>, and <span class="ph">[ timing ]</span>.</p>',
+   +'<div class="reco"><span class="ph">[ Sire ]</span> <span class="gold">&times;</span> <span class="ph">[ Dam ]</span></div>'
+   +'<p class="sub">We believe this breeding is a strong fit based on your preferences for <span class="ph">[ _ ]</span>, <span class="ph">[ _ ]</span>, and <span class="ph">[ _ ]</span>.</p>',
   note:`SLIDE 4 — YOUR RECOMMENDED BREEDING (this is MATCH)
-Replaces the repeated "selecting the breeding of your dreams" slides. You act as the professional and recommend, instead of asking the buyer to figure out which litter they want.
-Replace: the pairing name and the 2–3 preferences from slide 2 that it matches.`},
+You act as the professional and recommend, instead of asking the buyer to figure out which litter they want.
+Replace: the pairing, and the 2 to 3 preferences from slide 2 that it matches.`},
 
- /* 5 */
- {html:'<span class="tag">04 &middot; Why this pairing</span>'
-   +'<h1>Why we chose <span class="gold">this pairing</span></h1>'
-   +'<div class="fields" style="max-width:660px">'
-   +'<div class="fr"><span class="l">Breeding goal</span><div class="v ph">[ what we\'re trying to produce ]</div></div>'
-   +'<div class="fr"><span class="l">Temperament</span><div class="v ph">[ characteristics that are relevant ]</div></div>'
-   +'<div class="fr"><span class="l">Structure &amp; type</span><div class="v ph">[ why these dogs complement the goal ]</div></div>'
-   +'<div class="fr"><span class="l">Health &amp; testing</span><div class="v ph">[ verified info for this pairing ]</div></div>'
-   +'<div class="fr" style="grid-column:1 / -1"><span class="l">Best fit for</span><div class="v ph">[ the kind of home this pairing suits ]</div></div>'
-   +'</div>',
-  note:`SLIDE 5 — WHY THIS PAIRING (missing from most decks)
-This is where BOSS beats a generic Canva template. Give the reasoning behind the breeding: goal, temperament, structure, health, and who it's best for.
-Parent height/weight/registration is fine, but it shouldn't be the entirety of your evidence. This slide is the thinking.`},
-
- /* 6 */
- {html:'<span class="tag">05 &middot; Proof</span>'
-   +'<h1>Meet the <span class="gold">parents</span></h1>'
+ /* 5 — Pairing & Parents (merged why + parents) */
+ {html:'<span class="tag">04 &middot; Proof &middot; the pairing</span>'
+   +'<h1>Meet the parents, and <span class="gold">why this pairing</span></h1>'
+   +'<p class="whyline"><b>Why we chose it:</b> <span class="ph">[ breeding goal ]</span>, to produce <span class="ph">[ temperament / type ]</span>, suited to <span class="ph">[ the home it fits ]</span>.</p>'
    +'<div class="two">'
-   +'<div class="cardm"><div class="ct">MARATHON</div><div class="meta">Height 19" &middot; Weight 95 lbs &middot; ABKC Registered</div><ul><li><span class="ph">[ Health testing ]</span></li><li><span class="ph">[ Temperament notes ]</span></li><li><span class="ph">[ Pedigree / accomplishments ]</span></li></ul></div>'
-   +'<div class="cardm"><div class="ct">GRCH GRIMM</div><div class="meta">Height 21" &middot; Weight 140 lbs &middot; ABKC Registered</div><ul><li><span class="ph">[ Health testing ]</span></li><li><span class="ph">[ Temperament notes ]</span></li><li><span class="ph">[ Pedigree / accomplishments ]</span></li></ul></div>'
-   +'</div>'
-   +'<p class="sub">Add only verified information you actually have.</p>',
-  note:`SLIDE 6 — MEET THE PARENTS (this is PROVE)
-Keep the stats (height, weight, registration), and add the verified information you genuinely have: testing, accomplishments, temperament observations, pedigree. Photos of the parents go here in your real deck.
-Don't let the template push you to make claims you can't substantiate.`},
+   +'<div class="cardm"><div class="ct ph">[ Sire name ]</div><div class="meta"><span class="ph">[ height ]</span> &middot; <span class="ph">[ weight ]</span> &middot; <span class="ph">[ registry ]</span></div><ul><li><span class="ph">[ health testing ]</span></li><li><span class="ph">[ temperament ]</span></li><li><span class="ph">[ pedigree / titles ]</span></li></ul></div>'
+   +'<div class="cardm"><div class="ct ph">[ Dam name ]</div><div class="meta"><span class="ph">[ height ]</span> &middot; <span class="ph">[ weight ]</span> &middot; <span class="ph">[ registry ]</span></div><ul><li><span class="ph">[ health testing ]</span></li><li><span class="ph">[ temperament ]</span></li><li><span class="ph">[ pedigree / titles ]</span></li></ul></div>'
+   +'</div>',
+  note:`SLIDE 5 — THE PAIRING & THE PARENTS (this is PROVE)
+One slide for the reasoning AND the parents, so you're not saying the same thing twice. Lead with why you chose the pairing, then show the parents with the stats plus verified info only.
+Add only what you can substantiate. Parent photos go here in your real deck.`},
 
- /* 7 */
- {html:'<span class="tag">06 &middot; Matching</span>'
+ /* 6 — Health & Promise (guarantee) */
+ {html:'<span class="tag">05 &middot; Proof &middot; health &amp; promise</span>'
+   +'<h1>How we protect <span class="gold">health</span>, and our promise</h1>'
+   +'<div class="two">'
+   +'<div class="cardm"><div class="ct">How we protect health</div><ul><li><span class="ph">[ health testing / panels ]</span></li><li><span class="ph">[ whelping &amp; neonatal care ]</span></li><li><span class="ph">[ vet checks, vaccines, records ]</span></li></ul></div>'
+   +'<div class="cardm"><div class="ct">Our promise to you</div><ul><li><span class="ph">[ health guarantee: what it covers ]</span></li><li>If something goes wrong: <span class="ph">[ what we do ]</span></li><li>Support for life: <span class="ph">[ how ]</span></li></ul></div>'
+   +'</div>'
+   +'<p class="sub">The honest answer to the question every buyer is quietly asking: what happens if something goes wrong?</p>',
+  note:`SLIDE 6 — HEALTH & OUR PROMISE
+The risk-reduction beat. A premium buyer's loudest unspoken fear is "what if something goes wrong?" Answer it on its own slide, don't bury it in a bullet.
+Replace: your real testing, your guarantee terms, and exactly what happens if there's a problem. Be specific and honest.`},
+
+ /* 7 — Social proof */
+ {html:'<span class="tag">06 &middot; Proof &middot; families</span>'
+   +'<h1>Families <span class="gold">like yours</span></h1>'
+   +'<div class="three">'
+   +'<div class="tc"><div class="quo">&ldquo;</div><p class="ph">[ Testimonial: what changed for them ]</p><div class="who ph">[ Family, location ]</div></div>'
+   +'<div class="tc"><div class="quo">&ldquo;</div><p class="ph">[ Testimonial ]</p><div class="who ph">[ Family ]</div></div>'
+   +'<div class="tc"><div class="quo">&ldquo;</div><p class="ph">[ Testimonial ]</p><div class="who ph">[ Family ]</div></div>'
+   +'</div>'
+   +'<p class="sub"><span class="ph">[ # ]</span> families placed &middot; <span class="ph">[ # ]</span> five-star reviews</p>',
+  note:`SLIDE 7 — FAMILIES LIKE YOURS (social proof)
+Testimonials, reviews and placement numbers belong HERE, inside Proof, BEFORE the price. At a premium price, third-party proof is one of the strongest trust drivers you have.
+Replace: 2 to 3 real testimonials and your real numbers. Proof earns the price; it can't follow it.`},
+
+ /* 8 — Matching (the puppy) */
+ {html:'<span class="tag">07 &middot; Matching &middot; the puppy</span>'
    +'<h1>Finding the right puppy<br><span class="gold">within the litter</span></h1>'
    +'<div class="flow"><div class="st"><b>Temperament</b></div><i>&rarr;</i><div class="st"><b>Lifestyle</b></div><i>&rarr;</i><div class="st"><b>Purpose</b></div><i>&rarr;</i><div class="st"><b>Preferences</b></div></div>'
-   +'<p class="sub">We\'ll consider your color preferences while helping you identify the puppy that best fits what you\'re looking for.</p>',
-  note:`SLIDE 7 — FINDING YOUR PUPPY
-Combines the old separate "color" and "temperament" slides. Match on temperament, lifestyle and purpose first; color is a preference, not the primary criterion.
+   +'<p class="sub">We\'ll consider your look and color preferences while matching the puppy that best fits what you\'re looking for.</p>',
+  note:`SLIDE 8 — MATCHING: the PUPPY
+This is the puppy, not the home (slide 2 was the home). Match on temperament, lifestyle and purpose first; color and look are preferences, not the primary criterion.
 This reads far more professional than making color the headline decision.`},
 
- /* 8 */
- {html:'<span class="tag">07 &middot; Timeline</span>'
+ /* 9 — Timeline */
+ {html:'<span class="tag">08 &middot; Timeline</span>'
    +'<h1>What happens <span class="gold">from here</span></h1>'
    +'<div class="flow"><div class="st"><b>Breeding</b><span class="ph">[ date ]</span></div><i>&rarr;</i><div class="st"><b>Confirmation</b><span class="ph">[ date ]</span></div><i>&rarr;</i><div class="st"><b>Birth</b><span class="ph">[ date ]</span></div><i>&rarr;</i><div class="st"><b>Development</b><span class="ph">[ weeks ]</span></div><i>&rarr;</i><div class="st"><b>Selection</b><span class="ph">[ date ]</span></div><i>&rarr;</i><div class="st"><b>Go-home</b><span class="ph">[ week ]</span></div></div>'
    +'<p class="sub">So you always know what comes next.</p>',
-  note:`SLIDE 8 — WHAT HAPPENS FROM HERE
-Turn your timeline into a visual buyer journey: breeding, confirmation, birth, development, selection, go-home, with dates underneath.
-This answers the biggest unspoken question: "what happens after I give you money?" That's certainty.`},
+  note:`SLIDE 9 — WHAT HAPPENS FROM HERE
+Turn your timeline into a visual journey with dates. This answers the biggest unspoken question, "what happens after I give you money?" That's certainty.`},
 
- /* 9 */
- {html:'<span class="tag">08 &middot; Process</span>'
+ /* 10 — Placement Process */
+ {html:'<span class="tag">09 &middot; Process</span>'
    +'<h1>Our puppy <span class="gold">placement process</span></h1>'
    +'<div class="proc">'
    +'<div class="prow"><span class="n">01</span><div><b>Qualification</b><span>Make sure we\'re a good fit.</span></div></div>'
-   +'<div class="prow"><span class="n">02</span><div><b>Litter selection</b><span>Choose the appropriate breeding.</span></div></div>'
-   +'<div class="prow"><span class="n">03</span><div><b>Reservation / deposit</b><span>Secure placement per breeder terms.</span></div></div>'
+   +'<div class="prow"><span class="n">02</span><div><b>Reservation / deposit</b><span>Secure placement per your terms.</span></div></div>'
+   +'<div class="prow"><span class="n">03</span><div><b>Litter selection</b><span>Confirm the appropriate breeding.</span></div></div>'
    +'<div class="prow"><span class="n">04</span><div><b>Puppy matching / pick placement</b><span>Complete the applicable selection process.</span></div></div>'
    +'<div class="prow"><span class="n">05</span><div><b>Contract &amp; documentation</b></div></div>'
    +'<div class="prow"><span class="n">06</span><div><b>Go-home &amp; support</b></div></div>'
    +'</div>',
-  note:`SLIDE 9 — OUR PLACEMENT PROCESS
-Your existing process is good; make it sequential, 01 through 06. Customize it to your own placement system, since not everyone uses the same one.`},
+  note:`SLIDE 10 — OUR PLACEMENT PROCESS
+Make your steps sequential, 01 to 06, and customize to your own system. This is the transaction path (how they become an owner), distinct from slide 9 (the litter's calendar).`},
 
- /* 10 */
- {html:'<span class="tag">09 &middot; Inclusions</span>'
-   +'<h1>What comes with <span class="gold">your puppy</span></h1>'
-   +'<div class="incl"><div>Transportation options</div><div>Puppy care package</div><div>Applicable health documentation</div><div class="ph">[ ______ ]</div><div class="ph">[ ______ ]</div><div>Ongoing support: <span class="ph">[ ______ ]</span></div></div>',
-  note:`SLIDE 10 — WHAT COMES WITH YOUR PUPPY
-Keep this slide, but cut vague phrases like "premium care" unless you say what it means. Every item should answer: "what specifically am I receiving?"`},
-
- /* 11 */
+ /* 11 — Investment & What's Included */
  {html:'<span class="tag">10 &middot; Investment</span>'
    +'<h1>Your <span class="gold">investment</span></h1>'
-   +'<div class="price">$7,500&ndash;$10,000<small>Puppies from this breeding, depending on the pairing</small></div>'
-   +'<div class="fields" style="margin-top:24px">'
-   +'<div class="fr"><span class="l">Reservation</span><div class="v ph">[ amount ]</div></div>'
-   +'<div class="fr"><span class="l">Remaining balance</span><div class="v ph">[ amount ]</div></div>'
-   +'<div class="fr"><span class="l">When payment is due</span><div class="v ph">[ milestone ]</div></div>'
-   +'<div class="fr"><span class="l">Transportation</span><div class="v ph">[ options ]</div></div>'
-   +'<div class="fr" style="grid-column:1 / -1"><span class="l">What\'s included &amp; terms</span><div class="v ph">[ contract / terms ]</div></div>'
-   +'</div>',
-  note:`SLIDE 11 — INVESTMENT (this is CLARIFY)
-Keep the price transparent, but give it context: reservation, balance, when due, what's included, transportation, terms.
-Don't hide price until a "magical final moment." By now the buyer already understands what they're considering, so the number lands in context.`},
+   +'<div class="price ph">[ price range ]<small>Depending on the placement</small></div>'
+   +'<div class="two" style="margin-top:22px"><div class="cardm"><div class="ct">What\'s included</div><div class="incl" style="margin-top:0"><div class="ph">[ item ]</div><div class="ph">[ item ]</div><div class="ph">[ item ]</div><div>Ongoing support: <span class="ph">[ _ ]</span></div></div></div>'
+   +'<div class="cardm"><div class="ct">Terms</div><ul><li>Reservation: <span class="ph">[ amount ]</span></li><li>Balance due: <span class="ph">[ when ]</span></li><li>Transportation: <span class="ph">[ options ]</span></li><li>Contract &amp; terms: <span class="ph">[ _ ]</span></li></ul></div></div>',
+  note:`SLIDE 11 — INVESTMENT & WHAT'S INCLUDED (this is CLARIFY)
+Price and what's included sit together, so the number lands in context. Keep it transparent: range, reservation, balance, transportation, terms.
+Don't hide price until a "magical final moment." By now the buyer understands what they're considering.`},
 
- /* 12 */
+ /* 12 — Decision */
  {html:'<span class="tag">11 &middot; Decision</span>'
    +'<h1>Which next step is <span class="gold">right for you</span>?</h1>'
    +'<div class="decide2">'
-   +'<div class="do hot"><div class="k">Ready to move forward</div><div class="t">Reserve your placement</div><div class="amt">$2,000</div></div>'
-   +'<div class="do"><div class="k">Not ready yet</div><div class="t">Join the waitlist</div><div class="amt">$500 <small>credited</small></div></div>'
+   +'<div class="do hot"><div class="k">Ready to move forward</div><div class="t">Reserve your placement</div><div class="amt ph">[ amount ]</div></div>'
+   +'<div class="do"><div class="k">Not ready yet</div><div class="t">Join the waitlist</div><div class="amt ph">[ amount ] <small>credited</small></div></div>'
    +'</div>'
    +'<div class="decide-q">Does this feel like the right fit for you and your family?</div>'
    +'<p class="pairnote">Your deck is the front stage. Pair it with your <a href="buyer-path-builder.html">Buyer Path Builder</a> so every &ldquo;yes&rdquo; here is captured and followed up, not lost in an inbox.</p>',
   note:`SLIDE 12 — YOUR DECISION / NEXT STEP (this is DECIDE)
-Keep both options, but change the psychology. Offer the two clear paths and then ask: "Does this feel like the right fit for you and your family?"
-No pressure, just clarity. Not "so are you putting down a deposit?"
-A legitimate no is a good outcome. The deck runs Match → Prove → Clarify → Decide; the earlier Connect → Discover happen on the call before you ever send it.`}
+Offer the two clear paths, then ask the question: "Does this feel like the right fit for you and your family?"
+No pressure, just clarity. Not "so are you putting down a deposit?" A legitimate no is a good outcome.
+The deck runs Match to Prove to Clarify to Decide; Connect and Discover happen on the call before you ever send it.`}
 ];
 
 var i=0;
