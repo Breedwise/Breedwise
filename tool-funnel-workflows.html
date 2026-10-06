@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Tool → TPB → BOSS · CC360 Workflow Build</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1b1b20;--surface:#111114;--card:#26262c;--card-2:#212127;--border:#34343c;--gold:#d6ba76;--gold-deep:#b89c47;--gold-faint:rgba(214,186,118,.10);--ink:#f2efe8;--mid:#bab5aa;--muted:#88847c;--good:#6dbf90;--heading:'Playfair Display',Georgia,serif;--body:'Inter',-apple-system,sans-serif}
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6}
+  h1,h2,h3{font-family:var(--heading);font-weight:600;letter-spacing:-.01em}
+  #gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:24px}
+  .gbox{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:14px;padding:32px 28px;max-width:400px;width:100%;text-align:center}
+  .gbox .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .gbox h2{font-size:20px;margin:12px 0 6px}
+  .gbox p{color:var(--mid);font-size:13px;margin-bottom:16px}
+  .gbox input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 14px;font-size:15px;color:var(--ink);font-family:var(--body);text-align:center;letter-spacing:.04em}
+  .gbox input:focus{outline:none;border-color:var(--gold)}
+  .gbox button{width:100%;margin-top:10px;background:var(--gold);color:#1b1b20;border:0;border-radius:9px;padding:13px;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;font-family:var(--body)}
+  .gerr{color:#e0807e;font-size:12.5px;margin-top:10px;min-height:16px}
+  #app{display:none}
+  .wrap{max-width:900px;margin:0 auto;padding:36px 20px 100px}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  h1.title{font-size:clamp(26px,5vw,42px);margin:12px 0 8px}
+  .sub{color:var(--mid);font-size:16px;max-width:700px}
+  h2.sec{font-size:clamp(22px,4vw,30px);margin:38px 0 4px}
+  .secnote{color:var(--mid);font-size:13.5px;margin-bottom:12px;max-width:720px}
+  code{font-family:var(--body);font-size:12px;color:var(--gold);background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:1px 6px}
+  ul.clean{list-style:none;display:grid;gap:7px;margin:8px 0;padding:0}
+  ul.clean li{font-size:13.5px;color:var(--mid);padding-left:18px;position:relative;line-height:1.5}
+  ul.clean li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;background:var(--gold);border-radius:50%}
+  ul.clean li b{color:var(--ink);font-weight:600}
+  .wf{background:var(--card-2);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-top:16px}
+  .wf.exit{border-left:3px solid var(--gold)}
+  .wh{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+  .wh .wn{font-family:var(--heading);font-size:13px;color:var(--gold);font-weight:700;letter-spacing:.06em}
+  .wh h3{font-size:18px}
+  .trig{font-size:13px;color:var(--mid);margin:6px 0 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 12px}
+  .trig b{color:var(--gold);font-weight:700;text-transform:uppercase;font-size:10.5px;letter-spacing:.1em;display:block;margin-bottom:2px}
+  ol.steps{counter-reset:s;list-style:none;display:grid;gap:9px;margin:4px 0;padding:0}
+  ol.steps li{counter-increment:s;position:relative;padding-left:34px;font-size:13.5px;color:var(--mid);line-height:1.5}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:22px;height:22px;border-radius:50%;background:var(--gold-faint);border:1px solid var(--gold-deep);color:var(--gold);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:var(--body)}
+  ol.steps li b{color:var(--ink);font-weight:600}
+  .act{display:inline-block;font-size:10px;letter-spacing:.04em;text-transform:uppercase;font-weight:700;color:var(--gold);border:1px solid var(--gold-deep);border-radius:5px;padding:1px 6px;margin-right:6px;vertical-align:1px}
+  .act.wait{color:var(--mid);border-color:var(--border)}
+  .act.cond{color:#9fb79a;border-color:#4f6b4a}
+  .act.sms{color:#8fb4d6;border-color:#3f5a76}
+  .goal{margin-top:12px;font-size:12.5px;color:var(--ink);background:var(--gold-faint);border:1px solid var(--gold-deep);border-radius:8px;padding:9px 12px}
+  .goal b{color:var(--gold);text-transform:uppercase;font-size:10px;letter-spacing:.1em}
+  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:12.5px}
+  th,td{border:1px solid var(--border);padding:7px 10px;text-align:left;vertical-align:top}
+  th{background:var(--surface);font-size:10.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .flag{background:#2a1f1a;border:1px solid #6b4a3a;border-left:3px solid #c87f5a;border-radius:10px;padding:14px 16px;margin:14px 0;font-size:13px;color:#e8cdbf;line-height:1.55}
+  .flag b{color:#e8a97e}
+  .foot{margin-top:36px;padding-top:16px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted);line-height:1.6}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="gbox">
+    <div class="k">BreedWise · Internal</div>
+    <h2>Tool &rarr; TPB &rarr; BOSS · Workflow Build</h2>
+    <p>Team access only. Enter your team code.</p>
+    <input id="code" type="password" placeholder="Team code" autocomplete="off" autofocus>
+    <button id="go">Unlock</button>
+    <div class="gerr" id="gerr"></div>
+  </div></div>
+
+  <div id="app"><div class="wrap">
+    <div class="eyebrow">The Profitable Breeder · Sales Ops · CC360</div>
+    <h1 class="title">CC360 Workflow Build</h1>
+    <p class="sub">The exact HighLevel/CC360 workflows that run the Tool &rarr; TPB &rarr; BOSS funnel: triggers, steps, waits, conditions, and goals. Build these five workflows in order. They pair with the funnel buildout and the 5 opt-in emails already created.</p>
+
+    <!-- PREREQS -->
+    <h2 class="sec">Before you build (prerequisites)</h2>
+    <ul class="clean">
+      <li><b>Pipeline:</b> create <code>Tool → TPB → BOSS</code> with stages: Tool Opt-in · Tool Completed · Setter Working · Connected · TPB Member · BOSS Opportunity · BOSS Member · Nurture · Not a Fit.</li>
+      <li><b>Tags:</b> confirm the tools fire <code>litter-scorecard-optin</code> / <code>pb-scorecard-optin</code> / <code>science-scorecard-optin</code> and the <code>…-complete</code> pair. Create <code>tool-lead</code>, <code>tool-contacted</code>, <code>no-answer-1</code>, <code>tpb-member</code>, <code>boss-opportunity</code>, <code>boss-member</code>, <code>tool-nurture-monthly</code>, <code>not-a-fit</code>.</li>
+      <li><b>Email assets:</b> load the 5 opt-in emails (Email 1&ndash;5) as CC360 email templates; swap <code>[Tool]</code>, <code>[RESULT_LINK]</code>, <code>[BOOK_CALL_LINK]</code>, <code>[TPB_LINK]</code>.</li>
+      <li><b>SMS assets:</b> the 4 setter texts (S1&ndash;S4) from the buildout; include <code>Reply STOP to opt out</code> on S1.</li>
+      <li><b>Sending:</b> provision the SMS number; set a booking calendar for <code>[BOOK_CALL_LINK]</code>; set the owner user (Regina) and her notification channel.</li>
+    </ul>
+    <div class="flag"><b>Do this first:</b> have each tool's opt-in edge function also add a single <code>tool-lead</code> tag, so one workflow triggers for every tool. Until then, set the WF-1 trigger to fire on <b>any</b> of the three opt-in tags (OR condition). I can make the function edit on request.</div>
+
+    <!-- WF-1 -->
+    <h2 class="sec">The five workflows</h2>
+    <div class="wf exit">
+      <div class="wh"><span class="wn">WF-1</span><h3>Tool Lead Intake + Nurture</h3></div>
+      <div class="trig"><b>Trigger</b>Contact Tag Added = <code>tool-lead</code> &nbsp;(or ANY of the three opt-in tags, until <code>tool-lead</code> is standardized)</div>
+      <ol class="steps">
+        <li><span class="act">Pipeline</span>Create/Update Opportunity &rarr; pipeline <b>Tool → TPB → BOSS</b>, stage <b>Tool Opt-in</b>.</li>
+        <li><span class="act">Assign</span>Assign owner = <b>Regina</b> (or add <code>owner-regina</code>).</li>
+        <li><span class="act">Notify</span>Internal notification &rarr; Regina: &ldquo;New tool lead: {{contact.name}} · [tool] · [source]. Call within 15 min.&rdquo;</li>
+        <li><span class="act">Task</span>Create task &rarr; Regina: &ldquo;Call {{contact.name}} — new tool lead,&rdquo; due <b>+15 min</b>.</li>
+        <li><span class="act cond">If/Else</span>Has phone number? &rarr; if yes, continue SMS steps; if no, skip to step 8.</li>
+        <li><span class="act wait">Wait</span>5 minutes.</li>
+        <li><span class="act sms">Send SMS</span><b>S1</b> — results ready + &ldquo;I'll call you,&rdquo; with Reply STOP.</li>
+        <li><span class="act">Send Email</span><b>Email 1</b> (instant).</li>
+        <li><span class="act wait">Wait</span>until <b>Day 1</b>.</li>
+        <li><span class="act cond">If/Else</span>Has a <code>…-complete</code> tag? &rarr; <b>No:</b> <span class="act sms">Send SMS</span> <b>S2</b> (finish your tool). &rarr; <b>Yes:</b> skip.</li>
+        <li><span class="act">Send Email</span><b>Email 2</b>.</li>
+        <li><span class="act wait">Wait</span>to <b>Day 2</b> &rarr; <span class="act">Send Email</span> <b>Email 3</b>.</li>
+        <li><span class="act wait">Wait</span>to <b>Day 4</b> &rarr; <span class="act">Send Email</span> <b>Email 4</b>.</li>
+        <li><span class="act wait">Wait</span>to <b>Day 7</b> &rarr; <span class="act">Send Email</span> <b>Email 5</b>.</li>
+        <li><span class="act">Add Tag</span><code>tool-nurture-monthly</code> (hand to long-term nurture). End.</li>
+      </ol>
+      <div class="goal"><b>Goal / Exit</b> &nbsp; Tag <code>tpb-member</code> added &rarr; jump to End. (WF-5 also removes the contact from this workflow.) Also stop on unsubscribe.</div>
+    </div>
+
+    <!-- WF-2 -->
+    <div class="wf exit">
+      <div class="wh"><span class="wn">WF-2</span><h3>Tool Completed (hot)</h3></div>
+      <div class="trig"><b>Trigger</b>Contact Tag Added = <code>litter-scorecard-complete</code> OR <code>pb-scorecard-complete</code> OR <code>science-scorecard-complete</code> OR <code>tpb-scorecard-complete</code></div>
+      <ol class="steps">
+        <li><span class="act">Pipeline</span>Move Opportunity &rarr; stage <b>Tool Completed</b>.</li>
+        <li><span class="act">Notify</span>Internal notification &rarr; Regina (hot): &ldquo;{{contact.name}} COMPLETED [tool] — CALL NOW.&rdquo;</li>
+        <li><span class="act">Task</span>Create high-priority task &rarr; Regina: &ldquo;CALL NOW — {{contact.name}} completed [tool],&rdquo; due <b>now</b>.</li>
+        <li><span class="act wait">Wait</span>3 minutes.</li>
+        <li><span class="act sms">Send SMS</span><b>S3</b> — &ldquo;saw you finished, want me to walk your top 3 moves?&rdquo;</li>
+      </ol>
+      <div class="goal"><b>Goal / Exit</b> &nbsp; Tag <code>tpb-member</code> &rarr; End. Runs in parallel with WF-1; WF-1's Day-1 branch checks the same completion tag so no one gets double-asked.</div>
+    </div>
+
+    <!-- WF-3 -->
+    <div class="wf exit">
+      <div class="wh"><span class="wn">WF-3</span><h3>No-Answer Call Cadence</h3></div>
+      <div class="trig"><b>Trigger</b>Contact Tag Added = <code>no-answer-1</code> &nbsp;(Regina adds this after a missed attempt)</div>
+      <ol class="steps">
+        <li><span class="act wait">Wait</span>4 hours.</li>
+        <li><span class="act cond">If/Else</span>Tag <code>tool-contacted</code> present? &rarr; <b>Yes:</b> End. <b>No:</b> continue.</li>
+        <li><span class="act">Task</span>&ldquo;Attempt 2 — {{contact.name}}&rdquo; &nbsp;+ <span class="act sms">Send SMS</span> <b>S4</b>.</li>
+        <li><span class="act wait">Wait</span>until next morning (09:00).</li>
+        <li><span class="act cond">If/Else</span><code>tool-contacted</code>? &rarr; <b>No:</b> <span class="act">Task</span> &ldquo;Attempt 3 + voicemail.&rdquo;</li>
+        <li><span class="act wait">Wait</span>2 days.</li>
+        <li><span class="act cond">If/Else</span><code>tool-contacted</code>? &rarr; <b>No:</b> <span class="act">Pipeline</span> move &rarr; <b>Nurture</b>; <span class="act">Add Tag</span> <code>tool-nurture-monthly</code>; remove <code>no-answer-1</code>.</li>
+      </ol>
+      <div class="goal"><b>Goal / Exit</b> &nbsp; Tag <code>tool-contacted</code> added (Regina connects) &rarr; End &amp; move Opportunity to <b>Connected</b>.</div>
+    </div>
+
+    <!-- WF-4 -->
+    <div class="wf exit">
+      <div class="wh"><span class="wn">WF-4</span><h3>TPB Member → BOSS Ascension</h3></div>
+      <div class="trig"><b>Trigger</b>Contact Tag Added = <code>tpb-member</code> &nbsp;(fires on TPB purchase)</div>
+      <ol class="steps">
+        <li><span class="act">Pipeline</span>Move Opportunity &rarr; <b>TPB Member (Won #1)</b>.</li>
+        <li><span class="act">Notify</span>Regina: &ldquo;{{contact.name}} joined TPB — onboard + set the BOSS clock.&rdquo;</li>
+        <li><span class="act wait">Wait</span><b>10 days</b> (ascension timer; adjust 7&ndash;14).</li>
+        <li><span class="act cond">If/Else</span>(optional) engaged/active? &rarr; if not, extend the wait or route to member-success first.</li>
+        <li><span class="act">Pipeline</span>Move &rarr; <b>BOSS Opportunity</b>; <span class="act">Task</span> Regina/Closer: &ldquo;Book BOSS call with {{contact.name}}.&rdquo;</li>
+        <li><span class="act">Send Email</span>BOSS invite (the &ldquo;Academy → BOSS: Your Options&rdquo; angle) + optional SMS.</li>
+      </ol>
+      <div class="goal"><b>Goal / Exit</b> &nbsp; Tag <code>boss-member</code> &rarr; move Opportunity to <b>BOSS Member (Won #2)</b>; End; hand to fulfillment.</div>
+    </div>
+
+    <!-- WF-5 -->
+    <div class="wf">
+      <div class="wh"><span class="wn">WF-5</span><h3>Exit / Kill-switch</h3></div>
+      <div class="trig"><b>Trigger</b>Contact Tag Added = <code>tpb-member</code> OR <code>unsubscribed</code> OR <code>not-a-fit</code></div>
+      <ol class="steps">
+        <li><span class="act">Remove from Workflow</span>WF-1 (Intake+Nurture), WF-2 (Hot), WF-3 (No-Answer).</li>
+        <li><span class="act cond">If/Else</span>If <code>not-a-fit</code> &rarr; <span class="act">Pipeline</span> move to <b>Not a Fit</b>, set lost-reason, remove <code>tool-lead</code>.</li>
+      </ol>
+      <div class="goal"><b>Purpose</b> &nbsp; Guarantees the cold sequences stop the instant someone converts or opts out. Build this so the other workflows never keep emailing a new member.</div>
+    </div>
+
+    <!-- REFERENCE -->
+    <h2 class="sec">Trigger &amp; tag reference</h2>
+    <table>
+      <tr><th>Event</th><th>Tag / trigger</th><th>Starts / does</th></tr>
+      <tr><td>Opted into a tool</td><td><code>tool-lead</code> (+ the tool's own opt-in tag)</td><td>WF-1 intake + nurture</td></tr>
+      <tr><td>Completed a tool</td><td><code>…-complete</code></td><td>WF-2 hot (call now)</td></tr>
+      <tr><td>Setter connects</td><td><code>tool-contacted</code></td><td>Exit WF-3; stage &rarr; Connected</td></tr>
+      <tr><td>Missed attempt</td><td><code>no-answer-1</code></td><td>WF-3 cadence</td></tr>
+      <tr><td>Joined TPB</td><td><code>tpb-member</code></td><td>WF-4 ascension; WF-5 removes cold</td></tr>
+      <tr><td>Booked/at BOSS stage</td><td><code>boss-opportunity</code></td><td>Stage &rarr; BOSS Opportunity</td></tr>
+      <tr><td>Joined BOSS</td><td><code>boss-member</code></td><td>Won #2; fulfillment</td></tr>
+      <tr><td>Opted out / not a fit</td><td><code>unsubscribed</code> / <code>not-a-fit</code></td><td>WF-5 removes from cold</td></tr>
+    </table>
+
+    <div class="flag"><b>Build order &amp; testing.</b> Build WF-5 (kill-switch) and the pipeline/tags first, then WF-1, WF-2, WF-4, WF-3. Test with a dummy contact: add <code>tool-lead</code> and watch the stage move, task, SMS and Email 1 fire; then add a <code>…-complete</code> tag and confirm WF-2's hot task; then add <code>tpb-member</code> and confirm it exits the cold sequences and starts WF-4. Honor DND/quiet hours on all SMS.</div>
+
+    <div class="foot">BreedWise internal sales operating document. CC360/HighLevel workflow build for the Tool → TPB → BOSS funnel. Pairs with the Funnel Buildout (pipeline, copy, backfill) and the 5 opt-in email templates. Bracketed values and wait timings are defaults to confirm.</div>
+  </div></div>
+
+<script>
+(function(){
+  var HASHES=['368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875','7c80836fc0ce4e3956aa136771a24b98d946bece11d70efef268e3612037234d'];
+  var gate=document.getElementById('gate'),app=document.getElementById('app'),gerr=document.getElementById('gerr');
+  function sha(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function open(){gate.style.display='none';app.style.display='block';}
+  try{if(sessionStorage.getItem('tfw_ok')==='1')open();}catch(e){}
+  function tryCode(){var v=(document.getElementById('code').value||'').trim();if(!v)return;
+    Promise.all([sha(v),sha(v.toUpperCase())]).then(function(hs){
+      if(HASHES.indexOf(hs[0])>=0||HASHES.indexOf(hs[1])>=0){try{sessionStorage.setItem('tfw_ok','1');}catch(e){}open();}
+      else gerr.textContent='That code did not match.';});}
+  document.getElementById('go').onclick=tryCode;
+  document.getElementById('code').addEventListener('keydown',function(e){if(e.key==='Enter')tryCode();});
+})();
+</script>
+</body>
+</html>
