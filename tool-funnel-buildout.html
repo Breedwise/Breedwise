@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Tool → TPB → BOSS · Funnel Buildout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1b1b20;--surface:#111114;--card:#26262c;--card-2:#212127;--border:#34343c;--gold:#d6ba76;--gold-deep:#b89c47;--gold-faint:rgba(214,186,118,.10);--ink:#f2efe8;--mid:#bab5aa;--muted:#88847c;--good:#6dbf90;--heading:'Playfair Display',Georgia,serif;--body:'Inter',-apple-system,sans-serif}
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6}
+  h1,h2,h3{font-family:var(--heading);font-weight:600;letter-spacing:-.01em}
+  #gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:24px}
+  .gbox{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:14px;padding:32px 28px;max-width:400px;width:100%;text-align:center}
+  .gbox .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .gbox h2{font-size:21px;margin:12px 0 6px}
+  .gbox p{color:var(--mid);font-size:13px;margin-bottom:16px}
+  .gbox input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 14px;font-size:15px;color:var(--ink);font-family:var(--body);text-align:center;letter-spacing:.04em}
+  .gbox input:focus{outline:none;border-color:var(--gold)}
+  .gbox button{width:100%;margin-top:10px;background:var(--gold);color:#1b1b20;border:0;border-radius:9px;padding:13px;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;font-family:var(--body)}
+  .gerr{color:#e0807e;font-size:12.5px;margin-top:10px;min-height:16px}
+  #app{display:none}
+  .wrap{max-width:900px;margin:0 auto;padding:36px 20px 100px}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  h1.title{font-size:clamp(28px,5vw,44px);margin:12px 0 8px}
+  .sub{color:var(--mid);font-size:16px;max-width:680px}
+  .principle{background:var(--card);border:1px solid var(--gold-deep);border-left:3px solid var(--gold);border-radius:12px;padding:20px 22px;margin:24px 0}
+  .principle .pl{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+  .principle p{font-family:var(--heading);font-size:clamp(17px,2.4vw,22px);line-height:1.4;color:var(--ink)}
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:20px 0 4px;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:12px}
+  .chip{font-size:11.5px;font-weight:600;padding:8px 11px;border-radius:8px;border:1px solid var(--border);color:var(--mid);white-space:nowrap}
+  .chip.hot{border-color:var(--gold-deep);color:var(--gold);background:var(--gold-faint)}
+  .chip.won{background:var(--gold);color:#1b1b20;border-color:var(--gold)}
+  .flow .ar{color:var(--muted);font-size:11px}
+  h2.sec{font-size:clamp(23px,4vw,32px);margin:40px 0 4px}
+  .secnote{color:var(--mid);font-size:13.5px;margin-bottom:14px;max-width:720px}
+  .section-eye{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-top:8px}
+  .stage{background:var(--card-2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-top:11px}
+  .stage.q{border-left:3px solid var(--gold)}
+  .stage.won{border:1px solid var(--gold-deep);border-left:3px solid var(--gold);background:var(--gold-faint)}
+  .sh{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+  .sh .n{font-family:var(--heading);font-size:20px;color:var(--gold);min-width:26px}
+  .sh h3{font-size:17px}
+  .sh .own{margin-left:auto;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;border:1px solid var(--border);border-radius:20px;padding:3px 9px}
+  .fields{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin-top:6px}
+  @media(max-width:640px){.fields{grid-template-columns:1fr}}
+  .fld{font-size:12.5px}
+  .fld .fl{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;display:block;margin-bottom:1px}
+  .fld .fv{color:var(--ink);line-height:1.4}
+  .cc{font-family:var(--body);font-size:11.5px;color:var(--mid);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:2px 7px;display:inline-block;margin:2px 3px 0 0}
+  .seq{background:var(--card-2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-top:10px;display:flex;gap:14px}
+  .seq .when{flex:none;width:76px;font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.04em;padding-top:2px}
+  .seq .body b{font-family:var(--heading);font-size:15px;color:var(--ink);font-weight:600}
+  .seq .body p{font-size:13px;color:var(--mid);margin-top:3px;line-height:1.5}
+  .seq .body .cta{font-size:12px;color:var(--gold);font-weight:600;margin-top:4px;display:inline-block}
+  .msg{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:10px 13px;font-size:13px;color:var(--ink);margin-top:8px;line-height:1.5}
+  .msg .who{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;display:block;margin-bottom:3px}
+  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px}
+  th,td{border:1px solid var(--border);padding:8px 11px;text-align:left;vertical-align:top}
+  th{background:var(--surface);font-family:var(--body);font-size:11px;letter-spacing:.03em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  td code{font-family:var(--body);font-size:11.5px;color:var(--gold);background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:1px 6px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr}}
+  .box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+  .box b.t{font-family:var(--heading);font-size:15px;color:var(--ink);display:block;margin-bottom:6px}
+  ul.clean{list-style:none;display:grid;gap:7px;margin-top:6px;padding:0}
+  ul.clean li{font-size:13px;color:var(--mid);padding-left:18px;position:relative;line-height:1.5}
+  ul.clean li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;background:var(--gold);border-radius:50%}
+  ul.clean li b{color:var(--ink);font-weight:600}
+  ol.focus{counter-reset:f;list-style:none;display:grid;gap:10px;margin-top:12px;padding:0}
+  ol.focus li{counter-increment:f;position:relative;padding-left:40px;font-size:14px;color:var(--mid);line-height:1.5;min-height:28px}
+  ol.focus li::before{content:counter(f);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--gold-faint);border:1px solid var(--gold-deep);color:var(--gold);font-family:var(--heading);font-weight:700;display:flex;align-items:center;justify-content:center}
+  ol.focus li b{color:var(--ink);font-weight:600}
+  .flag{background:#2a1f1a;border:1px solid #6b4a3a;border-left:3px solid #c87f5a;border-radius:10px;padding:14px 16px;margin:14px 0;font-size:13px;color:#e8cdbf;line-height:1.55}
+  .flag b{color:#e8a97e}
+  .lineband{display:flex;align-items:center;gap:12px;margin:22px 0 4px}
+  .lineband span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:800;white-space:nowrap}
+  .lineband i{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold-deep),transparent)}
+  .foot{margin-top:36px;padding-top:16px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted);line-height:1.6}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="gbox">
+    <div class="k">BreedWise · Internal</div>
+    <h2>Tool &rarr; TPB &rarr; BOSS · Funnel Buildout</h2>
+    <p>Team access only. Enter your team code.</p>
+    <input id="code" type="password" placeholder="Team code" autocomplete="off" autofocus>
+    <button id="go">Unlock</button>
+    <div class="gerr" id="gerr"></div>
+  </div></div>
+
+  <div id="app"><div class="wrap">
+    <div class="eyebrow">The Profitable Breeder · Sales Ops</div>
+    <h1 class="title">Tool &rarr; TPB &rarr; BOSS Funnel Buildout</h1>
+    <p class="sub">The front-door funnel for cold social traffic: a free tool proves value, a human (the setter) brings them into The Profitable Breeder, then we ascend them to BOSS. This is the CC360 build and the automation layer that makes strangers convert.</p>
+
+    <div class="principle">
+      <div class="pl">The operating rule</div>
+      <p>Strangers don't buy from an ad. They convert when the tool proves we know their world, a human reaches them fast, and TPB is an easy first yes. Speed-to-lead and the TPB-first ladder are the whole game.</p>
+    </div>
+
+    <div class="flow">
+      <span class="chip">Social post / ad</span><span class="ar">&rarr;</span>
+      <span class="chip">Tool opt-in</span><span class="ar">&rarr;</span>
+      <span class="chip hot">Tool completed</span><span class="ar">&rarr;</span>
+      <span class="chip">Setter call</span><span class="ar">&rarr;</span>
+      <span class="chip won">TPB member</span><span class="ar">&rarr;</span>
+      <span class="chip won">BOSS member</span>
+    </div>
+
+    <!-- PIPELINE -->
+    <h2 class="sec">1 · The CC360 pipeline</h2>
+    <div class="secnote">One pipeline, &ldquo;Tool &rarr; TPB &rarr; BOSS.&rdquo; Each stage has an owner, an entry trigger, an exit, and the CC360 tag it keys off. Tags in <span class="cc">this style</span> already fire from the tools today.</div>
+
+    <div class="lineband" style="margin-top:12px"><span>Cold · the tool does the selling</span><i></i></div>
+    <div class="stage"><div class="sh"><span class="n">1</span><h3>Tool Opt-in</h3><span class="own">Setter</span></div>
+      <div class="fields">
+        <div class="fld"><span class="fl">Enters when</span><span class="fv">Contact submits the opt-in screen on any tool.</span></div>
+        <div class="fld"><span class="fl">Track</span><span class="fv">Opt-ins by tool and by source.</span></div>
+        <div class="fld"><span class="fl">Exits when</span><span class="fv">They complete the tool, or stall (&rarr; Nurture-to-finish).</span></div>
+        <div class="fld"><span class="fl">CC360</span><span class="fv"><span class="cc">litter-scorecard-optin</span><span class="cc">pb-scorecard-optin</span><span class="cc">science-scorecard-optin</span> + <code>tool-lead</code> (add) + <code>owner-regina</code></span></div>
+      </div></div>
+    <div class="stage hot" style="border-left:3px solid var(--gold)"><div class="sh"><span class="n">2</span><h3>Tool Completed &mdash; the hot moment</h3><span class="own">Setter</span></div>
+      <div class="fields">
+        <div class="fld"><span class="fl">Enters when</span><span class="fv">Results screen renders (tool finished).</span></div>
+        <div class="fld"><span class="fl">Objective</span><span class="fv">Call now. Highest intent of the whole funnel.</span></div>
+        <div class="fld"><span class="fl">Exits when</span><span class="fv">Setter connects, or call cadence exhausted.</span></div>
+        <div class="fld"><span class="fl">CC360</span><span class="fv"><span class="cc">litter-scorecard-complete</span><span class="cc">pb-scorecard-complete</span> + band/segment/gap tags</span></div>
+      </div></div>
+    <div class="stage"><div class="sh"><span class="n">3</span><h3>Setter Working</h3><span class="own">Setter</span></div>
+      <div class="fields">
+        <div class="fld"><span class="fl">Objective</span><span class="fv">Reach them: calls + SMS per the cadence in §4.</span></div>
+        <div class="fld"><span class="fl">Track</span><span class="fv">Speed-to-lead, attempts, connect rate.</span></div>
+        <div class="fld"><span class="fl">Exits when</span><span class="fv">Connected (&rarr; stage 4) or no-contact (&rarr; Nurture).</span></div>
+        <div class="fld"><span class="fl">CC360</span><span class="fv"><code>tool-contacted</code> · attempt counter</span></div>
+      </div></div>
+    <div class="stage"><div class="sh"><span class="n">4</span><h3>Connected / Qualified</h3><span class="own">Setter</span></div>
+      <div class="fields">
+        <div class="fld"><span class="fl">Objective</span><span class="fv">Walk their results, qualify, position TPB as the first step.</span></div>
+        <div class="fld"><span class="fl">Exits when</span><span class="fv">TPB joined, not-yet (&rarr; Nurture), or not-a-fit.</span></div>
+      </div></div>
+
+    <div class="lineband"><span>Warm · the human closes TPB</span><i></i></div>
+    <div class="stage won"><div class="sh"><span class="n">5</span><h3>TPB Member &mdash; Won #1</h3><span class="own">Setter</span></div>
+      <div class="fields">
+        <div class="fld"><span class="fl">Enters when</span><span class="fv">They purchase The Profitable Breeder.</span></div>
+        <div class="fld"><span class="fl">Objective</span><span class="fv">Fast onboarding + set up the BOSS conversation.</span></div>
+        <div class="fld"><span class="fl">CC360</span><span class="fv"><code>tpb-member</code> (add on purchase) &rarr; exits all cold sequences</span></div>
+      </div></div>
+    <div class="stage q"><div class="sh"><span class="n">6</span><h3>BOSS Opportunity</h3><span class="own">Setter / Closer</span></div>
+      <div class="fields">
+        <div class="fld"><span class="fl">Enters when</span><span class="fv">TPB member active ~<b>[7&ndash;14]</b> days / hits an engagement trigger.</span></div>
+        <div class="fld"><span class="fl">Objective</span><span class="fv">Book the BOSS call; present the upgrade.</span></div>
+        <div class="fld"><span class="fl">CC360</span><span class="fv"><code>boss-opportunity</code> · BOSS call booked</span></div>
+      </div></div>
+    <div class="stage won"><div class="sh"><span class="n">7</span><h3>BOSS Member &mdash; Won #2</h3><span class="own">Closer</span></div>
+      <div class="fields">
+        <div class="fld"><span class="fl">Enters when</span><span class="fv">They purchase BOSS.</span></div>
+        <div class="fld"><span class="fl">CC360</span><span class="fv"><code>boss-member</code> &rarr; hand to fulfillment</span></div>
+      </div></div>
+
+    <div class="lineband"><span>Holding lanes</span><i></i></div>
+    <div class="stage"><div class="sh"><span class="n">N</span><h3>Nurture</h3><span class="own">Automated + Setter</span></div>
+      <div class="fields"><div class="fld"><span class="fl">Who</span><span class="fv">Opted in but didn't finish, or talked but not ready.</span></div><div class="fld"><span class="fl">Objective</span><span class="fv">Keep warming with value; setter re-touch at [30/60] days.</span></div></div></div>
+    <div class="stage"><div class="sh"><span class="n">X</span><h3>Not a Fit</h3><span class="own">Setter</span></div>
+      <div class="fields"><div class="fld"><span class="fl">Who</span><span class="fv">Wrong audience / no intent.</span></div><div class="fld"><span class="fl">Exit</span><span class="fv">Closed with a lost-reason.</span></div></div></div>
+
+    <!-- EMAIL -->
+    <h2 class="sec">2 · Opt-in email sequence</h2>
+    <div class="secnote">Fires the moment someone opts into a tool. One skeleton, with the tool name and result swapped in per tool. The sequence <b>exits the instant they join TPB</b> (then the ascension track in §6 takes over). Each email gives value and points to one action: talk to us / join TPB.</div>
+    <div class="seq"><div class="when">Instant</div><div class="body"><b>Email 1 — &ldquo;Your [Tool] results are ready&rdquo;</b><p>Deliver the result/link, one line of value, and set the expectation that a BreedWise coach will reach out to walk through it. Warm, human, from the setter's name.</p><span class="cta">CTA: Open your results</span></div></div>
+    <div class="seq"><div class="when">Day 1</div><div class="body"><b>Email 2 — &ldquo;The 3 moves from your [Tool]&rdquo;</b><p>Interpret their result and give the top 3 moves for the next 90 days. Invite a quick, free call to walk through them with a coach.</p><span class="cta">CTA: Grab a time / reply</span></div></div>
+    <div class="seq"><div class="when">Day 2</div><div class="body"><b>Email 3 — one real insight tied to their gap</b><p>Teach one concrete thing (a change in the science, a pricing or buyer-process fix). Position The Profitable Breeder as where breeders actually implement this.</p><span class="cta">CTA: See The Profitable Breeder</span></div></div>
+    <div class="seq"><div class="when">Day 4</div><div class="body"><b>Email 4 — &ldquo;Knowing isn't the same as doing&rdquo;</b><p>The gap between a score and a stronger program is implementation. TPB is the first step, with the community and the plan. Soft offer.</p><span class="cta">CTA: Join The Profitable Breeder</span></div></div>
+    <div class="seq"><div class="when">Day 7</div><div class="body"><b>Email 5 — last touch</b><p>&ldquo;Want a hand with your next litter?&rdquo; One more invite to book the call or join TPB, then move to monthly nurture if no action.</p><span class="cta">CTA: Book a call / Join TPB</span></div></div>
+    <div class="flag"><b>Tool-specific swaps.</b> Healthy Litter &rarr; Dr. Fontaine voice, the science angle (we already have this 3-email set built). Profitable Breeder Scorecard &rarr; business/profit angle. Keep subject lines about <b>their result</b>, not about us. I can produce the full HTML emails per tool (like the Healthy Litter set) on request.</div>
+
+    <!-- SMS -->
+    <h2 class="sec">3 · SMS sequence (setter voice)</h2>
+    <div class="secnote">SMS from the setter's number does the heavy lifting on cold leads. Short, personal, one ask. Send only to opt-ins who gave a phone number and consented.</div>
+    <div class="msg"><span class="who">Instant (~5 min after opt-in)</span>Hi [First], it's Regina with BreedWise. Your [Tool] is ready here: [link]. I'll give you a quick call to walk through your results. What time works today or tomorrow?</div>
+    <div class="msg"><span class="who">Day 1 — if not completed</span>Did you get a chance to finish your [Tool]? Takes about 5 minutes and shows your top 3 moves: [link]</div>
+    <div class="msg"><span class="who">On completion</span>Nice, I see you finished. Want me to walk you through your top 3 moves? I've got time [today/tomorrow] &mdash; what's better for you?</div>
+    <div class="msg"><span class="who">No answer after calls</span>Tried you today. Still happy to go over your results whenever &mdash; just reply with a time and I'll call.</div>
+    <div class="flag"><b>Compliance.</b> Only text opt-ins who provided a phone number; include an opt-out (&ldquo;reply STOP&rdquo;) on the first message; honor quiet hours. Confirm CC360 SMS is provisioned for the sending number.</div>
+
+    <!-- SETTER NOTIFICATIONS -->
+    <h2 class="sec">4 · Setter notifications, reminders &amp; call cadence</h2>
+    <div class="secnote">Speed-to-lead is the single biggest lever. The setter should know within seconds and call within minutes, especially on completion.</div>
+    <table>
+      <tr><th>Trigger</th><th>Notify the setter</th><th>Action &amp; SLA</th></tr>
+      <tr><td>New tool opt-in (<code>tool-lead</code>)</td><td>Instant CC360 task + internal SMS/Slack: &ldquo;New tool lead: [name] · [tool] · [source].&rdquo;</td><td>First SMS auto-sends; setter calls <b>Attempt 1 within 15 min</b>.</td></tr>
+      <tr><td>Tool completed (<code>…-complete</code>)</td><td>Task flips to hot: &ldquo;[name] COMPLETED [tool] — call now.&rdquo;</td><td><b>Call immediately.</b> Highest-intent moment.</td></tr>
+      <tr><td>No answer, Attempt 1</td><td>Reminder task</td><td>Attempt 2 <b>+4 hours</b> (+ SMS).</td></tr>
+      <tr><td>No answer, Attempt 2</td><td>Reminder task</td><td>Attempt 3 <b>next morning</b> (+ voicemail).</td></tr>
+      <tr><td>No answer, Attempt 3</td><td>Reminder task</td><td>Attempt 4 <b>+2 days</b>, then &rarr; Nurture.</td></tr>
+      <tr><td>Daily</td><td>9:00 digest of all open tool leads, newest first, hottest (completed) at top.</td><td>Clear the board daily; no lead without a next action + date.</td></tr>
+    </table>
+
+    <!-- FOLLOW-UP -->
+    <h2 class="sec">5 · Follow-up sequences</h2>
+    <div class="grid2">
+      <div class="box"><b class="t">No contact</b><ul class="clean"><li>4 call attempts over ~48h + SMS + one voicemail.</li><li>No connect &rarr; <b>Nurture</b>: weekly value email, setter re-touch at [30] days.</li></ul></div>
+      <div class="box"><b class="t">Talked, not ready</b><ul class="clean"><li>Tag the reason; set a dated re-touch.</li><li>Nurture emails tied to their tool result until they re-engage.</li></ul></div>
+      <div class="box"><b class="t">Booked call, no-show</b><ul class="clean"><li>Instant &ldquo;sorry we missed you&rdquo; SMS + rebook link.</li><li>2 rebook attempts, then Nurture.</li></ul></div>
+      <div class="box"><b class="t">Joined TPB &rarr; ascension</b><ul class="clean"><li>Exit cold sequences; start onboarding.</li><li>After ~[7&ndash;14] active days, trigger the <b>BOSS</b> invite + book the BOSS call.</li></ul></div>
+    </div>
+
+    <!-- TAGS & TRIGGERS -->
+    <h2 class="sec">6 · Tags &amp; triggers to build</h2>
+    <div class="secnote">The tools already tag opt-in and completion. To run one clean set of automations across every tool, standardize two tags and wire the moves below.</div>
+    <table>
+      <tr><th>When this happens</th><th>CC360 does</th></tr>
+      <tr><td>Any tool opt-in (add <code>tool-lead</code> + <code>tool-[name]</code> + <code>source-social</code> + <code>owner-regina</code>)</td><td>Enroll in the opt-in email + SMS sequence; create the setter task; move to <b>stage 1</b>.</td></tr>
+      <tr><td>Tool completed (<code>…-complete</code>)</td><td>Move to <b>stage 2</b>; fire the &ldquo;call now&rdquo; task; swap to the completed-lead messaging.</td></tr>
+      <tr><td>Setter logs a connect</td><td>Add <code>tool-contacted</code>; move to <b>stage 4</b>.</td></tr>
+      <tr><td>TPB purchased (<code>tpb-member</code>)</td><td>Exit all cold sequences; move to <b>stage 5</b>; start onboarding + ascension timer.</td></tr>
+      <tr><td>BOSS purchased (<code>boss-member</code>)</td><td>Move to <b>stage 7</b>; hand to fulfillment.</td></tr>
+    </table>
+    <div class="flag"><b>One fix that pays for itself:</b> have every tool opt-in add a single universal <code>tool-lead</code> tag (the PB Scorecard already adds <code>tpb-lead</code>; the others don't). Then one workflow powers all tools instead of one per tool. This is a small edit to the opt-in edge functions &mdash; I can make it.</div>
+
+    <!-- BACKFILL -->
+    <h2 class="sec">7 · Backfill the leads who already opted in</h2>
+    <div class="secnote">Good news: everyone who ever opted into a tool is <b>already a CC360 contact</b> &mdash; the tool functions upsert them with tags on opt-in and completion. So the backfill is a set of CC360 Smart Lists, run inside CC360, no import needed.</div>
+    <div class="grid2">
+      <div class="box"><b class="t">List A — Completed (warmest)</b><ul class="clean"><li>Tag is ANY of: <code>litter-scorecard-complete</code>, <code>science-scorecard-complete</code>, <code>pb-scorecard-complete</code>, <code>tpb-scorecard-complete</code></li><li>AND NOT <code>tpb-member</code> / <code>boss-member</code></li><li>&rarr; bulk-add to pipeline at <b>stage 2 (Tool Completed)</b>; assign Regina; start the completed-lead cadence.</li></ul></div>
+      <div class="box"><b class="t">List B — Opted in, didn't finish</b><ul class="clean"><li>Tag is ANY of: <code>litter-scorecard-optin</code>, <code>science-scorecard-optin</code>, <code>pb-scorecard-optin</code>, <code>tpb-scorecard-started</code></li><li>AND NOT the matching <code>…-complete</code>, AND NOT <code>tpb-member</code></li><li>&rarr; add at <b>stage 1</b>; start the &ldquo;finish your tool&rdquo; nurture.</li></ul></div>
+    </div>
+    <ul class="clean" style="margin-top:12px">
+      <li>De-dupe by email + phone before enrolling; exclude current TPB/BOSS members.</li>
+      <li>Prioritize List A by recency &mdash; call the last 30 days first.</li>
+    </ul>
+    <div class="flag"><b>On exporting the raw lead list:</b> I can't bulk-export the opt-in contact PII from the database for you &mdash; that data-dump path is intentionally restricted. It isn't needed: the contacts already live in CC360 with the tags above, so build the Smart Lists there. If any opt-in failed to reach CC360 (the tool logged it but the CC360 upsert errored), those show in the submissions vault with no CC360 match &mdash; flag those and we can reconcile a short list by hand.</div>
+
+    <!-- KPIs -->
+    <h2 class="sec">8 · The scoreboard</h2>
+    <div class="secnote">Measure the funnel end to end so you know which stage to fix.</div>
+    <table>
+      <tr><th>Metric</th><th>Why it matters</th></tr>
+      <tr><td>Opt-ins (by tool, by source)</td><td>Top of funnel; which magnet and channel works.</td></tr>
+      <tr><td><b>Opt-in &rarr; completion %</b></td><td>Is the tool landing? Fix the tool/reminders if low.</td></tr>
+      <tr><td><b>Completion &rarr; contacted %</b> + median speed-to-lead</td><td>The setter's biggest lever. Target: first touch in minutes.</td></tr>
+      <tr><td>Contacted &rarr; TPB join %</td><td>Setter conversion on the TPB-first pitch.</td></tr>
+      <tr><td>TPB &rarr; BOSS ascension %</td><td>The second sale; the real revenue.</td></tr>
+      <tr><td>Overall opt-in &rarr; TPB, opt-in &rarr; BOSS</td><td>True funnel yield from cold social traffic.</td></tr>
+    </table>
+
+    <!-- FOCUS -->
+    <h2 class="sec">9 · What to focus on first</h2>
+    <ol class="focus">
+      <li><b>Speed-to-lead.</b> Instant setter notification + the first SMS within 5 minutes of opt-in. This moves conversion more than anything else.</li>
+      <li><b>Standardize the <code>tool-lead</code> tag + <code>owner-regina</code></b> on every opt-in, so one workflow runs the whole funnel (small edit to the opt-in functions).</li>
+      <li><b>Build the opt-in email + SMS sequence</b> and the setter call cadence (§2–§4).</li>
+      <li><b>Backfill</b> Lists A and B in CC360; call List A, last 30 days first.</li>
+      <li><b>Wire the TPB &rarr; BOSS ascension trigger</b> so every new TPB member gets the BOSS conversation on schedule.</li>
+    </ol>
+
+    <div class="foot">BreedWise internal sales operating document. CC360 is the system of record; tools (Healthy Litter Scorecard, Breeder Science Scorecard, Profitable Breeder Scorecard) already upsert contacts and fire opt-in/completion tags. Owners: Setter runs opt-in &rarr; TPB; Setter/Closer runs the BOSS ascension. Bracketed timings are defaults to confirm.</div>
+  </div></div>
+
+<script>
+(function(){
+  var HASHES=['368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875','7c80836fc0ce4e3956aa136771a24b98d946bece11d70efef268e3612037234d'];
+  var gate=document.getElementById('gate'),app=document.getElementById('app'),gerr=document.getElementById('gerr');
+  function sha(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function open(){gate.style.display='none';app.style.display='block';}
+  try{if(sessionStorage.getItem('tfb_ok')==='1')open();}catch(e){}
+  function tryCode(){var v=(document.getElementById('code').value||'').trim();if(!v)return;
+    Promise.all([sha(v),sha(v.toUpperCase())]).then(function(hs){
+      if(HASHES.indexOf(hs[0])>=0||HASHES.indexOf(hs[1])>=0){try{sessionStorage.setItem('tfb_ok','1');}catch(e){}open();}
+      else gerr.textContent='That code did not match.';});}
+  document.getElementById('go').onclick=tryCode;
+  document.getElementById('code').addEventListener('keydown',function(e){if(e.key==='Enter')tryCode();});
+})();
+</script>
+</body>
+</html>
