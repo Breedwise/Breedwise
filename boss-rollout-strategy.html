@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>BOSS™ Rollout &amp; Positioning Strategy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#080808;--panel:#121216;--panel2:#17171c;--line:rgba(247,245,240,.1);--line2:rgba(247,245,240,.2);--gline:rgba(212,175,55,.38);
+    --ink:#f5f5f7;--mid:#b9b6ad;--muted:#817f78;--gold:#d4af37;--gold-soft:#f0dd9a;--gold-deep:#9e7b24;--green:#6bbf7a;--yellow:#e0b64a;--red:#d98c8c;
+    --disp:'Manrope',-apple-system,sans-serif;--serif:'Cormorant Garamond',Georgia,serif}
+  *{box-sizing:border-box;margin:0}
+  body{background:radial-gradient(1100px 600px at 50% -12%,#16130a,#080808 58%),var(--bg);color:var(--ink);font-family:var(--disp);font-size:15px;line-height:1.62;-webkit-font-smoothing:antialiased}
+  .gold{color:var(--gold)}
+  .goldgrad{background:linear-gradient(162deg,#f3e2a6,#d4af37 45%,#9e7b24 72%,#eccf82);-webkit-background-clip:text;background-clip:text;color:transparent}
+  #gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:24px}
+  .gbox{max-width:380px;width:100%;text-align:center}
+  .gbox .lk{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .gbox h2{font-size:21px;font-weight:800;margin:14px 0 6px;letter-spacing:-.4px}
+  .gbox p{color:var(--mid);font-size:13px;margin-bottom:16px}
+  .gbox input{width:100%;background:var(--panel);border:1px solid var(--line2);color:var(--ink);border-radius:11px;padding:13px 15px;font-size:15px;text-align:center;letter-spacing:.06em;font-family:var(--disp)}
+  .gbox input:focus{outline:none;border-color:var(--gold)}
+  .gbox button{width:100%;margin-top:10px;background:linear-gradient(180deg,#f3e2a6,#d4af37);color:#120d02;border:0;border-radius:11px;padding:13px;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--disp)}
+  .gerr{color:#d98c8c;font-size:12.5px;margin-top:10px;min-height:16px}
+  #app{display:none}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 22px 110px}
+  .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  h1{font-family:var(--disp);font-size:clamp(28px,5vw,46px);font-weight:800;letter-spacing:-1.1px;line-height:1.05;margin:14px 0 8px}
+  .lead{color:var(--mid);font-size:16px;max-width:640px}
+  .northstar{border:1px solid var(--gline);background:linear-gradient(180deg,rgba(212,175,55,.08),rgba(212,175,55,.02));border-radius:16px;padding:24px 26px;margin:26px 0}
+  .northstar .pl{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+  .northstar p{font-family:var(--serif);font-style:italic;font-size:clamp(18px,2.8vw,25px);line-height:1.38;color:var(--ink)}
+  .map{display:flex;flex-wrap:wrap;gap:7px;margin:22px 0 6px}
+  .map a{font-size:11.5px;font-weight:700;color:var(--mid);border:1px solid var(--line);border-radius:8px;padding:6px 10px;text-decoration:none}
+  .map a:hover{border-color:var(--gline);color:var(--gold-soft)}
+  section{border-top:1px solid var(--line);padding-top:26px;margin-top:34px;scroll-margin-top:16px}
+  .sn{display:flex;align-items:baseline;gap:14px;margin-bottom:10px}
+  .sn .num{font-family:var(--disp);font-weight:800;font-size:clamp(24px,4vw,34px);color:var(--gold);line-height:1;min-width:42px}
+  .sn h2{font-size:clamp(20px,3vw,27px);font-weight:800;letter-spacing:-.5px}
+  p.body{color:var(--mid);margin:9px 0}
+  p.body b,li b{color:var(--ink);font-weight:700}
+  .quoteline{font-family:var(--serif);font-style:italic;font-size:clamp(17px,2.4vw,22px);color:var(--gold-soft);line-height:1.35;margin:14px 0;padding-left:16px;border-left:2px solid var(--gold)}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+  th{background:var(--panel);font-size:11px;letter-spacing:.03em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  td b{color:var(--ink)}
+  .dd{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+  @media(max-width:640px){.dd{grid-template-columns:1fr}}
+  .do,.dont{border-radius:12px;padding:15px 17px;font-size:14px;line-height:1.5}
+  .do{border:1px solid var(--gline);background:rgba(212,175,55,.05)}
+  .dont{border:1px dashed var(--line2);color:var(--mid)}
+  .do .lab,.dont .lab{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;margin-bottom:7px}
+  .do .lab{color:var(--gold)}.dont .lab{color:var(--red)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+  @media(max-width:640px){.two{grid-template-columns:1fr}}
+  .card{border:1px solid var(--line);border-radius:13px;padding:16px 18px;background:var(--panel)}
+  .card.key{border-color:var(--gline);background:rgba(212,175,55,.05)}
+  .card .ct{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px}
+  .card .ch{font-family:var(--disp);font-size:18px;font-weight:800;margin-bottom:6px}
+  .card p{font-size:13px;color:var(--mid);line-height:1.5}
+  ul.clean,ul.check,ul.x{list-style:none;display:grid;gap:8px;margin:10px 0;padding:0}
+  ul.clean li,ul.check li,ul.x li{font-size:14px;color:var(--mid);padding-left:24px;position:relative;line-height:1.5}
+  ul.clean li::before{content:"";position:absolute;left:2px;top:9px;width:6px;height:6px;background:var(--gold);border-radius:1px;transform:rotate(45deg)}
+  ul.check li::before{content:"\2713";position:absolute;left:0;color:var(--gold);font-weight:800}
+  ul.x li::before{content:"\2013";position:absolute;left:0;color:var(--muted);font-weight:800}
+  .flow{display:flex;flex-direction:column;gap:6px;margin:14px 0;max-width:460px}
+  .flow .fi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 14px;font-size:14px}
+  .flow .fi b{color:var(--ink);font-weight:700}
+  .flow .fi .d{color:var(--muted);font-size:12.5px}
+  .flow .fi.won{border-color:var(--gline);background:rgba(212,175,55,.06)}
+  .flow .ar{color:var(--gold);text-align:center;font-size:12px;margin:-2px 0}
+  .volume{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:14px 0;text-align:center}
+  @media(max-width:600px){.volume{grid-template-columns:1fr}}
+  .vcard{border:1px solid var(--line);border-radius:12px;padding:16px}
+  .vcard .big{font-family:var(--disp);font-size:34px;font-weight:800;color:var(--gold)}
+  .vcard .sm{font-size:12px;color:var(--muted);margin-top:2px}
+  .vcard.danger .big{color:var(--red)}
+  .board{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:12px 0}
+  @media(max-width:640px){.board{grid-template-columns:1fr 1fr}}
+  .bt{border:1px solid var(--line);border-radius:11px;padding:13px 10px;text-align:center}
+  .bt .bl{font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);font-weight:700;line-height:1.3}
+  .ryg{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .ryg span{font-size:12px;font-weight:700;border-radius:8px;padding:6px 12px;border:1px solid}
+  .ryg .g{color:var(--green);border-color:rgba(107,191,122,.4)}
+  .ryg .y{color:var(--yellow);border-color:rgba(224,182,74,.4)}
+  .ryg .r{color:var(--red);border-color:rgba(217,140,140,.4)}
+  .phase{display:flex;gap:16px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--line)}
+  .phase:last-child{border-bottom:0}
+  .phase .pn{flex:none;width:34px;height:34px;border-radius:50%;background:rgba(212,175,55,.1);border:1px solid var(--gline);color:var(--gold);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+  .phase .pc b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .phase .pc .pt{font-family:var(--disp);font-size:15.5px;font-weight:700;margin:2px 0 2px;color:var(--ink)}
+  .phase .pc p{font-size:13px;color:var(--mid)}
+  .rule{border:1px solid var(--gline);background:rgba(212,175,55,.05);border-radius:12px;padding:16px 18px;margin:14px 0}
+  .rule .rl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:800;margin-bottom:6px}
+  .rule p{font-family:var(--disp);font-weight:700;font-size:clamp(16px,2.4vw,20px);color:var(--ink)}
+  .foot{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted);line-height:1.6}
+  .totop{display:inline-block;margin-top:14px;font-size:12px;color:var(--gold-soft);text-decoration:none;border:1px solid var(--line);border-radius:9px;padding:7px 13px}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="gbox">
+    <div class="lk">BreedWise · Leadership</div>
+    <h2>BOSS™ Rollout &amp; Positioning Strategy</h2>
+    <p>Internal. Enter the team code.</p>
+    <input id="code" type="password" placeholder="Team code" autocomplete="off" autofocus>
+    <button id="go">Unlock</button>
+    <div class="gerr" id="gerr"></div>
+  </div></div>
+
+  <div id="app"><div class="wrap" id="top">
+    <div class="eyebrow">BOSS™ · Internal Launch Document</div>
+    <h1>The <span class="goldgrad">Rollout &amp; Positioning</span> Strategy</h1>
+    <p class="lead">How to make BOSS feel like the natural evolution of what BreedWise learned through Academy, without implying Academy was incomplete, and without making Accelerator look overpriced.</p>
+
+    <div class="northstar">
+      <div class="pl">The strategic sentence &middot; the north star</div>
+      <p>BOSS is not a replacement for Academy and it is not a cheaper Accelerator. It is BreedWise's standardized implementation offer: built from what Academy taught us, designed to turn diagnosed priorities into operating systems, and intentionally bounded so Accelerator remains the home for bespoke acceleration.</p>
+    </div>
+    <p class="body">If every product, sales, delivery and community decision agrees with that sentence, the architecture stays clean. Optimize the Academy rollout for <b>trust first, conversion second</b>. Counterintuitively, that also maximizes $3K conversions: make it unmistakable that nobody has to buy BOSS to keep what they already paid for, then make the implementation advantage so tangible that the right members want to upgrade.</p>
+
+    <div class="map">
+      <a href="#s1">1 Hierarchy</a><a href="#s2">2 Systems vs Implementation</a><a href="#s3">3 Protect Accelerator</a><a href="#s4">4 Ascension</a><a href="#s5">5 Pilot cohort</a><a href="#s6">6 Learn from pilot</a><a href="#s7">7 Must finish</a><a href="#s8">8 OK unfinished</a><a href="#s9">9 Volume</a><a href="#s10">10 Capacity board</a><a href="#s11">11 Unveil</a><a href="#s12">12 The invite</a><a href="#s13">13 Urgency</a><a href="#s14">14 Pre-launch Qs</a><a href="#s15">15 Blind spots</a><a href="#s16">16 Rollout</a><a href="#cert" style="border-color:var(--gline);color:var(--gold-soft)">&#9733; Certification</a>
+    </div>
+
+    <!-- 1 -->
+    <section id="s1"><div class="sn"><span class="num">1</span><h2>Lock the product hierarchy first</h2></div>
+      <table>
+        <tr><th>Offer</th><th>Job</th><th>The customer is buying</th></tr>
+        <tr><td><b>Academy</b></td><td>Learn + improve</td><td>Education, frameworks, guidance, community, existing implementation support, and the promises already made.</td></tr>
+        <tr><td><b>BOSS — $3K</b></td><td>Build + implement</td><td>A defined implementation engagement: identify the priority, install the applicable systems, get them adopted, and measure progress.</td></tr>
+        <tr><td><b>Accelerator</b></td><td>Accelerate + customize</td><td>Higher-touch, multi-constraint, bespoke strategy, custom projects, faster iteration, and greater Austin involvement.</td></tr>
+      </table>
+      <p class="body">Internal language: <b>Academy showed us how important implementation is. BOSS productizes implementation. Accelerator goes beyond standardized implementation into bespoke acceleration.</b></p>
+      <div class="dd">
+        <div class="dont"><div class="lab">Do not say</div>&ldquo;Academy was education. BOSS is implementation.&rdquo; That is inconsistent with what Academy members bought: Academy already included assessment, prioritization, implementation plans, reviews and support.</div>
+        <div class="do"><div class="lab">Say instead</div>&ldquo;BOSS was built from what we learned through Academy. We took the assessment, prioritization, implementation and accountability principles that worked, and turned them into a more defined operating system with clearer standards, systems, measurement and implementation.&rdquo;</div>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section id="s2"><div class="sn"><span class="num">2</span><h2>Separate BOSS Systems from BOSS Implementation</h2></div>
+      <p class="body">Probably the most important decision. Let Academy members access <b>BOSS Systems</b> as they are released (Buyer, Profit, Operational, Breeding, Sales, etc.). That feels like BreedWise investing in existing members. But accessing the systems is <b>not the same thing as buying BOSS.</b></p>
+      <div class="two">
+        <div class="card"><div class="ct">Academy Legacy Access</div><div class="ch">Learn it.</div><p>The applicable BOSS education, frameworks, standards, tools and templates, within their existing Academy experience.</p></div>
+        <div class="card key"><div class="ct">BOSS — $3K</div><div class="ch">Build it with us.</div><p>A defined engagement: <b>Assess → Prioritize → Build → Implement → Measure → Reassess</b>, with a personalized plan, systems configured/built with them, implementation management, adoption, KPIs and a Definition of Done.</p></div>
+      </div>
+      <div class="quoteline">You already have access to the thinking. The upgrade is for members who want us involved in putting it into operation.</div>
+      <p class="body">Now nobody feels like the good information is being held hostage to extract another $3K.</p>
+    </section>
+
+    <!-- 3 -->
+    <section id="s3"><div class="sn"><span class="num">3</span><h2>Protect Accelerator even more aggressively</h2></div>
+      <p class="body">Tell existing Accelerator members: <b>&ldquo;BOSS is becoming BreedWise's standardized operating system. Where those systems are relevant to your Accelerator work, you benefit from them too. Accelerator remains our higher-touch environment for businesses that require more customization, multiple priorities, faster iteration and deeper strategic involvement.&rdquo;</b> Don't make them buy BOSS, and don't let BOSS gradually absorb every custom thing you've ever done in Accelerator.</p>
+      <div class="two">
+        <div class="card"><div class="ct">BOSS</div><p>Standardized systems, personalized diagnosis and implementation.</p></div>
+        <div class="card"><div class="ct">Accelerator</div><p>Bespoke strategy, multiple constraints, custom growth projects, greater founder access, faster iteration.</p></div>
+      </div>
+      <p class="body">A $3K BOSS client should never accidentally receive the same experience as a ~$20K Accelerator client just because the team wants to be helpful. That is one of the biggest potential blind spots.</p>
+    </section>
+
+    <!-- 4 -->
+    <section id="s4"><div class="sn"><span class="num">4</span><h2>The ascension paths</h2></div>
+      <div class="two">
+        <div>
+          <p class="body" style="margin-top:0"><b>New BreedWise customers</b></p>
+          <div class="flow">
+            <div class="fi"><b>Free Tool</b></div><div class="ar">&darr;</div>
+            <div class="fi"><b>TPB</b> <span class="d">Diagnose it</span></div><div class="ar">&darr;</div>
+            <div class="fi won"><b>BOSS</b> <span class="d">Build it</span></div><div class="ar">&darr;</div>
+            <div class="fi"><b>BOSS Continuation</b> <span class="d">Operate + prove it</span></div><div class="ar">&darr;</div>
+            <div class="fi"><b>Accelerator</b> <span class="d">Accelerate it</span></div>
+          </div>
+        </div>
+        <div>
+          <p class="body" style="margin-top:0"><b>Existing Academy members</b></p>
+          <div class="flow">
+            <div class="fi"><b>Academy</b></div><div class="ar">&darr;</div>
+            <div class="fi"><b>BOSS Systems</b> <span class="d">Legacy Access</span></div><div class="ar">&darr;</div>
+            <div class="fi won"><b>Optional $3K</b> <span class="d">BOSS Implementation</span></div><div class="ar">&darr;</div>
+            <div class="fi"><b>Continuation / Accelerator</b> <span class="d">where appropriate</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="body">Don't force every person through every level. A clear, expensive implementation problem can qualify directly for BOSS. Someone who doesn't understand what's wrong starts with TPB. Sophisticated infrastructure that needs bespoke growth is an Accelerator prospect. For Academy: <b>Academy does not become BOSS. Their agreement, certification opportunity and what they bought all remain. They don't pay $3K to keep it.</b> That is where goodwill comes from.</p>
+    </section>
+
+    <!-- 5 -->
+    <section id="s5"><div class="sn"><span class="num">5</span><h2>Do not publicly launch BOSS yet</h2></div>
+      <p class="body">Run controlled implementation with existing members first. Don't position it as &ldquo;Paid-in-full Academy members get BOSS&rdquo; (that's an internal selection criterion if you want one). Externally, call it the <b>BOSS Founding Implementation Cohort</b>. Select ~<b>5&ndash;8 members</b> on readiness:</p>
+      <ul class="clean">
+        <li>They respond quickly and have a clear problem.</li>
+        <li>They'll provide the information you need, and will actually implement.</li>
+        <li>They represent different types of constraints.</li>
+        <li>They'll give feedback and can become good case studies.</li>
+      </ul>
+      <p class="body">If you comp or subsidize those first implementations, document why: <b>pilot participation in exchange for feedback, implementation participation, measurement and case-study permission.</b> So when someone later asks &ldquo;why did Sarah get this and I'm asked to pay $3K?&rdquo; the answer is not &ldquo;because she paid Academy off first.&rdquo;</p>
+    </section>
+
+    <!-- 6 -->
+    <section id="s6"><div class="sn"><span class="num">6</span><h2>What to learn from the pilot</h2></div>
+      <p class="body">Don't use the pilot to decide whether people <i>like</i> BOSS. You're testing the machine. By the end, Jennifer should be able to answer:</p>
+      <table>
+        <tr><th>Question</th></tr>
+        <tr><td>How long does onboarding take? How long does diagnosis take?</td></tr>
+        <tr><td>Average Jenn time per client per week? Average Austin time per client per month?</td></tr>
+        <tr><td>What does AI actually save? Which systems repeat across clients?</td></tr>
+        <tr><td>Which requests create scope creep? Where do clients get stuck?</td></tr>
+        <tr><td>What information delays implementation? What should be templated next?</td></tr>
+        <tr><td>What should BOSS explicitly NOT include?</td></tr>
+        <tr><td>How many simultaneous clients can Jenn actually manage? What does successful Day 120 look like?</td></tr>
+      </table>
+      <p class="body">Every time you do something custom, ask: <b>Was this truly custom?</b> If it happens twice: <b>Can we standardize it?</b> Then: <b>Template → SOP → AI Workflow → BOSS Standard.</b> That's how BOSS becomes more profitable as it grows, not less.</p>
+    </section>
+
+    <!-- 7 -->
+    <section id="s7"><div class="sn"><span class="num">7</span><h2>What MUST be finished before the $3K launch</h2></div>
+      <p class="body">You don't need a giant finished curriculum. You need the <b>delivery machine</b> finished. Don't launch publicly until these are clear:</p>
+      <ul class="check">
+        <li><b>The promise.</b> One sentence on what happens over the implementation period.</li>
+        <li><b>Scope.</b> Exactly what $3K does and doesn't include.</li>
+        <li><b>The BOSS Loop.</b> Assess → Prioritize → Build → Implement → Measure → Reassess.</li>
+        <li><b>Onboarding.</b> Payment → agreement → intake → baseline → kickoff → plan.</li>
+        <li><b>Implementation Plan.</b> Every client: Primary Constraint → Objective → Systems → KPIs → Definition of Done.</li>
+        <li><b>Ownership.</b> Who owns every handoff: Austin, Jenn, Yasmin, Emmanuel, client.</li>
+        <li><b>Client dashboard.</b> Every active account: status, current priority, next action, owner, due date, health.</li>
+        <li><b>Support boundaries.</b> Where they communicate, response times, what qualifies for escalation.</li>
+        <li><b>Austin boundaries.</b> Exactly when and how much Austin is involved.</li>
+        <li><b>System scope.</b> Especially website, CRM, automation, anything that can become an endless custom project.</li>
+        <li><b>Capacity ceiling.</b> Max active implementations before sales are throttled.</li>
+        <li><b>Agreement / payment terms.</b></li>
+        <li><b>Academy positioning. Accelerator positioning.</b></li>
+        <li><b>Day-120 exit.</b> What happens when implementation ends.</li>
+      </ul>
+      <p class="body">If those aren't defined, volume will expose every ambiguity simultaneously.</p>
+    </section>
+
+    <!-- 8 -->
+    <section id="s8"><div class="sn"><span class="num">8</span><h2>What is completely OK to leave unfinished</h2></div>
+      <p class="body">Prevent perfectionism. You do NOT need:</p>
+      <ul class="x">
+        <li>Every future BOSS course recorded, or every conceivable tool or automation.</li>
+        <li>Every system someone might eventually need.</li>
+        <li>BOSS Certification completely built, or a giant case-study library.</li>
+        <li>Every SOP perfected, or the entire 12-month continuation experience produced.</li>
+        <li>A solution for every breeder problem.</li>
+      </ul>
+      <p class="body">You <b>do</b> need to know what you're selling, how you diagnose, how you decide what gets implemented, who implements it, how you measure it, and when you're done. That's enough to launch.</p>
+    </section>
+
+    <!-- 9 -->
+    <section id="s9"><div class="sn"><span class="num">9</span><h2>The volume issue is bigger than the sales issue</h2></div>
+      <p class="body">At $3K, BOSS may be far easier to sell than Accelerator. That's great until you sell 10 in one week. A 120-day engagement means every new weekly cohort stacks on the previous cohorts. Steady-state active 120-day implementations:</p>
+      <div class="volume">
+        <div class="vcard"><div class="big">~34</div><div class="sm">at 2 starts / week</div></div>
+        <div class="vcard"><div class="big">~85</div><div class="sm">at 5 starts / week</div></div>
+        <div class="vcard danger"><div class="big">~170</div><div class="sm">at 10 starts / week</div></div>
+      </div>
+      <div class="rule"><div class="rl">The initial cap</div><p>Cap the team at ~2 new BOSS <span class="gold">starts</span> per week. Not two sales. Two starts. Sell future start dates if needed.</p></div>
+      <p class="body">After 30&ndash;45 days, Jennifer can say: &ldquo;We're at 28 active, 25 green, average implementation time is X, my workload is Y, Austin is spending Z. We can safely move to three starts/week.&rdquo; <b>Scale based on how many people Jennifer can get to implementation without quality dropping, not on how many Regina can close.</b></p>
+    </section>
+
+    <!-- 10 -->
+    <section id="s10"><div class="sn"><span class="num">10</span><h2>Give Jennifer a BOSS Capacity Board</h2></div>
+      <p class="body">Every Monday, you and Jennifer look at five numbers:</p>
+      <div class="board">
+        <div class="bt"><div class="bl">Active BOSS Clients</div></div>
+        <div class="bt"><div class="bl">New Starts This Week</div></div>
+        <div class="bt"><div class="bl">On-Track %</div></div>
+        <div class="bt"><div class="bl">Overdue / Blocked</div></div>
+        <div class="bt"><div class="bl">Team Capacity %</div></div>
+      </div>
+      <p class="body">Every client is:</p>
+      <div class="ryg"><span class="g">GREEN · progressing normally</span><span class="y">YELLOW · blocked / delayed / adoption issue</span><span class="r">RED · materially off track / escalate</span></div>
+      <div class="rule"><div class="rl">The operating rule</div><p>Growth can never outrun delivery.</p></div>
+      <p class="body">If delivery turns yellow, marketing doesn't get celebrated for creating more volume. You solve delivery.</p>
+    </section>
+
+    <!-- 11 -->
+    <section id="s11"><div class="sn"><span class="num">11</span><h2>How to unveil this to Academy</h2></div>
+      <p class="body">Don't start with pricing. Do an Academy-only unveiling first. The message:</p>
+      <div class="quoteline">BOSS wasn't created from scratch. A lot of it was born from what we've learned inside Academy. Academy showed us how important assessment, prioritization, implementation and accountability are. We've gotten much clearer on how to turn those ideas into actual operating systems. That's what BOSS is. And because you helped us get here as Academy members, we're rolling BOSS systems into your experience as Legacy Access.</div>
+      <p class="body"><b>Academy isn't being renamed BOSS, your existing experience isn't being taken away, and you don't need to purchase anything else.</b> Then teach the BOSS philosophy, let them experience some of the new systems, and release the implementation opportunity separately. That prevents the unveiling from feeling like a webinar designed to extract another $3K.</p>
+    </section>
+
+    <!-- 12 -->
+    <section id="s12"><div class="sn"><span class="num">12</span><h2>Then make the $3K invitation</h2></div>
+      <p class="body">A separate module/call: <b>&ldquo;Want us to help you implement it?&rdquo;</b> Distinguish clearly:</p>
+      <div class="two">
+        <div class="card"><div class="ct">BOSS Systems Legacy Access</div><p>Included for qualifying/current Academy members, per the transition policy you establish.</p></div>
+        <div class="card key"><div class="ct">BOSS Implementation — $3,000</div><p>Our team diagnoses the priority, builds the applicable infrastructure, puts it into operation, and measures it.</p></div>
+      </div>
+      <div class="dd">
+        <div class="dont"><div class="lab">The message isn't</div>&ldquo;Get more BOSS.&rdquo;</div>
+        <div class="do"><div class="lab">It's</div>&ldquo;You've seen the system. If you'd rather have our team work with you to diagnose the priority, build the applicable infrastructure, put it into operation and measure it, that's what the BOSS Implementation engagement is for.&rdquo;</div>
+      </div>
+      <p class="body">That converts better because the difference is obvious.</p>
+    </section>
+
+    <!-- 13 -->
+    <section id="s13"><div class="sn"><span class="num">13</span><h2>Don't manufacture urgency</h2></div>
+      <p class="body">If you give Academy a founding/legacy opportunity, make the constraint real.</p>
+      <div class="dd">
+        <div class="do"><div class="lab">Legitimate scarcity</div>&ldquo;We can take eight implementations in this cohort, because this requires hands-on work from our team.&rdquo;</div>
+        <div class="dont"><div class="lab">Not this</div>&ldquo;$3K price disappears Friday!!!&rdquo;</div>
+      </div>
+      <p class="body">If 20 people want it, the next 12 receive start dates or join the implementation queue. That protects delivery and creates legitimate demand.</p>
+    </section>
+
+    <!-- 14 -->
+    <section id="s14"><div class="sn"><span class="num">14</span><h2>The questions to answer before launch</h2></div>
+      <p class="body">One working session, and don't leave until these are answered:</p>
+      <table>
+        <tr><th>Area</th><th>Question</th></tr>
+        <tr><td>Promise</td><td>What exactly should be different after BOSS?</td></tr>
+        <tr><td>Scope</td><td>What exactly does $3K purchase?</td></tr>
+        <tr><td>Academy</td><td>What do Academy members already have that we cannot repackage as newly paid value?</td></tr>
+        <tr><td>Legacy Access</td><td>What BOSS systems do Academy members receive without upgrading?</td></tr>
+        <tr><td>Upgrade</td><td>What happens only after someone purchases BOSS Implementation?</td></tr>
+        <tr><td>Accelerator</td><td>What can Accelerator do that BOSS intentionally cannot?</td></tr>
+        <tr><td>Constraint</td><td>Do we solve one primary constraint or everything they ask for?</td></tr>
+        <tr><td>Systems</td><td>Which systems are standard, conditional and out of scope?</td></tr>
+        <tr><td>Customization</td><td>What gets customized vs. templated?</td></tr>
+        <tr><td>Client responsibility</td><td>What must the member provide/do?</td></tr>
+        <tr><td>Team</td><td>Who owns diagnosis, build, QA, training, follow-up and measurement?</td></tr>
+        <tr><td>Austin</td><td>Exactly where is Austin required?</td></tr>
+        <tr><td>Jennifer</td><td>What's Jenn's maximum active-client capacity?</td></tr>
+        <tr><td>AI</td><td>What production can AI reliably handle?</td></tr>
+        <tr><td>KPI</td><td>How do we prove implementation happened?</td></tr>
+        <tr><td>Done</td><td>What specifically constitutes Definition of Done?</td></tr>
+        <tr><td>Delay</td><td>What happens when the client doesn't provide assets or implement?</td></tr>
+        <tr><td>Scope creep</td><td>Who says no, and how?</td></tr>
+        <tr><td>Day 120</td><td>What happens when the engagement ends?</td></tr>
+        <tr><td>Continuation</td><td>What's the next logical relationship for ongoing support?</td></tr>
+        <tr><td>Capacity</td><td>At what number do we stop taking immediate starts?</td></tr>
+        <tr><td>Escalation</td><td>What turns a normal implementation into an Austin issue?</td></tr>
+        <tr><td>Proof</td><td>How will we capture before/after evidence from the pilot?</td></tr>
+        <tr><td>Sales</td><td>Who qualifies for BOSS and who should stay in TPB/Academy?</td></tr>
+        <tr><td>Economics</td><td>After actual fulfillment labor, does $3K still make sense?</td></tr>
+      </table>
+      <p class="body">If you cannot answer one of those, that's where to focus before public launch.</p>
+    </section>
+
+    <!-- 15 -->
+    <section id="s15"><div class="sn"><span class="num">15</span><h2>Your biggest blind spots</h2></div>
+      <div class="two">
+        <div class="card"><div class="ch">Scope creep</div><p>At $3K, &ldquo;we'll help implement your systems&rdquo; can accidentally become a $20K custom consulting engagement.</p></div>
+        <div class="card"><div class="ch">Austin creep</div><p>Every unusual client problem escalates to you. Suddenly a $3K product consumes more founder time than Accelerator.</p></div>
+        <div class="card"><div class="ch">Perceived replacement</div><p>If Academy hears &ldquo;finally we'll help you implement,&rdquo; they'll reasonably ask what they already paid for. Every message must honor Academy as the foundation BOSS grew from.</p></div>
+        <div class="card"><div class="ch">Accelerator compression</div><p>If BOSS includes websites, CRM, strategy, implementation, private support, custom builds, Austin access and multiple priorities for $3K, the rational customer asks why Accelerator costs more. Keep the boundary hard.</p></div>
+      </div>
+      <div class="card" style="margin-top:12px"><div class="ch">+ Giving too much away in the pilot</div><p>Founding Academy members can receive extraordinary treatment while you learn. Just don't turn every pilot exception into the public BOSS promise. Document <b>BOSS STANDARD</b> vs. <b>PILOT EXCEPTION.</b></p></div>
+    </section>
+
+    <!-- 16 -->
+    <section id="s16"><div class="sn"><span class="num">16</span><h2>The rollout to execute</h2></div>
+      <div class="phase"><div class="pn">1</div><div class="pc"><b>Align</b><div class="pt">You + Jennifer finalize the definitions</div><p>Promise, scope, responsibilities, implementation plan, capacity, Academy distinction, Accelerator distinction.</p></div></div>
+      <div class="phase"><div class="pn">2</div><div class="pc"><b>Pilot</b><div class="pt">5&ndash;8 selected Academy members</div><p>Run the actual BOSS implementation system. Track every hour, bottleneck, request, system, delay and result.</p></div></div>
+      <div class="phase"><div class="pn">3</div><div class="pc"><b>Productize</b><div class="pt">Turn repeated work into leverage</div><p>Templates, SOPs and AI workflows. Tighten what is included / not included.</p></div></div>
+      <div class="phase"><div class="pn">4</div><div class="pc"><b>Academy unveiling</b><div class="pt">Trust first</div><p>Explain where BOSS came from. Give Legacy Access. Explicitly state what isn't changing.</p></div></div>
+      <div class="phase"><div class="pn">5</div><div class="pc"><b>Legacy implementation invitation</b><div class="pt">The $3K offer</div><p>Offer $3K implementation to Academy members with a real, capacity-limited cohort.</p></div></div>
+      <div class="phase"><div class="pn">6</div><div class="pc"><b>Prove delivery</b><div class="pt">Milestones + proof</div><p>Get the cohort through meaningful milestones. Capture proof and identify capacity.</p></div></div>
+      <div class="phase"><div class="pn">7</div><div class="pc"><b>Public launch</b><div class="pt">The full funnel</div><p>Free Tools / TPB → BOSS qualification → call → $3K BOSS → implementation.</p></div></div>
+      <div class="phase"><div class="pn">8</div><div class="pc"><b>Scale by capacity</b><div class="pt">Delivery-gated growth</div><p>Increase weekly starts only when delivery metrics say you can.</p></div></div>
+      <a class="totop" href="#top">↑ Back to top</a>
+    </section>
+
+    <!-- ===================== PART II: CERTIFICATION ===================== -->
+    <div id="cert" style="border-top:2px solid var(--gline);margin-top:48px;padding-top:34px">
+      <div class="eyebrow">Part II &middot; The verification layer</div>
+      <h1 style="font-size:clamp(24px,4.4vw,38px);margin:12px 0 8px">BOSS™ <span class="goldgrad">Certification</span> Architecture</h1>
+      <p class="lead">Make certification its own workstream before the BOSS rollout. It is one of the easiest places to accidentally diminish Academy or make a promise you cannot operationally support.</p>
+      <div class="rule"><div class="rl">The governing principle</div><p>BOSS can help a member build toward the standard. Certification verifies that the standard has actually been met.</p></div>
+      <p class="body">So <b>buying BOSS does not buy certification</b>, and existing Academy members do <b>not</b> lose the certification opportunity they already purchased.</p>
+    </div>
+
+    <!-- C1 -->
+    <section id="c1"><div class="sn"><span class="num">C1</span><h2>The certification treatment, by member</h2></div>
+      <table>
+        <tr><th>Member</th><th>Certification treatment</th></tr>
+        <tr><td><b>Existing Academy</b></td><td>Existing certification opportunity is honored. No BOSS purchase required.</td></tr>
+        <tr><td><b>Academy &rarr; $3K BOSS</b></td><td>Qualifying Academy work carries forward. BOSS implementation can help close remaining gaps.</td></tr>
+        <tr><td><b>New BOSS</b></td><td>BOSS starts the pathway toward certification. Completing 120 days does not automatically certify them.</td></tr>
+        <tr><td><b>Accelerator</b></td><td>Accelerator work can satisfy applicable requirements. Accelerator purchase does not automatically certify them either.</td></tr>
+        <tr><td><b>Continuation</b></td><td>Provides the environment to operate, measure, improve and build the evidence necessary for certification and re-certification.</td></tr>
+      </table>
+      <div class="two">
+        <div class="card"><div class="ct">Academy</div><div class="ch">Promise honored</div><p>Existing certification opportunity is preserved.</p></div>
+        <div class="card"><div class="ct">BOSS</div><div class="ch">Build the standard</div><p>Put the right systems into operation.</p></div>
+        <div class="card key"><div class="ct">Certification</div><div class="ch">Prove the standard</div><p>Independent verification against the BreedWise standard.</p></div>
+        <div class="card"><div class="ct">Accelerator</div><div class="ch">Not a shortcut</div><p>Bespoke acceleration, never a way around the standard.</p></div>
+      </div>
+      <div class="quoteline">Grandfather the promise, not an automatic pass.</div>
+      <p class="body">If Academy members were promised an opportunity to become certified, honor that opportunity. That does not mean everyone automatically receives certification because the product is changing. They still have to demonstrate whatever standards BreedWise ultimately requires.</p>
+    </section>
+
+    <!-- C2 -->
+    <section id="c2"><div class="sn"><span class="num">C2</span><h2>What BOSS Certification must (and must not) mean</h2></div>
+      <div class="dd">
+        <div class="dont"><div class="lab">It must NOT mean</div>
+          &ldquo;BreedWise guarantees this breeder produces healthy puppies.&rdquo;<br>&ldquo;This breeding is medically appropriate.&rdquo;<br>&ldquo;This breeder will never lose puppies.&rdquo;<br>&ldquo;BreedWise's veterinarian approves every decision this breeder makes.&rdquo;</div>
+        <div class="do"><div class="lab">It means</div>BreedWise certification verifies that a breeder has demonstrated the required knowledge, documented practices, systems, preparedness and BreedWise standards <b>at the time of audit</b>. That is defensible and measurable.</div>
+      </div>
+      <p class="body">Build certification around four gates:</p>
+      <div class="two">
+        <div class="card"><div class="ct">Gate 1</div><div class="ch">Knowledge</div><p>Do they understand the principles they are expected to understand? Reproduction, genetics and health, whelping, neonatal preparedness, business practices, ethics.</p></div>
+        <div class="card"><div class="ct">Gate 2</div><div class="ch">Verification</div><p>Can they provide the required documentation? Health testing, registration where applicable, records, veterinary relationship, contracts and policies, program documentation, other BreedWise requirements. <b>The scientific and health requirements are reviewed and approved by Emmanuel / veterinary leadership before publishing.</b></p></div>
+        <div class="card"><div class="ct">Gate 3</div><div class="ch">Implementation</div><p>Are the required practices and systems actually being used? Not &ldquo;did you watch the training?&rdquo; but <b>&ldquo;show us how this operates inside your program.&rdquo;</b> This is where BOSS becomes extremely valuable.</p></div>
+        <div class="card"><div class="ct">Gate 4</div><div class="ch">Audit</div><p>BreedWise verifies the evidence against a defined standard.</p></div>
+      </div>
+      <p class="body">The result is one of three:</p>
+      <div class="ryg">
+        <span class="g">CERTIFIED &middot; standard demonstrated</span>
+        <span class="y">CONDITIONAL / CORRECTIONS REQUIRED &middot; specific gaps</span>
+        <span class="r">NOT YET &middot; material requirements not demonstrated</span>
+      </div>
+      <p class="body" style="margin-top:12px">Use <b>&ldquo;Not Yet&rdquo;</b> in member communications rather than &ldquo;Failed.&rdquo;</p>
+    </section>
+
+    <!-- C3 -->
+    <section id="c3"><div class="sn"><span class="num">C3</span><h2>Jennifer's certification pipeline</h2></div>
+      <p class="body">Certification is not a run of DMs between you, Jennifer and Emmanuel. It is an operational process.</p>
+      <div class="flow">
+        <div class="fi"><b>Not Yet Eligible</b></div><div class="ar">&darr;</div>
+        <div class="fi"><b>Eligible for Review</b></div><div class="ar">&darr;</div>
+        <div class="fi"><b>Evidence Requested</b></div><div class="ar">&darr;</div>
+        <div class="fi"><b>Evidence Submitted</b></div><div class="ar">&darr;</div>
+        <div class="fi"><b>Initial Review</b></div><div class="ar">&darr;</div>
+        <div class="fi"><b>Gaps Identified</b></div><div class="ar">&darr;</div>
+        <div class="fi"><b>Corrections / Implementation</b></div><div class="ar">&darr;</div>
+        <div class="fi"><b>Final Audit</b></div><div class="ar">&darr;</div>
+        <div class="fi won"><b>Certified</b></div>
+      </div>
+      <p class="body" style="margin-top:6px"><b>Side statuses:</b></p>
+      <div class="ryg">
+        <span class="y">Waiting on Member</span><span class="y">Waiting on BreedWise</span><span class="r">Veterinary / Scientific Review Required</span><span class="r">Not Yet Certified</span>
+      </div>
+    </section>
+
+    <!-- C4 -->
+    <section id="c4"><div class="sn"><span class="num">C4</span><h2>What to tell current Academy members</h2></div>
+      <p class="body">This is the politically sensitive part. When BOSS launches, tell them explicitly:</p>
+      <div class="northstar"><div class="pl">Say this, in these words</div>
+        <p style="font-size:clamp(16px,2.4vw,21px)">Your existing Academy certification opportunity is not being taken away or replaced. As BreedWise develops the BOSS standards, we will map the qualifying work you have already completed in Academy toward the applicable certification requirements. You will not be required to purchase BOSS simply to preserve the certification opportunity included with your Academy membership. If you choose to upgrade to BOSS Implementation, our team can work more directly with you to implement applicable systems and close identified gaps, but purchasing BOSS does not guarantee certification.</p>
+      </div>
+      <p class="body">That eliminates the interpretation you must never create: <b>&ldquo;I paid Academy expecting certification, and now you are charging me another $3K to get it.&rdquo;</b></p>
+    </section>
+
+    <!-- C5 -->
+    <section id="c5"><div class="sn"><span class="num">C5</span><h2>Existing work counts</h2></div>
+      <p class="body">Do not make existing members start over. If a member already completed health-testing verification, education requirements, assessment work, documents, or implementation work that satisfies the new standard, credit it. A certification dashboard should read like this:</p>
+      <div class="card" style="max-width:420px">
+        <div class="ct">Sarah &middot; certification dashboard</div>
+        <table style="margin:8px 0 0">
+          <tr><td>Knowledge</td><td style="color:var(--green);font-weight:700">COMPLETE</td></tr>
+          <tr><td>Health Verification</td><td style="color:var(--green);font-weight:700">COMPLETE</td></tr>
+          <tr><td>Program Documentation</td><td style="color:var(--green);font-weight:700">COMPLETE</td></tr>
+          <tr><td>Implementation</td><td style="color:var(--yellow);font-weight:700">70%</td></tr>
+          <tr><td>Audit</td><td style="color:var(--muted);font-weight:700">NOT STARTED</td></tr>
+        </table>
+      </div>
+      <p class="body">Then BOSS helps her close the remaining 30%. That is a far better experience than &ldquo;welcome to the new system, everything you did for the last year is irrelevant.&rdquo;</p>
+    </section>
+
+    <!-- C6 -->
+    <section id="c6"><div class="sn"><span class="num">C6</span><h2>For new BOSS customers: separate the 120-day promise from certification</h2></div>
+      <div class="two">
+        <div class="card"><div class="ct">120 Days to Build</div><p><b>Assess &rarr; Prioritize &rarr; Build &rarr; Implement &rarr; Measure &rarr; Reassess.</b> At Day 120 they receive a <b>BOSS Implementation Report</b>: what was identified, built, implemented, what is being measured, what evidence exists, what remains incomplete, and the next roadmap. They are <b>not</b> automatically certified.</p></div>
+        <div class="card key"><div class="ct">12 Months to Prove</div><p>After at least <b>12 months of qualifying participation and evidence</b>, a member becomes eligible for the complete certification audit. The 120 BOSS days count toward that period. <b>12 months = eligible, not automatically certified.</b></p></div>
+      </div>
+      <div class="rule"><div class="rl">The tagline</div><p>120 Days to Build. 12 Months to Prove.</p></div>
+      <p class="body">This is also what makes continuation make obvious sense. The full ladder:</p>
+      <div class="flow" style="max-width:560px">
+        <div class="fi"><b>TPB</b> <span class="d">Diagnose it. Know what needs improvement.</span></div><div class="ar">&darr;</div>
+        <div class="fi"><b>BOSS</b> <span class="d">Build it. Put the systems into operation.</span></div><div class="ar">&darr;</div>
+        <div class="fi"><b>BOSS Continuation</b> <span class="d">Operate + prove it. Measure, improve, establish evidence.</span></div><div class="ar">&darr;</div>
+        <div class="fi won"><b>Certification</b> <span class="d">Verify it. Independent verification against the standard.</span></div><div class="ar">&darr;</div>
+        <div class="fi"><b>Accelerator</b> <span class="d">Accelerate it. Bespoke growth beyond the standard.</span></div>
+      </div>
+      <p class="body">Certification is not something to awkwardly sell. It becomes a standard members work toward.</p>
+    </section>
+
+    <!-- C7 -->
+    <section id="c7"><div class="sn"><span class="num">C7</span><h2>One important commercial decision</h2></div>
+      <div class="rule"><div class="rl">Legacy protection</div><p>Do not make $297 continuation mandatory solely to maintain certification eligibility for legacy Academy members, unless their original agreement clearly allows it.</p></div>
+      <p class="body">For <b>new customers</b>, structure the future certification pathway prospectively however you want, with counsel reviewing the representations and terms. For <b>existing Academy members</b>, preserve what they were promised. That is why two paths should temporarily coexist:</p>
+      <div class="two">
+        <div class="card"><div class="ct">Path A</div><div class="ch">Legacy Academy Certification</div><p>Honors the original promise. Qualifying Academy work maps forward.</p></div>
+        <div class="card"><div class="ct">Path B</div><div class="ch">New BOSS Certification</div><p>The forward standard for new customers, defined prospectively with counsel.</p></div>
+      </div>
+      <p class="body">Eventually the legacy cohort disappears naturally.</p>
+    </section>
+
+    <!-- C8 -->
+    <section id="c8"><div class="sn"><span class="num">C8</span><h2>What must be finished before announcing certification</h2></div>
+      <p class="body">This is one area not to launch half-built. Before publicly explaining BOSS Certification, these must exist:</p>
+      <ul class="check">
+        <li><b>Certification Standard.</b> Exactly what must be true.</li>
+        <li><b>Evidence Matrix.</b> What proves each requirement.</li>
+        <li><b>Reviewer.</b> Who can approve each requirement.</li>
+        <li><b>Scientific Governance.</b> Which standards require Emmanuel / veterinary approval.</li>
+        <li><b>Audit Process.</b> How certification decisions happen.</li>
+        <li><b>Legacy Mapping.</b> How Academy requirements map into the new requirements.</li>
+        <li><b>Status System.</b> Certified / Corrections Required / Not Yet.</li>
+        <li><b>Appeal / Re-review Process.</b> What happens when someone disagrees.</li>
+        <li><b>Expiration / Renewal.</b> Whether certification expires and what continuing verification looks like.</li>
+        <li><b>Public Claims Policy.</b> Exactly what members may say certification means.</li>
+        <li><b>Badge / Brand Usage.</b> How someone may use &ldquo;BreedWise Certified.&rdquo;</li>
+        <li><b>Revocation Policy.</b> What happens if a certified breeder later materially violates the standard.</li>
+      </ul>
+      <div class="rule"><div class="rl">The rule</div><p>The standard must exist before the badge exists.</p></div>
+      <p class="body">Anything involving reproduction, genetics, health, neonatal practices or veterinary preparedness: Emmanuel and the appropriate veterinary / scientific reviewers sign off on the actual standards before publishing.</p>
+      <p class="body" style="margin-top:14px"><b>What can remain unfinished:</b></p>
+      <ul class="x">
+        <li>Every certification lesson recorded.</li>
+        <li>Fancy certification software or a beautiful automated portal.</li>
+        <li>Every audit automated.</li>
+        <li>The final public badge, immediately. First audits can run manually.</li>
+      </ul>
+      <p class="body">But the standard and evidence requirements must be finalized before telling members what certification represents.</p>
+    </section>
+
+    <!-- C9 -->
+    <section id="c9"><div class="sn"><span class="num">C9</span><h2>Blind spot: certification can become a fulfillment monster</h2></div>
+      <p class="body">If every certification requires Austin plus Jennifer plus Emmanuel to manually inspect 80 documents and spend three hours on Zoom, it will not scale. While designing it, every requirement must answer:</p>
+      <ul class="clean">
+        <li>What are we verifying?</li>
+        <li>What evidence proves it?</li>
+        <li>Can Jennifer verify it?</li>
+        <li>Does this actually require a veterinarian?</li>
+        <li>Can the evidence be standardized?</li>
+      </ul>
+      <p class="body">Emmanuel should not become the bottleneck for administrative verification. Use him for the things that legitimately require scientific or veterinary judgment. Ownership splits cleanly:</p>
+      <div class="two">
+        <div class="card"><div class="ct">Jennifer</div><p>Owns the certification <b>process</b>.</p></div>
+        <div class="card"><div class="ct">Emmanuel / Vet</div><p>Owns the <b>scientific standard</b> and escalated scientific review.</p></div>
+        <div class="card"><div class="ct">Austin</div><p>Owns the <b>business and brand standard</b> and final architecture, not every audit.</p></div>
+      </div>
+      <div class="northstar"><div class="pl">The clean message for the entire rollout</div>
+        <p>Academy helped members learn, assess and improve. BOSS turns those lessons into a defined operating system and helps members put the right systems into operation. Certification does not mean you bought BOSS, it means you have demonstrated the BreedWise standard. And Accelerator remains the environment for breeders who need more customized strategy and acceleration beyond the standardized BOSS system.</p>
+      </div>
+      <a class="totop" href="#top">&uarr; Back to top</a>
+    </section>
+
+    <div class="foot">BreedWise internal leadership document. BOSS rollout &amp; positioning strategy. Pricing ($3K) and the Academy transition policy are strategic recommendations pending final economics and counsel on member agreements. Every decision should agree with the strategic sentence at the top.</div>
+  </div></div>
+
+<script>
+(function(){
+  var HASH='368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875';
+  var gate=document.getElementById('gate'),app=document.getElementById('app'),gerr=document.getElementById('gerr');
+  function sha(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function open(){gate.style.display='none';app.style.display='block';}
+  try{if(sessionStorage.getItem('brs_ok')==='1')open();}catch(e){}
+  function tryCode(){var v=(document.getElementById('code').value||'').trim();if(!v)return;
+    Promise.all([sha(v),sha(v.toUpperCase())]).then(function(hs){
+      if(hs[0]===HASH||hs[1]===HASH){try{sessionStorage.setItem('brs_ok','1');}catch(e){}open();}
+      else gerr.textContent='That code did not match.';});}
+  document.getElementById('go').onclick=tryCode;
+  document.getElementById('code').addEventListener('keydown',function(e){if(e.key==='Enter')tryCode();});
+})();
+</script>
+</body>
+</html>
