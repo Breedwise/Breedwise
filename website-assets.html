@@ -288,6 +288,81 @@ el('addLitter').addEventListener('click',function(){makeEntry('litter',LITTER_FI
 makeEntry('dog',DOG_FIELDS,DOGS);        // start with one of each
 makeEntry('litter',LITTER_FIELDS,LITTERS);
 
+/* ── draft autosave (survives a lost screen / closed tab) ──
+   Saves every typed answer + brand choices to this browser as you go and
+   restores them on reopen. Files can't be serialized, so only their names
+   are remembered as a re-attach reminder. Cleared on a successful send. */
+var DRAFT_KEY='bw_website_assets_draft_v1';
+var TEXT_IDS=['name','kennel','email','phone','breeds','about','different','website','social','videolinks','tagline','domain','colorsdesc','inspo','show_email','show_phone','location','hours'];
+function fileNamesAll(){
+  var n=[];
+  ['logo','photos','videos','testimonials'].forEach(function(f){ PICK[f].forEach(function(x){ n.push(x.name); }); });
+  DOGS.forEach(function(e,i){ e.files.forEach(function(x){ n.push('Dog '+(i+1)+': '+x.name); }); });
+  LITTERS.forEach(function(e,i){ e.files.forEach(function(x){ n.push('Litter '+(i+1)+': '+x.name); }); });
+  return n;
+}
+function collectDraft(){
+  var fields={}; TEXT_IDS.forEach(function(id){ var e=el(id); if(e)fields[id]=e.value; });
+  return { v:1, ts:Date.now(), fields:fields, feel:Array.from(feelSel), fonts:Array.from(fontSel), colors:COLORS,
+    dogs:DOGS.map(function(e){return e.get();}), litters:LITTERS.map(function(e){return e.get();}), fileNames:fileNamesAll() };
+}
+function draftHasContent(d){
+  if(!d)return false;
+  if(d.fields&&Object.keys(d.fields).some(function(k){return (d.fields[k]||'').trim();}))return true;
+  if((d.feel&&d.feel.length)||(d.fonts&&d.fonts.length)||(d.colors&&Object.keys(d.colors).length))return true;
+  if((d.dogs||[]).some(function(o){return Object.keys(o).some(function(k){return (o[k]||'').trim();});}))return true;
+  if((d.litters||[]).some(function(o){return Object.keys(o).some(function(k){return (o[k]||'').trim();});}))return true;
+  return false;
+}
+var _sv;
+function saveDraft(now){
+  try{
+    var d=collectDraft();
+    if(!draftHasContent(d)){ try{localStorage.removeItem(DRAFT_KEY);}catch(_){ } return; }
+    if(now){ localStorage.setItem(DRAFT_KEY,JSON.stringify(d)); }
+    else{ clearTimeout(_sv); _sv=setTimeout(function(){ try{localStorage.setItem(DRAFT_KEY,JSON.stringify(d));}catch(_){ } },600); }
+  }catch(_){ }
+}
+function clearDraft(){ try{localStorage.removeItem(DRAFT_KEY);}catch(_){ } }
+document.addEventListener('input',function(){ saveDraft(false); });
+document.addEventListener('change',function(){ saveDraft(false); });
+document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='hidden') saveDraft(true); });
+window.addEventListener('pagehide',function(){ saveDraft(true); });
+
+function setEntries(kind,fields,list,saved){
+  while(list.length){ list[0].el.remove(); list.shift(); }
+  if(!saved||!saved.length){ makeEntry(kind,fields,list); return; }
+  saved.forEach(function(vals){ var e=makeEntry(kind,fields,list); fields.forEach(function(f){ if(vals[f.k]!=null) e.inputs[f.k].value=vals[f.k]; }); });
+}
+function showDraftBanner(d){
+  var when=''; try{ when=new Date(d.ts).toLocaleString(); }catch(_){ }
+  var names=d.fileNames||[];
+  var b=document.createElement('div');
+  b.style.cssText='background:#1f2a1c;border:1px solid #3a5230;border-radius:12px;padding:13px 15px;margin:0 0 18px;display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;font-size:13.5px;line-height:1.55;color:#dfe8d6';
+  b.innerHTML='<div style="flex:1;min-width:220px"><b style="color:#eaf3e2">We brought back your saved draft'+(when?(' from '+esc(when)):'')+'.</b> Your typed answers are restored.'
+    +(names.length?(' Files can’t be saved in your browser, so please re-attach: <span style="color:#eaf3e2">'+names.map(esc).join(', ')+'</span>.'):'')
+    +'</div><button type="button" id="draftClear" style="background:transparent;border:1px solid #4a6b3c;color:#cfe0c3;border-radius:9px;padding:7px 13px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap">Start over</button>';
+  var app=el('app'); app.insertBefore(b,app.firstChild);
+  el('draftClear').addEventListener('click',function(){ if(confirm('Clear this saved draft and start with a blank form?')){ clearDraft(); location.reload(); } });
+}
+function restoreDraft(){
+  var raw; try{ raw=localStorage.getItem(DRAFT_KEY); }catch(_){ return; }
+  if(!raw)return; var d; try{ d=JSON.parse(raw); }catch(_){ return; }
+  if(!draftHasContent(d))return;
+  TEXT_IDS.forEach(function(id){ var e=el(id); if(e&&d.fields&&d.fields[id]!=null) e.value=d.fields[id]; });
+  (d.feel||[]).forEach(function(v){ feelSel.add(v); });
+  (d.fonts||[]).forEach(function(v){ fontSel.add(v); });
+  Array.prototype.forEach.call(el('feelChips').querySelectorAll('.chip-t'),function(c){ if(feelSel.has(c.getAttribute('data-v')))c.classList.add('on'); });
+  Array.prototype.forEach.call(el('fontChips').querySelectorAll('.chip-t'),function(c){ if(fontSel.has(c.getAttribute('data-v')))c.classList.add('on'); });
+  if(d.colors)Object.keys(d.colors).forEach(function(k){ COLORS[k]=d.colors[k];
+    var slot=document.querySelector('.cslot[data-k="'+k+'"]'); if(slot){ var ci=slot.querySelector('.ci'); if(ci)ci.value=d.colors[k]; slot.classList.add('set'); slot.querySelector('.sw').style.background=d.colors[k]; slot.querySelector('.hex').textContent=d.colors[k]; }
+  });
+  setEntries('dog',DOG_FIELDS,DOGS,d.dogs);
+  setEntries('litter',LITTER_FIELDS,LITTERS,d.litters);
+  showDraftBanner(d);
+}
+restoreDraft();
+
 /* ── submit ── */
 el('submit').onclick=submit;
 async function submit(){
@@ -338,6 +413,7 @@ async function submit(){
 }
 function hasAny(o){ return Object.keys(o).some(function(k){return o[k]&&String(o[k]).trim();}); }
 function done(kennel,n,nd,nl){
+  clearDraft();                                  // submitted successfully — drop the saved draft
   el('app').innerHTML='<div class="done"><div class="ic">✓</div>'
     +'<h1 style="font-size:28px">Got it — thank you!</h1>'
     +'<p class="lead" style="margin:10px auto 0;max-width:470px">We received your content for <b style="color:var(--ink)">'+esc(kennel)+'</b>'
