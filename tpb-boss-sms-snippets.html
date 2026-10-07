@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Tool &rarr; TPB &rarr; BOSS · SMS Snippets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1b1b20;--surface:#111114;--card:#26262c;--card-2:#212127;--border:#34343c;--gold:#d6ba76;--gold-deep:#b89c47;--gold-faint:rgba(214,186,118,.10);--ink:#f2efe8;--mid:#bab5aa;--muted:#88847c;--good:#6dbf90;--heading:'Playfair Display',Georgia,serif;--body:'Inter',-apple-system,sans-serif}
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6}
+  h1,h2,h3{font-family:var(--heading);font-weight:600;letter-spacing:-.01em}
+  #gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:24px}
+  .gbox{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:14px;padding:32px 28px;max-width:400px;width:100%;text-align:center}
+  .gbox .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .gbox h2{font-size:21px;margin:12px 0 6px}
+  .gbox p{color:var(--mid);font-size:13px;margin-bottom:16px}
+  .gbox input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 14px;font-size:15px;color:var(--ink);font-family:var(--body);text-align:center;letter-spacing:.04em}
+  .gbox input:focus{outline:none;border-color:var(--gold)}
+  .gbox button{width:100%;margin-top:10px;background:var(--gold);color:#1b1b20;border:0;border-radius:9px;padding:13px;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;font-family:var(--body)}
+  .gerr{color:#e0807e;font-size:12.5px;margin-top:10px;min-height:16px}
+  #app{display:none}
+  .wrap{max-width:860px;margin:0 auto;padding:36px 20px 100px}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  h1.title{font-size:clamp(28px,5vw,42px);margin:12px 0 8px}
+  .sub{color:var(--mid);font-size:16px;max-width:680px}
+  .principle{background:var(--card);border:1px solid var(--gold-deep);border-left:3px solid var(--gold);border-radius:12px;padding:18px 20px;margin:24px 0}
+  .principle .pl{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+  .principle p{font-family:var(--heading);font-size:clamp(16px,2.3vw,20px);line-height:1.4;color:var(--ink)}
+  .lineband{display:flex;align-items:center;gap:12px;margin:34px 0 4px}
+  .lineband span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:800;white-space:nowrap}
+  .lineband i{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold-deep),transparent)}
+  .stagenote{color:var(--mid);font-size:13px;margin:10px 0 2px;max-width:720px}
+  .sms{background:var(--card-2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-top:12px}
+  .sms .hd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px}
+  .sms .id{font-family:var(--heading);font-size:14px;color:var(--gold);font-weight:700}
+  .sms .ttl{font-size:14px;color:var(--ink);font-weight:600}
+  .sms .meta{margin-left:auto;display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+  .tag{font-family:var(--body);font-size:10.5px;color:var(--mid);background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2px 9px;white-space:nowrap}
+  .tag.stg{color:var(--gold);border-color:var(--gold-deep)}
+  .tag.send{color:var(--good);border-color:#3d5a49}
+  .body-wrap{position:relative}
+  .msg{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 44px 12px 14px;font-size:14px;color:var(--ink);line-height:1.5;white-space:pre-wrap}
+  .copy{position:absolute;top:8px;right:8px;background:var(--card);border:1px solid var(--border);color:var(--mid);border-radius:7px;padding:5px 9px;font-size:11px;font-family:var(--body);font-weight:600;cursor:pointer;letter-spacing:.03em}
+  .copy:hover{border-color:var(--gold-deep);color:var(--gold)}
+  .copy.done{color:var(--good);border-color:#3d5a49}
+  .note{font-size:12px;color:var(--muted);margin-top:7px;line-height:1.5}
+  .note b{color:var(--mid)}
+  .flag{background:#2a1f1a;border:1px solid #6b4a3a;border-left:3px solid #c87f5a;border-radius:10px;padding:14px 16px;margin:18px 0 0;font-size:13px;color:#e8cdbf;line-height:1.55}
+  .flag b{color:#e8a97e}
+  .legend{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-top:18px;font-size:13px;color:var(--mid);line-height:1.7}
+  .legend b{color:var(--ink)}
+  .legend code{font-family:var(--body);font-size:12px;color:var(--gold);background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:1px 6px}
+  .foot{margin-top:40px;padding-top:16px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted);line-height:1.6}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="gbox">
+    <div class="k">BreedWise · Internal</div>
+    <h2>Tool &rarr; TPB &rarr; BOSS · SMS Snippets</h2>
+    <p>Team access only. Enter your team code.</p>
+    <input id="code" type="password" placeholder="Team code" autocomplete="off" autofocus>
+    <button id="go">Unlock</button>
+    <div class="gerr" id="gerr"></div>
+  </div></div>
+
+  <div id="app"><div class="wrap">
+    <div class="eyebrow">The Profitable Breeder · Sales Ops</div>
+    <h1 class="title">SMS Snippets</h1>
+    <p class="sub">Every short text for the Tool &rarr; TPB &rarr; BOSS funnel, one per stage, copy-ready. These pair with the opt-in email sequence. In CC360, build each as a thin tag &rarr; send message so the router stays the brain. Tap Copy, paste into the workflow SMS step, keep the merge fields intact.</p>
+
+    <div class="principle">
+      <div class="pl">The operating rule</div>
+      <p>Short, personal, one ask. The setter's number does the heavy lifting on cold leads. Logic lives in the router, not in the text.</p>
+    </div>
+
+    <div class="legend">
+      <b>Merge fields</b> (leave exactly as written): <code>{{contact.first_name}}</code> first name.<br>
+      <b>Link placeholders</b> (swap for the real CC360 link before go-live): <code>[RESULT_LINK]</code> their tool results · <code>[REBOOK_LINK]</code> setter rebook calendar · <code>[BOSS_CALL_LINK]</code> BOSS fit-call calendar · <code>[APPT_TIME]</code> booked time token.<br>
+      <b>Sender</b>: Regina (setter) sends everything from opt-in through TPB. Austin (closer) sends the BOSS invite only.
+    </div>
+
+    <!-- STAGE 1 -->
+    <div class="lineband"><span>Stage · Tool Opt-in</span><i></i></div>
+    <p class="stagenote">Fires on opt-in. Speed-to-lead is the single biggest lever: this first text should auto-send within 5 minutes.</p>
+
+    <div class="sms">
+      <div class="hd"><span class="id">S1</span><span class="ttl">Instant opt-in (speed-to-lead)</span>
+        <span class="meta"><span class="tag stg">Tool Opt-in</span><span class="tag">tool-lead</span><span class="tag send">~5 min auto</span></span></div>
+      <div class="body-wrap"><div class="msg" id="m1">Hi {{contact.first_name}}, it's Regina with BreedWise. Your results are ready here: [RESULT_LINK]. I'd love to give you a quick call to walk through them. What time works today or tomorrow? Reply STOP to opt out.</div><button class="copy" data-t="m1">Copy</button></div>
+      <p class="note"><b>Keep the STOP line</b> on this first message. It is the only one that needs the opt-out.</p>
+    </div>
+
+    <div class="sms">
+      <div class="hd"><span class="id">S2</span><span class="ttl">Opted in, tool not finished</span>
+        <span class="meta"><span class="tag stg">Tool Opt-in</span><span class="tag">tool-lead</span><span class="tag send">Day 1, if no complete</span></span></div>
+      <div class="body-wrap"><div class="msg" id="m2">Hi {{contact.first_name}}, did you get a chance to finish? It takes about 5 minutes and shows your top 3 moves: [RESULT_LINK]</div><button class="copy" data-t="m2">Copy</button></div>
+      <p class="note"><b>Suppress</b> if <code>tool-completed</code> is already present.</p>
+    </div>
+
+    <!-- STAGE 2 -->
+    <div class="lineband"><span>Stage · Tool Completed</span><i></i></div>
+    <p class="stagenote">The hot moment. Setter should call within minutes. This text backs up the call.</p>
+
+    <div class="sms">
+      <div class="hd"><span class="id">S3</span><span class="ttl">Completion, book the walk-through</span>
+        <span class="meta"><span class="tag stg">Tool Completed</span><span class="tag">tool-completed</span><span class="tag send">On complete</span></span></div>
+      <div class="body-wrap"><div class="msg" id="m3">Nice work finishing, {{contact.first_name}}. Want me to walk you through your top 3 moves? I have time today or tomorrow. Which is better for you?</div><button class="copy" data-t="m3">Copy</button></div>
+    </div>
+
+    <!-- STAGE 3 -->
+    <div class="lineband"><span>Stage · Setter Working · No-answer cadence</span><i></i></div>
+    <p class="stagenote">Four touches over roughly 48 hours, then hand to Nurture. One ask each, never pushy. The router sets <code>no-answer-1</code> only; <code>no-answer-2</code> and <code>no-answer-3</code> are set manually by the setter, not by the router. <code>tool-nurture-monthly</code> is set by the CC-1 workflow at the end of the opt-in drip.</p>
+
+    <div class="sms">
+      <div class="hd"><span class="id">S4.1</span><span class="ttl">No answer, attempt 1</span>
+        <span class="meta"><span class="tag stg">Setter Working</span><span class="tag">no-answer-1</span><span class="tag send">+4 hours</span></span></div>
+      <div class="body-wrap"><div class="msg" id="m41">Tried giving you a call, {{contact.first_name}}. Still happy to go over your results whenever. Just reply with a time and I'll call you.</div><button class="copy" data-t="m41">Copy</button></div>
+    </div>
+
+    <div class="sms">
+      <div class="hd"><span class="id">S4.2</span><span class="ttl">No answer, next morning</span>
+        <span class="meta"><span class="tag stg">Setter Working</span><span class="tag">no-answer-2</span><span class="tag send">Next morning</span></span></div>
+      <div class="body-wrap"><div class="msg" id="m42">Morning {{contact.first_name}}, Regina again. Your results are still saved here: [RESULT_LINK]. Want me to call today? Reply with a good time.</div><button class="copy" data-t="m42">Copy</button></div>
+    </div>
+
+    <div class="sms">
+      <div class="hd"><span class="id">S4.3</span><span class="ttl">No answer, step back</span>
+        <span class="meta"><span class="tag stg">Setter Working</span><span class="tag">no-answer-3</span><span class="tag send">+2 days</span></span></div>
+      <div class="body-wrap"><div class="msg" id="m43">Hi {{contact.first_name}}, I don't want to keep filling your phone. I'll give it one more try, then leave you to it. If a quick walk-through would help, just reply here.</div><button class="copy" data-t="m43">Copy</button></div>
+    </div>
+
+    <div class="sms">
+      <div class="hd"><span class="id">S4.4</span><span class="ttl">Final touch before Nurture</span>
+        <span class="meta"><span class="tag stg">Setter Working &rarr; Nurture</span><span class="tag">tool-nurture-monthly</span><span class="tag send">End of cadence</span></span></div>
+      <div class="body-wrap"><div class="msg" id="m44">Last note from me for now, {{contact.first_name}}. Your results stay open any time: [RESULT_LINK]. Reply whenever you would like that call.</div><button class="copy" data-t="m44">Copy</button></div>
+    </div>
+
+    <!-- STAGE 4 -->
+    <div class="lineband"><span>Stage · Connected / Qualified · Call booked</span><i></i></div>
+    <p class="stagenote">On a booked call, the no-answer tags clear and these confirm and remind.</p>
+
+    <div class="sms">
+      <div class="hd"><span class="id">S5</span><span class="ttl">Booking confirmation</span>
+        <span class="meta"><span class="tag stg">Connected / Qualified</span><span class="tag">call-booked</span><span class="tag send">On book</span></span></div>
+      <div class="body-wrap"><div class="msg" id="m5">You're booked, {{contact.first_name}}. Our call is [APPT_TIME]. I'll call you then. If you need to move it, reply here or use [REBOOK_LINK].</div><button class="copy" data-t="m5">Copy</button></div>
+    </div>
+
+    <div class="sms">
+      <div class="hd"><span class="id">S6</span><span class="ttl">Reminder, 24 hours out</span>
+        <span class="meta"><span class="tag stg">Connected / Qualified</span><span class="tag">call-booked</span><span class="tag send">T minus 24h</span></span></div>
+      <div class="body-wrap"><div class="msg" id="m6">Hi {{contact.first_name}}, looking forward to our call tomorrow at [APPT_TIME]. Have your results handy and we'll map your top moves.</div><button class="copy" data-t="m6">Copy</button></div>
+    </div>
+
+    <div class="sms">
+      <div class="hd"><span class="id">S7</span><span class="ttl">Reminder, 1 hour out</span>
+        <span class="meta"><span class="tag stg">Connected / Qualified</span><span class="tag">call-booked</span><span class="tag send">T minus 1h</span></span></div>
+      <div class="body-wrap"><div class="msg" id="m7">See you in about an hour, {{contact.first_name}}. I'll call you at [APPT_TIME]. Talk soon.</div><button class="copy" data-t="m7">Copy</button></div>
+    </div>
+
+    <div class="sms">
+      <div class="hd"><span class="id">S8</span><span class="ttl">No-show rebook</span>
+        <span class="meta"><span class="tag stg">Setter Working</span><span class="tag">call-noshow</span><span class="tag send">On no-show</span></span></div>
+      <div class="body-wrap"><div class="msg" id="m8">Sorry we missed each other, {{contact.first_name}}. Things come up. Grab a new time that works and I'll call then: [REBOOK_LINK]</div><button class="copy" data-t="m8">Copy</button></div>
+    </div>
+
+    <!-- STAGE 5 -->
+    <div class="lineband"><span>Stage · TPB Member</span><i></i></div>
+    <p class="stagenote">Won. Welcome text, then light monthly nurture. The BOSS ascension clock starts here.</p>
+
+    <div class="sms">
+      <div class="hd"><span class="id">S9</span><span class="ttl">TPB welcome</span>
+        <span class="meta"><span class="tag stg">TPB Member</span><span class="tag">tpb-member</span><span class="tag send">On purchase</span></span></div>
+      <div class="body-wrap"><div class="msg" id="m9">Welcome to The Profitable Breeder, {{contact.first_name}}. Everything is inside your member area. Start with your first system and reply here if you get stuck.</div><button class="copy" data-t="m9">Copy</button></div>
+    </div>
+
+    <div class="sms">
+      <div class="hd"><span class="id">S10</span><span class="ttl">Member monthly check-in</span>
+        <span class="meta"><span class="tag stg">TPB Member</span><span class="tag">tpb-member</span><span class="tag send">Monthly</span></span></div>
+      <div class="body-wrap"><div class="msg" id="m10">Hi {{contact.first_name}}, quick check in. What's the one thing slowing your program down this month? Reply and I'll point you to the right tool inside TPB.</div><button class="copy" data-t="m10">Copy</button></div>
+    </div>
+
+    <!-- STAGE 6 -->
+    <div class="lineband"><span>Stage · BOSS Opportunity</span><i></i></div>
+    <p class="stagenote">Ascension. Owner flips to Austin, the closer. This invites a fit call. Diagnose, do not pressure.</p>
+
+    <div class="sms">
+      <div class="hd"><span class="id">S11</span><span class="ttl">BOSS fit-call invite</span>
+        <span class="meta"><span class="tag stg">BOSS Opportunity</span><span class="tag">boss-opportunity</span><span class="tag send">On qualify</span></span></div>
+      <div class="body-wrap"><div class="msg" id="m11">Hi {{contact.first_name}}, it's Austin at BreedWise. Based on where your program is, B.O.S.S. may be the right next step to build your priority system with our team. Want a quick fit call? [BOSS_CALL_LINK]</div><button class="copy" data-t="m11">Copy</button></div>
+    </div>
+
+    <div class="sms">
+      <div class="hd"><span class="id">S12</span><span class="ttl">BOSS invite, soft follow-up</span>
+        <span class="meta"><span class="tag stg">BOSS Opportunity</span><span class="tag">boss-opportunity</span><span class="tag send">+3 days, if no book</span></span></div>
+      <div class="body-wrap"><div class="msg" id="m12">No rush either way, {{contact.first_name}}. If there's a system you keep meaning to build, a fit call is the fastest way to know if B.O.S.S. is right for it: [BOSS_CALL_LINK]</div><button class="copy" data-t="m12">Copy</button></div>
+    </div>
+
+    <div class="flag"><b>Compliance.</b> Text only opt-ins who gave a phone number and consented. The STOP opt-out rides on the first message (S1); honor it everywhere. Respect quiet hours and confirm the sending number is SMS-provisioned in CC360. Not-a-Fit and unsubscribed are kill-switches: no SMS of any kind.</div>
+
+    <div class="foot">
+      BreedWise internal · The Profitable Breeder · Sales Ops. Link placeholders in [BRACKETS] must be replaced with live CC360 links before activation. Merge fields in {{curly braces}} stay as written. SMS logic belongs in the funnel router; CC360 workflows should only listen for the tag and send.
+    </div>
+  </div></div>
+
+<script>
+(function(){
+  var HASHES=['368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875','7c80836fc0ce4e3956aa136771a24b98d946bece11d70efef268e3612037234d'];
+  var gate=document.getElementById('gate'),app=document.getElementById('app'),gerr=document.getElementById('gerr');
+  function sha(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function reveal(){gate.style.display='none';app.style.display='block';bindCopy();}
+  try{if(sessionStorage.getItem('tsms_ok')==='1')reveal();}catch(e){}
+  function tryCode(){var v=(document.getElementById('code').value||'').trim();if(!v)return;
+    Promise.all([sha(v),sha(v.toUpperCase())]).then(function(hs){
+      if(HASHES.indexOf(hs[0])>=0||HASHES.indexOf(hs[1])>=0){try{sessionStorage.setItem('tsms_ok','1');}catch(e){}reveal();}
+      else gerr.textContent='That code did not match.';});}
+  document.getElementById('go').onclick=tryCode;
+  document.getElementById('code').addEventListener('keydown',function(e){if(e.key==='Enter')tryCode();});
+  function bindCopy(){
+    var btns=document.querySelectorAll('.copy');
+    Array.prototype.forEach.call(btns,function(btn){
+      btn.addEventListener('click',function(){
+        var el=document.getElementById(btn.getAttribute('data-t'));
+        if(!el)return;
+        var txt=el.innerText;
+        function ok(){btn.textContent='Copied';btn.className='copy done';setTimeout(function(){btn.textContent='Copy';btn.className='copy';},1500);}
+        if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,fallback);}else{fallback();}
+        function fallback(){try{var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);ok();}catch(e){}}
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>

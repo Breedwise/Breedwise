@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>TPB → BOSS · Master Funnel Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1b1b20;--surface:#111114;--card:#26262c;--card-2:#212127;--border:#34343c;--gold:#d6ba76;--gold-deep:#b89c47;--gold-faint:rgba(214,186,118,.10);--ink:#f2efe8;--mid:#bab5aa;--muted:#88847c;--good:#6dbf90;--warn:#e0b56e;--heading:'Playfair Display',Georgia,serif;--body:'Inter',-apple-system,sans-serif}
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6}
+  h1,h2,h3,h4{font-family:var(--heading);font-weight:600;letter-spacing:-.01em}
+  a{color:var(--gold)}
+  /* gate */
+  #gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:24px}
+  .gbox{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:14px;padding:32px 28px;max-width:400px;width:100%;text-align:center}
+  .gbox .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .gbox h2{font-size:21px;margin:12px 0 6px}
+  .gbox p{color:var(--mid);font-size:13px;margin-bottom:16px}
+  .gbox input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 14px;font-size:15px;color:var(--ink);font-family:var(--body);text-align:center;letter-spacing:.04em}
+  .gbox input:focus{outline:none;border-color:var(--gold)}
+  .gbox button{width:100%;margin-top:10px;background:var(--gold);color:#1b1b20;border:0;border-radius:9px;padding:13px;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;font-family:var(--body)}
+  .gerr{color:#e0807e;font-size:12.5px;margin-top:10px;min-height:16px}
+  #app{display:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:36px 20px 110px}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  h1.title{font-size:clamp(28px,5vw,46px);margin:12px 0 8px}
+  .sub{color:var(--mid);font-size:16px;max-width:760px}
+  .principle{background:var(--card);border:1px solid var(--gold-deep);border-left:3px solid var(--gold);border-radius:12px;padding:20px 22px;margin:26px 0 6px}
+  .principle .pl{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+  .principle p{font-family:var(--heading);font-size:clamp(17px,2.4vw,22px);line-height:1.4;color:var(--ink)}
+  h2.sec{font-size:clamp(23px,4vw,32px);margin:52px 0 4px}
+  .secnote{color:var(--mid);font-size:13.5px;margin-bottom:16px;max-width:820px}
+  /* funnel map */
+  .map{display:flex;gap:12px;overflow-x:auto;padding:8px 2px 18px;scroll-snap-type:x proximity}
+  .col{scroll-snap-align:start;flex:0 0 272px;min-width:272px;background:var(--card-2);border:1px solid var(--border);border-radius:13px;padding:0;display:flex;flex-direction:column;position:relative}
+  .col.entry{border-style:dashed;background:transparent}
+  .col.hot{border-color:var(--gold-deep)}
+  .col.won{border:1px solid var(--gold-deep);box-shadow:inset 0 0 0 1px var(--gold-faint)}
+  .col .top{padding:14px 15px 12px;border-bottom:1px solid var(--border)}
+  .col .step{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .col .hdr{display:flex;align-items:baseline;gap:9px;margin-top:5px}
+  .col .hdr .n{font-family:var(--heading);font-size:21px;color:var(--gold);line-height:1}
+  .col .hdr h3{font-size:16px;line-height:1.2}
+  .col.won .hdr h3{color:var(--gold)}
+  .col .phase{display:inline-block;margin-top:8px;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--mid);border:1px solid var(--border);border-radius:20px;padding:2px 9px}
+  .col.hot .phase{color:var(--gold);border-color:var(--gold-deep)}
+  .col .rows{padding:12px 15px 16px;display:flex;flex-direction:column;gap:11px;flex:1}
+  .r .rl{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;display:block;margin-bottom:3px}
+  .r .rv{font-size:12.5px;color:var(--ink);line-height:1.45}
+  .r .rv.mut{color:var(--mid)}
+  .trig{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--gold);background:var(--surface);border:1px solid var(--gold-deep);border-radius:6px;padding:3px 8px;display:inline-block}
+  .tag{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;color:var(--mid);background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:2px 6px;display:inline-block;margin:2px 3px 0 0}
+  .tag.add{color:var(--good);border-color:#3a5a46}
+  .tag.rm{color:#d98b89;border-color:#6a3f3e;text-decoration:line-through}
+  .own{font-size:11px;font-weight:700;color:var(--ink)}
+  .arrow{flex:0 0 auto;align-self:center;color:var(--muted);font-size:20px;padding:0 1px}
+  .branches{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  @media(max-width:640px){.branches{grid-template-columns:1fr}}
+  .branch{background:var(--card-2);border:1px solid var(--border);border-left:3px solid var(--muted);border-radius:11px;padding:14px 16px}
+  .branch.kill{border-left-color:#8a4b49}
+  .branch h4{font-size:15px;margin-bottom:4px}
+  .branch .trig{margin-bottom:7px}
+  .branch p{font-size:12.5px;color:var(--mid);line-height:1.5}
+  /* automation layers */
+  .layers{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+  @media(max-width:760px){.layers{grid-template-columns:1fr}}
+  .lcard{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:20px 22px}
+  .lcard.router{border-top:3px solid var(--gold)}
+  .lcard.msg{border-top:3px solid var(--gold-deep)}
+  .lcard .le{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .lcard h3{font-size:19px;margin:6px 0 4px}
+  .lcard .note{font-size:12.5px;color:var(--muted);margin-bottom:12px}
+  ul.clean{list-style:none;padding:0;margin:0}
+  ul.clean li{position:relative;padding-left:18px;margin-top:9px;font-size:13px;color:var(--mid);line-height:1.5}
+  ul.clean li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;background:var(--gold);border-radius:50%}
+  ul.clean li b{color:var(--ink);font-weight:600}
+  .files{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .fchip{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--gold);background:var(--surface);border:1px solid var(--gold-deep);border-radius:7px;padding:6px 10px;text-decoration:none}
+  .fchip:hover{background:var(--gold-faint)}
+  /* tables */
+  table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+  th{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  td b{color:var(--ink)}
+  td .m{color:var(--muted);font-size:12px}
+  .kpi-stage{color:var(--gold);font-weight:600}
+  .cap{background:var(--card);border:1px solid var(--gold-deep);border-left:3px solid var(--gold);border-radius:12px;padding:20px 22px;margin-top:18px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  .cap .big{font-family:var(--heading);font-size:40px;color:var(--gold);line-height:1}
+  .cap .ct{flex:1;min-width:240px}
+  .cap .ct b{font-family:var(--heading);font-size:17px;color:var(--ink);display:block;margin-bottom:3px}
+  .cap .ct p{font-size:13px;color:var(--mid);line-height:1.5}
+  /* checklist */
+  ol.golive{list-style:none;counter-reset:g;padding:0;margin:16px 0 0}
+  ol.golive li{counter-increment:g;position:relative;padding:16px 18px 16px 58px;background:var(--card-2);border:1px solid var(--border);border-radius:11px;margin-top:11px}
+  ol.golive li::before{content:counter(g);position:absolute;left:16px;top:16px;width:28px;height:28px;border-radius:50%;background:var(--gold-faint);border:1px solid var(--gold-deep);color:var(--gold);font-family:var(--heading);font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+  ol.golive li b{font-family:var(--heading);font-weight:600;font-size:15.5px;color:var(--ink)}
+  ol.golive li p{font-size:13px;color:var(--mid);margin-top:4px;line-height:1.5}
+  .cmd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:8px 11px;margin-top:8px;display:block;overflow-x:auto;white-space:pre}
+  .gapnote{background:var(--surface);border:1px dashed var(--gold-deep);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:12px;color:var(--warn)}
+  .gapnote b{color:var(--gold)}
+  .hint{text-align:center;font-size:11px;color:var(--muted);margin:-6px 0 10px;letter-spacing:.04em}
+  .foot{margin-top:60px;padding-top:18px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.6}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gbox">
+    <div class="k">BreedWise · Internal</div>
+    <h2>TPB → BOSS Master Map</h2>
+    <p>Team passcode required.</p>
+    <input id="code" type="password" autocomplete="off" placeholder="Enter passcode" aria-label="Passcode">
+    <button id="go">Unlock</button>
+    <div class="gerr" id="gerr"></div>
+  </div>
+</div>
+
+<div id="app">
+<div class="wrap">
+
+  <div class="eyebrow">BreedWise · Sales &amp; Automation Operating Document</div>
+  <h1 class="title">The TPB → BOSS Machine</h1>
+  <p class="sub">One page for the whole funnel: how a cold social lead becomes a TPB member and then a BOSS implementation client, what the automation does at each step, and what still has to be wired. CC360 (GoHighLevel LeadConnector) is the system of record. Every stage below is one event sent to the <b>tpb-boss-router</b> edge function.</p>
+
+  <div class="principle">
+    <div class="pl">The operating principle</div>
+    <p>The router owns the logic. CC360 workflows only send messages. Every tool opt-in, completion, booking, and purchase calls one deterministic router that upserts the contact, sets and clears tags, and creates or advances the opportunity. Native CC360 workflows shrink to a single job: tag fires, message sends.</p>
+  </div>
+
+  <!-- ================= FUNNEL MAP ================= -->
+  <h2 class="sec">The funnel, left to right</h2>
+  <p class="secnote">Pipeline: <b>Tool → TPB → BOSS</b>. Setter is Regina across the cold and TPB phase. Closer is Austin from BOSS Opportunity onward. Each card shows the router event, the tags it sets or clears, the resulting pipeline stage, the owner, and the message CC360 fires off that tag.</p>
+  <div class="hint">Scroll sideways to follow the full path →</div>
+
+  <div class="map">
+
+    <!-- entry -->
+    <div class="col entry">
+      <div class="top">
+        <div class="step">Entry · no opp yet</div>
+        <div class="hdr"><span class="n">0</span><h3>Cold Social</h3></div>
+        <span class="phase">Pre-funnel</span>
+      </div>
+      <div class="rows">
+        <div class="r"><span class="rl">What happens</span><span class="rv mut">Paid and organic social drive the breeder to a free tool landing page (Profitable Breeder Scorecard, Healthy Litter, Breeder Science, Litter Snapshot, Niche Finder, Value Architect).</span></div>
+        <div class="r"><span class="rl">Capture</span><span class="rv mut">Page persists fbp / fbc / event_id so later Schedule and purchase CAPI events can dedupe against the ad click.</span></div>
+        <div class="r"><span class="rl">Owner</span><span class="own">None yet</span></div>
+      </div>
+    </div>
+
+    <div class="arrow">→</div>
+
+    <!-- 1 opt-in -->
+    <div class="col">
+      <div class="top">
+        <div class="step">Router event</div>
+        <div class="hdr"><span class="n">1</span><h3>Tool Opt-in</h3></div>
+        <span class="phase">Cold</span>
+      </div>
+      <div class="rows">
+        <div class="r"><span class="rl">Trigger to router</span><span class="trig">tool-optin</span></div>
+        <div class="r"><span class="rl">Tags set</span><span class="rv">
+          <span class="tag add">tool-lead</span><span class="tag add">tool-{name}</span><span class="tag add">source-social</span><span class="tag add">owner-regina</span></span></div>
+        <div class="r"><span class="rl">Pipeline stage</span><span class="rv">Tool Opt-in · opp created at <b>$291</b></span></div>
+        <div class="r"><span class="rl">Owner</span><span class="own">Regina (setter)</span></div>
+        <div class="r"><span class="rl">Message fires</span><span class="rv mut">optin-email-1 + SMS S1, keyed by <b>tool-lead</b>. Router also sends the speed-to-lead setter alert and opens a +15 min task.</span></div>
+      </div>
+    </div>
+
+    <div class="arrow">→</div>
+
+    <!-- 2 complete -->
+    <div class="col hot">
+      <div class="top">
+        <div class="step">Router event</div>
+        <div class="hdr"><span class="n">2</span><h3>Tool Completed</h3></div>
+        <span class="phase">Hot moment</span>
+      </div>
+      <div class="rows">
+        <div class="r"><span class="rl">Trigger to router</span><span class="trig">tool-complete</span></div>
+        <div class="r"><span class="rl">Tags set</span><span class="rv">
+          <span class="tag add">tool-completed</span><span class="tag add">{tool}-complete</span></span></div>
+        <div class="r"><span class="rl">Pipeline stage</span><span class="rv">Tool Completed · opp advances, value held at <b>$291</b></span></div>
+        <div class="r"><span class="rl">Owner</span><span class="own">Regina (setter)</span></div>
+        <div class="r"><span class="rl">Message fires</span><span class="rv mut">hot-call-now internal alert + SMS S3, keyed by <b>tool-completed</b>. This is the speed-to-lead window: first touch in minutes.</span></div>
+      </div>
+    </div>
+
+    <div class="arrow">→</div>
+
+    <!-- 3 setter call -->
+    <div class="col">
+      <div class="top">
+        <div class="step">Router event</div>
+        <div class="hdr"><span class="n">3</span><h3>Setter Call</h3></div>
+        <span class="phase">Connected</span>
+      </div>
+      <div class="rows">
+        <div class="r"><span class="rl">Trigger to router</span><span class="trig">call-booked</span></div>
+        <div class="r"><span class="rl">Tags set</span><span class="rv">
+          <span class="tag add">call-booked</span><span class="tag add">tool-contacted</span></span></div>
+        <div class="r"><span class="rl">Tags cleared</span><span class="rv">
+          <span class="tag rm">no-answer-1</span><span class="tag rm">no-answer-2</span><span class="tag rm">no-answer-3</span></span></div>
+        <div class="r"><span class="rl">Pipeline stage</span><span class="rv">Connected / Qualified · <b>$291</b></span></div>
+        <div class="r"><span class="rl">Owner</span><span class="own">Regina (setter)</span></div>
+        <div class="r"><span class="rl">Message fires</span><span class="rv mut">booking-confirm + reminder sequence, keyed by <b>call-booked</b>. Regina works the TPB-first pitch on the call.</span></div>
+      </div>
+    </div>
+
+    <div class="arrow">→</div>
+
+    <!-- 4 TPB -->
+    <div class="col won">
+      <div class="top">
+        <div class="step">Router event · Won #1</div>
+        <div class="hdr"><span class="n">4</span><h3>TPB Member</h3></div>
+        <span class="phase">Warm · entry offer</span>
+      </div>
+      <div class="rows">
+        <div class="r"><span class="rl">Trigger to router</span><span class="trig">tpb-purchase</span></div>
+        <div class="r"><span class="rl">Tags set</span><span class="rv">
+          <span class="tag add">tpb-member</span></span></div>
+        <div class="r"><span class="rl">Tags cleared (kill-switch)</span><span class="rv">
+          <span class="tag rm">tool-lead</span><span class="tag rm">tpb-lead</span><span class="tag rm">no-answer-1</span><span class="tag rm">no-answer-2</span><span class="tag rm">no-answer-3</span><span class="tag rm">tool-nurture-monthly</span><span class="tag rm">not-a-fit</span></span></div>
+        <div class="r"><span class="rl">Pipeline stage</span><span class="rv">TPB Member · opp status → <b>won</b> at $291</span></div>
+        <div class="r"><span class="rl">Owner</span><span class="own">Regina → handoff pending</span></div>
+        <div class="r"><span class="rl">Message fires</span><span class="rv mut">tpb-welcome / onboarding, keyed by <b>tpb-member</b>. Exits every cold sequence and starts the BOSS ascension clock.</span></div>
+      </div>
+    </div>
+
+    <div class="arrow">→</div>
+
+    <!-- 5 BOSS qualified -->
+    <div class="col hot">
+      <div class="top">
+        <div class="step">Router event</div>
+        <div class="hdr"><span class="n">5</span><h3>BOSS Opportunity</h3></div>
+        <span class="phase">Ascension</span>
+      </div>
+      <div class="rows">
+        <div class="r"><span class="rl">Trigger to router</span><span class="trig">boss-qualified</span></div>
+        <div class="r"><span class="rl">Tags set</span><span class="rv">
+          <span class="tag add">boss-opportunity</span><span class="tag add">boss-qualified</span></span></div>
+        <div class="r"><span class="rl">Pipeline stage</span><span class="rv">BOSS Opportunity · opp value raised to <b>$3,000</b></span></div>
+        <div class="r"><span class="rl">Owner</span><span class="own">Austin (closer)</span></div>
+        <div class="r"><span class="rl">Message fires</span><span class="rv mut">boss-invite + book-BOSS-call task, keyed by <b>boss-opportunity</b>. Qualifies on a clear, expensive implementation problem.</span></div>
+      </div>
+    </div>
+
+    <div class="arrow">→</div>
+
+    <!-- 6 BOSS member -->
+    <div class="col won">
+      <div class="top">
+        <div class="step">Router event · Won #2</div>
+        <div class="hdr"><span class="n">6</span><h3>BOSS Member</h3></div>
+        <span class="phase">Implementation</span>
+      </div>
+      <div class="rows">
+        <div class="r"><span class="rl">Trigger to router</span><span class="trig">boss-purchase</span></div>
+        <div class="r"><span class="rl">Tags set</span><span class="rv">
+          <span class="tag add">boss-member</span></span></div>
+        <div class="r"><span class="rl">Tags cleared</span><span class="rv">
+          <span class="tag rm">boss-opportunity</span></span></div>
+        <div class="r"><span class="rl">Pipeline stage</span><span class="rv">BOSS Member · opp status → <b>won</b> at $3,000</span></div>
+        <div class="r"><span class="rl">Owner</span><span class="own">Austin → fulfillment (Jennifer)</span></div>
+        <div class="r"><span class="rl">Message fires</span><span class="rv mut">boss-welcome + fulfillment handoff, keyed by <b>boss-member</b>. Jennifer owns the implementation from here.</span></div>
+      </div>
+    </div>
+
+  </div><!-- /map -->
+
+  <!-- branch events -->
+  <p class="secnote" style="margin-top:22px">Two events branch off the main line. Both are router events, not new pipeline paths.</p>
+  <div class="branches">
+    <div class="branch">
+      <h4>No-show on a booked call</h4>
+      <span class="trig">call-noshow</span>
+      <p>Sets <span class="tag add">call-noshow</span> <span class="tag add">no-answer-1</span>, drops the opp back to <b>Setter Working</b> at $291, owner stays Regina. Fires noshow-rebook SMS S8 with a rebook link, keyed by <b>call-noshow</b>. The S4.1-S4.4 texts are the separate no-answer cadence (4h, next morning, +2 days, then Nurture), not the no-show rebook.</p>
+    </div>
+    <div class="branch kill">
+      <h4>Disqualified / wrong audience</h4>
+      <span class="trig">exit</span>
+      <p>Sets <span class="tag add">not-a-fit</span>, clears <span class="tag rm">tool-lead</span> <span class="tag rm">tpb-lead</span> <span class="tag rm">no-answer-*</span> <span class="tag rm">tool-nurture-monthly</span>, moves opp to <b>Not a Fit</b> with a lost reason. No message. For plain opt-outs use unsubscribed instead: remove from cold, no stage move.</p>
+    </div>
+  </div>
+
+  <!-- ================= AUTOMATION LAYERS ================= -->
+  <h2 class="sec">The two automation layers</h2>
+  <p class="secnote">Everything above is split across exactly two layers. Keep them separate: logic lives in the router, sending lives in CC360. The full event contract and the per-tool call snippets live in the companion files.</p>
+
+  <div class="layers">
+    <div class="lcard router">
+      <div class="le">Layer 1 · Edge function</div>
+      <h3>tpb-boss-router</h3>
+      <div class="note">Supabase edge function. Every tool and webhook POSTs one event to it. Deterministic, no AI in the path.</div>
+      <ul class="clean">
+        <li><b>Upserts the contact</b> by email or phone against the LeadConnector v2 API, recovering the id on a duplicate so returning leads get re-tagged, never a 400.</li>
+        <li><b>Sets and clears tags</b> per the event (POST and DELETE-with-body on /contacts/{id}/tags). This is how every kill-switch and no-answer cleanup fires.</li>
+        <li><b>Creates or advances the opportunity</b>: looks up the Tool → TPB → BOSS pipeline by exact name, finds the opp by contact_id, then PUTs the new stage, value, and status. This stage-move helper does not exist in the codebase yet and is the core new build.</li>
+        <li><b>Sends the speed-to-lead alert</b> and opens the +15 min setter task on opt-in and completion.</li>
+        <li><b>Logs every event</b> to tool_submissions and runs Close mirror / Slack / CAPI in the background via EdgeRuntime.waitUntil so intake returns fast.</li>
+      </ul>
+    </div>
+    <div class="lcard msg">
+      <div class="le">Layer 2 · CC360 native</div>
+      <h3>Thin tag → send workflows</h3>
+      <div class="note">One job each. A tag the router sets fires a message. No branching logic lives here.</div>
+      <ul class="clean">
+        <li><b>tool-lead</b> → optin-email-1 and SMS S1.</li>
+        <li><b>tool-completed</b> → hot-call-now internal alert and SMS S3.</li>
+        <li><b>call-booked</b> → booking-confirm and the reminder sequence.</li>
+        <li><b>call-noshow</b> → noshow-rebook SMS S8 with rebook link.</li>
+        <li><b>tpb-member</b> → tpb-welcome and onboarding.</li>
+        <li><b>boss-opportunity</b> → boss-invite and the book-BOSS-call task.</li>
+        <li><b>boss-member</b> → boss-welcome and fulfillment handoff.</li>
+        <li>The five opt-in nurture emails already exist as HTML (tpb-tool-email-1 through 5). Load them as CC360 templates, do not rebuild the logic.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="files">
+    <a class="fchip" href="tpb-boss-automation-spec.html">tpb-boss-automation-spec.html</a>
+    <a class="fchip" href="tpb-boss-router-usage.txt">tpb-boss-router-usage.txt</a>
+    <a class="fchip" href="tool-funnel-buildout.html">tool-funnel-buildout.html</a>
+    <a class="fchip" href="tool-funnel-workflows.html">tool-funnel-workflows.html</a>
+    <a class="fchip" href="boss-rollout-strategy.html">boss-rollout-strategy.html</a>
+  </div>
+
+  <!-- ================= KPIs ================= -->
+  <h2 class="sec">KPIs per stage</h2>
+  <p class="secnote">Watch the conversion between stages, not the raw counts. The two highest-leverage numbers are median speed-to-lead at completion and the TPB → BOSS ascension rate.</p>
+  <table>
+    <thead><tr><th>Stage transition</th><th>Metric</th><th>Why it matters</th></tr></thead>
+    <tbody>
+      <tr><td><span class="kpi-stage">Opt-in → Completed</span></td><td><b>Tool-complete rate</b></td><td>Is the tool landing. Fix the tool or the reminder cadence if this is low.</td></tr>
+      <tr><td><span class="kpi-stage">Completed → Connected</span></td><td><b>Call-booked rate</b> + median speed-to-lead</td><td>The setter's biggest lever. Target first touch in minutes, not hours.</td></tr>
+      <tr><td><span class="kpi-stage">Connected → on call</span></td><td><b>Show rate</b></td><td>Booked calls that actually happen. Drives the no-show rebook cadence.</td></tr>
+      <tr><td><span class="kpi-stage">Connected → TPB</span></td><td><b>TPB close rate</b></td><td>Regina's conversion on the TPB-first pitch. Won #1.</td></tr>
+      <tr><td><span class="kpi-stage">TPB → BOSS Opportunity</span></td><td><b>BOSS qualify rate</b></td><td>Share of TPB members with a clear, expensive implementation problem.</td></tr>
+      <tr><td><span class="kpi-stage">BOSS Opportunity → BOSS Member</span></td><td><b>BOSS close rate</b></td><td>Austin's close. Won #2. This is the real revenue.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="cap">
+    <div class="big">2</div>
+    <div class="ct">
+      <b>Capacity cap: 2 new BOSS starts per week</b>
+      <p>Not two sales. Two starts. Sell future start dates if demand runs ahead. The ceiling is how many implementations Jennifer can take to a result without quality dropping, not how many Regina or Austin can close. Lift the cap only off fulfillment capacity data (active count, green count, average implementation time), after 30 to 45 days.</p>
+    </div>
+  </div>
+
+  <!-- ================= GO-LIVE ================= -->
+  <h2 class="sec">Go-live checklist</h2>
+  <p class="secnote">Run in order. The orchestrator reviews and deploys. This page does not push or deploy anything.</p>
+  <ol class="golive">
+    <li>
+      <b>Push the HTML pages to main</b>
+      <p>Ship this map, the automation spec, and the router usage notes to review.breedwise.io (GitHub Pages, main branch, repo root). Compile-check every inline script first: one SyntaxError kills the whole page.</p>
+      <span class="cmd">git add tpb-boss-funnel-map.html tpb-boss-automation-spec.html tpb-boss-router-usage.txt
+git commit -m "TPB -> BOSS master funnel map + automation spec"
+git push origin main</span>
+    </li>
+    <li>
+      <b>Deploy the tpb-boss-router edge function</b>
+      <p>New Deno function at supabase/functions/tpb-boss-router/index.ts. Copy the CC360 patterns from vsl-apply and partial-capture, and build the new find-opp-then-PUT stage-move helper.</p>
+      <span class="cmd">supabase functions deploy tpb-boss-router --project-ref xhjdowbnqcsvhtcccuqx --no-verify-jwt</span>
+    </li>
+    <li>
+      <b>Confirm CC360 env, and leave ROUTER_SECRET unset at launch</b>
+      <p>CC360_TOKEN, CC360_LOCATION, SUPABASE_URL, and SUPABASE_SERVICE_ROLE_KEY must already be present for the function to upsert, tag, and log. Leave ROUTER_SECRET unset at go-live: when it is unset the router skips the secret check, and every documented caller omits the secret, so setting it now would reject every call. Set it later only once every caller is updated to send the matching x-router-secret header.</p>
+      <span class="cmd">supabase secrets set CC360_TOKEN=... CC360_LOCATION=... --project-ref xhjdowbnqcsvhtcccuqx
+# Do NOT set ROUTER_SECRET yet. Only after every caller sends x-router-secret:
+# supabase secrets set ROUTER_SECRET=&lt;long-random-string&gt; --project-ref xhjdowbnqcsvhtcccuqx</span>
+    </li>
+    <li>
+      <b>Build the CC360 pipeline, stages, and message templates</b>
+      <p>Create the <b>Tool → TPB → BOSS</b> pipeline with the nine stages exactly as named: Tool Opt-in, Tool Completed, Setter Working, Connected / Qualified, TPB Member, BOSS Opportunity, BOSS Member, Nurture, Not a Fit. Build the thin tag → send workflows from Layer 2 and load the five tpb-tool-email templates. Resolve the owner tag to a single setter (owner-regina): update program-scorecard, which currently sets owner-jennifer.</p>
+    </li>
+    <li>
+      <b>Point every funnel page and edge function at the router</b>
+      <p>Add the universal tags and the router call to each tool: pb-scorecard, vet-optin, program-scorecard, litter-snapshot, niche-finder, value-architect send tool-optin and tool-complete; stripe-webhook maps product → tpb-purchase / boss-purchase; booking-notify and the calendar / close-events send call-booked and call-noshow. Each tool fires tool-lead and tool-completed so one router path serves all of them. Treat tpb-lead as an alias of tool-lead.</p>
+      <div class="gapnote"><b>Open gaps to close here:</b> purchase won events (tpb-member, boss-member) fire nowhere today; the BOSS qualification rule is undefined in code; call-booked / no-show / no-answer are manual; and tool opt-ins do not yet persist fbp / fbc / event_id for CAPI matching.</div>
+    </li>
+    <li>
+      <b>Test one lead end to end</b>
+      <p>Run a single real contact through tool-optin → tool-complete → call-booked → tpb-purchase → boss-qualified → boss-purchase. Confirm at each step: the contact is tagged and un-tagged correctly, the opportunity sits on the right stage at the right value, status flips to won at TPB and at BOSS, and exactly one message fires per tag.</p>
+    </li>
+  </ol>
+
+  <div class="foot">BreedWise internal operating document. Pipeline: Tool → TPB → BOSS. TPB opportunity value $291 (code value; confirm against the paid entry price). BOSS Implementation $3,000. Setter: Regina. Closer: Austin. Fulfillment: Jennifer. CC360 / LeadConnector v2 is the system of record. The Academy funnel (New VSL Funnel, vsl-apply) stays a separate pipeline and is out of scope for this map. Bracketed owners and timings are defaults to confirm before go-live.</div>
+
+</div></div>
+
+<script>
+(function(){
+  var HASHES=['368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875'];
+  var gate=document.getElementById('gate'),app=document.getElementById('app'),gerr=document.getElementById('gerr');
+  function sha(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function open(){gate.style.display='none';app.style.display='block';}
+  try{if(sessionStorage.getItem('tbfm_ok')==='1')open();}catch(e){}
+  function tryCode(){var v=(document.getElementById('code').value||'').trim();if(!v)return;
+    Promise.all([sha(v),sha(v.toUpperCase())]).then(function(hs){
+      if(HASHES.indexOf(hs[0])>=0||HASHES.indexOf(hs[1])>=0){try{sessionStorage.setItem('tbfm_ok','1');}catch(e){}open();}
+      else gerr.textContent='That code did not match.';});}
+  document.getElementById('go').onclick=tryCode;
+  document.getElementById('code').addEventListener('keydown',function(e){if(e.key==='Enter')tryCode();});
+})();
+</script>
+</body>
+</html>

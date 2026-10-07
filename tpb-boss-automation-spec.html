@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>TPB → BOSS · Thin Wiring Spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1b1b20;--surface:#111114;--card:#26262c;--card-2:#212127;--border:#34343c;--gold:#d6ba76;--gold-deep:#b89c47;--gold-faint:rgba(214,186,118,.10);--ink:#f2efe8;--mid:#bab5aa;--muted:#88847c;--good:#6dbf90;--heading:'Playfair Display',Georgia,serif;--body:'Inter',-apple-system,sans-serif}
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6}
+  h1,h2,h3{font-family:var(--heading);font-weight:600;letter-spacing:-.01em}
+  #gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:24px}
+  .gbox{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:14px;padding:32px 28px;max-width:400px;width:100%;text-align:center}
+  .gbox .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .gbox h2{font-size:20px;margin:12px 0 6px}
+  .gbox p{color:var(--mid);font-size:13px;margin-bottom:16px}
+  .gbox input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 14px;font-size:15px;color:var(--ink);font-family:var(--body);text-align:center;letter-spacing:.04em}
+  .gbox input:focus{outline:none;border-color:var(--gold)}
+  .gbox button{width:100%;margin-top:10px;background:var(--gold);color:#1b1b20;border:0;border-radius:9px;padding:13px;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;font-family:var(--body)}
+  .gerr{color:#e0807e;font-size:12.5px;margin-top:10px;min-height:16px}
+  #app{display:none}
+  .wrap{max-width:1000px;margin:0 auto;padding:36px 20px 100px}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  h1.title{font-size:clamp(26px,5vw,42px);margin:12px 0 8px}
+  .sub{color:var(--mid);font-size:16px;max-width:760px}
+  h2.sec{font-size:clamp(22px,4vw,30px);margin:40px 0 4px}
+  .secnote{color:var(--mid);font-size:13.5px;margin-bottom:12px;max-width:760px}
+  code{font-family:var(--body);font-size:12px;color:var(--gold);background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:1px 6px;white-space:nowrap}
+  ul.clean{list-style:none;display:grid;gap:7px;margin:8px 0;padding:0}
+  ul.clean li{font-size:13.5px;color:var(--mid);padding-left:18px;position:relative;line-height:1.5}
+  ul.clean li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;background:var(--gold);border-radius:50%}
+  ul.clean li b{color:var(--ink);font-weight:600}
+
+  /* two-column who-owns-what */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+  @media(max-width:720px){.split{grid-template-columns:1fr}}
+  .owncol{background:var(--card-2);border:1px solid var(--border);border-radius:14px;padding:18px 20px}
+  .owncol.router{border-top:3px solid var(--gold)}
+  .owncol.native{border-top:3px solid #8fb4d6}
+  .owncol h3{font-size:16px;margin-bottom:2px}
+  .owncol .tag{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:8px;display:block}
+  .owncol.router .tag{color:var(--gold)}
+  .owncol.native .tag{color:#8fb4d6}
+  .owncol .lead{font-size:12.5px;color:var(--mid);margin-bottom:10px;line-height:1.5}
+
+  .wf{background:var(--card-2);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-top:16px}
+  .wf.native{border-left:3px solid #8fb4d6}
+  .wh{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+  .wh .wn{font-family:var(--heading);font-size:13px;color:var(--gold);font-weight:700;letter-spacing:.06em}
+  .wh h3{font-size:18px}
+  .trig{font-size:13px;color:var(--mid);margin:6px 0 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 12px}
+  .trig b{color:var(--gold);font-weight:700;text-transform:uppercase;font-size:10.5px;letter-spacing:.1em;display:block;margin-bottom:2px}
+  ol.steps{counter-reset:s;list-style:none;display:grid;gap:9px;margin:4px 0;padding:0}
+  ol.steps li{counter-increment:s;position:relative;padding-left:34px;font-size:13.5px;color:var(--mid);line-height:1.5}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:22px;height:22px;border-radius:50%;background:var(--gold-faint);border:1px solid var(--gold-deep);color:var(--gold);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:var(--body)}
+  ol.steps li b{color:var(--ink);font-weight:600}
+  .act{display:inline-block;font-size:10px;letter-spacing:.04em;text-transform:uppercase;font-weight:700;color:var(--gold);border:1px solid var(--gold-deep);border-radius:5px;padding:1px 6px;margin-right:6px;vertical-align:1px}
+  .act.wait{color:var(--mid);border-color:var(--border)}
+  .act.cond{color:#9fb79a;border-color:#4f6b4a}
+  .act.sms{color:#8fb4d6;border-color:#3f5a76}
+  .act.hook{color:#c9a3d6;border-color:#6a4f76}
+  .goal{margin-top:12px;font-size:12.5px;color:var(--ink);background:var(--gold-faint);border:1px solid var(--gold-deep);border-radius:8px;padding:9px 12px}
+  .goal b{color:var(--gold);text-transform:uppercase;font-size:10px;letter-spacing:.1em}
+  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:12.5px}
+  th,td{border:1px solid var(--border);padding:7px 10px;text-align:left;vertical-align:top}
+  th{background:var(--surface);font-size:10.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  td code{white-space:normal}
+  .none{color:var(--muted);font-style:italic}
+  .flag{background:#2a1f1a;border:1px solid #6b4a3a;border-left:3px solid #c87f5a;border-radius:10px;padding:14px 16px;margin:14px 0;font-size:13px;color:#e8cdbf;line-height:1.55}
+  .flag b{color:#e8a97e}
+  .note{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:10px;padding:14px 16px;margin:14px 0;font-size:13px;color:var(--mid);line-height:1.55}
+  .note b{color:var(--ink)}
+  .foot{margin-top:40px;padding-top:16px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted);line-height:1.6}
+  .pill{display:inline-block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;border-radius:999px;padding:2px 10px;margin-left:6px}
+  .pill.router{color:var(--gold);border:1px solid var(--gold-deep);background:var(--gold-faint)}
+  .pill.native{color:#8fb4d6;border:1px solid #3f5a76;background:rgba(143,180,214,.08)}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="gbox">
+    <div class="k">BreedWise · Internal</div>
+    <h2>TPB &rarr; BOSS · Thin Wiring</h2>
+    <p>Team access only. Enter your team code.</p>
+    <input id="code" type="password" placeholder="Team code" autocomplete="off" autofocus>
+    <button id="go">Unlock</button>
+    <div class="gerr" id="gerr"></div>
+  </div></div>
+
+  <div id="app"><div class="wrap">
+    <div class="eyebrow">The Profitable Breeder · Sales Ops · CC360</div>
+    <h1 class="title">TPB &rarr; BOSS Thin Wiring Spec</h1>
+    <p class="sub">The router edge function now owns every decision: tags, stage moves, opportunity value, owner, and the speed to lead notification. That means CC360 is no longer the brain. It is only the mouth and the clock. This page is the API first replacement for the older five workflow build.</p>
+
+    <div class="note"><b>Replaces tool-funnel-workflows.html.</b> That page described five CC360 workflows that each created and advanced opportunities, assigned owners, and set stages by hand. All of that logic has moved into the <code>tpb-boss-router</code> edge function. The CC360 workflows below are the thin remainder: send a message, wait, maybe send another. Build from this page, not the old one.</div>
+
+    <!-- WHO OWNS WHAT -->
+    <h2 class="sec">Who owns what</h2>
+    <p class="secnote">Every tool opt in, completion, booking, and purchase calls the <code>tpb-boss-router</code> edge function. The router does the deterministic work. CC360 reacts to the tags the router sets and does only the two things an edge function cannot: send branded drip messages and wait real world days.</p>
+    <div class="split">
+      <div class="owncol router">
+        <span class="tag">Handled automatically · tpb-boss-router</span>
+        <h3>Nobody wires this in CC360</h3>
+        <p class="lead">The edge function calls the LeadConnector v2 API directly for all of it. Do not rebuild any of this as a CC360 workflow.</p>
+        <ul class="clean">
+          <li><b>Tags.</b> Sets and removes every tag in the routing contract (contact upsert then tags POST / tags DELETE with body).</li>
+          <li><b>Opportunity.</b> Creates the opportunity on opt in, then finds it by contact id and advances the stage on every later event (search by contact id, then PUT the stage and value).</li>
+          <li><b>Stage.</b> Moves the opportunity to the exact stage name for each event.</li>
+          <li><b>Value.</b> Sets monetary value: 291 through the TPB phase, 3000 at BOSS, 0 on Not a Fit.</li>
+          <li><b>Owner.</b> Sets the owner tag: <code>owner-regina</code> for the cold and TPB phase, flips to Austin at BOSS.</li>
+          <li><b>Notify.</b> Fires the speed to lead Slack alert and creates the plus 15 minute setter task. This is the biggest lever, so it lives in code, not in a drip.</li>
+          <li><b>Logging and attribution.</b> Writes <code>tool_submissions</code> and persists fbp / fbc / event_id so later CAPI events dedupe.</li>
+        </ul>
+      </div>
+      <div class="owncol native">
+        <span class="tag">Still required · CC360 native</span>
+        <h3>The thin remainder</h3>
+        <p class="lead">Each workflow below is only: trigger on a tag the router set, then send email or SMS or wait N days, then maybe one more step. No stage moves, no opportunity edits, no owner assignment, no task creation. Those are already done.</p>
+        <ul class="clean">
+          <li><b>Message delivery.</b> The branded email and SMS drips keyed to each router tag.</li>
+          <li><b>Time delayed waits.</b> The multi day nurture gaps and the BOSS ascension clock, because an edge function cannot sleep for days.</li>
+          <li><b>Two tag actions that are themselves time delayed:</b> adding <code>tool-nurture-monthly</code> at the end of the opt in drip, and the webhook callback to the router after the ascension wait. Everything else that touches a tag stays in the router.</li>
+          <li><b>Exit goals.</b> Standard CC360 workflow goals that pull a contact out of every cold drip the instant they convert or opt out.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CC360 WORKFLOWS -->
+    <h2 class="sec">CC360 native workflows to build</h2>
+    <p class="secnote">Seven thin workflows plus one exit convention. Each trigger tag is set by the router, so none of these fire until the router has already set the stage, value, owner, and notification. Bracketed asset names map to the templates in the prerequisites checklist.</p>
+
+    <!-- CC-1 -->
+    <div class="wf native">
+      <div class="wh"><span class="wn">CC-1</span><h3>Opt-in Nurture Drip</h3><span class="pill native">send + wait</span></div>
+      <div class="trig"><b>Trigger</b>Contact Tag Added = <code>tool-lead</code> &nbsp;(accept <code>tpb-lead</code> as an alias, OR condition, since pb-scorecard already fires that one)</div>
+      <ol class="steps">
+        <li><span class="act">Send Email</span><b>optin-email-1</b> (results ready) immediately.</li>
+        <li><span class="act cond">If/Else</span>Has phone number? If yes: <span class="act sms">Send SMS</span> <b>S1</b> (results ready, I will call you, Reply STOP to opt out).</li>
+        <li><span class="act wait">Wait</span>to <b>Day 1</b>.</li>
+        <li><span class="act cond">If/Else</span>Has a <code>tool-completed</code> tag? <b>No:</b> <span class="act sms">Send SMS</span> <b>S2</b> (finish your tool). <b>Yes:</b> skip S2.</li>
+        <li><span class="act">Send Email</span><b>optin-email-2</b> (3 moves).</li>
+        <li><span class="act wait">Wait</span>to <b>Day 2</b> &rarr; <span class="act">Send Email</span> <b>optin-email-3</b> (the small thing most skip).</li>
+        <li><span class="act wait">Wait</span>to <b>Day 4</b> &rarr; <span class="act">Send Email</span> <b>optin-email-4</b> (knowing is not doing).</li>
+        <li><span class="act wait">Wait</span>to <b>Day 7</b> &rarr; <span class="act">Send Email</span> <b>optin-email-5</b> (a hand with your next litter).</li>
+        <li><span class="act">Add Tag</span><code>tool-nurture-monthly</code>. End. (This tag action is time delayed by 7 days, so it correctly lives here and not in the router.)</li>
+      </ol>
+      <div class="goal"><b>Exit goals</b> &nbsp; <code>tpb-member</code>, <code>not-a-fit</code>, or <code>unsubscribed</code> added &rarr; remove from this workflow. The five opt-in email HTML templates already exist as tpb-tool-email-1 through tpb-tool-email-5.</div>
+    </div>
+
+    <!-- CC-2 -->
+    <div class="wf native">
+      <div class="wh"><span class="wn">CC-2</span><h3>Tool Completed Hot SMS</h3><span class="pill native">send</span></div>
+      <div class="trig"><b>Trigger</b>Contact Tag Added = <code>tool-completed</code></div>
+      <ol class="steps">
+        <li><span class="act wait">Wait</span>3 minutes (lets the router notification and the plus 15 minute setter task land first).</li>
+        <li><span class="act sms">Send SMS</span><b>S3</b> (saw you finished, want me to walk your top 3 moves).</li>
+      </ol>
+      <div class="goal"><b>Note</b> &nbsp; The internal call now alert and the setter task are already fired by the router on this same event. CC-2 only adds the lead facing text. <b>Exit goals:</b> <code>tpb-member</code>, <code>not-a-fit</code>, <code>unsubscribed</code>.</div>
+    </div>
+
+    <!-- CC-3 -->
+    <div class="wf native">
+      <div class="wh"><span class="wn">CC-3</span><h3>Booking Confirm + Reminders</h3><span class="pill native">send + wait</span></div>
+      <div class="trig"><b>Trigger</b>Contact Tag Added = <code>call-booked</code></div>
+      <ol class="steps">
+        <li><span class="act">Send Email</span><b>booking-confirm</b> (your call is set, what to bring) immediately.</li>
+        <li><span class="act sms">Send SMS</span>Confirmation text with the calendar details.</li>
+        <li><span class="act wait">Wait</span>until the day before the call &rarr; <span class="act sms">Send SMS</span> day before reminder.</li>
+        <li><span class="act wait">Wait</span>until 1 hour before &rarr; <span class="act sms">Send SMS</span> final reminder with the join link.</li>
+      </ol>
+      <div class="goal"><b>Note</b> &nbsp; The router already set the stage to Connected / Qualified and cleared <code>no-answer-1/2/3</code> on this event. Use CC360 appointment reminders if the booking calendar is native. <b>Exit goals:</b> <code>call-noshow</code>, <code>tpb-member</code>, <code>not-a-fit</code>.</div>
+    </div>
+
+    <!-- CC-4 -->
+    <div class="wf native">
+      <div class="wh"><span class="wn">CC-4</span><h3>No-Show Rebook</h3><span class="pill native">send + wait</span></div>
+      <div class="trig"><b>Trigger</b>Contact Tag Added = <code>call-noshow</code></div>
+      <ol class="steps">
+        <li><span class="act sms">Send SMS</span><b>S8</b> (sorry we missed you, grab a new time) with the rebook link, immediately. (S8 is the no-show rebook text; S4.1 to S4.4 are the separate no-answer cadence, not no-show.)</li>
+        <li><span class="act">Send Email</span><b>noshow-rebook</b> with the rebook link.</li>
+        <li><span class="act wait">Wait</span>1 day &rarr; <span class="act sms">Send SMS</span> second rebook nudge if not yet rebooked.</li>
+        <li><span class="act wait">Wait</span>2 days &rarr; <span class="act">Send Email</span> final rebook attempt.</li>
+      </ol>
+      <div class="goal"><b>Note</b> &nbsp; The router already set <code>no-answer-1</code> and moved the stage back to Setter Working on this event. <b>Exit goals:</b> <code>call-booked</code>, <code>tpb-member</code>, <code>not-a-fit</code>.</div>
+    </div>
+
+    <!-- CC-5 -->
+    <div class="wf native">
+      <div class="wh"><span class="wn">CC-5</span><h3>TPB Welcome + Ascension Clock</h3><span class="pill native">send + wait + callback</span></div>
+      <div class="trig"><b>Trigger</b>Contact Tag Added = <code>tpb-member</code> &nbsp;(router sets this on TPB purchase and marks the opportunity won)</div>
+      <ol class="steps">
+        <li><span class="act">Send Email</span><b>tpb-welcome</b> (welcome and first steps) immediately.</li>
+        <li><span class="act">Send Email</span><b>tpb-boss-ascension-email-1.html</b> (you have the plan, now the building starts) on <code>tpb-member</code>, at the start of the ascension window.</li>
+        <li><span class="act wait">Wait</span>to <b>Day 1</b> &rarr; <span class="act">Send Email</span> onboarding step 2.</li>
+        <li><span class="act wait">Wait</span>to <b>Day 3</b> &rarr; <span class="act">Send Email</span> onboarding step 3.</li>
+        <li><span class="act wait">Wait</span>a few days &rarr; <span class="act">Send Email</span> <b>tpb-boss-ascension-email-2.html</b> (what B.O.S.S. actually is), a few days into the window.</li>
+        <li><span class="act wait">Wait</span><b>10 days</b> from join (the ascension clock, adjust 7 to 14), then <span class="act">Send Email</span> <b>tpb-boss-ascension-email-3.html</b> (when you want it built with you) at the close of the ascension window, just before the webhook fires.</li>
+        <li><span class="act hook">Webhook</span>POST to <code>https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/tpb-boss-router</code> with <code>{ event: "boss-qualified", email: {{contact.email}} }</code>. The router then sets <code>boss-opportunity</code>, moves the stage to BOSS Opportunity, flips value to 3000, assigns Austin, and notifies.</li>
+      </ol>
+      <div class="goal"><b>Why a webhook, not a tag move</b> &nbsp; The ascension decision stays in the router. CC360 owns only the 10 day wait, because an edge function cannot sleep that long. When the clock fires, CC360 hands control straight back to the router. <b>Exit goals:</b> <code>boss-member</code>, <code>not-a-fit</code>.</div>
+    </div>
+
+    <!-- CC-6 -->
+    <div class="wf native">
+      <div class="wh"><span class="wn">CC-6</span><h3>BOSS Invite</h3><span class="pill native">send + wait</span></div>
+      <div class="trig"><b>Trigger</b>Contact Tag Added = <code>boss-opportunity</code></div>
+      <ol class="steps">
+        <li><span class="act">Send Email</span><b>boss-invite</b> (your options to build, book the BOSS call) immediately.</li>
+        <li><span class="act sms">Send SMS</span>BOSS call invite with the booking link.</li>
+        <li><span class="act wait">Wait</span>2 days &rarr; <span class="act">Send Email</span> follow up if not booked.</li>
+        <li><span class="act wait">Wait</span>3 days &rarr; <span class="act sms">Send SMS</span> final BOSS invite nudge.</li>
+      </ol>
+      <div class="goal"><b>Note</b> &nbsp; The router already set the stage to BOSS Opportunity, value 3000, owner Austin, and created the book the BOSS call task for the closer. CC-6 is only the lead facing invite drip. <b>Exit goals:</b> <code>boss-member</code>, <code>not-a-fit</code>.</div>
+    </div>
+
+    <!-- CC-7 -->
+    <div class="wf native">
+      <div class="wh"><span class="wn">CC-7</span><h3>BOSS Welcome + Fulfillment Handoff</h3><span class="pill native">send</span></div>
+      <div class="trig"><b>Trigger</b>Contact Tag Added = <code>boss-member</code> &nbsp;(router sets this on BOSS purchase and marks the second win)</div>
+      <ol class="steps">
+        <li><span class="act">Send Email</span><b>boss-welcome</b> (welcome to implementation, what happens next) immediately.</li>
+        <li><span class="act">Notify</span>Internal notification to fulfillment: new BOSS member, begin onboarding. (Optional if the router Slack alert already covers this.)</li>
+        <li><span class="act wait">Wait</span>to <b>Day 1</b> &rarr; <span class="act">Send Email</span> kickoff scheduling email.</li>
+      </ol>
+      <div class="goal"><b>Note</b> &nbsp; The router already moved the stage to BOSS Member, marked the opportunity won, and removed <code>boss-opportunity</code>. CC-7 is the welcome and the human handoff.</div>
+    </div>
+
+    <!-- CC-8 -->
+    <div class="wf native">
+      <div class="wh"><span class="wn">CC-8</span><h3>Monthly Long-Term Nurture</h3><span class="pill native">send + wait</span></div>
+      <div class="trig"><b>Trigger</b>Contact Tag Added = <code>tool-nurture-monthly</code> &nbsp;(added by CC-1 at the end of the 7 day drip, or by the setter cadence when it exhausts)</div>
+      <ol class="steps">
+        <li><span class="act wait">Wait</span>30 days.</li>
+        <li><span class="act">Send Email</span>monthly value email.</li>
+        <li><span class="act cond">If/Else</span>Loop: repeat the wait and send monthly.</li>
+      </ol>
+      <div class="goal"><b>Exit goals</b> &nbsp; <code>tool-completed</code>, <code>call-booked</code>, <code>tpb-member</code>, <code>not-a-fit</code>, or <code>unsubscribed</code> added &rarr; remove from this workflow so a re-engaged lead rejoins the active path.</div>
+    </div>
+
+    <div class="note"><b>On the Nurture stage.</b> The <code>Nurture</code> pipeline stage exists for leads the setter parks at the end of the no-answer cadence, but no router event moves an opportunity into it. That stage move is handled CC360-side or manually, so do not expect a router event to target it.</div>
+
+    <!-- EXIT CONVENTION -->
+    <div class="wf">
+      <div class="wh"><span class="wn">EXIT</span><h3>Kill-switch convention (not a standalone workflow)</h3></div>
+      <div class="trig"><b>Applies to</b>CC-1, CC-2, CC-3, CC-4, CC-8 (every cold or nurture drip)</div>
+      <ol class="steps">
+        <li>Add these as workflow <b>Goals</b> on each drip above: tag <code>tpb-member</code> OR <code>boss-member</code> OR <code>not-a-fit</code> OR <code>unsubscribed</code> added &rarr; remove from workflow.</li>
+        <li>No stage move or lost reason is needed here. The router already sets the stage (TPB Member, BOSS Member, or Not a Fit) and the lost reason when it sets those tags.</li>
+      </ol>
+      <div class="goal"><b>Purpose</b> &nbsp; Guarantees the cold sequences stop the instant someone converts or opts out, without a separate workflow carrying any logic. Opt outs use <code>unsubscribed</code> (no stage move). <code>not-a-fit</code> is the setter or router disqualify path.</div>
+    </div>
+
+    <!-- TAG REFERENCE -->
+    <h2 class="sec">Tag reference</h2>
+    <p class="secnote">Every tag the router sets, the event that sets it, and the CC360 message it triggers. The router sets all of these except the two marked CC360, which are time delayed. Do not invent tags outside this list.</p>
+    <table>
+      <tr><th>Tag</th><th>Set by · event</th><th>CC360 message it triggers</th></tr>
+      <tr><td><code>tool-lead</code> / <code>tpb-lead</code></td><td>Router · tool opt in (<code>tpb-lead</code> already fired by pb-scorecard, treat as alias)</td><td>CC-1 opt-in nurture drip</td></tr>
+      <tr><td><code>tool-{name}</code></td><td>Router · tool opt in</td><td><span class="none">Segmentation only, no message</span></td></tr>
+      <tr><td><code>source-social</code></td><td>Router · tool opt in</td><td><span class="none">Attribution only, no message</span></td></tr>
+      <tr><td><code>owner-regina</code></td><td>Router · tool opt in and cold / TPB phase</td><td><span class="none">Ownership only, no message</span></td></tr>
+      <tr><td><code>tool-completed</code></td><td>Router · tool completion</td><td>CC-2 hot SMS (S3)</td></tr>
+      <tr><td><code>{tool}-complete</code></td><td>Router · tool completion</td><td><span class="none">Segmentation, and CC-1 Day 1 branch check</span></td></tr>
+      <tr><td><code>call-booked</code> + <code>tool-contacted</code></td><td>Router · call booked</td><td>CC-3 booking confirm and reminders</td></tr>
+      <tr><td><code>call-noshow</code> + <code>no-answer-1</code></td><td>Router · call no-show</td><td>CC-4 no-show rebook (S8; S4.1-S4.4 are the no-answer cadence)</td></tr>
+      <tr><td><code>tpb-member</code></td><td>Router · TPB purchase (opp won, removes cold tags)</td><td>CC-5 TPB welcome + ascension; exit goal on all cold drips</td></tr>
+      <tr><td><code>boss-opportunity</code> + <code>boss-qualified</code></td><td>Router · boss-qualified (fired by CC-5 webhook after the 10 day wait)</td><td>CC-6 BOSS invite</td></tr>
+      <tr><td><code>boss-member</code></td><td>Router · BOSS purchase (opp won)</td><td>CC-7 BOSS welcome and fulfillment handoff; exit goal</td></tr>
+      <tr><td><code>tool-nurture-monthly</code></td><td><b>CC360</b> · end of CC-1 (time delayed)</td><td>CC-8 monthly nurture</td></tr>
+      <tr><td><code>not-a-fit</code></td><td>Router · exit (opp to Not a Fit, value 0, lost reason)</td><td><span class="none">No message; exit goal on all drips</span></td></tr>
+      <tr><td><code>unsubscribed</code></td><td>Router or CC360 · opt out</td><td><span class="none">No message; exit goal, no stage move</span></td></tr>
+    </table>
+
+    <!-- PREREQUISITES -->
+    <h2 class="sec">Prerequisites in CC360</h2>
+    <p class="secnote">The router looks pipelines and stages up by exact name. These must exist, spelled exactly, before the router can advance anything.</p>
+    <ul class="clean">
+      <li><b>Pipeline:</b> create <code>Tool → TPB → BOSS</code> with these nine stages, exact names and order: <code>Tool Opt-in</code>, <code>Tool Completed</code>, <code>Setter Working</code>, <code>Connected / Qualified</code>, <code>TPB Member</code>, <code>BOSS Opportunity</code>, <code>BOSS Member</code>, <code>Nurture</code>, <code>Not a Fit</code>.</li>
+      <li><b>Keep separate:</b> the existing <code>New VSL Funnel</code> pipeline stays as is. It is the Academy funnel (6000 / 291), adjacent to this one. Do not merge them.</li>
+      <li><b>Email templates to create:</b> <code>optin-email-1</code> to <code>optin-email-5</code> (load from the existing tpb-tool-email-1 through tpb-tool-email-5 HTML), <code>booking-confirm</code>, <code>noshow-rebook</code>, <code>tpb-welcome</code>, the three BOSS ascension emails (<code>tpb-boss-ascension-email-1.html</code>, <code>tpb-boss-ascension-email-2.html</code>, <code>tpb-boss-ascension-email-3.html</code>, loaded into CC-5), <code>boss-invite</code>, <code>boss-welcome</code>, and the monthly nurture email. Swap the placeholders <code>[RESULT_LINK]</code>, <code>[BOOK_CALL_LINK]</code>, <code>[TPB_LINK]</code>, <code>[BOSS_INFO_LINK]</code>, <code>[BOOK_BOSS_CALL_LINK]</code>.</li>
+      <li><b>SMS templates to create:</b> <code>S1</code> (results ready), <code>S2</code> (finish your tool), <code>S3</code> (top 3 moves), <code>S4.1</code> to <code>S4.4</code> (no-answer cadence), <code>S8</code> (no-show rebook), plus the booking and BOSS reminder texts. Include Reply STOP to opt out on the first text.</li>
+      <li><b>Sending setup:</b> provision the SMS number, set the booking calendar behind <code>[BOOK_CALL_LINK]</code>, create the owner users Regina (setter) and Austin (closer) and their notification channels.</li>
+      <li><b>Router callback:</b> whitelist and test the webhook action to <code>https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/tpb-boss-router</code> used by CC-5.</li>
+      <li><b>Honor DND and quiet hours on all SMS.</b></li>
+    </ul>
+
+    <!-- OPEN ITEMS -->
+    <h2 class="sec">Open items to confirm before go-live</h2>
+    <div class="flag"><b>Owner tag conflict.</b> program-scorecard sets <code>owner-jennifer</code> while every other tool sets <code>owner-regina</code>. The plan uses one setter, Regina, for the whole cold and TPB phase. Fix program-scorecard to set <code>owner-regina</code>, or have the router overwrite the owner tag on every opt in.</div>
+    <div class="flag"><b>Universal tags not yet firing from code.</b> Only pb-scorecard fires a cross tool lead tag today (<code>tpb-lead</code>). <code>tool-lead</code> and <code>tool-completed</code> do not fire yet. Until every tool opt in and completion routes through the router, set CC-1 to also accept <code>tpb-lead</code>, and CC-2 to also accept each tool's own <code>-complete</code> tag as an OR trigger.</div>
+    <div class="flag"><b>Purchase events not wired.</b> No code fires <code>tpb-member</code> or <code>boss-member</code> yet. stripe-webhook has no product to tag mapping. Until that lands, the ascension (CC-5) and the BOSS welcome (CC-7) have nothing to trigger them. Wire stripe-webhook (and skool-webhook) to call the router with <code>tpb-purchase</code> and <code>boss-purchase</code>.</div>
+    <div class="flag"><b>TPB value confirmed at 291.</b> This spec uses 291 as the TPB opportunity value to match the code. The 1500 figure is the invest qualifier and the Lead CAPI value, not the opportunity value. Confirm this is still correct.</div>
+
+    <!-- BUILD AND TEST -->
+    <h2 class="sec">Build and test order</h2>
+    <ol class="steps">
+      <li><b>Create the pipeline and nine stages</b> with the exact names above. The router cannot advance anything until these resolve by name.</li>
+      <li><b>Create every email and SMS template</b> from the prerequisites checklist.</li>
+      <li><b>Add the exit goals convention</b> to each drip as you build it, so cold stops on conversion from the first test.</li>
+      <li><b>Build CC-1</b> (opt-in drip). Then CC-2 (hot SMS), CC-3 and CC-4 (booking and no-show), CC-5 (TPB welcome and ascension), CC-6 (BOSS invite), CC-7 (BOSS welcome), CC-8 (monthly).</li>
+      <li><b>Test with a dummy contact.</b> Fire a test tool opt in through the router. Confirm the router set <code>tool-lead</code>, created the opportunity in Tool Opt-in at value 291, set <code>owner-regina</code>, sent the Slack alert and the plus 15 minute task. Then confirm CC-1 sent optin-email-1 and S1.</li>
+      <li><b>Add <code>tool-completed</code></b> to the dummy. Confirm the router moved the stage to Tool Completed and notified, and CC-2 sent S3 after 3 minutes.</li>
+      <li><b>Add <code>call-booked</code></b>, then <code>call-noshow</code>. Confirm the stage moves (Connected / Qualified, then Setter Working), the no-answer tag cleanup, and that CC-3 and CC-4 fire and exit each other correctly.</li>
+      <li><b>Add <code>tpb-member</code>.</b> Confirm the opportunity is won, cold tags are removed, every cold drip exits, and CC-5 starts. Shorten the CC-5 wait to a few minutes for the test and confirm the webhook calls the router and <code>boss-opportunity</code> lands in BOSS Opportunity at value 3000 with Austin as owner.</li>
+      <li><b>Add <code>boss-member</code>.</b> Confirm the second win and CC-7.</li>
+    </ol>
+
+    <div class="foot">BreedWise internal sales operating document. API first thin wiring for the Tool &rarr; TPB &rarr; BOSS funnel. The tpb-boss-router edge function owns all tagging, stage, opportunity, owner, and notification logic. CC360 owns message delivery and time delayed waits only. Replaces tool-funnel-workflows.html. Pairs with the funnel buildout and the five opt-in email templates. Bracketed assets and wait timings are defaults to confirm.</div>
+  </div></div>
+
+<script>
+(function(){
+  var HASHES=['368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875'];
+  var gate=document.getElementById('gate'),app=document.getElementById('app'),gerr=document.getElementById('gerr');
+  function sha(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function open(){gate.style.display='none';app.style.display='block';}
+  try{if(sessionStorage.getItem('tbaw_ok')==='1')open();}catch(e){}
+  function tryCode(){var v=(document.getElementById('code').value||'').trim();if(!v)return;
+    Promise.all([sha(v),sha(v.toUpperCase())]).then(function(hs){
+      if(HASHES.indexOf(hs[0])>=0||HASHES.indexOf(hs[1])>=0){try{sessionStorage.setItem('tbaw_ok','1');}catch(e){}open();}
+      else gerr.textContent='That code did not match.';});}
+  document.getElementById('go').onclick=tryCode;
+  document.getElementById('code').addEventListener('keydown',function(e){if(e.key==='Enter')tryCode();});
+})();
+</script>
+</body>
+</html>
