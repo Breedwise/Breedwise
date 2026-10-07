@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Partial Applications — Call List</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{--bg:#0d0d10;--panel:#16161b;--panel2:#1c1c22;--line:#2a2a32;--line2:#36363f;
+    --ink:#f2f1ee;--mid:#b4b1a9;--muted:#76736c;--gold:#cdae72;--gold2:#e4cf9a;
+    --green:#5fb47a;--red:#d98c8c;--blue:#7fa8d9}
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:var(--gold)}
+  .hide{display:none!important}
+  /* gate */
+  #gate{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:22px}
+  .gbox{max-width:360px;width:100%}
+  .gbox .lk{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700;text-align:center}
+  .gbox h2{font-size:20px;font-weight:700;margin:12px 0 4px;text-align:center}
+  .gbox p{color:var(--mid);font-size:13px;text-align:center;margin-bottom:16px}
+  .gbox input{width:100%;background:var(--panel);border:1px solid var(--line2);color:var(--ink);border-radius:10px;padding:12px 14px;font-size:15px;margin-bottom:9px;font-family:inherit}
+  .gbox input:focus{outline:none;border-color:var(--gold)}
+  .gbox button{width:100%;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#141008;border:0;border-radius:10px;padding:12px;font-weight:700;font-size:15px;cursor:pointer;font-family:inherit}
+  .gerr{color:var(--red);font-size:12.5px;margin-top:9px;min-height:16px;text-align:center}
+  /* app */
+  #app{max-width:760px;margin:0 auto;padding:20px 16px 90px}
+  header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+  h1{font-size:21px;font-weight:700;letter-spacing:-.3px}
+  .sub{color:var(--muted);font-size:12.5px;margin-top:2px}
+  .who{font-size:12px;color:var(--muted);text-align:right}
+  .who a{cursor:pointer;color:var(--mid);text-decoration:underline}
+  .stats{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 10px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:10px 14px;min-width:96px}
+  .stat .n{font-size:22px;font-weight:800;line-height:1.1}
+  .stat .l{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:2px;font-weight:600}
+  .stat.hot .n{color:var(--gold)}
+  .stat.done .n{color:var(--green)}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:4px 0 14px}
+  .toolbar input[type=search]{flex:1;min-width:160px;background:var(--panel);border:1px solid var(--line2);color:var(--ink);border-radius:10px;padding:10px 13px;font-size:14px;font-family:inherit}
+  .toolbar input:focus{outline:none;border-color:var(--gold)}
+  .btn{background:var(--panel2);border:1px solid var(--line2);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .btn:hover{border-color:var(--gold)}
+  .btn.ghost{background:transparent}
+  label.chk{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--mid);cursor:pointer;user-select:none}
+  /* card */
+  .list{display:flex;flex-direction:column;gap:9px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px 15px;display:flex;align-items:center;gap:14px;transition:opacity .15s}
+  .card.called{opacity:.5;border-style:dashed}
+  .card .main{flex:1;min-width:0}
+  .card .nm{font-size:15.5px;font-weight:700}
+  .card .nm .em{font-weight:400;color:var(--muted);font-size:12.5px;margin-left:6px}
+  .card .meta{font-size:12.5px;color:var(--mid);margin-top:3px}
+  .card .meta .dot{color:var(--line2);margin:0 6px}
+  .card .ph{font-size:17px;font-weight:700;color:var(--gold2);letter-spacing:.01em;text-decoration:none;white-space:nowrap}
+  .card .acts{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+  .card .row2{display:flex;gap:6px;align-items:center}
+  .mini{background:var(--panel2);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:5px 10px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+  .mini:hover{border-color:var(--gold);color:var(--ink)}
+  .mini.on{background:rgba(95,180,122,.14);border-color:rgba(95,180,122,.5);color:var(--green)}
+  .age{font-size:11px;color:var(--muted)}
+  .age.old{color:var(--red)}
+  .empty{text-align:center;color:var(--muted);padding:50px 20px;font-size:14px}
+  .note{font-size:11.5px;color:var(--muted);margin-top:18px;line-height:1.6;border-top:1px solid var(--line);padding-top:14px}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:#141008;font-weight:700;font-size:13px;padding:9px 18px;border-radius:10px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60}
+  .toast.show{opacity:1}
+  @media(max-width:540px){.card{flex-wrap:wrap;gap:10px}.card .acts{flex-direction:row;width:100%;justify-content:space-between;align-items:center}}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gbox">
+    <div class="lk">BreedWise · Internal</div>
+    <h2>Partial Applications · Call List</h2>
+    <p>Sign in with your submissions-dashboard login.</p>
+    <input id="gEmail" type="email" placeholder="Email" autocomplete="username">
+    <input id="gPass" type="password" placeholder="Password" autocomplete="current-password">
+    <button id="gBtn">Sign in</button>
+    <div class="gerr" id="gErr"></div>
+  </div>
+</div>
+
+<div id="app" class="hide">
+  <header>
+    <div>
+      <h1>Partial Applications · Call List</h1>
+      <div class="sub">Started the Academy application, never submitted. Newest first.</div>
+    </div>
+    <div class="who"><span id="who"></span><br><a id="signout">Sign out</a></div>
+  </header>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="toolbar">
+    <input id="q" type="search" placeholder="Search name, email, phone, breed…">
+    <label class="chk"><input type="checkbox" id="hideCalled"> Hide called</label>
+    <button class="btn ghost" id="copyAll">Copy all numbers</button>
+    <button class="btn ghost" id="refresh">Refresh</button>
+  </div>
+
+  <div class="list" id="list"></div>
+
+  <div class="note" id="foot"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+const SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+const sb=supabase.createClient(SB_URL,SB_KEY);
+const CALLED_KEY='bw_partials_called_v1';
+
+let PARTIALS=[], SUBMITTED=0, NOPHONE=0, q='', ME=null;
+let called={};
+try{ called=JSON.parse(localStorage.getItem(CALLED_KEY)||'{}'); }catch(e){ called={}; }
+
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function toast(t){ const el=$('#toast'); el.textContent=t; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),1400); }
+function telHref(p){ return 'tel:'+String(p).replace(/[^\d+]/g,''); }
+function digits(p){ return String(p).replace(/[^\d+]/g,''); }
+function daysAgo(ts){ if(!ts) return null; const ms=(String(ts).length>11?Number(ts):Number(ts)*1000); const d=Math.floor((Date.now()-ms)/86400000); return isNaN(d)?null:d; }
+function ageLabel(d){ if(d==null) return ''; if(d<=0) return 'today'; if(d===1) return 'yesterday'; return d+' days ago'; }
+
+// ---- auth ----
+$('#gBtn').addEventListener('click',signIn);
+$('#gPass').addEventListener('keydown',e=>{if(e.key==='Enter')signIn();});
+$('#signout').addEventListener('click',async()=>{ await sb.auth.signOut(); location.reload(); });
+async function signIn(){
+  const email=$('#gEmail').value.trim(), password=$('#gPass').value; $('#gErr').textContent='';
+  if(!email||!password){ $('#gErr').textContent='Enter your email and password.'; return; }
+  $('#gBtn').disabled=true; $('#gBtn').textContent='Signing in…';
+  const {error}=await sb.auth.signInWithPassword({email,password});
+  $('#gBtn').disabled=false; $('#gBtn').textContent='Sign in';
+  if(error){ $('#gErr').textContent=error.message; return; }
+  boot();
+}
+async function boot(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){ $('#gate').classList.remove('hide'); $('#app').classList.add('hide'); return; }
+  ME=session.user.email; $('#who').textContent=ME;
+  $('#gate').classList.add('hide'); $('#app').classList.remove('hide');
+  load();
+}
+
+// ---- load + compute ----
+async function load(){
+  $('#list').innerHTML='<div class="empty">Loading…</div>';
+  const {data,error}=await sb.from('tool_submissions').select('member_email,member_name,tool_label,meta,created_at')
+    .eq('tool','meta-attribution').order('created_at',{ascending:false}).limit(5000);
+  if(error){ $('#list').innerHTML='<div class="empty">Couldn\'t load ('+esc(error.message)+').</div>'; return; }
+  const rows=data||[];
+
+  // Completed = the full-submit "Meta Attribution" row (no "partial"); partial = "(partial)" / meta.partial.
+  const submittedEmails=new Set();
+  rows.forEach(r=>{
+    const lbl=String(r.tool_label||'').toLowerCase();
+    const isPartial = lbl.includes('partial') || (r.meta && r.meta.partial===true);
+    if(!isPartial && r.member_email) submittedEmails.add(String(r.member_email).toLowerCase());
+  });
+
+  // Latest partial per email, excluding anyone who later submitted.
+  const byEmail=new Map();
+  rows.forEach(r=>{
+    const lbl=String(r.tool_label||'').toLowerCase();
+    const isPartial = lbl.includes('partial') || (r.meta && r.meta.partial===true);
+    if(!isPartial) return;
+    const email=String(r.member_email||'').toLowerCase();
+    if(!email || submittedEmails.has(email)) return;
+    if(!byEmail.has(email)) byEmail.set(email,r);     // rows already newest-first → first seen is latest
+  });
+
+  SUBMITTED=submittedEmails.size;
+  const all=[...byEmail.values()].map(r=>{
+    const m=r.meta||{};
+    return {
+      email:r.member_email||'', name:r.member_name||'',
+      phone:(m.phone||'').trim(),
+      breeds:(m.breeds||'').trim(),
+      reason:(m.reason||'').trim(),
+      ts:m.captured_at||r.created_at
+    };
+  });
+  NOPHONE=all.filter(x=>!x.phone).length;
+  PARTIALS=all.filter(x=>x.phone)
+    .sort((a,b)=>{ const ta=(String(a.ts).length>11?+a.ts:+a.ts*1000), tb=(String(b.ts).length>11?+b.ts:+b.ts*1000); return tb-ta; });
+  render();
+}
+
+// ---- render ----
+function render(){
+  const hideCalled=$('#hideCalled').checked;
+  const needle=q.toLowerCase();
+  let shown=PARTIALS.filter(p=>{
+    if(hideCalled && called[p.email]) return false;
+    if(!needle) return true;
+    return (p.name+' '+p.email+' '+p.phone+' '+p.breeds).toLowerCase().includes(needle);
+  });
+  const toCall=PARTIALS.filter(p=>!called[p.email]).length;
+  const doneCount=PARTIALS.filter(p=>called[p.email]).length;
+
+  $('#stats').innerHTML=
+    stat('hot',toCall,'To call')+
+    stat('done',doneCount,'Called')+
+    stat('',PARTIALS.length,'Partials w/ #')+
+    stat('',SUBMITTED,'Submitted');
+
+  if(!shown.length){ $('#list').innerHTML='<div class="empty">'+(PARTIALS.length?'Nothing matches that filter.':'No partial applications with a phone number right now.')+'</div>'; }
+  else{
+    $('#list').innerHTML=shown.map(p=>{
+      const d=daysAgo(p.ts), isCalled=!!called[p.email];
+      const bits=[];
+      if(p.breeds) bits.push(esc(p.breeds));
+      if(p.reason) bits.push('exit: '+esc(p.reason));
+      return '<div class="card'+(isCalled?' called':'')+'" data-e="'+esc(p.email)+'">'+
+        '<div class="main">'+
+          '<div class="nm">'+esc(p.name||'(no name)')+'<span class="em">'+esc(p.email)+'</span></div>'+
+          (bits.length?'<div class="meta">'+bits.join('<span class="dot">·</span>')+'</div>':'')+
+        '</div>'+
+        '<div class="acts">'+
+          '<a class="ph" href="'+telHref(p.phone)+'">'+esc(p.phone)+'</a>'+
+          '<div class="row2">'+
+            '<span class="age'+(d!=null&&d>=3?' old':'')+'">'+ageLabel(d)+'</span>'+
+            '<button class="mini" data-copy="'+esc(digits(p.phone))+'">Copy</button>'+
+            '<button class="mini'+(isCalled?' on':'')+'" data-call="'+esc(p.email)+'">'+(isCalled?'✓ Called':'Mark called')+'</button>'+
+          '</div>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+  }
+
+  const extra=[];
+  if(NOPHONE) extra.push(NOPHONE+' more partial'+(NOPHONE===1?'':'s')+' have an email but no phone number yet (can\'t be called).');
+  extra.push('"Submitted" = applicants who started and then completed the application; they are excluded from this list.');
+  extra.push('"Called" is tracked on this device only. Numbers come from the Academy application funnel\'s partial-capture.');
+  $('#foot').innerHTML=extra.map(esc).join('<br>');
+}
+function stat(cls,n,l){ return '<div class="stat'+(cls?' '+cls:'')+'"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>'; }
+
+// ---- interactions ----
+$('#list').addEventListener('click',e=>{
+  const cp=e.target.closest('[data-copy]');
+  if(cp){ navigator.clipboard.writeText(cp.getAttribute('data-copy')).then(()=>toast('Number copied')); return; }
+  const mc=e.target.closest('[data-call]');
+  if(mc){ const em=mc.getAttribute('data-call'); called[em]=called[em]?0:Date.now(); if(!called[em])delete called[em];
+    try{localStorage.setItem(CALLED_KEY,JSON.stringify(called));}catch(_){ } render(); return; }
+});
+$('#q').addEventListener('input',e=>{ q=e.target.value; render(); });
+$('#hideCalled').addEventListener('change',render);
+$('#refresh').addEventListener('click',load);
+$('#copyAll').addEventListener('click',()=>{
+  const nums=PARTIALS.filter(p=>!called[p.email]).map(p=>p.phone);
+  if(!nums.length){ toast('Nothing to copy'); return; }
+  navigator.clipboard.writeText(nums.join('\n')).then(()=>toast(nums.length+' numbers copied'));
+});
+
+boot();
+</script>
+</body>
+</html>
