@@ -248,10 +248,12 @@ function maybeForceScore(){
     }
   } else if(ex){ ex.remove(); }
 }
-// Safety net: capture ANY uncaught client error (the real "nothing happened" cause) with evidence.
+// Safety net: capture ANY uncaught client error (the real "nothing happened" cause) with evidence,
+// and surface it visibly so a blank screen becomes a message the member can screenshot.
 var _scErrOnce=false;
-window.addEventListener('error',function(ev){ if(_scErrOnce)return; _scErrOnce=true; logFail('window.onerror',(ev&&(ev.error||ev.message))||'error'); });
-window.addEventListener('unhandledrejection',function(ev){ if(_scErrOnce)return; _scErrOnce=true; logFail('unhandledrejection',(ev&&ev.reason)||'rejection'); });
+function _scBanner(msg){ try{ if(document.getElementById('_errbar'))return; var b=document.createElement('div'); b.id='_errbar'; b.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99999;background:#7a1f1f;color:#fff;padding:12px 16px;font:14px/1.5 -apple-system,system-ui,sans-serif;text-align:center'; b.textContent='This tool hit a problem loading on your device: '+msg+'. Please screenshot this and send it to your BreedWise contact.'; (document.body||document.documentElement).appendChild(b); }catch(e){} }
+window.addEventListener('error',function(ev){ if(_scErrOnce)return; _scErrOnce=true; var m=(ev&&((ev.error&&ev.error.message)||ev.message))||'error'; logFail('window.onerror',m); _scBanner(String(m)); });
+window.addEventListener('unhandledrejection',function(ev){ if(_scErrOnce)return; _scErrOnce=true; var m=(ev&&ev.reason&&(ev.reason.message||ev.reason))||'rejection'; logFail('unhandledrejection',String(m)); _scBanner(String(m)); });
 
 async function turn(userText){
   if(BUSY)return; BUSY=true; $('#send').disabled=true;
