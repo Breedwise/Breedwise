@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
-<meta name="build" content="1791497095">
-<script>window.__BV__='1791497095';(function(){try{fetch(location.pathname+'?_c='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){var m=t.match(/name="build" content="(\d+)"/);if(m&&m[1]&&m[1]!==window.__BV__){try{if(sessionStorage.getItem('sc_active')==='1')return;}catch(e){}var k='rl_'+m[1];try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');}catch(e){}location.replace(location.pathname+'?v='+m[1]);}}).catch(function(){});}catch(e){}})();</script>
+<meta name="build" content="1791498449">
+<script>window.__BV__='1791498449';(function(){try{fetch(location.pathname+'?_c='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){var m=t.match(/name="build" content="(\d+)"/);if(m&&m[1]&&m[1]!==window.__BV__){try{if(sessionStorage.getItem('sc_active')==='1')return;}catch(e){}var k='rl_'+m[1];try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');}catch(e){}location.replace(location.pathname+'?v='+m[1]);}}).catch(function(){});}catch(e){}})();</script>
 <title>BreedWise Program Assessment</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -183,6 +183,55 @@ var CATS=['Demand','Brand & Positioning','Social Media & Content','Buyer Experie
           'Profitability','Breeding & Reproductive Prep','Whelping & Neonatal','Data & Recordkeeping','Operations & Systems'];
 var CODE='', MSGS=[], CAT=1, BUSY=false, DONE=false, KENNEL='', SEEN={}, FOCUS='';
 var MFIRST='', MEMAIL='', MKENNEL='', LAST_RESULT=null;
+// Background per-section scoring, so the final result is near-instant.
+var SCORES={}, SCORING={}, lastCat=0, FAST_OK=null;   // FAST_OK=false => backend lacks the new actions, fall back
+var CAT_META=[
+  {key:'demand',label:'Demand',engine:'business'},
+  {key:'brand',label:'Brand & Positioning',engine:'business'},
+  {key:'content',label:'Social Media & Content',engine:'business'},
+  {key:'sales',label:'Buyer Experience & Sales',engine:'business'},
+  {key:'pricing',label:'Pricing',engine:'business'},
+  {key:'profitability',label:'Profitability',engine:'business'},
+  {key:'repro',label:'Breeding & Reproductive Preparation',engine:'breeding'},
+  {key:'whelping',label:'Whelping & Neonatal Preparedness',engine:'breeding'},
+  {key:'data',label:'Data & Recordkeeping',engine:'breeding'},
+  {key:'operations',label:'Operations & Systems',engine:'breeding'}
+];
+function catKey(n){ return (CAT_META[n-1]||{}).key; }
+// Fire-and-forget: score one category in the background while they answer the next question.
+function scoreCatBg(n){
+  var key=catKey(n); if(!key||SCORES[key]||SCORING[key])return;
+  SCORING[key]=1;
+  api({action:'score-one',category:key,messages:MSGS.slice()}).then(function(r){
+    if(r&&r.key){ SCORES[r.key]={key:r.key,score:r.score,evidence:r.evidence}; saveState(); }
+  }).catch(function(){}).then(function(){ delete SCORING[key]; });
+}
+// Make sure every section has a score before assembling (fills any the background missed).
+function scoreOneAwait(key){
+  return apiRetry({action:'score-one',category:key,messages:MSGS},2).then(function(r){
+    if(r&&r.key){ SCORES[key]={key:r.key,score:r.score,evidence:r.evidence}; FAST_OK=true; }
+    else SCORES[key]={key:key,score:0,evidence:'No evidence captured for this area.'};
+  }).catch(function(err){
+    if(/unknown action/i.test(String((err&&err.message)||err))) FAST_OK=false;   // backend not updated yet
+    else SCORES[key]={key:key,score:0,evidence:'No evidence captured for this area.'};
+  });
+}
+async function ensureAllScored(){
+  var pend=[]; for(var i=1;i<=10;i++){ var k=catKey(i); if(!SCORES[k])pend.push(scoreOneAwait(k)); }
+  if(pend.length) await Promise.all(pend);
+}
+// Instant render of the section grades (narrative fills in a moment later).
+function renderScoresNow(){
+  var scores=CAT_META.map(function(c){ var s=SCORES[c.key]||{score:0,evidence:'Scoring…'}; return {key:c.key,label:c.label,engine:c.engine,score:s.score,evidence:s.evidence,standard:''}; });
+  var overall=scores.reduce(function(a,s){return a+(Number(s.score)||0);},0);
+  $('#out').innerHTML=
+    '<div class="hero"><div class="k">BreedWise Program Assessment</div>'+
+      '<h2>'+esc(KENNEL||'Your Program')+'</h2>'+
+      '<div class="tot"><b>'+overall+'</b>/100 overall — the pattern across categories matters more than the total.</div></div>'+
+    '<div class="block">'+group(scores,'business','Business Engine')+group(scores,'breeding','Breeding Engine')+'</div>'+
+    '<div class="block" style="text-align:center"><p style="color:var(--mid)">Your section grades are ready. Finishing your personalized summary&hellip;</p></div>';
+  $('#out').scrollIntoView({behavior:'smooth',block:'start'});
+}
 
 function $(s){return document.querySelector(s);}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){
@@ -280,6 +329,9 @@ async function turn(userText){
     if(d.kennel_name)KENNEL=d.kennel_name;
     var c=Number(d.current_category)||0;
     if(c>=1&&c<=10){SEEN[c]=true;CAT=c;}
+    // When the AI moves on from a category, score that one in the background so the final result is instant.
+    if(lastCat>=1&&lastCat<=10&&c!==lastCat) scoreCatBg(lastCat);
+    if(c>=1&&c<=10) lastCat=c;
     if(d.focus)FOCUS=d.focus;
     if(d.vet_flag){
       $('#vet').innerHTML='<div class="vetwarn"><b>Please contact your veterinarian.</b> '+
@@ -375,31 +427,50 @@ async function buildScorecard(){
   var fr=document.getElementById('finishRow'); if(fr)fr.style.display='none';
   thinking(true);
   try{
-    var d=await apiRetry({action:'score',messages:MSGS,member_name:MFIRST,member_kennel:MKENNEL||KENNEL,member_email:MEMAIL},3);
+    await ensureAllScored();                         // finish any section the background missed (fast; most are already done)
+    if(FAST_OK===false){
+      // Backend not updated yet — use the proven one-shot score so the page never breaks mid-deploy.
+      var d0=await apiRetry({action:'score',messages:MSGS,member_name:MFIRST,member_kennel:MKENNEL||KENNEL,member_email:MEMAIL},3);
+      thinking(false);
+      if(!d0||!d0.result){ throw new Error('The results came back empty.'); }
+      LAST_RESULT=d0.result; $('#thread').style.display='none'; rail(); renderCard(d0.result); saveState();
+      BUSY=false; return;
+    }
     thinking(false);
-    if(!d||!d.result){ throw new Error('The results came back empty.'); }
-    LAST_RESULT=d.result;
-    $('#thread').style.display='none';
-    rail();
-    renderCard(d.result);
+    $('#thread').style.display='none'; rail();
+    renderScoresNow();                               // INSTANT: section grades are on screen immediately
+    var scoresArr=CAT_META.map(function(c){return SCORES[c.key];}).filter(Boolean);
+    var fin=await apiRetry({action:'finalize',messages:MSGS,scores:scoresArr,member_name:MFIRST,member_kennel:MKENNEL||KENNEL,member_email:MEMAIL},3);
+    if(!fin||!fin.result){ throw new Error('The summary came back empty.'); }
+    LAST_RESULT=fin.result;
+    renderCard(fin.result);                          // full card: grades + personalized summary
     saveState();
   }catch(e){
     thinking(false);
-    logFail('score',e);
-    // Never leave the member on a blank screen: show a visible, retryable error in the results area.
-    $('#out').innerHTML='<div class="block" style="text-align:center">'+
-      '<h3>We could not load your results just now</h3>'+
-      '<p style="color:var(--mid)">Your answers are saved. This was a temporary issue ('+esc(e.message||'unknown')+').</p>'+
-      '<button class="btn" id="retryScore" type="button" style="margin-top:12px">Try again →</button></div>';
+    logFail('finalize',e);
+    if(Object.keys(SCORES).length){
+      // The section grades are already computed — keep them visible and let them retry just the summary.
+      renderScoresNow();
+      var dd=document.createElement('div'); dd.className='block'; dd.style.textAlign='center';
+      dd.innerHTML='<p style="color:var(--mid)">Your section grades above are saved. We could not finish the written summary just now.</p>'+
+        '<button class="btn" id="retrySummary" type="button" style="margin-top:10px">Finish my summary →</button>';
+      $('#out').appendChild(dd);
+      var rs=document.getElementById('retrySummary'); if(rs)rs.onclick=buildScorecard;
+    }else{
+      $('#out').innerHTML='<div class="block" style="text-align:center">'+
+        '<h3>We could not load your results just now</h3>'+
+        '<p style="color:var(--mid)">Your answers are saved. This was a temporary issue ('+esc(e.message||'unknown')+').</p>'+
+        '<button class="btn" id="retryScore" type="button" style="margin-top:12px">Try again →</button></div>';
+      var rb=document.getElementById('retryScore'); if(rb)rb.onclick=function(){ $('#out').innerHTML=''; buildScorecard(); };
+    }
     $('#out').scrollIntoView({behavior:'smooth',block:'start'});
-    var rb=document.getElementById('retryScore'); if(rb)rb.onclick=function(){ $('#out').innerHTML=''; buildScorecard(); };
   }finally{
     BUSY=false;
   }
 }
 
 function reset(){
-  MSGS=[];CAT=1;DONE=false;SEEN={};FOCUS='';LAST_RESULT=null;
+  MSGS=[];CAT=1;DONE=false;SEEN={};FOCUS='';LAST_RESULT=null;SCORES={};SCORING={};lastCat=0;
   clearState();
   $('#thread').innerHTML='';$('#thread').style.display='';$('#out').innerHTML='';$('#vet').innerHTML='';
   $('#composer').style.display='';
@@ -419,7 +490,7 @@ var STATE_KEY='bw-scorecard-state';
 function saveState(){
   try{
     sessionStorage.setItem('sc_active',(MSGS.length>0 && !DONE)?'1':'0');
-    localStorage.setItem(STATE_KEY,JSON.stringify({v:1,ts:Date.now(),MSGS:MSGS,CAT:CAT,DONE:DONE,SEEN:SEEN,FOCUS:FOCUS,KENNEL:KENNEL,MFIRST:MFIRST,MEMAIL:MEMAIL,MKENNEL:MKENNEL,result:(DONE?LAST_RESULT:null)}));
+    localStorage.setItem(STATE_KEY,JSON.stringify({v:1,ts:Date.now(),MSGS:MSGS,CAT:CAT,DONE:DONE,SEEN:SEEN,FOCUS:FOCUS,KENNEL:KENNEL,MFIRST:MFIRST,MEMAIL:MEMAIL,MKENNEL:MKENNEL,SCORES:SCORES,lastCat:lastCat,result:(DONE?LAST_RESULT:null)}));
   }catch(e){}
 }
 function clearState(){ try{localStorage.removeItem(STATE_KEY);sessionStorage.setItem('sc_active','0');}catch(e){} }
@@ -431,6 +502,7 @@ function restoreState(){
   if(Date.now()-(s.ts||0)>12*3600*1000){ clearState(); return false; }   // older than 12h, start fresh
   MSGS=s.MSGS; CAT=s.CAT||1; DONE=!!s.DONE; SEEN=s.SEEN||{}; FOCUS=s.FOCUS||'';
   KENNEL=s.KENNEL||KENNEL; MFIRST=s.MFIRST||MFIRST; MEMAIL=s.MEMAIL||MEMAIL; MKENNEL=s.MKENNEL||MKENNEL;
+  SCORES=s.SCORES||{}; lastCat=s.lastCat||0;
   $('#thread').innerHTML='';
   MSGS.forEach(function(m){ if(m&&m.content) bubble(m.role==='user'?'user':'assistant', m.content); });
   rail();
