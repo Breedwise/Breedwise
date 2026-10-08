@@ -154,9 +154,9 @@ main{padding:22px 0 60px}
       <textarea id="say" rows="2" placeholder="Type your answer…" aria-label="Your answer"></textarea>
       <button class="btn" id="send">Send</button>
     </div>
-    <div id="finishRow" style="display:none;text-align:center;margin-top:12px">
-      <button class="btn ghost" id="finishBtn" type="button">I'm done — show my results →</button>
-      <div style="font-size:11.5px;color:var(--muted);margin-top:6px">You can finish anytime. The more you share, the more accurate your assessment.</div>
+    <div id="finishRow" style="display:none;text-align:center;margin-top:14px">
+      <button class="btn" id="finishBtn" type="button" style="max-width:440px">Show my results now &rarr;</button>
+      <div style="font-size:11.5px;color:var(--muted);margin-top:7px">You can finish anytime. The more you share, the more accurate your assessment. Your results also appear on their own once you have covered enough.</div>
     </div>
     <div id="out"></div>
   </div></main>
@@ -276,10 +276,16 @@ async function turn(userText){
         'It sounds like there may be an active concern with a dog or a puppy. This assessment is educational and cannot assess a medical situation — '+
         'call your veterinarian or an emergency veterinary service now. Your answers are saved; come back when things are settled.</div>';
     }
-    if(d.ready_to_score){
+    // Decide if we have enough to score. NEVER depend only on the AI's ready_to_score flag:
+    // auto-finish once all 10 areas are covered OR after 10 answers, so results ALWAYS generate
+    // even if the AI keeps asking questions and the member never clicks a button.
+    var seenCount=0; for(var sk in SEEN){ if(SEEN[sk]) seenCount++; }
+    var userTurns=0; for(var mi=0;mi<MSGS.length;mi++){ if(MSGS[mi].role==='user') userTurns++; }
+    if(d.ready_to_score || seenCount>=10 || userTurns>=10){
       DONE=true; for(var q=1;q<=10;q++)SEEN[q]=true;
-      $('#composer').style.display='none';
+      if($('#composer'))$('#composer').style.display='none';
       rail();
+      BUSY=false;                 // CRITICAL: release the lock, or buildScorecard's BUSY-guard bails and nothing generates
       buildScorecard();
       return;
     }
