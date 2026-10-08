@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="robots" content="noindex">
+<title>The Business of Dog Breeding — BreedWise Business Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1b1b20;--surface:#111114;--panel:#26262c;--panel2:#2d2d35;--line:#34343c;--line2:#454551;
+    --ink:#f2efe8;--mid:#bab5aa;--muted:#88847c;--gold:#d6ba76;--gold2:#e8d39a;--gold-deep:#a9863f;--green:#8bbf85;
+    --disp:'Playfair Display',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif}
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%}
+  body{background:radial-gradient(1200px 700px at 50% -15%,#232019,#1b1b20 60%),var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow:hidden}
+  .gold{color:var(--gold)}
+  /* deck */
+  #deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;
+    padding:clamp(28px,5vh,70px) clamp(22px,6vw,90px);overflow:auto}
+  .slide.active{display:flex;animation:fade .4s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .slide .inner{max-width:1000px;width:100%;margin:auto}
+  .eyebrow{font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .eyebrow .t{color:var(--muted);font-weight:600;margin-left:6px}
+  h1.sh{font-family:var(--disp);font-weight:700;font-size:clamp(28px,4.6vw,52px);line-height:1.1;letter-spacing:-.4px;margin:18px 0 0}
+  h1.sh .u{color:var(--gold);font-style:italic;font-weight:600}
+  .lead{color:var(--mid);font-size:clamp(16px,2vw,20px);margin-top:18px;max-width:760px}
+  .keyline{font-family:var(--disp);font-style:italic;font-size:clamp(19px,2.6vw,27px);color:var(--gold2);line-height:1.35;margin-top:26px;padding-left:18px;border-left:3px solid var(--gold)}
+  /* title slide */
+  .title .brandrow{font-size:13px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .title h1{font-family:var(--disp);font-weight:800;font-size:clamp(40px,8vw,88px);line-height:1.02;letter-spacing:-1.2px;margin:20px 0 0}
+  .title .by{margin-top:22px;font-size:clamp(16px,2.2vw,20px);color:var(--ink)}
+  .title .by b{color:var(--gold)}
+  .title .desc{color:var(--mid);max-width:620px;margin:16px 0 0;font-size:clamp(15px,1.9vw,18px)}
+  /* cards */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px}
+  @media(max-width:760px){.two{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 24px}
+  .card .ct{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:9px}
+  .card p{font-size:15.5px;color:var(--mid);line-height:1.55}
+  .card ul{list-style:none;display:grid;gap:9px;margin-top:4px}
+  .card li{font-size:15px;color:var(--mid);padding-left:22px;position:relative;line-height:1.5}
+  .card li::before{content:"";position:absolute;left:3px;top:9px;width:6px;height:6px;background:var(--gold);border-radius:1px;transform:rotate(45deg)}
+  .preview{margin-top:22px;background:linear-gradient(170deg,rgba(214,186,118,.08),rgba(214,186,118,.02));border:1px solid rgba(214,186,118,.34);border-radius:14px;padding:16px 20px}
+  .preview .pl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:5px}
+  .preview p{font-size:15px;color:var(--mid)}
+  .ask{margin-top:20px;font-family:var(--disp);font-style:italic;font-size:clamp(17px,2.2vw,22px);color:var(--ink)}
+  .ask::before{content:"Leave them with: ";font-family:var(--sans);font-style:normal;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;display:block;margin-bottom:6px}
+  /* engine model */
+  .engine{display:flex;flex-direction:column;gap:12px;margin-top:26px}
+  .estep{display:flex;align-items:center;gap:16px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 20px}
+  .estep .en{flex:none;width:40px;height:40px;border-radius:11px;background:rgba(214,186,118,.12);border:1px solid rgba(214,186,118,.3);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:18px;font-weight:700}
+  .estep .ett{font-weight:700;font-size:16.5px}
+  .estep .eds{font-size:14px;color:var(--muted);margin-top:1px}
+  .estep .arr{margin:-20px 0 -20px 39px;color:var(--gold-deep);font-size:15px}
+  .ecap{margin-top:16px;font-size:14px;color:var(--muted);text-align:center;font-style:italic}
+  /* agenda / roadmap tables */
+  table{width:100%;border-collapse:collapse;margin-top:22px;font-size:14.5px}
+  th,td{border:1px solid var(--line);padding:11px 14px;text-align:left;vertical-align:top}
+  th{background:var(--panel);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  td b{color:var(--ink)}
+  td .tm{color:var(--gold);font-weight:700;white-space:nowrap}
+  /* purposes */
+  .four{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px}
+  @media(max-width:760px){.four{grid-template-columns:1fr 1fr}}
+  .pcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;text-align:center}
+  .pcard .ph{font-family:var(--disp);font-size:19px;font-weight:700;color:var(--gold)}
+  .pcard p{font-size:13.5px;color:var(--mid);margin-top:6px;line-height:1.45}
+  /* self-check */
+  .check{display:grid;gap:10px;margin-top:22px}
+  .crow{display:grid;grid-template-columns:1.4fr 1fr;gap:14px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px 18px}
+  @media(max-width:640px){.crow{grid-template-columns:1fr}}
+  .crow .q b{display:block;font-size:15.5px}
+  .crow .q span{font-size:13px;color:var(--muted)}
+  .opts{display:flex;gap:7px;justify-content:flex-end}
+  @media(max-width:640px){.opts{justify-content:flex-start}}
+  .opt{font-size:12.5px;font-weight:600;color:var(--mid);border:1px solid var(--line2);border-radius:20px;padding:6px 13px;cursor:pointer;user-select:none;white-space:nowrap}
+  .opt:hover{border-color:var(--gold)}
+  .opt.on{background:rgba(214,186,118,.14);border-color:var(--gold);color:var(--gold2)}
+  .closing{font-family:var(--disp);font-style:italic;font-size:clamp(20px,3vw,32px);line-height:1.3;color:var(--gold2);text-align:center;max-width:860px;margin:0 auto}
+  .qlist{list-style:none;display:grid;gap:12px;margin-top:22px}
+  .qlist li{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px;font-size:16px;color:var(--ink)}
+  .qlist li::before{content:"?";color:var(--gold);font-weight:800;margin-right:10px}
+  /* chrome */
+  #bar{position:fixed;left:0;top:0;height:3px;background:linear-gradient(90deg,var(--gold-deep),var(--gold2));z-index:30;transition:width .3s}
+  #hud{position:fixed;bottom:14px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:16px;z-index:30;pointer-events:none}
+  #dots{display:flex;gap:7px;pointer-events:auto}
+  #dots i{width:8px;height:8px;border-radius:50%;background:var(--line2);cursor:pointer;transition:all .2s}
+  #dots i.on{background:var(--gold);transform:scale(1.3)}
+  .navbtn{position:fixed;top:50%;transform:translateY(-50%);z-index:30;width:46px;height:46px;border-radius:50%;background:rgba(38,38,44,.7);border:1px solid var(--line2);color:var(--ink);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:.5;transition:opacity .2s}
+  .navbtn:hover{opacity:1;border-color:var(--gold)}
+  #prev{left:18px}#next{right:18px}
+  #count{position:fixed;top:16px;right:20px;z-index:30;font-size:12.5px;color:var(--muted);letter-spacing:.08em}
+  #count b{color:var(--gold)}
+  #nhint{position:fixed;top:16px;left:20px;z-index:30;font-size:11.5px;color:var(--muted);letter-spacing:.06em}
+  #nhint b{color:var(--gold);font-weight:700}
+  /* teleprompter */
+  #notes{position:fixed;left:0;right:0;bottom:0;z-index:40;max-height:42vh;overflow:auto;background:rgba(12,12,14,.97);border-top:2px solid var(--gold);padding:20px clamp(22px,6vw,70px) 24px;transform:translateY(100%);transition:transform .3s}
+  body.notes-on #notes{transform:none}
+  body.notes-on #hud{opacity:0}
+  #notes .nh{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+  #notes .nbody{font-size:16.5px;line-height:1.6;color:var(--ink);max-width:900px}
+  #notes .nbody p{margin:0 0 10px}
+  #notes .nbody .q{color:var(--gold2);font-style:italic;border-left:2px solid var(--gold);padding-left:14px;margin:10px 0}
+  .talk{display:none}
+  @media print{body{overflow:visible}.slide{position:static;display:flex!important;page-break-after:always;min-height:100vh}#bar,#hud,.navbtn,#count,#nhint,#notes{display:none}}
+</style>
+</head>
+<body>
+
+<div id="bar"></div>
+<div id="count"><b id="cNow">1</b> / <span id="cTot">14</span></div>
+<div id="nhint">Press <b>N</b> for speaker notes · <b>&larr; &rarr;</b> to navigate</div>
+<button class="navbtn" id="prev" aria-label="Previous">&#8249;</button>
+<button class="navbtn" id="next" aria-label="Next">&#8250;</button>
+
+<div id="deck">
+
+  <!-- 0 · TITLE -->
+  <section class="slide title">
+    <div class="inner">
+      <div class="brandrow">BreedWise · Business Foundations</div>
+      <h1>The Business of <span class="gold">Dog Breeding</span></h1>
+      <div class="by">A 40-minute live foundation with <b>Austin Shanks</b></div>
+      <p class="desc">Why great breeders struggle to grow a sustainable business, and the fundamentals you need to understand before trying to fix anything.</p>
+    </div>
+    <div class="talk"><p>Welcome. Today is entirely about the business side of dog breeding.</p><p>This is not a marketing tutorial, a sales training, or an implementation workshop. It is the foundation that makes those future trainings make sense.</p><p>By the end, you should be able to say: I understand the moving parts of my breeding business, I know which ones I am struggling with, and I know what we are going to learn next.</p></div>
+  </section>
+
+  <!-- 1 · THE ENGINE -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">The big picture</div>
+      <h1 class="sh">The BreedWise <span class="u">Business Engine</span></h1>
+      <div class="engine">
+        <div class="estep"><div class="en">1</div><div><div class="ett">Positioning + Content</div><div class="eds">Give the right people a reason to notice and trust you</div></div></div>
+        <div class="arr">&darr;</div>
+        <div class="estep"><div class="en">2</div><div><div class="ett">Traffic</div><div class="eds">Get discovered</div></div></div>
+        <div class="arr">&darr;</div>
+        <div class="estep"><div class="en">3</div><div><div class="ett">Lead Quality</div><div class="eds">Attract the right buyers</div></div></div>
+        <div class="arr">&darr;</div>
+        <div class="estep"><div class="en">4</div><div><div class="ett">Sales + Buyer Experience</div><div class="eds">Build trust, establish fit, and help qualified buyers decide</div></div></div>
+        <div class="arr">&darr;</div>
+        <div class="estep"><div class="en">5</div><div><div class="ett">Profitability + Operations</div><div class="eds">Know what you keep and build a business that functions consistently</div></div></div>
+      </div>
+      <div class="ecap">A simplified model, not a strict one-way funnel. Each part influences the others.</div>
+    </div>
+    <div class="talk"><p>Here is how a breeding business actually works, start to finish.</p><p>Positioning and content give the right people a reason to notice and trust you. Traffic gets you discovered. Lead quality decides whether the people finding you are the right buyers. Sales and buyer experience help those qualified buyers make a confident decision. And profitability and operations decide what you actually keep and whether the business can run consistently.</p><p>This is simplified on purpose. It is not a strict one-way funnel. Each part influences the others. If one area is weak, it affects everything downstream of it.</p></div>
+  </section>
+
+  <!-- 2 · AGENDA -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">Today, in 40 minutes</div>
+      <h1 class="sh">The flow</h1>
+      <table>
+        <tr><th style="width:120px">Time</th><th>Section</th><th>Purpose</th></tr>
+        <tr><td><span class="tm">0–4</span></td><td><b>The Business Behind the Breeder</b></td><td>Reframe the problem</td></tr>
+        <tr><td><span class="tm">4–9</span></td><td><b>Positioning</b></td><td>Who you serve and why they choose you</td></tr>
+        <tr><td><span class="tm">9–14</span></td><td><b>Content Creation</b></td><td>How buyers form their first impressions</td></tr>
+        <tr><td><span class="tm">14–19</span></td><td><b>Traffic</b></td><td>Visibility versus actual demand</td></tr>
+        <tr><td><span class="tm">19–24</span></td><td><b>Lead Quality</b></td><td>Why not every inquiry is an opportunity</td></tr>
+        <tr><td><span class="tm">24–29</span></td><td><b>Sales &amp; Buyer Experience</b></td><td>Where interest becomes a decision</td></tr>
+        <tr><td><span class="tm">29–33</span></td><td><b>Profitability</b></td><td>Revenue versus a sustainable business</td></tr>
+        <tr><td><span class="tm">33–36</span></td><td><b>Operations &amp; Systems</b></td><td>Why consistency matters</td></tr>
+        <tr><td><span class="tm">36–40</span></td><td><b>Program Assessment + Q&amp;A</b></td><td>Identify gaps and preview future modules</td></tr>
+      </table>
+    </div>
+    <div class="talk"><p>Here is where we are headed. Nine short sections, about forty minutes. Each one covers one part of the business: what it is, why it matters, and what we will go deeper on in a future module.</p></div>
+  </section>
+
+  <!-- 3 · SLIDE 1 -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">1 · The Business Behind the Breeder<span class="t">0–4 min</span></div>
+      <h1 class="sh">Being good at breeding dogs doesn't automatically make you good at <span class="u">running a breeding business</span>.</h1>
+      <div class="card" style="margin-top:24px"><div class="ct">The reframe</div><ul>
+        <li>Breeding skill and business skill are different.</li>
+        <li>More sales activity doesn't automatically mean better business performance.</li>
+        <li>Most business problems fall into identifiable categories.</li>
+        <li>You cannot prioritize improvement if you don't understand the components.</li>
+      </ul></div>
+      <div class="keyline">Before you can build a better business, you need to understand how your business works.</div>
+    </div>
+    <div class="talk"><p>I want to focus today entirely on the business side of dog breeding.</p><p>Because one of the biggest misconceptions in this industry is that if you produce great dogs, the business should somehow take care of itself.</p><p>But you can have an incredible breeding program and still struggle with getting attention, finding qualified buyers, making sales, understanding your numbers, and managing everything behind the scenes.</p><p>And the solution is not always to post more, run more ads, or get more inquiries. Sometimes the problem is that you do not understand which part of your business actually needs attention.</p><p>So today we are going to break down the major components of a breeding business: what they are, why they matter, and what we will cover in future modules.</p></div>
+  </section>
+
+  <!-- 4 · POSITIONING -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">2 · Positioning<span class="t">4–9 min</span></div>
+      <h1 class="sh">Being visible is not the same as <span class="u">being understood</span>.</h1>
+      <div class="two">
+        <div class="card"><div class="ct">What it is</div><p>How your program is perceived by the people you are trying to serve: what makes it relevant, credible, and different from other options.</p></div>
+        <div class="card"><div class="ct">Why it matters</div><ul>
+          <li>Buyers need to understand who your program is right for.</li>
+          <li>Without it, buyers compare you on price, location, or availability.</li>
+          <li>Strong positioning makes all your content more relevant.</li>
+          <li>It helps the wrong buyers self-select out.</li>
+        </ul></div>
+      </div>
+      <div class="preview"><div class="pl">Future module</div><p>How breeders clarify their ideal buyer, communicate their value, and establish a recognizable market position.</p></div>
+      <div class="ask">Can a potential buyer explain why your program is the right fit without you having to personally explain it?</div>
+    </div>
+    <div class="talk"><p>A lot of breeders think they have a marketing problem when they really have a positioning problem.</p><p>They are posting. They are getting seen. People are visiting their page. But the buyer cannot clearly understand why they should choose that program.</p><p>And when buyers do not understand the difference, what do they usually compare? Price. Location. Who has puppies available right now.</p><p>Your positioning shapes the entire conversation before someone ever messages you.</p></div>
+  </section>
+
+  <!-- 5 · CONTENT -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">3 · Content Creation<span class="t">9–14 min</span></div>
+      <h1 class="sh">Content isn't just something you post. It <span class="u">shapes how buyers perceive you</span>.</h1>
+      <p class="lead">The photos, videos, educational posts, stories, updates and testimonials that communicate your program to potential buyers. More content doesn't necessarily mean better content.</p>
+      <div class="four">
+        <div class="pcard"><div class="ph">Attention</div><p>Help people discover your program.</p></div>
+        <div class="pcard"><div class="ph">Education</div><p>Help buyers understand your standards, decisions and process.</p></div>
+        <div class="pcard"><div class="ph">Trust</div><p>Give credible reasons to feel confident in your program.</p></div>
+        <div class="pcard"><div class="ph">Action</div><p>Help interested people see the right next step.</p></div>
+      </div>
+      <div class="ask">Is your content attracting attention, or helping attract the right people?</div>
+    </div>
+    <div class="talk"><p>I see breeders get caught up in posting every day without stopping to think about what their content is actually doing.</p><p>A cute puppy video might get thousands of views. But what did those views accomplish? Did they help someone understand your program? Did they attract the type of buyer you want? Did they build trust?</p><p>I am not saying every post has to sell something. I am saying content should have a purpose. There are four broad purposes: attention, education, trust, and action.</p><p>Future module: content strategy, messaging, content types, and how to evaluate whether a piece of content is serving its intended purpose.</p></div>
+  </section>
+
+  <!-- 6 · TRAFFIC -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">4 · Traffic<span class="t">14–19 min</span></div>
+      <h1 class="sh">You can't convert buyers who <span class="u">never discover your program</span>.</h1>
+      <div class="two">
+        <div class="card"><div class="ct">What it is</div><p>The people who discover, visit or interact with your program through social media, search, referrals, your website and paid advertising.</p></div>
+        <div class="card"><div class="ct">Why it matters</div><ul>
+          <li>Without visibility, even a well-positioned program struggles to generate demand.</li>
+          <li>Different sources bring different audiences and buying intentions.</li>
+          <li>High reach doesn't necessarily mean high buyer demand.</li>
+          <li>Relying entirely on one source makes you vulnerable.</li>
+        </ul></div>
+      </div>
+      <div class="preview"><div class="pl">Future module</div><p>Organic visibility, traffic sources, paid versus unpaid reach, and which channels produce meaningful interest.</p></div>
+      <div class="ask">If your biggest social media account disappeared tomorrow, where would your next buyers come from?</div>
+    </div>
+    <div class="talk"><p>Traffic is simply about getting people to your business. Instagram. Facebook. Google. Your website. Referrals from previous puppy buyers.</p><p>But here is what I want you to understand: a hundred thousand views does not automatically mean you have a hundred thousand potential buyers.</p><p>There is a big difference between someone who enjoys watching puppy videos and someone actively looking for the right breeder.</p><p>So when we talk about traffic, we need to understand not just how many people are seeing you, but where they are coming from and what that visibility is actually producing.</p></div>
+  </section>
+
+  <!-- 7 · LEAD QUALITY -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">5 · Lead Quality<span class="t">19–24 min</span></div>
+      <h1 class="sh">More inquiries do not always mean <span class="u">more qualified buyers</span>.</h1>
+      <div class="two">
+        <div class="card"><div class="ct">What it is</div><p>How closely an interested person aligns with your program, expectations, requirements, timing, and ability to make a responsible purchase decision.</p></div>
+        <div class="card"><div class="ct">Why it matters</div><ul>
+          <li>Not every person who messages you is ready or suitable to buy.</li>
+          <li>Low-quality inquiries consume time without producing placements.</li>
+          <li>A few well-matched buyers can beat a large volume of casual interest.</li>
+          <li>Lead quality is shaped by positioning, content, and traffic sources.</li>
+        </ul></div>
+      </div>
+      <div class="preview"><div class="pl">Future module</div><p>Buyer qualification, understanding inquiry quality, and spotting where marketing attracts the wrong audience. Qualification is about fit and readiness, not pressuring people to buy.</p></div>
+      <div class="ask">Do you know how many of your inquiries are actually qualified, or do you just count messages?</div>
+    </div>
+    <div class="talk"><p>One of the most common things I hear breeders say is, I need more leads. And my question is: what kind of leads?</p><p>Because if you are getting fifty messages from people who are not a fit for your program, another fifty of those same messages might not solve anything.</p><p>We have to stop treating every inquiry like it is equal. The real goal is not just to get more people asking about puppies. It is to attract more of the people who are genuinely suited to your program.</p><p>And to be clear, qualification is about fit and readiness. It is not about pressuring anyone to buy.</p></div>
+  </section>
+
+  <!-- 8 · SALES -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">6 · Sales &amp; Buyer Experience<span class="t">24–29 min</span></div>
+      <h1 class="sh">Interest is not the same as a <span class="u">buying decision</span>.</h1>
+      <div class="two">
+        <div class="card"><div class="ct">What it is</div><p>The journey from a buyer's first inquiry to understanding the program, evaluating fit, building trust, and making an informed decision.</p></div>
+        <div class="card"><div class="ct">Why it matters</div><ul>
+          <li>Buyers need more than a price and an availability update.</li>
+          <li>Slow responses and inconsistent follow-up create friction.</li>
+          <li>A good process helps buyers decide confidently, without pressure.</li>
+          <li>Know where buyers disengage before assuming you need more traffic.</li>
+        </ul></div>
+      </div>
+      <div class="preview"><div class="pl">Future module</div><p>The buyer journey, communication, trust, follow-up, and why interested buyers do or don't move forward.</p></div>
+      <div class="ask">Can you explain what happens between someone sending their first message and making a decision?</div>
+    </div>
+    <div class="talk"><p>Imagine two breeders getting the exact same number of qualified inquiries.</p><p>One has a clear process. Buyers understand what happens next, what the program offers, and how decisions are made. The other just responds to messages whenever they have time and hopes the buyer comes back.</p><p>Same traffic. Same number of inquiries. Completely different buyer experience. That is why getting attention is only one part of the business.</p></div>
+  </section>
+
+  <!-- 9 · PROFITABILITY -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">7 · Profitability<span class="t">29–33 min</span></div>
+      <h1 class="sh">Revenue is not <span class="u">profit</span>.</h1>
+      <div class="two">
+        <div class="card"><div class="ct">What it is</div><p>Understanding how much your business generates, what it costs to operate, and what remains after accounting for the relevant expenses.</p></div>
+        <div class="card"><div class="ct">Why it matters</div><ul>
+          <li>High puppy prices don't automatically mean healthy margins.</li>
+          <li>Litter expenses are only part of the financial picture.</li>
+          <li>Year-round program costs and the value of your time matter.</li>
+          <li>Financial clarity drives more sustainable decisions.</li>
+        </ul></div>
+      </div>
+      <div class="preview"><div class="pl">Future module</div><p>Litter profit, program expenses, pricing economics, margins, and financial decision-making.</p></div>
+      <div class="ask">Do you know what your breeding business actually earns, or only what it brings in?</div>
+    </div>
+    <div class="talk"><p>If somebody tells me they brought in twenty thousand dollars from a litter, that tells me their revenue. It does not tell me how much they made.</p><p>What were the direct expenses? What did it cost to maintain the program throughout the year? What about their time?</p><p>Some breeders are making decisions based on how much money comes into their bank account instead of what the business actually keeps. And those are two very different numbers.</p></div>
+  </section>
+
+  <!-- 10 · OPERATIONS -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">8 · Operations &amp; Systems<span class="t">33–36 min</span></div>
+      <h1 class="sh">If you have to remember everything, <span class="u">you're the system</span>.</h1>
+      <div class="two">
+        <div class="card"><div class="ct">What it is</div><p>The processes and responsibilities that keep the business functioning: records, buyer communication, scheduling, finances, follow-up and day-to-day administration.</p></div>
+        <div class="card"><div class="ct">Why it matters</div><ul>
+          <li>Inconsistent processes lead to missed opportunities and stress.</li>
+          <li>As a program grows, relying on memory gets harder.</li>
+          <li>Repeatable operations deliver a consistent buyer experience.</li>
+          <li>Good systems create visibility into what's happening.</li>
+        </ul></div>
+      </div>
+      <div class="preview"><div class="pl">Future module</div><p>Business workflows, organization, tracking, buyer management, and the systems that support day-to-day operations.</p></div>
+    </div>
+    <div class="talk"><p>A lot of breeders have a business that functions because they personally hold everything together. They remember who messaged them. They remember who needs a follow-up. They know where all the information is.</p><p>But if they step away, does the business still have a clear process? That is what we are talking about when we talk about operations.</p><p>Not building some giant corporation. Just making the business more organized, consistent, and manageable.</p></div>
+  </section>
+
+  <!-- 11 · ASSESSMENT / SELF-CHECK -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">9 · Where does your business need attention?<span class="t">36–40 min</span></div>
+      <h1 class="sh">The Program Assessment helps you <span class="u">see the gaps</span>.</h1>
+      <div class="check" id="selfcheck">
+        <div class="crow"><div class="q"><b>Positioning</b><span>Can buyers understand who your program is for and why it matters?</span></div><div class="opts"><span class="opt">Yes</span><span class="opt">Partly</span><span class="opt">Not yet</span></div></div>
+        <div class="crow"><div class="q"><b>Content</b><span>Do you know what purpose your content serves?</span></div><div class="opts"><span class="opt">Yes</span><span class="opt">Partly</span><span class="opt">Not yet</span></div></div>
+        <div class="crow"><div class="q"><b>Traffic</b><span>Do you know where your prospective buyers come from?</span></div><div class="opts"><span class="opt">Yes</span><span class="opt">Partly</span><span class="opt">Not yet</span></div></div>
+        <div class="crow"><div class="q"><b>Lead quality</b><span>Can you distinguish qualified buyers from general interest?</span></div><div class="opts"><span class="opt">Yes</span><span class="opt">Partly</span><span class="opt">Not yet</span></div></div>
+        <div class="crow"><div class="q"><b>Sales</b><span>Do you understand what happens after someone inquires?</span></div><div class="opts"><span class="opt">Yes</span><span class="opt">Partly</span><span class="opt">Not yet</span></div></div>
+        <div class="crow"><div class="q"><b>Profitability</b><span>Do you know what you keep after the relevant costs?</span></div><div class="opts"><span class="opt">Yes</span><span class="opt">Partly</span><span class="opt">Not yet</span></div></div>
+        <div class="crow"><div class="q"><b>Operations</b><span>Are your business processes consistent and documented?</span></div><div class="opts"><span class="opt">Yes</span><span class="opt">Partly</span><span class="opt">Not yet</span></div></div>
+      </div>
+      <p class="lead" style="margin-top:16px">A discussion prompt, not a replacement for the assessment's actual scoring. The real diagnosis is your BreedWise Program Assessment.</p>
+    </div>
+    <div class="talk"><p>Here is what I want you to understand. Every part of your business has a job.</p><p>Positioning helps the right people understand your program. Content communicates that value. Traffic gets people to discover you. Lead quality tells you whether you are attracting the right people. Sales and buyer experience help those people make informed decisions. Profitability tells you whether the business is financially sustainable. And operations help everything function consistently.</p><p>If one of those areas is weak, it can affect everything else. That is why we are breaking these into individual modules instead of trying to teach you everything in one session.</p><p>Today is about understanding the business. The upcoming modules are where we start going deeper into each part. And the assessment helps you identify which areas deserve your attention.</p></div>
+  </section>
+
+  <!-- 12 · ROADMAP -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">What comes next</div>
+      <h1 class="sh">The module roadmap</h1>
+      <table>
+        <tr><th style="width:42%">Future module</th><th>What you'll understand</th></tr>
+        <tr><td><b>Positioning &amp; Ideal Buyers</b></td><td>Who you serve, what differentiates your program, and why buyers choose.</td></tr>
+        <tr><td><b>Content Creation &amp; Messaging</b></td><td>Different content purposes and how content influences trust and demand.</td></tr>
+        <tr><td><b>Traffic &amp; Visibility</b></td><td>Where prospective buyers come from and what meaningful visibility looks like.</td></tr>
+        <tr><td><b>Lead Quality &amp; Qualification</b></td><td>Why inquiry volume and buyer fit are different.</td></tr>
+        <tr><td><b>Sales &amp; Buyer Experience</b></td><td>The stages between inquiry and an informed purchase decision.</td></tr>
+        <tr><td><b>Litter Profitability &amp; Financial Clarity</b></td><td>Revenue, direct costs, overhead, margins and sustainable decisions.</td></tr>
+        <tr><td><b>Operations &amp; Business Systems</b></td><td>The processes that keep a breeding business organized and consistent.</td></tr>
+      </table>
+      <p class="lead" style="margin-top:14px;font-size:15px;color:var(--muted)">Direction, not fixed release dates. We build each part in its own module so it is taught properly.</p>
+    </div>
+    <div class="talk"><p>This is the direction of the curriculum. Each part of the engine becomes its own module so we can go deep instead of rushing everything into one session.</p><p>I am previewing the direction here, not promising exact release dates or claiming every module is already published.</p></div>
+  </section>
+
+  <!-- 13 · Q&A + CLOSE -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">Open it up</div>
+      <h1 class="sh">Questions</h1>
+      <ul class="qlist">
+        <li>Which part of your business do you understand the least right now?</li>
+        <li>Who has had a post get a lot of attention but very few serious inquiries?</li>
+        <li>Who is getting inquiries but isn't sure whether they're the right buyers?</li>
+        <li>Who knows exactly where their last ten buyer inquiries came from?</li>
+        <li>Which area do you think is costing your business the most right now, and why?</li>
+      </ul>
+      <div class="closing" style="margin-top:30px">"Most breeders think they need more traffic, more leads, or more sales. But until you understand how each part of your business works, you don't actually know what you need more of."</div>
+    </div>
+    <div class="talk"><p>Let us open it up. Use these to start the discussion.</p><p class="q">Most breeders think they need more traffic, more leads, or more sales. But until you understand how each part of your business works, you do not actually know what you need more of.</p><p>Delivery reminder: keep it on the what and the why. Do not start demonstrating ad campaigns, content calendars, sales scripts, CRM setups, or profit spreadsheets. Those belong in the dedicated modules.</p></div>
+  </section>
+
+</div>
+
+<div id="hud"><div id="dots"></div></div>
+
+<div id="notes"><div class="nh">Speaker notes · press N to hide</div><div class="nbody" id="notesBody"></div></div>
+
+<script>
+(function(){
+  var deck=document.getElementById('deck');
+  var slides=[].slice.call(deck.querySelectorAll('.slide'));
+  var N=slides.length, i=0;
+  var dots=document.getElementById('dots');
+  document.getElementById('cTot').textContent=N;
+  slides.forEach(function(_,k){ var d=document.createElement('i'); d.onclick=function(){go(k);}; dots.appendChild(d); });
+  var dotEls=[].slice.call(dots.children);
+  function render(){
+    slides.forEach(function(s,k){ s.classList.toggle('active',k===i); });
+    dotEls.forEach(function(d,k){ d.classList.toggle('on',k===i); });
+    document.getElementById('bar').style.width=((i)/(N-1)*100)+'%';
+    document.getElementById('cNow').textContent=i+1;
+    var talk=slides[i].querySelector('.talk');
+    document.getElementById('notesBody').innerHTML=talk?talk.innerHTML:'<p>No notes for this slide.</p>';
+    var app=slides[i].querySelector('.inner'); if(app)app.scrollTop=0;
+    slides[i].scrollTop=0;
+  }
+  function go(n){ i=Math.max(0,Math.min(N-1,n)); render(); }
+  window._go=go;
+  document.getElementById('prev').onclick=function(){go(i-1);};
+  document.getElementById('next').onclick=function(){go(i+1);};
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){ e.preventDefault(); go(i+1); }
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){ e.preventDefault(); go(i-1); }
+    else if(e.key==='Home'){ go(0); } else if(e.key==='End'){ go(N-1); }
+    else if(e.key==='n'||e.key==='N'){ document.body.classList.toggle('notes-on'); }
+    else if(e.key==='f'||e.key==='F'){ if(!document.fullscreenElement)document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen(); else document.exitFullscreen&&document.exitFullscreen(); }
+  });
+  // click zones (ignore clicks on interactive elements)
+  deck.addEventListener('click',function(e){
+    if(e.target.closest('.opt,.navbtn,#dots,a,button,table,.talk'))return;
+    var x=e.clientX, w=window.innerWidth;
+    if(x < w*0.32) go(i-1); else go(i+1);
+  });
+  // swipe
+  var sx=0,sy=0;
+  deck.addEventListener('touchstart',function(e){ sx=e.touches[0].clientX; sy=e.touches[0].clientY; },{passive:true});
+  deck.addEventListener('touchend',function(e){ var dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy; if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)){ go(dx<0?i+1:i-1); } });
+  // self-check poll (highlight only, one per row)
+  var sc=document.getElementById('selfcheck');
+  if(sc) sc.addEventListener('click',function(e){ var o=e.target.closest('.opt'); if(!o)return; var row=o.closest('.opts'); [].slice.call(row.children).forEach(function(x){x.classList.remove('on');}); o.classList.add('on'); });
+  render();
+})();
+</script>
+</body>
+</html>
