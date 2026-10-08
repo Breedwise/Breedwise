@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
-<meta name="build" content="1791478433">
-<script>window.__BV__='1791478433';(function(){try{fetch(location.pathname+'?_c='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){var m=t.match(/name="build" content="(\d+)"/);if(m&&m[1]&&m[1]!==window.__BV__){var k='rl_'+m[1];try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');}catch(e){}location.replace(location.pathname+'?v='+m[1]);}}).catch(function(){});}catch(e){}})();</script>
+<meta name="build" content="1791494996">
+<script>window.__BV__='1791494996';(function(){try{fetch(location.pathname+'?_c='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){var m=t.match(/name="build" content="(\d+)"/);if(m&&m[1]&&m[1]!==window.__BV__){var k='rl_'+m[1];try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');}catch(e){}location.replace(location.pathname+'?v='+m[1]);}}).catch(function(){});}catch(e){}})();</script>
 <title>BreedWise Program Assessment</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -279,12 +279,12 @@ async function turn(userText){
         'It sounds like there may be an active concern with a dog or a puppy. This assessment is educational and cannot assess a medical situation — '+
         'call your veterinarian or an emergency veterinary service now. Your answers are saved; come back when things are settled.</div>';
     }
-    // Decide if we have enough to score. NEVER depend only on the AI's ready_to_score flag:
-    // auto-finish once all 10 areas are covered OR after 10 answers, so results ALWAYS generate
-    // even if the AI keeps asking questions and the member never clicks a button.
+    // Only score when ALL 10 categories (both the business and breeding engines) have actually been
+    // covered, or the AI itself signals ready_to_score. Never truncate on turn count: the member must
+    // be asked every area so the results give a full business AND breeding analysis. The always-visible
+    // "Show my results" button is the manual override for anyone who wants to finish early.
     var seenCount=0; for(var sk in SEEN){ if(SEEN[sk]) seenCount++; }
-    var userTurns=0; for(var mi=0;mi<MSGS.length;mi++){ if(MSGS[mi].role==='user') userTurns++; }
-    if(d.ready_to_score || seenCount>=10 || userTurns>=10){
+    if(d.ready_to_score || seenCount>=10){
       DONE=true; for(var q=1;q<=10;q++)SEEN[q]=true;
       if($('#composer'))$('#composer').style.display='none';
       rail();
