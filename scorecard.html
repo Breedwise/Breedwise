@@ -154,6 +154,10 @@ main{padding:22px 0 60px}
       <textarea id="say" rows="2" placeholder="Type your answer…" aria-label="Your answer"></textarea>
       <button class="btn" id="send">Send</button>
     </div>
+    <div id="finishRow" style="display:none;text-align:center;margin-top:12px">
+      <button class="btn ghost" id="finishBtn" type="button">I'm done — show my results →</button>
+      <div style="font-size:11.5px;color:var(--muted);margin-top:6px">You can finish anytime. The more you share, the more accurate your assessment.</div>
+    </div>
     <div id="out"></div>
   </div></main>
   <div class="foot">
@@ -234,19 +238,18 @@ async function apiRetry(body,tries){
   }
   throw last;
 }
-// If the member has covered all 10 areas but scoring never auto-triggered, never leave them stuck.
+// A manual finish is ALWAYS available after the first exchange, so scoring never depends
+// on the AI flipping ready_to_score. No member can reach the end with no way to submit.
 function maybeForceScore(){
-  var n=0,k; for(k in SEEN)if(SEEN[k])n++;
-  var ex=document.getElementById('forceScore');
-  if(n>=10 && !DONE && !BUSY){
-    if(!ex){
-      var b=document.createElement('button'); b.id='forceScore'; b.className='btn'; b.type='button';
-      b.textContent='Get my results now →';
-      b.style.cssText='display:block;margin:16px auto 0';
-      b.onclick=function(){ DONE=true; for(var q=1;q<=10;q++)SEEN[q]=true; var c=$('#composer'); if(c)c.style.display='none'; this.remove(); rail(); buildScorecard(); };
-      $('#app').appendChild(b);
-    }
-  } else if(ex){ ex.remove(); }
+  var fr=document.getElementById('finishRow');
+  if(fr) fr.style.display=(MSGS.length>=2 && !DONE && !BUSY)?'':'none';
+}
+function finishNow(){
+  if(BUSY||DONE)return;
+  DONE=true; for(var q=1;q<=10;q++)SEEN[q]=true;
+  var c=$('#composer'); if(c)c.style.display='none';
+  var fr=document.getElementById('finishRow'); if(fr)fr.style.display='none';
+  rail(); buildScorecard();
 }
 // Safety net: capture ANY uncaught client error (the real "nothing happened" cause) with evidence,
 // and surface it visibly so a blank screen becomes a message the member can screenshot.
@@ -352,7 +355,7 @@ function renderCard(res){
 
 async function buildScorecard(){
   if(BUSY)return; BUSY=true;
-  var fs=document.getElementById('forceScore'); if(fs)fs.remove();
+  var fr=document.getElementById('finishRow'); if(fr)fr.style.display='none';
   thinking(true);
   try{
     var d=await apiRetry({action:'score',messages:MSGS,member_name:MFIRST,member_kennel:MKENNEL||KENNEL,member_email:MEMAIL},3);
@@ -384,6 +387,7 @@ function reset(){
 }
 
 $('#send').onclick=function(){var v=$('#say').value.trim(); if(v)turn(v);};
+$('#finishBtn').onclick=finishNow;
 $('#say').addEventListener('keydown',function(e){
   if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$('#send').click();}});
 $('#startOver').onclick=reset;
