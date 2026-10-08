@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
-<meta name="build" content="1791496768">
-<script>window.__BV__='1791496768';(function(){try{fetch(location.pathname+'?_c='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){var m=t.match(/name="build" content="(\d+)"/);if(m&&m[1]&&m[1]!==window.__BV__){try{if(sessionStorage.getItem('sc_active')==='1')return;}catch(e){}var k='rl_'+m[1];try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');}catch(e){}location.replace(location.pathname+'?v='+m[1]);}}).catch(function(){});}catch(e){}})();</script>
+<meta name="build" content="1791497095">
+<script>window.__BV__='1791497095';(function(){try{fetch(location.pathname+'?_c='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){var m=t.match(/name="build" content="(\d+)"/);if(m&&m[1]&&m[1]!==window.__BV__){try{if(sessionStorage.getItem('sc_active')==='1')return;}catch(e){}var k='rl_'+m[1];try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');}catch(e){}location.replace(location.pathname+'?v='+m[1]);}}).catch(function(){});}catch(e){}})();</script>
 <title>BreedWise Program Assessment</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -215,12 +215,19 @@ function thinking(on){
 }
 
 async function api(body){
-  var r=await fetch(FN,{method:'POST',
-    headers:{'content-type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},
-    body:JSON.stringify(Object.assign({passcode:CODE},body))});
-  var d=await r.json().catch(function(){return {error:'The server returned something unreadable.'};});
-  if(!r.ok||d.error)throw new Error(d.error||('Request failed ('+r.status+')'));
-  return d;
+  // Hard timeout so a hung request can never leave the member on an endless "thinking…" spinner.
+  // The scoring call gets longer than a chat turn. On timeout the fetch aborts -> apiRetry retries.
+  var ctrl, to;
+  try{ ctrl=new AbortController(); to=setTimeout(function(){ try{ctrl.abort();}catch(e){} }, (body&&body.action==='score')?150000:55000); }catch(e){ ctrl=null; }
+  try{
+    var r=await fetch(FN,{method:'POST',
+      headers:{'content-type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},
+      body:JSON.stringify(Object.assign({passcode:CODE},body)), signal:ctrl?ctrl.signal:undefined});
+    var d=await r.json().catch(function(){return {error:'The server returned something unreadable.'};});
+    if(!r.ok||d.error)throw new Error(d.error||('Request failed ('+r.status+')'));
+    return d;
+  }catch(e){ if(e&&e.name==='AbortError')throw new Error('The request timed out. Please try again.'); throw e; }
+  finally{ if(to)clearTimeout(to); }
 }
 
 // Fire-and-forget failure logging, so an intermittent "nothing happened" is never invisible again.
@@ -427,10 +434,10 @@ function restoreState(){
   $('#thread').innerHTML='';
   MSGS.forEach(function(m){ if(m&&m.content) bubble(m.role==='user'?'user':'assistant', m.content); });
   rail();
-  if(DONE && s.result){
-    LAST_RESULT=s.result;
+  if(DONE){
     $('#thread').style.display='none'; $('#composer').style.display='none';
-    renderCard(s.result);
+    if(s.result){ LAST_RESULT=s.result; renderCard(s.result); }
+    else { rail(); buildScorecard(); }     // scoring was interrupted by the reload; finish it now
   }else{
     $('#thread').style.display=''; $('#composer').style.display='';
     maybeForceScore();
