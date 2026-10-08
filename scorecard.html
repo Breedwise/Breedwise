@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
-<meta name="build" content="1791494996">
-<script>window.__BV__='1791494996';(function(){try{fetch(location.pathname+'?_c='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){var m=t.match(/name="build" content="(\d+)"/);if(m&&m[1]&&m[1]!==window.__BV__){var k='rl_'+m[1];try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');}catch(e){}location.replace(location.pathname+'?v='+m[1]);}}).catch(function(){});}catch(e){}})();</script>
+<meta name="build" content="1791496768">
+<script>window.__BV__='1791496768';(function(){try{fetch(location.pathname+'?_c='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){var m=t.match(/name="build" content="(\d+)"/);if(m&&m[1]&&m[1]!==window.__BV__){try{if(sessionStorage.getItem('sc_active')==='1')return;}catch(e){}var k='rl_'+m[1];try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');}catch(e){}location.replace(location.pathname+'?v='+m[1]);}}).catch(function(){});}catch(e){}})();</script>
 <title>BreedWise Program Assessment</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -182,7 +182,7 @@ var sb=window.supabase.createClient(SB_URL,SB_KEY);
 var CATS=['Demand','Brand & Positioning','Social Media & Content','Buyer Experience & Sales','Pricing',
           'Profitability','Breeding & Reproductive Prep','Whelping & Neonatal','Data & Recordkeeping','Operations & Systems'];
 var CODE='', MSGS=[], CAT=1, BUSY=false, DONE=false, KENNEL='', SEEN={}, FOCUS='';
-var MFIRST='', MEMAIL='', MKENNEL='';
+var MFIRST='', MEMAIL='', MKENNEL='', LAST_RESULT=null;
 
 function $(s){return document.querySelector(s);}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){
@@ -300,6 +300,7 @@ async function turn(userText){
   }finally{
     BUSY=false; if($('#send'))$('#send').disabled=false; if($('#say')){$('#say').value='';$('#say').focus();}
     maybeForceScore();
+    saveState();
   }
 }
 
@@ -370,9 +371,11 @@ async function buildScorecard(){
     var d=await apiRetry({action:'score',messages:MSGS,member_name:MFIRST,member_kennel:MKENNEL||KENNEL,member_email:MEMAIL},3);
     thinking(false);
     if(!d||!d.result){ throw new Error('The results came back empty.'); }
+    LAST_RESULT=d.result;
     $('#thread').style.display='none';
     rail();
     renderCard(d.result);
+    saveState();
   }catch(e){
     thinking(false);
     logFail('score',e);
@@ -389,7 +392,8 @@ async function buildScorecard(){
 }
 
 function reset(){
-  MSGS=[];CAT=1;DONE=false;SEEN={};FOCUS='';
+  MSGS=[];CAT=1;DONE=false;SEEN={};FOCUS='';LAST_RESULT=null;
+  clearState();
   $('#thread').innerHTML='';$('#thread').style.display='';$('#out').innerHTML='';$('#vet').innerHTML='';
   $('#composer').style.display='';
   rail(); turn('');
@@ -401,6 +405,40 @@ $('#say').addEventListener('keydown',function(e){
   if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$('#send').click();}});
 $('#startOver').onclick=reset;
 
+/* ---- resume support: the assessment survives ANY reload (mobile tab eviction, an accidental
+   refresh, a network blip, or an app update). The whole conversation is saved as you go and
+   restored on reopen, so nobody is ever thrown back to the first question. ---- */
+var STATE_KEY='bw-scorecard-state';
+function saveState(){
+  try{
+    sessionStorage.setItem('sc_active',(MSGS.length>0 && !DONE)?'1':'0');
+    localStorage.setItem(STATE_KEY,JSON.stringify({v:1,ts:Date.now(),MSGS:MSGS,CAT:CAT,DONE:DONE,SEEN:SEEN,FOCUS:FOCUS,KENNEL:KENNEL,MFIRST:MFIRST,MEMAIL:MEMAIL,MKENNEL:MKENNEL,result:(DONE?LAST_RESULT:null)}));
+  }catch(e){}
+}
+function clearState(){ try{localStorage.removeItem(STATE_KEY);sessionStorage.setItem('sc_active','0');}catch(e){} }
+function restoreState(){
+  var raw; try{raw=localStorage.getItem(STATE_KEY);}catch(e){return false;}
+  if(!raw)return false;
+  var s; try{s=JSON.parse(raw);}catch(e){return false;}
+  if(!s||!Array.isArray(s.MSGS)||!s.MSGS.length)return false;
+  if(Date.now()-(s.ts||0)>12*3600*1000){ clearState(); return false; }   // older than 12h, start fresh
+  MSGS=s.MSGS; CAT=s.CAT||1; DONE=!!s.DONE; SEEN=s.SEEN||{}; FOCUS=s.FOCUS||'';
+  KENNEL=s.KENNEL||KENNEL; MFIRST=s.MFIRST||MFIRST; MEMAIL=s.MEMAIL||MEMAIL; MKENNEL=s.MKENNEL||MKENNEL;
+  $('#thread').innerHTML='';
+  MSGS.forEach(function(m){ if(m&&m.content) bubble(m.role==='user'?'user':'assistant', m.content); });
+  rail();
+  if(DONE && s.result){
+    LAST_RESULT=s.result;
+    $('#thread').style.display='none'; $('#composer').style.display='none';
+    renderCard(s.result);
+  }else{
+    $('#thread').style.display=''; $('#composer').style.display='';
+    maybeForceScore();
+    if($('#say'))$('#say').focus();
+  }
+  return true;
+}
+
 async function openApp(){
   // Member tool: no opt-in. Identity comes from the CRM/Skool link, e.g.
   // scorecard.html?email=sarah@kennel.com&name=Sarah%20Jones  (optional).
@@ -410,6 +448,7 @@ async function openApp(){
     MKENNEL=(p.get('kennel')||'').trim(); if(MKENNEL)KENNEL=MKENNEL;
   }catch(e){}
   $('#gate').style.display='none'; $('#app').style.display='block';
+  if(restoreState()) return;              // resume an in-progress or completed assessment
   rail(); await turn('');
 }
 $('#enter').onclick=async function(){
