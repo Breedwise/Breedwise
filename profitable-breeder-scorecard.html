@@ -380,7 +380,7 @@ function renderLanding(){
   '<div class="center fade">'
    +'<span class="eyebrow">Free · 19 quick questions · about 4 minutes</span>'
    +'<h1>Working harder every litter, but the program still <span class="u">isn\'t paying off</span>?</h1>'
-   +'<p class="lead">Answer 19 quick questions to find out why. The scorecard measures the five areas that decide whether a breeding program is profitable, and gives you your first three moves for the next 90 days.</p>'
+   +'<p class="lead">Answer 19 quick questions to find out why. The scorecard measures the five areas that decide whether a breeding program is profitable, and shows you your top priorities and where your program is leaking.</p>'
    +'<button class="cta" id="startBtn">Start the scorecard</button>'
    +'<div class="undercta">100% free. About 4 minutes. Your personal results and next steps appear on screen the moment you finish.</div>'
   +'</div>'
@@ -388,7 +388,7 @@ function renderLanding(){
   +'<div class="card"><div class="how">'
     +'<div class="row"><div class="n">1</div><div class="t"><b>Answer:</b> 19 questions; most are yes or no, and "Not sure" is always an option.</div></div>'
     +'<div class="row"><div class="n">2</div><div class="t"><b>See your score:</b> an overall score plus a score for each of the five areas.</div></div>'
-    +'<div class="row"><div class="n">3</div><div class="t"><b>Get your first three moves:</b> your top priorities for the next 90 days, plus every gap explained.</div></div>'
+    +'<div class="row"><div class="n">3</div><div class="t"><b>See where you stand:</b> your top priorities for the next 90 days and every gap holding your program back.</div></div>'
   +'</div></div>'
   +'<div class="section-title center">The five areas</div>'
   +'<div class="card"><div class="seclist">'
@@ -518,42 +518,58 @@ function renderResults(){
   var strengths=BP.filter(isBest);
   var gapSecs=[1,2,3,4,5].filter(function(s){return secScore(s)<3;}).sort(function(a,b){return secScore(a)-secScore(b)||a-b;});
 
+  // Personalized "why join" built from their own answers. We name WHAT is wrong (urgency),
+  // but withhold the HOW (no DIY), and make the reason to join specific to them.
+  var seg=segment();
+  var closing = pct>=70 ? "Your foundation is strong. The work now is turning it into pricing power and a waitlist that sells every litter before it is born."
+    : pct>=40 ? "You are closer than you think. A few systems, run consistently, are what separate a solid program from a premium, profitable one."
+    : "At your stage the fastest money is in getting these foundations right once, instead of relearning them litter after litter.";
+  var whyJoin = (OBSTACLE[A.q18]||"")+" The gaps below show you where your program is leaking. What they do not show is the exact sequence to close them without guessing. "+closing;
+  var fitLine = seg==='hot' ? "You told us you are ready to invest in getting this right. This is the room where that decision pays off fastest."
+    : seg==='warm' ? "You are at the point where the right structure turns effort into results, and that is exactly what this gives you."
+    : "Your top priorities above are the start. The Profitable Breeder gives you the framework and the people to see them through.";
+
   var html='<div class="fade">';
   html+='<h1 class="center" style="margin-top:4px">'+esc(A.first)+', here\'s where your program stands.</h1>';
   html+='<div class="scorewrap">'+ring(pct)
     +'<div class="band">'+band.label+'</div><p class="bandmsg">'+band.msg+'</p>'
     +'<p class="underscore">'+UNDERSCORE+'</p></div>';
-  html+='<div class="section-title">Your 90-day starting point</div><div class="card startpoint"><p class="p">'+sp+'</p>';
-  if(moves.length){
-    html+='<div class="moves">';
-    moves.forEach(function(Q,i){html+='<div class="move"><div class="mi">'+(i+1)+'</div><div class="mt"><b>'+Q.gap.title+'</b><span>'+Q.gap.win+'</span></div></div>';});
-    html+='</div><p class="bridgeline">Want these moves turned into a full plan, with breeders working on the same thing?</p>'
-      +'<a class="cta" href="'+TPB_URL+'" target="_blank" rel="noopener">Join The Profitable Breeder &rarr;</a>';
-  }
-  html+='</div>';
+
   html+='<div class="section-title">Your five areas</div><div class="secgrid">';
   for(var s=1;s<=5;s++){var ss=secScore(s);var dots='';for(var d=0;d<3;d++)dots+='<span class="d'+(d<ss?' on':'')+'"></span>';
     html+='<div class="sc"><div class="dots">'+dots+'</div><div class="nm">'+secName(s)+'</div><div class="lb">'+SECMSG[ss].label+'</div></div>';}
   html+='</div>';
+
   if(strengths.length){
     html+='<div class="section-title">Already in place</div><div class="chips">';
     strengths.forEach(function(Q){html+='<span class="chip">'+Q.strength+'</span>';});
     html+='</div><p class="subtle">These habits are already at the level a premium program needs. Keep them.</p>';
   }
-  if(gapSecs.length){
-    html+='<div class="section-title">Your gaps, area by area</div>';
-    gapSecs.forEach(function(s){var ss=secScore(s),sm=SECMSG[ss];
-      html+='<div class="stageblock"><div class="stagehead"><div class="k">Area '+s+' · '+ss+' of 3 in place</div>'
-        +'<div class="nm">'+secName(s)+': <em>'+sm.label+'</em></div>'+(sm.msg?'<div class="sm">'+sm.msg+'</div>':'')+'</div>';
-      BP.filter(function(Q){return Q.sec===s&&isGap(Q);}).forEach(function(Q){html+=gapCard(Q);});
-      html+='</div>';});
+
+  // Top priorities: name WHAT to fix and what it is costing. The HOW stays inside the program.
+  html+='<div class="section-title">Your 90-day starting point</div><div class="card startpoint"><p class="p">'+sp+'</p>';
+  if(moves.length){
+    html+='<div class="moves">';
+    moves.forEach(function(Q,i){html+='<div class="move"><div class="mi">'+(i+1)+'</div><div class="mt"><b>'+Q.gap.title+'</b><span>'+(Q.gap.cost||'')+'</span></div></div>';});
+    html+='</div>';
   }
-  html+='<div class="section-title">Your next step</div><div class="card">'
-    +'<p class="bandmsg" style="text-align:left;color:var(--ink);margin:0 0 10px">'+OBSTACLE[A.q18]+'</p>'
-    +'<p class="bandmsg" style="text-align:left;margin:0 0 4px">'+BRIDGE+'</p>'
+  html+='</div>';
+
+  // Where you are leaking: name every gap (urgency), withhold the fixes (no DIY).
+  if(gaps.length){
+    html+='<div class="section-title">Where your program is leaking</div><div class="card">';
+    html+='<p class="p" style="margin-top:0">You have '+gaps.length+' gap'+(gaps.length===1?'':'s')+' across your five areas. Each one is quietly costing you buyers, margin, or time. Here is what they are.</p>';
+    gaps.forEach(function(Q){html+='<div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--line);font-size:14.5px;color:var(--mid)"><span style="color:var(--gold);font-weight:700;line-height:1.5">&bull;</span><span>'+Q.gap.title+'</span></div>';});
+    html+='<p class="subtle" style="margin-top:12px">Your scorecard shows you <b style="color:var(--ink)">what</b> to fix. The <b style="color:var(--ink)">how</b> for each one, the exact moves, scripts and numbers, is what you get inside The Profitable Breeder.</p>';
+    html+='</div>';
+  }
+
+  // Personalized reason to join, from their answers.
+  html+='<div class="section-title">Why The Profitable Breeder is your next move</div><div class="card">'
+    +'<p class="bandmsg" style="text-align:left;color:var(--ink);margin:0 0 12px">'+whyJoin+'</p>'
     +'<div class="pcard"><div class="tag">Recommended for you</div><h3>The Profitable Breeder</h3>'
-    +'<p class="desc">Get your program ready to scale with a clearer plan: the 90-day Profitable Breeder Blueprint, weekly live sessions, and business, sales and breeding education, in a community of serious breeders.</p>'
-    +'<p class="fit">Your three moves above are the start. The Profitable Breeder gives you the framework and the people to see them through.</p>'
+    +'<p class="desc">Your program ready to scale with a clearer plan: the 90-day Profitable Breeder Blueprint, weekly live sessions, and business, sales and breeding education, in a community of serious breeders.</p>'
+    +'<p class="fit">'+fitLine+'</p>'
     +'<a class="cta" href="'+TPB_URL+'" target="_blank" rel="noopener">See what\'s inside The Profitable Breeder &rarr;</a></div></div>';
   html+='<div class="retake"><button class="cta ghost" id="retake">Retake the scorecard</button></div>';
   html+='<p class="subtle center" style="max-width:560px;margin:18px auto 0">An educational self-assessment of how your program runs. Not financial, legal or veterinary advice.</p>';
