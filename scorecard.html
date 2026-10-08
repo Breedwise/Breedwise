@@ -216,12 +216,49 @@ async function api(body){
   return d;
 }
 
+// Fire-and-forget failure logging, so an intermittent "nothing happened" is never invisible again.
+function logFail(stage,err){
+  try{
+    fetch(SB_URL+'/functions/v1/log-submission',{method:'POST',keepalive:true,headers:{'content-type':'application/json'},
+      body:JSON.stringify({tool:'feedback',tool_label:'Tool Error',member_email:MEMAIL||'',member_name:MFIRST||KENNEL||'',
+        summary:'[TOOL-ERROR] program-scorecard '+stage+': '+((err&&err.message)||err||'unknown'),
+        meta:{kind:'tool-error',tool:'program-scorecard',stage:stage,error:String((err&&err.message)||err||''),seen:Object.keys(SEEN).length,ua:navigator.userAgent}})}).catch(function(){});
+  }catch(e){}
+}
+// Retry transient failures (network blip, 5xx, Anthropic overload) before giving up.
+async function apiRetry(body,tries){
+  var last; tries=tries||3;
+  for(var i=0;i<tries;i++){
+    try{ return await api(body); }
+    catch(e){ last=e; if(i<tries-1){ await new Promise(function(r){setTimeout(r,800*(i+1));}); } }
+  }
+  throw last;
+}
+// If the member has covered all 10 areas but scoring never auto-triggered, never leave them stuck.
+function maybeForceScore(){
+  var n=0,k; for(k in SEEN)if(SEEN[k])n++;
+  var ex=document.getElementById('forceScore');
+  if(n>=10 && !DONE && !BUSY){
+    if(!ex){
+      var b=document.createElement('button'); b.id='forceScore'; b.className='btn'; b.type='button';
+      b.textContent='Get my results now →';
+      b.style.cssText='display:block;margin:16px auto 0';
+      b.onclick=function(){ DONE=true; for(var q=1;q<=10;q++)SEEN[q]=true; var c=$('#composer'); if(c)c.style.display='none'; this.remove(); rail(); buildScorecard(); };
+      $('#app').appendChild(b);
+    }
+  } else if(ex){ ex.remove(); }
+}
+// Safety net: capture ANY uncaught client error (the real "nothing happened" cause) with evidence.
+var _scErrOnce=false;
+window.addEventListener('error',function(ev){ if(_scErrOnce)return; _scErrOnce=true; logFail('window.onerror',(ev&&(ev.error||ev.message))||'error'); });
+window.addEventListener('unhandledrejection',function(ev){ if(_scErrOnce)return; _scErrOnce=true; logFail('unhandledrejection',(ev&&ev.reason)||'rejection'); });
+
 async function turn(userText){
   if(BUSY)return; BUSY=true; $('#send').disabled=true;
   if(userText){MSGS.push({role:'user',content:userText});bubble('user',userText);}
   thinking(true);
   try{
-    var d=await api({action:'chat',messages:MSGS});
+    var d=await apiRetry({action:'chat',messages:MSGS},2);
     thinking(false);
     MSGS.push({role:'assistant',content:d.reply});
     bubble('assistant',d.reply);
@@ -244,9 +281,12 @@ async function turn(userText){
     rail();
   }catch(e){
     thinking(false);
+    logFail('chat',e);
     bubble('assistant','Something went wrong: '+e.message+'\n\nTry sending that again.');
+  }finally{
+    BUSY=false; if($('#send'))$('#send').disabled=false; if($('#say')){$('#say').value='';$('#say').focus();}
+    maybeForceScore();
   }
-  BUSY=false; $('#send').disabled=false; $('#say').value=''; $('#say').focus();
 }
 
 function bar(n){
@@ -310,18 +350,28 @@ function renderCard(res){
 
 async function buildScorecard(){
   if(BUSY)return; BUSY=true;
+  var fs=document.getElementById('forceScore'); if(fs)fs.remove();
   thinking(true);
   try{
-    var d=await api({action:'score',messages:MSGS,member_name:MFIRST,member_kennel:MKENNEL||KENNEL,member_email:MEMAIL});
+    var d=await apiRetry({action:'score',messages:MSGS,member_name:MFIRST,member_kennel:MKENNEL||KENNEL,member_email:MEMAIL},3);
     thinking(false);
+    if(!d||!d.result){ throw new Error('The results came back empty.'); }
     $('#thread').style.display='none';
     rail();
-    renderCard(d.result||{});
+    renderCard(d.result);
   }catch(e){
     thinking(false);
-    bubble('assistant','I couldn’t build the assessment: '+e.message+'\n\nReassess in a moment — your answers are saved.');
+    logFail('score',e);
+    // Never leave the member on a blank screen: show a visible, retryable error in the results area.
+    $('#out').innerHTML='<div class="block" style="text-align:center">'+
+      '<h3>We could not load your results just now</h3>'+
+      '<p style="color:var(--mid)">Your answers are saved. This was a temporary issue ('+esc(e.message||'unknown')+').</p>'+
+      '<button class="btn" id="retryScore" type="button" style="margin-top:12px">Try again →</button></div>';
+    $('#out').scrollIntoView({behavior:'smooth',block:'start'});
+    var rb=document.getElementById('retryScore'); if(rb)rb.onclick=function(){ $('#out').innerHTML=''; buildScorecard(); };
+  }finally{
+    BUSY=false;
   }
-  BUSY=false;
 }
 
 function reset(){

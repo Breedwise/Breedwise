@@ -501,6 +501,20 @@ function catTotal(k){if(isFull()){var t=0;DIRECT[k].items.forEach(function(it){t
 function puppySales(){if(isFull()){var t=0;document.querySelectorAll('#puppyRows .puppy-row').forEach(function(r){t+=(parseFloat(r.querySelector('.pPrice').value)||0)-(parseFloat(r.querySelector('.pDiscount').value)||0);});return t;}return n('qPuppySales');}
 function puppyPrices(){var a=[];document.querySelectorAll('#puppyRows .puppy-row').forEach(function(r){var v=(parseFloat(r.querySelector('.pPrice').value)||0)-(parseFloat(r.querySelector('.pDiscount').value)||0);if(v>0)a.push(v);});return a;}
 
+/* ---- failure capture: never let a silent client error hide "results not populating" ---- */
+function lsLogFail(stage,err){
+  try{
+    var em=''; var en=document.getElementById('saveEmail'); if(en)em=(en.value||'').trim().toLowerCase();
+    fetch('https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/log-submission',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({tool:'feedback',tool_label:'Tool Error',member_email:em,
+        summary:'[TOOL-ERROR] litter-snapshot '+stage+': '+((err&&err.message)||err||'unknown'),
+        meta:{kind:'tool-error',tool:'litter-snapshot',stage:stage,error:String((err&&(err.message||(err.reason&&err.reason.message)))||err||''),ua:navigator.userAgent}})}).catch(function(){});
+  }catch(e){}
+}
+var _lsErrOnce=false;
+window.addEventListener('error',function(ev){ if(_lsErrOnce)return; _lsErrOnce=true; lsLogFail('window.onerror',(ev&&(ev.error||ev.message))||'error'); });
+window.addEventListener('unhandledrejection',function(ev){ if(_lsErrOnce)return; _lsErrOnce=true; lsLogFail('unhandledrejection',(ev&&ev.reason)||'rejection'); });
+
 /* ---------- compute ---------- */
 function compute(){
   var full=isFull();
