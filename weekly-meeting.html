@@ -124,11 +124,11 @@
 
 <div class="wrap" id="app" style="display:none">
 
-  <!-- CONSTRAINT -->
+  <!-- Q4 NORTH STAR -->
   <div class="constraint">
-    <div class="eyebrow">The one thing this quarter</div>
-    <div class="q">$30k → <b>$100k / month</b>. The bottleneck is <b>show‑rate · qualifying leads before the closing call · churn · delivery</b> — not more leads.</div>
-    <div class="b">Everything below earns its place by moving that. If it doesn't, it's backlog — not meeting time.</div>
+    <div class="eyebrow">Q4 · the one number</div>
+    <div class="q"><b>$100k / month</b> in recurring revenue — through member success, sales, marketing &amp; fulfillment.</div>
+    <div class="b">If an item doesn't move one of those four pillars — or a Q4 goal below — it's backlog, not meeting time.</div>
   </div>
 
   <!-- 1. ENERGY & MINDSET -->
@@ -144,22 +144,37 @@
     </div>
   </section>
 
+  <!-- MEMBER SPOTLIGHT -->
+  <section class="s" id="s-spot">
+    <div class="h"><h2>Member Spotlight</h2><span class="sub">One member to celebrate &amp; encourage together this week.</span><span class="bud">3 min</span></div>
+    <div class="grid g3">
+      <div><label class="fl">Member of the week</label><input class="f" data-mp="spot_member" placeholder="Who are we highlighting?"></div>
+      <div><label class="fl">Their win / progress</label><input class="f" data-mp="spot_win" placeholder="What they did or achieved"></div>
+      <div><label class="fl">Encouragement / shout‑out</label><input class="f" data-mp="spot_note" placeholder="How we'll lift them up in the group"></div>
+    </div>
+  </section>
+
+  <!-- Q4 GOALS -->
+  <section class="s" id="s-goals">
+    <div class="h"><h2>Q4 Goals</h2><span class="sub">The four outcomes this quarter — status + this week's move.</span><span class="bud">8 min</span></div>
+    <div id="goalsWrap"></div>
+  </section>
+
   <!-- 2. SCOREBOARD -->
   <section class="s" id="s-score">
-    <div class="h"><h2>Scoreboard</h2><span class="sub">Sales = you enter · Community = live from the OS.</span><span class="bud">6 min</span></div>
-    <div class="divlabel">Sales &amp; conversion</div>
-    <div class="grid g3" id="salesKpis"></div>
-    <div class="divlabel" style="margin-top:14px">Cash &amp; delivery</div>
-    <div class="grid g3" id="cashKpis"></div>
+    <div class="h"><h2>Scoreboard</h2><span class="sub">You enter the numbers · Community is live from the OS.</span><span class="bud">6 min</span></div>
+    <div class="divlabel">Recurring revenue</div>
+    <div class="grid g3" id="revKpis"></div>
+    <div class="divlabel" style="margin-top:14px">Delivery &amp; cash</div>
+    <div class="grid g3" id="delivKpis"></div>
     <div class="divlabel" style="margin-top:14px">Community <span class="badge-auto">AUTO · OS</span></div>
     <div class="grid g3" id="commKpis"></div>
   </section>
 
   <!-- 3. ROCKS -->
   <section class="s" id="s-rocks">
-    <div class="h"><h2>The 4 Rocks</h2><span class="sub">on‑track / off‑track / done. If off‑track → one blocker + one ask.</span><span class="bud">15 min</span></div>
+    <div class="h"><h2>Q4 Focus · the four pillars</h2><span class="sub">Member success · sales · marketing · fulfillment. On‑track / off‑track / done → one blocker + one ask.</span><span class="bud">15 min</span></div>
     <div id="rocksWrap"></div>
-    <div class="kpi" style="border-color:var(--gold-mid);margin-top:4px"><div class="n" style="min-height:0">⚑ Parked big bet — needs a decision, not a rock (yet)</div><div style="font-size:13px;color:var(--mid);margin-top:6px"><b>Six‑Figure Breeder Summit + dog show (Oct).</b> Don't add it as a rock until something comes off. Decision goes in the log below.</div></div>
   </section>
 
   <!-- 4. DECISIONS -->
@@ -187,23 +202,28 @@
 const SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co', SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
 const sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,detectSessionInUrl:true}});
 const $=s=>document.querySelector(s);
-const ROSTER=['Austin','Jennifer','Madison','Yasmin','Derek','Jake','Regina'];
+const ROSTER=['Austin','Jennifer','Yasmin','Regina','Emmanuel'];
 const ROCKS=[
- {t:'Convert the existing pipeline',who:'Austin · Jake · Yas',dod:'Nurture + no‑show + good‑fit follow‑up sequences live; qualified bookings & closes climbing.'},
- {t:'Lock cash collection',who:'Jennifer',dod:'Every recurring member on auto‑Stripe; failed‑pay list worked weekly; failed‑pay <3%.'},
- {t:'Make the funnel measurable',who:'Austin',dod:'Show rate + schedule rate on the scoreboard; Zoom↔OS attendance reconciled.'},
- {t:'Automate onboarding intake → customized paths',who:'Austin · Jen',dod:'Transcript auto‑fills the intake; every member on a customized path.'},
+ {t:'Member Success',who:'Jennifer',dod:'Academy members activated, healthy & implementing — Day‑7 activation ≥90%, healthy (Green) ≥85%, clarity ≥9.'},
+ {t:'Sales',who:'Austin',dod:'Recurring revenue climbing toward $100k/mo; B.O.S.S. positioned as the flagship offer.'},
+ {t:'Marketing',who:'Yasmin',dod:'Content + funnel driving qualified demand and feeding the affiliate system.'},
+ {t:'Customer Fulfillment & Delivery',who:'Regina · Emmanuel',dod:'Every member gets what they paid for, on time — deliverables 100% on time, no dropped handoffs.'},
 ];
-// sales KPIs (manual). closes handled specially.
-const SALES=[
- {k:'qb',n:'Qualified bookings / wk',t:25,dir:'above',u:''},
- {k:'qualRate',n:'Qualification rate (qualified ÷ booked)',t:null,dir:'above',u:'%',hint:'raise it — ~50% now'},
- {k:'showRate',n:'Show rate',t:75,dir:'above',u:'%'},
+const GOALS=[
+ '$100k / month in recurring revenue',
+ 'By Christmas: launch Breedwise Certification + make B.O.S.S. (Breedwise Operating Systems & Standards) the flagship offer',
+ 'Launch the affiliate system',
+ 'Establish the Breedwise Operating System by end of October — a strong internal design for the whole company',
 ];
-const CASH=[
- {k:'cashMTD',n:'Cash collected (MTD)',t:40000,dir:'above',u:'$'},
- {k:'failedPay',n:'Failed payments',t:3,dir:'below',u:'%'},
+const REV=[
+ {k:'mrr',n:'Recurring revenue / mo (MRR)',t:100000,dir:'above',u:'$'},
+ {k:'newrec',n:'New recurring added this wk',t:null,dir:'above',u:'$'},
+ {k:'newmem',n:'New members this wk',t:null,dir:'above',u:''},
+];
+const DELIV=[
+ {k:'cashMTD',n:'Cash collected (MTD)',t:null,dir:'above',u:'$'},
  {k:'delivery',n:'Deliverables shipped on time',t:100,dir:'above',u:'%'},
+ {k:'failedPay',n:'Failed payments',t:3,dir:'below',u:'%'},
 ];
 
 let ME='', WK=mondayISO(), STATE={}, saveT;
@@ -217,12 +237,19 @@ function kpiCard(o){
       <span class="tgt">${o.t==null?'track':(o.u==='$'?money(o.t):o.t+o.u)}${o.t!=null&&o.dir?(o.dir==='below'?' max':' goal'):''}</span>
       <span class="stat n" id="st_${o.k}">—</span></div></div>`;
 }
-$('#salesKpis').innerHTML = SALES.map(kpiCard).join('') + `
-  <div class="kpi" data-kpi="closes"><div class="n">Closes / wk <span class="tgt">· 5 PIF or 12 plans (hybrid)</span></div>
-    <div class="row"><input type="number" data-mp="kpi_pif" placeholder="0" inputmode="decimal" style="width:56px"><span class="tgt">PIF</span>
-      <input type="number" data-mp="kpi_plan" placeholder="0" inputmode="decimal" style="width:56px"><span class="tgt">plan</span>
-      <span class="stat n" id="st_closes">—</span></div></div>`;
-$('#cashKpis').innerHTML = CASH.map(kpiCard).join('');
+$('#revKpis').innerHTML = REV.map(kpiCard).join('');
+$('#delivKpis').innerHTML = DELIV.map(kpiCard).join('');
+$('#goalsWrap').innerHTML = GOALS.map((g,i)=>`<div class="rock" data-goal="${i}">
+  <div class="rh"><div class="rt" style="flex:1">${i+1}. ${g}</div>
+    <div class="seg">
+      <button data-v="on" onclick="setGoal(${i},'on')">On‑track</button>
+      <button data-v="off" onclick="setGoal(${i},'off')">At‑risk</button>
+      <button data-v="done" onclick="setGoal(${i},'done')">Done</button>
+    </div></div>
+  <div class="grid g2" style="margin-top:8px">
+    <div><label class="fl">This week's move</label><input class="f" data-mp="goal${i}_move"></div>
+    <div><label class="fl">Owner / blocker</label><input class="f" data-mp="goal${i}_note"></div>
+  </div></div>`).join('');
 $('#commKpis').innerHTML = `
   <div class="kpi"><div class="n">Attendance <span class="badge-auto">AUTO</span></div><div class="row"><span class="auto" id="auto_att">—</span><span class="tgt">70% goal</span><span class="stat n" id="st_att">—</span></div></div>
   <div class="kpi"><div class="n">Monthly churn <span class="badge-auto">AUTO</span></div><div class="row"><span class="auto" id="auto_churn">—</span><span class="tgt">3% max</span><span class="stat n" id="st_churn">—</span></div></div>
@@ -247,13 +274,14 @@ $('#rocksWrap').innerHTML = ROCKS.map((r,i)=>`<div class="rock" data-rock="${i}"
 $('#rate').innerHTML=[1,2,3,4,5,6,7,8,9,10].map(n=>`<button data-rate="${n}" onclick="setRate(${n})">${n}</button>`).join('');
 
 /* ---- state / persistence (shared, per week, via app_state) ---- */
-function collect(){const o={};document.querySelectorAll('[data-mp]').forEach(el=>{if(el.value!=='')o[el.dataset.mp]=el.value;});o.__rocks=STATE.__rocks||{};o.__rate=STATE.__rate;o.__decs=readDecs();return o;}
+function collect(){const o={};document.querySelectorAll('[data-mp]').forEach(el=>{if(el.value!=='')o[el.dataset.mp]=el.value;});o.__rocks=STATE.__rocks||{};o.__goals=STATE.__goals||{};o.__rate=STATE.__rate;o.__decs=readDecs();return o;}
 function readDecs(){return [...document.querySelectorAll('#decList input')].map(i=>i.value).filter(Boolean);}
 function apply(d){
   STATE=d||{};
   document.querySelectorAll('[data-mp]').forEach(el=>{ if(d[el.dataset.mp]!=null) el.value=d[el.dataset.mp]; });
   (d.__decs&&d.__decs.length?d.__decs:['']).forEach(v=>addDec(v));
   Object.entries(d.__rocks||{}).forEach(([i,v])=>paintRock(+i,v));
+  Object.entries(d.__goals||{}).forEach(([i,v])=>paintGoal(+i,v));
   if(d.__rate) paintRate(d.__rate);
 }
 let saving=false;
@@ -266,6 +294,8 @@ document.body.addEventListener('input',e=>{ if(e.target.dataset.mp!==undefined) 
 
 function setRock(i,v){ STATE.__rocks=STATE.__rocks||{}; STATE.__rocks[i]=v; paintRock(i,v); save(); }
 function paintRock(i,v){ const rk=document.querySelector(`.rock[data-rock="${i}"]`); if(!rk)return; rk.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.v===v)); rk.classList.toggle('show', v==='off'); }
+function setGoal(i,v){ STATE.__goals=STATE.__goals||{}; STATE.__goals[i]=v; paintGoal(i,v); save(); }
+function paintGoal(i,v){ const g=document.querySelector(`[data-goal="${i}"]`); if(!g)return; g.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.v===v)); }
 function setRate(n){ STATE.__rate=n; paintRate(n); save(); }
 function paintRate(n){ document.querySelectorAll('#rate button').forEach(b=>b.classList.toggle('on',+b.dataset.rate===n)); }
 function addDec(v){ const w=document.createElement('div'); w.innerHTML=`<input class="f" placeholder="Decision or issue → owner + due date">`; w.querySelector('input').value=v||''; w.querySelector('input').addEventListener('input',save); $('#decList').appendChild(w); }
@@ -276,10 +306,7 @@ function statPill(id,val,t,dir){ const el=$(id); if(!el)return; if(t==null||val=
   const v=parseFloat(val); const ok = dir==='below'? v<=t : v>=t; const near = dir==='below'? v<=t*1.34 : v>=t*0.85;
   el.className='stat '+(ok?'g':near?'y':'r'); el.textContent = ok?'on target':near?'close':'behind'; }
 function recolor(){
-  SALES.concat(CASH).forEach(o=>{ const inp=document.querySelector(`[data-mp="kpi_${o.k}"]`); statPill('#st_'+o.k, inp?inp.value:'', o.t, o.dir); });
-  // closes hybrid: pif/5 + plan/12 >= 1
-  const pif=+($('#salesKpis').querySelector('[data-mp="kpi_pif"]').value||0), plan=+($('#salesKpis').querySelector('[data-mp="kpi_plan"]').value||0);
-  const pct=pif/5+plan/12; const el=$('#st_closes'); if(pif||plan){el.className='stat '+(pct>=1?'g':pct>=.7?'y':'r');el.textContent=Math.round(pct*100)+'% of wk goal';}else{el.className='stat n';el.textContent='—';}
+  REV.concat(DELIV).forEach(o=>{ const inp=document.querySelector(`[data-mp="kpi_${o.k}"]`); statPill('#st_'+o.k, inp?inp.value:'', o.t, o.dir); });
 }
 document.body.addEventListener('input',e=>{ if(e.target.dataset.mp&&e.target.dataset.mp.startsWith('kpi_')) recolor(); });
 
