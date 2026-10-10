@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contented Puppies Paradise · Yorkshire Terriers, Biewers &amp; Morkies in Pennsylvania</title>
+<meta name="description" content="Contented Puppies Paradise — family-raised Yorkshire Terriers, Biewer Terriers, and Morkies in McClure, Pennsylvania. Healthy, happy, lovingly home-raised puppies since 2005.">
+<meta property="og:title" content="Contented Puppies Paradise">
+<meta property="og:description" content="Healthy, happy, home-raised Yorkshire Terriers, Biewers & Morkies. Family-raised with love since 2005.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fbf6ee;--cream2:#f5ecdf;--white:#fffdf9;
+    --ink:#30281f;--ink2:#6a5d4e;--muted:#9a8c79;
+    --gold:#c2965a;--gold-deep:#a3743a;--gold-soft:#e7d3b1;
+    --blush:#dca99d;--blush-soft:#f4ddd6;--sage:#9bab8f;
+    --line:#ece0cf;--line2:#e0d1ba;
+    --disp:'Fraunces',Georgia,serif;--sans:'Nunito Sans',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --shadow:0 24px 60px rgba(120,90,50,.14);--shadow-sm:0 10px 30px rgba(120,90,50,.1);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:76px}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);line-height:1.65;-webkit-font-smoothing:antialiased;font-weight:400}
+  img{display:block;max-width:100%}
+  a{color:inherit}
+  h1,h2,h3{font-family:var(--disp);font-weight:500;line-height:1.1;margin:0}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .ey{font-family:var(--sans);font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-deep);font-weight:700}
+  .btn{display:inline-block;padding:14px 26px;border-radius:40px;font-family:var(--sans);font-weight:700;font-size:14.5px;letter-spacing:.02em;text-decoration:none;cursor:pointer;border:0;transition:transform .15s ease,box-shadow .2s ease}
+  .btn.primary{background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#fff;box-shadow:0 10px 26px rgba(163,116,58,.33)}
+  .btn.primary:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(163,116,58,.4)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line2)}
+  .btn.ghost:hover{border-color:var(--gold);color:var(--gold-deep)}
+
+  /* nav */
+  nav.top{position:sticky;top:0;z-index:50;background:rgba(251,246,238,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  nav.top .in{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:13px 24px}
+  .brand{display:flex;align-items:center;gap:11px;text-decoration:none}
+  .brand .mk{width:40px;height:40px;border-radius:50%;background:linear-gradient(145deg,var(--gold-soft),var(--gold));display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 2px #fff6,0 4px 12px rgba(163,116,58,.3);flex:none}
+  .brand .mk span{font-family:var(--disp);font-weight:600;color:#fff;font-size:20px}
+  .brand .nm{font-family:var(--disp);font-size:18px;font-weight:600;line-height:1;color:var(--ink)}
+  .brand .nm small{display:block;font-family:var(--sans);font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-deep);font-weight:700;margin-top:3px}
+  nav .links{display:flex;gap:4px;margin-left:auto}
+  nav .links a{font-size:14px;color:var(--ink2);text-decoration:none;padding:8px 13px;border-radius:30px;font-weight:600}
+  nav .links a:hover{color:var(--gold-deep);background:var(--white)}
+  nav .nav-cta{margin-left:6px}
+  .burger{display:none;margin-left:auto;background:var(--white);border:1px solid var(--line2);border-radius:10px;padding:9px 11px;cursor:pointer}
+  .burger span{display:block;width:19px;height:2px;background:var(--ink);margin:4px 0;border-radius:2px}
+  @media(max-width:860px){nav .links{display:none}.burger{display:block}}
+
+  /* hero */
+  .hero{padding:58px 0 40px}
+  .hero .in{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .hero h1{font-size:54px;letter-spacing:-.5px;margin:16px 0 0}
+  .hero h1 em{font-style:italic;color:var(--gold-deep)}
+  .hero p.sub{font-size:18px;color:var(--ink2);margin:18px 0 26px;max-width:520px}
+  .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .hero .breeds{margin-top:24px;font-size:13.5px;color:var(--muted);letter-spacing:.02em}
+  .hero .breeds b{color:var(--ink);font-weight:700}
+  .hero-art{position:relative}
+  .hero-art .main{border-radius:28px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:1/1;border:6px solid #fff}
+  .hero-art .main img{width:100%;height:100%;object-fit:cover}
+  .hero-art .badge{position:absolute;left:-18px;bottom:26px;background:#fff;border-radius:18px;padding:13px 18px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:11px}
+  .hero-art .badge .ic{width:38px;height:38px;border-radius:50%;background:var(--blush-soft);display:flex;align-items:center;justify-content:center;font-size:19px;flex:none}
+  .hero-art .badge b{font-family:var(--disp);font-size:16px;display:block;line-height:1.1}
+  .hero-art .badge small{font-size:11px;color:var(--muted);letter-spacing:.04em}
+  @media(max-width:860px){.hero .in{grid-template-columns:1fr;gap:30px}.hero h1{font-size:40px}.hero-art{order:-1}}
+
+  /* trust strip */
+  .trust{background:var(--cream2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .trust .in{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:26px 24px;max-width:1120px;margin:0 auto}
+  .trust .t{text-align:center}
+  .trust .t .ic{font-size:24px}
+  .trust .t b{font-family:var(--disp);display:block;font-size:16px;margin-top:4px}
+  .trust .t small{font-size:12.5px;color:var(--ink2)}
+  @media(max-width:700px){.trust .in{grid-template-columns:1fr 1fr;gap:22px}}
+
+  /* sections */
+  section.block{padding:72px 0}
+  .shead{text-align:center;max-width:640px;margin:0 auto 42px}
+  .shead h2{font-size:38px;letter-spacing:-.3px;margin-top:10px}
+  .shead p{color:var(--ink2);font-size:16px;margin:14px 0 0}
+  .shead.left{text-align:left;margin-left:0}
+
+  /* about */
+  .about .in{display:grid;grid-template-columns:.9fr 1.1fr;gap:50px;align-items:center}
+  .about-art{border-radius:26px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:4/5;border:6px solid #fff}
+  .about-art img{width:100%;height:100%;object-fit:cover}
+  .about-copy p{color:var(--ink2);font-size:15.5px;margin:0 0 15px}
+  .about-copy p.first::first-letter{font-family:var(--disp);font-size:52px;float:left;line-height:.8;padding:6px 10px 0 0;color:var(--gold-deep)}
+  .sig{font-family:var(--disp);font-style:italic;font-size:22px;color:var(--ink);margin-top:8px}
+  @media(max-width:860px){.about .in{grid-template-columns:1fr;gap:30px}.about-art{order:-1;aspect-ratio:4/3}}
+
+  /* value cards */
+  .vals{background:var(--cream2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .vgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .vcard{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:26px 22px;box-shadow:var(--shadow-sm)}
+  .vcard .ic{width:52px;height:52px;border-radius:16px;background:var(--blush-soft);display:flex;align-items:center;justify-content:center;font-size:25px;margin-bottom:14px}
+  .vcard h3{font-size:19px;margin-bottom:7px}
+  .vcard p{font-size:13.5px;color:var(--ink2);margin:0}
+  @media(max-width:860px){.vgrid{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.vgrid{grid-template-columns:1fr}}
+
+  /* puppies / litter */
+  .litter{background:var(--white);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);overflow:hidden;display:grid;grid-template-columns:1.1fr .9fr}
+  .litter .gal{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--cream2)}
+  .litter .gal img{width:100%;height:100%;object-fit:cover;aspect-ratio:1/1;cursor:pointer;transition:opacity .2s}
+  .litter .gal img:hover{opacity:.9}
+  .litter .gal .big{grid-column:1/3;aspect-ratio:16/10}
+  .litter .info{padding:34px 34px 30px}
+  .pill{display:inline-block;background:var(--sage);color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 13px;border-radius:30px}
+  .litter .info h3{font-size:27px;margin:14px 0 4px}
+  .litter .info .meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+  .litter .info .meta .m{border-left:2px solid var(--gold-soft);padding-left:12px}
+  .litter .info .meta .m small{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .litter .info .meta .m b{display:block;font-family:var(--disp);font-size:17px;margin-top:2px}
+  .price{font-family:var(--disp);font-size:24px;color:var(--gold-deep)}
+  @media(max-width:860px){.litter{grid-template-columns:1fr}}
+
+  /* dogs */
+  .dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+  .dog{background:var(--white);border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:var(--shadow-sm);transition:transform .18s ease,box-shadow .2s ease}
+  .dog:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  .dog .ph{aspect-ratio:1/1;overflow:hidden;cursor:pointer}
+  .dog .ph img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+  .dog:hover .ph img{transform:scale(1.05)}
+  .dog .bd{padding:16px 18px 20px}
+  .dog .bd .top{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+  .dog .bd h3{font-size:21px}
+  .dog .bd .sx{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:20px}
+  .dog .bd .sx.f{background:var(--blush-soft);color:#b56f60}
+  .dog .bd .sx.m{background:#dbe6f2;color:#4f7aa8}
+  .dog .bd .br{color:var(--gold-deep);font-size:13px;font-weight:700;margin:3px 0 8px}
+  .dog .bd .at{font-size:12.5px;color:var(--muted)}
+  .dog .bd p.note{font-size:13px;color:var(--ink2);margin:9px 0 0;font-style:italic}
+  @media(max-width:860px){.dgrid{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.dgrid{grid-template-columns:1fr 1fr}}
+
+  /* promise */
+  .promise{background:linear-gradient(160deg,var(--blush-soft),var(--cream2));border-radius:30px;padding:56px 40px;text-align:center;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
+  .promise .q{font-size:34px}
+  .promise p{max-width:640px;margin:16px auto 0;color:var(--ink2);font-size:16px}
+
+  /* contact */
+  .contact{background:var(--ink);color:#f3ece1}
+  .contact h2{color:#fff}
+  .contact .shead p{color:#cbbfb0}
+  .cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:10px}
+  .ccard{background:#3b3127;border:1px solid #4a3e30;border-radius:20px;padding:26px 22px;text-align:center}
+  .ccard .ic{font-size:26px}
+  .ccard b{font-family:var(--disp);display:block;font-size:18px;margin:8px 0 4px;color:#fff}
+  .ccard a,.ccard span{color:var(--gold-soft);text-decoration:none;font-size:14.5px;word-break:break-word}
+  .ccard a:hover{text-decoration:underline}
+  .social{display:flex;justify-content:center;gap:14px;margin-top:34px}
+  .social a{width:46px;height:46px;border-radius:50%;background:#3b3127;border:1px solid #4a3e30;display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--gold-soft);font-weight:700;font-size:13px;transition:background .2s}
+  .social a:hover{background:var(--gold-deep);color:#fff}
+  .cta-band{text-align:center;margin-top:40px}
+  @media(max-width:700px){.cgrid{grid-template-columns:1fr}}
+
+  footer.ft{background:#241d16;color:#9a8c79;text-align:center;padding:30px 24px;font-size:12.5px}
+  footer.ft b{color:var(--gold-soft);font-family:var(--disp);font-weight:500;letter-spacing:.04em}
+  footer.ft a{color:#9a8c79}
+
+  /* lightbox */
+  #lb{position:fixed;inset:0;background:rgba(30,24,18,.92);z-index:100;display:none;align-items:center;justify-content:center;padding:28px;cursor:zoom-out}
+  #lb.on{display:flex}
+  #lb img{max-width:92vw;max-height:88vh;border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  #lb .x{position:absolute;top:20px;right:26px;color:#fff;font-size:34px;cursor:pointer;line-height:1;font-family:var(--sans)}
+
+  /* mobile menu */
+  #mnav{display:none;background:var(--white);border-bottom:1px solid var(--line);padding:8px 24px 16px}
+  #mnav a{display:block;padding:11px 6px;color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px solid var(--line)}
+  #mnav.on{display:block}
+</style>
+</head>
+<body>
+
+  <nav class="top"><div class="in">
+    <a class="brand" href="#top">
+      <span class="mk"><span>C</span></span>
+      <span class="nm">Contented Puppies<small>Paradise</small></span>
+    </a>
+    <div class="links">
+      <a href="#about">Our Story</a>
+      <a href="#why">Why Us</a>
+      <a href="#puppies">Available Puppies</a>
+      <a href="#dogs">Our Dogs</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a class="btn primary nav-cta" href="#puppies">See Puppies</a>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div id="mnav">
+    <a href="#about">Our Story</a><a href="#why">Why Us</a><a href="#puppies">Available Puppies</a><a href="#dogs">Our Dogs</a><a href="#contact">Contact</a>
+  </div>
+  </nav>
+
+  <a id="top"></a>
+  <!-- HERO -->
+  <header class="hero"><div class="wrap in">
+    <div class="hero-copy">
+      <div class="ey">McClure, Pennsylvania · Family-raised since 2005</div>
+      <h1>Where every puppy is <em>raised to feel at home</em></h1>
+      <p class="sub">Healthy, happy, lovingly home-raised Yorkshire Terriers, Biewer Terriers, and Morkies, given the very best foundation for a joyful life with your forever family.</p>
+      <div class="cta">
+        <a class="btn primary" href="#puppies">See Available Puppies</a>
+        <a class="btn ghost" href="#about">Meet Our Family</a>
+      </div>
+      <div class="breeds">Raising &nbsp;<b>Yorkshire Terriers</b> &nbsp;·&nbsp; <b>Biewer Terriers</b> &nbsp;·&nbsp; <b>Morkies</b></div>
+    </div>
+    <div class="hero-art">
+      <div class="main"><img src="img/litter-1.jpg" alt="A Biewer Terrier puppy with a red bow and pearls at Contented Puppies Paradise"></div>
+      <div class="badge"><span class="ic">🏡</span><span><b>20+ years</b><small>of loving, in-home breeding</small></span></div>
+    </div>
+  </div></header>
+
+  <!-- TRUST -->
+  <div class="trust"><div class="in">
+    <div class="t"><div class="ic">🩺</div><b>Health First</b><small>Genetic &amp; OFA testing in progress</small></div>
+    <div class="t"><div class="ic">💛</div><b>Family-Raised</b><small>In our home, underfoot &amp; loved</small></div>
+    <div class="t"><div class="ic">✨</div><b>Beautiful Type</b><small>Heavy coats, sweet cobby build</small></div>
+    <div class="t"><div class="ic">🐾</div><b>Well-Socialized</b><small>Confident, balanced temperaments</small></div>
+  </div></div>
+
+  <!-- ABOUT -->
+  <section class="block about" id="about"><div class="wrap in">
+    <div class="about-art"><img src="img/cooper-1.jpg" alt="Cooper, a Biewer Yorkie, in a navy bow"></div>
+    <div class="about-copy">
+      <div class="ey">Our Story</div>
+      <h2 style="font-size:36px;margin:10px 0 18px">Raised with love, purpose, and intention</h2>
+      <p class="first">My husband and I have been devoted to raising and breeding since 2005. What began as a love for this beautiful breed has grown into a lifelong passion and a commitment to doing our very best to preserve and improve the qualities we treasure most.</p>
+      <p>Over the years, we have worked diligently to produce puppies who are not only beautiful, with gorgeous heavy coats and the shorter, cobby structure we love, but most importantly, who are healthy, well-balanced, confident, and wonderfully socialized. For us, breeding has never been simply about producing puppies. It is about raising them with love, purpose, and intention.</p>
+      <p>Eight years ago, another family joined us in this journey, and our shared love for the breed has made this endeavor even more special. Together, we raise our puppies in a warm, loving, family-centered home where they are surrounded by people, handled with care, and given the individual attention they need to thrive.</p>
+      <p>Every puppy we raise carries with them a little piece of our hearts, and it is our hope that they bring your family the same love, joy, and companionship this incredible breed has brought into ours.</p>
+      <div class="sig">— Judith &amp; Family</div>
+    </div>
+  </div></section>
+
+  <!-- WHY -->
+  <section class="block vals" id="why"><div class="wrap">
+    <div class="shead">
+      <div class="ey">Why Families Choose Us</div>
+      <h2>More than 20 years of doing it the right way</h2>
+      <p>With over two decades of experience, we stand apart through our commitment to health, temperament, beautiful breed type, and loving, family-raised puppies.</p>
+    </div>
+    <div class="vgrid">
+      <div class="vcard"><div class="ic">🏅</div><h3>20+ Years' Experience</h3><p>Devoted to this breed since 2005, always learning and refining what we do.</p></div>
+      <div class="vcard"><div class="ic">🧬</div><h3>Health &amp; Testing</h3><p>Our dogs are in the process of genetic and OFA health testing, so your puppy starts strong.</p></div>
+      <div class="vcard"><div class="ic">🌸</div><h3>Exceptional Temperament</h3><p>Even, confident, eager-to-please personalities, nurtured through daily handling.</p></div>
+      <div class="vcard"><div class="ic">👐</div><h3>Family-Raised</h3><p>Every puppy is raised underfoot in our home with individual attention and thoughtful socialization.</p></div>
+    </div>
+  </div></section>
+
+  <!-- PUPPIES -->
+  <section class="block" id="puppies"><div class="wrap">
+    <div class="shead">
+      <div class="ey">Available Puppies</div>
+      <h2>Our newest little ones</h2>
+      <p>A treasured Biewer Terrier litter, raised with the same love and care as every Contented Puppy. Reach out to reserve yours.</p>
+    </div>
+    <div class="litter">
+      <div class="gal">
+        <img class="big" src="img/litter-2.jpg" alt="Biewer Terrier puppy" data-full="img/litter-2.jpg">
+        <img src="img/litter-3.jpg" alt="Biewer puppy" data-full="img/litter-3.jpg">
+        <img src="img/litter-4.jpg" alt="Biewer puppy" data-full="img/litter-4.jpg">
+        <img src="img/litter-5.jpg" alt="Biewer puppy" data-full="img/litter-5.jpg">
+        <img src="img/litter-6.jpg" alt="Biewer puppy" data-full="img/litter-6.jpg">
+      </div>
+      <div class="info">
+        <span class="pill">Available Now</span>
+        <h3>Savannah &times; Cooper</h3>
+        <div style="color:var(--gold-deep);font-weight:700;font-size:14px">Biewer Terrier puppies</div>
+        <div class="meta">
+          <div class="m"><small>Born</small><b>July 25, 2026</b></div>
+          <div class="m"><small>Available</small><b>2 puppies</b></div>
+          <div class="m"><small>Parents</small><b>Savannah &amp; Cooper</b></div>
+          <div class="m"><small>Investment</small><b class="price">$3,000–$3,500</b></div>
+        </div>
+        <p style="color:var(--ink2);font-size:14.5px;margin:0 0 20px">Lovingly raised in our home and ready to fill yours with joy. Health records and go-home details shared with every family. Message us to meet them.</p>
+        <a class="btn primary" href="#contact">Ask About This Litter</a>
+      </div>
+    </div>
+    <p style="text-align:center;color:var(--muted);font-size:13.5px;margin-top:22px">Planning future Yorkshire Terrier, Biewer, and Morkie litters. <a href="#contact" style="color:var(--gold-deep);font-weight:700">Join our waitlist</a> to be the first to know.</p>
+  </div></section>
+
+  <!-- DOGS -->
+  <section class="block vals" id="dogs"><div class="wrap">
+    <div class="shead">
+      <div class="ey">Meet Our Dogs</div>
+      <h2>The heart of our home</h2>
+      <p>Every puppy begins with parents we adore, chosen for health, temperament, and beautiful breed type, and cherished as part of our family.</p>
+    </div>
+    <div class="dgrid">
+      <div class="dog"><div class="ph"><img src="img/cooper-1.jpg" alt="Cooper" data-full="img/cooper-1.jpg"></div><div class="bd"><div class="top"><h3>Cooper</h3><span class="sx m">Male</span></div><div class="br">Biewer Yorkie</div><div class="at">Belted · 4 lbs · 2 yrs</div><p class="note">Super sweet, even-keeled and eager to please.</p></div></div>
+      <div class="dog"><div class="ph"><img src="img/seely-1.jpg" alt="Seely" data-full="img/seely-1.jpg"></div><div class="bd"><div class="top"><h3>Seely</h3><span class="sx m">Male</span></div><div class="br">Yorkshire Terrier</div><div class="at">Black &amp; tan · 3 lbs · 2 yrs</div></div></div>
+      <div class="dog"><div class="ph"><img src="img/savannah-1.jpg" alt="Savannah" data-full="img/savannah-1.jpg"></div><div class="bd"><div class="top"><h3>Savannah</h3><span class="sx f">Female</span></div><div class="br">Biewer Terrier</div><div class="at">Piebald · 6 lbs · 4 yrs</div></div></div>
+      <div class="dog"><div class="ph"><img src="img/molly-1.jpg" alt="Molly" data-full="img/molly-1.jpg"></div><div class="bd"><div class="top"><h3>Molly</h3><span class="sx f">Female</span></div><div class="br">Yorkshire Terrier</div><div class="at">Black &amp; tan · 8 lbs · 6 yrs</div></div></div>
+      <div class="dog"><div class="ph"><img src="img/lindie-1.jpg" alt="Lindie" data-full="img/lindie-1.jpg"></div><div class="bd"><div class="top"><h3>Lindie</h3><span class="sx f">Female</span></div><div class="br">Biewer Yorkie</div><div class="at">Piebald · 5 yrs</div></div></div>
+      <div class="dog"><div class="ph"><img src="img/pheebe-1.jpg" alt="Pheebe" data-full="img/pheebe-1.jpg"></div><div class="bd"><div class="top"><h3>Pheebe</h3><span class="sx f">Female</span></div><div class="br">Yorkshire Terrier</div><div class="at">Black &amp; gold · 7 lbs · 5 yrs</div></div></div>
+      <div class="dog"><div class="ph"><img src="img/opal-1.jpg" alt="Opal" data-full="img/opal-1.jpg"></div><div class="bd"><div class="top"><h3>Opal</h3><span class="sx f">Female</span></div><div class="br">Biewer Terrier</div><div class="at">Belted · 5 lbs · 6 yrs</div></div></div>
+      <div class="dog" style="display:flex;align-items:center;justify-content:center;text-align:center;background:linear-gradient(160deg,var(--blush-soft),var(--white))"><div class="bd"><h3 style="color:var(--gold-deep)">More to love</h3><p class="note" style="font-style:normal;color:var(--ink2)">Every one of our dogs is health-minded, lovingly kept, and part of the family.</p></div></div>
+    </div>
+  </div></section>
+
+  <!-- PROMISE -->
+  <section class="block"><div class="wrap">
+    <div class="promise">
+      <div class="ey">Our Promise</div>
+      <div class="q" style="font-family:var(--disp);font-style:italic;color:var(--ink)">“It shouldn't feel like leaving one home for another. It should feel like coming home.”</div>
+      <p>We want each puppy to leave us feeling secure, loved, and confident, so that when they walk through your door, they are simply coming home. Every Contented Puppy carries a little piece of our hearts.</p>
+    </div>
+  </div></section>
+
+  <!-- CONTACT -->
+  <section class="block contact" id="contact"><div class="wrap">
+    <div class="shead">
+      <div class="ey" style="color:var(--gold-soft)">Get In Touch</div>
+      <h2>Bring home your Contented Puppy</h2>
+      <p>We would love to hear about your family and help you find your perfect companion. We reply to every message within 24 hours.</p>
+    </div>
+    <div class="cgrid">
+      <div class="ccard"><div class="ic">✉️</div><b>Email</b><a href="mailto:contentedpuppies@gmail.com">contentedpuppies@gmail.com</a></div>
+      <div class="ccard"><div class="ic">📞</div><b>Call or Text</b><a href="tel:+13522200351">(352) 220-0351</a></div>
+      <div class="ccard"><div class="ic">📍</div><b>Location</b><span>McClure, Pennsylvania</span></div>
+    </div>
+    <div class="social">
+      <a href="https://www.facebook.com/profile.php?id=61584042657220" target="_blank" rel="noopener" title="Facebook">f</a>
+      <a href="https://www.instagram.com/contentedpuppies/" target="_blank" rel="noopener" title="Instagram">IG</a>
+      <a href="https://www.youtube.com/@contentedpuppies" target="_blank" rel="noopener" title="YouTube">▶</a>
+    </div>
+    <div class="cta-band"><a class="btn primary" href="mailto:contentedpuppies@gmail.com?subject=Puppy%20Inquiry%20from%20your%20website">Send Us a Message</a></div>
+  </div></section>
+
+  <footer class="ft">
+    <b>Contented Puppies Paradise</b><br>
+    Family-raised Yorkshire Terriers, Biewers &amp; Morkies · McClure, Pennsylvania<br>
+    <a href="mailto:contentedpuppies@gmail.com">contentedpuppies@gmail.com</a> · (352) 220-0351<br>
+    <span style="opacity:.7">© 2026 Contented Puppies Paradise. All rights reserved.</span>
+  </footer>
+
+  <div id="lb"><span class="x">&times;</span><img src="" alt="Enlarged photo"></div>
+
+<script>
+(function(){
+  // mobile menu
+  var b=document.getElementById('burger'), m=document.getElementById('mnav');
+  if(b){b.addEventListener('click',function(){m.classList.toggle('on');});}
+  if(m){m.addEventListener('click',function(e){if(e.target.tagName==='A')m.classList.remove('on');});}
+  // lightbox
+  var lb=document.getElementById('lb'), lbimg=lb.querySelector('img');
+  document.querySelectorAll('[data-full]').forEach(function(el){
+    el.addEventListener('click',function(){lbimg.src=el.getAttribute('data-full');lb.classList.add('on');});
+  });
+  lb.addEventListener('click',function(){lb.classList.remove('on');lbimg.src='';});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){lb.classList.remove('on');lbimg.src='';}});
+})();
+</script>
+</body>
+</html>

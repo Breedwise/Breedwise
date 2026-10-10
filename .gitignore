@@ -71,3 +71,7 @@
 /supabase/functions/*
 !/supabase/functions/masterclass-optin/
 !/supabase/functions/booking-notify/
+
+# --- Client site: Contented Puppies Paradise (Judith Leiva) ---
+!/contented-puppies/
+!/contented-puppies/**
