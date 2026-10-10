@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13;--bg2:#0e131a;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;
+    --ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--faint:#586472;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--red:#e8695f;--blue:#5aa9e6;--purple:#a481d8;--amber:#e0a955;
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{margin:0;background:radial-gradient(1100px 600px at 82% -10%,rgba(201,168,98,.07),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.55}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:80}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#1a130a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #gate .hint{color:var(--muted);font-size:12px;margin-top:14px}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),#a9863f);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 14px rgba(201,168,98,.28)}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#15100a;font-size:18px;line-height:1}
+  .logo .wm{font-size:16px;letter-spacing:.2em;font-weight:700;color:var(--ink)}
+  .logo .wm b{color:var(--gold)}
+  #app{display:none}
+  nav.top{position:sticky;top:0;z-index:40;background:rgba(11,14,19,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav.top .in{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:11px 22px}
+  nav .pills{display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+  nav .pills::-webkit-scrollbar{display:none}
+  nav .pills a{white-space:nowrap;font-size:12px;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:8px;font-weight:500}
+  nav .pills a:hover{color:var(--ink);background:var(--panel)}
+  nav .print{background:var(--panel);border:1px solid var(--line);color:var(--mid);border-radius:9px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+  .wrap{max-width:1000px;margin:0 auto;padding:26px 22px 60px}
+  header.hero{padding:14px 0 8px}
+  header .k{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  header h1{font-family:var(--disp);font-size:37px;line-height:1.06;margin:8px 0 6px;font-weight:600;letter-spacing:-.5px}
+  header p.lead{color:var(--mid);font-size:15px;max-width:760px;font-weight:300}
+  section{margin-top:34px;scroll-margin-top:70px}
+  .sh{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:16px;flex-wrap:wrap}
+  .sh .n{font-family:var(--disp);font-size:15px;color:var(--gold);font-weight:600}
+  .sh h2{font-family:var(--disp);font-size:23px;font-weight:600;margin:0;letter-spacing:-.3px}
+  .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:14px}
+  .card h3{font-family:var(--disp);font-size:17px;margin:0 0 8px;font-weight:600}
+  .card h3 .tiny{font-family:var(--sans);font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.04em}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:820px){.cols,.cols3{grid-template-columns:1fr}}
+  .callout{background:rgba(201,168,98,.09);border:1px solid rgba(201,168,98,.28);border-left:3px solid var(--gold);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:14px;color:var(--mid)}
+  .callout.red{background:rgba(232,105,95,.09);border-color:rgba(232,105,95,.3);border-left-color:var(--red)}
+  .callout.green{background:rgba(87,185,138,.09);border-color:rgba(87,185,138,.3);border-left-color:var(--green)}
+  .callout.blue{background:rgba(90,169,230,.08);border-color:rgba(90,169,230,.28);border-left-color:var(--blue)}
+  .callout b{color:var(--gold-soft)}.callout.red b{color:#f2a59d}.callout.green b{color:#9fe3c2}.callout.blue b{color:#bcdcf5}
+  ul.clean{list-style:none;padding:0;margin:8px 0}
+  ul.clean li{position:relative;padding:5px 0 5px 22px;font-size:14px;color:var(--mid)}
+  ul.clean li::before{content:'›';position:absolute;left:4px;color:var(--gold);font-weight:700}
+  ul.clean li b{color:var(--ink);font-weight:600}
+  ul.x li::before{content:'✕';color:var(--red);font-size:11px;top:7px}
+  ul.chk li::before{content:'✓';color:var(--green);font-size:12px}
+  ol.num{counter-reset:s;list-style:none;padding:0;margin:4px 0}
+  ol.num li{position:relative;padding:6px 0 6px 30px;font-size:13.5px;color:var(--mid)}
+  ol.num li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:5px;width:21px;height:21px;border-radius:50%;background:var(--panel2);border:1px solid var(--line2);color:var(--gold);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0}
+  th{text-align:left;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:8px 10px;border-bottom:1px solid var(--line2)}
+  td{padding:9px 10px;border-bottom:1px solid var(--line);color:var(--mid);vertical-align:top}
+  td b{color:var(--ink);font-weight:600}td.r{text-align:right}td.c{text-align:center}tr:last-child td{border-bottom:0}
+  td.g{color:#9fe3c2}td.a{color:var(--amber)}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel2);margin:6px 0}
+  .lede{font-size:14px;color:var(--mid);margin:0 0 6px}
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:6px 0}
+  .flow .st{background:var(--panel2);border:1px solid var(--line2);border-radius:10px;padding:8px 12px;font-size:12.5px;color:var(--mid);text-align:center;min-width:92px}
+  .flow .st b{display:block;color:var(--gold-soft);font-family:var(--disp);font-size:18px;font-weight:600}
+  .flow .ar{color:var(--faint);font-weight:700}
+  footer.bf{text-align:center;color:#59657390;font-size:11px;margin-top:46px;letter-spacing:.04em}
+  .big-quote{font-family:var(--disp);font-size:20px;color:var(--gold-soft);font-weight:600;line-height:1.3}
+  @media print{nav.top{display:none}#app{display:block!important}#gate{display:none!important}body{background:#fff;color:#111}}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo mark" style="margin-bottom:18px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Open →</button>
+    <div class="err" id="gate-err"></div>
+    <div class="hint">Your sales seat</div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top"><div class="in">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+      <div class="pills">
+        <a href="#role">Your role</a><a href="#ladder">The ladder</a><a href="#routing">Routing</a><a href="#scorecard">Your scorecard</a>
+        <a href="#day">Your day</a><a href="#math">The math</a><a href="#pay">How you're paid</a><a href="#crm">CRM</a>
+        <a href="#standards">Standards</a><a href="#ramp">Your first 90</a><a href="#coaching">Coaching</a>
+      </div>
+      <button class="print" onclick="window.print()">Print</button>
+    </div></nav>
+
+    <div class="wrap">
+      <header class="hero">
+        <div class="k">BreedWise · DM Setter Playbook</div>
+        <h1>Your DM Setter Playbook</h1>
+        <p class="lead">Everything you need to do this job well: what you own, how to qualify and route people, your daily targets, how the math works, exactly how you get paid, and how we will coach you to win. Read it once end to end, then keep it open while you work.</p>
+      </header>
+
+      <div class="callout green" style="margin-top:4px">
+        <b>Your mission in one line:</b> turn qualified Instagram conversations into TPB members and into booked, qualified sales calls for Academy / B.O.S.S. You run the front of the process. You make the <b>right</b> recommendation for each person, not the most expensive one. Do that consistently and you earn well.
+      </div>
+
+      <!-- ROLE -->
+      <section id="role">
+        <div class="sh"><span class="n">01</span><h2>What You Own</h2></div>
+        <div class="cols">
+          <div class="card"><h3>You own</h3>
+            <ul class="clean chk">
+              <li>Starting qualified new conversations from approved sources</li>
+              <li>Answering warm inbound (comments, story replies, DMs) fast</li>
+              <li>Real two-way conversations and qualification</li>
+              <li><b>Closing TPB directly</b> ($97/mo) right in the DM</li>
+              <li>Booking + confirming qualified Academy / B.O.S.S. calls</li>
+              <li>Following up until a yes, a no, or a clear disqualify</li>
+              <li>Keeping your CRM accurate: stage, source, next action, outcome</li>
+            </ul>
+          </div>
+          <div class="card"><h3>You do not own</h3>
+            <ul class="clean x">
+              <li><b>Closing the Academy / B.O.S.S. call</b> (a closer does that, unless you're later trained and assigned)</li>
+              <li>Creating ads or content (Marketing)</li>
+              <li>Onboarding, support, or retention of members (Customer Success)</li>
+              <li>Running the community day to day (Community Manager)</li>
+              <li>Pricing or refund decisions (leadership)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout"><b>The golden rule:</b> qualify for <b>fit first, product second.</b> TPB is closed in the DM. Academy / B.O.S.S. is never priced or pitched in the DM beyond a single framing line, it is <b>booked to a call.</b> Your job is to get the right people to the right next step.</div>
+      </section>
+
+      <!-- LADDER -->
+      <section id="ladder">
+        <div class="sh"><span class="n">02</span><h2>The Ladder: What Each Word Means</h2></div>
+        <p class="lede">We all use these words the same way. This is how your work gets counted, so know them cold.</p>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Stage</th><th>What makes it count</th></tr></thead>
+          <tbody>
+            <tr><td><b>Contact</b></td><td>One personalized first message to a new, approved-source prospect. A copy-paste blast does not count.</td></tr>
+            <tr><td><b>Lead</b></td><td>A contact (or inbound) who fits: breeds dogs or is seriously starting, reachable, not a competitor or spam.</td></tr>
+            <tr><td><b>Two-way conversation</b></td><td>They sent at least <b>2 real replies</b>. An actual back-and-forth, not just a thumbs-up.</td></tr>
+            <tr><td><b>Qualified TPB prospect</b></td><td>Has a problem TPB solves, can do $97/mo, is showing buying intent. Ready for the TPB offer.</td></tr>
+            <tr><td><b>Qualified Academy prospect</b></td><td>Operating breeder with revenue or clear ambition, a budget signal, is the decision-maker, has a timeline. Ready for a call.</td></tr>
+            <tr><td><b>Qualified appointment</b></td><td>A booked call with a qualified Academy prospect, on the calendar, reminders set. Booked and qualified both have to be true.</td></tr>
+            <tr><td><b>Confirmed</b></td><td>They re-confirmed within 24 hours of the call.</td></tr>
+            <tr><td><b>Attended</b></td><td>They actually showed up and the call happened.</td></tr>
+            <tr><td><b>Closed sale</b></td><td>Money collected: TPB first payment cleared, or Academy deposit / first payment cleared. A verbal yes is not a close.</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ROUTING -->
+      <section id="routing">
+        <div class="sh"><span class="n">03</span><h2>Routing: Where Each Person Goes</h2></div>
+        <div class="cols">
+          <div class="card"><h3>Offer TPB when…</h3><ul class="clean"><li>They have a real problem TPB solves</li><li>$97/mo is realistic for them</li><li>They want structure and community now</li><li>They're not ready for (or not a fit for) a $3K+ build</li></ul></div>
+          <div class="card"><h3>Book a call when…</h3><ul class="clean"><li>They're an operating breeder</li><li>Revenue or clear ambition is there</li><li>Budget + decision-maker + timeline</li><li>They want done-with-you / done-for-you help</li></ul></div>
+        </div>
+        <div class="cols">
+          <div class="card"><h3>Nurture when…</h3><ul class="clean"><li>Good fit, wrong timing</li><li>Tag them, set a dated follow-up</li><li>This is not a disqualify, it's a "later"</li></ul></div>
+          <div class="card"><h3>Disqualify when…</h3><ul class="clean"><li>No breeding intent, or can't pay</li><li>Competitor, or just browsing</li><li>Disrespectful</li><li>Tag + close it out, protect the calendar</li></ul></div>
+        </div>
+        <div class="callout red"><b>Never put someone on a call just to hit a booking number.</b> A call that was never qualified wastes the closer's time, hurts your show rate, and does not pay you (you're paid on <b>attended, qualified</b> calls, not bookings). Quality over volume, every time.</div>
+      </section>
+
+      <!-- SCORECARD -->
+      <section id="scorecard">
+        <div class="sh"><span class="n">04</span><h2>Your Scorecard</h2></div>
+        <p class="lede">These top numbers are <b>in your control</b> every single day. Hit these and the results follow. The bottom numbers are the monthly outcomes we're aiming for together.</p>
+        <div class="card"><h3>Daily activity <span class="tiny">· you control these</span></h3>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Each day</th><th class="r">Minimum</th><th class="r">Target</th><th class="r">Exceptional</th></tr></thead>
+          <tbody>
+            <tr><td><b>New personalized contacts</b></td><td class="r">40</td><td class="r">60</td><td class="r">80</td></tr>
+            <tr><td>Warm inbound answered (within 2 hrs)</td><td class="r">100%</td><td class="r">100%</td><td class="r">100%</td></tr>
+            <tr><td>Follow-up messages</td><td class="r">25</td><td class="r">40</td><td class="r">55</td></tr>
+            <tr><td>Active two-way conversations</td><td class="r">12</td><td class="r">18</td><td class="r">25</td></tr>
+            <tr><td>Qualified conversations</td><td class="r">5</td><td class="r">7</td><td class="r">10</td></tr>
+            <tr><td>TPB offers presented</td><td class="r">3</td><td class="r">4</td><td class="r">6</td></tr>
+            <tr><td>CRM updated same day</td><td class="r">100%</td><td class="r">100%</td><td class="r">100%</td></tr>
+          </tbody>
+        </table></div>
+        </div>
+        <div class="card"><h3>Monthly outcomes <span class="tiny">· what a strong month looks like</span></h3>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Each month</th><th class="r">Minimum</th><th class="r">Target</th><th class="r">Exceptional</th></tr></thead>
+          <tbody>
+            <tr><td><b>TPB memberships closed</b></td><td class="r">10</td><td class="r">16</td><td class="r">22</td></tr>
+            <tr><td>Qualified appointments booked</td><td class="r">14</td><td class="r">20</td><td class="r">26</td></tr>
+            <tr><td>Confirmed before the call</td><td class="r">70%</td><td class="r">80%</td><td class="r">90%</td></tr>
+            <tr><td>Show rate (attended)</td><td class="r">55%</td><td class="r">65%</td><td class="r">75%</td></tr>
+            <tr><td>Follow-up compliance (next action set)</td><td class="r">90%</td><td class="r">95%</td><td class="r">100%</td></tr>
+          </tbody>
+        </table></div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:8px">These are the <b>mature</b> targets, once you're fully ramped. Your first 90 days build up to them, see "Your first 90 days" below. Nobody expects month-1 numbers to look like month-3.</p>
+        </div>
+      </section>
+
+      <!-- DAY -->
+      <section id="day">
+        <div class="sh"><span class="n">05</span><h2>Your Day</h2></div>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Block</th><th>What you do</th><th class="r">Time</th></tr></thead>
+          <tbody>
+            <tr><td><b>Open</b></td><td>Warm inbound first (overnight DMs, comments, story replies), then confirm today's booked calls</td><td class="r">45m</td></tr>
+            <tr><td><b>Prospecting</b></td><td>New personalized outreach from approved sources (~60)</td><td class="r">90m</td></tr>
+            <tr><td><b>Conversations</b></td><td>Work your live two-ways: qualify, present TPB, book calls</td><td class="r">90m</td></tr>
+            <tr><td><b>Follow-up</b></td><td>Dated follow-ups and nurture touches (~40)</td><td class="r">45m</td></tr>
+            <tr><td><b>Wrap</b></td><td>Update every record, set next actions, log your scorecard</td><td class="r">30m</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout"><b>Warm inbound always comes first.</b> Someone who just replied or commented is your hottest lead of the day. Speed wins. Answer them before you start new outreach.</div>
+      </section>
+
+      <!-- MATH -->
+      <section id="math">
+        <div class="sh"><span class="n">06</span><h2>The Math: How Your Day Becomes Closes</h2></div>
+        <p class="lede">Small daily numbers compound into a big month. This is the realistic path from your activity to your results. It's why the daily scorecard matters more than any single conversation.</p>
+        <div class="card"><h3>A target month, step by step</h3>
+          <div class="flow">
+            <div class="st"><b>~1,900</b>contacts /mo<br><span style="font-size:11px;color:var(--faint)">~88 a day</span></div>
+            <span class="ar">→</span>
+            <div class="st"><b>~580</b>replies</div>
+            <span class="ar">→</span>
+            <div class="st"><b>~375</b>conversations</div>
+            <span class="ar">→</span>
+            <div class="st"><b>~150</b>qualified</div>
+          </div>
+          <div class="flow">
+            <div class="st"><b>~90</b>TPB offers</div>
+            <span class="ar">→</span>
+            <div class="st" style="border-color:rgba(87,185,138,.4)"><b style="color:#9fe3c2">~16</b>TPB closes</div>
+            <span class="ar">+</span>
+            <div class="st"><b>~37</b>qualified<br>Academy</div>
+            <span class="ar">→</span>
+            <div class="st" style="border-color:rgba(87,185,138,.4)"><b style="color:#9fe3c2">~20</b>appointments</div>
+          </div>
+        </div>
+        <div class="callout green"><b>Read it backward and it's simple:</b> about 4 TPB offers a day gets you to ~16 closes a month. About 1 qualified call booked a day gets you to ~20 appointments. That's the whole game. Keep the top of the funnel full and the bottom takes care of itself.</div>
+        <p style="font-size:12.5px;color:var(--muted)">These rates are our starting estimates. As we work, we'll track <b>your</b> real numbers at each step and coach the one that needs the most help. Your rates will climb as you get sharper.</p>
+      </section>
+
+      <!-- PAY -->
+      <section id="pay">
+        <div class="sh"><span class="n">07</span><h2>How You Get Paid</h2></div>
+        <div class="cols3">
+          <div class="card"><h3>Base</h3><p style="font-size:13.5px;color:var(--mid)"><b>$200 / week</b>, paid for consistently working your pipeline to standard.</p></div>
+          <div class="card"><h3>Every TPB close</h3><p style="font-size:13.5px;color:var(--mid)"><b>$20</b> per membership: $12 when the first payment clears, $8 when they're still active at day 30.</p></div>
+          <div class="card"><h3>Every Academy / B.O.S.S. close</h3><p style="font-size:13.5px;color:var(--mid)"><b>$150 to $300</b> on deals you sourced and booked that close, based on cash collected (see tiers).</p></div>
+        </div>
+        <div class="card"><h3>Academy / B.O.S.S. bounty tiers</h3>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Cash collected on the deal</th><th class="r">You earn</th></tr></thead>
+          <tbody>
+            <tr><td>Under $1,500</td><td class="r"><b>$150</b></td></tr>
+            <tr><td>$1,500 – $2,999</td><td class="r"><b>$200</b></td></tr>
+            <tr><td>$3,000 – $5,999</td><td class="r"><b>$250</b></td></tr>
+            <tr><td>$6,000+</td><td class="r"><b>$300</b></td></tr>
+          </tbody>
+        </table></div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:8px">Paid 50% when the first payment clears, 50% when the deal is fully collected or at day 60, whichever comes first.</p>
+        </div>
+        <div class="card"><h3>The rules, so it's always clear</h3>
+          <ul class="clean">
+            <li><b>A deal is yours</b> when you're the first-touch owner in the CRM <b>and</b> you booked the call. Both logged.</li>
+            <li><b>Earned</b> when the cash clears. <b>Paid</b> the next pay cycle after that. No pay for a verbal yes or for just booking a call.</li>
+            <li>Commissions are on <b>cash actually collected</b>, not contract value. Payment plans pay as the money comes in.</li>
+            <li>If a deal is <b>refunded or charged back</b> inside the guarantee window, that commission comes back out of your next payout. After the window, it's yours to keep.</li>
+            <li>If you're ever trained and assigned to <b>close</b> a deal yourself, you earn the closer payout on it, not both. One or the other, whichever is higher.</li>
+            <li>Deals already <b>closed and collected</b> before your last day are still paid on schedule.</li>
+          </ul>
+        </div>
+        <div class="card"><h3>What you can earn</h3>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Your month</th><th class="r">Base</th><th class="r">TPB</th><th class="r">Academy</th><th class="r">Total</th></tr></thead>
+          <tbody>
+            <tr><td>Building (8 TPB, 1 Academy)</td><td class="r">$867</td><td class="r">$160</td><td class="r">$150</td><td class="r"><b>~$1,177</b></td></tr>
+            <tr><td><b>On target</b> (16 TPB, 4 Academy)</td><td class="r">$867</td><td class="r">$320</td><td class="r">$800</td><td class="r g"><b>~$1,987</b></td></tr>
+            <tr><td>Strong month (22 TPB, 7 Academy)</td><td class="r">$867</td><td class="r">$440</td><td class="r">$1,925</td><td class="r g"><b>~$3,232</b></td></tr>
+          </tbody>
+        </table></div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:8px">Your base is your floor. Your activity is your ceiling. The more qualified conversations you create, the more you earn.</p>
+        </div>
+      </section>
+
+      <!-- CRM -->
+      <section id="crm">
+        <div class="sh"><span class="n">08</span><h2>Your CRM</h2></div>
+        <div class="cols">
+          <div class="card"><h3>Move people through these stages</h3>
+            <ol class="num">
+              <li>New / Contacted</li><li>Replied</li><li>In Conversation</li><li>Qualified · TPB</li><li>Qualified · Academy</li><li>TPB Offer Made</li><li>Appointment Booked</li><li>Confirmed</li><li>Attended</li><li>Closed-Won</li><li>Nurture</li><li>Disqualified</li>
+            </ol>
+          </div>
+          <div class="card"><h3>Fill these on every record</h3>
+            <ul class="clean">
+              <li><b>Source</b> (which channel)</li>
+              <li><b>Stage</b> (keep it current)</li>
+              <li><b>Next action + date</b> (never leave this blank unless closed or DQ)</li>
+              <li><b>Track</b> (TPB / Academy / Nurture)</li>
+              <li><b>Notes</b> (why qualified or DQ)</li>
+              <li><b>Outcome + cash collected</b> (when it closes)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout"><b>If it's not in the CRM, it didn't happen.</b> The CRM is how your work is counted and how you get paid. Keep it clean daily, not at the end of the week.</div>
+      </section>
+
+      <!-- STANDARDS -->
+      <section id="standards">
+        <div class="sh"><span class="n">09</span><h2>How We Show Up</h2></div>
+        <div class="cols">
+          <div class="card"><h3>Always</h3>
+            <ul class="clean chk">
+              <li>Personalized, respectful outreach</li>
+              <li>Answer honestly, never over-promise results</li>
+              <li>Follow up with care, and stop the moment someone says no</li>
+              <li>Treat every breeder with respect, this is a close community that talks</li>
+              <li>Keep your CRM accurate</li>
+            </ul>
+          </div>
+          <div class="card"><h3>Never</h3>
+            <ul class="clean x">
+              <li>Spam, mass identical messages, or automation tools (this gets the account banned)</li>
+              <li>Exaggerated income or results claims</li>
+              <li>High-pressure tactics</li>
+              <li>Pushing an unqualified person onto a call</li>
+              <li>Ignoring an opt-out</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout red"><b>Protect the account.</b> Aggressive, spammy volume from one Instagram account gets it limited or banned, and that takes the whole pipeline with it. Stay personal, stay within the daily numbers, no bots. Ever.</div>
+      </section>
+
+      <!-- RAMP -->
+      <section id="ramp">
+        <div class="sh"><span class="n">10</span><h2>Your First 90 Days</h2></div>
+        <p class="lede">You're not expected to hit full numbers on day one. Here's how you ramp. We build the skill and the pipeline first, then the results.</p>
+        <div class="cols3">
+          <div class="card"><h3>Days 1–30 · Learn</h3>
+            <ul class="clean">
+              <li>Product, who we serve, offers, scripts, CRM</li>
+              <li>Role-play the TPB offer and qualifying</li>
+              <li>Watch real conversations</li>
+              <li>Build your pipeline, don't force closes</li>
+              <li><b>Goal:</b> your first 3–6 TPB closes, clean CRM</li>
+            </ul>
+          </div>
+          <div class="card"><h3>Days 31–60 · Develop</h3>
+            <ul class="clean">
+              <li>Volume up to ~80% of target</li>
+              <li>Own all warm inbound</li>
+              <li>Your first qualified appointments</li>
+              <li>Weekly coaching on your weak step</li>
+              <li><b>Goal:</b> 8–12 TPB + 8–14 appointments</li>
+            </ul>
+          </div>
+          <div class="card"><h3>Days 61–90 · Produce</h3>
+            <ul class="clean">
+              <li>Full target volume and quality</li>
+              <li>Steady qualified appointments</li>
+              <li><b>Goal:</b> hit the target scorecard two weeks running</li>
+              <li>Then we talk about what's next for you</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- COACHING -->
+      <section id="coaching">
+        <div class="sh"><span class="n">11</span><h2>How We'll Work Together</h2></div>
+        <div class="cols">
+          <div class="card"><h3>Every day</h3><p style="font-size:13.5px;color:var(--mid)">You log your scorecard and keep your CRM current. That's it. Takes a few minutes at wrap.</p></div>
+          <div class="card"><h3>Every week (~30 min)</h3><p style="font-size:13.5px;color:var(--mid)">We review your scorecard, look at where the funnel leaked, go through two of your conversations together, pick one thing to sharpen, and set your focus for next week.</p></div>
+        </div>
+        <div class="callout green"><b>How to win here:</b> keep the top of your funnel full, answer warm leads fast, qualify honestly, and keep your CRM clean. Do those four things every day and the closes, the appointments, and the commission all follow. We'll coach the rest.</div>
+        <p class="big-quote" style="margin-top:18px">Full funnel. Fast replies. Honest qualifying. Clean CRM. Every day.</p>
+      </section>
+
+      <footer class="bf">BREEDWISE · DM Setter Playbook. Your operating guide, keep it open while you work. Questions on anything here go to your manager.</footer>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var OK='10507e9b2f51ad6a5805328ce47310372a649109a9ff4e74805503693f54e655'; /* SETTER2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function el(id){return document.getElementById(id);}
+  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='DM Setter Playbook · BreedWise';}
+  function tryUnlock(){var v=(el('pw').value||'').trim().toUpperCase();h(v).then(function(hex){if(hex===OK){try{sessionStorage.setItem('dmp_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
+  el('unlock').addEventListener('click',tryUnlock);
+  el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('dmp_ok')==='1'){reveal();}else{el('pw').focus();}}catch(e){el('pw').focus();}
+})();
+</script>
+</body>
+</html>
