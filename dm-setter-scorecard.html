@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13;--bg2:#0e131a;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;
+    --ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--faint:#586472;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--red:#e8695f;--blue:#5aa9e6;--purple:#a481d8;--amber:#e0a955;
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:74px}
+  body{margin:0;background:radial-gradient(1100px 600px at 82% -10%,rgba(201,168,98,.07),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.55}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:80}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#1a130a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #gate .hint{color:var(--muted);font-size:12px;margin-top:14px}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),#a9863f);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 14px rgba(201,168,98,.28)}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#15100a;font-size:18px;line-height:1}
+  .logo .wm{font-size:16px;letter-spacing:.2em;font-weight:700;color:var(--ink)}
+  .logo .wm b{color:var(--gold)}
+  #app{display:none}
+  nav.top{position:sticky;top:0;z-index:40;background:rgba(11,14,19,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav.top .in{max-width:1040px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:11px 22px}
+  nav .pills{display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+  nav .pills::-webkit-scrollbar{display:none}
+  nav .pills a{white-space:nowrap;font-size:12px;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:8px;font-weight:500}
+  nav .pills a:hover{color:var(--ink);background:var(--panel)}
+  nav .print{background:var(--panel);border:1px solid var(--line);color:var(--mid);border-radius:9px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+  .wrap{max-width:1040px;margin:0 auto;padding:26px 22px 60px}
+  header.hero{padding:14px 0 8px}
+  header .k{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  header h1{font-family:var(--disp);font-size:37px;line-height:1.06;margin:8px 0 6px;font-weight:600;letter-spacing:-.5px}
+  header p.lead{color:var(--mid);font-size:15px;max-width:760px;font-weight:300}
+  section{margin-top:34px;scroll-margin-top:70px}
+  .sh{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:16px;flex-wrap:wrap}
+  .sh .n{font-family:var(--disp);font-size:15px;color:var(--gold);font-weight:600}
+  .sh h2{font-family:var(--disp);font-size:23px;font-weight:600;margin:0;letter-spacing:-.3px}
+  .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:14px}
+  .card h3{font-family:var(--disp);font-size:17px;margin:0 0 8px;font-weight:600}
+  .card h3 .tiny{font-family:var(--sans);font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.04em}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:820px){.cols,.cols3{grid-template-columns:1fr}}
+  .callout{background:rgba(201,168,98,.09);border:1px solid rgba(201,168,98,.28);border-left:3px solid var(--gold);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:14px;color:var(--mid)}
+  .callout.red{background:rgba(232,105,95,.09);border-color:rgba(232,105,95,.3);border-left-color:var(--red)}
+  .callout.green{background:rgba(87,185,138,.09);border-color:rgba(87,185,138,.3);border-left-color:var(--green)}
+  .callout.blue{background:rgba(90,169,230,.08);border-color:rgba(90,169,230,.28);border-left-color:var(--blue)}
+  .callout b{color:var(--gold-soft)}.callout.red b{color:#f2a59d}.callout.green b{color:#9fe3c2}.callout.blue b{color:#bcdcf5}
+  ul.clean{list-style:none;padding:0;margin:8px 0}
+  ul.clean li{position:relative;padding:5px 0 5px 22px;font-size:14px;color:var(--mid)}
+  ul.clean li::before{content:'›';position:absolute;left:4px;color:var(--gold);font-weight:700}
+  ul.clean li b{color:var(--ink);font-weight:600}
+  ul.x li::before{content:'✕';color:var(--red);font-size:11px;top:7px}
+  ul.chk li::before{content:'✓';color:var(--green);font-size:12px}
+  ol.num{counter-reset:s;list-style:none;padding:0;margin:4px 0}
+  ol.num li{position:relative;padding:6px 0 6px 30px;font-size:13.5px;color:var(--mid)}
+  ol.num li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:5px;width:21px;height:21px;border-radius:50%;background:var(--panel2);border:1px solid var(--line2);color:var(--gold);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:4px 0}
+  th{text-align:left;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:8px 10px;border-bottom:1px solid var(--line2)}
+  td{padding:9px 10px;border-bottom:1px solid var(--line);color:var(--mid);vertical-align:top}
+  td b{color:var(--ink);font-weight:600}td.r{text-align:right}td.c{text-align:center}tr:last-child td{border-bottom:0}
+  td.g{color:#9fe3c2}td.a{color:var(--amber)}td.rd{color:#f2a59d}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel2);margin:6px 0}
+  .src{font-size:11.5px;color:var(--muted)}.src a{color:var(--blue)}
+  .tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:5px;vertical-align:middle}
+  .tag.fact{background:rgba(87,185,138,.15);color:#9fe3c2}
+  .tag.assum{background:rgba(224,169,85,.15);color:var(--amber)}
+  .tag.bench{background:rgba(90,169,230,.14);color:#bcdcf5}
+  .tag.target{background:rgba(164,129,216,.16);color:#d3bff0}
+  .lede{font-size:14px;color:var(--mid);margin:0 0 6px}
+  footer.bf{text-align:center;color:#59657390;font-size:11px;margin-top:46px;letter-spacing:.04em}
+  .verdict{font-family:var(--disp);font-size:19px;color:var(--gold-soft);font-weight:600;line-height:1.3}
+  @media print{nav.top{display:none}#app{display:block!important}#gate{display:none!important}body{background:#fff;color:#111}}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo mark" style="margin-bottom:18px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Open →</button>
+    <div class="err" id="gate-err"></div>
+    <div class="hint">Internal · sales ops leadership</div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top"><div class="in">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+      <div class="pills">
+        <a href="#role">Role</a><a href="#defs">Definitions</a><a href="#scorecard">Scorecard</a><a href="#math">Funnel math</a>
+        <a href="#comp">Comp</a><a href="#schedule">Schedule</a><a href="#crm">CRM</a><a href="#quality">Guardrails</a>
+        <a href="#ramp">30/60/90</a><a href="#mgmt">Accountability</a><a href="#legal">Legal</a><a href="#final">Recommendation</a>
+      </div>
+      <button class="print" onclick="window.print()">Print</button>
+    </div></nav>
+
+    <div class="wrap">
+      <header class="hero">
+        <div class="k">Internal · Revenue Operations</div>
+        <h1>DM Setter Role, Scorecard &amp; Compensation Plan</h1>
+        <p class="lead">The complete operating model for a BreedWise Instagram DM setter: role boundaries, a scorecard that cannot be gamed, the funnel math behind the targets (with the targets challenged, not assumed), compensation and unit economics, ramp, and the hire/no-hire call. Built to run without constant founder supervision.</p>
+      </header>
+
+      <div class="callout blue" style="margin-top:4px">
+        <b>Read the labels.</b> This document separates four things on purpose so no one confuses a hope for a result:
+        <span class="tag fact">FACT</span> given by you · <span class="tag assum">ASSUMPTION</span> stated, not measured · <span class="tag bench">BENCHMARK</span> industry range, not BreedWise data · <span class="tag target">TARGET</span> a goal we are choosing.
+        We have <b>no historical BreedWise DM conversion data in hand</b>, so every rate below is a benchmark or assumption until you measure yours. Capturing real rates is the single most valuable output of the first 30 days.
+      </div>
+
+      <div class="callout red">
+        <b>Three facts to lock before this plan is final.</b>
+        (1) <b>B.O.S.S. price.</b> You said ~$3,000 here <span class="tag fact">FACT</span>, but <b>boss-offer.html</b> currently publishes $6,000 / 120 days and the pricing model carries Academy $5K / Accelerator $15K. The commission tiers below are banded by cash collected so they survive either price, but pick the canonical number before you sign anything.
+        (2) <b>Employee or contractor.</b> A scorecard this prescriptive points toward employee (see Legal).
+        (3) <b>Part-time or full-time.</b> The comp math only works cleanly for one of them, and it is not full-time at $200/week.
+      </div>
+
+      <!-- 01 ROLE -->
+      <section id="role">
+        <div class="sh"><span class="n">01</span><h2>Role Definition &amp; Boundaries</h2></div>
+        <p class="lede">The setter runs the <b>front</b> of the revenue process: start qualified conversations, sort people correctly, close the low-ticket product (TPB) directly, and hand the high-ticket product (Academy / B.O.S.S.) to a closer as a booked, qualified, confirmed appointment. That is the whole job. Everything else is someone else's.</p>
+        <div class="cols">
+          <div class="card"><h3>The setter OWNS</h3>
+            <ul class="clean chk">
+              <li>Initiating qualified new conversations from approved sources</li>
+              <li>Working warm inbound (comments, story replies, DMs) within SLA</li>
+              <li>Two-way conversation and qualification</li>
+              <li><b>Closing TPB directly</b> ($97/mo) in the DM</li>
+              <li>Booking + confirming qualified Academy/B.O.S.S. appointments</li>
+              <li>Follow-up until a yes, a no, or a disqualify</li>
+              <li>CRM accuracy: stage, source, owner, next action, outcome</li>
+            </ul>
+          </div>
+          <div class="card"><h3>The setter does NOT own</h3>
+            <ul class="clean x">
+              <li><b>Closing Academy / B.O.S.S. calls</b> (closer) unless formally assigned + approved</li>
+              <li>Generating demand / ad spend / content (Marketing)</li>
+              <li>Onboarding, fulfillment, retention, member questions (Customer Success)</li>
+              <li>Community moderation, engagement, events (Community Manager)</li>
+              <li>Pricing, offer changes, refunds decisions (Founder / Ops)</li>
+              <li>Lead volume. If the machine does not create conversations, that is not the setter's miss.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Boundary vs…</th><th>Setter</th><th>Other role</th></tr></thead>
+          <tbody>
+            <tr><td><b>Closer</b></td><td>Books + qualifies the call, closes TPB only</td><td>Runs the sales call, closes high-ticket, handles price objections</td></tr>
+            <tr><td><b>Community Manager</b></td><td>Converts conversations into customers</td><td>Keeps existing members engaged + retained inside TPB</td></tr>
+            <tr><td><b>Customer Success</b></td><td>Hands off a sold customer cleanly</td><td>Onboards, activates, renews, prevents churn</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout"><b>TPB vs Academy handling, in one rule:</b> the setter is paid to make the <b>correct</b> recommendation, not the most expensive one. TPB is closed in the DM. Academy/B.O.S.S. is never pitched or priced in the DM beyond a one-line frame; it is <b>booked to a call</b>. Qualify for fit first, product second.</div>
+      </section>
+
+      <!-- 02 DEFINITIONS -->
+      <section id="defs">
+        <div class="sh"><span class="n">02</span><h2>Definitions &amp; Qualification Ladder</h2></div>
+        <p class="lede">Every KPI below depends on these being airtight. If "conversation" or "qualified" is fuzzy, the scorecard gets inflated and the comp plan gets disputed. One definition each, no interpretation room.</p>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Stage</th><th>Precise definition (what makes it count)</th></tr></thead>
+          <tbody>
+            <tr><td><b>Contact</b></td><td>One outbound personalized first message sent to a net-new, approved-source prospect. A mass/identical blast does not count.</td></tr>
+            <tr><td><b>Lead</b></td><td>A contact (or inbound) that matches ICP signals: breeds dogs or is actively starting, English-speaking, reachable, not a competitor/minor/spam.</td></tr>
+            <tr><td><b>Two-way conversation</b></td><td>Prospect sent <b>at least 2 substantive replies</b> (not just an emoji / "thanks"). A real back-and-forth exists.</td></tr>
+            <tr><td><b>Qualified TPB prospect</b></td><td>Lead in a two-way convo who has a problem TPB solves, can pay $97/mo, and has shown buying intent language. Ready for the TPB offer.</td></tr>
+            <tr><td><b>Qualified Academy/B.O.S.S. prospect</b></td><td>Meets the Academy Qualification Matrix: operating breeder with revenue/ambition to justify a high-ticket build, budget signal, decision-maker, real timeline. Ready for a call.</td></tr>
+            <tr><td><b>Qualified appointment</b></td><td>A booked call with a qualified Academy prospect, on the calendar, with reminders set. Booked &ne; qualified; both must be true.</td></tr>
+            <tr><td><b>Confirmed appointment</b></td><td>Prospect re-confirmed within 24h of the call (reply or confirm click).</td></tr>
+            <tr><td><b>Completed sales appointment</b></td><td>Prospect <b>attended</b> and the call actually happened (showed, stayed, engaged).</td></tr>
+            <tr><td><b>Closed sale</b></td><td>Money collected: TPB first payment cleared, or Academy/B.O.S.S. deposit/first payment cleared. Verbal "yes" is not a close.</td></tr>
+          </tbody>
+        </table></div>
+        <div class="cols">
+          <div class="card"><h3>Routing logic</h3>
+            <ul class="clean">
+              <li><b>Offer TPB</b> when: real problem, $97 is in reach, wants structure/community now, not ready for or not a fit for a $3K+ build.</li>
+              <li><b>Route to call</b> when: operating breeder, revenue or clear ambition, budget + decision-maker + timeline, wants done-with/for-you help.</li>
+              <li><b>Nurture</b> when: good fit, wrong timing. Tag + dated next action. Not a disqualify.</li>
+              <li><b>Disqualify</b> when: no breeding intent, can't pay, competitor, abusive, or just browsing. Tag + close. Protect the calendar.</li>
+            </ul>
+          </div>
+          <div class="card"><h3>Anti-gaming guardrails <span class="tiny">(stops KPI inflation)</span></h3>
+            <ul class="clean">
+              <li>Appointment KPIs pay/credit only on <b>qualified + attended</b>, never on booked. Removes the incentive to book anyone with a pulse.</li>
+              <li>A no-show that was unqualified counts <b>against</b> booking quality, not for booking volume.</li>
+              <li>TPB bounty partially tied to day-30 retention (see Comp). Removes the incentive to hard-sell a churner.</li>
+              <li>Random weekly audit of 5 "qualified" tags by the manager. Mis-tags tracked as a quality metric.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 SCORECARD -->
+      <section id="scorecard">
+        <div class="sh"><span class="n">03</span><h2>The Scorecard — Leading vs Lagging, 3 Levels</h2></div>
+        <p class="lede">Leading indicators are what the setter <b>controls</b> (activity + quality). Lagging outcomes <b>depend on other people</b> (closer, offer, price, market) and are measured but never the sole basis for firing. Numbers below are the mature-funnel target period, i.e. after ramp. See the ramp plan for months 1 to 3.</p>
+
+        <div class="card"><h3>Leading indicators <span class="tiny">· setter controls these · daily</span></h3>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Daily KPI</th><th class="r">Minimum</th><th class="r">Target</th><th class="r">Exceptional</th></tr></thead>
+          <tbody>
+            <tr><td><b>New qualified contacts initiated</b></td><td class="r">40</td><td class="r">60</td><td class="r">80</td></tr>
+            <tr><td>Warm inbound contacted (within 2h SLA)</td><td class="r">100%</td><td class="r">100%</td><td class="r">100%</td></tr>
+            <tr><td>Follow-up messages sent</td><td class="r">25</td><td class="r">40</td><td class="r">55</td></tr>
+            <tr><td>Two-way conversations active</td><td class="r">12</td><td class="r">18</td><td class="r">25</td></tr>
+            <tr><td>Qualified conversations created</td><td class="r">5</td><td class="r">7</td><td class="r">10</td></tr>
+            <tr><td>TPB offers presented</td><td class="r">3</td><td class="r">4</td><td class="r">6</td></tr>
+            <tr><td>CRM updated same-day</td><td class="r">100%</td><td class="r">100%</td><td class="r">100%</td></tr>
+          </tbody>
+        </table></div>
+        <p class="src" style="margin-top:8px">"100 contacts/day" from your brief maps here as <b>~60 new personalized + ~40 follow-ups = ~100 daily touches</b>, not 100 cold new messages. 100 genuinely personalized net-new DMs plus managing live threads is above sustainable human output. <span class="tag bench">BENCHMARK</span></p>
+        </div>
+
+        <div class="card"><h3>Lagging outcomes <span class="tiny">· shared dependency · weekly &amp; monthly</span></h3>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Outcome</th><th class="r">Cadence</th><th class="r">Minimum</th><th class="r">Target</th><th class="r">Exceptional</th></tr></thead>
+          <tbody>
+            <tr><td><b>TPB memberships closed</b></td><td class="r">month</td><td class="r">10</td><td class="r">16</td><td class="r">22</td></tr>
+            <tr><td>Academy/B.O.S.S. opps identified</td><td class="r">month</td><td class="r">25</td><td class="r">40</td><td class="r">55</td></tr>
+            <tr><td>Qualified appointments booked</td><td class="r">month</td><td class="r">14</td><td class="r">20</td><td class="r">26</td></tr>
+            <tr><td>Appointments confirmed</td><td class="r">%</td><td class="r">70%</td><td class="r">80%</td><td class="r">90%</td></tr>
+            <tr><td>Appointments attended (show rate)</td><td class="r">%</td><td class="r">55%</td><td class="r">65%</td><td class="r">75%</td></tr>
+            <tr><td>Closed-won attributable (Academy)</td><td class="r">month</td><td class="r">2</td><td class="r">4</td><td class="r">7</td></tr>
+            <tr><td>Follow-up compliance (dated next action set)</td><td class="r">%</td><td class="r">90%</td><td class="r">95%</td><td class="r">100%</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout"><b>Why TPB target is 16, not 20:</b> 20 TPB closes/month is only reachable at realistic-or-better conversion <i>and</i> near-ceiling daily volume at the same time (proof in the next section). 16 is the honest mature target; 22 is the exceptional month. Setting 20 as "minimum acceptable" would manufacture failure on day one.</div>
+        </div>
+      </section>
+
+      <!-- 04 FUNNEL MATH -->
+      <section id="math">
+        <div class="sh"><span class="n">04</span><h2>Funnel Math &amp; Target Validation</h2></div>
+        <p class="lede">Reverse-engineering your targets from the close backward. All rates are benchmark ranges for <b>warm / semi-warm Instagram DMs</b> (people who engaged, commented, or matched a lead source), <b>not cold spam</b>. Replace each with your measured rate as data comes in.</p>
+        <div class="card"><h3>Conversion assumptions <span class="tiny">· all BENCHMARK / ASSUMPTION, zero BreedWise history</span></h3>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Step</th><th class="r">Conservative</th><th class="r">Realistic</th><th class="r">Aggressive</th></tr></thead>
+          <tbody>
+            <tr><td>Contact → reply</td><td class="r">20%</td><td class="r">30%</td><td class="r">40%</td></tr>
+            <tr><td>Reply → two-way conversation</td><td class="r">55%</td><td class="r">65%</td><td class="r">75%</td></tr>
+            <tr><td>Two-way → qualified (any track)</td><td class="r">30%</td><td class="r">40%</td><td class="r">50%</td></tr>
+            <tr><td>Qualified-TPB → TPB offer</td><td class="r">70%</td><td class="r">80%</td><td class="r">90%</td></tr>
+            <tr><td>TPB offer → TPB close</td><td class="r">15%</td><td class="r">22%</td><td class="r">30%</td></tr>
+            <tr><td>Qualified-Academy → booked</td><td class="r">50%</td><td class="r">60%</td><td class="r">70%</td></tr>
+            <tr><td>Booked → attended (net show)</td><td class="r">50%</td><td class="r">60%</td><td class="r">70%</td></tr>
+            <tr><td>Attended → closed (closer)</td><td class="r">20%</td><td class="r">28%</td><td class="r">35%</td></tr>
+          </tbody>
+        </table></div>
+        <p class="src" style="margin-top:8px">Split assumption: of qualified prospects, ~70% route TPB, ~30% route Academy (TPB is the volume product). <span class="tag assum">ASSUMPTION</span></p>
+        </div>
+
+        <div class="card"><h3>What it takes to hit 20 TPB closes + 22 appointments in a month</h3>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Required volume (monthly)</th><th class="r">Conservative</th><th class="r">Realistic</th><th class="r">Aggressive</th></tr></thead>
+          <tbody>
+            <tr><td>TPB offers needed (for 20 closes)</td><td class="r">133</td><td class="r">91</td><td class="r">67</td></tr>
+            <tr><td>Qualified-TPB prospects</td><td class="r">190</td><td class="r">114</td><td class="r">74</td></tr>
+            <tr><td>Qualified-Academy (for 22 booked)</td><td class="r">44</td><td class="r">37</td><td class="r">31</td></tr>
+            <tr><td><b>Total qualified conversations</b></td><td class="r">234</td><td class="r">151</td><td class="r">105</td></tr>
+            <tr><td>Two-way conversations</td><td class="r">780</td><td class="r">377</td><td class="r">210</td></tr>
+            <tr><td>Replies</td><td class="r">1,418</td><td class="r">580</td><td class="r">280</td></tr>
+            <tr><td><b>Contacts needed</b></td><td class="r rd">7,090</td><td class="r a">1,934</td><td class="r g">700</td></tr>
+            <tr><td><b>Contacts / working day (22 days)</b></td><td class="r rd">322 ✕</td><td class="r a">~88</td><td class="r g">~32</td></tr>
+          </tbody>
+        </table></div>
+        </div>
+
+        <div class="callout red"><b>Verdict on the targets:</b> 20 TPB closes/month is achievable <b>only at realistic-or-better conversion</b>, and even then it demands ~88 personalized contacts every working day with no bad weeks. At conservative rates it needs 322/day, which is <b>operationally impossible</b> for personalized outreach. So: the targets are not wrong, they are <b>a stretch goal mislabeled as a baseline</b>, and they only cohere on one timeframe.</div>
+
+        <div class="callout green"><b>Timeframe answer (the question you asked me not to assume):</b> <span class="verdict">100 contacts = DAILY. 20 TPB closes + 20–25 appointments = MONTHLY.</span><br>That is the <i>only</i> combination where the numbers reconcile: ~88–100 contacts/day for ~22 days feeds ~20 TPB closes + ~22 appointments at realistic conversion. Daily closes would be absurd (400+/mo); weekly closes would need ~350 contacts/day. Monthly it is.</div>
+
+        <div class="callout"><b>Mathematically / operationally inconsistent items flagged:</b>
+          <ul class="clean" style="margin-top:4px">
+            <li>"100 personalized contacts/day" as <b>net-new</b> is above human sustainable output once you add follow-ups and live threads. Use 60 new + 40 follow-up.</li>
+            <li>"20 TPB closes" as a <b>minimum</b> assumes realistic+ conversion from a brand-new setter with no measured funnel. It is a month-3+ target, not a month-1 floor.</li>
+            <li>Closed Academy sales are a <b>lagging, shared</b> outcome (needs a capable closer + show rate). Do not make the setter's job security depend on the closer's close rate.</li>
+          </ul>
+        </div>
+        <div class="callout blue"><b>Data we actually need (capture from day 1):</b> contact→reply, reply→two-way, two-way→qualified, qualified→offer, offer→TPB-close, qualified→booked, booked→confirmed, confirmed→attended, attended→Academy-close, and TPB day-30 / day-60 retention. Until these are real, every projection here is a benchmark, not a forecast.</div>
+      </section>
+
+      <!-- 05 COMP -->
+      <section id="comp">
+        <div class="sh"><span class="n">05</span><h2>Compensation &amp; Unit Economics</h2></div>
+        <div class="callout red"><b>Blunt answer on the proposed package:</b> $200/week base + the bounties is <b>fine for part-time, not for full-time.</b> At 40 hrs/week it is $5/hr base, and even at target total earnings it lands around $12/hr all-in. That is unattractive to a good setter and, if this person is an employee, likely <b>below minimum wage</b>. Either scope it to ~20–25 hrs/week, or raise the base.</div>
+
+        <div class="cols3">
+          <div class="card"><h3>Base</h3><p style="font-size:13px;color:var(--mid)"><b>Part-time (recommended):</b> $200/wk for ~20–25 hrs = guaranteed floor. <b>If full-time:</b> raise to $350–$400/wk or convert to proper hourly + commission.</p></div>
+          <div class="card"><h3>TPB bounty</h3><p style="font-size:13px;color:var(--mid)"><b>$20 / TPB close</b>, split <b>$12 on first payment cleared + $8 at day-30 still active.</b> ~20.6% of first month; the day-30 tail kills the churn incentive.</p></div>
+          <div class="card"><h3>Academy / B.O.S.S. setter bounty</h3><p style="font-size:13px;color:var(--mid)">Tiered by cash collected on the deal the setter sourced + booked + that <b>attended</b>. Not a percentage, a <b>bounty</b>, so no one argues what "%" meant.</p></div>
+        </div>
+
+        <div class="card"><h3>Academy/B.O.S.S. setter bounty tiers <span class="tiny">· banded by cash collected, survives $3K or $6K pricing</span></h3>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Cash collected on deal</th><th class="r">Setter bounty</th><th>When paid</th></tr></thead>
+          <tbody>
+            <tr><td>Under $1,500</td><td class="r"><b>$150</b></td><td>50% on first cleared payment, 50% at full-collection or day-60</td></tr>
+            <tr><td>$1,500 – $2,999</td><td class="r"><b>$200</b></td><td>same split</td></tr>
+            <tr><td>$3,000 – $5,999</td><td class="r"><b>$250</b></td><td>same split</td></tr>
+            <tr><td>$6,000+</td><td class="r"><b>$300</b></td><td>same split</td></tr>
+          </tbody>
+        </table></div>
+        </div>
+
+        <div class="card"><h3>Attribution &amp; edge-case rules <span class="tiny">· put in writing before anyone starts</span></h3>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Scenario</th><th>Rule</th></tr></thead>
+          <tbody>
+            <tr><td>Setter-sourced definition</td><td>Setter is first-touch owner in CRM <b>and</b> booked the call. Both logged, timestamped.</td></tr>
+            <tr><td>Earned vs paid</td><td><b>Earned</b> when cash clears. <b>Paid</b> next payroll cycle after clearing. No pay on verbal yes or on booking alone.</td></tr>
+            <tr><td>Cash-collected vs contract-value</td><td>Always <b>cash collected</b>. Protects you on payment plans and walk-aways.</td></tr>
+            <tr><td>Payment plans / partials</td><td>Bounty tier set by <b>total cash collected to date</b>; 50% pays at first cleared payment, 50% once the deal clears its band or hits day-60.</td></tr>
+            <tr><td>Refund / chargeback / failed payment</td><td>Within the guarantee window → bounty <b>clawed back</b> (deducted from next payout). After the window → kept.</td></tr>
+            <tr><td>Cancellation before any cash</td><td>No bounty. Nothing was collected.</td></tr>
+            <tr><td>Existing customer / ascension</td><td>TPB member who later buys Academy: setter earns <b>only</b> if they ran the ascension conversation + booked it. Passive upgrades pay nothing.</td></tr>
+            <tr><td>Duplicate lead / ownership dispute</td><td>CRM first-touch timestamp wins. Ties go to the person who booked the call. Manager rules within 48h; no splitting.</td></tr>
+            <tr><td>Setter also closes (dual role)</td><td>Only if formally assigned + approved. <b>Never stack</b> setter bounty + closer commission on the same deal. One or the other, whichever is greater.</td></tr>
+            <tr><td>Post-termination</td><td>Deals already <b>closed with cash cleared</b> before the last day pay out on schedule. Open pipeline does not. Put this in the written agreement (some states treat earned commission as protected wages).</td></tr>
+          </tbody>
+        </table></div>
+        </div>
+
+        <div class="card"><h3>Setter earnings model <span class="tiny">· monthly, part-time base</span></h3>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Scenario</th><th class="r">Base</th><th class="r">TPB</th><th class="r">Academy</th><th class="r">Total / mo</th><th class="r">Blended $/hr*</th></tr></thead>
+          <tbody>
+            <tr><td><b>Low</b> (8 TPB, 1 Academy @ $150)</td><td class="r">$867</td><td class="r">$160</td><td class="r">$150</td><td class="r"><b>$1,177</b></td><td class="r a">~$11</td></tr>
+            <tr><td><b>Target</b> (16 TPB, 4 Academy @ $200)</td><td class="r">$867</td><td class="r">$320</td><td class="r">$800</td><td class="r g"><b>$1,987</b></td><td class="r g">~$18</td></tr>
+            <tr><td><b>High</b> (22 TPB, 7 Academy @ $275)</td><td class="r">$867</td><td class="r">$440</td><td class="r">$1,925</td><td class="r g"><b>$3,232</b></td><td class="r g">~$30</td></tr>
+          </tbody>
+        </table></div>
+        <p class="src" style="margin-top:8px">*Blended on ~108 hrs/mo (25 hrs/wk). On full-time ~173 hrs/mo the same totals are ~$7 / ~$11 / ~$19 per hour. The hourly is the whole argument for keeping this part-time.</p>
+        </div>
+
+        <div class="card"><h3>BreedWise unit economics <span class="tiny">· margins/churn are ASSUMPTION until measured</span></h3>
+        <div class="tblwrap"><table>
+          <thead><tr><th>TPB economics</th><th class="r">Value</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Price</td><td class="r">$97/mo</td><td class="tag fact" style="padding:2px 7px">FACT</td></tr>
+            <tr><td>Gross margin (digital community)</td><td class="r">~85%</td><td><span class="tag assum">ASSUMPTION</span> confirm processing + content cost</td></tr>
+            <tr><td>Avg retention</td><td class="r">~6.7 mo</td><td><span class="tag assum">ASSUMPTION</span> at ~15%/mo churn, measure yours</td></tr>
+            <tr><td>Gross LTV</td><td class="r"><b>~$552</b></td><td>$97 × 85% × 6.7</td></tr>
+            <tr><td>Setter CAC (bounty + allocated base)</td><td class="r">~$60–80</td><td>$20 bounty + base spread over closes</td></tr>
+            <tr><td><b>LTV : CAC</b></td><td class="r g"><b>~7–9 : 1</b></td><td>Healthy — <b>if</b> retention is real</td></tr>
+            <tr><td>Payback</td><td class="r g">&lt; 1 month</td><td>First payment ~covers CAC</td></tr>
+          </tbody>
+        </table></div>
+        <p class="src" style="margin-top:8px">B.O.S.S. at $3K with $250 setter + ~$300 closer = ~18% total sales comp per deal: acceptable. At $6K it is ~9%: very comfortable. Either way the high-ticket deal easily carries the comp; the risk is never the Academy bounty, it is <b>TPB churn</b>.</p>
+        </div>
+
+        <div class="callout"><b>Minimum economics before you scale past one setter:</b>
+          <ul class="clean" style="margin-top:4px">
+            <li>≥30 days of <b>measured</b> funnel rates (not benchmarks)</li>
+            <li>TPB <b>day-30 retention ≥ 70%</b> on setter-sourced members</li>
+            <li>Blended new-customer <b>CAC payback &lt; 60 days</b></li>
+            <li>Closer <b>attended→close ≥ 20%</b> (or the appointments you set are wasted)</li>
+            <li>Setter clearing <b>≥ market hourly</b> at target, or you will churn setters and re-pay ramp cost every quarter</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 06 SCHEDULE -->
+      <section id="schedule">
+        <div class="sh"><span class="n">06</span><h2>Daily Operating Schedule</h2></div>
+        <div class="cols">
+          <div class="card"><h3>Part-time (~5 hrs/day · recommended)</h3>
+            <div class="tblwrap"><table>
+              <thead><tr><th>Block</th><th>Work</th><th class="r">Time</th></tr></thead>
+              <tbody>
+                <tr><td>Open</td><td>Warm inbound first (overnight DMs, comments, story replies) + confirm today's calls</td><td class="r">45m</td></tr>
+                <tr><td>Prospecting</td><td>New personalized outreach from approved sources (~60)</td><td class="r">90m</td></tr>
+                <tr><td>Conversations</td><td>Work live two-ways, qualify, present TPB, book calls</td><td class="r">90m</td></tr>
+                <tr><td>Follow-up</td><td>Dated follow-ups + nurture touches (~40)</td><td class="r">45m</td></tr>
+                <tr><td>CRM + EOD</td><td>Update every record, set next actions, log scorecard numbers</td><td class="r">30m</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+          <div class="card"><h3>Full-time (~8 hrs/day)</h3>
+            <p style="font-size:13px;color:var(--mid)">Same blocks, scaled: ~80 new outreach, ~55 follow-ups, 2–3 defined inbox sweeps (not "always online"), plus a midday live-conversation push around peak IG hours, and a second CRM pass. <b>Only justified if lead volume supports it</b> — more setter hours against a dry top-of-funnel just burns base.</p>
+            <div class="callout" style="margin:10px 0 0"><b>Reality check on hours:</b> hitting ~60 personalized contacts + 18 live conversations + 40 follow-ups + clean CRM is a genuine ~5-hour block of focused work. Do not pretend 100 net-new personalized + full pipeline fits in part-time hours.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 CRM -->
+      <section id="crm">
+        <div class="sh"><span class="n">07</span><h2>CRM Pipeline &amp; Reporting</h2></div>
+        <div class="cols">
+          <div class="card"><h3>Pipeline stages</h3>
+            <ol class="num">
+              <li>New / Contacted</li><li>Replied</li><li>In Conversation (two-way)</li><li>Qualified — TPB</li><li>Qualified — Academy</li><li>TPB Offer Made</li><li>Appointment Booked</li><li>Appointment Confirmed</li><li>Attended</li><li>Closed-Won</li><li>Nurture</li><li>Disqualified</li>
+            </ol>
+          </div>
+          <div class="card"><h3>Required fields on every record</h3>
+            <ul class="clean">
+              <li><b>Source</b> (which approved channel)</li>
+              <li><b>Owner</b> + first-touch timestamp (attribution)</li>
+              <li><b>Stage</b> + stage-changed date</li>
+              <li><b>Next action</b> + <b>next-action date</b> (never blank unless Closed/DQ)</li>
+              <li><b>Track</b> (TPB / Academy / Nurture)</li>
+              <li><b>Outcome</b> + cash collected (on close)</li>
+              <li><b>Qualification notes</b> (why qualified / DQ)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="cols3">
+          <div class="card"><h3>Daily scorecard <span class="tiny">· setter self-logs</span></h3><p style="font-size:12.5px;color:var(--mid)">The 7 leading KPIs from §03, entered EOD. Green/amber/red vs target. Takes 3 minutes.</p></div>
+          <div class="card"><h3>Weekly manager dashboard</h3><p style="font-size:12.5px;color:var(--mid)">Activity totals + every funnel conversion rate + show rate + closes + CRM hygiene % + 5-record quality audit result. One screen.</p></div>
+          <div class="card"><h3>Weekly review agenda <span class="tiny">· 30 min</span></h3><p style="font-size:12.5px;color:var(--mid)">1) scorecard vs target 2) where the funnel leaked 3) 2 conversations reviewed together 4) one coaching focus 5) next-week commitment.</p></div>
+        </div>
+        <div class="callout"><b>Every KPI gets one definition (see §02) and one source of truth (the CRM).</b> If a number is not in the CRM it did not happen. No spreadsheets on the side, no "I talked to a bunch of people today."</div>
+      </section>
+
+      <!-- 08 QUALITY -->
+      <section id="quality">
+        <div class="sh"><span class="n">08</span><h2>Quality Standards &amp; Guardrails</h2></div>
+        <div class="cols">
+          <div class="card"><h3>Non-negotiable conduct</h3>
+            <ul class="clean chk">
+              <li>Personalized, permission-based outreach only</li>
+              <li>Respectful follow-up with a clear stop on "no"</li>
+              <li>No spam, no mass identical blasts, no automation tools</li>
+              <li>Instagram platform-policy compliant (ban risk is real)</li>
+              <li>No exaggerated income/results claims, no high pressure</li>
+              <li>Accurate CRM, every time</li>
+              <li>Treat breeders with respect; they are a tight community that talks</li>
+              <li>Honor opt-outs immediately; handle objections, don't bulldoze them</li>
+            </ul>
+          </div>
+          <div class="card"><h3>Qualitative measures <span class="tiny">· scored weekly, not just volume</span></h3>
+            <div class="tblwrap"><table>
+              <thead><tr><th>Measure</th><th class="r">How judged</th></tr></thead>
+              <tbody>
+                <tr><td>Conversation quality</td><td class="r">2 reviewed / wk</td></tr>
+                <tr><td>Qualification accuracy</td><td class="r">5-tag audit</td></tr>
+                <tr><td>Message personalization</td><td class="r">spot-check</td></tr>
+                <tr><td>Tone / brand fit</td><td class="r">manager rating</td></tr>
+                <tr><td>Objection handling</td><td class="r">call/DM review</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+        <div class="callout red"><b>Platform risk is a business risk, not a footnote.</b> Aggressive volume from one IG account gets rate-limited or banned, and a banned account takes the pipeline with it. This is a second, independent reason to cap net-new volume and ban automation tools.</div>
+      </section>
+
+      <!-- 09 RAMP -->
+      <section id="ramp">
+        <div class="sh"><span class="n">09</span><h2>First 30 / 60 / 90 Days</h2></div>
+        <p class="lede">Learning and pipeline-building first, full production later. Do not hold a new setter to mature-pipeline close targets in month one, there is no mature pipeline yet.</p>
+        <div class="cols3">
+          <div class="card"><h3>Days 1–30 · Learn</h3>
+            <ul class="clean">
+              <li>Product, ICP, offers, scripts, CRM</li>
+              <li>Role-play TPB offer + qualification</li>
+              <li>Shadow/observe real conversations</li>
+              <li><b>Build pipeline</b>, don't chase closes</li>
+              <li>Volume at 50–60% of target</li>
+              <li><b>Milestone:</b> first TPB closes (3–6), clean CRM, rates being captured</li>
+            </ul>
+          </div>
+          <div class="card"><h3>Days 31–60 · Develop</h3>
+            <ul class="clean">
+              <li>Volume to ~80% of target</li>
+              <li>Own warm inbound fully</li>
+              <li>First qualified appointments set</li>
+              <li>Weekly coaching on the leak points</li>
+              <li><b>Milestone:</b> 8–12 TPB + 8–14 appointments, measured funnel rates exist</li>
+            </ul>
+          </div>
+          <div class="card"><h3>Days 61–90 · Produce</h3>
+            <ul class="clean">
+              <li>Full target volume + quality</li>
+              <li>Consistent qualified appointments</li>
+              <li><b>Graduation:</b> hitting target scorecard 2 weeks running</li>
+              <li><b>Then decide:</b> continue as setter, or begin closer apprenticeship</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout"><b>Ramped targets beat flat targets.</b> Month 1 target 3–6 TPB. Month 2: 8–12. Month 3+: 16 (the mature target). Judging a day-10 setter against a 16-close month is how you lose a good hire who was actually on track.</div>
+      </section>
+
+      <!-- 10 MGMT -->
+      <section id="mgmt">
+        <div class="sh"><span class="n">10</span><h2>Accountability &amp; Management</h2></div>
+        <div class="cols">
+          <div class="card"><h3>Review cadence</h3>
+            <ul class="clean">
+              <li><b>Daily:</b> leading-indicator scorecard + CRM hygiene (self-logged, manager glances)</li>
+              <li><b>Weekly:</b> full funnel rates, show rate, closes, 2 conversation reviews, 1 coaching focus</li>
+              <li><b>Monthly:</b> scorecard vs target, comp reconciliation, ramp/role decision</li>
+            </ul>
+          </div>
+          <div class="card"><h3>Ownership</h3>
+            <ul class="clean">
+              <li><b>Coaching + performance:</b> sales manager (or founder until that seat exists)</li>
+              <li><b>Lead volume:</b> Marketing. A dry funnel is not a setter failure.</li>
+              <li><b>Close rate on calls:</b> closer. A weak closer is not a setter failure.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card"><h3>Diagnose by pattern, not by mood</h3>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Pattern</th><th>Most likely cause</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>High activity, low conversion</td><td>Quality / targeting / script</td><td>Review conversations, fix messaging + ICP, coach. Not a volume problem.</td></tr>
+            <tr><td>High booking, poor show rate</td><td>Over-booking unqualified, weak confirmation</td><td>Tighten qualification, enforce confirm SLA, pay only on attended.</td></tr>
+            <tr><td>Strong results, poor outreach quality</td><td>Cutting corners / spam risk</td><td>Correct immediately. Results do not excuse brand/platform risk.</td></tr>
+            <tr><td>Good quality, low results, dry funnel</td><td>Lead volume (Marketing)</td><td>Fix top-of-funnel. Do not penalize the setter.</td></tr>
+          </tbody>
+        </table></div>
+        </div>
+        <div class="callout"><b>Improvement window:</b> give <b>one full pay period (2 weeks) of focused coaching</b> on a named metric before changing role or comp, and never judge before <b>day 60</b> (no mature pipeline exists before then). If a specific leading indicator the setter controls is still red after a focused 2-week coaching cycle, then act.</div>
+      </section>
+
+      <!-- 11 LEGAL -->
+      <section id="legal">
+        <div class="sh"><span class="n">11</span><h2>Legal &amp; Compensation Risk</h2></div>
+        <div class="callout red"><b>Not legal advice. Have qualified employment counsel in your state review all of this before you hire.</b> These are the flags, not clearances.</div>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Risk</th><th>Why it matters here</th></tr></thead>
+          <tbody>
+            <tr><td><b>Minimum wage / overtime (FLSA)</b></td><td>If this is an <b>employee</b>, $200/wk for full-time is ~$5/hr, below the $7.25 federal floor and far below most state minimums ($15+ in many). Overtime applies past 40 hrs. Commission does not erase the hourly-minimum obligation each pay period.</td></tr>
+            <tr><td><b>Worker classification</b></td><td>A set schedule, company scripts/CRM, supervision, coaching, and a prescriptive scorecard all point toward <b>employee</b> under the IRS factors, the DOL economic-reality test, and especially California's ABC test (AB5). Calling someone a "contractor" does not make them one.</td></tr>
+            <tr><td><b>Written commission agreement</b></td><td>Several states require commission terms <b>in writing</b> (e.g., California Labor Code §2751). Define: what is earned, when, how computed, clawbacks, and post-termination.</td></tr>
+            <tr><td><b>Earned commission = wages</b></td><td>In many states, once earned, commission is a protected wage you cannot retroactively forfeit. This drives the "cash cleared before last day pays out" rule.</td></tr>
+            <tr><td><b>Chargeback / clawback terms</b></td><td>Deducting a clawback from future pay can itself run into wage-deduction rules. Counsel should word this.</td></tr>
+            <tr><td><b>Platform ToS</b></td><td>Not a law, but Instagram automation / mass DM violates ToS and risks the account. Treat as a hard operational rule.</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout"><b>Cleanest path:</b> a <b>part-time W-2 employee</b> at a lawful hourly base + the commission plan, with a written commission agreement, is simpler and lower-risk than trying to make this prescriptive role fit a 1099. Confirm with counsel.</div>
+      </section>
+
+      <!-- 12 FINAL -->
+      <section id="final">
+        <div class="sh"><span class="n">12</span><h2>Final Recommended Operating Model</h2></div>
+        <div class="callout green"><b>My strongest recommendation, not a menu:</b> Hire <b>one part-time setter (~25 hrs/week)</b>, W-2, at <b>$200/week base + $20/TPB (split for retention) + the banded Academy bounty</b>. Run a <b>60-day measured pilot</b> with <b>ramped targets</b>. The job is TPB closing + Academy appointment-setting only. Prove the funnel rates and TPB retention on real data, <b>then</b> decide whether to go full-time, add a closer apprenticeship, or hire a second setter. Do not scale on benchmarks.</div>
+
+        <div class="card"><h3>A. One-page DM Setter job description</h3>
+          <p style="font-size:13.5px;color:var(--mid)"><b>Role:</b> DM Setter (part-time) · <b>Reports to:</b> Sales Manager / Founder · <b>Mission:</b> turn qualified Instagram conversations into TPB members and booked, qualified Academy/B.O.S.S. appointments. <b>Owns:</b> outreach, inbound, qualification, TPB closing, appointment booking + confirming, follow-up, CRM. <b>Does not own:</b> closing high-ticket calls, demand generation, fulfillment/retention, community. <b>Measured on:</b> leading activity + quality (controls) and TPB closes / qualified appointments / attributable closes (shared). <b>Comp:</b> $200/wk base + $20/TPB + $150–$300 Academy bounty on cash collected. <b>Must:</b> personalized permission-based outreach, platform-compliant, accurate CRM, respectful to breeders.</p>
+        </div>
+        <div class="card"><h3>B. Compensation plan — exact tiers</h3>
+          <ul class="clean"><li>Base: <b>$200/wk</b> part-time (raise to $350–$400 only if full-time)</li><li>TPB: <b>$20</b> = $12 on first payment + $8 at day-30 active</li><li>Academy/B.O.S.S.: <b>$150 / $200 / $250 / $300</b> by cash-collected band, 50% first cleared payment + 50% at full-collection or day-60</li><li>Paid on cash collected; clawed back on in-window refund/chargeback; no setter+closer stacking; written agreement; post-termination = cash-cleared deals only</li></ul>
+        </div>
+        <div class="cols">
+          <div class="card"><h3>C. KPI scorecard</h3><p style="font-size:13px;color:var(--mid)">Full 3-level leading/lagging scorecard in <a href="#scorecard" style="color:var(--gold-soft)">§03</a>. Daily: 60 new / 40 follow-up / 18 live convos / 7 qualified / 4 TPB offers. Monthly target: 16 TPB + 20 appointments + 4 attributable Academy closes.</p></div>
+          <div class="card"><h3>D. Funnel math model</h3><p style="font-size:13px;color:var(--mid)">Full conservative/realistic/aggressive model in <a href="#math" style="color:var(--gold-soft)">§04</a>. Headline: ~88 contacts/day at realistic conversion → 20 TPB + 22 appts/month. 100 = daily, closes = monthly.</p></div>
+        </div>
+        <div class="card"><h3>E. Sample weekly earnings &amp; company economics</h3>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Level</th><th class="r">Setter / week</th><th class="r">Setter / mo</th><th class="r">TPB new MRR added</th><th class="r">Academy cash</th><th class="r">Sales comp % of new rev</th></tr></thead>
+          <tbody>
+            <tr><td>Low</td><td class="r">~$272</td><td class="r">$1,177</td><td class="r">$776 (8×$97)</td><td class="r">$1,500</td><td class="r a">~13%</td></tr>
+            <tr><td>Target</td><td class="r">~$459</td><td class="r">$1,987</td><td class="r">$1,552 (16×$97)</td><td class="r">$12,000 (4×$3k)</td><td class="r g">~9%</td></tr>
+            <tr><td>High</td><td class="r">~$746</td><td class="r">$3,232</td><td class="r">$2,134 (22×$97)</td><td class="r">$21,000 (7×$3k)</td><td class="r g">~8%</td></tr>
+          </tbody>
+        </table></div>
+        <p class="src" style="margin-top:8px">Company sales comp stays single-digit % of new revenue at target+. The model is <b>profitable for BreedWise</b>. The open question is whether it pays the setter <b>enough to keep them</b>, which is why it is part-time.</p>
+        </div>
+        <div class="cols">
+          <div class="card"><h3>F. 30/60/90 ramp</h3><p style="font-size:13px;color:var(--mid)">Learn → Develop → Produce in <a href="#ramp" style="color:var(--gold-soft)">§09</a>. Close targets ramp 3–6 → 8–12 → 16. Graduate on 2 consecutive target weeks.</p></div>
+          <div class="card"><h3>G. CRM pipeline</h3><p style="font-size:13px;color:var(--mid)">12 stages + required fields in <a href="#crm" style="color:var(--gold-soft)">§07</a>. Source + owner + timestamp + next-action-date on every record. CRM is the only source of truth.</p></div>
+        </div>
+
+        <div class="card"><h3>H. Top 10 blind spots you are likely overlooking</h3>
+        <ol class="num">
+          <li><b>Lead volume is the real ceiling.</b> A great setter against a dry top-of-funnel still fails. Marketing must feed this.</li>
+          <li><b>The closer is a hidden dependency.</b> Setting great appointments is worthless if attended→close is weak. Measure the closer too.</li>
+          <li><b>TPB churn silently breaks the economics.</b> 16 closes that churn by month 2 is not growth. The day-30 bounty tail is deliberate.</li>
+          <li><b>$200/wk full-time is likely illegal</b> and will churn your setter. Scope part-time or raise base.</li>
+          <li><b>Classification.</b> This role looks like an employee. A 1099 label will not hold up.</li>
+          <li><b>Instagram can ban the account</b> and erase the pipeline overnight. Volume caps are protection, not timidity.</li>
+          <li><b>Attribution fights</b> will happen the first time a TPB member ascends. Write the rules before, not after.</li>
+          <li><b>You have no measured conversion data.</b> Every projection is a benchmark. The pilot's job is to replace them.</li>
+          <li><b>Offer instability.</b> B.O.S.S. is $3K here, $6K on the live page. A moving price breaks qualification and comp. Freeze it.</li>
+          <li><b>Founder-dependency.</b> Without a defined scorecard + weekly cadence + CRM-as-truth, this role quietly becomes another thing you manage daily.</li>
+        </ol>
+        </div>
+
+        <div class="card"><h3>I. The 5 decisions to make before hiring</h3>
+        <ol class="num">
+          <li><b>Part-time or full-time?</b> (Recommend part-time. If full-time, raise base.)</li>
+          <li><b>Employee or contractor?</b> (Recommend part-time W-2; confirm with counsel.)</li>
+          <li><b>Canonical B.O.S.S. price?</b> $3K or $6K. Freeze it before writing comp.</li>
+          <li><b>Who coaches + reviews weekly?</b> You, until a sales manager exists. Name it.</li>
+          <li><b>Is Marketing committed to the lead volume?</b> ~1,900 contactable prospects/month of raw material. If not, lower the targets now.</li>
+        </ol>
+        </div>
+
+        <div class="callout green"><h3 style="margin:0 0 6px">J. Is this role ready to hire now?</h3>
+          <p class="verdict" style="margin:0 0 8px">Yes to hire. No to the plan as written.</p>
+          <span style="font-size:14px;color:var(--mid)">Hire the seat, it is the right role and the economics work. But do not sign the exact package in your brief. Before the offer goes out, make the 5 decisions above, freeze the B.O.S.S. price, re-label the 20-close/100-contact targets as monthly/daily stretch goals with a ramp, scope it part-time (or raise the base), and get a written, counsel-reviewed commission agreement. Do that and this is a profitable, low-supervision seat. Skip it and you get a misclassified, underpaid setter chasing a baseline that is mathematically a stretch, and you will churn them in a quarter.</span>
+        </div>
+      </section>
+
+      <footer class="bf">BREEDWISE · Revenue Operations — internal. Funnel rates are industry benchmarks, not BreedWise history. Not legal advice; confirm classification and commission terms with counsel in your state.</footer>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var OK='368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875'; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function el(id){return document.getElementById(id);}
+  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='DM Setter Scorecard · BreedWise';}
+  function tryUnlock(){var v=(el('pw').value||'').trim();h(v).then(function(hex){if(hex===OK){try{sessionStorage.setItem('dms_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
+  el('unlock').addEventListener('click',tryUnlock);
+  el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('dms_ok')==='1'){reveal();}else{el('pw').focus();}}catch(e){el('pw').focus();}
+})();
+</script>
+</body>
+</html>
