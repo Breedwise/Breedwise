@@ -95,6 +95,17 @@
   .tile .v.gold{color:var(--gold2)}.tile .v.green{color:var(--green)}
   .tile .s{font-size:11.5px;color:var(--muted);margin-top:3px}
 
+  /* five levers */
+  .levers{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+  @media(max-width:1100px){.levers{grid-template-columns:1fr 1fr 1fr}}
+  @media(max-width:720px){.levers{grid-template-columns:1fr}}
+  .lever{position:relative;background:linear-gradient(165deg,var(--card),var(--card2));border:1px solid var(--line);border-top:2px solid var(--gold);border-radius:12px;padding:16px 15px 15px}
+  .lever .lnum{font-family:var(--display);font-size:26px;color:var(--gold);line-height:1}
+  .lever .lname{font-family:var(--display)!important;font-size:14.5px!important;letter-spacing:.03em;text-transform:uppercase;margin:9px 0 5px;color:var(--ink)}
+  .lever .ldesc{font-size:12.5px;color:var(--mid)}
+  .lever .x{position:absolute;top:9px;right:11px;color:var(--faint);cursor:pointer;font-size:15px;line-height:1}
+  .lever .x:hover{color:var(--red)}
+
   /* list editor (bullets) */
   .lst{list-style:none;padding:0;margin:0}
   .lst li{display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}
@@ -195,8 +206,15 @@ function initials(n){n=(n||'').trim();if(!n)return'?';var p=n.split(/\s+/);retur
 function seed(){return {
  updated:0,
  command:{
-   mission:"BreedWise helps dog breeders build profitable, ethical, well-run breeding businesses through education, tools, and implementation support.",
-   vision:"Become the trusted operating standard for the modern dog-breeding industry.",
+   mission:"BreedWise is building the trusted global infrastructure for ethical dog breeding and responsible pet sales — one veterinary-backed certification, recognized and adopted worldwide, that raises breeder standards, ends backyard breeding, and unifies a fragmented industry.",
+   vision:"A world where every ethical breeder is certified to a single, globally recognized, veterinary-backed standard — backyard breeding is gone, standards are high in every country, and a once-fragmented industry is fully vertically integrated under BreedWise.",
+   levers:[
+     {name:"Education / Certification",desc:"Train and certify breeders to one rigorous, veterinary-backed standard — the credential the whole industry is built on."},
+     {name:"Software Integration",desc:"One platform that runs the breeding business end to end: records, health, compliance, sales, and operations."},
+     {name:"Veterinary Adoption",desc:"Make the certification the standard veterinarians endorse, reference, and require — the clinical backbone of trust."},
+     {name:"Marketplace",desc:"A trusted marketplace connecting certified breeders with responsible buyers, where certification is the proof."},
+     {name:"Globalization",desc:"Export the standard country by country, raising breeder standards and ending backyard breeding worldwide."}
+   ],
    objectives:["",""],
    priorities:["",""],
    announcements:[""],
@@ -453,6 +471,27 @@ function renderCommand(){var p=$('#p-command');p.innerHTML='';
   var c1=el('div','card');c1.appendChild(el('div','lbl','Company Mission'));c1.appendChild(ta(DB.command,'mission','What BreedWise does and for whom'));
   var c2=el('div','card');c2.appendChild(el('div','lbl','Vision'));c2.appendChild(ta(DB.command,'vision','Where we are going'));
   mv.appendChild(c1);mv.appendChild(c2);p.appendChild(mv);
+
+  /* 5-year levers */
+  if(!DB.command.levers||!DB.command.levers.length)DB.command.levers=seed().command.levers;
+  p.appendChild(el('div','sec-h','<h3>The Five Levers · Next 5 Years</h3><span class="ln"></span>'));
+  p.appendChild(el('p','intro','Our long-horizon strategy. Every objective, project, and priority should ladder up to one of these five.'));
+  var lvWrap=el('div');p.appendChild(lvWrap);
+  (function(){
+    var box=el('div','levers');
+    function rebuild(){box.innerHTML='';DB.command.levers.forEach(function(L,i){
+      var c=el('div','lever');
+      var x=el('span','x','×');x.title='Remove';x.addEventListener('click',function(){DB.command.levers.splice(i,1);rebuild();save();});
+      c.appendChild(x);
+      c.appendChild(el('div','lnum',(i<9?'0':'')+(i+1)));
+      var nm=inp(L,'name','Lever');nm.className='f lname';c.appendChild(nm);
+      var ds=ta(L,'desc','What it is');ds.className='f ldesc';c.appendChild(ds);
+      box.appendChild(c);
+    });setTimeout(function(){box.querySelectorAll('textarea.f').forEach(autoGrow);},0);}
+    rebuild();lvWrap.appendChild(box);
+    var add=el('button','addbtn','+ Add lever');add.addEventListener('click',function(){DB.command.levers.push({name:'',desc:''});rebuild();save();});
+    lvWrap.appendChild(add);
+  })();
 
   /* objectives + priorities */
   p.appendChild(el('div','sec-h','<h3>Q4 Objectives & Current Priorities</h3><span class="ln"></span>'));
