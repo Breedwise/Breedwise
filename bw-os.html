@@ -55,6 +55,8 @@
   .save{font-size:11.5px;color:var(--green);letter-spacing:.04em;display:flex;align-items:center;gap:7px}
   .save .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
   .save.saving{color:var(--amber)}.save.saving .dot{background:var(--amber)}
+  .save.synced{color:var(--green)}.save.synced .dot{background:var(--green)}
+  .save.local{color:var(--amber)}.save.local .dot{background:var(--amber)}
   .tbtn{background:var(--card);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:8px 13px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--body)}
   .tbtn:hover{border-color:var(--gold);color:var(--ink)}
   .wrap{padding:30px 32px 80px;max-width:1240px}
@@ -182,6 +184,8 @@
 "use strict";
 var LS='bw-os-v1';
 var FEED='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/bw-dashboard', FSECRET='YrKJx6hWQ-buaiTVuN3VcqMS';
+var FN_OS='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/bw-os', OS_SECRET='bw_os_5TmQ9xZ', AK='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+var myRev=0, lastEdit=0, srvT, pollT, serverOnline=false;
 function $(s,r){return (r||document).querySelector(s);}
 function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
@@ -287,13 +291,47 @@ function seed(){return {
 var DB=seed();
 function load(){try{var r=localStorage.getItem(LS);if(r){var d=JSON.parse(r);DB=Object.assign(seed(),d);}}catch(e){}}
 var saveT;
-function save(){DB.updated=Date.now();
-  $('#save').classList.add('saving');$('#savetxt').textContent='Saving…';
-  clearTimeout(saveT);saveT=setTimeout(function(){
-    try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}
-    $('#save').classList.remove('saving');$('#savetxt').textContent='Saved';
-    var d=new Date(DB.updated);$('#savedAt').textContent='Saved '+d.toLocaleString();
-  },350);
+function setSync(state){var s=$('#save'),t=$('#savetxt');if(!s)return;s.classList.remove('saving','local','synced');
+  if(state==='saving'){s.classList.add('saving');t.textContent='Saving…';}
+  else if(state==='synced'){s.classList.add('synced');t.textContent='Saved · team';}
+  else if(state==='local'){s.classList.add('local');t.textContent='Saved locally (offline)';}
+}
+function save(){DB.updated=Date.now();lastEdit=Date.now();setSync('saving');
+  clearTimeout(saveT);saveT=setTimeout(function(){try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}},300);
+  clearTimeout(srvT);srvT=setTimeout(serverSave,900);
+}
+function serverSave(){
+  fetch(FN_OS,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({action:'set',secret:OS_SECRET,data:DB,rev:myRev})})
+    .then(function(r){return r.ok?r.json():Promise.reject(r);})
+    .then(function(resp){myRev=resp.rev||myRev;serverOnline=true;setSync('synced');
+      $('#savedAt').textContent='Synced '+new Date(resp.updated||Date.now()).toLocaleString();})
+    .catch(function(){serverOnline=false;setSync('local');
+      $('#savedAt').textContent='Saved locally '+new Date().toLocaleString();});
+}
+function serverLoad(cb){
+  fetch(FN_OS,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({action:'get',secret:OS_SECRET})})
+    .then(function(r){return r.ok?r.json():Promise.reject(r);})
+    .then(function(resp){serverOnline=true;
+      if(resp&&resp.data){DB=Object.assign(seed(),resp.data);myRev=resp.rev||0;try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}}
+      cb&&cb(true,!!(resp&&resp.data));})
+    .catch(function(){serverOnline=false;cb&&cb(false,false);});
+}
+function currentSection(){var a=document.querySelector('#nav a.on');return a?a.dataset.id:'command';}
+function startPoll(){clearInterval(pollT);pollT=setInterval(function(){
+  if(!serverOnline)return;
+  var editing=document.activeElement&&document.activeElement.classList&&document.activeElement.classList.contains('f');
+  if(editing||Date.now()-lastEdit<9000)return;
+  fetch(FN_OS,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({action:'get',secret:OS_SECRET})})
+    .then(function(r){return r.json();}).then(function(resp){
+      if(resp&&resp.rev&&resp.rev>myRev&&resp.data){
+        DB=Object.assign(seed(),resp.data);myRev=resp.rev;try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}
+        var cur=currentSection();build(cur);toast('Updated from the team');
+      }
+    }).catch(function(){});
+},25000);}
+function toast(msg){var t=el('div');t.textContent=msg;
+  t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--card2);border:1px solid var(--gold-line);color:var(--gold2);padding:11px 20px;border-radius:30px;font-size:13px;z-index:200;box-shadow:0 10px 30px rgba(0,0,0,.5)';
+  document.body.appendChild(t);setTimeout(function(){t.style.opacity='0';t.style.transition='opacity .4s';setTimeout(function(){t.remove();},420);},2600);
 }
 
 /* ---------- editable helpers ---------- */
@@ -373,7 +411,7 @@ var SECTIONS=[
  {id:'people',n:'10',name:'People & Performance',q:'How each person is doing'}
 ];
 
-function build(){
+function build(keep){
   /* nav */
   var nav=$('#nav');nav.innerHTML='';
   SECTIONS.forEach(function(s){var a=el('a');a.dataset.id=s.id;a.innerHTML='<span class="nn">'+s.n+'</span>'+esc(s.name);
@@ -382,7 +420,7 @@ function build(){
   var w=$('#wrap');w.innerHTML='';
   SECTIONS.forEach(function(s){var p=el('div','panel');p.id='p-'+s.id;w.appendChild(p);});
   renderCommand();renderRoles();renderScorecard();renderDepts();renderGoals();renderProjects();renderSops();renderMeetings();renderFinance();renderPeople();
-  go('command');
+  go(keep||'command');
 }
 function go(id){
   SECTIONS.forEach(function(s){
@@ -641,6 +679,14 @@ var OK='368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875'; /* BW
 function reveal(){var g=$('#gate');if(g)g.remove();$('#app').style.display='block';document.title='BreedWise OS';
   load();build();
   if(DB.updated){$('#savedAt').textContent='Saved '+new Date(DB.updated).toLocaleString();}
+  setSync('saving');$('#savetxt').textContent='Connecting…';
+  serverLoad(function(online,hadData){
+    if(online){var cur=currentSection();build(cur);setSync('synced');
+      $('#savedAt').textContent=DB.updated?('Synced '+new Date(DB.updated).toLocaleString()):'Synced';
+      if(!hadData)serverSave(); /* seed the shared doc on first run */
+      startPoll();
+    } else {setSync('local');}
+  });
   $('#exp').addEventListener('click',expJSON);
   $('#imp').addEventListener('click',function(){$('#impf').click();});
   $('#impf').addEventListener('change',function(e){if(e.target.files[0])impJSON(e.target.files[0]);});
