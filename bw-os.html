@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0a;--bg2:#060606;--card:#15151a;--card2:#1b1b21;--card3:#202027;
+    --line:rgba(245,242,234,.10);--line2:rgba(245,242,234,.16);
+    --ink:#f5f2ea;--mid:#b9b3a7;--muted:#8a8578;--faint:#5f5b52;
+    --gold:#cdae72;--gold2:#dcc185;--gold-soft:rgba(205,174,114,.12);--gold-line:rgba(205,174,114,.3);
+    --green:#6dbf90;--amber:#e0b15e;--red:#e07a6d;--blue:#6fa8d6;
+    --green-s:rgba(109,191,144,.14);--amber-s:rgba(224,177,94,.14);--red-s:rgba(224,122,109,.14);
+    --display:'Anton',Impact,sans-serif;--body:'Poppins',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{margin:0;font-family:var(--display);font-weight:400;letter-spacing:.01em;text-transform:uppercase}
+  a{color:inherit}
+  /* gate */
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:120}
+  #gate .box{width:min(92vw,400px);text-align:center}
+  #gate .mk{width:56px;height:56px;border-radius:14px;background:linear-gradient(150deg,var(--gold),#9c7d3f);display:inline-flex;align-items:center;justify-content:center;font-family:var(--display);font-size:30px;color:#120d04;margin-bottom:20px}
+  #gate h1{font-size:30px;letter-spacing:.04em}
+  #gate .sub{color:var(--muted);font-size:12px;letter-spacing:.24em;text-transform:uppercase;margin:6px 0 22px}
+  #gate input{width:100%;padding:14px 16px;background:var(--card);border:1px solid var(--line2);border-radius:10px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--body)}
+  #gate button{width:100%;margin-top:11px;padding:14px;background:var(--gold);border:0;border-radius:10px;color:#120d04;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;font-family:var(--body)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #app{display:none}
+
+  /* layout */
+  .shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+  aside{background:var(--bg2);border-right:1px solid var(--line);position:sticky;top:0;height:100vh;overflow-y:auto;padding:22px 0}
+  .brand{display:flex;align-items:center;gap:11px;padding:0 22px 20px;border-bottom:1px solid var(--line);margin-bottom:14px}
+  .brand .mk{width:38px;height:38px;border-radius:10px;background:linear-gradient(150deg,var(--gold),#9c7d3f);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:21px;color:#120d04;flex:none}
+  .brand .wm{font-family:var(--display);font-size:16px;line-height:1;letter-spacing:.02em}
+  .brand .wm small{display:block;font-family:var(--body);font-size:8.5px;font-weight:600;letter-spacing:.26em;color:var(--gold);margin-top:5px}
+  nav.side a{display:flex;align-items:center;gap:13px;padding:11px 22px;color:var(--mid);text-decoration:none;font-size:13.5px;font-weight:400;cursor:pointer;border-left:2px solid transparent}
+  nav.side a .nn{font-family:var(--display);font-size:12px;color:var(--faint);width:20px;flex:none}
+  nav.side a:hover{color:var(--ink);background:var(--card)}
+  nav.side a.on{color:var(--gold2);border-left-color:var(--gold);background:var(--gold-soft)}
+  nav.side a.on .nn{color:var(--gold)}
+  .side-foot{padding:16px 22px;margin-top:10px;border-top:1px solid var(--line);font-size:11px;color:var(--faint);line-height:1.8}
+
+  main{min-width:0}
+  .topbar{position:sticky;top:0;z-index:40;background:rgba(10,10,10,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:14px 32px}
+  .topbar .sct{font-family:var(--display);font-size:22px;letter-spacing:.02em}
+  .topbar .q{font-size:11.5px;color:var(--muted);margin-left:4px}
+  .topbar .sp{flex:1}
+  .save{font-size:11.5px;color:var(--green);letter-spacing:.04em;display:flex;align-items:center;gap:7px}
+  .save .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+  .save.saving{color:var(--amber)}.save.saving .dot{background:var(--amber)}
+  .tbtn{background:var(--card);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:8px 13px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--body)}
+  .tbtn:hover{border-color:var(--gold);color:var(--ink)}
+  .wrap{padding:30px 32px 80px;max-width:1240px}
+  .panel{display:none}.panel.on{display:block}
+  .intro{color:var(--mid);font-size:14px;max-width:760px;margin:0 0 26px;font-weight:300}
+  .intro b{color:var(--ink);font-weight:600}
+
+  /* blocks */
+  .sec-h{display:flex;align-items:center;gap:14px;margin:34px 0 16px}
+  .sec-h h3{font-size:18px;letter-spacing:.02em}
+  .sec-h .ln{flex:1;height:1px;background:var(--line)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:16px}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}.g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:1000px){.g3,.g4{grid-template-columns:1fr 1fr}}
+  @media(max-width:720px){.shell{grid-template-columns:1fr}aside{position:static;height:auto}.g2,.g3,.g4{grid-template-columns:1fr}.wrap{padding:22px 18px 70px}.topbar{padding:12px 18px}}
+  .lbl{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .khead{font-family:var(--display);font-size:13px;letter-spacing:.06em;color:var(--gold);margin-bottom:12px;text-transform:uppercase}
+
+  /* editable fields */
+  .f{width:100%;background:transparent;border:0;border-bottom:1px dashed transparent;color:var(--ink);font-family:var(--body);font-size:13.5px;font-weight:300;padding:4px 2px;transition:border-color .2s;resize:none;line-height:1.5}
+  .f:hover{border-bottom-color:var(--line2)}
+  .f:focus{outline:none;border-bottom-color:var(--gold);background:var(--gold-soft)}
+  textarea.f{min-height:26px;overflow:hidden}
+  .big{font-family:var(--display);font-size:30px;color:var(--gold2);letter-spacing:.01em}
+  .big.f{border:0}
+  select.f{cursor:pointer}
+  select.f option{background:var(--card2);color:var(--ink)}
+
+  /* tiles */
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:1000px){.tiles{grid-template-columns:1fr 1fr}}
+  .tile{background:linear-gradient(160deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:14px;padding:18px 18px}
+  .tile .t{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .tile .v{font-family:var(--display);font-size:30px;color:var(--ink);margin-top:6px;letter-spacing:.01em}
+  .tile .v.gold{color:var(--gold2)}.tile .v.green{color:var(--green)}
+  .tile .s{font-size:11.5px;color:var(--muted);margin-top:3px}
+
+  /* list editor (bullets) */
+  .lst{list-style:none;padding:0;margin:0}
+  .lst li{display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}
+  .lst li:last-child{border-bottom:0}
+  .lst li .bu{color:var(--gold);font-weight:700;margin-top:4px;flex:none}
+  .lst li .x{color:var(--faint);cursor:pointer;font-size:16px;line-height:1;margin-top:2px;flex:none}
+  .lst li .x:hover{color:var(--red)}
+  .addbtn{background:transparent;border:1px dashed var(--line2);color:var(--mid);border-radius:8px;padding:9px 14px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--body);margin-top:10px}
+  .addbtn:hover{border-color:var(--gold);color:var(--gold2)}
+
+  /* tables */
+  .tw{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:12px 12px;border-bottom:1px solid var(--line2);white-space:nowrap;background:var(--bg2)}
+  td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:0}
+  td .f{font-size:13px}
+  td.del{width:28px;text-align:center}
+  td .x{color:var(--faint);cursor:pointer;font-size:16px}td .x:hover{color:var(--red)}
+
+  /* status pill */
+  .pill{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:30px;padding:5px 12px;font-size:11px;font-weight:600;letter-spacing:.04em;cursor:pointer;font-family:var(--body);white-space:nowrap}
+  .pill .d{width:7px;height:7px;border-radius:50%}
+  .pill.green{background:var(--green-s);color:var(--green)}.pill.green .d{background:var(--green)}
+  .pill.yellow{background:var(--amber-s);color:var(--amber)}.pill.yellow .d{background:var(--amber)}
+  .pill.red{background:var(--red-s);color:var(--red)}.pill.red .d{background:var(--red)}
+  .pill.gray{background:var(--card3);color:var(--muted)}.pill.gray .d{background:var(--muted)}
+
+  /* role / people cards */
+  .rcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0;overflow:hidden;margin-bottom:16px}
+  .rcard .rh{display:flex;align-items:center;gap:14px;padding:16px 20px;background:linear-gradient(120deg,var(--card2),var(--card));border-bottom:1px solid var(--line)}
+  .rcard .rh .av{width:40px;height:40px;border-radius:50%;background:var(--gold-soft);border:1px solid var(--gold-line);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:17px;color:var(--gold2);flex:none;text-transform:uppercase}
+  .rcard .rh .ti{flex:1;min-width:0}
+  .rcard .rh .ti input{font-family:var(--display);font-size:18px}
+  .rcard .rb{padding:18px 20px;display:grid;grid-template-columns:1fr 1fr;gap:16px 26px}
+  @media(max-width:720px){.rcard .rb{grid-template-columns:1fr}}
+  .rcard .fld.full{grid-column:1/-1}
+  .delrole{color:var(--faint);cursor:pointer;font-size:12px;border:1px solid var(--line);border-radius:7px;padding:5px 10px}
+  .delrole:hover{color:var(--red);border-color:var(--red)}
+
+  .sopfolder{margin-bottom:14px}
+  .sopfolder .fh{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:14px;color:var(--gold2);letter-spacing:.04em;padding:10px 0}
+  .muted{color:var(--muted)}
+  .note{background:var(--gold-soft);border:1px solid var(--gold-line);border-left:3px solid var(--gold);border-radius:10px;padding:13px 16px;font-size:13px;color:var(--mid);margin:14px 0}
+  .note b{color:var(--gold2)}
+  .flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0}
+  .flow .st{background:var(--card2);border:1px solid var(--line2);border-radius:8px;padding:8px 14px;font-size:12px;font-weight:500}
+  .flow .ar{color:var(--faint)}
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="mk">B</div>
+    <h1>BreedWise OS</h1>
+    <div class="sub">Internal Operating System</div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Enter →</button>
+    <div class="err" id="gerr"></div>
+  </div></div>
+
+  <div id="app">
+  <div class="shell">
+    <aside>
+      <div class="brand"><div class="mk">B</div><div class="wm">BreedWise<small>OPERATING SYSTEM</small></div></div>
+      <nav class="side" id="nav"></nav>
+      <div class="side-foot">Q4 2026 · Internal<br><span id="savedAt" class="muted">—</span></div>
+    </aside>
+    <main>
+      <div class="topbar">
+        <span class="sct" id="sct">Command Center</span>
+        <span class="q" id="sctq"></span>
+        <span class="sp"></span>
+        <span class="save" id="save"><span class="dot"></span><span id="savetxt">Saved</span></span>
+        <button class="tbtn" id="exp">Export</button>
+        <button class="tbtn" id="imp">Import</button>
+        <input type="file" id="impf" accept="application/json" class="hidden">
+      </div>
+      <div class="wrap" id="wrap"></div>
+    </main>
+  </div>
+  </div>
+
+<script>
+/* ========================= BreedWise OS ========================= */
+(function(){
+"use strict";
+var LS='bw-os-v1';
+var FEED='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/bw-dashboard', FSECRET='YrKJx6hWQ-buaiTVuN3VcqMS';
+function $(s,r){return (r||document).querySelector(s);}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function initials(n){n=(n||'').trim();if(!n)return'?';var p=n.split(/\s+/);return (p[0][0]+(p[1]?p[1][0]:'')).toUpperCase();}
+
+/* ---------- default seed ---------- */
+function seed(){return {
+ updated:0,
+ command:{
+   mission:"BreedWise helps dog breeders build profitable, ethical, well-run breeding businesses through education, tools, and implementation support.",
+   vision:"Become the trusted operating standard for the modern dog-breeding industry.",
+   objectives:["",""],
+   priorities:["",""],
+   announcements:[""],
+   risks:[""],
+   links:[{label:"Command Center (live numbers)",url:"https://review.breedwise.io/command-center.html"},{label:"Academy Application",url:"https://review.breedwise.io/academy-application.html"}]
+ },
+ roles:[
+  {title:"CEO / Strategy",owner:"Austin",dept:"Leadership",purpose:"Set direction and own overall company performance.",resp:"Revenue · Strategy · Company performance · Final decisions",outcomes:"Company hits revenue and growth targets",kpis:"Total cash collected · New revenue booked · Cash runway",authority:"All strategic and financial decisions",reports:"—",deliver:"Weekly scorecard review · Monthly financial review",sops:""},
+  {title:"Operations / Member Success",owner:"Jenn",dept:"Operations",purpose:"Own client experience, delivery, and implementation operations.",resp:"Onboarding · Delivery · Implementation · Retention",outcomes:"Active clients on track and retained",kpis:"Onboarding completion · Active clients on track · Retention",authority:"Delivery and member-success operations",reports:"Austin",deliver:"Weekly client-health report",sops:""},
+  {title:"Marketing / Content",owner:"Yasamine",dept:"Marketing",purpose:"Produce content and campaigns that create qualified demand.",resp:"Content production · Campaigns · Qualified demand",outcomes:"Consistent qualified inbound leads",kpis:"Content published vs planned · MQLs · Cost per qualified lead",authority:"Content calendar and campaign execution",reports:"Austin",deliver:"Weekly content + lead report",sops:""},
+  {title:"Sales",owner:"Regina",dept:"Sales",purpose:"Own pipeline, qualification, follow-up, and conversions.",resp:"Pipeline · Qualification · Follow-up · Conversions",outcomes:"Qualified calls converted to members and clients",kpis:"Calls held · Show rate · TPB / Academy / B.O.S.S. close rate · Cash collected",authority:"Pipeline management and follow-up cadence",reports:"Austin",deliver:"Weekly pipeline review",sops:""},
+  {title:"Scientific / Veterinary",owner:"Dr. Emmanuel",dept:"Education",purpose:"Ensure scientific accuracy and veterinary standards in education.",resp:"Scientific accuracy · Veterinary standards · Education quality",outcomes:"Curriculum is accurate, credible, and current",kpis:"Lessons reviewed/approved · Review turnaround · Content requiring correction",authority:"Scientific sign-off on educational content",reports:"Austin",deliver:"Review-queue status",sops:""},
+  {title:"Finance / Bookkeeping",owner:"Bookkeeper",dept:"Finance",purpose:"Maintain accurate books, reconciliation, and reporting.",resp:"Bookkeeping · Reconciliation · Reporting",outcomes:"Books accurate and closed monthly, on time",kpis:"Reconciliation completion · Reporting timeliness · Outstanding receivables",authority:"Day-to-day bookkeeping; Austin owns financial decisions",reports:"Austin",deliver:"Monthly close report",sops:""}
+ ],
+ scorecard:[
+  {m:"Total Cash Collected",def:"Actual money received (all offers)",owner:"Austin",src:"Stripe / Accounting",freq:"Weekly",t:"",a:"",s:"gray"},
+  {m:"New Revenue Booked",def:"Value of new signed sales",owner:"Regina",src:"CRM",freq:"Weekly",t:"",a:"",s:"gray"},
+  {m:"New TPB Members",def:"Entry-offer ($97/mo) sales",owner:"Regina",src:"Checkout / Skool",freq:"Weekly",t:"",a:"",s:"gray"},
+  {m:"TPB Monthly Recurring Revenue",def:"Active recurring subscription revenue",owner:"Austin",src:"Stripe",freq:"Monthly",t:"",a:"",s:"gray"},
+  {m:"TPB Churn Rate",def:"% of members canceling",owner:"Jenn",src:"Skool / Stripe",freq:"Monthly",t:"",a:"",s:"gray"},
+  {m:"Qualified Sales Calls Held",def:"Qualified opportunities actually attended",owner:"Regina",src:"CRM / Calendar",freq:"Weekly",t:"",a:"",s:"gray"},
+  {m:"Academy Sales",def:"New Academy enrollments",owner:"Regina",src:"CRM",freq:"Weekly",t:"",a:"",s:"gray"},
+  {m:"B.O.S.S. Sales",def:"New B.O.S.S. clients",owner:"Regina",src:"CRM",freq:"Weekly",t:"",a:"",s:"gray"},
+  {m:"Marketing Qualified Leads",def:"Relevant prospects entering the funnel",owner:"Yasamine",src:"CRM / Forms",freq:"Weekly",t:"",a:"",s:"gray"},
+  {m:"Lead-to-Customer Conversion",def:"Funnel effectiveness (%)",owner:"Austin",src:"CRM",freq:"Monthly",t:"",a:"",s:"gray"},
+  {m:"Active Clients On Track",def:"Delivery performance",owner:"Jenn",src:"Project tracker",freq:"Weekly",t:"",a:"",s:"gray"},
+  {m:"Operating Cash / Runway",def:"Months of runway at current burn",owner:"Austin",src:"Accounting",freq:"Monthly",t:"",a:"",s:"gray"}
+ ],
+ depts:{
+  marketing:[{m:"Content published vs planned",t:"",a:"",s:"gray"},{m:"Reach / relevant engagement",t:"",a:"",s:"gray"},{m:"Qualified inbound leads",t:"",a:"",s:"gray"},{m:"Landing-page visitors",t:"",a:"",s:"gray"},{m:"Visitor-to-paid conversion",t:"",a:"",s:"gray"},{m:"Cost per qualified lead",t:"",a:"",s:"gray"}],
+  sales:[{m:"New conversations / qualified leads",t:"",a:"",s:"gray"},{m:"Calls booked / held / show rate",t:"",a:"",s:"gray"},{m:"TPB sales",t:"",a:"",s:"gray"},{m:"Academy & B.O.S.S. close rate",t:"",a:"",s:"gray"},{m:"Cash collected from sales",t:"",a:"",s:"gray"},{m:"Follow-up completion / pipeline value",t:"",a:"",s:"gray"}],
+  ops:[{m:"New-member onboarding completion",t:"",a:"",s:"gray"},{m:"Assessment completion",t:"",a:"",s:"gray"},{m:"Active clients on track",t:"",a:"",s:"gray"},{m:"Implementation milestones completed",t:"",a:"",s:"gray"},{m:"Support response time",t:"",a:"",s:"gray"},{m:"Retention / cancellations / escalations",t:"",a:"",s:"gray"}],
+  education:[{m:"Lessons reviewed / approved",t:"",a:"",s:"gray"},{m:"Scientific review turnaround",t:"",a:"",s:"gray"},{m:"Curriculum milestones completed",t:"",a:"",s:"gray"},{m:"Content requiring correction",t:"",a:"",s:"gray"},{m:"Assessment / certification reviews",t:"",a:"",s:"gray"}],
+  finance:[{m:"Cash collected and expenses",t:"",a:"",s:"gray"},{m:"Monthly profit and loss",t:"",a:"",s:"gray"},{m:"Outstanding receivables",t:"",a:"",s:"gray"},{m:"Refunds and chargebacks",t:"",a:"",s:"gray"},{m:"Reconciliation completion",t:"",a:"",s:"gray"},{m:"Financial reporting timeliness",t:"",a:"",s:"gray"}]
+ },
+ goals:[
+  {level:"Company Objective",goal:"",owner:"Austin",t:"",due:"",prog:"",s:"gray"},
+  {level:"Company Objective",goal:"",owner:"Austin",t:"",due:"",prog:"",s:"gray"},
+  {level:"Company Objective",goal:"",owner:"Austin",t:"",due:"",prog:"",s:"gray"}
+ ],
+ projects:[
+  {name:"B.O.S.S. Delivery System",dept:"Operations",owner:"Jenn",pri:"High",due:"",s:"yellow",mile:"Client onboarding finalized",block:"Waiting on approved scope",next:"Finalize onboarding checklist"}
+ ],
+ sops:[
+  {folder:"Marketing SOPs",name:"",owner:"",purpose:"",trigger:"",dod:"",updated:""},
+  {folder:"Sales SOPs",name:"",owner:"",purpose:"",trigger:"",dod:"",updated:""},
+  {folder:"Client Onboarding SOPs",name:"",owner:"",purpose:"",trigger:"",dod:"",updated:""},
+  {folder:"TPB Operations",name:"",owner:"",purpose:"",trigger:"",dod:"",updated:""},
+  {folder:"Academy Operations",name:"",owner:"",purpose:"",trigger:"",dod:"",updated:""},
+  {folder:"B.O.S.S. Implementation",name:"",owner:"",purpose:"",trigger:"",dod:"",updated:""},
+  {folder:"Scientific Review & Quality",name:"",owner:"",purpose:"",trigger:"",dod:"",updated:""},
+  {folder:"Finance & Payments",name:"",owner:"",purpose:"",trigger:"",dod:"",updated:""},
+  {folder:"Affiliate / Partner Operations",name:"",owner:"",purpose:"",trigger:"",dod:"",updated:""},
+  {folder:"Company Policies & Templates",name:"",owner:"",purpose:"",trigger:"",dod:"",updated:""}
+ ],
+ meetings:[
+  {meeting:"Leadership Scorecard",freq:"Weekly · 45–60 min",purpose:"Review numbers, blockers, decisions",owner:"Austin"},
+  {meeting:"Department Check-ins",freq:"Weekly · 15–30 min",purpose:"Performance and next priorities",owner:"Dept owners"},
+  {meeting:"Sales Pipeline Review",freq:"Weekly · 30 min",purpose:"Qualified opportunities, conversions, follow-ups",owner:"Regina"},
+  {meeting:"Delivery / Client Health",freq:"Weekly · 30 min",purpose:"Milestones, at-risk clients, capacity",owner:"Jenn"},
+  {meeting:"Financial Review",freq:"Monthly · 45–60 min",purpose:"Revenue, margin, cash, forecasts",owner:"Austin + Bookkeeper"},
+  {meeting:"Quarterly Planning",freq:"Quarterly",purpose:"Results, goals, ownership, capacity",owner:"Austin"}
+ ],
+ finance:[
+  {label:"Revenue by Offer — TPB",val:"",notes:""},
+  {label:"Revenue by Offer — Academy",val:"",notes:""},
+  {label:"Revenue by Offer — B.O.S.S.",val:"",notes:""},
+  {label:"Revenue by Offer — Accelerator",val:"",notes:""},
+  {label:"Cash Collected (MTD)",val:"",notes:""},
+  {label:"Booked Sales vs Cash Received",val:"",notes:""},
+  {label:"Monthly Recurring Revenue",val:"",notes:""},
+  {label:"Operating Expenses",val:"",notes:""},
+  {label:"Payroll & Contractor Costs",val:"",notes:""},
+  {label:"Marketing & Acquisition Costs",val:"",notes:""},
+  {label:"Gross Margin by Offer",val:"",notes:""},
+  {label:"Profit & Loss (MTD)",val:"",notes:""},
+  {label:"Accounts Receivable",val:"",notes:""},
+  {label:"Cash Forecast / Runway",val:"",notes:""},
+  {label:"Affiliate / Sales Commissions",val:"",notes:""}
+ ],
+ people:[
+  {name:"Austin",role:"CEO / Strategy",outcomes:"Revenue, direction, company performance",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"},
+  {name:"Jenn",role:"Operations / Member Success",outcomes:"Client experience, delivery, implementation",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"},
+  {name:"Yasamine",role:"Marketing / Content",outcomes:"Qualified demand and content production",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"},
+  {name:"Regina",role:"Sales",outcomes:"Pipeline, qualification, conversions",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"},
+  {name:"Dr. Emmanuel",role:"Scientific / Veterinary",outcomes:"Scientific accuracy and education quality",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"},
+  {name:"Bookkeeper",role:"Finance",outcomes:"Accurate books and timely reporting",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"}
+ ]
+};}
+
+/* ---------- state ---------- */
+var DB=seed();
+function load(){try{var r=localStorage.getItem(LS);if(r){var d=JSON.parse(r);DB=Object.assign(seed(),d);}}catch(e){}}
+var saveT;
+function save(){DB.updated=Date.now();
+  $('#save').classList.add('saving');$('#savetxt').textContent='Saving…';
+  clearTimeout(saveT);saveT=setTimeout(function(){
+    try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}
+    $('#save').classList.remove('saving');$('#savetxt').textContent='Saved';
+    var d=new Date(DB.updated);$('#savedAt').textContent='Saved '+d.toLocaleString();
+  },350);
+}
+
+/* ---------- editable helpers ---------- */
+function autoGrow(t){t.style.height='auto';t.style.height=(t.scrollHeight)+'px';}
+/* bound textarea */
+function ta(obj,key,ph){var t=el('textarea','f');t.value=obj[key]||'';t.placeholder=ph||'';t.rows=1;
+  setTimeout(function(){autoGrow(t);},0);
+  t.addEventListener('input',function(){obj[key]=t.value;autoGrow(t);save();});
+  return t;}
+function inp(obj,key,ph){var i=el('input','f');i.value=obj[key]||'';i.placeholder=ph||'';
+  i.addEventListener('input',function(){obj[key]=i.value;save();});return i;}
+var STATES=['gray','green','yellow','red'],SLBL={gray:'Not set',green:'On track',yellow:'At risk',red:'Off track'};
+function statusPill(obj,key,onchange){
+  var b=el('button','pill '+(obj[key]||'gray'));
+  function render(){b.className='pill '+(obj[key]||'gray');b.innerHTML='<span class="d"></span>'+SLBL[obj[key]||'gray'];}
+  render();
+  b.addEventListener('click',function(){var i=STATES.indexOf(obj[key]||'gray');obj[key]=STATES[(i+1)%STATES.length];render();save();if(onchange)onchange();});
+  return b;}
+function selField(obj,key,opts){var s=el('select','f');opts.forEach(function(o){var op=el('option');op.value=o;op.textContent=o;if((obj[key]||'')===o)op.selected=true;s.appendChild(op);});
+  s.addEventListener('change',function(){obj[key]=s.value;save();});return s;}
+
+/* ---------- generic table ---------- */
+/* cols: [{k,label,w,type:'text'|'area'|'status'|'select',opts,ph}] */
+function tableEditor(mount,arr,cols,blank,addLabel,afterChange){
+  var tw=el('div','tw');var tbl=el('table');var thead=el('thead');var trh=el('tr');
+  cols.forEach(function(c){var th=el('th');th.textContent=c.label;if(c.w)th.style.width=c.w;trh.appendChild(th);});
+  trh.appendChild(el('th'));thead.appendChild(trh);tbl.appendChild(thead);
+  var tb=el('tbody');tbl.appendChild(tb);
+  function row(r){var tr=el('tr');
+    cols.forEach(function(c){var td=el('td');
+      if(c.type==='status')td.appendChild(statusPill(r,c.k,afterChange));
+      else if(c.type==='area')td.appendChild(ta(r,c.k,c.ph));
+      else if(c.type==='select')td.appendChild(selField(r,c.k,c.opts));
+      else td.appendChild(inp(r,c.k,c.ph));
+      tr.appendChild(td);
+    });
+    var dtd=el('td','del');var x=el('span','x','×');x.title='Remove';
+    x.addEventListener('click',function(){var i=arr.indexOf(r);if(i>-1){arr.splice(i,1);tb.removeChild(tr);save();if(afterChange)afterChange();}});
+    dtd.appendChild(x);tr.appendChild(dtd);tb.appendChild(tr);
+  }
+  arr.forEach(row);
+  tw.appendChild(tbl);mount.appendChild(tw);
+  var add=el('button','addbtn','+ '+(addLabel||'Add row'));
+  add.addEventListener('click',function(){var r=JSON.parse(JSON.stringify(blank));arr.push(r);row(r);save();if(afterChange)afterChange();});
+  mount.appendChild(add);
+}
+
+/* ---------- bullet list editor ---------- */
+function listEditor(mount,arr,ph,addLabel){
+  var ul=el('ul','lst');
+  function row(i){var li=el('li');li.appendChild(el('span','bu','›'));
+    var t=el('textarea','f');t.value=arr[i]||'';t.placeholder=ph||'';t.rows=1;setTimeout(function(){autoGrow(t);},0);
+    t.addEventListener('input',function(){arr[i]=t.value;autoGrow(t);save();});
+    t.style.flex='1';li.appendChild(t);
+    var x=el('span','x','×');x.addEventListener('click',function(){arr.splice(i,1);rebuild();save();});
+    li.appendChild(x);ul.appendChild(li);
+  }
+  function rebuild(){ul.innerHTML='';arr.forEach(function(_,i){row(i);});}
+  rebuild();mount.appendChild(ul);
+  var add=el('button','addbtn','+ '+(addLabel||'Add'));
+  add.addEventListener('click',function(){arr.push('');rebuild();
+    var tas=ul.querySelectorAll('textarea');if(tas.length)tas[tas.length-1].focus();save();});
+  mount.appendChild(add);
+}
+
+/* ========================= SECTIONS ========================= */
+var SECTIONS=[
+ {id:'command',n:'01',name:'Command Center',q:'Company health at a glance'},
+ {id:'roles',n:'02',name:'Roles & Accountability',q:'Who owns what?'},
+ {id:'scorecard',n:'03',name:'Company Scorecard',q:'Are we hitting our numbers?'},
+ {id:'depts',n:'04',name:'Department Dashboards',q:'Performance by function'},
+ {id:'goals',n:'05',name:'Goals & Priorities',q:'What matters this quarter?'},
+ {id:'projects',n:'06',name:'Projects & Tasks',q:'What needs to happen next?'},
+ {id:'sops',n:'07',name:'SOPs & Resources',q:'How we do the work'},
+ {id:'meetings',n:'08',name:'Meetings & Reporting',q:'Our operating rhythm'},
+ {id:'finance',n:'09',name:'Finance & Performance',q:'The financial picture'},
+ {id:'people',n:'10',name:'People & Performance',q:'How each person is doing'}
+];
+
+function build(){
+  /* nav */
+  var nav=$('#nav');nav.innerHTML='';
+  SECTIONS.forEach(function(s){var a=el('a');a.dataset.id=s.id;a.innerHTML='<span class="nn">'+s.n+'</span>'+esc(s.name);
+    a.addEventListener('click',function(){go(s.id);});nav.appendChild(a);});
+  /* panels */
+  var w=$('#wrap');w.innerHTML='';
+  SECTIONS.forEach(function(s){var p=el('div','panel');p.id='p-'+s.id;w.appendChild(p);});
+  renderCommand();renderRoles();renderScorecard();renderDepts();renderGoals();renderProjects();renderSops();renderMeetings();renderFinance();renderPeople();
+  go('command');
+}
+function go(id){
+  SECTIONS.forEach(function(s){
+    $('#p-'+s.id).classList.toggle('on',s.id===id);
+  });
+  document.querySelectorAll('#nav a').forEach(function(a){a.classList.toggle('on',a.dataset.id===id);});
+  var s=SECTIONS.filter(function(x){return x.id===id;})[0];
+  $('#sct').textContent=s.name;$('#sctq').textContent='· '+s.q;
+  /* textareas can't measure height while hidden; resize them now that the panel is visible */
+  var pan=$('#p-'+id);if(pan){pan.querySelectorAll('textarea.f').forEach(function(t){autoGrow(t);});}
+  window.scrollTo(0,0);
+}
+
+/* ---- 01 Command Center ---- */
+function renderCommand(){var p=$('#p-command');p.innerHTML='';
+  p.appendChild(el('p','intro','<b>This is the homepage.</b> A living summary of company health, pulled together from the sections below. Edit the mission, objectives, priorities, announcements and risks here; the health roll-ups come from your Scorecard and Department dashboards.'));
+  /* live snapshot */
+  var live=el('div');var liveT=el('div','tiles');
+  live.appendChild(el('div','sec-h','<h3>Live Snapshot</h3><span class="ln"></span><button class="tbtn" id="pullLive">Pull live numbers</button>'));
+  var lt=el('div','tiles',
+    '<div class="tile"><div class="t">Cash · MTD</div><div class="v gold" id="lv-cash">—</div><div class="s">from Command Center feed</div></div>'+
+    '<div class="tile"><div class="t">Cash · 7d</div><div class="v" id="lv-7d">—</div><div class="s">last 7 days</div></div>'+
+    '<div class="tile"><div class="t">Applications · 7d</div><div class="v" id="lv-apps">—</div><div class="s">CRM</div></div>'+
+    '<div class="tile"><div class="t">Ad Spend · 7d</div><div class="v" id="lv-spend">—</div><div class="s">Meta</div></div>');
+  live.appendChild(lt);p.appendChild(live);
+
+  /* mission / vision */
+  p.appendChild(el('div','sec-h','<h3>Mission & Vision</h3><span class="ln"></span>'));
+  var mv=el('div','grid g2');
+  var c1=el('div','card');c1.appendChild(el('div','lbl','Company Mission'));c1.appendChild(ta(DB.command,'mission','What BreedWise does and for whom'));
+  var c2=el('div','card');c2.appendChild(el('div','lbl','Vision'));c2.appendChild(ta(DB.command,'vision','Where we are going'));
+  mv.appendChild(c1);mv.appendChild(c2);p.appendChild(mv);
+
+  /* objectives + priorities */
+  p.appendChild(el('div','sec-h','<h3>Q4 Objectives & Current Priorities</h3><span class="ln"></span>'));
+  var op=el('div','grid g2');
+  var o=el('div','card');o.appendChild(el('div','khead','Q4 Company Objectives'));var od=el('div');o.appendChild(od);listEditor(od,DB.command.objectives,'A major Q4 objective','Add objective');
+  var pr=el('div','card');pr.appendChild(el('div','khead','Current Company Priorities'));var prd=el('div');pr.appendChild(prd);listEditor(prd,DB.command.priorities,'A priority right now','Add priority');
+  op.appendChild(o);op.appendChild(pr);p.appendChild(op);
+
+  /* department health + KPI snapshot */
+  p.appendChild(el('div','sec-h','<h3>Department Health & KPI Snapshot</h3><span class="ln"></span>'));
+  var dh=el('div','grid g2');
+  var dhc=el('div','card');dhc.appendChild(el('div','khead','Department Health'));var dhg=el('div','dh-grid');dhc.appendChild(dhg);
+  var kc=el('div','card');kc.appendChild(el('div','khead','KPI Snapshot (from Scorecard)'));var kg=el('div');kc.appendChild(kg);
+  dh.appendChild(dhc);dh.appendChild(kc);p.appendChild(dh);
+
+  /* announcements + risks */
+  p.appendChild(el('div','sec-h','<h3>Announcements & Risks</h3><span class="ln"></span>'));
+  var ar=el('div','grid g2');
+  var an=el('div','card');an.appendChild(el('div','khead','Key Announcements'));var and=el('div');an.appendChild(and);listEditor(and,DB.command.announcements,'Something the team should know','Add announcement');
+  var rk=el('div','card');rk.appendChild(el('div','khead','Major Risks & Blockers'));var rkd=el('div');rk.appendChild(rkd);listEditor(rkd,DB.command.risks,'A risk or blocker','Add risk');
+  ar.appendChild(an);ar.appendChild(rk);p.appendChild(ar);
+
+  /* links */
+  p.appendChild(el('div','sec-h','<h3>Important Links</h3><span class="ln"></span>'));
+  var lc=el('div','card');var ld=el('div');lc.appendChild(ld);
+  tableEditor(ld,DB.command.links,[{k:'label',label:'Label',ph:'Name'},{k:'url',label:'URL',ph:'https://'}],{label:'',url:''},'Add link');
+  p.appendChild(lc);
+
+  refreshCommand();
+  $('#pullLive').addEventListener('click',pullLive);
+}
+function refreshCommand(){
+  /* department health roll-up: worst status among a dept's scorecard/dept metrics */
+  var map={Marketing:'marketing',Sales:'sales',Operations:'ops',Education:'education',Finance:'finance'};
+  var order={green:1,yellow:2,red:3,gray:0};
+  var dhg=$('.dh-grid');if(dhg){dhg.innerHTML='';
+    Object.keys(map).forEach(function(name){
+      var arr=DB.depts[map[name]]||[];var worst='gray';
+      arr.forEach(function(r){if(order[r.s]>order[worst])worst=r.s;});
+      var row=el('div');row.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line)';
+      row.innerHTML='<span style="font-size:13.5px">'+esc(name)+'</span>';
+      var pill=el('span','pill '+worst,'<span class="d"></span>'+SLBL[worst]);row.appendChild(pill);
+      dhg.appendChild(row);
+    });
+  }
+  /* KPI snapshot: first 6 scorecard metrics */
+  var kg=$('#p-command .khead');/*noop*/
+  var kgc=document.querySelectorAll('#p-command .card');
+  var kgbox=null;document.querySelectorAll('#p-command .khead').forEach(function(h){if(h.textContent.indexOf('KPI Snapshot')===0)kgbox=h.nextSibling;});
+  if(kgbox){kgbox.innerHTML='';
+    DB.scorecard.slice(0,6).forEach(function(r){
+      var row=el('div');row.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)';
+      row.innerHTML='<span style="font-size:13px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(r.m)+'</span>'+
+        '<span style="font-size:13px;color:var(--muted);white-space:nowrap">'+(r.a?esc(r.a):'—')+(r.t?(' / '+esc(r.t)):'')+'</span>';
+      var pill=el('span','pill '+(r.s||'gray'));pill.innerHTML='<span class="d"></span>';pill.style.padding='5px 8px';
+      row.appendChild(pill);kgbox.appendChild(row);
+    });
+  }
+}
+function pullLive(){var b=$('#pullLive');b.textContent='Pulling…';
+  fetch(FEED+'?secret='+encodeURIComponent(FSECRET),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
+    function usd(n){return n==null?'—':'$'+Math.round(n).toLocaleString();}
+    var cash=d.cash||{},ads=d.ads||{},crm=d.crm||{};
+    $('#lv-cash').textContent=usd(cash.mtd!=null?cash.mtd:cash.last30d);
+    $('#lv-7d').textContent=usd(cash.last7d);
+    $('#lv-apps').textContent=(crm.applications7d!=null?crm.applications7d:'—');
+    $('#lv-spend').textContent=usd(ads.last7d&&ads.last7d.spend);
+    b.textContent='Refresh';
+  }).catch(function(){b.textContent='Feed unavailable';setTimeout(function(){b.textContent='Pull live numbers';},2500);});
+}
+
+/* ---- 02 Roles ---- */
+function roleCard(r){
+  var c=el('div','rcard');
+  var rh=el('div','rh');var av=el('div','av',initials(r.owner||r.title));rh.appendChild(av);
+  var ti=el('div','ti');var tin=inp(r,'title','Role title');ti.appendChild(tin);
+  var sub=el('div');sub.style.cssText='display:flex;gap:8px;margin-top:2px';
+  sub.appendChild(inp(r,'owner','Owner'));rh.appendChild(ti);
+  var del=el('span','delrole','Remove');del.addEventListener('click',function(){var i=DB.roles.indexOf(r);if(i>-1){DB.roles.splice(i,1);renderRoles();save();}});
+  rh.appendChild(del);c.appendChild(rh);
+  var rb=el('div','rb');
+  function fld(label,key,full,area){var d=el('div','fld'+(full?' full':''));d.appendChild(el('div','lbl',label));d.appendChild(area?ta(r,key):inp(r,key));return d;}
+  rb.appendChild(fld('Role Owner','owner'));
+  rb.appendChild(fld('Department','dept'));
+  rb.appendChild(fld('Role Purpose','purpose',true,true));
+  rb.appendChild(fld('Core Responsibilities (3–7)','resp',true,true));
+  rb.appendChild(fld('Expected Outcomes','outcomes',true,true));
+  rb.appendChild(fld('KPIs (3–5)','kpis',true,true));
+  rb.appendChild(fld('Decision Authority','authority',false,true));
+  rb.appendChild(fld('Reporting To','reports'));
+  rb.appendChild(fld('Recurring Deliverables','deliver',true,true));
+  rb.appendChild(fld('SOPs & Tools','sops',true,true));
+  c.appendChild(rb);return c;
+}
+function renderRoles(){var p=$('#p-roles');p.innerHTML='';
+  p.appendChild(el('p','intro','<b>Who owns what.</b> One card per role, same structure for everyone. One person can hold multiple roles, but every major function needs one accountable owner.'));
+  DB.roles.forEach(function(r){p.appendChild(roleCard(r));});
+  var add=el('button','addbtn','+ Add role');
+  add.addEventListener('click',function(){DB.roles.push({title:'New Role',owner:'',dept:'',purpose:'',resp:'',outcomes:'',kpis:'',authority:'',reports:'',deliver:'',sops:''});renderRoles();save();});
+  p.appendChild(add);
+}
+
+/* ---- 03 Scorecard ---- */
+function renderScorecard(){var p=$('#p-scorecard');p.innerHTML='';
+  p.appendChild(el('p','intro','<b>Are we hitting our numbers?</b> 10–12 company-level metrics, each with one definition and one owner. Define terms once so no two people count the same metric differently. Click a status to cycle it.'));
+  p.appendChild(el('div','sec-h','<h3>Company Scorecard</h3><span class="ln"></span><button class="tbtn" id="syncSc">Sync live actuals</button>'));
+  var box=el('div');p.appendChild(box);
+  tableEditor(box,DB.scorecard,[
+    {k:'m',label:'Metric',w:'17%'},{k:'def',label:'Definition',type:'area',w:'20%'},{k:'owner',label:'Owner',w:'9%'},
+    {k:'src',label:'Source',w:'11%'},{k:'freq',label:'Freq',w:'8%'},{k:'t',label:'Target',w:'9%'},{k:'a',label:'Actual',w:'9%'},{k:'s',label:'Status',type:'status',w:'8%'}
+  ],{m:'',def:'',owner:'',src:'',freq:'Weekly',t:'',a:'',s:'gray'},'Add metric',refreshCommand);
+  $('#syncSc').addEventListener('click',syncScorecard);
+}
+function syncScorecard(){var b=$('#syncSc');b.textContent='Syncing…';
+  fetch(FEED+'?secret='+encodeURIComponent(FSECRET),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
+    var cash=d.cash||{},crm=d.crm||{};
+    function setA(frag,val){DB.scorecard.forEach(function(r){if(r.m.toLowerCase().indexOf(frag)>-1&&(r.a==null||r.a===''))r.a=val;});}
+    if(cash.mtd!=null||cash.last30d!=null)setA('total cash','$'+Math.round(cash.mtd!=null?cash.mtd:cash.last30d).toLocaleString());
+    if(crm.applications7d!=null)setA('qualified sales calls',''); // leave; apps not calls
+    save();renderScorecard();refreshCommand();b.textContent='Synced ✓';setTimeout(function(){b.textContent='Sync live actuals';},2000);
+  }).catch(function(){b.textContent='Feed unavailable';setTimeout(function(){b.textContent='Sync live actuals';},2500);});
+}
+
+/* ---- 04 Departments ---- */
+function renderDepts(){var p=$('#p-depts');p.innerHTML='';
+  p.appendChild(el('p','intro','<b>Performance by function.</b> Each department owns its detailed metrics; the Company Scorecard pulls only the most important ones up. Status here rolls up into Department Health on the Command Center.'));
+  var defs=[['marketing','Marketing','Yasamine'],['sales','Sales','Regina / Sales Lead'],['ops','Operations & Member Success','Jenn'],['education','Education & Scientific Quality','Dr. Emmanuel + program owner'],['finance','Finance','Bookkeeper · Austin accountable']];
+  defs.forEach(function(d){
+    p.appendChild(el('div','sec-h','<h3>'+esc(d[1])+'</h3><span class="ln"></span><span class="muted" style="font-size:12px">Owner: '+esc(d[2])+'</span>'));
+    var box=el('div');p.appendChild(box);
+    tableEditor(box,DB.depts[d[0]],[{k:'m',label:'Metric',w:'52%'},{k:'t',label:'Target',w:'16%'},{k:'a',label:'Actual',w:'16%'},{k:'s',label:'Status',type:'status',w:'16%'}],{m:'',t:'',a:'',s:'gray'},'Add metric',refreshCommand);
+  });
+}
+
+/* ---- 05 Goals ---- */
+function renderGoals(){var p=$('#p-goals');p.innerHTML='';
+  p.appendChild(el('p','intro','<b>What matters this quarter.</b> Keep it to 3–5 company objectives, with each department owning the priorities that feed them. Hierarchy: Objectives → Department Goals → Projects → Tasks.'));
+  p.appendChild(el('div','note','<b>Hierarchy:</b> Q4 Company Objectives → Department Goals → Projects / Initiatives → Tasks & Milestones. Set the objectives and department goals here; the work to achieve them lives in Projects & Tasks.'));
+  var box=el('div');p.appendChild(box);
+  tableEditor(box,DB.goals,[
+    {k:'level',label:'Level',type:'select',opts:['Company Objective','Department Goal'],w:'15%'},
+    {k:'goal',label:'Goal',type:'area',w:'30%'},{k:'owner',label:'Owner',w:'12%'},{k:'t',label:'Target',w:'12%'},{k:'due',label:'Deadline',w:'11%'},{k:'prog',label:'Progress',w:'10%'},{k:'s',label:'Status',type:'status',w:'10%'}
+  ],{level:'Company Objective',goal:'',owner:'',t:'',due:'',prog:'',s:'gray'},'Add goal');
+}
+
+/* ---- 06 Projects ---- */
+function renderProjects(){var p=$('#p-projects');p.innerHTML='';
+  p.appendChild(el('p','intro','<b>What needs to happen next.</b> One central tracker for cross-functional work. Keep task assignments inside projects, do not spin up a competing tracker per department.'));
+  var box=el('div');p.appendChild(box);
+  tableEditor(box,DB.projects,[
+    {k:'name',label:'Project',w:'16%'},{k:'dept',label:'Dept',w:'10%'},{k:'owner',label:'Owner',w:'9%'},
+    {k:'pri',label:'Priority',type:'select',opts:['High','Medium','Low'],w:'9%'},{k:'due',label:'Due',w:'9%'},
+    {k:'s',label:'Status',type:'status',w:'9%'},{k:'mile',label:'Milestone',type:'area',w:'13%'},{k:'block',label:'Blocker',type:'area',w:'12%'},{k:'next',label:'Next Action',type:'area',w:'13%'}
+  ],{name:'',dept:'',owner:'',pri:'Medium',due:'',s:'gray',mile:'',block:'',next:''},'Add project');
+}
+
+/* ---- 07 SOPs ---- */
+var SOP_FOLDERS=["Marketing SOPs","Sales SOPs","Client Onboarding SOPs","TPB Operations","Academy Operations","B.O.S.S. Implementation","Scientific Review & Quality","Finance & Payments","Affiliate / Partner Operations","Company Policies & Templates"];
+function renderSops(){var p=$('#p-sops');p.innerHTML='';
+  p.appendChild(el('p','intro','<b>How we do the work</b> — and how BreedWise becomes less dependent on any one person. Start with repeated tasks, tasks that cause errors, and processes currently dependent on Austin. Every SOP: Purpose → Owner → Trigger → Steps → Definition of Done → Escalation → Last Updated.'));
+  var box=el('div');p.appendChild(box);
+  tableEditor(box,DB.sops,[
+    {k:'folder',label:'Folder',type:'select',opts:SOP_FOLDERS,w:'16%'},
+    {k:'name',label:'SOP',w:'16%',ph:'Process name'},{k:'owner',label:'Owner',w:'10%'},{k:'purpose',label:'Purpose',type:'area',w:'20%'},
+    {k:'trigger',label:'Trigger',type:'area',w:'14%'},{k:'dod',label:'Definition of Done',type:'area',w:'18%'},{k:'updated',label:'Updated',w:'10%'}
+  ],{folder:'Marketing SOPs',name:'',owner:'',purpose:'',trigger:'',dod:'',updated:''},'Add SOP');
+  p.appendChild(el('div','note','<b>Recommended folders:</b> '+SOP_FOLDERS.join(' · ')+'. Start with the 5–10 highest-impact SOPs: the processes that break, repeat, or only live in one person’s head.'));
+}
+
+/* ---- 08 Meetings ---- */
+function renderMeetings(){var p=$('#p-meetings');p.innerHTML='';
+  p.appendChild(el('p','intro','<b>Our operating rhythm.</b> A lightweight cadence. Every meeting runs the same structure, and no meeting ends with an unassigned issue.'));
+  var box=el('div');p.appendChild(box);
+  tableEditor(box,DB.meetings,[{k:'meeting',label:'Meeting',w:'22%'},{k:'freq',label:'Frequency',w:'22%'},{k:'purpose',label:'Purpose',type:'area',w:'40%'},{k:'owner',label:'Owner',w:'16%'}],{meeting:'',freq:'',purpose:'',owner:''},'Add meeting');
+  p.appendChild(el('div','sec-h','<h3>Standard Meeting Structure</h3><span class="ln"></span>'));
+  var fl=el('div','card');fl.innerHTML='<div class="flow"><span class="st">Scorecard</span><span class="ar">→</span><span class="st">Off-Track Metrics</span><span class="ar">→</span><span class="st">Issues</span><span class="ar">→</span><span class="st">Decisions</span><span class="ar">→</span><span class="st">Assigned Actions</span></div><div class="muted" style="font-size:12.5px;margin-top:8px">Every action gets an owner and a due date.</div>';
+  p.appendChild(fl);
+}
+
+/* ---- 09 Finance ---- */
+function renderFinance(){var p=$('#p-finance');p.innerHTML='';
+  p.appendChild(el('p','intro','<b>The financial picture.</b> The Scorecard shows highlights; this is the detail. Have the bookkeeper maintain the underlying data and deliver a monthly close report, with Austin owning the financial decisions.'));
+  var box=el('div');p.appendChild(box);
+  tableEditor(box,DB.finance,[{k:'label',label:'Line',w:'34%'},{k:'val',label:'Value',w:'22%'},{k:'notes',label:'Notes',type:'area',w:'44%'}],{label:'',val:'',notes:''},'Add line');
+}
+
+/* ---- 10 People ---- */
+function peopleCard(r){
+  var c=el('div','rcard');
+  var rh=el('div','rh');rh.appendChild(el('div','av',initials(r.name)));
+  var ti=el('div','ti');ti.appendChild(inp(r,'name','Name'));var sub=inp(r,'role','Role');sub.style.cssText='color:var(--gold2);font-size:12.5px';ti.appendChild(sub);rh.appendChild(ti);
+  rh.appendChild(statusPill(r,'s'));
+  var del=el('span','delrole','Remove');del.style.marginLeft='10px';del.addEventListener('click',function(){var i=DB.people.indexOf(r);if(i>-1){DB.people.splice(i,1);renderPeople();save();}});
+  rh.appendChild(del);c.appendChild(rh);
+  var rb=el('div','rb');
+  function fld(label,key,full){var d=el('div','fld'+(full?' full':''));d.appendChild(el('div','lbl',label));d.appendChild(ta(r,key));return d;}
+  rb.appendChild(fld('Primary Outcomes','outcomes',true));
+  rb.appendChild(fld('KPI Targets vs Actuals','kpis',true));
+  rb.appendChild(fld('Deliverables Completed','deliver'));
+  rb.appendChild(fld('Quality / Accuracy','quality'));
+  rb.appendChild(fld('Reliability','reliability'));
+  rb.appendChild(fld('Current Priorities','priorities'));
+  rb.appendChild(fld('Blockers / Support Needed','blockers',true));
+  rb.appendChild(fld('Coaching / Development','coaching',true));
+  rb.appendChild(fld('Next Review Date','review'));
+  c.appendChild(rb);return c;
+}
+function renderPeople(){var p=$('#p-people');p.innerHTML='';
+  p.appendChild(el('p','intro','<b>How each person is performing</b> against their role, not just whether they are busy. Monthly review with a simple Green / Yellow / Red, backed by real data. Never hold someone responsible for a company result they do not control.'));
+  DB.people.forEach(function(r){p.appendChild(peopleCard(r));});
+  var add=el('button','addbtn','+ Add person');
+  add.addEventListener('click',function(){DB.people.push({name:'New Person',role:'',outcomes:'',kpis:'',deliver:'',quality:'',reliability:'',priorities:'',blockers:'',coaching:'',review:'',s:'gray'});renderPeople();save();});
+  p.appendChild(add);
+}
+
+/* ---------- export / import ---------- */
+function expJSON(){var blob=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});
+  var a=el('a');a.href=URL.createObjectURL(blob);a.download='breedwise-os-'+new Date().toISOString().slice(0,10)+'.json';a.click();}
+function impJSON(file){var r=new FileReader();r.onload=function(){try{var d=JSON.parse(r.result);DB=Object.assign(seed(),d);save();build();alert('Imported successfully.');}catch(e){alert('Could not read that file.');}};r.readAsText(file);}
+
+/* ---------- gate ---------- */
+function sha(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+var OK='368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875'; /* BWTEAM2026 */
+function reveal(){var g=$('#gate');if(g)g.remove();$('#app').style.display='block';document.title='BreedWise OS';
+  load();build();
+  if(DB.updated){$('#savedAt').textContent='Saved '+new Date(DB.updated).toLocaleString();}
+  $('#exp').addEventListener('click',expJSON);
+  $('#imp').addEventListener('click',function(){$('#impf').click();});
+  $('#impf').addEventListener('change',function(e){if(e.target.files[0])impJSON(e.target.files[0]);});
+}
+function tryUnlock(){var v=($('#pw').value||'').trim().toUpperCase();sha(v).then(function(h){if(h===OK){try{sessionStorage.setItem('bwos','1');}catch(e){}reveal();}else{$('#gerr').textContent='Incorrect code.';$('#pw').select();}});}
+$('#unlock').addEventListener('click',tryUnlock);
+$('#pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+try{if(sessionStorage.getItem('bwos')==='1')reveal();else $('#pw').focus();}catch(e){$('#pw').focus();}
+})();
+</script>
+</body>
+</html>
