@@ -4,13 +4,13 @@
    =========================================================== */
 :root{
   /* ---- ELEGANT BLUE palette (active). To revert to the original brown, swap this block for the ORIGINAL below. ---- */
-  --paper:#eef3f9;--paper-2:#e3ebf5;--paper-3:#f5f9fd;--paper-4:#ffffff;
-  --sable:#14233f;--sable-2:#1c2e4e;
-  --ink:#16243d;--ink-2:#45566f;--faint:#8493aa;
-  --gold:#3f6ea5;--gold-deep:#2b5583;--gold-lt:#a8c8ea;--gold-lt2:#9cc0e6;
-  --gold-ln:rgba(63,110,163,.34);--gold-ln-2:rgba(63,110,163,.16);
-  --rose:#c08f94;--rose-soft:#e7d5da;--sage:#5f8fb0;
-  --line:#d6e0ec;--line-2:#c4d2e4;
+  --paper:#e8f0fb;--paper-2:#d6e6f8;--paper-3:#f2f8ff;--paper-4:#ffffff;
+  --sable:#122a52;--sable-2:#1c3a6b;
+  --ink:#13223c;--ink-2:#334565;--faint:#5f7293;
+  --gold:#2767b8;--gold-deep:#1c518f;--gold-lt:#aacdf5;--gold-lt2:#9ec6f2;
+  --gold-ln:rgba(39,103,184,.38);--gold-ln-2:rgba(39,103,184,.17);
+  --rose:#c0858c;--rose-soft:#e7d5da;--sage:#3f82cf;
+  --line:#cfe0f4;--line-2:#b9d0ec;
   /* ---- ORIGINAL BROWN (revert):
   --paper:#f6f0e4;--paper-2:#efe7d7;--paper-3:#fbf7ef;--paper-4:#fffdf8;
   --sable:#1f1812;--sable-2:#2a2118;
@@ -78,7 +78,7 @@ p{margin:0 0 18px}
 @media(max-width:820px){.topbar .tr a:nth-child(1){display:none}.topbar .in{letter-spacing:.1em;font-size:11px}}
 
 /* --- header / nav --- */
-header.site{position:sticky;top:0;z-index:60;background:rgba(246,240,228,.92);backdrop-filter:blur(16px);
+header.site{position:sticky;top:0;z-index:60;background:rgba(232,240,251,.9);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--gold-ln-2);transition:box-shadow .3s}
 header.site.scrolled{box-shadow:0 8px 30px -18px rgba(20,40,75,.4)}
 header.site .in{max-width:var(--maxw);margin:0 auto;padding:16px 32px;display:flex;align-items:center;gap:22px}
@@ -99,7 +99,7 @@ nav.main .apply:hover{border-color:var(--gold);color:var(--gold-deep);background
 #mnav a{display:block;padding:15px 32px;font-family:var(--sans);font-size:16px;font-weight:500;letter-spacing:.02em;color:var(--ink);border-bottom:1px solid var(--line)}
 #mnav a.active{color:var(--gold-deep)}
 #mnav.on{display:block}
-@media(max-width:920px){nav.main{display:none}.burger{display:block}}
+@media(max-width:1060px){nav.main{display:none}.burger{display:block}}
 
 /* --- monogram crest --- */
 .crest{width:48px;height:48px;flex:none}
