@@ -77,3 +77,6 @@
 # --- Client site: Contented Puppies Paradise (Judith Leiva) ---
 !/contented-puppies/
 !/contented-puppies/**
+
+# --- TPB Week 3: Next Litter Readiness interactive tool ---
+!/litter-readiness.html

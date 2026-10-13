@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#16161a;--bg2:#101013;--panel:#1b1b20;--panel2:#212128;--panel3:#26262e;
+    --line:rgba(214,186,118,.2);--line2:rgba(214,186,118,.34);--line-soft:rgba(255,255,255,.07);
+    --ink:#f3efe6;--mid:#c3bdae;--muted:#8f8a7c;--faint:#615d53;
+    --gold:#d6ba76;--gold2:#e7d2a0;--gold-deep:#a98f4e;--gold-soft:rgba(214,186,118,.1);
+    --green:#7cc496;--amber:#e0b15e;--red:#dd8f81;--blue:#7fb0dd;
+    --green-s:rgba(124,196,150,.14);--amber-s:rgba(224,177,94,.14);--red-s:rgba(221,143,129,.14);
+    --disp:'Playfair Display',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:radial-gradient(1100px 600px at 80% -10%,rgba(214,186,118,.06),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{font-family:var(--disp);font-weight:600;margin:0;line-height:1.15}
+  /* gate */
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:90}
+  #gate .box{width:min(92vw,400px);text-align:center}
+  #gate .mk{width:54px;height:54px;border-radius:14px;background:linear-gradient(150deg,var(--gold),#9c7e3f);display:inline-flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:700;font-size:26px;color:#1a150a;margin-bottom:18px}
+  #gate h1{font-size:23px}
+  #gate .sub{color:var(--muted);font-size:11px;letter-spacing:.22em;text-transform:uppercase;margin:7px 0 22px}
+  #gate input{width:100%;padding:14px 16px;background:var(--panel);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:11px;padding:14px;background:var(--gold);border:0;border-radius:11px;color:#1a150a;font-weight:700;font-size:14px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #app{display:none}
+  /* bar */
+  .bar{position:sticky;top:0;z-index:40;background:rgba(22,22,26,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .bar .in{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:13px;padding:13px 22px}
+  .logo{display:flex;align-items:center;gap:11px}
+  .logo .mk{width:32px;height:32px;border-radius:8px;background:linear-gradient(150deg,var(--gold),#9c7e3f);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:700;font-size:17px;color:#1a150a}
+  .logo .wm{font-family:var(--disp);font-size:15px;font-weight:600;line-height:1}
+  .logo .wm small{display:block;font-family:var(--sans);font-size:8.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-top:3px}
+  .bar .sp{flex:1}
+  .save{font-size:11px;color:var(--green);letter-spacing:.03em;margin-right:4px}
+  .tbtn{background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:8px 13px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--sans)}
+  .tbtn:hover{border-color:var(--gold);color:var(--ink)}
+  .wrap{max-width:860px;margin:0 auto;padding:26px 22px 90px}
+  /* hero */
+  .hero{text-align:center;padding:16px 0 10px}
+  .hero .k{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .hero h1{font-size:clamp(26px,5vw,38px);margin:12px 0 0}
+  .hero .meta{font-size:13px;color:var(--muted);margin-top:12px}
+  .framecard{background:var(--gold-soft);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:14px 18px;margin:22px 0;font-size:13.5px;color:var(--mid)}
+  .framecard b{color:var(--gold2)}
+  /* context fields */
+  .ctx{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:10px}
+  @media(max-width:620px){.ctx{grid-template-columns:1fr}}
+  .fld label{display:block;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+  input.f,textarea.f{width:100%;background:var(--bg2);border:1px solid var(--line2);border-radius:9px;color:var(--ink);font-family:var(--sans);font-size:14px;padding:11px 13px;transition:border-color .2s}
+  input.f:focus,textarea.f:focus{outline:none;border-color:var(--gold)}
+  textarea.f{min-height:52px;resize:vertical;line-height:1.5}
+  .startdate{grid-column:1/-1;font-size:13px;color:var(--mid);background:var(--bg2);border:1px dashed var(--line2);border-radius:9px;padding:11px 14px}
+  .startdate b{color:var(--gold2);font-family:var(--disp)}
+  /* section head */
+  .sec-h{display:flex;align-items:center;gap:12px;margin:34px 0 4px}
+  .sec-h .n{font-family:var(--disp);font-size:14px;color:var(--gold);background:var(--gold-soft);border:1px solid var(--line2);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;font-weight:600}
+  .sec-h h3{font-size:21px}
+  .sec-q{color:var(--muted);font-size:13.5px;margin:4px 0 14px;padding-left:42px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-bottom:14px}
+  .lbl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:14px 0 7px}
+  .lbl:first-child{margin-top:0}
+  /* level / decision pills */
+  .pills{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{border:1px solid var(--line2);background:var(--bg2);color:var(--mid);border-radius:30px;padding:8px 15px;font-size:12.5px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:.18s;display:inline-flex;align-items:center;gap:7px}
+  .pill:hover{border-color:var(--gold)}
+  .pill .d{width:8px;height:8px;border-radius:50%;background:var(--faint)}
+  .pill.on{color:var(--ink);font-weight:600}
+  .pill.lv-a.on{background:var(--red-s);border-color:var(--red);color:var(--red)}.pill.lv-a .d{background:var(--red)}
+  .pill.lv-v.on{background:var(--amber-s);border-color:var(--amber);color:var(--amber)}.pill.lv-v .d{background:var(--amber)}
+  .pill.lv-p.on{background:var(--green-s);border-color:var(--green);color:var(--green)}.pill.lv-p .d{background:var(--green)}
+  .pill.dc.on{background:var(--gold-soft);border-color:var(--gold);color:var(--gold2)}
+  .hint{font-size:11.5px;color:var(--faint);margin-top:7px}
+  /* detailed checklist */
+  details.dl{margin-top:16px;border-top:1px solid var(--line);padding-top:4px}
+  details.dl>summary{list-style:none;cursor:pointer;padding:12px 0 6px;font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}
+  details.dl>summary::-webkit-details-marker{display:none}
+  details.dl>summary::before{content:"▸";transition:transform .2s;display:inline-block}
+  details.dl[open]>summary::before{transform:rotate(90deg)}
+  .grp-h{font-family:var(--disp);font-size:14px;color:var(--gold2);margin:14px 0 8px;font-weight:600}
+  .item{padding:10px 0;border-bottom:1px solid var(--line-soft)}
+  .item:last-child{border-bottom:0}
+  .item .t{font-size:13.5px;color:var(--mid);margin-bottom:8px}
+  .ticks{display:flex;gap:6px;flex-wrap:wrap}
+  .tick{border:1px solid var(--line-soft);background:var(--bg2);color:var(--muted);border-radius:7px;padding:5px 11px;font-size:11.5px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:.15s}
+  .tick:hover{border-color:var(--line2)}
+  .tick.on.v{background:var(--green-s);border-color:var(--green);color:var(--green)}
+  .tick.on.s{background:var(--amber-s);border-color:var(--amber);color:var(--amber)}
+  .tick.on.n{background:var(--red-s);border-color:var(--red);color:var(--red)}
+  .tick.on.na{background:var(--panel3);border-color:var(--line2);color:var(--muted)}
+  /* plan B rows */
+  .pb .item .t{margin-bottom:6px}
+  /* health gate */
+  .gate-q{display:flex;gap:10px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line-soft)}
+  .gate-q:last-of-type{border-bottom:0}
+  .gate-q .q{flex:1;font-size:13.5px;color:var(--mid)}
+  .warnbanner{display:none;background:var(--red-s);border:1px solid var(--red);border-radius:12px;padding:14px 18px;margin:14px 0;color:#f0c3bb;font-size:13.5px}
+  .warnbanner.on{display:block}
+  .warnbanner b{color:#f6d9d3}
+  /* priorities */
+  .prow{display:grid;grid-template-columns:28px 1fr 150px 130px;gap:10px;align-items:center;margin-bottom:10px}
+  .prow .num{font-family:var(--disp);font-size:18px;color:var(--gold);text-align:center}
+  @media(max-width:640px){.prow{grid-template-columns:1fr;gap:6px;padding:12px 0;border-bottom:1px solid var(--line-soft)}}
+  /* readiness map */
+  .map{background:linear-gradient(165deg,var(--panel),var(--panel2));border:1px solid var(--line2);border-radius:18px;padding:24px 24px 26px;margin-top:10px}
+  .map h3{font-size:20px;margin-bottom:4px}
+  .mapgrid{display:grid;grid-template-columns:1fr;gap:9px;margin-top:16px}
+  .maprow{display:flex;align-items:center;gap:12px;padding:12px 15px;border:1px solid var(--line);border-radius:11px;background:var(--bg2)}
+  .maprow .mn{flex:1;font-size:14px;color:var(--ink)}
+  .maprow .lv{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 11px;border-radius:20px}
+  .maprow .lv.a{background:var(--red-s);color:var(--red)}.maprow .lv.v{background:var(--amber-s);color:var(--amber)}.maprow .lv.p{background:var(--green-s);color:var(--green)}.maprow .lv.none{background:var(--panel3);color:var(--muted)}
+  .maprow .dc{font-size:11.5px;color:var(--muted)}
+  .tally{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .tchip{border-radius:10px;padding:12px 16px;text-align:center;flex:1;min-width:90px;border:1px solid var(--line)}
+  .tchip .v{font-family:var(--disp);font-size:26px;font-weight:700}
+  .tchip .t{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+  .tchip.a .v{color:var(--red)}.tchip.v2 .v{color:var(--amber)}.tchip.p .v{color:var(--green)}
+  .summary{font-size:14.5px;color:var(--mid);margin-top:18px;line-height:1.6}
+  .summary b{color:var(--gold2)}
+  .closing{font-size:13px;color:var(--muted);margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
+  .closing b{color:var(--gold2)}
+  @media print{
+    .bar,.tbtn,details.dl>summary{display:none}
+    body{background:#fff;color:#111}
+    details.dl{display:block}details.dl[open]>*{display:block}
+    .card,.ctx,.map{border-color:#ccc;background:#fff}
+  }
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="mk">B</div>
+    <h1>Next Litter Readiness</h1>
+    <div class="sub">The Profitable Breeder · Week 3</div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Open →</button>
+    <div class="err" id="gerr"></div>
+  </div></div>
+
+  <div id="app">
+    <div class="bar"><div class="in">
+      <span class="logo"><span class="mk">B</span><span class="wm">BreedWise<small>The Profitable Breeder</small></span></span>
+      <span class="sp"></span>
+      <span class="save" id="save">Saved</span>
+      <button class="tbtn" id="printBtn">Print</button>
+      <button class="tbtn" id="resetBtn">Reset</button>
+    </div></div>
+    <div class="wrap">
+      <div class="hero">
+        <div class="k">Week 3 · Required Tool</div>
+        <h1>My Next Litter Readiness Snapshot</h1>
+        <div class="meta">Ready for your next litter? · About 10–15 minutes</div>
+      </div>
+
+      <div class="framecard">
+        For each area, note what is already <b>verified</b> (done and the result reviewed), what is <b>scheduled or still missing</b>, and your <b>next action</b> — then set your level. A test correctly booked, with its date, is the right step at the right time, not a failure. This is <b>not a clinical score</b> and it doesn't guarantee a pregnancy — it's a map of where your attention belongs. Your veterinarian makes the clinical calls.
+      </div>
+
+      <div class="ctx" id="ctx">
+        <div class="fld"><label>Female</label><input class="f" data-k="female" placeholder="Her name"></div>
+        <div class="fld"><label>Male or semen source</label><input class="f" data-k="male" placeholder="His name / source"></div>
+        <div class="fld"><label>Expected next heat</label><input class="f" type="date" data-k="heat"></div>
+        <div class="fld"><label>Date completed</label><input class="f" type="date" data-k="done"></div>
+        <div class="startdate" id="startdate">Enter her expected heat and I'll work out your start date (heat minus 90 days).</div>
+      </div>
+
+      <div id="areas"></div>
+
+      <!-- HEALTH GATE -->
+      <div class="sec-h"><span class="n" style="background:var(--red-s);border-color:var(--red);color:var(--red)">!</span><h3>Health &amp; Welfare — First</h3></div>
+      <div class="sec-q">Not a priority to rank. Anything here is resolved with your vet <b>before any mating</b>, whatever your top three are.</div>
+      <div class="card" id="healthcard">
+        <div class="gate-q"><div class="q">A positive screen in either dog</div>
+          <div class="pills" data-gate="screen"><span class="pill" data-v="none">None</span><span class="pill" data-v="yes">Yes — resolving with my vet</span></div></div>
+        <div class="gate-q"><div class="q">A dog who isn't sound, or a finding my vet wants to investigate</div>
+          <div class="pills" data-gate="sound"><span class="pill" data-v="none">None</span><span class="pill" data-v="yes">Yes — resolving with my vet</span></div></div>
+        <div class="lbl">Anything else my vet says must be resolved before this breeding</div>
+        <textarea class="f" id="healthother" data-k="healthother" placeholder="Write it here, or leave blank"></textarea>
+        <div class="warnbanner" id="healthwarn"><b>Resolve this with your vet first.</b> A positive screen, a dog who isn't sound, or a finding your vet wants to investigate comes before any mating — whatever your top three priorities are.</div>
+      </div>
+
+      <!-- PRIORITIES -->
+      <div class="sec-h"><span class="n">★</span><h3>My Three Priorities</h3></div>
+      <div class="sec-q">Three, not ten. The few things that move your readiness the most before this cycle.</div>
+      <div class="card">
+        <div class="startdate" id="startdate2" style="margin-bottom:16px">Start date (expected heat − 90 days) will show here once you set her heat above.</div>
+        <div class="prow" style="color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase"><span></span><span>Action</span><span>Dog(s)</span><span>Target date</span></div>
+        <div id="priorities"></div>
+      </div>
+
+      <!-- MAP -->
+      <div class="sec-h"><span class="n">◆</span><h3>My Readiness Map</h3></div>
+      <div class="card map">
+        <h3>Where your attention belongs</h3>
+        <div class="summary" id="mapsummary">Set a level on each area above and your map appears here.</div>
+        <div class="tally" id="tally"></div>
+        <div class="mapgrid" id="mapgrid"></div>
+        <div class="closing">You don't need a perfect program to start improving. But starting to improve is not the same as being cleared to mate: anything required for her health, his health or a safe mating must be done and satisfactory before breeding goes ahead. <b>When you're done, copy your three priorities into your Profitable Breeder Scorecard</b> — under biological performance (reproduction, preparation, veterinary support).</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function(){
+"use strict";
+var LS='tpb-litter-readiness-v1';
+var OK='bb184d16c73d5a54ebf08a198f5a1712b51e1f3afdc870c6ac69bf027f466a70'; /* READINESS2026 */
+function $(s,r){return (r||document).querySelector(s);}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+/* ---------- content ---------- */
+var AREAS=[
+ {id:'female',n:'1',title:'The female',q:'Is she ready, biologically and medically? · Stage of life · condition &amp; nutrition · history · health review with my vet',
+  reflect:[['assume','What am I still assuming?'],['ifwrong','If that assumption is wrong, what happens?']],
+  items:[
+   'Stage of life. Her age noted. If she is over 6 and this is her first litter, the breeding is planned with my vet from the start.',
+   'Condition. Body condition scored by hand at 4 to 5 out of 9 (a show female has had weeks to reset).',
+   'Nutrition. Right food for her stage of life, nothing harmful added on top, intake stable; any change made with my vet 60 to 90 days ahead.',
+   'History. Litter sizes, interval between heats and recovery after her last litter, read against her own pattern (any clear change discussed with my vet).',
+   'Health review. Vaccinations reviewed with my vet, protection confirmed at least 30 days before the breeding.',
+   'Health review. Parasite plan built with my vet for this female, my region and this season.',
+   'Health review. Bloodwork, medical history and any current treatment reviewed with my vet.']},
+ {id:'male',n:'2',title:'The male and the pairing',q:'One area, three questions · Is he ready now? · Is this the right pairing? · Can we carry it out?',
+  reflect:[['who','For each answer about him: who told me, and when was it true?']],
+  groups:[
+   {h:'Question 1 · Is he ready now?',items:[
+     'Breeding soundness exam with semen evaluation, 60 to 30 days before the mating (repeated if the last is over 6 months old), read by a vet.',
+     'Kept cool, condition 4 to 5 out of 9, diet and weight stable across the 63 days.',
+     'Any recent illness or fever known to his vet.',
+     'If he is over about 5: prostate checked.']},
+   {h:'Question 2 · Is this the right pairing?',items:[
+     'Both DNA panels compared by my vet or a genetic counsellor; the green, yellow or red call written down.',
+     'Breed health screening on file for both dogs, beyond the DNA panel (as advised by my vet and breed club).',
+     'Fertility, structure, ease of whelping and temperament looked at on both sides of the pedigree.']},
+   {h:'Question 3 · Can we carry out the breeding we’ve planned?',items:[
+     'Brucella canis: both dogs screened before this mating, results negative and on paper.',
+     'Shipped semen: his negative Brucella result dated within 30 days of collection.',
+     'Semen type chosen; if chilled or frozen, a trained inseminator agreed.',
+     'A check of the semen on arrival or after thawing arranged.']}]},
+ {id:'toolkit',n:'3',title:'The toolkit',q:'What must exist before her heat · Her records · his semen plan · the room',
+  reflect:[['missing','If her heat started tomorrow, what would be missing?']],
+  items:[
+   'Her records: progesterone log, calendar, previous cycles (fast or slow riser), thermometer and her normal temperature.',
+   'His side: a written semen plan (type, source, shipping, who inseminates), confirmed with the people involved.',
+   'For a natural mating: the room ready (non-slip floor, cool, calm, one handler per dog, vet’s number posted).']},
+ {id:'vet',n:'4',title:'The vet',q:'An agreed plan, not just access · Who tests her, when, on which machine · who inseminates',
+  reflect:[],
+  items:[
+   'Who tests her this cycle, on schedule, including weekends, on the same machine: agreed.',
+   'Who inseminates, and that they are available once ovulation is confirmed: agreed.',
+   'Both dogs’ pre-breeding checks, screens and his semen evaluation on one calendar.',
+   'His collection coordinated with his own vet, if semen travels.']},
+ {id:'planb',n:'5',title:'Plan B',q:'Is the decision already made? · What I’ll do if something goes wrong, decided now',
+  reflect:[],planb:true,
+  items:[
+   'Her heat comes early, late or barely shows.',
+   'A screen comes back positive (cancel, confirm, retest).',
+   'The natural mating doesn’t work (stop, never force; AI discussed with my vet).',
+   'His evaluation isn’t good enough, or the semen fails its arrival check.',
+   'She isn’t in condition when the heat arrives (skip, decided in advance).',
+   'My calendar, space and help for the pregnancy, the whelping and the weeks of puppies.']}
+];
+var LEVELS=[['a','Assumed','A vulnerability'],['v','Verified','Checked, incomplete'],['p','Planned','Checked — and I know what happens if it isn’t right']];
+var DECS=[['proceed','Proceed'],['adjust','Adjust'],['postpone','Postpone'],['investigate','Investigate']];
+var TICKS=[['v','Verified'],['s','Scheduled'],['n','Not yet'],['na','N/A']];
+
+/* ---------- state ---------- */
+var DB={ctx:{},areas:{},gate:{},priorities:[{},{},{}]};
+function load(){try{var r=localStorage.getItem(LS);if(r)DB=Object.assign(DB,JSON.parse(r));}catch(e){}}
+var st;
+function save(){$('#save').textContent='Saving…';clearTimeout(st);st=setTimeout(function(){try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}$('#save').textContent='Saved';},300);}
+function A(id){if(!DB.areas[id])DB.areas[id]={items:{},refl:{}};return DB.areas[id];}
+
+/* ---------- build ---------- */
+function pills(curr,opts,cls,onpick){
+  var box=el('div','pills');
+  opts.forEach(function(o){
+    var p=el('span','pill '+cls+(cls==='lv-x'?'':'')+' '+(cls.indexOf('lv')===0?('lv-'+o[0]):'dc')+(curr===o[0]?' on':''));
+    p.innerHTML=(cls.indexOf('lv')===0?'<span class="d"></span>':'')+esc(o[1])+(o[2]?'<span style="color:var(--faint);font-size:11px;margin-left:4px">· '+esc(o[2])+'</span>':'');
+    p.addEventListener('click',function(){onpick(o[0]);[].forEach.call(box.children,function(c){c.classList.remove('on');});p.classList.add('on');});
+    box.appendChild(p);
+  });
+  return box;
+}
+function itemRow(aid,gi,ii,text,planb){
+  var a=A(aid);var key=gi+'-'+ii;
+  var row=el('div','item'+(planb?' pb':''));
+  row.appendChild(el('div','t',text));
+  var ticks=el('div','ticks');
+  (planb?[['done','Decided'],['na','N/A']]:TICKS).forEach(function(tk){
+    var b=el('button','tick '+tk[0]+(a.items[key]===tk[0]?' on':''),tk[1]);
+    b.addEventListener('click',function(){a.items[key]=(a.items[key]===tk[0]?'':tk[0]);[].forEach.call(ticks.children,function(c){c.classList.remove('on');});if(a.items[key])b.classList.add('on');save();});
+    ticks.appendChild(b);
+  });
+  row.appendChild(ticks);
+  if(planb){
+    var ta=el('textarea','f');ta.placeholder='My decision, made in advance';ta.style.marginTop='8px';ta.value=a.items['note-'+key]||'';
+    ta.addEventListener('input',function(){a.items['note-'+key]=ta.value;save();});
+    row.appendChild(ta);
+  }
+  return row;
+}
+function areaCard(area){
+  var a=A(area.id);
+  var wrap=el('div');
+  wrap.appendChild(el('div','sec-h','<span class="n">'+area.n+'</span><h3>'+esc(area.title)+'</h3>'));
+  wrap.appendChild(el('div','sec-q',area.q));
+  var card=el('div','card');
+  if(!area.planb){
+    card.appendChild(el('div','lbl','Verified — done and reviewed'));
+    card.appendChild(ta(a,'verified','What is confirmed and satisfactory'));
+    card.appendChild(el('div','lbl','Scheduled (with date) or still missing'));
+    card.appendChild(ta(a,'sched','e.g. progesterone booked 14 Mar · brucella — not yet'));
+    card.appendChild(el('div','lbl','My next action'));
+    card.appendChild(ta(a,'action','The one next step'));
+  }
+  /* reflections */
+  (area.reflect||[]).forEach(function(r){
+    card.appendChild(el('div','lbl',r[1]));
+    card.appendChild(taRefl(a,r[0]));
+  });
+  /* level */
+  card.appendChild(el('div','lbl','My level'));
+  card.appendChild(pills(a.level,LEVELS,'lv-x',function(v){a.level=v;save();renderMap();}));
+  /* decision */
+  card.appendChild(el('div','lbl','Decision'));
+  card.appendChild(pills(a.decision,DECS,'dc',function(v){a.decision=v;save();renderMap();}));
+  /* detailed checklist */
+  var det=el('details','dl');var sum=el('summary',null,'Detailed checklist (optional)');det.appendChild(sum);
+  if(area.groups){
+    area.groups.forEach(function(g,gi){
+      det.appendChild(el('div','grp-h',g.h));
+      g.items.forEach(function(it,ii){det.appendChild(itemRow(area.id,gi,ii,it,false));});
+    });
+  } else {
+    (area.items||[]).forEach(function(it,ii){det.appendChild(itemRow(area.id,0,ii,it,area.planb));});
+  }
+  card.appendChild(det);
+  if(area.planb){var open=det;open.setAttribute('open','');}
+  wrap.appendChild(card);
+  return wrap;
+}
+function ta(obj,key,ph){var t=el('textarea','f');t.placeholder=ph||'';t.value=obj[key]||'';t.addEventListener('input',function(){obj[key]=t.value;save();});return t;}
+function taRefl(a,key){var t=el('textarea','f');t.value=(a.refl[key]||'');t.addEventListener('input',function(){a.refl[key]=t.value;save();});return t;}
+
+/* ---------- context + startdate ---------- */
+function bindCtx(){
+  [].forEach.call(document.querySelectorAll('#ctx .f'),function(inp){
+    var k=inp.getAttribute('data-k');inp.value=DB.ctx[k]||'';
+    inp.addEventListener('input',function(){DB.ctx[k]=inp.value;save();startDate();});
+  });
+  $('#healthother').value=DB.ctx.healthother||'';
+  $('#healthother').addEventListener('input',function(){DB.ctx.healthother=$('#healthother').value;save();healthWarn();});
+  startDate();
+}
+function startDate(){
+  var h=DB.ctx.heat;var out='Enter her expected heat and I’ll work out your start date (heat minus 90 days).';
+  var out2='Start date (expected heat − 90 days) will show here once you set her heat above.';
+  if(h){var d=new Date(h+'T00:00:00');if(!isNaN(d)){d.setDate(d.getDate()-90);var s=d.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+    out='Expected heat minus 90 days = your start date: <b>'+s+'</b>';out2='Expected heat <b>'+new Date(h+'T00:00:00').toLocaleDateString(undefined,{month:'long',day:'numeric'})+'</b> · minus 90 days = start date <b>'+s+'</b>';}}
+  $('#startdate').innerHTML=out;var s2=$('#startdate2');if(s2)s2.innerHTML=out2;
+}
+
+/* ---------- health gate ---------- */
+function bindGate(){
+  [].forEach.call(document.querySelectorAll('[data-gate]'),function(box){
+    var g=box.getAttribute('data-gate');
+    [].forEach.call(box.children,function(p){
+      if(DB.gate[g]===p.getAttribute('data-v'))p.classList.add('on');
+      p.addEventListener('click',function(){DB.gate[g]=p.getAttribute('data-v');[].forEach.call(box.children,function(c){c.classList.remove('on');});p.classList.add('on');save();healthWarn();});
+    });
+  });
+}
+function healthWarn(){
+  var open=(DB.gate.screen==='yes')||(DB.gate.sound==='yes')||((DB.ctx.healthother||'').trim().length>0);
+  $('#healthwarn').classList.toggle('on',open);
+}
+
+/* ---------- priorities ---------- */
+function renderPriorities(){
+  var box=$('#priorities');box.innerHTML='';
+  for(var i=0;i<3;i++){(function(i){
+    var p=DB.priorities[i]||(DB.priorities[i]={});
+    var row=el('div','prow');
+    row.appendChild(el('span','num',(i+1)));
+    var act=el('input','f');act.placeholder='Priority action';act.value=p.action||'';act.addEventListener('input',function(){p.action=act.value;save();});
+    var dog=el('input','f');dog.placeholder='Dog(s)';dog.value=p.dog||'';dog.addEventListener('input',function(){p.dog=dog.value;save();});
+    var dt=el('input','f');dt.type='date';dt.value=p.date||'';dt.addEventListener('input',function(){p.date=dt.value;save();});
+    row.appendChild(act);row.appendChild(dog);row.appendChild(dt);box.appendChild(row);
+  })(i);}
+}
+
+/* ---------- readiness map ---------- */
+var LVLABEL={a:'Assumed',v:'Verified',p:'Planned'};
+function renderMap(){
+  var grid=$('#mapgrid');grid.innerHTML='';
+  var counts={a:0,v:0,p:0,none:0};
+  AREAS.forEach(function(area){
+    var a=DB.areas[area.id]||{};var lv=a.level||'none';counts[lv!=='none'?lv:'none']++;
+    var row=el('div','maprow');
+    row.appendChild(el('div','mn',area.n+'. '+esc(area.title)));
+    row.appendChild(el('div','lv '+(lv==='none'?'none':lv),lv==='none'?'Not set':LVLABEL[lv]));
+    row.appendChild(el('div','dc',a.decision?('→ '+a.decision.charAt(0).toUpperCase()+a.decision.slice(1)):''));
+    grid.appendChild(row);
+  });
+  $('#tally').innerHTML=
+    '<div class="tchip p"><div class="v">'+counts.p+'</div><div class="t">Planned</div></div>'+
+    '<div class="tchip v2"><div class="v">'+counts.v+'</div><div class="t">Verified</div></div>'+
+    '<div class="tchip a"><div class="v">'+counts.a+'</div><div class="t">Assumed</div></div>';
+  var done=counts.a+counts.v+counts.p;
+  var msg;
+  if(done===0){msg='Set a level on each area above and your map fills in here.';}
+  else{
+    msg='You’ve mapped <b>'+done+' of 5</b> areas. ';
+    if(counts.a>0)msg+='Your <b>'+counts.a+' assumed</b> area'+(counts.a>1?'s are':' is')+' where a weakness could hide — that’s where your next action matters most. ';
+    else if(counts.v>0)msg+='Nothing is purely assumed — good. Turn your <b>'+counts.v+' verified</b> area'+(counts.v>1?'s':'')+' into <b>planned</b> by deciding what happens if each isn’t right. ';
+    else if(counts.p===5)msg+='All five areas are <b>planned</b> — verified, with a plan B for each. ';
+    var gateOpen=(DB.gate.screen==='yes')||(DB.gate.sound==='yes')||((DB.ctx.healthother||'').trim().length>0);
+    if(gateOpen)msg+='<br><br><span style="color:var(--red)">Health &amp; welfare comes first:</span> resolve the item(s) you flagged above with your vet before any mating.';
+  }
+  $('#mapsummary').innerHTML=msg;
+}
+
+/* ---------- init ---------- */
+function build(){
+  load();
+  var areasBox=$('#areas');areasBox.innerHTML='';
+  AREAS.forEach(function(area){areasBox.appendChild(areaCard(area));});
+  bindCtx();bindGate();healthWarn();renderPriorities();renderMap();
+  $('#printBtn').addEventListener('click',function(){window.print();});
+  $('#resetBtn').addEventListener('click',function(){if(confirm('Clear everything and start fresh? This cannot be undone.')){DB={ctx:{},areas:{},gate:{},priorities:[{},{},{}]};try{localStorage.removeItem(LS);}catch(e){}build();}});
+}
+
+/* ---------- gate ---------- */
+function sha(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+function reveal(){var g=$('#gate');if(g)g.remove();$('#app').style.display='block';document.title='Next Litter Readiness · BreedWise';build();}
+function tryUnlock(){var v=($('#pw').value||'').trim().toUpperCase();sha(v).then(function(h){if(h===OK){try{sessionStorage.setItem('lr_ok','1');}catch(e){}reveal();}else{$('#gerr').textContent='Incorrect code.';$('#pw').select();}});}
+$('#unlock').addEventListener('click',tryUnlock);
+$('#pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+try{if(sessionStorage.getItem('lr_ok')==='1')reveal();else $('#pw').focus();}catch(e){$('#pw').focus();}
+})();
+</script>
+</body>
+</html>
