@@ -40,9 +40,20 @@
   .logo .wm small{display:block;font-family:var(--sans);font-size:8.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-top:3px}
   .bar .sp{flex:1}
   .save{font-size:11px;color:var(--green);letter-spacing:.03em;margin-right:4px}
-  .tbtn{background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:8px 13px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--sans)}
+  .tbtn{background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:8px 13px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--sans);white-space:nowrap}
   .tbtn:hover{border-color:var(--gold);color:var(--ink)}
+  .tbtn.gold{background:var(--gold);border-color:var(--gold);color:#1a150a;font-weight:700}
+  .tbtn.gold:hover{background:var(--gold2);color:#1a150a}
+  @media(max-width:620px){.bar .in{gap:8px;padding:11px 14px;flex-wrap:wrap}.logo .wm{font-size:14px}.save{width:100%;order:5;margin:0}}
+  /* progress strip */
+  .progbar{display:flex;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding:0 22px 10px}
+  .progbar .pt{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+  .prog{flex:1;height:4px;background:var(--panel3);border-radius:4px;overflow:hidden}
+  .prog span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--green));transition:width .45s cubic-bezier(.4,0,.2,1)}
+  @media(max-width:620px){.progbar{padding:0 14px 9px}}
   .wrap{max-width:860px;margin:0 auto;padding:26px 22px 90px}
+  /* print cover */
+  .printonly{display:none}
   /* hero */
   .hero{text-align:center;padding:16px 0 10px}
   .hero .k{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:600}
@@ -126,11 +137,19 @@
   .summary b{color:var(--gold2)}
   .closing{font-size:13px;color:var(--muted);margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
   .closing b{color:var(--gold2)}
+  .printonly .ph{border-bottom:2px solid #caa94e;padding-bottom:10px;margin-bottom:16px}
+  .printonly .ph .t{font-family:var(--disp);font-size:22px;color:#1a150a}
+  .printonly .ph .m{font-size:12px;color:#555;margin-top:4px}
   @media print{
-    .bar,.tbtn,details.dl>summary{display:none}
-    body{background:#fff;color:#111}
+    .bar,.progbar,.tbtn,details.dl>summary,#printBtn,#resetBtn{display:none !important}
+    body{background:#fff;color:#111;font-size:12px}
+    .printonly{display:block}
     details.dl{display:block}details.dl[open]>*{display:block}
-    .card,.ctx,.map{border-color:#ccc;background:#fff}
+    .card,.ctx,.map,.framecard{border-color:#ccc !important;background:#fff !important;box-shadow:none}
+    .hero h1,.sec-h h3,.map h3,.grp-h{color:#1a150a}
+    .pill,.tick{color:#333 !important}
+    textarea.f,input.f{border-color:#bbb !important;background:#fff !important;color:#111 !important}
+    .sec-h .n{color:#1a150a;background:#f3ead0;border-color:#caa94e}
   }
 </style>
 </head>
@@ -145,13 +164,20 @@
   </div></div>
 
   <div id="app">
-    <div class="bar"><div class="in">
-      <span class="logo"><span class="mk">B</span><span class="wm">BreedWise<small>The Profitable Breeder</small></span></span>
-      <span class="sp"></span>
-      <span class="save" id="save">Saved</span>
-      <button class="tbtn" id="printBtn">Print</button>
-      <button class="tbtn" id="resetBtn">Reset</button>
-    </div></div>
+    <div class="bar">
+      <div class="in">
+        <span class="logo"><span class="mk">B</span><span class="wm">BreedWise<small>The Profitable Breeder</small></span></span>
+        <span class="sp"></span>
+        <span class="save" id="save">Saved</span>
+        <button class="tbtn" id="saveFileBtn" title="Download your answers as a file you can reopen on any device or send to your vet or coach">Save file</button>
+        <button class="tbtn" id="loadFileBtn" title="Reopen a file you saved earlier">Load</button>
+        <button class="tbtn" id="printBtn">Print / PDF</button>
+        <button class="tbtn" id="resetBtn">Reset</button>
+        <input type="file" id="loadInput" accept="application/json,.json" style="display:none">
+      </div>
+      <div class="progbar"><span class="pt" id="progtext">0 of 5 areas mapped</span><div class="prog"><span id="progfill"></span></div></div>
+    </div>
+    <div class="printonly" id="printhdr"></div>
     <div class="wrap">
       <div class="hero">
         <div class="k">Week 3 · Required Tool</div>
@@ -193,6 +219,10 @@
         <div class="startdate" id="startdate2" style="margin-bottom:16px">Start date (expected heat − 90 days) will show here once you set her heat above.</div>
         <div class="prow" style="color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase"><span></span><span>Action</span><span>Dog(s)</span><span>Target date</span></div>
         <div id="priorities"></div>
+        <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <button class="tbtn gold" id="copyPri">Copy my three priorities</button>
+          <span class="hint" id="copyNote" style="margin:0">Then paste them into your Profitable Breeder Scorecard, under biological performance.</span>
+        </div>
       </div>
 
       <!-- MAP -->
@@ -358,14 +388,15 @@ function bindCtx(){
     inp.addEventListener('input',function(){DB.ctx[k]=inp.value;save();startDate();});
   });
   $('#healthother').value=DB.ctx.healthother||'';
-  $('#healthother').addEventListener('input',function(){DB.ctx.healthother=$('#healthother').value;save();healthWarn();});
+  $('#healthother').addEventListener('input',function(){DB.ctx.healthother=$('#healthother').value;save();healthWarn();renderMap();});
   startDate();
 }
+function startDateStr(){var h=DB.ctx.heat;if(!h)return '';var d=new Date(h+'T00:00:00');if(isNaN(d))return '';d.setDate(d.getDate()-90);return d.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});}
 function startDate(){
   var h=DB.ctx.heat;var out='Enter her expected heat and I’ll work out your start date (heat minus 90 days).';
   var out2='Start date (expected heat − 90 days) will show here once you set her heat above.';
-  if(h){var d=new Date(h+'T00:00:00');if(!isNaN(d)){d.setDate(d.getDate()-90);var s=d.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
-    out='Expected heat minus 90 days = your start date: <b>'+s+'</b>';out2='Expected heat <b>'+new Date(h+'T00:00:00').toLocaleDateString(undefined,{month:'long',day:'numeric'})+'</b> · minus 90 days = start date <b>'+s+'</b>';}}
+  var s=startDateStr();
+  if(s){out='Expected heat minus 90 days = your start date: <b>'+s+'</b>';out2='Expected heat <b>'+new Date(h+'T00:00:00').toLocaleDateString(undefined,{month:'long',day:'numeric'})+'</b> · minus 90 days = start date <b>'+s+'</b>';}
   $('#startdate').innerHTML=out;var s2=$('#startdate2');if(s2)s2.innerHTML=out2;
 }
 
@@ -375,7 +406,7 @@ function bindGate(){
     var g=box.getAttribute('data-gate');
     [].forEach.call(box.children,function(p){
       if(DB.gate[g]===p.getAttribute('data-v'))p.classList.add('on');
-      p.addEventListener('click',function(){DB.gate[g]=p.getAttribute('data-v');[].forEach.call(box.children,function(c){c.classList.remove('on');});p.classList.add('on');save();healthWarn();});
+      p.addEventListener('click',function(){DB.gate[g]=p.getAttribute('data-v');[].forEach.call(box.children,function(c){c.classList.remove('on');});p.classList.add('on');save();healthWarn();renderMap();});
     });
   });
 }
@@ -427,6 +458,51 @@ function renderMap(){
     if(gateOpen)msg+='<br><br><span style="color:var(--red)">Health &amp; welfare comes first:</span> resolve the item(s) you flagged above with your vet before any mating.';
   }
   $('#mapsummary').innerHTML=msg;
+  /* progress strip */
+  var pf=$('#progfill');if(pf)pf.style.width=(done/5*100)+'%';
+  var pt=$('#progtext');if(pt)pt.textContent=(done>=5?'All 5 areas mapped':done+' of 5 areas mapped');
+}
+
+/* ---------- save / load / handoff ---------- */
+function download(name,text){
+  try{var blob=new Blob([text],{type:'application/json'});var u=URL.createObjectURL(blob);
+    var a=el('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(function(){URL.revokeObjectURL(u);},1500);}catch(e){alert('Could not create the file on this device.');}
+}
+function saveFile(){
+  var who=(DB.ctx.female||'litter').replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'').toLowerCase()||'litter';
+  download('next-litter-readiness-'+who+'.json',JSON.stringify(DB,null,2));
+  var s=$('#save');s.textContent='File saved';setTimeout(function(){s.textContent='Saved';},1800);
+}
+function loadFile(file){
+  var r=new FileReader();
+  r.onload=function(){try{var d=JSON.parse(r.result);
+    DB={ctx:d.ctx||{},areas:d.areas||{},gate:d.gate||{},priorities:(d.priorities&&d.priorities.length?d.priorities:[{},{},{}])};
+    try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}
+    build();var s=$('#save');s.textContent='File loaded';setTimeout(function(){s.textContent='Saved';},1800);
+  }catch(err){alert('That file could not be read. Please pick a readiness file you saved from this tool.');}};
+  r.readAsText(file);
+}
+function copyPriorities(){
+  var lines=['MY NEXT LITTER — THREE PRIORITIES'];
+  var head=[];if(DB.ctx.female)head.push(DB.ctx.female);if(DB.ctx.male)head.push('× '+DB.ctx.male);
+  if(head.length)lines.push(head.join(' '));
+  var s=startDateStr();if(s)lines.push('Start date (expected heat − 90 days): '+s);
+  lines.push('');
+  var any=false;
+  DB.priorities.forEach(function(p,i){if(p&&(p.action||p.dog||p.date)){any=true;lines.push((i+1)+'. '+(p.action||'—')+(p.dog?('  ·  '+p.dog):'')+(p.date?('  ·  by '+p.date):''));}});
+  if(!any)lines.push('(Fill in your three priorities above first.)');
+  var txt=lines.join('\n');
+  var note=$('#copyNote');
+  function ok(){note.textContent='Copied. Paste into your Profitable Breeder Scorecard, under biological performance.';note.style.color='var(--green)';}
+  function fail(){note.textContent='Copy not available here — select the text to copy it manually.';note.style.color='var(--amber)';}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,fail);}else{fail();}
+}
+function fillPrintHeader(){
+  var h=$('#printhdr');if(!h)return;
+  var sub=[];if(DB.ctx.female)sub.push('Female: '+DB.ctx.female);if(DB.ctx.male)sub.push('Male / source: '+DB.ctx.male);
+  var s=startDateStr();if(s)sub.push('Start date: '+s);if(DB.ctx.done)sub.push('Completed: '+DB.ctx.done);
+  h.innerHTML='<div class="ph"><div class="t">My Next Litter Readiness Snapshot</div><div class="m">'+esc(sub.join('  ·  '))+'</div></div>';
 }
 
 /* ---------- init ---------- */
@@ -435,13 +511,21 @@ function build(){
   var areasBox=$('#areas');areasBox.innerHTML='';
   AREAS.forEach(function(area){areasBox.appendChild(areaCard(area));});
   bindCtx();bindGate();healthWarn();renderPriorities();renderMap();
-  $('#printBtn').addEventListener('click',function(){window.print();});
+}
+function wireToolbar(){
+  $('#printBtn').addEventListener('click',function(){fillPrintHeader();window.print();});
   $('#resetBtn').addEventListener('click',function(){if(confirm('Clear everything and start fresh? This cannot be undone.')){DB={ctx:{},areas:{},gate:{},priorities:[{},{},{}]};try{localStorage.removeItem(LS);}catch(e){}build();}});
+  $('#saveFileBtn').addEventListener('click',saveFile);
+  $('#loadFileBtn').addEventListener('click',function(){$('#loadInput').click();});
+  $('#loadInput').addEventListener('change',function(e){var f=e.target.files&&e.target.files[0];if(f)loadFile(f);e.target.value='';});
+  $('#copyPri').addEventListener('click',copyPriorities);
+  window.addEventListener('beforeprint',function(){document.querySelectorAll('details.dl').forEach(function(d){d.dataset.wasopen=d.open?'1':'';d.open=true;});fillPrintHeader();});
+  window.addEventListener('afterprint',function(){document.querySelectorAll('details.dl').forEach(function(d){d.open=d.dataset.wasopen==='1';});});
 }
 
 /* ---------- gate ---------- */
 function sha(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
-function reveal(){var g=$('#gate');if(g)g.remove();$('#app').style.display='block';document.title='Next Litter Readiness · BreedWise';build();}
+function reveal(){var g=$('#gate');if(g)g.remove();$('#app').style.display='block';document.title='Next Litter Readiness · BreedWise';build();wireToolbar();}
 function tryUnlock(){var v=($('#pw').value||'').trim().toUpperCase();sha(v).then(function(h){if(h===OK){try{sessionStorage.setItem('lr_ok','1');}catch(e){}reveal();}else{$('#gerr').textContent='Incorrect code.';$('#pw').select();}});}
 $('#unlock').addEventListener('click',tryUnlock);
 $('#pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
