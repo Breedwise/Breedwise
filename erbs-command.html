@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · ERBS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0a08;--bg2:#070605;--panel:#15120b;--panel2:#1c180e;--panel3:#221d10;
+    --line:rgba(201,162,75,.2);--line2:rgba(201,162,75,.34);
+    --ink:#f6efe0;--mid:#c3b8a1;--muted:#8f8571;--faint:#5f5949;
+    --gold:#c9a24b;--gold2:#e6c877;--gold-soft:rgba(201,162,75,.12);
+    --green:#6dbf90;--amber:#e0b15e;--red:#e07a6d;--blue:#6fa8d6;
+    --disp:'Playfair Display',Georgia,serif;--sans:'Montserrat',-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1100px 600px at 82% -10%,rgba(201,162,75,.08),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;-webkit-font-smoothing:antialiased;line-height:1.5}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:80}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  #gate .mk{width:52px;height:52px;border-radius:13px;background:linear-gradient(150deg,var(--gold),#9c7327);display:inline-flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:800;font-size:26px;color:#1a1305;margin-bottom:18px}
+  #gate h1{font-family:var(--disp);font-size:24px;margin:0}
+  #gate .sub{color:var(--muted);font-size:11px;letter-spacing:.22em;text-transform:uppercase;margin:6px 0 20px}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#1a1305;font-weight:700;font-size:14px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #app{display:none}
+  .bar{position:sticky;top:0;z-index:40;background:rgba(11,10,8,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .bar .in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:14px 22px}
+  .logo{display:flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),#9c7327);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:800;font-size:18px;color:#1a1305}
+  .logo .wm{font-family:var(--disp);font-size:17px;font-weight:700}
+  .logo .wm small{display:block;font-family:var(--sans);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-top:2px}
+  .bar .sp{flex:1}
+  .live{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
+  .live .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+  .live .dot.stale{background:var(--amber);box-shadow:none}
+  .refresh{background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:9px;padding:7px 13px;font-size:12px;cursor:pointer;font-family:var(--sans)}
+  .refresh:hover{border-color:var(--gold);color:var(--ink)}
+  .wrap{max-width:1180px;margin:0 auto;padding:24px 22px 70px}
+  h2.sh{font-family:var(--disp);font-size:16px;font-weight:600;margin:30px 0 14px;letter-spacing:.01em}
+  h2.sh:first-of-type{margin-top:8px}
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  @media(max-width:900px){.tiles{grid-template-columns:1fr 1fr}}
+  .tile{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:18px 20px;position:relative;overflow:hidden}
+  .tile::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold)}
+  .tile .t{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .tile .v{font-family:var(--disp);font-size:40px;font-weight:700;line-height:1;margin:8px 0 6px;color:var(--gold2)}
+  .tile .s{font-size:12px;color:var(--mid)}
+  .tile.blue::before{background:var(--blue)}.tile.green::before{background:var(--green)}.tile.amber::before{background:var(--amber)}
+  .tile.blue .v{color:var(--blue)}.tile.green .v{color:var(--green)}.tile.amber .v{color:var(--amber)}
+  .panel{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+  .cols{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}
+  @media(max-width:900px){.cols{grid-template-columns:1fr}}
+  /* funnel */
+  .funnel{display:flex;flex-direction:column;gap:12px}
+  .fstep{display:flex;align-items:center;gap:14px}
+  .fstep .nm{width:150px;font-size:13px;color:var(--mid);flex:none}
+  .fstep .track{flex:1;height:30px;background:var(--bg2);border:1px solid var(--line);border-radius:8px;overflow:hidden;position:relative}
+  .fstep .fill{height:100%;background:linear-gradient(90deg,#9c7327,var(--gold2));display:flex;align-items:center;padding:0 10px;font-size:13px;font-weight:700;color:#1a1305;min-width:30px;border-radius:7px 3px 3px 7px;transition:width .6s}
+  .fstep .rate{width:92px;text-align:right;font-size:12px;color:var(--muted);flex:none}
+  .fstep .rate b{color:var(--gold2)}
+  /* trend */
+  .trend{display:flex;align-items:flex-end;gap:6px;height:120px;padding-top:8px}
+  .trend .b{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;justify-content:flex-end;height:100%}
+  .trend .b .bar2{width:100%;max-width:26px;background:linear-gradient(180deg,var(--gold2),#9c7327);border-radius:5px 5px 0 0;min-height:3px;transition:height .5s}
+  .trend .b .d{font-size:9px;color:var(--faint);white-space:nowrap}
+  .trend .b .n{font-size:10px;color:var(--mid);font-weight:600}
+  /* tables */
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:9px 10px;border-bottom:1px solid var(--line2)}
+  td{padding:10px 10px;border-bottom:1px solid var(--line);color:var(--mid);vertical-align:top}
+  td b{color:var(--ink);font-weight:600}tr:last-child td{border-bottom:0}
+  td a{color:var(--gold2)}
+  .tag{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.04em;padding:3px 9px;border-radius:20px;background:var(--gold-soft);color:var(--gold2)}
+  .empty{color:var(--faint);text-align:center;padding:26px;font-size:13px}
+  .mini{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .mini:last-child{border-bottom:0}.mini span:first-child{color:var(--mid)}.mini b{color:var(--ink)}
+  .note{font-size:11.5px;color:var(--faint);margin-top:8px}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="mk">E</div>
+    <h1>Lead Command Center</h1>
+    <div class="sub">ERBS Luxury Doodles</div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Enter →</button>
+    <div class="err" id="gerr"></div>
+  </div></div>
+
+  <div id="app">
+    <div class="bar"><div class="in">
+      <span class="logo"><span class="mk">E</span><span class="wm">ERBS Luxury Doodles<small>Lead Command Center</small></span></span>
+      <span class="sp"></span>
+      <span class="live"><span class="dot" id="liveDot"></span><span id="liveTxt">connecting…</span></span>
+      <button class="refresh" id="refreshBtn">↻ Refresh</button>
+    </div></div>
+    <div class="wrap">
+      <h2 class="sh">Overview</h2>
+      <div class="tiles">
+        <div class="tile"><div class="t">Visitors</div><div class="v" id="t-visitors">—</div><div class="s" id="t-visitors-s">—</div></div>
+        <div class="tile blue"><div class="t">Page Views</div><div class="v" id="t-pv">—</div><div class="s" id="t-pv-s">—</div></div>
+        <div class="tile amber"><div class="t">Partial Inquiries</div><div class="v" id="t-partials">—</div><div class="s" id="t-partials-s">started, not submitted</div></div>
+        <div class="tile green"><div class="t">Applications</div><div class="v" id="t-apps">—</div><div class="s" id="t-apps-s">completed</div></div>
+      </div>
+
+      <div class="cols" style="margin-top:18px">
+        <div class="panel">
+          <div style="font-family:var(--disp);font-size:15px;font-weight:600;margin-bottom:14px">Conversion Funnel</div>
+          <div class="funnel" id="funnel"></div>
+        </div>
+        <div class="panel">
+          <div style="font-family:var(--disp);font-size:15px;font-weight:600;margin-bottom:14px">Visitors · Last 14 Days</div>
+          <div class="trend" id="trend"></div>
+        </div>
+      </div>
+
+      <h2 class="sh">Partial Inquiries <span style="font-family:var(--sans);font-size:12px;color:var(--muted);font-weight:400">· people who started the application — follow up</span></h2>
+      <div class="panel" style="padding:4px 0"><div style="overflow-x:auto"><table>
+        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Interest</th><th>When</th></tr></thead>
+        <tbody id="partials-body"></tbody>
+      </table></div></div>
+
+      <div class="cols" style="margin-top:22px;align-items:start">
+        <div>
+          <h2 class="sh">Recent Applications</h2>
+          <div class="panel" style="padding:4px 0"><div style="overflow-x:auto"><table>
+            <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>When</th></tr></thead>
+            <tbody id="apps-body"></tbody>
+          </table></div></div>
+        </div>
+        <div>
+          <h2 class="sh">Top Pages &amp; Sources</h2>
+          <div class="panel">
+            <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Top Pages</div>
+            <div id="pages"></div>
+            <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:16px 0 8px">Top Referrers</div>
+            <div id="refs"></div>
+          </div>
+        </div>
+      </div>
+      <div class="note" id="updnote">—</div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var FN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/erbs-track';
+  var AK='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+  var SECRET='erbs_adm_Qz9mR4';
+  var OK='01220d99f733e37cff9f4f2e08c75c299c7452c885b2b5f2e966d59823c10836'; /* ERBSLEADS2026 */
+  var REFRESH=30000, lastOK=0, timer;
+  function el(id){return document.getElementById(id);}
+  function n(x){return (x==null?0:x).toLocaleString();}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function ago(ts){if(!ts)return '—';var s=Math.round((Date.now()-ts)/1000);if(s<60)return s+'s ago';var m=Math.floor(s/60);if(m<60)return m+'m ago';var h=Math.floor(m/60);if(h<24)return h+'h ago';return Math.floor(h/24)+'d ago';}
+  function setLive(ok,msg){el('liveDot').classList.toggle('stale',!ok);el('liveTxt').textContent=msg;}
+
+  function render(d){
+    var T=d.totals||{}, t=d.today||{}, w=d.last7||{};
+    el('t-visitors').textContent=n(T.visitors);
+    el('t-visitors-s').textContent=n(t.v)+' today · '+n(w.visitors)+' / 7d';
+    el('t-pv').textContent=n(T.pageviews);
+    el('t-pv-s').textContent=n(t.pv)+' today · '+n(w.pageviews)+' / 7d';
+    el('t-partials').textContent=n(T.partials);
+    el('t-apps').textContent=n(T.inquiries);
+    el('t-apps-s').textContent=n(w.inquiries)+' in last 7 days';
+
+    /* funnel */
+    var V=T.visitors||0, P=T.partials||0, A=T.inquiries||0, max=Math.max(V,1);
+    var steps=[['Visitors',V,null],['Started Application',P+A,V],['Submitted Application',A,P+A]];
+    el('funnel').innerHTML=steps.map(function(s){
+      var w2=Math.max(4,Math.round((s[1]/max)*100));
+      var rate=s[2]!=null&&s[2]>0?('<b>'+Math.round(s[1]/s[2]*100)+'%</b> of prev'):'';
+      return '<div class="fstep"><span class="nm">'+s[0]+'</span><span class="track"><span class="fill" style="width:'+w2+'%">'+n(s[1])+'</span></span><span class="rate">'+rate+'</span></div>';
+    }).join('');
+
+    /* trend */
+    var tr=d.trend||[], tmax=1; tr.forEach(function(x){if(x.v>tmax)tmax=x.v;});
+    el('trend').innerHTML=tr.length?tr.map(function(x){
+      var h=Math.round((x.v/tmax)*100);
+      var dd=x.day.slice(5);
+      return '<div class="b"><span class="n">'+(x.v||'')+'</span><span class="bar2" style="height:'+h+'%"></span><span class="d">'+dd+'</span></div>';
+    }).join(''):'<div class="empty" style="width:100%">No visits yet.</div>';
+
+    /* partials */
+    var pl=d.partialsList||[];
+    el('partials-body').innerHTML=pl.length?pl.map(function(p){
+      return '<tr><td><b>'+(esc(p.name)||'—')+'</b></td><td>'+(p.email?'<a href="mailto:'+esc(p.email)+'">'+esc(p.email)+'</a>':'—')+'</td><td>'+(p.phone?'<a href="tel:'+esc(p.phone)+'">'+esc(p.phone)+'</a>':'—')+'</td><td>'+(esc(p.breed)||esc(p.timeline)||'—')+'</td><td>'+ago(p.ts)+'</td></tr>';
+    }).join(''):'<tr><td colspan="5"><div class="empty">No partial inquiries yet. They’ll appear here the moment someone starts the application.</div></td></tr>';
+
+    /* applications */
+    var il=d.inquiriesList||[];
+    el('apps-body').innerHTML=il.length?il.map(function(a){
+      return '<tr><td><b>'+(esc(a.name)||'—')+'</b></td><td>'+(a.email?'<a href="mailto:'+esc(a.email)+'">'+esc(a.email)+'</a>':'—')+'</td><td>'+(esc(a.phone)||'—')+'</td><td>'+ago(a.ts)+'</td></tr>';
+    }).join(''):'<tr><td colspan="4"><div class="empty">No applications yet.</div></td></tr>';
+
+    /* pages + refs */
+    function list(arr,unit){return arr&&arr.length?arr.map(function(x){return '<div class="mini"><span>'+esc(x.k)+'</span><b>'+n(x.v)+'</b></div>';}).join(''):'<div class="empty">—</div>';}
+    el('pages').innerHTML=list(d.topPages);
+    el('refs').innerHTML=(d.topReferrers&&d.topReferrers.length)?list(d.topReferrers):'<div class="mini"><span>Direct / unknown</span><b>—</b></div>';
+
+    el('updnote').textContent='Data updates live. Last refreshed '+new Date().toLocaleTimeString()+'. Visit counts are approximate; partial inquiries and applications are exact.';
+  }
+
+  function load(){
+    setLive(true,'updating…');
+    fetch(FN,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({action:'stats',secret:SECRET})})
+      .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+      .then(function(d){render(d);lastOK=Date.now();setLive(true,'live · '+new Date().toLocaleTimeString());})
+      .catch(function(e){setLive(false,'reconnecting… ('+(e.message||'error')+')');});
+  }
+  function start(){load();if(timer)clearInterval(timer);timer=setInterval(load,REFRESH);
+    document.addEventListener('visibilitychange',function(){if(!document.hidden)load();});
+    el('refreshBtn').addEventListener('click',load);}
+
+  function sha(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Lead Command Center · ERBS';start();}
+  function tryUnlock(){var v=(el('pw').value||'').trim().toUpperCase();sha(v).then(function(h){if(h===OK){try{sessionStorage.setItem('erbs_cc','1');}catch(e){}reveal();}else{el('gerr').textContent='Incorrect code.';el('pw').select();}});}
+  el('unlock').addEventListener('click',tryUnlock);
+  el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('erbs_cc')==='1')reveal();else el('pw').focus();}catch(e){el('pw').focus();}
+})();
+</script>
+</body>
+</html>
