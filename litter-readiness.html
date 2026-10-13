@@ -76,8 +76,10 @@
   .sec-h h3{font-size:21px}
   .sec-q{color:var(--muted);font-size:13.5px;margin:4px 0 14px;padding-left:42px}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-bottom:14px}
-  .lbl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:14px 0 7px}
+  .lbl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:16px 0 4px}
   .lbl:first-child{margin-top:0}
+  .sublbl{font-size:12.5px;line-height:1.5;color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none;margin:0 0 8px;max-width:62ch}
+  .sublbl.intro{background:var(--gold-soft);border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin:0 0 14px;color:var(--mid);font-size:13px}
   /* level / decision pills */
   .pills{display:flex;gap:8px;flex-wrap:wrap}
   .pill{border:1px solid var(--line2);background:var(--bg2);color:var(--mid);border-radius:30px;padding:8px 15px;font-size:12.5px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:.18s;display:inline-flex;align-items:center;gap:7px}
@@ -147,6 +149,7 @@
     details.dl{display:block}details.dl[open]>*{display:block}
     .card,.ctx,.map,.framecard{border-color:#ccc !important;background:#fff !important;box-shadow:none}
     .hero h1,.sec-h h3,.map h3,.grp-h{color:#1a150a}
+    .lbl{color:#7a5f1e !important}.sublbl{color:#555 !important}.sublbl.intro{background:#f7f1df !important}
     .pill,.tick{color:#333 !important}
     textarea.f,input.f{border-color:#bbb !important;background:#fff !important;color:#111 !important}
     .sec-h .n{color:#1a150a;background:#f3ead0;border-color:#caa94e}
@@ -249,7 +252,11 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return
 /* ---------- content ---------- */
 var AREAS=[
  {id:'female',n:'1',title:'The female',q:'Is she ready, biologically and medically? · Stage of life · condition &amp; nutrition · history · health review with my vet',
-  reflect:[['assume','What am I still assuming?'],['ifwrong','If that assumption is wrong, what happens?']],
+  ex:{verified:'e.g. Vet health review done 2 Mar, all clear. Body condition 4/5. On the right food for her stage.',
+      sched:'e.g. Progesterone testing booked 14 Mar. Brucella test — not done yet.',
+      action:'e.g. Call the vet Monday to book her pre-breeding bloodwork.'},
+  reflect:[['assume','What am I still assuming about her?','Something you are treating as true without having actually checked it lately.','e.g. I assume her last heat was normal, but I never tracked it.'],
+           ['ifwrong','If that turns out wrong, what does it cost me?','The real consequence if that assumption is false.','e.g. If her cycle is off, we miss the window and lose the whole breeding.']],
   items:[
    'Stage of life. Her age noted. If she is over 6 and this is her first litter, the breeding is planned with my vet from the start.',
    'Condition. Body condition scored by hand at 4 to 5 out of 9 (a show female has had weeks to reset).',
@@ -259,7 +266,10 @@ var AREAS=[
    'Health review. Parasite plan built with my vet for this female, my region and this season.',
    'Health review. Bloodwork, medical history and any current treatment reviewed with my vet.']},
  {id:'male',n:'2',title:'The male and the pairing',q:'One area, three questions · Is he ready now? · Is this the right pairing? · Can we carry it out?',
-  reflect:[['who','For each answer about him: who told me, and when was it true?']],
+  ex:{verified:'e.g. His semen evaluation done 10 Mar, good count and motility. DNA panels compared — green.',
+      sched:'e.g. Brucella for both dogs booked 20 Mar. Inseminator — still need to confirm.',
+      action:'e.g. Email the stud owner for his most recent semen results.'},
+  reflect:[['who','How do I actually know he is ready?','For the sire: who gave you each fact — the stud owner, a vet? — and how recent is it? Old or secondhand info is a risk.','e.g. The stud owner says he is fertile, but his last semen test was over a year ago.']],
   groups:[
    {h:'Question 1 · Is he ready now?',items:[
      'Breeding soundness exam with semen evaluation, 60 to 30 days before the mating (repeated if the last is over 6 months old), read by a vet.',
@@ -276,13 +286,19 @@ var AREAS=[
      'Semen type chosen; if chilled or frozen, a trained inseminator agreed.',
      'A check of the semen on arrival or after thawing arranged.']}]},
  {id:'toolkit',n:'3',title:'The toolkit',q:'What must exist before her heat · Her records · his semen plan · the room',
-  reflect:[['missing','If her heat started tomorrow, what would be missing?']],
+  ex:{verified:'e.g. Progesterone log, thermometer and calendar ready. Her normal temperature recorded.',
+      sched:'e.g. Chilled-semen shipping box ordered, arrives 18 Mar. Whelping room — not set up yet.',
+      action:'e.g. Write out the full semen plan: type, source, shipping, who inseminates.'},
+  reflect:[['missing','If her heat started tomorrow, what would be missing?','Be honest — what would not be ready in time?','e.g. I do not have the shipping box yet and have not confirmed who inseminates.']],
   items:[
    'Her records: progesterone log, calendar, previous cycles (fast or slow riser), thermometer and her normal temperature.',
    'His side: a written semen plan (type, source, shipping, who inseminates), confirmed with the people involved.',
    'For a natural mating: the room ready (non-slip floor, cool, calm, one handler per dog, vet’s number posted).']},
  {id:'vet',n:'4',title:'The vet',q:'An agreed plan, not just access · Who tests her, when, on which machine · who inseminates',
-  reflect:[],
+  ex:{verified:'e.g. Vet agreed to test on schedule including weekends, on the same machine. Inseminator confirmed.',
+      sched:'e.g. Pre-breeding checks on the calendar for 12 Mar. Collection with his vet — not arranged yet.',
+      action:'e.g. Confirm who inseminates once ovulation is confirmed.'},
+  reflect:[['agree','Is this actually agreed, or just assumed?','Have you confirmed it with the vet by name and date — or are you hoping they will be available?','e.g. I assume my vet does progesterone on weekends, but I have not confirmed it for this cycle.']],
   items:[
    'Who tests her this cycle, on schedule, including weekends, on the same machine: agreed.',
    'Who inseminates, and that they are available once ovulation is confirmed: agreed.',
@@ -290,13 +306,14 @@ var AREAS=[
    'His collection coordinated with his own vet, if semen travels.']},
  {id:'planb',n:'5',title:'Plan B',q:'Is the decision already made? · What I’ll do if something goes wrong, decided now',
   reflect:[],planb:true,
+  intro:'For each thing that can go wrong, write down now what you will do — before her heat, while you can think clearly. Decide, then mark it. That is what turns a panic into a plan.',
   items:[
-   'Her heat comes early, late or barely shows.',
-   'A screen comes back positive (cancel, confirm, retest).',
-   'The natural mating doesn’t work (stop, never force; AI discussed with my vet).',
-   'His evaluation isn’t good enough, or the semen fails its arrival check.',
-   'She isn’t in condition when the heat arrives (skip, decided in advance).',
-   'My calendar, space and help for the pregnancy, the whelping and the weeks of puppies.']}
+   'If her heat comes early, late, or barely shows — what do I do?',
+   'If a health screen comes back positive — cancel, confirm, or retest?',
+   'If the natural mating does not work — what then? (Never force it; discuss AI with my vet.)',
+   'If his semen evaluation is poor, or the shipped semen fails its arrival check — what is my backup?',
+   'If she is not in condition when the heat arrives — do I skip this cycle?',
+   'Am I ready for the pregnancy, the whelping, and the first weeks of puppies — the time, space and help it takes?']}
 ];
 var LEVELS=[['a','Assumed','A vulnerability'],['v','Verified','Checked, incomplete'],['p','Planned','Checked — and I know what happens if it isn’t right']];
 var DECS=[['proceed','Proceed'],['adjust','Adjust'],['postpone','Postpone'],['investigate','Investigate']];
@@ -332,7 +349,7 @@ function itemRow(aid,gi,ii,text,planb){
   });
   row.appendChild(ticks);
   if(planb){
-    var ta=el('textarea','f');ta.placeholder='My decision, made in advance';ta.style.marginTop='8px';ta.value=a.items['note-'+key]||'';
+    var ta=el('textarea','f');ta.placeholder='If this happens, I will… (decide it now, in writing)';ta.style.marginTop='8px';ta.value=a.items['note-'+key]||'';
     ta.addEventListener('input',function(){a.items['note-'+key]=ta.value;save();});
     row.appendChild(ta);
   }
@@ -344,24 +361,26 @@ function areaCard(area){
   wrap.appendChild(el('div','sec-h','<span class="n">'+area.n+'</span><h3>'+esc(area.title)+'</h3>'));
   wrap.appendChild(el('div','sec-q',area.q));
   var card=el('div','card');
+  var ex=area.ex||{};
+  if(area.intro)card.appendChild(el('div','sublbl intro',esc(area.intro)));
   if(!area.planb){
-    card.appendChild(el('div','lbl','Verified — done and reviewed'));
-    card.appendChild(ta(a,'verified','What is confirmed and satisfactory'));
-    card.appendChild(el('div','lbl','Scheduled (with date) or still missing'));
-    card.appendChild(ta(a,'sched','e.g. progesterone booked 14 Mar · brucella — not yet'));
-    card.appendChild(el('div','lbl','My next action'));
-    card.appendChild(ta(a,'action','The one next step'));
+    addLbl(card,'What is already DONE?','Tests, vet visits or steps you have finished — and the result looked good.');
+    card.appendChild(ta(a,'verified',ex.verified||'What is confirmed and satisfactory'));
+    addLbl(card,'What is BOOKED, or still MISSING?','What is scheduled (write the date) and what has not been handled yet.');
+    card.appendChild(ta(a,'sched',ex.sched||'e.g. progesterone booked 14 Mar · brucella — not yet'));
+    addLbl(card,'My ONE next step','The single most important thing to do next for this part.');
+    card.appendChild(ta(a,'action',ex.action||'The one next step'));
   }
   /* reflections */
   (area.reflect||[]).forEach(function(r){
-    card.appendChild(el('div','lbl',r[1]));
-    card.appendChild(taRefl(a,r[0]));
+    addLbl(card,r[1],r[2]);
+    card.appendChild(taRefl(a,r[0],r[3]));
   });
   /* level */
-  card.appendChild(el('div','lbl','My level'));
+  addLbl(card,'How ready is this area, honestly?','Pick one. This is your gut read, not a grade.');
   card.appendChild(pills(a.level,LEVELS,'lv-x',function(v){a.level=v;save();renderMap();}));
   /* decision */
-  card.appendChild(el('div','lbl','Decision'));
+  addLbl(card,'So what am I doing about it?','Given the above, your call for this area right now.');
   card.appendChild(pills(a.decision,DECS,'dc',function(v){a.decision=v;save();renderMap();}));
   /* detailed checklist */
   var det=el('details','dl');var sum=el('summary',null,'Detailed checklist (optional)');det.appendChild(sum);
@@ -378,8 +397,9 @@ function areaCard(area){
   wrap.appendChild(card);
   return wrap;
 }
+function addLbl(card,label,sub){card.appendChild(el('div','lbl',esc(label)));if(sub)card.appendChild(el('div','sublbl',esc(sub)));}
 function ta(obj,key,ph){var t=el('textarea','f');t.placeholder=ph||'';t.value=obj[key]||'';t.addEventListener('input',function(){obj[key]=t.value;save();});return t;}
-function taRefl(a,key){var t=el('textarea','f');t.value=(a.refl[key]||'');t.addEventListener('input',function(){a.refl[key]=t.value;save();});return t;}
+function taRefl(a,key,ph){var t=el('textarea','f');t.placeholder=ph||'';t.value=(a.refl[key]||'');t.addEventListener('input',function(){a.refl[key]=t.value;save();});return t;}
 
 /* ---------- context + startdate ---------- */
 function bindCtx(){
