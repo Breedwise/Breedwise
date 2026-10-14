@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Breeder Build Hub · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0e13;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;--ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--faint:#5a6675;--gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--green-s:rgba(87,185,138,.14);--amber:#e0b15e;--amber-s:rgba(224,177,94,.14);--blue:#7fb0dd;--blue-s:rgba(127,176,221,.14);--red:#ff8178;--disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif}
+  *{box-sizing:border-box;margin:0}
+  body{background:radial-gradient(1000px 560px at 80% -10%,rgba(201,168,98,.07),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.5}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:90}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  #gate .mk{font-family:var(--disp);font-size:13px;letter-spacing:.22em;font-weight:700;color:var(--gold);margin-bottom:16px}
+  #gate h1{font-family:var(--disp);font-size:22px;font-weight:600;margin-bottom:18px}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#17130a;font-weight:700;font-size:14px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:9px}
+  #app{display:none}
+  .bar{position:sticky;top:0;z-index:30;background:rgba(11,14,19,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .bar .in{max-width:1060px;margin:0 auto;display:flex;align-items:center;gap:13px;padding:13px 20px;flex-wrap:wrap}
+  .brand{font-size:12px;letter-spacing:.2em;font-weight:700;color:var(--mid)}.brand b{color:var(--gold)}
+  .sp{flex:1}
+  .search{background:var(--panel);border:1px solid var(--line2);color:var(--ink);border-radius:9px;padding:9px 13px;font-size:13.5px;font-family:var(--sans);min-width:200px}
+  .search:focus{outline:none;border-color:var(--gold)}
+  .tbtn{background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:9px 13px;font-size:12.5px;cursor:pointer;font-family:var(--sans)}
+  .tbtn:hover{border-color:var(--gold);color:var(--ink)}
+  .wrap{max-width:1060px;margin:0 auto;padding:22px 20px 80px}
+  .empty{text-align:center;color:var(--muted);padding:60px 20px;font-size:14px}
+  /* directory */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .ccard{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:15px;padding:18px 19px;cursor:pointer;transition:.15s;position:relative}
+  .ccard:hover{border-color:var(--gold);transform:translateY(-2px)}
+  .ccard .kn{font-family:var(--disp);font-size:18px;font-weight:600;color:var(--ink);line-height:1.2}
+  .ccard .dom{font-size:12.5px;color:var(--gold-soft);margin-top:3px;word-break:break-all}
+  .ccard .sub{font-size:12px;color:var(--muted);margin-top:8px}
+  .chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+  .chip{font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:13px;background:var(--panel2);border:1px solid var(--line2);color:var(--mid)}
+  .chip.open{background:var(--amber-s);border-color:var(--amber);color:var(--amber)}
+  .chip.assets{color:var(--gold-soft)}
+  /* detail */
+  .back{background:none;border:0;color:var(--gold-soft);font-size:13.5px;cursor:pointer;font-family:var(--sans);padding:0;margin-bottom:14px}
+  .dhead{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:16px}
+  .dhead .kn{font-family:var(--disp);font-size:26px;font-weight:600}
+  .dhead .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .pill{font-size:13px;text-decoration:none;padding:9px 14px;border-radius:10px;border:1px solid var(--line2);color:var(--mid);background:var(--panel2);display:inline-flex;align-items:center;gap:7px}
+  .pill:hover{border-color:var(--gold);color:var(--ink)}
+  .pill.gold{background:rgba(201,168,98,.14);border-color:var(--gold);color:var(--gold-soft);font-weight:600}
+  .sect{margin-top:22px}
+  .sect h3{font-family:var(--disp);font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;margin-bottom:10px}
+  .block{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:12px}
+  .block .bh{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+  .when{font-size:12px;color:var(--faint)}
+  .status{display:flex;gap:5px}
+  .sbtn{border:1px solid var(--line2);background:var(--panel2);color:var(--muted);border-radius:15px;padding:4px 11px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans)}
+  .sbtn.on.new{background:var(--amber-s);border-color:var(--amber);color:var(--amber)}
+  .sbtn.on.doing{background:var(--blue-s);border-color:var(--blue);color:var(--blue)}
+  .sbtn.on.done{background:var(--green-s);border-color:var(--green);color:var(--green)}
+  .chg{padding:11px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+  .chg:last-child{border-bottom:0}
+  .ct{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+  .num{font-family:var(--disp);font-size:13px;color:var(--gold);width:20px}
+  .badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:13px;background:rgba(201,168,98,.12);border:1px solid rgba(201,168,98,.3);color:var(--gold-soft)}
+  .badge.type{background:var(--panel2);border-color:var(--line2);color:var(--mid)}
+  .detail{font-size:14px;color:var(--ink);white-space:pre-wrap;line-height:1.5;margin-left:28px}
+  .imgs{display:flex;flex-wrap:wrap;gap:8px;margin:9px 0 0 28px}
+  .imgs a{width:84px;height:84px;border-radius:9px;overflow:hidden;border:1px solid var(--line2);background:var(--panel2);display:block}
+  .imgs img{width:100%;height:100%;object-fit:cover}
+  .imgs .ph{display:flex;align-items:center;justify-content:center;color:var(--faint);font-size:10px;height:100%}
+  .kv{display:grid;grid-template-columns:130px 1fr;gap:4px 12px;font-size:13px;margin-top:6px}
+  .kv .k{color:var(--muted)}.kv .v{color:var(--mid);white-space:pre-wrap}
+  .afiles{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+  .afiles a{width:72px;height:72px;border-radius:8px;overflow:hidden;border:1px solid var(--line2);display:block}
+  .afiles img{width:100%;height:100%;object-fit:cover}
+  #lb{position:fixed;inset:0;background:rgba(6,8,11,.95);z-index:120;display:none;align-items:center;justify-content:center;padding:28px;cursor:zoom-out}
+  #lb.on{display:flex}#lb img{max-width:92vw;max-height:90vh;border-radius:12px}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="mk">BREEDWISE · WEBSITE BUILD</div>
+    <h1>Breeder Build Hub</h1>
+    <input id="pw" type="password" placeholder="Team access code" autocomplete="off">
+    <button id="unlock">Open →</button>
+    <div class="err" id="gerr"></div>
+  </div></div>
+
+  <div id="app">
+    <div class="bar"><div class="in">
+      <span class="brand"><b>BREEDWISE</b> · BUILD HUB</span>
+      <span class="sp"></span>
+      <input class="search" id="search" placeholder="Search breeders…">
+      <button class="tbtn" id="refresh">Refresh</button>
+    </div></div>
+    <div class="wrap"><div id="view"><div class="empty">Loading…</div></div></div>
+  </div>
+  <div id="lb"><img src="" alt=""></div>
+
+<script>
+var SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+var FN=SB_URL+'/functions/v1/asset-upload';
+var SECRET='bw_assets_7Hq2';
+var OK='368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875'; /* BWTEAM2026 */
+function $(s,r){return (r||document).querySelector(s);}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
+var ROWS=[],LINKS={},Q='',CUR=null;
+var STLABEL={new:'New',doing:'In progress',done:'Done'};
+var TYPEDEF={text:'Text',photo:'Photo',info:'New info',remove:'Remove',other:'Other'};
+/* per-breeder lead dashboards we've built (match on site/email/kennel substring) */
+var DASH=[{m:'erbs',label:'Lead dashboard',url:'erbs-command.html'}];
+var FIELDLABELS={breeds:'Breeds',about:'About',different:'What sets them apart',tagline:'Tagline',domain:'Preferred domain',website:'Current site',social:'Social',location:'Location',hours:'Hours',colorsdesc:'Colors',inspiration:'Inspiration',notes:'Notes'};
+
+function fmtDate(s){try{var d=new Date(s);return d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});}catch(e){return '';}}
+function domain(s){if(!s)return '';return String(s).replace(/^https?:\/\//,'').replace(/^www\./,'').replace(/\/$/,'');}
+function siteUrl(s){if(!s)return '';return /^https?:/.test(s)?s:('https://'+s);}
+function dashFor(g){var hay=((g.site||'')+' '+(g.email||'')+' '+(g.kennel||'')).toLowerCase();for(var i=0;i<DASH.length;i++){if(hay.indexOf(DASH[i].m)>-1)return DASH[i];}return null;}
+
+async function fetchRows(){
+  var r=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'clients',secret:SECRET})});
+  var d=await r.json();
+  if(!d||!d.ok){$('#view').innerHTML='<div class="empty">Could not load ('+esc((d&&d.error)||'unknown')+').<br>If this is the first run, redeploy the asset-upload function to enable the hub.</div>';return;}
+  ROWS=d.rows||[];CUR=null;renderDir();
+}
+async function loadLinks(g){
+  var paths=[];g.revisions.forEach(function(rv){(rv.files||[]).forEach(function(f){if(f.path&&!LINKS[f.path])paths.push(f.path);});});
+  g.assets.forEach(function(a){(a.files||[]).forEach(function(f){if(f.path&&!LINKS[f.path])paths.push(f.path);});});
+  paths=paths.slice(0,80);if(!paths.length)return;
+  try{var r=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'links',secret:SECRET,paths:paths})});var d=await r.json();if(d&&d.ok)(d.links||[]).forEach(function(l){LINKS[l.path]=l.url;});}catch(e){}
+}
+
+function match(g){
+  if(!Q)return true;var q=Q.toLowerCase();
+  return ((g.kennel||'')+' '+(g.name||'')+' '+(g.email||'')+' '+(g.site||'')).toLowerCase().indexOf(q)>-1;
+}
+function renderDir(){
+  CUR=null;
+  var v=$('#view');v.innerHTML='';
+  var rows=ROWS.filter(match);
+  if(!rows.length){v.innerHTML='<div class="empty">'+(ROWS.length?'No breeders match your search.':'No breeder build data yet. Asset uploads and revision requests will appear here.')+'</div>';return;}
+  var grid=el('div','grid');
+  rows.forEach(function(g){
+    var c=el('div','ccard');
+    c.appendChild(el('div','kn',esc(g.kennel||g.name||g.email||'Unnamed')));
+    if(g.site)c.appendChild(el('div','dom',esc(domain(g.site))));
+    var sub=[];if(g.name&&g.kennel)sub.push(esc(g.name));if(g.email)sub.push(esc(g.email));
+    c.appendChild(el('div','sub',sub.join(' · ')+'<br>Last activity '+fmtDate(g.lastActivity)));
+    var chips=el('div','chips');
+    if(g.assetCount)chips.appendChild(el('span','chip assets',g.assetCount+' asset set'+(g.assetCount===1?'':'s')));
+    if(g.revisionCount)chips.appendChild(el('span','chip'+(g.openRevisions?' open':''),g.revisionCount+' revision'+(g.revisionCount===1?'':'s')+(g.openRevisions?(' · '+g.openRevisions+' open'):'')));
+    if(dashFor(g))chips.appendChild(el('span','chip','Lead dashboard'));
+    c.appendChild(chips);
+    c.addEventListener('click',function(){openDetail(g);});
+    grid.appendChild(c);
+  });
+  v.appendChild(grid);
+}
+
+async function openDetail(g){
+  CUR=g;var v=$('#view');v.innerHTML='<div class="empty">Loading photos…</div>';
+  await loadLinks(g);
+  v.innerHTML='';
+  var back=el('button','back','← All breeders');back.addEventListener('click',renderDir);v.appendChild(back);
+  // header
+  var h=el('div','dhead');
+  h.appendChild(el('div','kn',esc(g.kennel||g.name||g.email||'Unnamed')));
+  var row=el('div','row');
+  if(g.site)row.appendChild(linkPill(siteUrl(g.site),'↗ Open live site',true));
+  if(g.email)row.appendChild(linkPill('mailto:'+g.email,'✉ '+esc(g.email),false));
+  if(g.phone)row.appendChild(linkPill('tel:'+g.phone,'☎ '+esc(g.phone),false));
+  var dash=dashFor(g);if(dash)row.appendChild(linkPill(dash.url,'📊 '+dash.label,false));
+  h.appendChild(row);v.appendChild(h);
+
+  // revisions
+  if(g.revisions.length){
+    var s=el('div','sect');s.appendChild(el('h3',null,'Revision requests'));
+    g.revisions.forEach(function(rv){s.appendChild(revBlock(g,rv));});
+    v.appendChild(s);
+  }
+  // assets
+  if(g.assets.length){
+    var sa=el('div','sect');sa.appendChild(el('h3',null,'Build assets &amp; intake'));
+    g.assets.forEach(function(a){sa.appendChild(assetBlock(a));});
+    v.appendChild(sa);
+  }
+  if(!g.revisions.length&&!g.assets.length)v.appendChild(el('div','empty','No submissions recorded for this breeder yet.'));
+  window.scrollTo(0,0);
+}
+function linkPill(href,label,gold){var a=el('a','pill'+(gold?' gold':''),label);a.href=href;if(/^https?:/.test(href)||href.indexOf('.html')>-1){a.target='_blank';a.rel='noopener';}return a;}
+
+function revBlock(g,rv){
+  var b=el('div','block');
+  var bh=el('div','bh');
+  bh.appendChild(el('div','when',fmtDate(rv.created_at)+(rv.revisions&&rv.revisions.length?(' · '+rv.revisions.length+' change'+(rv.revisions.length===1?'':'s')):'')));
+  var st=el('div','status');
+  ['new','doing','done'].forEach(function(s){var sb=el('button','sbtn '+s+(rv.status===s?' on':''),STLABEL[s]);sb.addEventListener('click',function(){setStatus(g,rv,s);});st.appendChild(sb);});
+  bh.appendChild(st);b.appendChild(bh);
+  (rv.revisions||[]).forEach(function(c,i){
+    var box=el('div','chg');
+    var t=el('div','ct');
+    t.appendChild(el('span','num',(c.n||i+1)));
+    t.appendChild(el('span','badge',esc(c.page||'—')));
+    if(c.typeLabel||c.type)t.appendChild(el('span','badge type',esc(c.typeLabel||TYPEDEF[c.type]||c.type)));
+    box.appendChild(t);
+    box.appendChild(el('div','detail',esc(c.detail||'')));
+    var field=c.field||('rev-'+(c.n||i+1));
+    var imgs=(rv.files||[]).filter(function(f){return f.field===field;});
+    if(imgs.length)box.appendChild(imgRow(imgs,'imgs'));
+    b.appendChild(box);
+  });
+  return b;
+}
+function assetBlock(a){
+  var b=el('div','block');
+  b.appendChild(el('div','bh','<div class="when">'+fmtDate(a.created_at)+' · '+(a.fileCount||0)+' file'+((a.fileCount||0)===1?'':'s')+(a.folder?(' · '+esc(a.folder)):'')+'</div>'));
+  var f=a.fields||{};
+  var kv=el('div','kv');var any=false;
+  Object.keys(FIELDLABELS).forEach(function(k){if(f[k]&&String(f[k]).trim()){any=true;kv.appendChild(el('div','k',FIELDLABELS[k]));kv.appendChild(el('div','v',esc(String(f[k]).slice(0,600))));}});
+  if(any)b.appendChild(kv);
+  if(a.files&&a.files.length)b.appendChild(imgRow(a.files.filter(function(x){return /image|logo|photo/i.test(x.field||'')||/\.(jpe?g|png|webp|gif|heic)$/i.test(x.name||'');}),'afiles'));
+  return b;
+}
+function imgRow(files,cls){
+  var ig=el('div',cls);
+  files.forEach(function(f){
+    var url=LINKS[f.path];var a=el('a');a.href=url||'#';a.target='_blank';a.rel='noopener';
+    if(url){var im=el('img');im.src=url;im.alt=f.name||'';a.appendChild(im);a.addEventListener('click',function(e){e.preventDefault();openLb(url);});}
+    else a.appendChild(el('div','ph','file'));
+    ig.appendChild(a);
+  });
+  return ig;
+}
+async function setStatus(g,rv,s){
+  var prev=rv.status;rv.status=s;if(CUR===g)openDetail(g);
+  try{var res=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'revstatus',secret:SECRET,id:rv.id,status:s})});var d=await res.json();if(!d||!d.ok){rv.status=prev;if(CUR===g)openDetail(g);alert('Could not update status.');}}catch(e){rv.status=prev;if(CUR===g)openDetail(g);}
+}
+function openLb(url){$('#lb img').src=url;$('#lb').classList.add('on');}
+$('#lb').addEventListener('click',function(){$('#lb').classList.remove('on');$('#lb img').src='';});
+$('#refresh').addEventListener('click',fetchRows);
+$('#search').addEventListener('input',function(){Q=$('#search').value.trim();if(!CUR)renderDir();});
+
+/* gate */
+function sha(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+function reveal(){var g=$('#gate');if(g)g.remove();$('#app').style.display='block';fetchRows();}
+function tryUnlock(){var v=($('#pw').value||'').trim().toUpperCase();sha(v).then(function(h){if(h===OK){try{sessionStorage.setItem('hub_ok','1');}catch(e){}reveal();}else{$('#gerr').textContent='Incorrect code.';$('#pw').select();}});}
+$('#unlock').addEventListener('click',tryUnlock);
+$('#pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+try{if(sessionStorage.getItem('hub_ok')==='1')reveal();else $('#pw').focus();}catch(e){$('#pw').focus();}
+</script>
+</body>
+</html>

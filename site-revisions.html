@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Request Website Changes · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0e13;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;--ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--faint:#5a6675;--gold:#c9a862;--gold-soft:#e4cf9a;--green:#57b98a;--green-s:rgba(87,185,138,.13);--amber:#e0b15e;--amber-s:rgba(224,177,94,.13);--red:#ff8178;--red-s:rgba(255,129,120,.1);--disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif}
+  *{box-sizing:border-box;margin:0}
+  body{background:radial-gradient(1000px 560px at 50% -10%,rgba(201,168,98,.08),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.55}
+  .bar{border-bottom:1px solid var(--line);padding:13px 20px;text-align:center}
+  .brand{font-size:13px;letter-spacing:.22em;font-weight:700;color:var(--mid)}.brand b{color:var(--gold)}
+  .brand .w{color:var(--muted);font-weight:400;letter-spacing:.03em;font-size:12px;display:block;margin-top:2px}
+  .wrap{max-width:720px;margin:0 auto;padding:34px 20px 70px}
+  .eyebrow{display:inline-block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;background:rgba(201,168,98,.1);border:1px solid rgba(201,168,98,.28);border-radius:20px;padding:5px 13px}
+  h1{font-family:var(--disp);font-size:34px;line-height:1.1;margin:14px 0 10px;font-weight:600;letter-spacing:-.4px}
+  @media(max-width:600px){h1{font-size:27px}}
+  h1 .u{color:var(--gold-soft)}
+  .lead{color:var(--mid);font-size:16px;max-width:580px;font-weight:300}
+  .sec{margin-top:26px}
+  .sec .st{font-family:var(--disp);font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;margin-bottom:4px}
+  .sec .sd{font-size:13px;color:var(--muted);margin-bottom:12px}
+  .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:20px}
+  .entry{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line2);border-radius:14px;padding:17px 18px;margin-bottom:14px;position:relative}
+  .entry .ehead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .entry .en{font-family:var(--disp);font-size:16px;font-weight:600;color:var(--gold-soft)}
+  .entry .rm{background:none;border:0;color:var(--muted);font-size:12.5px;cursor:pointer;font-family:var(--sans)}
+  .entry .rm:hover{color:var(--red)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:520px){.row2{grid-template-columns:1fr}}
+  .fld{margin-bottom:12px}
+  label{font-size:11.5px;color:var(--muted);display:block;margin-bottom:5px;letter-spacing:.02em}
+  label .req{color:var(--gold)}
+  input,textarea,select{width:100%;padding:12px 13px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;color:var(--ink);font-size:15px;font-family:var(--sans)}
+  textarea{min-height:84px;resize:vertical;line-height:1.5}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gold)}
+  select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 55%,calc(100% - 13px) 55%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}
+  .hint{font-size:12px;color:var(--faint);margin-top:6px;line-height:1.45}
+  .fld.bad input,.fld.bad textarea,.fld.bad select{border-color:var(--red)}
+  .nudge{display:none;font-size:12.5px;color:var(--amber);background:var(--amber-s);border:1px solid rgba(224,177,94,.3);border-radius:9px;padding:9px 11px;margin-top:8px;line-height:1.45}
+  .nudge.on{display:block}
+  .nudge b{color:var(--gold-soft)}
+  /* photo picker */
+  .drop{border:1.5px dashed var(--line2);border-radius:11px;padding:14px;text-align:center;cursor:pointer;color:var(--muted);font-size:13.5px;transition:.15s;background:var(--panel2)}
+  .drop:hover{border-color:var(--gold);color:var(--mid)}
+  .drop b{color:var(--gold-soft)}
+  .thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .thumb{position:relative;width:70px;height:70px;border-radius:9px;overflow:hidden;border:1px solid var(--line2);background:var(--panel2)}
+  .thumb img{width:100%;height:100%;object-fit:cover}
+  .thumb .del{position:absolute;top:2px;right:2px;width:19px;height:19px;border-radius:50%;background:rgba(10,12,16,.82);color:#fff;border:0;font-size:12px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .thumb .nm{position:absolute;bottom:0;left:0;right:0;font-size:8.5px;background:rgba(10,12,16,.72);color:var(--mid);padding:2px 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .addbtn{background:rgba(201,168,98,.08);border:1px dashed rgba(201,168,98,.4);color:var(--gold-soft);border-radius:11px;padding:12px;width:100%;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--sans)}
+  .addbtn:hover{background:rgba(201,168,98,.14)}
+  .cta{margin-top:24px;width:100%;padding:16px;background:linear-gradient(120deg,var(--gold),#b8954f);border:0;border-radius:12px;color:#17130a;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--sans);letter-spacing:.01em}
+  .cta:disabled{opacity:.6;cursor:default}
+  .msg{margin-top:12px;font-size:13.5px;min-height:18px;text-align:center}
+  .msg.err{color:var(--red)}.msg.ok{color:var(--green)}
+  .trust{margin-top:14px;font-size:12px;color:var(--faint);text-align:center}
+  footer{border-top:1px solid var(--line);padding:20px;text-align:center;color:var(--faint);font-size:12px}
+  .draft{font-size:12px;color:var(--green);text-align:right;min-height:16px;margin-top:-6px}
+  .done{text-align:center;padding:40px 10px}
+  .done .ic{width:58px;height:58px;border-radius:50%;background:var(--green-s);border:1px solid var(--green);color:var(--green);display:inline-flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:14px}
+  .hp{position:absolute;left:-9999px}
+</style>
+</head>
+<body>
+  <div class="bar"><div class="brand"><b>BREEDWISE</b> · WEBSITE BUILD<span class="w">Request changes to your live site</span></div></div>
+  <div class="wrap" id="app">
+    <span class="eyebrow">Website Revisions</span>
+    <h1>Request changes to <span class="u">your website</span></h1>
+    <p class="lead">Your site is live — this is how you send updates. Add each change you'd like, attach photos where it helps, and we'll make the edits. No need to explain the whole site; just tell us what to change. The clearer each request, the faster it ships.</p>
+
+    <div class="sec">
+      <div class="st">Your details</div>
+      <div class="sd">So we know whose site to update and how to reach you.</div>
+      <div class="card">
+        <div class="row2">
+          <div class="fld"><label>Kennel / program name <span class="req">*</span></label><input id="kennel" placeholder="e.g. Contented Puppies Paradise"></div>
+          <div class="fld"><label>Your website address</label><input id="site" placeholder="e.g. contentedpuppies.com"></div>
+        </div>
+        <div class="row2">
+          <div class="fld"><label>Email <span class="req">*</span></label><input id="email" type="email" placeholder="you@email.com"></div>
+          <div class="fld"><label>Your name</label><input id="name" placeholder="First and last"></div>
+        </div>
+        <div class="fld" style="margin-bottom:0"><label>Phone (optional)</label><input id="phone" placeholder="(000) 000-0000"></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="st">The changes you'd like</div>
+      <div class="sd">One box per change. Pick the page, say exactly what to do, and add photos if they help.</div>
+      <div id="entries"></div>
+      <button class="addbtn" id="add">+ Add another change</button>
+    </div>
+
+    <div class="sec">
+      <div class="st">Anything else?</div>
+      <div class="sd">Optional — deadlines, context, or something that doesn't fit above.</div>
+      <div class="card"><textarea id="notes" placeholder="e.g. Please try to have these done before our open house on the 20th."></textarea></div>
+    </div>
+
+    <input id="company" class="hp" tabindex="-1" autocomplete="off">
+    <button class="cta" id="submit">Send my changes</button>
+    <div class="msg" id="msg"></div>
+    <div class="draft" id="draft"></div>
+    <div class="trust">Your photos are private and used only to update your website.</div>
+  </div>
+  <footer>BreedWise · The Profitable Breeder — Website Build.</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+var SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+var FN=SB_URL+'/functions/v1/asset-upload';
+var sb=window.supabase.createClient(SB_URL,SB_KEY);
+var LS='bw-site-revisions-draft-v1';
+var emailRe=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+function el(id){return document.getElementById(id);}
+function ce(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
+
+var PAGES=['Home','Available Puppies','Our Breeds','How It Works / Process','About','Reviews / Testimonials','Contact','FAQ','Whole site / not sure','Other (type it in)'];
+var TYPES=[
+  ['text','Change some wording / text'],
+  ['photo','Add or replace a photo'],
+  ['info','Add new information'],
+  ['remove','Remove something'],
+  ['other','Something else']
+];
+var PH={
+  text:"Name the page and section, the current wording, and exactly what it should say instead.\nE.g. On the Home hero, change “Welcome” to “Family-Raised Goldendoodles in Ohio.”",
+  photo:"Say where these photos should go, and whether they replace existing ones.\nE.g. Replace the 3 photos in the Available Puppies gallery with the ones attached.",
+  info:"What should we add, and where should it appear?\nE.g. Add our new number (330) 555-1212 to the Contact page and the footer.",
+  remove:"What should we take off, and from which page?\nE.g. Remove the “Spring Litter” section from the Available Puppies page.",
+  other:"Describe the change in as much detail as you can — the more specific, the faster it ships."
+};
+
+/* ── one change entry ── */
+var ENTRIES=[];
+function makeEntry(seed){
+  seed=seed||{};
+  var E={files:[]};
+  var wrap=ce('div','entry');
+  var head=ce('div','ehead');
+  var title=ce('div','en','Change '+(ENTRIES.length+1));
+  var rm=ce('button','rm','Remove');
+  head.appendChild(title);head.appendChild(rm);wrap.appendChild(head);
+
+  // page
+  var fPage=ce('div','fld');
+  fPage.appendChild(ce('label',null,'Which page? <span class="req">*</span>'));
+  var sel=ce('select');PAGES.forEach(function(p){var o=ce('option',null,esc(p));o.value=p;sel.appendChild(o);});
+  if(seed.page&&PAGES.indexOf(seed.page)>-1)sel.value=seed.page;
+  fPage.appendChild(sel);
+  var otherPage=ce('input');otherPage.placeholder='Name the page';otherPage.style.marginTop='8px';otherPage.style.display='none';
+  if(seed.pageOther){otherPage.value=seed.pageOther;}
+  fPage.appendChild(otherPage);
+  wrap.appendChild(fPage);
+
+  // type
+  var fType=ce('div','fld');
+  fType.appendChild(ce('label',null,'What kind of change?'));
+  var tsel=ce('select');TYPES.forEach(function(t){var o=ce('option',null,esc(t[1]));o.value=t[0];tsel.appendChild(o);});
+  if(seed.type)tsel.value=seed.type;
+  fType.appendChild(tsel);
+  wrap.appendChild(fType);
+
+  // detail
+  var fDetail=ce('div','fld');
+  fDetail.appendChild(ce('label',null,'Describe the change <span class="req">*</span>'));
+  var det=ce('textarea');det.value=seed.detail||'';
+  fDetail.appendChild(det);
+  var nudge=ce('div','nudge');
+  fDetail.appendChild(nudge);
+  wrap.appendChild(fDetail);
+
+  // photos
+  var fPh=ce('div','fld');fPh.style.marginBottom='0';
+  fPh.appendChild(ce('label',null,'Photos for this change (optional)'));
+  var drop=ce('div','drop','<b>Tap to add photos</b> — or drag them here');
+  var inp=ce('input');inp.type='file';inp.accept='image/*';inp.multiple=true;inp.style.display='none';
+  var thumbs=ce('div','thumbs');
+  fPh.appendChild(drop);fPh.appendChild(inp);fPh.appendChild(thumbs);
+  wrap.appendChild(fPh);
+
+  function setPH(){det.placeholder=PH[tsel.value]||PH.other;}
+  setPH();
+  function renderThumbs(){
+    thumbs.innerHTML='';
+    E.files.forEach(function(f,i){
+      var t=ce('div','thumb');
+      var img=ce('img');img.alt=f.name;try{img.src=URL.createObjectURL(f);}catch(e){}
+      var del=ce('button','del','×');del.addEventListener('click',function(){E.files.splice(i,1);renderThumbs();saveDraft();});
+      t.appendChild(img);t.appendChild(del);t.appendChild(ce('div','nm',esc(f.name)));
+      thumbs.appendChild(t);
+    });
+  }
+  function addFiles(list){
+    for(var i=0;i<list.length;i++){var f=list[i];if(f&&/^image\//.test(f.type||'')&&E.files.length<20)E.files.push(f);}
+    renderThumbs();saveDraft();
+  }
+  drop.addEventListener('click',function(){inp.click();});
+  inp.addEventListener('change',function(){addFiles(inp.files);inp.value='';});
+  drop.addEventListener('dragover',function(e){e.preventDefault();drop.style.borderColor='var(--gold)';});
+  drop.addEventListener('dragleave',function(){drop.style.borderColor='';});
+  drop.addEventListener('drop',function(e){e.preventDefault();drop.style.borderColor='';if(e.dataTransfer&&e.dataTransfer.files)addFiles(e.dataTransfer.files);});
+
+  sel.addEventListener('change',function(){otherPage.style.display=(sel.value==='Other (type it in)')?'block':'none';clearBad(fPage);saveDraft();});
+  otherPage.style.display=(sel.value==='Other (type it in)')?'block':'none';
+  tsel.addEventListener('change',function(){setPH();saveDraft();});
+  det.addEventListener('input',function(){clearBad(fDetail);nudge.classList.remove('on');saveDraft();});
+  otherPage.addEventListener('input',saveDraft);
+  rm.addEventListener('click',function(){var i=ENTRIES.indexOf(E);if(i>-1)ENTRIES.splice(i,1);wrap.remove();renumber();saveDraft();});
+
+  E.el=wrap;E.title=title;
+  E.get=function(){
+    var page=sel.value==='Other (type it in)'?(otherPage.value.trim()||'Other'):sel.value;
+    return {page:page,pageOther:sel.value==='Other (type it in)'?otherPage.value.trim():'',pageSel:sel.value,type:tsel.value,detail:det.value.trim(),photos:E.files.length};
+  };
+  E.refs={fPage:fPage,fDetail:fDetail,det:det,sel:sel,otherPage:otherPage,tsel:tsel,nudge:nudge};
+  E.hasContent=function(){var g=E.get();return !!(g.detail||E.files.length||(g.pageSel==='Other (type it in)'&&g.pageOther));};
+  if(seed.files&&0){} // files are not restored from draft (browser cannot persist File objects)
+  renderThumbs();
+  ENTRIES.push(E);
+  el('entries').appendChild(wrap);
+  return E;
+}
+function renumber(){ENTRIES.forEach(function(e,i){e.title.textContent='Change '+(i+1);});}
+function clearBad(f){f.classList.remove('bad');}
+
+/* ── draft autosave (text only; photos can't be persisted) ── */
+var dts;
+function saveDraft(){
+  clearTimeout(dts);
+  dts=setTimeout(function(){
+    try{
+      var d={kennel:el('kennel').value,site:el('site').value,email:el('email').value,name:el('name').value,phone:el('phone').value,notes:el('notes').value,
+        entries:ENTRIES.map(function(e){var g=e.get();return {page:g.pageSel,pageOther:g.pageOther,type:g.type,detail:g.detail};})};
+      localStorage.setItem(LS,JSON.stringify(d));
+      el('draft').textContent='Draft saved';setTimeout(function(){el('draft').textContent='';},1200);
+    }catch(e){}
+  },400);
+}
+function loadDraft(){
+  var d=null;try{d=JSON.parse(localStorage.getItem(LS)||'null');}catch(e){}
+  if(d){
+    el('kennel').value=d.kennel||'';el('site').value=d.site||'';el('email').value=d.email||'';el('name').value=d.name||'';el('phone').value=d.phone||'';el('notes').value=d.notes||'';
+    (d.entries&&d.entries.length?d.entries:[{}]).forEach(function(s){makeEntry(s);});
+    if(d.entries&&d.entries.some(function(e){return e.detail;}))el('draft').textContent='We restored your saved draft — re-attach any photos.';
+  } else { makeEntry({}); }
+}
+['kennel','site','email','name','phone','notes'].forEach(function(id){el(id).addEventListener('input',saveDraft);});
+function clearDraft(){try{localStorage.removeItem(LS);}catch(e){}}
+
+el('add').addEventListener('click',function(){var e=makeEntry({});e.el.scrollIntoView({behavior:'smooth',block:'center'});});
+
+/* ── validate: prompt for more where needed ── */
+function validate(){
+  var kennel=el('kennel').value.trim(),email=el('email').value.trim();
+  if(!kennel){return {msg:'Please add your kennel / program name.',focus:'kennel'};}
+  if(!emailRe.test(email)){return {msg:'Please enter a valid email so we can confirm.',focus:'email'};}
+  var active=ENTRIES.filter(function(e){return e.hasContent();});
+  if(!active.length){return {msg:'Add at least one change you’d like us to make.'};}
+  for(var i=0;i<active.length;i++){
+    var e=active[i],g=e.get();e.el.querySelectorAll('.fld').forEach(clearBad);e.refs.nudge.classList.remove('on');
+    if(g.pageSel==='Other (type it in)'&&!g.pageOther){e.refs.fPage.classList.add('bad');return {el:e.el,msg:'Tell us which page this change is on (box '+(i+1)+').'};}
+    var min=(g.type==='photo'&&e.files.length)?8:14;
+    if(g.detail.length<min){
+      e.refs.fDetail.classList.add('bad');
+      var extra=g.type==='photo'?'Say where these photos go and whether they replace existing ones.':(g.type==='text'?'Include the current wording and exactly what it should say instead.':'Add the page, the spot, and the exact change.');
+      e.refs.nudge.innerHTML='<b>A little more detail, please.</b> '+extra;e.refs.nudge.classList.add('on');
+      return {el:e.el,msg:'One change needs more detail so we can make it right the first time.'};
+    }
+  }
+  return {ok:true,active:active};
+}
+
+async function submitForm(){
+  if(el('company').value)return;
+  var msg=el('msg');msg.className='msg';msg.textContent='';
+  var v=validate();
+  if(!v.ok){ msg.className='msg err';msg.textContent=v.msg;
+    if(v.focus)el(v.focus).focus();
+    if(v.el)v.el.scrollIntoView({behavior:'smooth',block:'center'});
+    return; }
+  var kennel=el('kennel').value.trim(),email=el('email').value.trim(),name=el('name').value.trim(),phone=el('phone').value.trim(),site=el('site').value.trim();
+
+  // flatten files, field = rev-<index> so each photo maps to its change
+  var all=[]; v.active.forEach(function(e,idx){ e.files.forEach(function(f){ all.push({field:'rev-'+(idx+1),file:f}); }); });
+
+  el('submit').disabled=true;el('submit').textContent='Sending…';
+  try{
+    var uploaded=[],folder='';
+    if(all.length){
+      msg.textContent='Preparing photos…';
+      var sr=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action:'sign',email:email,kennel:kennel,files:all.map(function(x){return {field:x.field,name:x.file.name,type:x.file.type};})})});
+      var sd=await sr.json(); if(!sd||!sd.ok)throw new Error((sd&&sd.error)||'Could not prepare the upload.');
+      folder=sd.folder;
+      for(var i=0;i<sd.uploads.length;i++){
+        var u=sd.uploads[i],file=all[i].file;
+        msg.textContent='Uploading photo '+(i+1)+' of '+sd.uploads.length+'…';
+        var up=await sb.storage.from(sd.bucket).uploadToSignedUrl(u.path,u.token,file,{contentType:file.type||'application/octet-stream',upsert:true});
+        if(up.error)throw new Error('A photo failed to upload ('+file.name+'). Please try again.');
+        uploaded.push({field:all[i].field,name:file.name,path:u.path,size:file.size,type:file.type});
+      }
+    }
+    msg.textContent='Saving your request…';
+    var revisions=v.active.map(function(e,idx){var g=e.get();return {n:idx+1,page:g.page,type:g.type,typeLabel:(TYPES.filter(function(t){return t[0]===g.type;})[0]||['',''])[1],detail:g.detail,photos:e.files.length,field:'rev-'+(idx+1)};});
+    var fields={notes:el('notes').value.trim(),site:site};
+    var svr=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'save',kind:'revision',name:name,kennel:kennel,email:email,phone:phone,site:site,folder:folder,files:uploaded,fields:fields,revisions:revisions})});
+    var sv=await svr.json(); if(!sv||!sv.ok)throw new Error((sv&&sv.error)||'Could not save. Your photos uploaded — please tell your BreedWise contact.');
+    clearDraft();
+    done(kennel,revisions.length,uploaded.length);
+  }catch(e){
+    el('submit').disabled=false;el('submit').textContent='Send my changes';
+    msg.className='msg err';msg.textContent=e.message||'Something went wrong. Please try again.';
+  }
+}
+el('submit').addEventListener('click',submitForm);
+
+function done(kennel,nc,nf){
+  el('app').innerHTML='<div class="done"><div class="ic">✓</div>'
+    +'<h1 style="font-size:28px">Got it — thank you!</h1>'
+    +'<p class="lead" style="margin:10px auto 0;max-width:500px">We received <b style="color:var(--ink)">'+nc+' change'+(nc===1?'':'s')+'</b>'+(nf?(' and '+nf+' photo'+(nf===1?'':'s')):'')+' for <b style="color:var(--ink)">'+esc(kennel)+'</b>. '
+    +'Your BreedWise team will make the edits and follow up if anything needs clarifying.</p>'
+    +'<button class="addbtn" style="max-width:280px;margin:22px auto 0" onclick="location.reload()">Send another request</button>'
+    +'<div class="trust">You can close this page.</div></div>';
+  window.scrollTo(0,0);
+}
+
+loadDraft();
+</script>
+</body>
+</html>
