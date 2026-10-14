@@ -39,7 +39,24 @@
   header p{color:var(--muted);font-size:14px;margin:0;max-width:560px;font-weight:300}
   .search{width:260px;max-width:48vw;padding:10px 14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;color:var(--ink);font-size:13px;font-family:var(--sans)}
 
-  .grouphd{font-family:var(--disp);font-size:14px;letter-spacing:.02em;color:var(--muted);font-weight:600;margin:30px 0 12px;padding-bottom:7px;border-bottom:1px solid var(--line);text-transform:uppercase}
+  /* category jump-nav (sticky) */
+  .catnav{position:sticky;top:0;z-index:20;display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:12px 0;margin-bottom:6px;background:linear-gradient(var(--bg) 70%,transparent)}
+  .catnav button{background:var(--panel);border:1px solid var(--line);color:var(--mid);border-radius:20px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:var(--sans);display:inline-flex;align-items:center;gap:7px;transition:border-color .15s,color .15s}
+  .catnav button:hover{border-color:var(--gold);color:var(--ink)}
+  .catnav button .n{font-size:11px;color:var(--gold-soft);background:rgba(201,168,98,.12);border-radius:10px;padding:1px 7px;font-weight:700}
+  .catnav .allbtn{margin-left:auto;background:transparent;border-color:var(--line2);color:var(--muted);font-weight:500}
+  /* collapsible category */
+  .cat{border:1px solid var(--line);border-radius:16px;margin-bottom:12px;overflow:hidden;background:linear-gradient(162deg,rgba(18,24,31,.6),rgba(15,21,28,.6))}
+  .cat.open{border-color:var(--line2)}
+  .cathead{display:flex;align-items:center;gap:13px;width:100%;padding:17px 20px;background:none;border:0;cursor:pointer;color:var(--ink);font-family:var(--sans);text-align:left}
+  .cathead:hover{background:rgba(201,168,98,.03)}
+  .cathead .emoji{font-size:19px;line-height:1;width:26px;text-align:center;flex:none}
+  .cathead .ct{font-family:var(--disp);font-size:19px;font-weight:600;letter-spacing:-.2px}
+  .cathead .cc{font-size:11.5px;font-weight:700;color:var(--gold-soft);background:rgba(201,168,98,.1);border:1px solid rgba(201,168,98,.2);border-radius:20px;padding:2px 9px}
+  .cathead .chev{margin-left:auto;color:var(--muted);font-size:20px;transition:transform .2s;transform:rotate(90deg)}
+  .cat.open .cathead .chev{transform:rotate(-90deg)}
+  .catbody{display:none;padding:2px 16px 17px}
+  .cat.open .catbody{display:block}
   .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
   @media(max-width:760px){.grid{grid-template-columns:1fr}}
   .pcard{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:16px 18px}
@@ -80,7 +97,7 @@
         <div>
           <div class="k">BreedWise OS</div>
           <h1>Team Hub</h1>
-          <p id="subline">Every playbook, guide and SOP, organized by seat. You're seeing the documents your code unlocks.</p>
+          <p id="subline">Every playbook, guide, tool and client-site asset, organized by category. Tap a category to open it; use the bar to jump.</p>
         </div>
         <input class="search" id="q" placeholder="Search documents…">
       </header>
@@ -95,7 +112,7 @@
 <script>
 /* ---- the directory. Add a row here when a new doc ships. ---- */
 var HUB=[
-  { group:'Company', cards:[
+  { group:'Company', emoji:'🏛️', cards:[
     { name:'Company', role:'Shared · leadership', ava:'a-gold', initial:'B', docs:[
       { t:'📂 Page Directory', p:'Living index of every BreedWise page in one place — searchable, filtered by type (funnels, scorecards, tools, dashboards, SOPs, client sites), with access codes.', href:'directory.html', code:'BWTEAM2026' },
       { t:'Operating System Playbook', p:'Austin\'s day-to-day: rhythm, quarterly rocks, accountability, scorecards, the full OS.', href:'playbook.html', code:'BWTEAM2026' },
@@ -106,7 +123,20 @@ var HUB=[
       { t:'Metrics Dashboard', p:'Program metrics overview.', href:'dashboard.html', code:'BreedWiseNumbers26' }
     ]}
   ]},
-  { group:'BOSS™', cards:[
+  { group:'Client Websites', emoji:'🌐', cards:[
+    { name:'Website Buildout', role:'Intake → build → hub', ava:'a-teal', initial:'🌐', docs:[
+      { t:'Website Content Intake', p:'Breeders submit their logo, photos, dogs, litters and brand details to kick off a new site build. Share this link with a new client.', href:'website-assets.html', pub:true },
+      { t:'Breeder Build Hub', p:'Every breeder we build for, per site — their intake + uploaded assets, revision requests with status, the live-site link, and their lead dashboard where one exists. One place for all website-build data.', href:'breeder-hub.html', code:'BWTEAM2026' }
+    ]},
+    { name:'Website Refinements', role:'Revisions on live sites', ava:'a-blue', initial:'✎', docs:[
+      { t:'Request Website Changes', p:'For breeders whose site is already live: submit revisions and photos one change at a time. Prompts them for detail so every edit is actionable. Share this link with clients.', href:'site-revisions.html', pub:true },
+      { t:'Revision Worklist', p:'The revision queue — New / In progress / Done, each request grouped by change with page, type and photo thumbnails.', href:'site-revisions-admin.html', code:'REVISIONS2026' }
+    ]},
+    { name:'Website Tracking', role:'Per-site analytics & leads', ava:'a-green', initial:'📊', docs:[
+      { t:'ERBS — Lead Command Center', p:'Reuben\'s live-site analytics: visitors, partial inquiries, completed applications, conversion funnel, 14-day trend and top pages/referrers.', href:'erbs-command.html', code:'ERBSLEADS2026' }
+    ]}
+  ]},
+  { group:'BOSS™', emoji:'🏆', cards:[
     { name:'BOSS™', role:'Product · curriculum · sales', ava:'a-gold', initial:'B', docs:[
       { t:'BOSS™ Product Specification', p:'The full BOSS offer architecture: Phase 1 Implementation ($6K / 120 days) + Phase 2 Continuation ($297/mo), the certification pathway, customer journey and final offer stack.', href:'boss.html', code:'BWTEAM2026' },
       { t:'BOSS™ Rollout & Positioning Strategy (+ Certification)', p:'The internal launch playbook. Part I: the product hierarchy (Academy / $3K BOSS / Accelerator), BOSS Systems Legacy Access vs paid Implementation, the two ascension paths, the Founding Implementation Cohort pilot, the capacity board + 2-starts-per-week cap, the pre-launch readiness checklist, the blind spots, and the 8-phase rollout. Part II: the full certification architecture — build-vs-prove principle, per-member treatment, the four gates (Knowledge/Verification/Implementation/Audit), Jennifer\'s certification pipeline, legacy-promise protection, 120-to-build / 12-to-prove, ownership split (Jennifer process / Emmanuel science / Austin brand), and what must exist before the badge. Internal strategy — pricing & legacy terms pending final economics + counsel.', href:'boss-rollout-strategy.html', code:'BWTEAM2026' },
@@ -120,7 +150,7 @@ var HUB=[
       { t:'Monthly Implementation Leaderboard', p:'The Academy + BOSS community leaderboard: 100 points a month, reset on the 1st, with 60 of 100 points from implementation and measured progress (Build → Implement → Measure). Scoring breakdown, fairness rules ("No BOSS Advantage", proof required, progress is relative), monthly timeline, and Operator-of-the-Month recognition. Member-facing explainer.', href:'leaderboard.html', code:'BWTEAM2026' },
     ]}
   ]},
-  { group:'By seat', cards:[
+  { group:'Team by Seat', emoji:'👥', cards:[
     { name:'Austin', role:'CEO · Sales', ava:'a-gold', initial:'A', docs:[
       { t:'Operating System Playbook', p:'His run-the-company manual (same as Company).', href:'playbook.html', code:'BWTEAM2026' },
       { t:'Sales Seat Strategy', p:'Private: Regina seat comp design, legal, math, bottlenecks, day-30 evaluation.', href:'sales-buildout-internal.html', code:'BWTEAM2026', priv:true }
@@ -164,27 +194,42 @@ var CODES={
   '440edf3cb587c1bf5da0521afae877f7aff7ddcfbf727bd43bdcb1a465b2c771':'SOCIAL2026'
 };
 var CURCODE='';
-function canSee(d){ return CURCODE===MASTER || d.code===CURCODE; }
+function canSee(d){ return CURCODE===MASTER || d.pub || d.code===CURCODE; }
+var OPEN={};
+function catId(g){ return 'cat-'+g.toLowerCase().replace(/[^a-z0-9]+/g,'-'); }
 function render(filter){
   filter=(filter||'').toLowerCase().trim();
-  var host=document.getElementById('hub'), html='', any=false;
+  var host=document.getElementById('hub'), nav=[], cats=[], any=false;
   HUB.forEach(function(g){
-    var cards='';
+    var cards='', gcount=0;
     g.cards.forEach(function(c){
-      var docs=c.docs.filter(function(d){ return canSee(d) && (!filter || (d.t+' '+d.p+' '+c.name+' '+c.role).toLowerCase().indexOf(filter)>=0); });
+      var docs=c.docs.filter(function(d){ return canSee(d) && (!filter || (d.t+' '+d.p+' '+c.name+' '+c.role+' '+g.group).toLowerCase().indexOf(filter)>=0); });
       if(!docs.length) return;
-      any=true;
+      gcount+=docs.length;
       cards+='<div class="pcard'+(c.wide?' wide':'')+'">'+
         '<div class="person"><span class="ava '+c.ava+'">'+c.initial+'</span><div><div class="pname">'+c.name+'</div><div class="prole">'+c.role+'</div></div></div>'+
         docs.map(function(d){
-          return '<a class="doc" href="'+d.href+'" target="_blank" rel="noopener"><div class="dt">'+d.t+'<span class="arrow">open ↗</span></div><div class="dp">'+d.p+'</div>'+(d.priv?'<span class="code priv">🔒 Private</span>':'')+'</a>';
+          var badge = d.priv ? '<span class="code priv">🔒 Private</span>'
+            : d.pub ? '<span class="code login">🔗 Public link</span>'
+            : d.code ? '<span class="code">'+d.code+'</span>' : '';
+          return '<a class="doc" href="'+d.href+'" target="_blank" rel="noopener"><div class="dt">'+d.t+'<span class="arrow">open ↗</span></div><div class="dp">'+d.p+'</div>'+badge+'</a>';
         }).join('')+'</div>';
     });
-    if(cards){ html+='<div class="grouphd">'+g.group+'</div><div class="grid">'+cards+'</div>'; }
+    if(!cards) return;
+    any=true;
+    var isOpen = filter ? true : !!OPEN[g.group];
+    nav.push('<button type="button" onclick="jumpCat(\''+g.group.replace(/'/g,'')+'\')">'+(g.emoji||'•')+' '+g.group+' <span class="n">'+gcount+'</span></button>');
+    cats.push('<section class="cat'+(isOpen?' open':'')+'" id="'+catId(g.group)+'" data-g="'+g.group+'">'+
+      '<button type="button" class="cathead" onclick="toggleCat(this)"><span class="emoji">'+(g.emoji||'•')+'</span><span class="ct">'+g.group+'</span><span class="cc">'+gcount+'</span><span class="chev">›</span></button>'+
+      '<div class="catbody"><div class="grid">'+cards+'</div></div></section>');
   });
-  host.innerHTML=html;
+  host.innerHTML = any ? ('<div class="catnav">'+nav.join('')+'<button type="button" class="allbtn" onclick="toggleAll()">'+(allOpen()?'Collapse all':'Expand all')+'</button></div>'+cats.join('')) : '';
   document.getElementById('noResults').style.display=any?'none':'block';
 }
+function toggleCat(btn){ var c=btn.closest('.cat'); var g=c.getAttribute('data-g'); var willOpen=!c.classList.contains('open'); OPEN[g]=willOpen; c.classList.toggle('open',willOpen); }
+function jumpCat(g){ OPEN[g]=true; var c=document.getElementById(catId(g)); if(c){ c.classList.add('open'); c.scrollIntoView({behavior:'smooth',block:'start'}); } }
+function allOpen(){ return HUB.every(function(x){ return OPEN[x.group]; }); }
+function toggleAll(){ var open=allOpen(); HUB.forEach(function(x){ OPEN[x.group]=!open; }); render(document.getElementById('q').value); }
 
 /* ---- gate: resolve the entered code, reveal only what it unlocks ---- */
 (function(){
@@ -194,6 +239,7 @@ function render(filter){
   function reveal(){
     var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Team Hub · BreedWise OS';
     if(CURCODE!==MASTER) el('subline').textContent='Showing the documents for your access.';
+    if(HUB[0]) OPEN[HUB[0].group]=true; OPEN['Client Websites']=true;   // open a couple by default
     render('');el('q').addEventListener('input',function(e){render(e.target.value);});
   }
   function tryUnlock(){var v=(el('pw').value||'').trim();resolve(v).then(function(code){if(code){CURCODE=code;try{sessionStorage.setItem('hub_code',code);}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
