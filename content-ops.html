@@ -239,7 +239,7 @@
         </div>
       </div>
 
-      <footer class="bf">BREEDWISE · Content Operations role card. Your trackers save to this device. Owner: Yasmin.</footer>
+      <footer class="bf">BREEDWISE · Content Operations role card. Your trackers sync across your devices. Owner: Yasmin.</footer>
     </div>
   </div>
 
@@ -250,9 +250,42 @@ var DAILY=['Publish today’s scheduled content','Monitor comments + DMs (ManyCh
 var TARGETS=[['pub','Publishing %','≥ 95',95,'gte','%'],['pipe','Pipeline days','≥ 14',14,'gte',''],['leads','Qualified leads','125 / wk',125,'gte',''],['tpb','New TPB','25 / wk',25,'gte','']];
 var ST=['Idea','Scripted','Ready to film','Filmed','Editing','Approved','Scheduled','Published','Analyzed'];
 function stCls(s){return 'st-'+s.toLowerCase().replace(/[^a-z]/g,'').slice(0,8).replace('readyto','ready');}
-var S={ideas:[],film:[],links:[],metrics:[],checks:{}};
-function load(){try{var o=JSON.parse(localStorage.getItem('bw_yasmin')||'null');if(o)S=Object.assign(S,o);}catch(e){}}
-function save(){try{localStorage.setItem('bw_yasmin',JSON.stringify(S));}catch(e){}var el=document.getElementById('saved');el.textContent='saved ✓';setTimeout(function(){el.textContent='saved on this device';},900);}
+/* ---- state + cross-device sync (mirrors the bw-os shared store) ---- */
+var LS='bw_yasmin';
+var FN_CO='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/content-ops', CO_SECRET='co_sync_8Yk3', AK='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+var myRev=0, lastEdit=0, srvT, pollT, serverOnline=false;
+function seedState(){return {ideas:[],film:[],links:[],metrics:[],checks:{}};}
+var S=seedState();
+function load(){try{var o=JSON.parse(localStorage.getItem(LS)||'null');if(o)S=Object.assign(seedState(),o);}catch(e){}}
+function setSync(state){var el=document.getElementById('saved');if(!el)return;
+  if(state==='saving')el.textContent='saving…';
+  else if(state==='synced')el.textContent='saved · all devices ✓';
+  else el.textContent='saved on this device (offline)';}
+function save(){S.updated=Date.now();lastEdit=Date.now();setSync('saving');
+  try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}
+  clearTimeout(srvT);srvT=setTimeout(serverSave,700);}
+function serverSave(){
+  fetch(FN_CO,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({action:'set',secret:CO_SECRET,data:S,rev:myRev})})
+    .then(function(r){return r.ok?r.json():Promise.reject(r);})
+    .then(function(resp){myRev=resp.rev||myRev;serverOnline=true;setSync('synced');})
+    .catch(function(){serverOnline=false;setSync('local');});}
+function serverLoad(cb){
+  fetch(FN_CO,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({action:'get',secret:CO_SECRET})})
+    .then(function(r){return r.ok?r.json():Promise.reject(r);})
+    .then(function(resp){serverOnline=true;
+      if(resp&&resp.data){S=Object.assign(seedState(),resp.data);myRev=resp.rev||0;try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}}
+      cb&&cb(true,!!(resp&&resp.data));})
+    .catch(function(){serverOnline=false;cb&&cb(false,false);});}
+function currentTab(){var p=document.querySelector('.pane.on');return p?p.id:'t-today';}
+function startPoll(){clearInterval(pollT);pollT=setInterval(function(){
+  if(!serverOnline)return;
+  var ae=document.activeElement, editing=ae&&(ae.tagName==='INPUT'||ae.tagName==='TEXTAREA'||ae.tagName==='SELECT');
+  if(editing||Date.now()-lastEdit<9000)return;
+  fetch(FN_CO,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({action:'get',secret:CO_SECRET})})
+    .then(function(r){return r.json();}).then(function(resp){
+      if(resp&&resp.rev&&resp.rev>myRev&&resp.data){S=Object.assign(seedState(),resp.data);myRev=resp.rev;try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}renderAll();showTab(currentTab());}
+    }).catch(function(){});
+},25000);}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function val(id){var e=document.getElementById(id);return e?(e.value||'').trim():'';}
@@ -338,7 +371,11 @@ function renderAll(){renderToday();renderIdeas();renderFilm();renderLinks();rend
           '368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875']; /* BWTEAM2026 master */
   function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
   function el(id){return document.getElementById(id);}
-  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Content Ops · BreedWise';load();buildTabs();renderAll();var t='t-today';try{t=sessionStorage.getItem('y_tab')||'t-today';}catch(e){}if(!document.getElementById(t))t='t-today';showTab(t);}
+  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Content Ops · BreedWise';
+    load();buildTabs();renderAll();var t='t-today';try{t=sessionStorage.getItem('y_tab')||'t-today';}catch(e){}if(!document.getElementById(t))t='t-today';showTab(t);
+    // pull the shared copy so links/ideas/film are the same on every device; seed the cloud on first run
+    serverLoad(function(ok,had){ if(had){ renderAll(); showTab(currentTab()); } else if(ok){ serverSave(); } setSync(ok?'synced':'local'); startPoll(); });
+  }
   function tryUnlock(){var v=(el('pw').value||'').trim();Promise.all([h(v),h(v.toUpperCase())]).then(function(a){if(OK.indexOf(a[0])>=0||OK.indexOf(a[1])>=0){try{sessionStorage.setItem('y_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
   el('unlock').addEventListener('click',tryUnlock);
   el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
