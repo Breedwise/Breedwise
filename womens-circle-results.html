@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Women's Circle · Survey Results</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f7f1ea;--bg2:#efe6da;--card:#fffdfa;--line:#e6d9ca;--line2:#dcc9b6;
+    --ink:#3f3540;--mid:#6e6168;--muted:#9a8c92;--faint:#b9adb2;
+    --plum:#9c6a86;--plum-deep:#7d5069;--plum-soft:#f3e7ee;--sage:#8aa893;--sage-soft:#edf2ec;--rose:#c58a9f;--amber:#cf9a5c;
+    --disp:'Cormorant Garamond',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:radial-gradient(900px 500px at 50% -8%,rgba(156,106,134,.08),transparent 62%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.55}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:80}
+  #gate .box{width:min(92vw,370px);text-align:center}
+  #gate .seal{width:58px;height:58px;border-radius:50%;border:1.5px solid var(--plum);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;background:var(--plum-soft)}
+  #gate .seal span{font-family:var(--disp);font-size:29px;font-style:italic;font-weight:600;color:var(--plum-deep)}
+  #gate h1{font-family:var(--disp);font-size:25px;font-weight:600;margin-bottom:4px}
+  #gate .sub{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+  #gate input{width:100%;padding:13px 15px;background:var(--card);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--plum);border:0;border-radius:11px;color:#fff;font-weight:600;font-size:14px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:#c0607a;font-size:12.5px;min-height:16px;margin-top:9px}
+  #app{display:none}
+  .wrap{max-width:860px;margin:0 auto;padding:28px 22px 80px}
+  header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:8px}
+  header .kick{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--plum);font-weight:600}
+  header h1{font-family:var(--disp);font-size:36px;font-weight:600;margin:6px 0 0;line-height:1}
+  header .total{text-align:right}
+  header .total .num{font-family:var(--disp);font-size:44px;font-weight:600;color:var(--plum-deep);line-height:1}
+  header .total .lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .tbtn{background:var(--card);border:1px solid var(--line2);color:var(--mid);border-radius:9px;padding:9px 14px;font-size:12.5px;cursor:pointer;font-family:var(--sans)}
+  .tbtn:hover{border-color:var(--plum);color:var(--ink)}
+  .sect{margin-top:26px}
+  .qh{display:flex;align-items:baseline;gap:9px;margin-bottom:12px}
+  .qh .n{font-family:var(--disp);font-style:italic;font-size:16px;color:var(--plum);font-weight:600;flex:none}
+  .qh h3{font-family:var(--disp);font-size:24px;font-weight:600;line-height:1.2}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+  /* bars */
+  .bar{margin:11px 0}
+  .bar .lab{display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px}
+  .bar .lab .v{color:var(--muted);font-weight:500}
+  .bar .track{height:12px;background:var(--bg2);border-radius:8px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--plum),var(--rose));min-width:2px;transition:width .5s}
+  .bar.sage .fill{background:linear-gradient(90deg,var(--sage),#a9c4b0)}
+  .bar.amber .fill{background:linear-gradient(90deg,var(--amber),#e0bd8a)}
+  /* text answers */
+  .answers{display:flex;flex-direction:column;gap:9px}
+  .ans{background:#fffdfb;border:1px solid var(--line);border-left:3px solid var(--plum);border-radius:10px;padding:12px 14px;font-size:14.5px;color:var(--ink);line-height:1.5;white-space:pre-wrap}
+  .count{font-size:12px;color:var(--muted);font-weight:500}
+  .empty{color:var(--muted);font-size:13.5px;font-style:italic;padding:6px 0}
+  .bigempty{text-align:center;color:var(--muted);padding:70px 20px;font-size:15px}
+  @media print{#gate{display:none!important}#app{display:block!important}body{background:#fff}.tbtn{display:none}}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="seal"><span>W</span></div>
+    <h1>Women's Circle</h1>
+    <div class="sub">Survey Results</div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">View results →</button>
+    <div class="err" id="gerr"></div>
+  </div></div>
+
+  <div id="app">
+    <div class="wrap">
+      <header class="top">
+        <div>
+          <div class="kick">BreedWise · Women's Circle</div>
+          <h1>Survey Results</h1>
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:16px">
+          <button class="tbtn" id="refresh">Refresh</button>
+          <div class="total"><div class="num" id="total">—</div><div class="lbl">responses</div></div>
+        </div>
+      </header>
+      <div id="body"><div class="bigempty">Loading…</div></div>
+    </div>
+  </div>
+
+<script>
+var SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+var FN=SB_URL+'/functions/v1/womens-circle';
+var SECRET='wc_adm_7Qx2';
+var OK='d55dede16f20c0917113c20f99c13b625f1c9162a26eea487426e5729ba9ad21'; /* CIRCLE2026 */
+function $(s,r){return (r||document).querySelector(s);}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
+
+/* the scaled questions, with their option order preserved for display */
+var SCALED=[
+  {key:'enjoying',n:1,q:'Are you enjoying the Women’s Circle?',opts:['Loving it','Yes','It’s okay','Not really'],cls:''},
+  {key:'stay',n:6,q:'Do you still want it to be part of BreedWise?',opts:['Yes','No','Unsure'],cls:'sage'},
+  {key:'frequency',n:7,q:'How often would you ideally attend?',opts:['Weekly','Every other week','Monthly','Quarterly','Only for special sessions'],cls:'amber'},
+];
+var TEXTF=[
+  {key:'liked',n:2,q:'What have you liked?'},
+  {key:'liveWithout',n:3,q:'What could you live without?'},
+  {key:'talkMore',n:4,q:'What would you like to talk about more?'},
+  {key:'topics',n:5,q:'Topics they’d most like to learn about'},
+  {key:'wishDiscuss',n:8,q:'Wish they could talk about, but rarely get to'},
+];
+
+function barBlock(Q,data){
+  var counts=data[Q.key]||{};
+  var total=0;Object.keys(counts).forEach(function(k){total+=counts[k];});
+  var card=el('div','card');
+  // show each known option (in order), plus any unexpected values
+  var seen={};
+  Q.opts.forEach(function(o){seen[o]=true;card.appendChild(bar(o,counts[o]||0,total,Q.cls));});
+  Object.keys(counts).forEach(function(k){if(!seen[k])card.appendChild(bar(k,counts[k],total,Q.cls));});
+  if(!total)card.appendChild(el('div','empty','No answers yet.'));
+  return card;
+}
+function bar(label,n,total,cls){
+  var pct=total?Math.round(n/total*100):0;
+  var b=el('div','bar'+(cls?(' '+cls):''));
+  b.innerHTML='<div class="lab"><span>'+esc(label)+'</span><span class="v">'+n+' · '+pct+'%</span></div><div class="track"><div class="fill" style="width:'+pct+'%"></div></div>';
+  return b;
+}
+function textBlock(Q,data){
+  var arr=(data[Q.key]||[]);
+  var card=el('div','card');
+  card.appendChild(el('div','count',arr.length+' response'+(arr.length===1?'':'s')));
+  if(!arr.length){card.appendChild(el('div','empty','No answers yet.'));return card;}
+  var box=el('div','answers');box.style.marginTop='10px';
+  arr.forEach(function(x){box.appendChild(el('div','ans',esc(x.text)));});
+  card.appendChild(box);
+  return card;
+}
+function render(data){
+  $('#total').textContent=data.total||0;
+  var body=$('#body');body.innerHTML='';
+  if(!data.total){body.innerHTML='<div class="bigempty">No responses yet. Share the survey link and they’ll appear here.</div>';return;}
+  // interleave in question order 1..8
+  var order=[SCALED[0],TEXTF[0],TEXTF[1],TEXTF[2],TEXTF[3],SCALED[1],SCALED[2],TEXTF[4]];
+  order.forEach(function(Q){
+    var sect=el('div','sect');
+    sect.appendChild(el('div','qh','<span class="n">Q'+Q.n+'</span><h3>'+esc(Q.q)+'</h3>'));
+    var isScaled=SCALED.indexOf(Q)>-1;
+    sect.appendChild(isScaled?barBlock(Q,data):textBlock(Q,data));
+    body.appendChild(sect);
+  });
+}
+async function load(){
+  $('#body').innerHTML='<div class="bigempty">Loading…</div>';
+  try{
+    var r=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'results',secret:SECRET})});
+    var d=await r.json();
+    if(!d||!d.ok){$('#body').innerHTML='<div class="bigempty">Could not load ('+esc((d&&d.error)||'unknown')+').<br>If this is the first run, deploy the womens-circle function first.</div>';return;}
+    render(d);
+  }catch(e){$('#body').innerHTML='<div class="bigempty">Could not reach the server. Try Refresh.</div>';}
+}
+$('#refresh').addEventListener('click',load);
+
+/* gate */
+function sha(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+function reveal(){var g=$('#gate');if(g)g.remove();$('#app').style.display='block';load();}
+function tryUnlock(){var v=($('#pw').value||'').trim().toUpperCase();sha(v).then(function(h){if(h===OK){try{sessionStorage.setItem('wc_ok','1');}catch(e){}reveal();}else{$('#gerr').textContent='Incorrect code.';$('#pw').select();}});}
+$('#unlock').addEventListener('click',tryUnlock);
+$('#pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+try{if(sessionStorage.getItem('wc_ok')==='1')reveal();else $('#pw').focus();}catch(e){$('#pw').focus();}
+</script>
+</body>
+</html>

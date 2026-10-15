@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Women's Circle · A Few Honest Questions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f7f1ea;--bg2:#efe6da;--card:#fffdfa;--line:#e6d9ca;--line2:#dcc9b6;
+    --ink:#3f3540;--mid:#6e6168;--muted:#9a8c92;--faint:#b9adb2;
+    --plum:#9c6a86;--plum-deep:#7d5069;--plum-soft:#f3e7ee;--sage:#8aa893;--sage-soft:#edf2ec;--rose:#c58a9f;
+    --disp:'Cormorant Garamond',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:
+      radial-gradient(900px 500px at 50% -8%,rgba(156,106,134,.10),transparent 62%),
+      radial-gradient(700px 420px at 90% 12%,rgba(138,168,147,.08),transparent 60%),
+      var(--bg);
+    color:var(--ink);font-family:var(--sans);font-weight:400;-webkit-font-smoothing:antialiased;line-height:1.6}
+  .wrap{max-width:640px;margin:0 auto;padding:44px 22px 80px}
+  /* header */
+  .seal{width:60px;height:60px;border-radius:50%;border:1.5px solid var(--plum);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;background:var(--plum-soft)}
+  .seal span{font-family:var(--disp);font-size:30px;font-weight:600;color:var(--plum-deep);font-style:italic;line-height:1}
+  .hero{text-align:center;margin-bottom:10px}
+  .kick{font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--plum);font-weight:600}
+  h1{font-family:var(--disp);font-size:clamp(34px,7vw,46px);font-weight:600;line-height:1.04;margin:14px 0 0;letter-spacing:.2px}
+  .lead{color:var(--mid);font-size:16.5px;margin:16px auto 0;max-width:500px;font-weight:300}
+  .anon{display:inline-flex;align-items:center;gap:8px;margin-top:20px;font-size:13px;color:var(--sage);background:var(--sage-soft);border:1px solid #d6e3d8;border-radius:30px;padding:8px 16px;font-weight:500}
+  /* questions */
+  .q{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px 24px 22px;margin-top:16px;box-shadow:0 1px 2px rgba(80,60,70,.03)}
+  .q .n{font-family:var(--disp);font-size:16px;font-style:italic;color:var(--plum);font-weight:600}
+  .q h3{font-family:var(--disp);font-size:24px;font-weight:600;line-height:1.2;margin:3px 0 0;color:var(--ink)}
+  .q .help{font-size:13.5px;color:var(--muted);margin-top:7px}
+  .opts{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+  .opt{border:1px solid var(--line2);background:#fff;color:var(--mid);border-radius:30px;padding:10px 18px;font-size:14.5px;cursor:pointer;font-family:var(--sans);transition:.16s;user-select:none}
+  .opt:hover{border-color:var(--plum);color:var(--ink)}
+  .opt.on{background:var(--plum);border-color:var(--plum);color:#fff;font-weight:500;box-shadow:0 3px 12px rgba(156,106,134,.26)}
+  textarea{width:100%;margin-top:14px;background:#fffdfb;border:1px solid var(--line2);border-radius:13px;color:var(--ink);font-family:var(--sans);font-size:15.5px;line-height:1.55;padding:14px 15px;min-height:92px;resize:vertical;transition:border-color .16s}
+  textarea::placeholder{color:var(--faint)}
+  textarea:focus{outline:none;border-color:var(--plum);box-shadow:0 0 0 3px rgba(156,106,134,.1)}
+  /* submit */
+  .cta{margin-top:26px;width:100%;padding:17px;background:linear-gradient(120deg,var(--plum),var(--plum-deep));border:0;border-radius:14px;color:#fff;font-size:16.5px;font-weight:600;cursor:pointer;font-family:var(--sans);letter-spacing:.01em;box-shadow:0 6px 20px rgba(124,80,105,.28)}
+  .cta:disabled{opacity:.6;cursor:default}
+  .msg{margin-top:14px;font-size:14px;min-height:18px;text-align:center}
+  .msg.err{color:#c0607a}
+  .foot{text-align:center;color:var(--faint);font-size:12px;margin-top:22px;letter-spacing:.03em}
+  .hp{position:absolute;left:-9999px}
+  /* thank you */
+  .done{text-align:center;padding:30px 10px}
+  .done .seal{width:72px;height:72px}.done .seal span{font-size:36px}
+  .done h1{font-size:40px}
+  .done p{color:var(--mid);font-size:16.5px;max-width:440px;margin:14px auto 0;font-weight:300}
+</style>
+</head>
+<body>
+  <div class="wrap" id="app">
+    <div class="hero">
+      <div class="seal"><span>W</span></div>
+      <div class="kick">BreedWise · Women's Circle</div>
+      <h1>A few honest questions</h1>
+      <p class="lead">We're shaping what the Women's Circle becomes, and your voice matters. This takes about three minutes. Say as much or as little as you'd like.</p>
+      <div class="anon">🕊️ Completely anonymous — no name, no email, ever.</div>
+    </div>
+
+    <div id="form"></div>
+
+    <input id="company" class="hp" tabindex="-1" autocomplete="off">
+    <button class="cta" id="submit">Share my answers</button>
+    <div class="msg" id="msg"></div>
+    <div class="foot">Your answers are private and used only to make the Circle better for everyone.</div>
+  </div>
+
+<script>
+var SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+var FN=SB_URL+'/functions/v1/womens-circle';
+var SITE='wc_pub_3Fm9';
+function el(id){return document.getElementById(id);}
+function ce(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
+
+/* the eight questions */
+var QUESTIONS=[
+  { key:'enjoying', n:1, q:'Are you enjoying the Women’s Circle?', type:'choice',
+    opts:['Loving it','Yes','It’s okay','Not really'] },
+  { key:'liked', n:2, q:'What have you liked?', type:'text',
+    ph:'The moments, people, or topics that have meant the most…' },
+  { key:'liveWithout', n:3, q:'What could you live without?', type:'text',
+    ph:'Anything that hasn’t landed for you, or you’d happily drop…' },
+  { key:'talkMore', n:4, q:'What would you like to talk about more?', type:'text',
+    ph:'Conversations you wish we spent more time on…' },
+  { key:'topics', n:5, q:'Which topics would you most like to learn about?', type:'text',
+    ph:'Breeding, business, health, family, mindset — anything you’d love taught…' },
+  { key:'stay', n:6, q:'Do you still want the Women’s Circle to be part of BreedWise?', type:'choice',
+    opts:['Yes','No','Unsure'] },
+  { key:'frequency', n:7, q:'How often would you ideally attend?', type:'choice',
+    opts:['Weekly','Every other week','Monthly','Quarterly','Only for special sessions'] },
+  { key:'wishDiscuss', n:8, q:'What’s something you wish you could talk about with other women breeders, but rarely get the chance to?', type:'text',
+    ph:'Speak freely — this is the space for it…' },
+];
+
+var ANS={};
+function build(){
+  var host=el('form');
+  QUESTIONS.forEach(function(Q){
+    var card=ce('div','q');
+    card.appendChild(ce('div','n','Question '+Q.n));
+    card.appendChild(ce('h3',null,esc(Q.q)));
+    if(Q.type==='choice'){
+      var opts=ce('div','opts');
+      Q.opts.forEach(function(o){
+        var b=ce('div','opt',esc(o));
+        b.addEventListener('click',function(){
+          ANS[Q.key]=(ANS[Q.key]===o?'':o);
+          [].forEach.call(opts.children,function(c){c.classList.remove('on');});
+          if(ANS[Q.key])b.classList.add('on');
+        });
+        opts.appendChild(b);
+      });
+      card.appendChild(opts);
+    } else {
+      var ta=ce('textarea');ta.placeholder=Q.ph||'';
+      ta.addEventListener('input',function(){ANS[Q.key]=ta.value;});
+      card.appendChild(ta);
+    }
+    host.appendChild(card);
+  });
+}
+build();
+
+async function submit(){
+  if(el('company').value)return;               // honeypot
+  var msg=el('msg');msg.className='msg';msg.textContent='';
+  var any=Object.keys(ANS).some(function(k){return ANS[k]&&String(ANS[k]).trim();});
+  if(!any){msg.className='msg err';msg.textContent='Add at least one answer before sharing.';window.scrollTo({top:0,behavior:'smooth'});return;}
+  el('submit').disabled=true;el('submit').textContent='Sending…';
+  try{
+    var r=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'submit',site:SITE,answers:ANS})});
+    var d=await r.json();
+    if(!d||!d.ok)throw new Error((d&&d.error)||'Something went wrong. Please try again.');
+    done();
+  }catch(e){
+    el('submit').disabled=false;el('submit').textContent='Share my answers';
+    msg.className='msg err';msg.textContent=e.message||'Something went wrong. Please try again.';
+  }
+}
+el('submit').addEventListener('click',submit);
+
+function done(){
+  el('app').innerHTML='<div class="done">'
+    +'<div class="seal"><span>W</span></div>'
+    +'<h1>Thank you.</h1>'
+    +'<p>Your voice is part of what the Women’s Circle becomes next. We’re grateful you shared it — honestly and anonymously.</p>'
+    +'<div class="foot" style="margin-top:24px">You can close this page.</div>'
+    +'</div>';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
