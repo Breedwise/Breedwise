@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13;--bg2:#0e131a;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;
+    --ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--faint:#5a6572;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--gold-deep:#a9863f;--green:#57b98a;--green-s:rgba(87,185,138,.1);--red:#e8695f;--red-s:rgba(232,105,95,.1);--blue:#5aa9e6;--blue-s:rgba(90,169,230,.1);--amber:#e0a955;--amber-s:rgba(224,169,85,.12);
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:radial-gradient(1200px 700px at 80% -12%,rgba(201,168,98,.06),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.6}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:80}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),var(--gold-deep));display:flex;align-items:center;justify-content:center}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#15100a;font-size:18px}
+  .logo .wm{font-size:15px;letter-spacing:.2em;font-weight:700}.logo .wm b{color:var(--gold)}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#1a130a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #gate .hint{color:var(--muted);font-size:12px;margin-top:14px}
+  #app{display:none}
+  nav.top{position:sticky;top:0;z-index:30;background:rgba(11,14,19,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav.top .in{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:12px 20px;flex-wrap:wrap}
+  nav .sp{flex:1}
+  .vtoggle{display:inline-flex;background:var(--panel);border:1px solid var(--line2);border-radius:10px;padding:3px}
+  .vtoggle button{background:none;border:0;color:var(--muted);font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:8px;cursor:pointer;font-family:var(--sans)}
+  .vtoggle button.on{background:var(--gold);color:#1a130a}
+  .tbtn{background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:8px 13px;font-size:12.5px;cursor:pointer;font-family:var(--sans)}
+  .tbtn:hover{border-color:var(--gold);color:var(--ink)}
+  .wrap{max-width:900px;margin:0 auto;padding:30px 20px 80px}
+  header.hero .k{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  header.hero h1{font-family:var(--disp);font-size:clamp(30px,5vw,42px);line-height:1.04;margin:10px 0 6px;font-weight:600;letter-spacing:-.4px}
+  header.hero p{color:var(--mid);font-size:15.5px;max-width:680px;font-weight:300}
+  .sec-h{display:flex;align-items:center;gap:12px;margin:38px 0 6px}
+  .sec-h .n{font-family:var(--disp);font-size:14px;color:var(--gold);background:rgba(201,168,98,.1);border:1px solid rgba(201,168,98,.22);min-width:30px;height:30px;padding:0 8px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex:none;font-weight:600}
+  .sec-h h2{font-family:var(--disp);font-size:22px;font-weight:600}
+  .lead{color:var(--mid);font-size:15px;margin:10px 0}
+  .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:15px;padding:18px 20px;margin-top:14px}
+  .note{border-radius:13px;padding:14px 17px;margin:16px 0;font-size:14px;line-height:1.55}
+  .note.gold{background:rgba(201,168,98,.08);border:1px solid rgba(201,168,98,.26);border-left:3px solid var(--gold)}
+  .note.blue{background:var(--blue-s);border:1px solid rgba(90,169,230,.26);border-left:3px solid var(--blue)}
+  .note b{color:var(--gold-soft)}.note.blue b{color:#a9d6ff}
+  table{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px}
+  th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line)}
+  th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  td{color:var(--mid)}td b{color:var(--ink)}
+  tr td:first-child{color:var(--ink)}
+  .num{font-variant-numeric:tabular-nums}
+  .pos{color:var(--green)}.neg{color:var(--red)}
+  /* recommended offer */
+  .offer{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+  @media(max-width:680px){.offer{grid-template-columns:repeat(2,1fr)}}
+  .offer .o{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line2);border-radius:13px;padding:15px 16px;text-align:center}
+  .offer .o .lab{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .offer .o .v{font-family:var(--disp);font-size:27px;color:var(--gold-soft);font-weight:600;margin:5px 0 2px}
+  .offer .o .d{font-size:11.5px;color:var(--faint)}
+  /* calculator */
+  .calc{background:linear-gradient(165deg,var(--panel),var(--panel2));border:1px solid var(--line2);border-radius:16px;padding:20px}
+  .calc .ins{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  @media(min-width:620px){.calc .ins{grid-template-columns:repeat(4,1fr)}}
+  .calc .fld label{display:block;font-size:11.5px;color:var(--muted);font-weight:600;margin-bottom:6px;line-height:1.3;min-height:30px}
+  .calc .fld input{width:100%;padding:11px 12px;background:var(--bg2);border:1px solid var(--line2);border-radius:9px;color:var(--ink);font-size:17px;font-family:var(--sans);text-align:center;font-variant-numeric:tabular-nums}
+  .calc .fld input:focus{outline:none;border-color:var(--gold)}
+  .calc .out{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px;border-top:1px solid var(--line);padding-top:18px}
+  @media(min-width:620px){.calc .out{grid-template-columns:repeat(4,1fr)}}
+  .calc .o2{text-align:center}
+  .calc .o2 .lab{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .calc .o2 .v{font-family:var(--disp);font-size:26px;font-weight:600;margin-top:4px}
+  .calc .o2.total .v{color:var(--gold-soft)}.calc .o2.contract .v{color:var(--green)}
+  .calc .dis{font-size:12px;color:var(--faint);margin-top:16px;line-height:1.5}
+  /* trigger checklist */
+  .trig label{display:flex;align-items:flex-start;gap:11px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14.5px;color:var(--mid);cursor:pointer}
+  .trig label:last-of-type{border-bottom:0}
+  .trig input{margin-top:3px;width:17px;height:17px;accent-color:var(--gold);flex:none}
+  .trig .res{margin-top:16px;background:var(--amber-s);border:1px solid rgba(224,169,85,.3);border-radius:11px;padding:13px 16px;font-size:14px;color:var(--ink)}
+  .trig .res b{color:var(--amber)}
+  .trig .res.go{background:var(--green-s);border-color:rgba(87,185,138,.3)}.trig .res.go b{color:var(--green)}
+  /* candidate outline */
+  #outline{display:none}
+  .ro-doc{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line2);border-radius:16px;padding:30px 32px}
+  @media(max-width:560px){.ro-doc{padding:22px 20px}}
+  .ro-doc .eyebrow{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .ro-doc h1{font-family:var(--disp);font-size:30px;font-weight:600;margin:8px 0 2px}
+  .ro-meta{font-size:13px;color:var(--muted);line-height:1.8;margin:14px 0 8px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0}
+  .ro-meta b{color:var(--ink)}
+  .ro-h{font-family:var(--disp);font-size:18px;color:var(--gold-soft);font-weight:600;margin:26px 0 4px}
+  .ro-sub{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:16px 0 6px}
+  .ro-doc p{color:var(--mid);font-size:14.5px;margin:8px 0}
+  .ro-doc p.em{color:var(--gold-soft);font-style:italic;font-family:var(--disp);font-size:16px}
+  .ro-doc ul{margin:8px 0;padding-left:20px}
+  .ro-doc li{color:var(--mid);font-size:14px;margin:5px 0;line-height:1.5}
+  footer.bf{text-align:center;color:#59657390;font-size:11px;margin-top:44px;letter-spacing:.04em}
+  @media print{
+    nav.top{display:none}#gate{display:none!important}#app{display:block!important}
+    body{background:#fff;color:#111}
+    #recommendation{display:none!important}#outline{display:block!important}
+    .ro-doc{background:#fff;border:0;padding:0}
+    .ro-doc h1,.ro-h{color:#1a130a}.ro-doc p,.ro-doc li{color:#333}.ro-doc p.em{color:#8a6d2e}
+  }
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo" style="margin-bottom:18px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Open →</button>
+    <div class="err" id="gate-err"></div>
+    <div class="hint">DM Setter · role &amp; compensation</div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top"><div class="in">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+      <span class="sp"></span>
+      <span class="vtoggle"><button id="vRec" class="on" onclick="setView('rec')">The recommendation</button><button id="vOut" onclick="setView('out')">Candidate outline</button></span>
+      <button class="tbtn" onclick="window.print()">Print</button>
+    </div></nav>
+
+    <div class="wrap">
+
+    <!-- ========== RECOMMENDATION ========== -->
+    <div id="recommendation">
+      <header class="hero">
+        <div class="k">Internal · Sales Build</div>
+        <h1>DM Setter — Role &amp; Compensation</h1>
+        <p>Build this as a <b style="color:var(--ink)">revenue-producing appointment-setting role</b>, not just someone who answers messages. The immediate priority is response coverage: BreedWise is generating interest on Facebook and Instagram, but without consistent follow-up some of that demand is wasted. The setter owns turning comments, inbound DMs, and warm leads into qualified conversations, TPB memberships, and attended Academy/BOSS appointments.</p>
+      </header>
+
+      <div class="sec-h"><span class="n">1</span><h2>Recommended starting offer</h2></div>
+      <div class="offer">
+        <div class="o"><div class="lab">Weekly base</div><div class="v">$200</div><div class="d">subject to hours &amp; classification</div></div>
+        <div class="o"><div class="lab">TPB</div><div class="v">$20</div><div class="d">split across acquisition &amp; retention</div></div>
+        <div class="o"><div class="lab">Academy</div><div class="v">3%</div><div class="d">of attributed cash collected</div></div>
+        <div class="o"><div class="lab">BOSS</div><div class="v">3%</div><div class="d">of attributed cash collected</div></div>
+      </div>
+      <div class="note gold"><b>Proposed, not finalized.</b> Working hours, lead volume, closing margins, and worker classification must be confirmed. Prices reflect the current proposed ladder (TPB $97/mo · Academy $4,500 · BOSS $8,000), not a confirmation that new pricing is live.</div>
+
+      <div class="sec-h"><span class="n">2</span><h2>Why not 10% of high-ticket revenue</h2></div>
+      <p class="lead">10% is substantial pay for someone who <b style="color:var(--ink)">sets</b> appointments but doesn't close, deliver, or manage fulfillment. At $8,000 BOSS, 10% is $800 to the setter — on top of closer pay, delivery, refunds, and acquisition costs. Reserve the larger commission for a role that independently generates, qualifies, <i>and</i> closes.</p>
+      <table>
+        <thead><tr><th>Offer</th><th>Total sale</th><th>10% commission</th><th>Proposed 3%</th></tr></thead>
+        <tbody>
+          <tr><td>Academy</td><td class="num">$4,500</td><td class="num neg">$450</td><td class="num pos">$135</td></tr>
+          <tr><td>BOSS</td><td class="num">$8,000</td><td class="num neg">$800</td><td class="num pos">$240</td></tr>
+        </tbody>
+      </table>
+      <div class="note gold">The 3% is paid <b>as installments are actually collected</b>, not up front — keeping commission expense aligned with revenue collection. Academy in 3×$1,500 = $45/installment (up to $135). BOSS in 4×$2,000 = $60/installment (up to $240).</div>
+      <p class="lead"><b style="color:var(--ink)">TPB $20</b> is about 20.6% of the first $97 payment — reasonable if the member stays. Split it into two $10s so the setter is incentivized to attract the <i>right</i> people, not drive poor-fit signups: <b style="color:var(--gold-soft)">$10 after the first payment, $10 after the second monthly payment.</b></p>
+
+      <div class="sec-h"><span class="n">3</span><h2>What it would actually cost — live model</h2></div>
+      <p class="lead">Illustrative month assuming full contract values are collected and eligible that month. Actual installment timing shifts when commission is paid.</p>
+      <div class="calc">
+        <div class="ins">
+          <div class="fld"><label>New TPB memberships</label><input id="ci_tpb" type="number" min="0" value="15"></div>
+          <div class="fld"><label>TPB second payments qualifying this month</label><input id="ci_tpb2" type="number" min="0" value="10"></div>
+          <div class="fld"><label>Academy sales ($4,500 each)</label><input id="ci_aca" type="number" min="0" value="2"></div>
+          <div class="fld"><label>BOSS sales ($8,000 each)</label><input id="ci_boss" type="number" min="0" value="1"></div>
+        </div>
+        <div class="out">
+          <div class="o2"><div class="lab">Monthly base equiv.</div><div class="v num" id="co_base">—</div></div>
+          <div class="o2"><div class="lab">Commissions</div><div class="v num" id="co_comm">—</div></div>
+          <div class="o2 total"><div class="lab">Total setter comp</div><div class="v num" id="co_total">—</div></div>
+          <div class="o2 contract"><div class="lab">New contract value</div><div class="v num" id="co_contract">—</div></div>
+        </div>
+        <div class="dis">Contract value is not profit or same-month cash. Excludes closer pay, marketing, software, taxes, refunds, and delivery. Base equivalent = $200/wk × 52 ÷ 12. Commissions: TPB $10 + $10 · Academy $135 · BOSS $240.</div>
+      </div>
+      <div class="note blue">Starting economic recommendation: <b>3%</b> for setter-attributed Academy/BOSS. Optionally test <b>4%</b> later for genuinely setter-<i>sourced</i> outbound opportunities, once unit economics are validated.</div>
+
+      <div class="sec-h"><span class="n">4</span><h2>Commission rules for the contract</h2></div>
+      <p class="lead">Without defined attribution rules, this is exactly the plan that creates disputes. Put these in writing.</p>
+      <table>
+        <thead><tr><th>Rule</th><th>Recommendation</th></tr></thead>
+        <tbody>
+          <tr><td>Lead attribution</td><td>Setter assigned in CRM <b>and</b> a documented, substantive contribution to the opportunity.</td></tr>
+          <tr><td>Existing pipeline leads</td><td>Eligible when formally assigned; merely touching an opportunity isn't enough.</td></tr>
+          <tr><td>TPB membership</td><td>First $10 after payment; second $10 after the second successful monthly payment.</td></tr>
+          <tr><td>Academy / BOSS</td><td>3% of actual eligible net cash collected.</td></tr>
+          <tr><td>Commission window</td><td>Payments received within <b>180 days</b> of the qualifying sale.</td></tr>
+          <tr><td>Refunds / chargebacks</td><td>Defined offsets against future unearned commissions where lawful; never arbitrary clawbacks.</td></tr>
+          <tr><td>Duplicate credit</td><td>One primary setter per opportunity; disputes resolved from timestamped CRM records.</td></tr>
+          <tr><td>Setter leaving</td><td>Commissions already earned remain payable; future eligibility per the written agreement &amp; law.</td></tr>
+          <tr><td>Existing members upgrading</td><td>Only if a separately documented, setter-owned sales opportunity meets attribution.</td></tr>
+        </tbody>
+      </table>
+      <div class="note gold">Require the setter to <b>update the CRM immediately</b> after substantive conversations. If attribution isn't visible, you cannot measure performance or know whether a second setter is needed.</div>
+
+      <div class="sec-h"><span class="n">5</span><h2>When to hire the second setter</h2></div>
+      <p class="lead">Don't hire because the first is booking a certain number of calls. Hire when the first is consistently at capacity <i>and</i> qualified demand is going unanswered. Consider expansion only when these persist for <b style="color:var(--ink)">3 consecutive weeks</b>:</p>
+      <div class="card trig" id="trig">
+        <label><input type="checkbox"> At least <b style="color:var(--ink)">85%</b> of agreed productive capacity is consistently utilized.</label>
+        <label><input type="checkbox"> More than <b style="color:var(--ink)">10%</b> of eligible inbound leads miss the response-time target.</label>
+        <label><input type="checkbox"> Qualified prospects or due follow-ups regularly remain unattended.</label>
+        <label><input type="checkbox"> Sales-qualified conversations are available beyond current coverage capacity.</label>
+        <label><input type="checkbox"> Incremental expected contribution covers the added setter's fully loaded cost.</label>
+        <div class="res" id="trigRes"><b>0 of 5 met.</b> Gather the remaining evidence before committing to another setter.</div>
+      </div>
+      <div class="note gold">Measure capacity by actual conversation complexity and coverage hours — not raw message counts. A prospect needing six exchanges, qualification, and scheduling is not the same as someone asking for a link. For the first 30 days, track how many conversations one setter handles per hour without hurting response time or appointment quality — that becomes your hiring baseline. Planning reference: ~30–40 meaningful conversations and 2–3 qualified bookings per full coverage day.</div>
+
+      <div class="sec-h"><span class="n">6</span><h2>The $200/week issue to confirm first</h2></div>
+      <p class="lead">If you expect all-day Facebook/Instagram monitoring across a full workweek, $200/week is unlikely to be an appropriate guaranteed base. Hours drive everything:</p>
+      <table>
+        <thead><tr><th>Weekly hours</th><th>$200 base equivalent</th></tr></thead>
+        <tbody>
+          <tr><td>10</td><td class="num pos">$20.00 / hour</td></tr>
+          <tr><td>15</td><td class="num">$13.33 / hour</td></tr>
+          <tr><td>20</td><td class="num neg">$10.00 / hour</td></tr>
+          <tr><td>40</td><td class="num neg">$5.00 / hour</td></tr>
+        </tbody>
+      </table>
+      <div class="note gold">Excludes commissions. Legal requirements depend on classification, jurisdiction, total comp, actual hours, and wage/overtime rules. A commission arrangement doesn't exempt an employee from wage protections, and calling someone a contractor doesn't settle classification — the U.S. DOL emphasizes that <b>actual working practices matter</b>. For a first hire, prefer <b>defined part-time coverage blocks</b> checked against wage requirements rather than all-day availability for $200/week.</div>
+
+      <div class="sec-h"><span class="n">7</span><h2>How to launch it</h2></div>
+      <div class="card"><b style="color:var(--gold-soft);font-family:var(--disp)">Week 1 — Establish coverage.</b><p style="color:var(--mid);font-size:14px;margin:4px 0 0">Set inbox responsibilities, qualification rules, CRM stages, reporting. Begin manually capturing every FB/IG sales opportunity.</p></div>
+      <div class="card"><b style="color:var(--gold-soft);font-family:var(--disp)">Week 2 — Improve conversations.</b><p style="color:var(--mid);font-size:14px;margin:4px 0 0">Review transcripts, missed messages, booking quality, objection handling, follow-up. Fix the biggest leaks before adding lead volume.</p></div>
+      <div class="card"><b style="color:var(--gold-soft);font-family:var(--disp)">Week 3 — Add automation.</b><p style="color:var(--mid);font-size:14px;margin:4px 0 0">ManyChat / approved Meta automations for initial responses and opt-in, with clear human handoffs and no duplicate messages. Automation reduces routine work, it doesn't replace qualified conversations.</p></div>
+      <div class="card"><b style="color:var(--gold-soft);font-family:var(--disp)">Week 4 — Validate economics &amp; capacity.</b><p style="color:var(--mid);font-size:14px;margin:4px 0 0">Review attended calls, TPB acquisitions, cash collected, commission cost, response performance, and how much coverage one setter can sustain.</p></div>
+
+      <div class="sec-h"><span class="n">★</span><h2>Final recommendation</h2></div>
+      <div class="note gold" style="font-size:14.5px">Launch with <b>one reliable, part-time DM setter</b>, an agreed coverage schedule, the proposed <b>$200/week base</b> (after hours &amp; classification review), up to <b>$20 per retained TPB member</b>, and <b>3% of eligible Academy/BOSS cash collected</b>. Do not pay 10% to an appointment setter unless the scope changes to independently sourced <i>and</i> closed revenue with margins that support it. Most importantly — set response-time and qualification standards <b>before</b> increasing lead generation. The one detail to confirm before publishing: <b style="color:var(--ink)">how many hours per week of active coverage you expect.</b></div>
+    </div>
+
+    <!-- ========== CANDIDATE OUTLINE ========== -->
+    <div id="outline">
+      <div class="ro-doc">
+        <div class="eyebrow">BreedWise</div>
+        <h1>DM Setter — Role &amp; Compensation Outline</h1>
+        <div class="ro-meta">
+          <b>Position:</b> DM Setter / Appointment Setter &nbsp;·&nbsp; <b>Company:</b> BreedWise<br>
+          <b>Primary channels:</b> Facebook, Instagram, and approved CRM<br>
+          <b>Reports to:</b> Sales Lead / Founder &nbsp;·&nbsp; <b>Compensation:</b> Weekly base + performance commissions<br>
+          <b>Work arrangement:</b> To be confirmed
+        </div>
+
+        <div class="ro-h">The opportunity</div>
+        <p>BreedWise helps serious dog breeders improve their breeding programs and businesses through veterinary-informed education, practical tools, coaching, and implementation support. We're looking for a proactive, organized, results-driven DM Setter to manage incoming conversations, engage interested breeders, qualify prospects, and connect the right people with the appropriate BreedWise program.</p>
+        <p><b style="color:var(--ink)">The Profitable Breeder (TPB)</b> — $97/month membership: assessments, education, tools, weekly guidance. &nbsp; <b style="color:var(--ink)">BreedWise Academy</b> — structured coaching, accountability, guided implementation. &nbsp; <b style="color:var(--ink)">BOSS</b> — premium, hands-on implementation support.</p>
+        <p class="em">Your job is not to pressure people into buying. It's to engage quickly, understand their needs, create genuine interest, and move qualified prospects toward the right next step.</p>
+
+        <div class="ro-h">Your primary mission</div>
+        <p>Turn BreedWise's existing social attention into qualified conversations, paid memberships, and attended sales appointments. Success is measured by response speed, conversation quality, qualified opportunities, consistent follow-up, and attributed sales.</p>
+
+        <div class="ro-h">1 · Core responsibilities</div>
+        <div class="ro-sub">Facebook &amp; Instagram engagement</div>
+        <ul>
+          <li>Monitor assigned FB &amp; IG messages and respond promptly to inbound questions.</li>
+          <li>Engage with comments that indicate interest; initiate permitted DM conversations with relevant prospects.</li>
+          <li>Continue conversations generated by existing automations; avoid duplicate messages or repeated qualification.</li>
+          <li>Escalate customer-service, veterinary, and sensitive concerns to the appropriate team member.</li>
+        </ul>
+        <div class="ro-sub">Lead qualification</div>
+        <ul>
+          <li>Learn the prospect's breeding experience/stage, primary challenge, desired outcome, timeline/readiness, and interest in support.</li>
+          <li>The goal is to identify genuine needs — not interrogate prospects.</li>
+        </ul>
+        <div class="ro-sub">TPB membership conversations</div>
+        <ul>
+          <li>Explain TPB's value, help suitable prospects understand the membership, and direct interested breeders to the official membership page.</li>
+          <li>Answer approved questions on price, resources, and access; follow up appropriately on requests for more information.</li>
+        </ul>
+        <div class="ro-sub">Academy &amp; BOSS appointment setting</div>
+        <ul>
+          <li>Identify prospects with needs appropriate for deeper support; explain the purpose of a Breeder Game Plan Call.</li>
+          <li>Book qualified prospects onto approved calendars, confirm interest/availability, send authorized reminders.</li>
+          <li>Update the CRM with useful discovery info; coordinate with the closing team after appointments.</li>
+        </ul>
+        <div class="ro-sub">CRM &amp; follow-up</div>
+        <ul>
+          <li>Record meaningful conversations; maintain accurate lead ownership, status, and sales attribution.</li>
+          <li>Follow up per approved rules; identify inactive conversations worth revisiting; track scheduled calls and outcomes.</li>
+        </ul>
+
+        <div class="ro-h">2 · Response &amp; service standards</div>
+        <p>During agreed coverage windows (targets, adjusted to staffing, schedules, platform limits, and actual volume):</p>
+        <ul>
+          <li>New inbound sales DMs: initial response within <b style="color:var(--ink)">15 minutes</b>.</li>
+          <li>Relevant public comments: reviewed and addressed within <b style="color:var(--ink)">60 minutes</b>.</li>
+          <li>Active conversations: timely follow-through, prioritized by interest and urgency; high-intent leads prioritized for immediate qualification or handoff.</li>
+        </ul>
+        <p>The setter is responsible for the assigned coverage period, not 24/7 monitoring. Messages outside covered periods are handled in the next window. Platform messaging permissions, consent requirements, and automation restrictions must be followed.</p>
+
+        <div class="ro-h">3 · Performance expectations</div>
+        <p>Initial planning targets, validated after the first 30 days:</p>
+        <ul>
+          <li><b style="color:var(--ink)">Conversation activity:</b> ~30–40 meaningful two-way conversations per full coverage day, given sufficient qualified lead volume.</li>
+          <li><b style="color:var(--ink)">Qualified appointments:</b> ~2–3 booked per full coverage day once systems and volume support it.</li>
+          <li><b style="color:var(--ink)">Appointment quality:</b> 75–85% show rate (planning assumption) via confirmation and follow-up.</li>
+          <li><b style="color:var(--ink)">TPB sales:</b> attributed paid memberships through qualified conversations; targets set after reviewing conversion rates and lead volume.</li>
+          <li><b style="color:var(--ink)">CRM accuracy:</b> 100% of qualified opportunities, booked appointments, and attributed sales recorded accurately. No fabricated activity, misleading qualification, or duplicate commission claims.</li>
+        </ul>
+        <p>Targets adjust proportionately for approved part-time coverage and actual inbound demand.</p>
+
+        <div class="ro-h">4 · Daily outputs</div>
+        <p>By the end of each coverage period: review assigned messages, address actionable comments, progress active conversations, complete due follow-ups, log appointments and lead status, flag high-priority opportunities, and escalate unresolved issues. A short daily report covers: new conversations initiated, meaningful conversations handled, qualified prospects, TPB memberships attributed, qualified calls booked, calls attended (where known), follow-ups completed, open high-intent leads, and issues needing management.</p>
+
+        <div class="ro-h">5 · Compensation</div>
+        <ul>
+          <li><b style="color:var(--ink)">Base:</b> $200/week, subject to scope, schedule, employment classification, and wage laws.</li>
+          <li><b style="color:var(--ink)">TPB:</b> up to $20 per qualified attributed new paying member — $10 after the first $97 payment, $10 after the second monthly payment.</li>
+          <li><b style="color:var(--ink)">Academy:</b> 3% of eligible, attributed net cash collected from a new enrollment in the eligibility window.</li>
+          <li><b style="color:var(--ink)">BOSS:</b> 3% of eligible, attributed net cash collected from a new enrollment in the eligibility window.</li>
+        </ul>
+        <p>High-ticket commissions are paid only as eligible payments are actually collected. The eligibility window, attribution rules, refunds, chargebacks, and timing are set in the final agreement. <b style="color:var(--gold-soft)">Booking an appointment does not itself earn commission</b> — eligibility requires a qualifying, documented sale and collected payment.</p>
+
+        <div class="ro-h">6 · Professional standards</div>
+        <ul>
+          <li>Communicate professionally; never misrepresent services or guarantee breeding, veterinary, or financial results.</li>
+          <li>No unauthorized discounts or payment promises; protect customer and prospect information.</li>
+          <li>Follow approved scripts and adapt them naturally; avoid spam, excessive follow-up, and prohibited platform activity.</li>
+          <li>Respect a prospect's decision to decline; keep all lead records inside approved BreedWise systems; raise problems early.</li>
+        </ul>
+
+        <div class="ro-h">7 · First 30 days</div>
+        <ul>
+          <li><b style="color:var(--ink)">Week 1 — Training &amp; systems:</b> learn BreedWise, offers, qualification standards, CRM, communication expectations, workflows.</li>
+          <li><b style="color:var(--ink)">Week 2 — Consistent execution:</b> independently handle inboxes, qualify prospects, book calls, maintain records.</li>
+          <li><b style="color:var(--ink)">Week 3 — Conversion improvement:</b> sharpen follow-up, objection handling, call quality, efficiency.</li>
+          <li><b style="color:var(--ink)">Week 4 — Performance review:</b> review response times, qualified conversations, appointments, attendance, attributed sales, CRM accuracy, and workload; set realistic ongoing expectations.</li>
+        </ul>
+
+        <div class="ro-h">8 · Advancement</div>
+        <ul>
+          <li><b style="color:var(--ink)">Senior DM Setter</b> — sustained high-quality conversion, independent ownership, reliable performance.</li>
+          <li><b style="color:var(--ink)">Sales Team Lead</b> — coaches other setters, manages quality, coordinates inbox coverage.</li>
+          <li><b style="color:var(--ink)">Sales Manager</b> — people leadership, pipeline management, forecasting, broader sales accountability.</li>
+        </ul>
+        <p>Advancement is based on demonstrated performance and business needs, not tenure.</p>
+
+        <div class="ro-h">The BreedWise expectation</div>
+        <p class="em">We're not looking for someone who sends messages and waits for instructions. We want someone who takes ownership of assigned sales conversations, identifies qualified opportunities, follows through consistently, and helps serious breeders find the support they actually need — turning conversations into meaningful opportunities and measurable revenue for BreedWise.</p>
+      </div>
+    </div>
+
+    <footer class="bf">BREEDWISE · DM Setter role &amp; compensation. Proposed terms — confirm hours, classification, and final pricing before publishing.</footer>
+    </div>
+  </div>
+
+<script>
+function money(n){ return '$' + Math.round(n).toLocaleString(); }
+function v(id){ var e=document.getElementById(id); return e? (parseFloat(e.value)||0) : 0; }
+function calc(){
+  var t=v('ci_tpb'), t2=v('ci_tpb2'), a=v('ci_aca'), b=v('ci_boss');
+  var comm = t*10 + t2*10 + a*135 + b*240;
+  var base = 200*52/12;
+  var contract = t*97 + a*4500 + b*8000;
+  document.getElementById('co_base').textContent = money(base);
+  document.getElementById('co_comm').textContent = money(comm);
+  document.getElementById('co_total').textContent = money(base+comm);
+  document.getElementById('co_contract').textContent = money(contract);
+}
+function trig(){
+  var boxes=document.querySelectorAll('#trig input'), met=0;
+  boxes.forEach(function(b){ if(b.checked) met++; });
+  var res=document.getElementById('trigRes');
+  if(met>=5){ res.className='res go'; res.innerHTML='<b>All 5 met.</b> If this has held for 3 consecutive weeks, the economics support adding a second setter.'; }
+  else { res.className='res'; res.innerHTML='<b>'+met+' of 5 met.</b> Gather the remaining evidence before committing to another setter — ideally sustained for 3 consecutive weeks.'; }
+}
+function setView(v){
+  var rec=v==='rec';
+  document.getElementById('recommendation').style.display=rec?'block':'none';
+  document.getElementById('outline').style.display=rec?'none':'block';
+  document.getElementById('vRec').classList.toggle('on',rec);
+  document.getElementById('vOut').classList.toggle('on',!rec);
+  try{sessionStorage.setItem('dms_view',v);}catch(e){}
+  window.scrollTo(0,0);
+}
+(function(){
+  var OK='368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875'; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function el(id){return document.getElementById(id);}
+  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='DM Setter — Role & Comp · BreedWise';
+    ['ci_tpb','ci_tpb2','ci_aca','ci_boss'].forEach(function(id){el(id).addEventListener('input',calc);});
+    document.querySelectorAll('#trig input').forEach(function(b){b.addEventListener('change',trig);});
+    calc();trig();
+    var vw='rec';try{vw=sessionStorage.getItem('dms_view')||'rec';}catch(e){}setView(vw);
+  }
+  function tryUnlock(){var val=(el('pw').value||'').trim().toUpperCase();h(val).then(function(hex){if(hex===OK){try{sessionStorage.setItem('dms_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
+  el('unlock').addEventListener('click',tryUnlock);
+  el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('dms_ok')==='1')reveal();else el('pw').focus();}catch(e){el('pw').focus();}
+})();
+</script>
+</body>
+</html>
