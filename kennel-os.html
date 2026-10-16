@@ -524,7 +524,8 @@ var NAV=[
  {g:'Overview',items:[['','home','Dashboard'],['calendar','calendar','Calendar'],['tasks','check','Tasks','tasks_open']]},
  {g:'Relationships',items:[['contacts','users','CRM & Contacts'],['leads','target','Leads & Sales','leads_open']]},
  {g:'Kennel',items:[['dogs','dog','Dogs'],['breedings','heart','Breedings'],
-   ['litters','paw','Litters & Puppies'],['health','check','Health & Vaccines']]},
+   ['litters','paw','Litters & Puppies'],['health','check','Health & Vaccines'],
+   ['breeding-tools','spark','Breeding Tools']]},
  {g:'Business',items:[['money','dollar','Finances'],['documents','file','Documents']]},
  {g:'Intelligence',items:[['reports','chart','Reports'],['settings','cog','Settings']]}
 ];
@@ -598,7 +599,12 @@ var RES={
      {k:'status',l:'Status',t:'sel',opts:['active','retired','placed','co-own','sold','prospect','deceased'],h:1},
      {k:'role',l:'Role',t:'text',h:1,ph:'Producer / Stud / Companion'},{k:'weight',l:'Weight',t:'text',h:1},
      {k:'reg_number',l:'Registration #',t:'text',h:1},{k:'microchip',l:'Microchip',t:'text',h:1},
-     {k:'sire',l:'Sire',t:'text',h:1},{k:'dam',l:'Dam',t:'text',h:1},
+     {k:'sire_id',l:'Sire (in this kennel)',t:'ref',opts:function(){return dogOpts('Male');},h:1},
+     {k:'dam_id', l:'Dam (in this kennel)', t:'ref',opts:function(){return dogOpts('Female');},h:1},
+     {k:'sire',l:'Outside sire (name)',t:'text',h:1,ph:'If he is not one of your dogs'},
+     {k:'dam', l:'Outside dam (name)', t:'text',h:1,ph:'If she is not one of your dogs'},
+     {k:'is_public',l:'Show on my website',t:'bool',h:1},
+     {k:'reg_org',l:'Registry',t:'text',h:1,ph:'AKC / ABKC / UKC'},
      {k:'photo_url',l:'Photo',t:'photo'},{k:'notes',l:'Notes',t:'area'}],
    row:function(d){return {img:d.photo_url,ini:initials(d.call_name||d.name),t:d.call_name||d.name,
      s:[d.sex,d.breed,d.color].filter(Boolean).join(' · ')||d.name,
@@ -648,6 +654,7 @@ var RES={
      {k:'birth_weight',l:'Birth weight',t:'text',h:1},
      {k:'price',l:'Price',t:'money',h:1},{k:'deposit',l:'Deposit paid',t:'money',h:1},
      {k:'buyer_id',l:'Buyer',t:'ref',opts:contactOpts,h:1},{k:'go_home_date',l:'Go-home date',t:'date',h:1},
+     {k:'is_public',l:'Show on my website',t:'bool',h:1},
      {k:'photo_url',l:'Photo',t:'photo'},{k:'notes',l:'Notes',t:'area'}],
    row:function(p){return {img:p.photo_url,ini:initials(p.name||p.collar||'P'),t:p.name||p.collar||'Puppy',
      s:[p.sex,p.color,contactName(p.buyer_id)].filter(Boolean).join(' · '),
@@ -1029,6 +1036,36 @@ async function dashView(){
       if(r.data)openForm(key,r.data);};});
 }
 
+/* ─── pedigree maths ─────────────────────────────────────────────
+   Wright's coefficient via recursive coancestry. Identical to the
+   website API's engine, which is unit-tested against textbook values
+   (full sibs 25%, half sibs 12.5%, first cousins 6.25%). */
+function pedEngine(){
+  var dogs={}; S.cache.dogs.forEach(function(d){dogs[d.id]=d;});
+  var memo={},dep={};
+  function par(id){var d=dogs[id];return d?[d.sire_id||null,d.dam_id||null]:[null,null];}
+  function depth(id,g){
+    if(!id||!dogs[id])return 0;
+    if(dep[id]!==undefined)return dep[id];
+    g=g||{}; if(g[id])return 0; g[id]=true;
+    var p=par(id),v=1+Math.max(depth(p[0],g),depth(p[1],g));
+    delete g[id]; dep[id]=v; return v;
+  }
+  function kin(a,b){
+    if(!a||!b||!dogs[a]||!dogs[b])return 0;
+    if(a===b){var pp=par(a);return .5*(1+kin(pp[0],pp[1]));}
+    var x=a,y=b; if(depth(y)>depth(x)){x=b;y=a;}
+    var k=x+'|'+y; if(memo[k]!==undefined)return memo[k];
+    memo[k]=0; var px=par(x); var v=.5*(kin(px[0],y)+kin(px[1],y)); memo[k]=v; return v;
+  }
+  return {
+    coi:function(id){var p=par(id);return (!p[0]||!p[1])?null:kin(p[0],p[1]);},
+    trial:function(a,b){return kin(a,b);},
+    known:function(id){var p=par(id);return !!(p[0]&&p[1]);}
+  };
+}
+function coiTone(pct){return pct<6.25?'good':pct<12.5?'warn':'bad';}
+
 /* ─── whelping: weights, health schedule, progesterone ──────────── */
 var OZ=28.3495;
 function oz(g){return (Number(g||0)/OZ);}
@@ -1252,6 +1289,50 @@ async function breedingView(id){
       openForm('progesterone',rec,{hide:['breeding_id','dog_id']});};});
 }
 
+/* ─── breeding tools: trial matings + COI ──────────────────────── */
+async function breedingToolsView(){
+  var v=el('view'),e=pedEngine();
+  var withPar=S.cache.dogs.filter(function(d){return e.known(d.id);});
+  var males=dogOpts('Male'),females=dogOpts('Female');
+  v.innerHTML='<div class="view-head"><h2>Breeding Tools</h2>'+
+    '<p>Trial a pairing before you make it, and see how line-bred your dogs already are.</p></div>'+
+    '<div class="card"><div class="card-h"><h3>Trial mating</h3></div>'+
+      '<div class="f2"><div class="field"><label>Sire</label><select id="tSire">'+
+        '<option value="">— pick a sire —</option>'+males.map(function(o){
+          return '<option value="'+esc(o[0])+'">'+esc(o[1])+'</option>';}).join('')+'</select></div>'+
+      '<div class="field"><label>Dam</label><select id="tDam">'+
+        '<option value="">— pick a dam —</option>'+females.map(function(o){
+          return '<option value="'+esc(o[0])+'">'+esc(o[1])+'</option>';}).join('')+'</select></div></div>'+
+      '<div id="tOut"></div>'+
+      '<div class="ld-s" style="margin-top:10px">Predicted coefficient of inbreeding for a puppy from this pairing, '+
+      'based only on the parentage recorded here. Add sires and dams to your dogs to make it meaningful.</div></div>'+
+    '<div class="card"><div class="card-h"><h3>Your dogs</h3><span class="mini">'+withPar.length+' of '+
+      S.cache.dogs.length+' have both parents recorded</span></div>'+
+      (withPar.length?'<div class="rows">'+withPar.map(function(d){
+        var c=e.coi(d.id),pct=c===null?null:+(c*100).toFixed(2);
+        return '<div class="row"><span class="av">'+esc(initials(d.call_name||d.name))+'</span>'+
+          '<span class="body"><span class="t">'+esc(d.call_name||d.name)+'</span>'+
+          '<span class="s">'+esc(d.sex||'')+'</span></span>'+
+          '<span class="r"><span class="pill '+coiTone(pct)+'">'+pct+'%</span><small>COI</small></span></div>';}).join('')+'</div>'
+      :'<div class="empty" style="padding:26px 8px"><b>No pedigrees yet</b>'+
+       'Open a dog and set its sire and dam from your own dogs. Two generations is enough to start.</div>')+
+    '</div>';
+  function calc(){
+    var a=el('tSire').value,b=el('tDam').value;
+    if(!a||!b){el('tOut').innerHTML='';return;}
+    var pct=+(e.trial(a,b)*100).toFixed(2);
+    el('tOut').innerHTML='<div class="hero" style="margin:4px 0 0;text-align:center">'+
+      '<div class="k" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">Predicted COI</div>'+
+      '<div style="font-family:var(--heading);font-size:38px;color:var(--'+coiTone(pct)+')">'+pct+'%</div>'+
+      '<div class="ld-s">'+(pct===0?'No shared ancestry in the pedigree you have recorded.'
+        :pct<6.25?'Low — roughly less than a first-cousin pairing.'
+        :pct<12.5?'Moderate — around a first-cousin pairing.'
+        :pct<25?'High — around a half-sibling pairing.'
+        :'Very high — at or above a full-sibling pairing.')+'</div></div>';
+  }
+  el('tSire').onchange=calc; el('tDam').onchange=calc;
+}
+
 /* ─── reports ──────────────────────────────────────────────────── */
 async function reportsView(){
   var v=el('view');
@@ -1418,6 +1499,16 @@ async function settingsView(){
     '<div class="ld-s" style="margin-top:8px">First row must be column headers. Columns we can\u2019t match are kept in each record\u2019s notes.</div>'+
   '</div>':'')+
 
+  (['owner','manager'].indexOf(S.role)>=0||S.isAdmin?
+  '<div class="card"><div class="card-h"><h3>Website API</h3><span class="mini">for your own site</span></div>'+
+    '<p style="color:var(--mid);font-size:14px;margin-bottom:12px">Create a key, paste the snippet into your website, '+
+    'and the puppies you mark <b style="color:var(--ink)">Show on my website</b> appear there automatically — '+
+    'and enquiries land straight in your CRM.</p>'+
+    '<div id="keyRows" class="rows"><div class="empty" style="padding:16px 0">Loading…</div></div>'+
+    '<button class="btn ghost block" id="newKey" style="margin-top:12px">Create a website key</button>'+
+    '<div id="keyHelp"></div>'+
+  '</div>':'')+
+
   '<div class="card"><div class="card-h"><h3>Account</h3></div><div class="rows">'+
     '<div class="row"><span class="body"><span class="t">'+esc(S.user.email)+'</span><span class="s">Signed in · '+esc(S.role)+'</span></span></div>'+
     '<div class="row"><span class="body"><span class="t">'+esc(k.name)+'</span><span class="s">Kennel · '+esc(k.slug)+' · '+esc(k.plan)+'</span></span></div>'+
@@ -1537,6 +1628,40 @@ async function settingsView(){
       el('impPreview').innerHTML='<div class="err">'+esc(e.message||'Import failed')+'</div>';
     }
   };
+
+  async function drawKeys(){
+    if(!el('keyRows'))return;
+    var r=await sb.from('kos_api_keys').select('*').eq('kennel_id',k.id).order('created_at',{ascending:false});
+    var rows=(r.data||[]);
+    el('keyRows').innerHTML=rows.length?rows.map(function(x){
+      return '<div class="row"><span class="av">'+(x.revoked?'✕':'🔑')+'</span>'+
+        '<span class="body"><span class="t">'+esc(x.label||'Website key')+'</span>'+
+        '<span class="s" style="font-family:ui-monospace,monospace">'+esc(x.key)+'</span></span>'+
+        '<span class="r">'+(x.revoked?'<span class="pill bad">revoked</span>'
+          :'<button class="mini" data-copy="'+esc(x.key)+'">Copy</button>')+
+        '<small>'+(x.calls||0)+' calls</small></span></div>';}).join('')
+      :'<div class="empty" style="padding:16px 0">No key yet.</div>';
+    Array.prototype.forEach.call(el('keyRows').querySelectorAll('[data-copy]'),function(b){
+      b.onclick=function(){
+        var key=b.getAttribute('data-copy');
+        try{navigator.clipboard.writeText(key);toast('Key copied');}catch(e){toast(key);}
+        el('keyHelp').innerHTML='<div class="block" style="margin-top:12px"><h3>Paste this into your website</h3>'+
+          '<p style="color:var(--mid);font-size:13.5px">Put it on the page where you list puppies. '+
+          'It is safe in public page source — it can only read what you marked public and create an enquiry.</p>'+
+          '<pre style="white-space:pre-wrap;word-break:break-all;background:var(--surface);border:1px solid var(--border);'+
+          'border-radius:10px;padding:12px;font-size:12px;color:var(--mid);margin-top:10px">'+
+          esc('<script src="https://review.breedwise.io/kennel-os-embed.js"></'+'script>\n<!-- or copy kennel-os-embed.html and set -->\nvar KOS_KEY = \''+key+'\';')+
+          '</pre></div>';
+      };});
+  }
+  if(el('newKey'))el('newKey').onclick=async function(){
+    this.disabled=true;
+    var r=await sb.from('kos_api_keys').insert({kennel_id:k.id,label:(k.website||k.name||'My website')}).select().single();
+    this.disabled=false;
+    if(r.error)return toast(r.error.message);
+    toast('Key created'); drawKeys();
+  };
+  drawKeys();
 
   var tm=await sb.from('kennel_members').select('*').eq('kennel_id',k.id);
   var iv=await sb.from('kennel_invites').select('*').eq('kennel_id',k.id).is('accepted_at',null);
@@ -1766,7 +1891,8 @@ async function adminView(){
 /* ─── render dispatcher ────────────────────────────────────────── */
 var TITLES={'':'Dashboard',calendar:'Calendar',tasks:'Tasks',contacts:'CRM & Contacts',leads:'Leads & Sales',
   dogs:'Dogs',breedings:'Breedings',litters:'Litters & Puppies',health:'Health & Vaccines',
-  money:'Finances',documents:'Documents',reports:'Reports',settings:'Settings',admin:'White-label Admin'};
+  money:'Finances',documents:'Documents',reports:'Reports',settings:'Settings',
+  'breeding-tools':'Breeding Tools',admin:'White-label Admin'};
 
 async function render(){
   if(!S.kennel){
@@ -1787,6 +1913,7 @@ async function render(){
     if(r.view==='')return await dashView();
     if(r.view==='litters'&&r.id)return await litterView(r.id);
     if(r.view==='breedings'&&r.id)return await breedingView(r.id);
+    if(r.view==='breeding-tools')return await breedingToolsView();
     if(r.view==='reports')return await reportsView();
     if(r.view==='settings')return await settingsView();
     if(r.view==='admin')return S.isAdmin?await adminView():go('');
@@ -1800,7 +1927,7 @@ async function render(){
 /* ─── caches + counters ────────────────────────────────────────── */
 async function refreshCaches(){
   var got=await Promise.all([
-    sel('kos_dogs','id,name,call_name,sex,status').order('name'),
+    sel('kos_dogs','id,name,call_name,sex,status,sire_id,dam_id,dob').order('name'),
     sel('kos_contacts','id,name,type').order('name'),
     sel('kos_litters','id,name,whelp_date,status').order('whelp_date',{ascending:false}),
     sel('kos_puppies','id,name,collar,color,status,litter_id').limit(400),
