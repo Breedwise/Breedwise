@@ -1,0 +1,106 @@
+<!-- ════════════════════════════════════════════════════════════════
+     KENNEL OS — website embed
+     Paste into any page on a breeder's site (Netlify, Webflow, Squarespace,
+     plain HTML). No build step, no framework, no server.
+
+     1. In the OS: Settings → Website API → create a key
+     2. Replace KOS_KEY below with it
+     3. Mark puppies "public" in the OS and they appear here within seconds
+
+     The key is safe in public source: it can only read records the breeder
+     marked public and create an enquiry. It cannot reach buyers, money,
+     notes, or any other kennel.
+     ════════════════════════════════════════════════════════════════ -->
+
+<div id="kos-puppies" class="kos-grid"></div>
+
+<form id="kos-enquiry" class="kos-form">
+  <h3>Enquire about a puppy</h3>
+  <input name="name"  placeholder="Your name" required>
+  <input name="email" type="email" placeholder="Email" required>
+  <input name="phone" type="tel" placeholder="Phone">
+  <select name="puppy_id" id="kos-puppy-select"><option value="">Any puppy / next litter</option></select>
+  <textarea name="message" rows="4" placeholder="Tell us a little about your family and what you're looking for"></textarea>
+  <button type="submit">Send enquiry</button>
+  <p class="kos-note" id="kos-status"></p>
+</form>
+
+<style>
+.kos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;margin:0 0 40px}
+.kos-card{border:1px solid #e5e2db;border-radius:14px;overflow:hidden;background:#fff}
+.kos-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#f2efe9}
+.kos-card .kos-body{padding:14px 16px}
+.kos-card h4{margin:0;font-size:17px}
+.kos-card p{margin:4px 0 0;font-size:14px;color:#6b665c}
+.kos-card .kos-price{margin-top:8px;font-weight:600}
+.kos-card .kos-tag{display:inline-block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 9px;border-radius:20px;background:#eef3ee;color:#3f6b4a;font-weight:700}
+.kos-card .kos-tag.reserved{background:#fdf3e3;color:#9a6b1e}
+.kos-form{max-width:520px;display:grid;gap:12px}
+.kos-form input,.kos-form select,.kos-form textarea{width:100%;padding:12px 14px;border:1px solid #ddd9d1;border-radius:10px;font:inherit}
+.kos-form button{padding:14px 22px;border:0;border-radius:10px;background:#111;color:#fff;font-weight:600;cursor:pointer}
+.kos-form button[disabled]{opacity:.5}
+.kos-note{font-size:14px;margin:0;min-height:20px}
+</style>
+
+<script>
+(function(){
+  var KOS_KEY = 'PASTE_YOUR_KEY_HERE';
+  var KOS_API = 'https://jrfdufemonjhafqyacge.supabase.co/functions/v1/kennel-os-api';
+
+  function money(n){ return n ? '$' + Number(n).toLocaleString() : ''; }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  // ── available puppies ──────────────────────────────────────────
+  fetch(KOS_API + '?key=' + encodeURIComponent(KOS_KEY) + '&resource=puppies')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var grid = document.getElementById('kos-puppies');
+      var sel  = document.getElementById('kos-puppy-select');
+      if (!d.ok || !d.puppies.length){
+        grid.innerHTML = '<p class="kos-note">No puppies are available right now — send an enquiry to join the waitlist.</p>';
+        return;
+      }
+      grid.innerHTML = d.puppies.map(function(p){
+        var title = esc(p.name || p.collar || 'Puppy');
+        var bits  = [p.sex, p.color].filter(Boolean).map(esc).join(' · ');
+        return '<div class="kos-card">' +
+          (p.photo_url ? '<img src="' + esc(p.photo_url) + '" alt="' + title + '">' : '') +
+          '<div class="kos-body"><span class="kos-tag ' + (p.status === 'reserved' ? 'reserved' : '') + '">' +
+            esc(p.status) + '</span><h4 style="margin-top:8px">' + title + '</h4>' +
+            (bits ? '<p>' + bits + '</p>' : '') +
+            (p.price ? '<div class="kos-price">' + money(p.price) + '</div>' : '') +
+          '</div></div>';
+      }).join('');
+      d.puppies.filter(function(p){ return p.status === 'available'; }).forEach(function(p){
+        var o = document.createElement('option');
+        o.value = p.id; o.textContent = p.name || p.collar || 'Puppy';
+        sel.appendChild(o);
+      });
+    })
+    .catch(function(){
+      document.getElementById('kos-puppies').innerHTML =
+        '<p class="kos-note">Puppy list is unavailable right now.</p>';
+    });
+
+  // ── enquiry straight into the kennel's CRM ─────────────────────
+  document.getElementById('kos-enquiry').addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = e.target, btn = f.querySelector('button'), note = document.getElementById('kos-status');
+    var body = {};
+    ['name','email','phone','message','puppy_id'].forEach(function(k){ body[k] = f[k] ? f[k].value : ''; });
+    body.source = 'Website';
+    btn.disabled = true; note.textContent = 'Sending…';
+    fetch(KOS_API + '?key=' + encodeURIComponent(KOS_KEY), {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body)
+    })
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if (d.ok){ f.reset(); note.textContent = d.message || 'Thanks — we will be in touch shortly.'; }
+        else { btn.disabled = false; note.textContent = d.error || 'Something went wrong. Please try again.'; }
+      })
+      .catch(function(){ btn.disabled = false; note.textContent = 'Could not send. Please try again.'; });
+  });
+})();
+</script>

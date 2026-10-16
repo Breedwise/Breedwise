@@ -256,6 +256,7 @@ main{padding:18px 15px calc(112px + var(--safe-b));max-width:1080px;margin:0 aut
       <span id="altText">First time here?</span>
       <button id="altBtn">Create your login</button>
     </div>
+    <div class="login-alt" style="margin-top:8px"><button id="forgotBtn">Forgot your password?</button></div>
   </div>
 </div>
 
@@ -1877,6 +1878,35 @@ async function loadPrefs(){
   S.prefs=(r&&r.data)||null;
 }
 
+/* ─── password reset ───────────────────────────────────────────── */
+// Supabase mails a recovery link back to this page; supabase-js picks the
+// token out of the URL, so we just listen for the event and swap the form.
+var RECOVERY=false;
+function showNewPassword(){
+  RECOVERY=true;
+  el('login').style.display='flex'; el('app').style.display='none';
+  document.body.classList.add('anon');
+  el('loginTitle').textContent='Choose a new password';
+  el('loginSub').textContent='You followed a reset link. Pick something you will remember.';
+  el('email').parentNode.style.display='none';
+  el('password').setAttribute('placeholder','New password');
+  el('loginBtn').textContent='Save new password';
+  el('forgotBtn').parentNode.style.display='none';
+  el('altBtn').parentNode.style.display='none';
+  el('password').focus();
+}
+el('forgotBtn').onclick=async function(){
+  var em=el('email').value.trim();
+  if(!em){el('loginErr').textContent='Type your email above first, then tap this again.';el('email').focus();return;}
+  this.disabled=true; this.textContent='Sending…';
+  var r=await sb.auth.resetPasswordForEmail(em,{redirectTo:location.origin+location.pathname});
+  this.disabled=false; this.textContent='Forgot your password?';
+  el('loginErr').style.color='var(--good)';
+  el('loginErr').textContent=r.error?r.error.message
+    :'If that email has an account, a reset link is on its way. Check spam too.';
+  setTimeout(function(){el('loginErr').style.color='';},6000);
+};
+
 /* ─── auth + boot ──────────────────────────────────────────────── */
 var signupMode=false;
 function showLogin(msg){
@@ -1895,8 +1925,16 @@ el('altBtn').onclick=function(){
 };
 el('loginBtn').onclick=async function(){
   var em=el('email').value.trim(),pw=el('password').value;
-  if(!em||!pw){el('loginErr').textContent='Email and password required';return;}
+  if(RECOVERY){ if(!pw||pw.length<8){el('loginErr').textContent='Use at least 8 characters.';return;} }
+  else if(!em||!pw){el('loginErr').textContent='Email and password required';return;}
   this.disabled=true;el('loginErr').textContent='';
+  if(RECOVERY){
+    var up=await sb.auth.updateUser({password:pw});
+    this.disabled=false;
+    if(up.error){el('loginErr').textContent=up.error.message;return;}
+    RECOVERY=false; location.replace(location.origin+location.pathname);
+    return;
+  }
   var r=signupMode?await sb.auth.signUp({email:em,password:pw})
                   :await sb.auth.signInWithPassword({email:em,password:pw});
   this.disabled=false;
@@ -1965,7 +2003,11 @@ async function boot(){
   await render();
 }
 
-sb.auth.onAuthStateChange(function(evt){if(evt==='SIGNED_OUT')showLogin();});
+sb.auth.onAuthStateChange(function(evt){
+  if(evt==='PASSWORD_RECOVERY')showNewPassword();
+  else if(evt==='SIGNED_OUT'&&!RECOVERY)showLogin();
+});
+if(/type=recovery/.test(location.hash))showNewPassword();
 boot();
 })();
 </script>
