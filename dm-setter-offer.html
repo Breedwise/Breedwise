@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>DM Setter — The Role &amp; Your Offer | BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13;--bg2:#0e131a;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;
+    --ink:#f0f4f9;--mid:#c3cdda;--muted:#8794a3;--faint:#5a6572;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--gold-deep:#a9863f;--green:#57b98a;--green-s:rgba(87,185,138,.1);
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1100px 680px at 82% -12%,rgba(201,168,98,.07),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.62}
+  nav.top{position:sticky;top:0;z-index:20;background:rgba(11,14,19,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:12px 22px}
+  .logo{display:inline-flex;align-items:center;gap:10px}
+  .logo .mk{width:30px;height:30px;border-radius:8px;background:linear-gradient(150deg,var(--gold),var(--gold-deep));display:flex;align-items:center;justify-content:center}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#15100a;font-size:16px}
+  .logo .wm{font-size:14px;letter-spacing:.2em;font-weight:700}.logo .wm b{color:var(--gold)}
+  nav .sp{flex:1}
+  .print{background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:8px 14px;font-size:12.5px;cursor:pointer;font-family:var(--sans)}
+  .print:hover{border-color:var(--gold);color:var(--ink)}
+  .wrap{max-width:760px;margin:0 auto;padding:12px 22px 80px}
+  header.hero{text-align:center;padding:46px 0 10px}
+  header .crest{width:60px;height:60px;border-radius:50%;border:1.5px solid var(--gold);background:rgba(201,168,98,.08);display:flex;align-items:center;justify-content:center;margin:0 auto 22px}
+  header .crest span{font-family:var(--disp);font-weight:700;font-size:28px;color:var(--gold-soft)}
+  header .k{font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  header h1{font-family:var(--disp);font-size:clamp(32px,6vw,48px);line-height:1.04;font-weight:600;letter-spacing:-.4px;margin:14px 0 0}
+  header .lead{color:var(--mid);font-size:16.5px;max-width:560px;margin:18px auto 0;font-weight:300}
+  .meta{font-size:13px;color:var(--muted);line-height:1.9;margin:26px auto 0;max-width:600px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 0;text-align:left}
+  .meta b{color:var(--ink)}
+  .sec{margin-top:40px}
+  .sec .lbl{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .sec h2{font-family:var(--disp);font-size:25px;font-weight:600;margin:7px 0 10px;letter-spacing:-.2px}
+  .sec p{color:var(--mid);font-size:15.5px;margin:10px 0}
+  .sec p b{color:var(--ink)}
+  .em{color:var(--gold-soft);font-style:italic;font-family:var(--disp);font-size:18px;line-height:1.4}
+  .offers{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
+  @media(min-width:620px){.offers{grid-template-columns:repeat(4,1fr)}}
+  .offers .o{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line2);border-radius:14px;padding:18px 16px;text-align:center}
+  .offers .o .lab{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .offers .o .v{font-family:var(--disp);font-size:30px;color:var(--gold-soft);font-weight:600;margin:6px 0 3px}
+  .offers .o .d{font-size:11.5px;color:var(--faint);line-height:1.35}
+  .how{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:15px;padding:20px 22px;margin-top:16px}
+  .how h3{font-family:var(--disp);font-size:17px;color:var(--gold-soft);font-weight:600;margin-bottom:6px}
+  .how ul{list-style:none;margin:8px 0 0;padding:0}
+  .how li{position:relative;padding:8px 0 8px 24px;color:var(--mid);font-size:14.5px;border-bottom:1px solid rgba(255,255,255,.04);line-height:1.5}
+  .how li:last-child{border-bottom:0}
+  .how li::before{content:"";position:absolute;left:3px;top:15px;width:7px;height:7px;background:var(--gold);transform:rotate(45deg);border-radius:1px}
+  .how li b{color:var(--ink)}
+  .pot{background:var(--green-s);border:1px solid rgba(87,185,138,.26);border-radius:14px;padding:16px 20px;margin-top:16px;font-size:14.5px;color:var(--mid);line-height:1.6}
+  .pot b{color:#9fe3c2}
+  .note{background:rgba(201,168,98,.08);border:1px solid rgba(201,168,98,.26);border-left:3px solid var(--gold);border-radius:12px;padding:14px 17px;margin-top:16px;font-size:14px;color:var(--mid);line-height:1.55}
+  .note b{color:var(--gold-soft)}
+  ul.clean{list-style:none;margin:10px 0;padding:0}
+  ul.clean li{position:relative;padding:7px 0 7px 24px;color:var(--mid);font-size:15px;line-height:1.5;border-bottom:1px solid rgba(255,255,255,.04)}
+  ul.clean li:last-child{border-bottom:0}
+  ul.clean li::before{content:"";position:absolute;left:3px;top:14px;width:6px;height:6px;background:var(--gold);border-radius:50%}
+  ul.clean li b{color:var(--ink)}
+  .steps{display:grid;gap:12px;margin-top:16px}
+  .step{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:13px;padding:15px 18px}
+  .step .w{font-family:var(--disp);font-size:14px;color:var(--gold);font-weight:600}
+  .step p{margin:3px 0 0;font-size:14px;color:var(--mid)}
+  .ladder{display:grid;gap:10px;margin-top:16px}
+  .rung{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:12px;padding:13px 16px}
+  .rung b{font-family:var(--disp);color:var(--gold-soft);font-size:16px;font-weight:600}
+  .rung span{display:block;color:var(--mid);font-size:13.5px;margin-top:2px}
+  .close{text-align:center;margin-top:44px;background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line2);border-radius:16px;padding:30px 26px}
+  .close .em{font-size:19px}
+  footer.bf{text-align:center;color:#59657390;font-size:11px;margin-top:40px;letter-spacing:.04em}
+  @media print{
+    nav.top{display:none}
+    body{background:#fff;color:#111}
+    header h1,.sec h2,.how h3,.rung b,.step .w{color:#1a130a}
+    .sec p,.how li,ul.clean li,.meta,.step p,.rung span,.pot{color:#333}
+    .em{color:#8a6d2e}
+    .offers .o,.how,.step,.rung,.close,.note,.pot{background:#fff;border-color:#ccc}
+    .offers .o .v{color:#8a6d2e}
+    .crest{border-color:#a9863f}.crest span{color:#8a6d2e}
+  }
+</style>
+</head>
+<body>
+  <nav class="top"><div class="in">
+    <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+    <span class="sp"></span>
+    <button class="print" onclick="window.print()">Print / Save PDF</button>
+  </div></nav>
+
+  <div class="wrap">
+    <header class="hero">
+      <div class="crest"><span>B</span></div>
+      <div class="k">BreedWise · The Role &amp; Your Offer</div>
+      <h1>DM Setter</h1>
+      <p class="lead">A real role turning the conversations BreedWise is already creating into qualified opportunities — with a base you can count on and commissions that grow with your results.</p>
+      <div class="meta">
+        <b>Position:</b> DM Setter / Appointment Setter &nbsp;·&nbsp; <b>Company:</b> BreedWise<br>
+        <b>Channels:</b> Facebook, Instagram &amp; our CRM &nbsp;·&nbsp; <b>Reports to:</b> Sales Lead / Founder<br>
+        <b>Compensation:</b> Weekly base + performance commissions &nbsp;·&nbsp; <b>Schedule:</b> To be confirmed with you
+      </div>
+    </header>
+
+    <div class="sec">
+      <div class="lbl">The opportunity</div>
+      <h2>What you'd be doing</h2>
+      <p>BreedWise helps serious dog breeders improve their breeding programs and businesses through veterinary-informed education, tools, coaching, and implementation support. We're already generating real interest on Facebook and Instagram — your job is to make sure none of it slips through the cracks.</p>
+      <p>You'll manage incoming conversations, engage interested breeders, understand what they need, and guide the right people to the right next step across our three programs:</p>
+      <ul class="clean">
+        <li><b>The Profitable Breeder (TPB)</b> — $97/month membership: assessments, education, tools, and weekly guidance.</li>
+        <li><b>BreedWise Academy</b> — structured coaching, accountability, and guided implementation.</li>
+        <li><b>BOSS</b> — premium, hands-on implementation support.</li>
+      </ul>
+      <p class="em">Your job is not to pressure anyone into buying. It's to respond quickly, understand their needs, create genuine interest, and move qualified people toward the right next step.</p>
+    </div>
+
+    <div class="sec">
+      <div class="lbl">Your mission</div>
+      <h2>Turn attention into opportunities</h2>
+      <p>Turn BreedWise's existing social attention into qualified conversations, paid TPB memberships, and attended Academy &amp; BOSS appointments. You'll be measured on <b>response speed, conversation quality, qualified opportunities, consistent follow-up, and attributed results</b> — not on how many messages you send.</p>
+    </div>
+
+    <div class="sec">
+      <div class="lbl">What the day looks like</div>
+      <h2>Your core responsibilities</h2>
+      <ul class="clean">
+        <li>Monitor assigned Facebook &amp; Instagram messages and respond promptly to inbound questions.</li>
+        <li>Engage with comments that show interest and continue conversations our automations start.</li>
+        <li>Qualify prospects — their breeding stage, main challenge, the outcome they want, and their timeline.</li>
+        <li>Explain TPB and point suitable breeders to the membership; book qualified prospects onto approved sales calls for Academy &amp; BOSS.</li>
+        <li>Confirm appointments, send reminders, and hand off cleanly to the closing team.</li>
+        <li>Keep the CRM accurate — ownership, status, notes, and attribution — and follow up on time.</li>
+        <li>Escalate customer-service, veterinary, or sensitive concerns to the right person.</li>
+      </ul>
+    </div>
+
+    <div class="sec">
+      <div class="lbl">Your offer</div>
+      <h2>How you're paid</h2>
+      <div class="offers">
+        <div class="o"><div class="lab">Weekly base</div><div class="v">$200</div><div class="d">steady, every week</div></div>
+        <div class="o"><div class="lab">Per TPB member</div><div class="v">$20</div><div class="d">$10 + $10, see below</div></div>
+        <div class="o"><div class="lab">Academy</div><div class="v">3%</div><div class="d">of cash collected</div></div>
+        <div class="o"><div class="lab">BOSS</div><div class="v">3%</div><div class="d">of cash collected</div></div>
+      </div>
+      <div class="how">
+        <h3>How commissions work</h3>
+        <ul>
+          <li><b>TPB — $20 per member you bring in:</b> $10 after their first monthly payment, and $10 more after their second — so you're rewarded for attracting members who stay.</li>
+          <li><b>Academy &amp; BOSS — 3% of the cash actually collected</b> on enrollments you're credited for. Because our high-ticket programs are paid in installments, your commission is paid as each payment comes in (e.g. Academy pays about $45 per installment, up to $135; BOSS about $60 per installment, up to $240).</li>
+          <li><b>Booking a call doesn't earn commission on its own</b> — commission is earned when a credited sale closes and payment is collected. You'll always be credited fairly from the CRM record, with one primary setter per opportunity.</li>
+        </ul>
+      </div>
+      <div class="pot"><b>What a strong month can look like:</b> on top of your base, bringing in 15 new TPB members, 10 members reaching their second payment, 2 Academy enrollments and 1 BOSS enrollment would add roughly <b>$760 in commissions</b> — and that grows as your pipeline and close rate grow.</div>
+      <div class="note"><b>Proposed terms.</b> Your exact schedule, hours, and employment classification will be confirmed with you in writing before you start, and your weekly base is reviewed against applicable wage requirements. Figures above reflect our current program pricing.</div>
+    </div>
+
+    <div class="sec">
+      <div class="lbl">What we'll expect</div>
+      <h2>Response &amp; performance standards</h2>
+      <p>During your agreed coverage windows (these are targets we'll fine-tune together as volume settles):</p>
+      <ul class="clean">
+        <li>New inbound sales DMs: aim to respond within <b>15 minutes</b>.</li>
+        <li>Relevant public comments: reviewed and addressed within <b>60 minutes</b>.</li>
+        <li>High-intent leads prioritized for immediate qualification or handoff; active conversations followed through on time.</li>
+        <li>As a planning reference, a full coverage day looks like roughly <b>30–40 meaningful conversations</b> and <b>2–3 qualified bookings</b> once systems and lead volume support it.</li>
+        <li><b>100% CRM accuracy</b> on qualified opportunities, booked appointments, and attributed sales — honest records, always.</li>
+      </ul>
+      <p>You're responsible for your assigned coverage period, not 24/7 monitoring. Messages outside your window are handled in the next one. Targets are set after your first 30 days, based on real performance and demand.</p>
+    </div>
+
+    <div class="sec">
+      <div class="lbl">How we work</div>
+      <h2>Professional standards</h2>
+      <ul class="clean">
+        <li>Communicate professionally and respectfully; never misrepresent BreedWise or guarantee breeding, veterinary, or financial results.</li>
+        <li>No unauthorized discounts or payment promises; protect every prospect's information.</li>
+        <li>Follow approved scripts and adapt them naturally; avoid spam and excessive follow-up.</li>
+        <li>Respect a prospect's decision to decline, keep all records inside BreedWise systems, and raise problems early.</li>
+      </ul>
+    </div>
+
+    <div class="sec">
+      <div class="lbl">Getting started</div>
+      <h2>Your first 30 days</h2>
+      <div class="steps">
+        <div class="step"><div class="w">Week 1 — Training &amp; systems</div><p>Learn BreedWise, the offers, our qualification standards, the CRM, and the approved workflows.</p></div>
+        <div class="step"><div class="w">Week 2 — Consistent execution</div><p>Independently handle your inboxes, qualify prospects, book calls, and keep clean records.</p></div>
+        <div class="step"><div class="w">Week 3 — Conversion improvement</div><p>Sharpen follow-up, objection handling, call quality, and conversation efficiency.</p></div>
+        <div class="step"><div class="w">Week 4 — Performance review</div><p>We review response times, qualified conversations, appointments, attendance, attributed sales, and set realistic ongoing expectations together.</p></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="lbl">Where this can go</div>
+      <h2>Room to grow</h2>
+      <div class="ladder">
+        <div class="rung"><b>Senior DM Setter</b><span>Sustained high-quality conversion, independent ownership, and reliable performance.</span></div>
+        <div class="rung"><b>Sales Team Lead</b><span>Coach other setters, manage quality, and coordinate inbox coverage.</span></div>
+        <div class="rung"><b>Sales Manager</b><span>People leadership, pipeline management, forecasting, and broader sales accountability.</span></div>
+      </div>
+      <p style="margin-top:12px">Advancement is based on demonstrated performance and business needs — not time served.</p>
+    </div>
+
+    <div class="close">
+      <div class="lbl" style="color:var(--gold)">What we're looking for</div>
+      <p class="em" style="margin-top:10px">We're not looking for someone who sends messages and waits for instructions. We want someone who takes ownership of their conversations, spots the right opportunities, follows through consistently, and helps serious breeders find the support they actually need — turning conversations into real opportunities for them and for BreedWise.</p>
+    </div>
+
+    <footer class="bf">BREEDWISE · DM Setter — role &amp; offer. Proposed terms; final schedule, hours, and classification confirmed in writing before start.</footer>
+  </div>
+</body>
+</html>
