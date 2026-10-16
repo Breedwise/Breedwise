@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The BreedWise Breeder Standard</title>
+<meta name="description" content="Better Your Breed. Build a Better Business. The standard every member of The Profitable Breeder, BreedWise Academy, and BOSS upholds.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13;--bg2:#0e131a;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;
+    --ink:#f0f4f9;--mid:#c3cdda;--muted:#8794a3;--faint:#5a6572;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--gold-deep:#a9863f;--green:#57b98a;--red:#e8695f;--red-s:rgba(232,105,95,.09);
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 760px at 80% -14%,rgba(201,168,98,.07),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.65}
+  a{color:inherit}
+  /* nav */
+  nav.top{position:sticky;top:0;z-index:30;background:rgba(11,14,19,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  nav.top .in{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:11px 20px}
+  .logo{display:inline-flex;align-items:center;gap:10px;flex:none}
+  .logo .mk{width:30px;height:30px;border-radius:8px;background:linear-gradient(150deg,var(--gold),var(--gold-deep));display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(201,168,98,.26)}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#15100a;font-size:16px}
+  .logo .wm{font-size:14px;letter-spacing:.2em;font-weight:700}.logo .wm b{color:var(--gold)}
+  nav .nums{display:flex;gap:4px;overflow-x:auto;flex:1;scrollbar-width:none;padding:2px}
+  nav .nums::-webkit-scrollbar{display:none}
+  nav .nums a{flex:none;width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;color:var(--muted);border:1px solid var(--line);background:var(--panel);text-decoration:none;transition:.15s}
+  nav .nums a:hover{border-color:var(--gold);color:var(--ink)}
+  nav .nums a.x{width:auto;padding:0 10px;font-size:11px;letter-spacing:.04em}
+  .print{flex:none;background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:8px 13px;font-size:12.5px;cursor:pointer;font-family:var(--sans)}
+  .print:hover{border-color:var(--gold);color:var(--ink)}
+  @media(max-width:620px){nav .nums a.x{display:none}}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 80px}
+  /* hero */
+  header.hero{text-align:center;padding:60px 0 20px}
+  .crest{width:70px;height:70px;border-radius:50%;border:1.5px solid var(--gold);background:rgba(201,168,98,.08);display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
+  .crest span{font-family:var(--disp);font-weight:700;font-size:34px;color:var(--gold-soft);line-height:1}
+  header .eyebrow{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  header h1{font-family:var(--disp);font-size:clamp(36px,8vw,60px);line-height:1.02;font-weight:600;letter-spacing:-.5px;margin:16px 0 0}
+  header .tag{font-family:var(--disp);font-style:italic;font-size:clamp(18px,3.4vw,24px);color:var(--gold-soft);font-weight:500;margin-top:14px}
+  .intro{max-width:620px;margin:34px auto 0;color:var(--mid);font-size:16.5px;font-weight:300}
+  .intro p{margin:0 0 15px}
+  .intro b{color:var(--ink);font-weight:500}
+  .pledgecard{background:linear-gradient(120deg,rgba(201,168,98,.12),rgba(201,168,98,.03));border:1px solid rgba(201,168,98,.3);border-radius:16px;padding:20px 24px;margin:26px auto 0;max-width:640px;text-align:left}
+  .pledgecard p{margin:0;color:var(--gold-soft);font-family:var(--disp);font-size:19px;font-style:italic;line-height:1.4;font-weight:500}
+  .rule{height:1px;background:linear-gradient(90deg,transparent,var(--line2),transparent);margin:48px 0}
+  /* principle */
+  .pr{padding-top:14px;scroll-margin-top:72px}
+  .pr .hd{display:flex;align-items:flex-start;gap:18px}
+  .pr .num{font-family:var(--disp);font-size:46px;font-weight:600;color:var(--gold);line-height:.9;flex:none;width:62px;opacity:.9}
+  .pr .ti h2{font-family:var(--disp);font-size:clamp(23px,4.4vw,30px);font-weight:600;line-height:1.1;letter-spacing:-.3px}
+  .pr .lead{color:var(--mid);font-size:16px;margin-top:8px;font-weight:300}
+  .commit-h{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:20px 0 10px;padding-left:80px}
+  ul.commits{list-style:none;margin:0;padding:0 0 0 80px}
+  ul.commits li{position:relative;padding:7px 0 7px 26px;color:var(--mid);font-size:15.5px;line-height:1.55;border-bottom:1px solid rgba(255,255,255,.04)}
+  ul.commits li:last-child{border-bottom:0}
+  ul.commits li::before{content:"";position:absolute;left:4px;top:15px;width:7px;height:7px;background:var(--gold);transform:rotate(45deg);border-radius:1px}
+  .pr .close{margin:16px 0 0 80px;font-family:var(--disp);font-style:italic;font-size:19px;color:var(--gold-soft);font-weight:500;line-height:1.4;border-left:2px solid rgba(201,168,98,.4);padding-left:16px}
+  @media(max-width:560px){
+    .pr .num{font-size:36px;width:46px}
+    .commit-h,ul.commits,.pr .close{padding-left:0}.pr .close{margin-left:0}
+  }
+  /* non-negotiables */
+  .nonneg{background:var(--red-s);border:1px solid rgba(232,105,95,.3);border-radius:18px;padding:28px 28px 24px;margin-top:10px}
+  .nonneg .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);font-weight:700}
+  .nonneg h2{font-family:var(--disp);font-size:28px;font-weight:600;margin:8px 0 4px}
+  .nonneg p.sub{color:var(--mid);font-size:15px;margin-bottom:14px}
+  .nonneg ul{list-style:none;margin:0;padding:0}
+  .nonneg li{position:relative;padding:9px 0 9px 30px;font-size:15.5px;color:var(--ink);line-height:1.5;border-bottom:1px solid rgba(232,105,95,.14)}
+  .nonneg li:last-child{border-bottom:0}
+  .nonneg li::before{content:"✕";position:absolute;left:4px;top:9px;color:var(--red);font-weight:700;font-size:14px}
+  .nonneg .enf{margin-top:16px;font-size:13.5px;color:var(--muted);line-height:1.55}
+  /* commitment */
+  .commitment{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line2);border-radius:18px;padding:30px 30px 26px;margin-top:10px;text-align:center}
+  .commitment .eyebrow{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .commitment h2{font-family:var(--disp);font-size:30px;font-weight:600;margin:10px 0 18px}
+  .commitment p{color:var(--mid);font-size:15.5px;max-width:580px;margin:0 auto 13px;text-align:left;font-weight:300}
+  .commitment p.lastline{font-family:var(--disp);font-style:italic;font-size:19px;color:var(--gold-soft);text-align:center;margin-top:18px}
+  .sign{margin-top:24px;border-top:1px solid var(--line);padding-top:22px}
+  .sign .sl{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .sign input{width:min(100%,380px);text-align:center;background:var(--bg2);border:0;border-bottom:1.5px solid var(--line2);border-radius:0;color:var(--ink);font-family:var(--disp);font-size:24px;font-style:italic;padding:8px 6px;transition:border-color .15s}
+  .sign input:focus{outline:none;border-color:var(--gold)}
+  .sign input::placeholder{color:var(--faint);font-style:italic}
+  .sign .dt{font-size:13px;color:var(--muted);margin-top:10px}
+  .sign .dt b{color:var(--gold-soft)}
+  .sign .act{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+  .btn{border:0;border-radius:11px;padding:13px 22px;font-size:14.5px;font-weight:600;cursor:pointer;font-family:var(--sans)}
+  .btn.gold{background:linear-gradient(120deg,var(--gold),var(--gold-deep));color:#17130a}
+  .btn.ghost{background:var(--panel);border:1px solid var(--line2);color:var(--mid)}
+  .btn.ghost:hover{border-color:var(--gold);color:var(--ink)}
+  .signed{display:none;color:var(--green);font-size:14px;margin-top:12px;font-weight:500}
+  .signed.on{display:block}
+  footer.bf{text-align:center;margin-top:50px}
+  footer .tag{font-family:var(--disp);font-style:italic;font-size:21px;color:var(--gold-soft)}
+  footer .hash{font-size:13px;letter-spacing:.24em;color:var(--muted);font-weight:600;margin-top:8px}
+  @media print{
+    nav.top{display:none}
+    body{background:#fff;color:#111}
+    .pr .num,.pr .ti h2,.nonneg h2,.commitment h2,header h1{color:#1a130a}
+    .pr .close,.commitment p.lastline,header .tag,footer .tag,.pledgecard p{color:#8a6d2e}
+    ul.commits li,.nonneg li,.commitment p,.intro{color:#333}
+    .pledgecard,.commitment,.nonneg{background:#fff;border-color:#ccc}
+    ul.commits li::before{background:#a9863f}
+    .sign .act,.print{display:none}
+    .crest{border-color:#a9863f}.crest span{color:#8a6d2e}
+  }
+</style>
+</head>
+<body>
+  <nav class="top"><div class="in">
+    <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+    <span class="nums" id="nums"></span>
+    <button class="print" onclick="window.print()">Print</button>
+  </div></nav>
+
+  <div class="wrap">
+    <header class="hero">
+      <div class="crest"><span>B</span></div>
+      <div class="eyebrow">The BreedWise Breeder Standard</div>
+      <h1>The Standard<br>We Hold.</h1>
+      <div class="tag">Better Your Breed. Build a Better Business.</div>
+      <div class="intro">
+        <p>At BreedWise, we believe the foundation of a successful breeding business is being a <b>responsible breeder</b>. Profitability is important — but it should never come at the expense of the dogs in our care, the integrity of our breeding decisions, or the trust of the families who purchase our puppies.</p>
+        <p>Responsible breeding practices, ethical business decisions, and continuous improvement belong together. That is why every member of <b>The Profitable Breeder</b>, <b>BreedWise Academy</b>, and <b>BOSS</b> is expected to uphold this standard.</p>
+      </div>
+      <div class="pledgecard"><p>You do not have to be a perfect breeder to belong here. But you must be committed to doing things the right way, being accountable for your decisions, and continually improving.</p></div>
+    </header>
+
+    <div class="rule"></div>
+    <div id="principles"></div>
+
+    <div class="rule"></div>
+    <section id="nonneg" class="pr" style="scroll-margin-top:72px">
+      <div class="nonneg">
+        <div class="eyebrow">Our Non-Negotiable Position</div>
+        <h2>What BreedWise does not tolerate</h2>
+        <ul id="nnlist"></ul>
+        <div class="enf">Serious or repeated violations may result in restricted access, suspension, or removal from BreedWise programs, subject to our member review and enforcement process.</div>
+      </div>
+    </section>
+
+    <div class="rule"></div>
+    <section id="commit" class="pr" style="scroll-margin-top:72px">
+      <div class="commitment">
+        <div class="eyebrow">The BreedWise Commitment</div>
+        <h2>My commitment as a member</h2>
+        <p>As a BreedWise member, I acknowledge that responsible breeding, animal welfare, ethical business practices, and professional integrity are essential to the quality of the breeding industry.</p>
+        <p>I understand that BreedWise membership is a privilege accompanied by responsibilities. I commit to maintaining high standards, being accountable for my decisions, and making meaningful efforts to improve my breeding program and business.</p>
+        <p>I understand that BreedWise may review credible concerns about member conduct and take appropriate action under its published policies.</p>
+        <p class="lastline">I don't have to know everything. But I commit to putting my dogs first, acting with integrity, and continually becoming a better breeder.</p>
+        <div class="sign">
+          <div class="sl">Sign your commitment</div>
+          <input id="sigName" placeholder="Type your full name" autocomplete="name">
+          <div class="dt" id="sigDate">Dated <b id="today">—</b></div>
+          <div class="act">
+            <button class="btn gold" id="commitBtn">I commit to the standard</button>
+            <button class="btn ghost" onclick="window.print()">Print / save a signed copy</button>
+          </div>
+          <div class="signed" id="signedMsg"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="bf">
+      <div class="tag">Better Your Breed. Build a Better Business.</div>
+      <div class="hash">#BREEDWISE</div>
+    </footer>
+  </div>
+
+<script>
+var PRINCIPLES=[
+  { t:'Animal Welfare Always Comes First',
+    lead:'The health, safety, and well-being of our dogs must take priority over financial gain, production goals, and convenience.',
+    commits:[
+      'Providing appropriate nutrition, housing, cleanliness, enrichment, exercise, and humane handling.',
+      'Providing timely and appropriate veterinary care.',
+      'Recognizing and responding promptly to signs of illness, injury, pain, or distress.',
+      'Never knowingly neglecting, abusing, or compromising an animal’s welfare for financial reasons.',
+      'Maintaining an appropriate level of care throughout each dog’s life and reproductive career.'],
+    close:'No litter, sale, or profit is worth compromising the welfare of a dog.' },
+  { t:'Breed With Purpose, Not Just For Profit',
+    lead:'Every breeding decision should have a responsible purpose.',
+    commits:[
+      'Considering health, temperament, genetic risk, and relevant breed characteristics when selecting breeding pairs.',
+      'Making decisions based on the suitability of the individual dogs, not simply market demand or appearance.',
+      'Avoiding breeding animals known to present serious, unjustifiable health or welfare risks.',
+      'Considering appropriate veterinary and breed-specific guidance when determining breeding suitability, timing, and frequency.',
+      'Prioritizing the long-term welfare of breeding animals and their offspring.'],
+    close:'Responsible breeders make informed decisions rather than chase trends at the expense of their dogs.' },
+  { t:'Practice Responsible Health Testing',
+    lead:'We believe breeders should understand the health risks relevant to the dogs they produce.',
+    commits:[
+      'Learning which health screenings and genetic evaluations are appropriate for their breed or breeding population.',
+      'Completing appropriate testing before breeding, as guided by breed-specific recommendations and qualified veterinary professionals.',
+      'Accurately representing health testing, results, and known conditions.',
+      'Not presenting registration, routine veterinary exams, or a single DNA test as proof that every relevant health concern has been addressed.',
+      'Using test results to inform responsible breeding decisions.'],
+    close:'Health testing is not a marketing badge. It is part of responsible decision-making.' },
+  { t:'Prepare Responsibly For Every Litter',
+    lead:'Breeding carries medical, financial, and welfare responsibilities.',
+    commits:[
+      'Preparing appropriately for pregnancy, whelping, and neonatal puppy care.',
+      'Establishing access to suitable veterinary care, including emergency services.',
+      'Maintaining reasonable financial preparedness for foreseeable breeding and puppy-care expenses.',
+      'Monitoring mothers and puppies appropriately.',
+      'Seeking qualified veterinary assistance when complications or concerning symptoms arise.',
+      'Maintaining appropriate records of breeding events, puppy health, and veterinary care.'],
+    close:'A responsible breeder prepares for what could go wrong, not only what they hope will go right.' },
+  { t:'Raise Puppies With Care And Intention',
+    lead:'Every puppy deserves appropriate care and preparation for life beyond the breeder’s program.',
+    commits:[
+      'Providing clean, safe, appropriate environments for puppies.',
+      'Meeting puppies’ nutritional, developmental, and veterinary needs.',
+      'Using humane, developmentally appropriate handling and socialization.',
+      'Avoiding unnecessary separation from the mother and littermates.',
+      'Following applicable laws and appropriate veterinary guidance concerning puppy placement age and readiness.',
+      'Providing buyers with accurate health, care, and developmental information.'],
+    close:'Our responsibility doesn’t begin when a puppy is sold. It begins long before that.' },
+  { t:'Place Puppies Responsibly',
+    lead:'We believe a successful placement is about more than completing a transaction.',
+    commits:[
+      'Making reasonable efforts to evaluate prospective buyers.',
+      'Communicating honestly about the breed’s needs, temperament, care requirements, and potential health considerations.',
+      'Avoiding knowingly unsuitable or unsafe placements.',
+      'Clearly explaining purchase terms, deposits, responsibilities, and relevant policies.',
+      'Providing appropriate health records, care information, and agreed documentation.',
+      'Maintaining a reasonable plan for assisting with rehoming or placement concerns when a buyer cannot keep a dog.'],
+    close:'The right home matters more than making the next sale.' },
+  { t:'Operate With Business Integrity',
+    lead:'We believe strong business practices should reinforce responsible breeding — not undermine it.',
+    commits:[
+      'Representing their dogs, programs, experience, and results truthfully.',
+      'Honoring written agreements and legitimate financial obligations.',
+      'Clearly communicating pricing, deposits, refund terms, and buyer expectations.',
+      'Avoiding deceptive advertising, fabricated testimonials, or false health claims.',
+      'Maintaining accurate records appropriate to their breeding business.',
+      'Complying with applicable laws, licensing requirements, and regulations.',
+      'Never intentionally exploiting or misleading buyers, partners, or fellow members.'],
+    close:'A breeder’s reputation should be built on trust — not manipulation.' },
+  { t:'Take Ownership Of Your Decisions',
+    lead:'Responsible breeders acknowledge that mistakes, unexpected complications, and disappointing outcomes can happen. What matters is how we respond.',
+    commits:[
+      'Taking responsibility for their decisions and actions.',
+      'Addressing legitimate concerns professionally.',
+      'Being truthful when something goes wrong.',
+      'Seeking qualified guidance when appropriate.',
+      'Correcting preventable problems.',
+      'Learning from mistakes rather than concealing or repeating them.'],
+    close:'We do not expect perfection. We do expect honesty, responsibility, and a willingness to improve.' },
+  { t:'Respect The BreedWise Community',
+    lead:'BreedWise is a place for serious breeders committed to education, ethical practices, and improvement.',
+    commits:[
+      'Treating other members, educators, staff, and professionals respectfully.',
+      'Offering constructive advice without harassment or intimidation.',
+      'Respecting legitimate differences in experience, breed practices, and professional opinions.',
+      'Not using the community for scams, deceptive solicitations, unauthorized selling, or exploitation.',
+      'Protecting confidential information shared by other members.',
+      'Respecting BreedWise intellectual property, resources, and community policies.',
+      'Avoiding false claims of veterinary authority, BreedWise certification, or official endorsement.',
+      'Refraining from encouraging illegal, abusive, or knowingly dangerous practices.'],
+    close:'Our community should raise standards — not create hostility or competition that compromises integrity.' },
+  { t:'Commit To Continuous Improvement',
+    lead:'Being a great breeder is an ongoing responsibility.',
+    commits:[
+      'Remaining open to reputable education and constructive feedback.',
+      'Regularly reviewing their breeding practices and business decisions.',
+      'Recognizing when their knowledge or experience is insufficient.',
+      'Seeking qualified professional guidance when needed.',
+      'Making reasonable improvements when deficiencies are identified.',
+      'Sharing information and experiences honestly.'],
+    close:'We welcome people at different stages. Experience does not excuse poor practices, and inexperience does not prevent someone from becoming an excellent breeder.' }
+];
+var NONNEG=[
+  'Intentional animal cruelty, serious neglect, or knowingly unsafe treatment.',
+  'Deliberate concealment or falsification of material animal health, testing, pedigree, or ownership information.',
+  'Knowingly deceptive puppy sales, fraudulent business practices, or theft.',
+  'Using the community to exploit, harass, threaten, or scam other members.',
+  'Encouraging illegal breeding practices or knowingly dangerous animal-care conduct.',
+  'Retaliating against individuals who raise legitimate animal-welfare or ethical concerns.',
+  'Misrepresenting membership as veterinary accreditation, certification, or an official endorsement of one’s breeding program.'
+];
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+
+(function build(){
+  var host=document.getElementById('principles'), nums=document.getElementById('nums');
+  PRINCIPLES.forEach(function(p,i){
+    var n=i+1, id='p'+n;
+    var sec=el('section','pr');sec.id=id;
+    sec.innerHTML='<div class="hd"><div class="num">'+(n<10?'0'+n:n)+'</div>'+
+      '<div class="ti"><h2>'+esc(p.t)+'</h2><div class="lead">'+esc(p.lead)+'</div></div></div>'+
+      '<div class="commit-h">As BreedWise members, we commit to</div>'+
+      '<ul class="commits">'+p.commits.map(function(c){return '<li>'+esc(c)+'</li>';}).join('')+'</ul>'+
+      '<div class="close">'+esc(p.close)+'</div>';
+    host.appendChild(sec);
+    if(i>0)host.insertBefore(el('div','rule'),sec);
+    var a=el('a',null,String(n));a.href='#'+id;nums.appendChild(a);
+  });
+  var na=el('a','x','Non-neg');na.href='#nonneg';nums.appendChild(na);
+  var ca=el('a','x','Commit');ca.href='#commit';nums.appendChild(ca);
+  document.getElementById('nnlist').innerHTML=NONNEG.map(function(c){return '<li>'+esc(c)+'</li>';}).join('');
+})();
+
+/* date + commitment */
+(function(){
+  var d=new Date();
+  document.getElementById('today').textContent=d.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+  var LS='bw-standard-signed';
+  try{var saved=JSON.parse(localStorage.getItem(LS)||'null');if(saved&&saved.name){document.getElementById('sigName').value=saved.name;showSigned(saved.name,saved.date);}}catch(e){}
+  function showSigned(name,date){var m=document.getElementById('signedMsg');m.textContent='✓ Committed by '+name+(date?(' on '+date):'')+'. Print to keep a signed copy.';m.classList.add('on');}
+  document.getElementById('commitBtn').addEventListener('click',function(){
+    var name=(document.getElementById('sigName').value||'').trim();
+    if(!name){document.getElementById('sigName').focus();return;}
+    var date=document.getElementById('today').textContent;
+    try{localStorage.setItem(LS,JSON.stringify({name:name,date:date}));}catch(e){}
+    showSigned(name,date);
+    document.getElementById('commit').scrollIntoView({behavior:'smooth',block:'center'});
+  });
+})();
+</script>
+</body>
+</html>
