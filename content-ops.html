@@ -269,13 +269,30 @@ function serverSave(){
     .then(function(r){return r.ok?r.json():Promise.reject(r);})
     .then(function(resp){myRev=resp.rev||myRev;serverOnline=true;setSync('synced');})
     .catch(function(){serverOnline=false;setSync('local');});}
-function serverLoad(cb){
+function contentCount(o){o=o||{};return (o.links&&o.links.length||0)+(o.ideas&&o.ideas.length||0)+(o.film&&o.film.length||0);}
+function serverGet(cb){
   fetch(FN_CO,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({action:'get',secret:CO_SECRET})})
     .then(function(r){return r.ok?r.json():Promise.reject(r);})
-    .then(function(resp){serverOnline=true;
-      if(resp&&resp.data){S=Object.assign(seedState(),resp.data);myRev=resp.rev||0;try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}}
-      cb&&cb(true,!!(resp&&resp.data));})
-    .catch(function(){serverOnline=false;cb&&cb(false,false);});}
+    .then(function(resp){serverOnline=true;cb&&cb(resp||null);})
+    .catch(function(){serverOnline=false;cb&&cb(null);});}
+/* On open, decide whether to adopt the shared copy or push this device's copy up.
+   The richer (more links/ideas/film) — or, on a tie, newer — non-empty version wins,
+   so a populated device (e.g. Yasmin's, with the saved links) is never wiped by an
+   empty device opening first. */
+function reconcile(resp){
+  if(!resp){setSync('local');return;}
+  var cloud=resp.data, cloudRev=resp.rev||0, cloudUpd=resp.updated||0, localUpd=S.updated||0;
+  var lc=contentCount(S), cc=contentCount(cloud);
+  if(cloud && (cc>lc || (cc===lc && cc>0 && cloudUpd>=localUpd))){
+    S=Object.assign(seedState(),cloud);myRev=cloudRev;
+    try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}
+    renderAll();showTab(currentTab());setSync('synced');
+  } else if(lc>0){
+    myRev=cloudRev;serverSave();            // push this device's richer copy up to the team
+  } else {
+    myRev=cloudRev;setSync('synced');
+  }
+}
 function currentTab(){var p=document.querySelector('.pane.on');return p?p.id:'t-today';}
 function startPoll(){clearInterval(pollT);pollT=setInterval(function(){
   if(!serverOnline)return;
@@ -374,7 +391,7 @@ function renderAll(){renderToday();renderIdeas();renderFilm();renderLinks();rend
   function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Content Ops · BreedWise';
     load();buildTabs();renderAll();var t='t-today';try{t=sessionStorage.getItem('y_tab')||'t-today';}catch(e){}if(!document.getElementById(t))t='t-today';showTab(t);
     // pull the shared copy so links/ideas/film are the same on every device; seed the cloud on first run
-    serverLoad(function(ok,had){ if(had){ renderAll(); showTab(currentTab()); } else if(ok){ serverSave(); } setSync(ok?'synced':'local'); startPoll(); });
+    serverGet(function(resp){ reconcile(resp); startPoll(); });
   }
   function tryUnlock(){var v=(el('pw').value||'').trim();Promise.all([h(v),h(v.toUpperCase())]).then(function(a){if(OK.indexOf(a[0])>=0||OK.indexOf(a[1])>=0){try{sessionStorage.setItem('y_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
   el('unlock').addEventListener('click',tryUnlock);
