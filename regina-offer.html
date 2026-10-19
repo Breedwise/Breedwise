@@ -67,6 +67,16 @@
   .extab th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
   .extab td{color:var(--mid)}.extab td:first-child{color:var(--ink)}
   .extab .num{text-align:right;font-variant-numeric:tabular-nums;color:#9fe3c2;font-weight:600}
+  .goalrow{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+  .goalrow .g{flex:1;min-width:120px;background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line2);border-radius:12px;padding:15px;text-align:center}
+  .goalrow .g.big{background:linear-gradient(120deg,rgba(201,168,98,.14),rgba(201,168,98,.03));border-color:rgba(201,168,98,.3)}
+  .goalrow .g .v{font-family:var(--disp);font-size:26px;color:var(--gold-soft);font-weight:600}
+  .goalrow .g .l{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-top:4px}
+  .kpit{width:100%;border-collapse:collapse;margin-top:14px;font-size:14.5px}
+  .kpit th,.kpit td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left}
+  .kpit th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .kpit td{color:var(--mid)}.kpit td:first-child{color:var(--ink)}
+  .kpit td:last-child{text-align:right;color:var(--gold-soft);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
   .steps{counter-reset:s;margin-top:14px}
   .pstep{display:flex;gap:14px;padding:11px 0;border-bottom:1px solid var(--line)}
   .pstep:last-child{border-bottom:0}
@@ -168,15 +178,53 @@
     </div>
 
     <div class="sec">
-      <div class="lbl">What moves you up</div>
-      <h2>What success looks like</h2>
+      <div class="lbl">Your target</div>
+      <h2>The path to $80,000 / year</h2>
+      <p>Here's the goal in plain numbers — and exactly how you get there.</p>
+      <div class="goalrow">
+        <div class="g big"><div class="v">$80,000</div><div class="l">per year</div></div>
+        <div class="g"><div class="v">$6,667</div><div class="l">per month</div></div>
+        <div class="g"><div class="v">$1,538</div><div class="l">per week</div></div>
+      </div>
+      <p>Your base and booking bonuses build a dependable floor. <b>Closing is the engine that carries you to $80k</b> — at 10–15% of cash collected, a steady rhythm of closes does the heavy lifting.</p>
+      <div class="stage"><div class="sn">A</div><div><span class="st">Booking foundation</span><p>Consistent qualified appointments and a few TPB sales a week — a reliable floor on top of your $200 base.</p></div></div>
+      <div class="stage"><div class="sn">B</div><div><span class="st">Closing starts</span><p>You begin closing deals. Around <b style="color:var(--ink)">one Academy/BOSS close a week</b> puts you on a clear climb past $60k a year.</p></div></div>
+      <div class="stage"><div class="sn">C</div><div><span class="st">On target</span><p>A sustained rhythm of roughly <b style="color:var(--ink)">one to two closes a week</b> — with your base rising as you move toward full-time — puts $80,000/year within reach.</p></div></div>
+      <div class="note">These are directional milestones, not a guarantee — your actual earnings depend on how much you close and how much is collected. The structure is built so <b>the more you close, the more you make — with no cap.</b></div>
+    </div>
+
+    <div class="sec">
+      <div class="lbl">Measured weekly</div>
+      <h2>Your KPIs</h2>
+      <p>These are your scoreboard, reviewed <b>every week</b>. Hit them consistently and your hours, base, and earning ceiling all rise with you.</p>
+      <table class="kpit">
+        <thead><tr><th>Metric</th><th>Weekly target</th></tr></thead>
+        <tbody>
+          <tr><td>Outbound conversations held</td><td>75–100</td></tr>
+          <tr><td>Qualified appointments booked</td><td>10–15</td></tr>
+          <tr><td>Appointments that attended (show rate)</td><td>75–85%</td></tr>
+          <tr><td>TPB memberships sold</td><td>3–5</td></tr>
+          <tr><td>Deals closed (once you're closing)</td><td>1–2</td></tr>
+          <tr><td>Cash collected — attributed to you</td><td>tracked</td></tr>
+          <tr><td>CRM accuracy</td><td>100%</td></tr>
+        </tbody>
+      </table>
+      <div class="note">Starting targets — we'll tune them to real lead volume after your first 30 days. What never moves: <b>honest numbers and 100% accurate CRM records.</b></div>
+    </div>
+
+    <div class="sec">
+      <div class="lbl">Submitted daily</div>
+      <h2>Your end-of-day report</h2>
+      <p>At the end of each coverage day, send a short <b>EOD report</b> — a couple of minutes — so the pipeline stays clear and we can back you up quickly. It covers:</p>
       <ul class="clean">
-        <li><b>Qualified calls that attend</b> — consistent, high-quality bookings.</li>
-        <li><b>Collected revenue</b> from the opportunities you source and (later) close.</li>
-        <li><b>Dependable coverage</b> across your committed hours.</li>
-        <li><b>100% accurate CRM</b> — honest records of every opportunity and sale.</li>
+        <li><b>Conversations held</b> — outbound calls and meaningful conversations today.</li>
+        <li><b>Appointments booked</b> — who, and for when.</li>
+        <li><b>Appointments attended</b> — which showed, and the outcome.</li>
+        <li><b>TPB sold</b> and <b>deals closed</b> — with cash collected.</li>
+        <li><b>Follow-ups completed</b> and <b>high-intent leads still open.</b></li>
+        <li><b>Anything blocking you</b> or where you need help.</li>
       </ul>
-      <p>Hit these consistently and your hours, base, and earning ceiling all rise with you.</p>
+      <div class="note">It all lives in the CRM — the EOD report is the quick summary on top. Accurate daily reporting is how we protect <b>your attribution and your commissions.</b></div>
     </div>
 
     <div class="close">
