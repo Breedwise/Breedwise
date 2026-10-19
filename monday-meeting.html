@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13;--bg2:#0e131a;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;
+    --ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--faint:#5a6572;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--gold-deep:#a9863f;--green:#57b98a;--green-s:rgba(87,185,138,.12);--red:#e8695f;--red-s:rgba(232,105,95,.12);--blue:#5aa9e6;--blue-s:rgba(90,169,230,.1);--amber:#e0a955;--amber-s:rgba(224,169,85,.12);--purple:#a481d8;
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:radial-gradient(1200px 700px at 82% -12%,rgba(201,168,98,.06),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.55}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:90}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),var(--gold-deep));display:flex;align-items:center;justify-content:center}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#15100a;font-size:18px}
+  .logo .wm{font-size:15px;letter-spacing:.2em;font-weight:700}.logo .wm b{color:var(--gold)}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#1a130a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #gate .hint{color:var(--muted);font-size:12px;margin-top:14px}
+  #app{display:none}
+  /* bar */
+  nav.top{position:sticky;top:0;z-index:40;background:rgba(11,14,19,.93);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .in{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:11px;padding:11px 20px;flex-wrap:wrap}
+  nav .sp{flex:1}
+  .wk{background:var(--panel);border:1px solid var(--line2);color:var(--ink);border-radius:8px;padding:7px 10px;font-size:12.5px;font-family:var(--sans)}
+  .vtoggle{display:inline-flex;background:var(--panel);border:1px solid var(--line2);border-radius:10px;padding:3px}
+  .vtoggle button{background:none;border:0;color:var(--muted);font-size:12.5px;font-weight:600;padding:7px 12px;border-radius:8px;cursor:pointer;font-family:var(--sans)}
+  .vtoggle button.on{background:var(--gold);color:#1a130a}
+  .save{font-size:11px;color:var(--green);margin-right:2px}
+  .tbtn{background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:8px 12px;font-size:12px;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+  .tbtn:hover{border-color:var(--gold);color:var(--ink)}
+  .tbtn.gold{background:var(--gold);border-color:var(--gold);color:#1a130a;font-weight:700}
+  /* timer strip */
+  .timer{position:sticky;top:51px;z-index:35;background:rgba(14,19,26,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .timer .in{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 20px;flex-wrap:wrap}
+  .clock{font-family:var(--disp);font-size:30px;font-weight:600;color:var(--gold-soft);font-variant-numeric:tabular-nums;min-width:96px}
+  .clock.warn{color:var(--amber)}.clock.over{color:var(--red)}
+  .tctl{display:flex;gap:6px}
+  .tctl button{background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:7px;padding:6px 11px;font-size:12px;cursor:pointer;font-family:var(--sans)}
+  .tctl button:hover{border-color:var(--gold);color:var(--ink)}
+  .agenda{display:flex;gap:5px;flex:1;flex-wrap:wrap;justify-content:flex-end}
+  .ag{font-size:10.5px;color:var(--muted);border:1px solid var(--line);border-radius:14px;padding:3px 9px;cursor:pointer;white-space:nowrap;background:var(--panel)}
+  .ag b{color:var(--mid)}
+  .ag.done{background:var(--green-s);border-color:rgba(87,185,138,.4);color:var(--green);text-decoration:line-through;text-decoration-color:rgba(87,185,138,.5)}
+  .wrap{max-width:900px;margin:0 auto;padding:22px 20px 90px}
+  .sec-h{display:flex;align-items:baseline;gap:11px;margin:30px 0 4px}
+  .sec-h .t{font-family:var(--disp);font-size:13px;color:var(--gold);background:rgba(201,168,98,.1);border:1px solid rgba(201,168,98,.22);padding:3px 9px;border-radius:7px;font-weight:600;white-space:nowrap}
+  .sec-h h2{font-family:var(--disp);font-size:21px;font-weight:600}
+  .sec-sub{color:var(--muted);font-size:13px;margin:5px 0 0}
+  .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:15px;padding:18px 20px;margin-top:12px}
+  label.fl{display:block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:12px 0 6px}
+  label.fl:first-child{margin-top:0}
+  input.f,textarea.f{width:100%;background:var(--bg2);border:1px solid var(--line2);border-radius:9px;color:var(--ink);font-family:var(--sans);font-size:14.5px;padding:11px 13px;transition:border-color .15s}
+  input.f:focus,textarea.f:focus{outline:none;border-color:var(--gold)}
+  textarea.f{min-height:52px;resize:vertical;line-height:1.5}
+  .note{border-radius:12px;padding:13px 16px;margin-top:12px;font-size:13.5px;line-height:1.55}
+  .note.gold{background:rgba(201,168,98,.08);border:1px solid rgba(201,168,98,.26);border-left:3px solid var(--gold);color:var(--mid)}
+  .note.blue{background:var(--blue-s);border:1px solid rgba(90,169,230,.26);border-left:3px solid var(--blue);color:var(--mid)}
+  .note b{color:var(--gold-soft)}.note.blue b{color:#a9d6ff}
+  details.script{margin-top:12px;background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:13px;padding:4px 18px}
+  details.script>summary{list-style:none;cursor:pointer;padding:13px 0;font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);display:flex;gap:8px;align-items:center}
+  details.script>summary::-webkit-details-marker{display:none}
+  details.script>summary::before{content:"▸";transition:transform .2s}
+  details.script[open]>summary::before{transform:rotate(90deg)}
+  details.script .body{padding:0 0 16px;color:var(--mid);font-size:14.5px;line-height:1.65}
+  details.script .body p{margin:0 0 11px}
+  details.script .body em{color:var(--gold-soft);font-style:italic}
+  /* scoreboard */
+  .scores{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+  @media(min-width:680px){.scores{grid-template-columns:repeat(5,1fr)}}
+  .scores .sc .lab{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px;min-height:26px;line-height:1.25}
+  .scores .sc input{width:100%;background:var(--bg2);border:1px solid var(--line2);border-radius:9px;color:var(--ink);font-family:var(--disp);font-size:18px;padding:9px 11px;text-align:center}
+  .scores .sc input:focus{outline:none;border-color:var(--gold)}
+  /* person card */
+  .person{border-left:3px solid var(--pc,var(--gold));}
+  .ph{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+  .ava{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:700;font-size:17px;color:#0c0f14;flex:none;background:var(--pc,var(--gold))}
+  .pn{font-weight:700;font-size:16px}.pr{font-size:12px;color:var(--muted)}
+  .pq{font-size:13.5px;color:var(--gold-soft);font-style:italic;font-family:var(--disp);margin:10px 0 2px;line-height:1.4}
+  .kpi{font-size:12px;color:var(--faint);margin-top:6px;line-height:1.5}
+  .kpi b{color:var(--muted)}
+  .row3{display:grid;grid-template-columns:1fr;gap:10px}
+  @media(min-width:620px){.row3.sb{grid-template-columns:2fr 1fr}}
+  .deadline{max-width:160px}
+  /* recap */
+  .recap{background:linear-gradient(165deg,rgba(201,168,98,.08),rgba(201,168,98,.02));border:1px solid var(--line2);border-radius:15px;padding:18px 20px;margin-top:12px}
+  .recap .ri{padding:11px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+  .recap .ri:last-child{border-bottom:0}
+  .recap .ri .who{font-family:var(--disp);color:var(--gold-soft);font-weight:600;font-size:16px}
+  .recap .ri .det{color:var(--mid);margin-top:3px;line-height:1.5}
+  .recap .ri .det b{color:var(--ink)}
+  .recap .empty{color:var(--muted);font-size:13.5px;font-style:italic}
+  /* parking lot */
+  .pk{display:grid;grid-template-columns:1fr;gap:8px}
+  .pkrow{display:grid;grid-template-columns:1fr;gap:8px;background:var(--bg2);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
+  @media(min-width:620px){.pkrow{grid-template-columns:3fr 1.4fr 1.4fr 30px;align-items:center}}
+  .pkrow input{background:var(--panel);border:1px solid var(--line2);border-radius:8px;color:var(--ink);font-size:13.5px;padding:9px 11px;font-family:var(--sans);width:100%}
+  .pkrow input:focus{outline:none;border-color:var(--gold)}
+  .pkrow .x{background:none;border:0;color:var(--muted);font-size:17px;cursor:pointer}.pkrow .x:hover{color:var(--red)}
+  .addbtn{background:rgba(201,168,98,.08);border:1px dashed rgba(201,168,98,.4);color:var(--gold-soft);border-radius:10px;padding:10px;width:100%;font-size:13.5px;font-weight:600;cursor:pointer;font-family:var(--sans);margin-top:8px}
+  /* friday */
+  .fri{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .fri .hit{border:1px solid var(--line2);background:var(--bg2);color:var(--mid);border-radius:20px;padding:7px 14px;font-size:12.5px;font-weight:600;cursor:pointer}
+  .fri .hit.on.yes{background:var(--green-s);border-color:var(--green);color:var(--green)}
+  .fri .hit.on.partial{background:var(--amber-s);border-color:var(--amber);color:var(--amber)}
+  .fri .hit.on.no{background:var(--red-s);border-color:var(--red);color:var(--red)}
+  .hide{display:none}
+  footer.bf{text-align:center;color:#59657390;font-size:11px;margin-top:40px;letter-spacing:.04em}
+  @media print{nav.top,.timer,.tbtn,.vtoggle,.addbtn,.pkrow .x{display:none!important}body{background:#fff;color:#111}.card,.recap,details.script{background:#fff;border-color:#ccc}}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo" style="margin-bottom:18px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Open →</button>
+    <div class="err" id="gate-err"></div>
+    <div class="hint">Monday meeting · leadership</div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top"><div class="in">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+      <span class="sp"></span>
+      <input class="wk" id="weekDate" type="date" title="Week of (Monday)">
+      <span class="vtoggle"><button id="vMon" class="on" onclick="setMode('monday')">Monday · commit</button><button id="vFri" onclick="setMode('friday')">Friday · results</button></span>
+      <span class="save" id="save">Saved</span>
+      <button class="tbtn" id="newWk">New week</button>
+      <button class="tbtn gold" id="exportBtn">Save as HTML</button>
+    </div></nav>
+
+    <div class="timer"><div class="in">
+      <span class="clock" id="clock">30:00</span>
+      <span class="tctl"><button id="tStart">Start</button><button id="tPause">Pause</button><button id="tReset">Reset</button></span>
+      <span class="agenda" id="agenda"></span>
+    </div></div>
+
+    <div class="wrap">
+      <!-- North star -->
+      <div class="sec-h"><span class="t">90-day priority</span><h2>The one company objective</h2></div>
+      <div class="sec-sub">Every commitment below should reinforce this. Keep it on screen.</div>
+      <div class="card"><textarea class="f" id="priority" rows="2"></textarea></div>
+
+      <!-- CEO opening -->
+      <div class="sec-h" data-mon><span class="t">0–3 min</span><h2>CEO opening</h2></div>
+      <div class="sec-sub" data-mon>Name the single company priority and the principle of measurable contribution.</div>
+      <details class="script" data-mon><summary>The Effective Executive — opening script</summary><div class="body">
+        <p>"I want to introduce a principle we're going to start operating by across BreedWise. I've been studying <em>The Effective Executive</em> by Peter Drucker, and one of the biggest lessons is that <em>being busy and being effective are not the same thing.</em></p>
+        <p>Every one of us has a lot we could work on. But what matters is identifying the contribution that will make the greatest difference to BreedWise this week.</p>
+        <p>For the next 90 days, our biggest priority is building a <em>predictable sales engine</em> that brings the right breeders into our programs and delivers on what we promise them.</p>
+        <p>Each Monday, every person identifies their single most important weekly contribution, the metric that measures it, and anything they need from another team member.</p>
+        <p>This isn't about doing only one thing — we still have our regular responsibilities. It's about knowing which result matters most when priorities compete. By Friday, we should be able to look at the numbers and know whether we made meaningful progress."</p>
+      </div></details>
+
+      <!-- Scoreboard -->
+      <div class="sec-h"><span class="t">3–6 min</span><h2>Scoreboard</h2></div>
+      <div class="sec-sub">Quick read. Keep these as <b style="color:var(--mid)">separate</b> numbers — don't blend them into one headline.</div>
+      <div class="scores" id="scores"></div>
+      <div class="note gold"><b>Don't call installments "recurring."</b> Academy &amp; BOSS installment collections are not subscription MRR. Track <b>new contracts booked</b>, <b>cash collected</b>, and <b>true recurring (MRR)</b> as three different numbers so no one optimizes toward a misleading $100k headline.</div>
+
+      <!-- Commitments -->
+      <div class="sec-h"><span class="t" id="commT">6–18 min</span><h2 id="commH">Four individual commitments</h2></div>
+      <div class="sec-sub" id="commSub">Three minutes each. Same three questions for everyone: your most important contribution, the measurable result, and what you need from another department.</div>
+      <div id="people"></div>
+
+      <!-- Blockers / parking lot -->
+      <div class="sec-h" data-mon><span class="t">18–24 min</span><h2>Cross-functional blockers</h2></div>
+      <div class="sec-sub" data-mon>Only the decisions needed to unlock this week. If something needs a longer conversation, give it an owner and a time — <b style="color:var(--mid)">don't solve it in front of everyone.</b></div>
+      <div class="card" data-mon>
+        <div class="pk" id="parking"></div>
+        <button class="addbtn" id="addPk">+ Add a blocker / decision to park</button>
+      </div>
+
+      <!-- Member win -->
+      <div class="sec-h" data-mon><span class="t">24–27 min</span><h2>Member win</h2></div>
+      <div class="sec-sub" data-mon>One specific member outcome — connect it back to the mission.</div>
+      <div class="card" data-mon><textarea class="f" id="memberWin" rows="2" placeholder="e.g. A member's first litter sold out from the new waitlist page — exactly the outcome our program promises."></textarea></div>
+
+      <!-- Recap -->
+      <div class="sec-h"><span class="t" id="recapT">27–30 min</span><h2 id="recapH">Commitment recap</h2></div>
+      <div class="sec-sub" id="recapSub">Read each one back — owner, measurable result, deadline. This auto-fills from the cards above.</div>
+      <div class="recap" id="recap"></div>
+
+      <!-- Friday facilitator (only friday) -->
+      <div class="note blue" id="friNote" style="display:none"><b>Friday question, for each person:</b> "You committed to this measurable result on Monday. Did we achieve it — yes or no? What did we learn?" Don't ask how hard anyone worked. Keep Monday for commitments, Friday for results, and 1:1s for deeper coaching.</div>
+
+      <!-- Facilitator cues (monday) -->
+      <div class="note gold" data-mon><b>If someone drifts into a long story:</b> "That's helpful context — what's the specific result you're committing to by Friday?" &nbsp;·&nbsp; The goal is not four people leaving with four new projects. It's four people leaving with four unmistakably clear priorities that reinforce the one objective.</div>
+
+      <footer class="bf">BREEDWISE · Monday commitment meeting. Auto-saves on this device · export a record with “Save as HTML”.</footer>
+    </div>
+  </div>
+
+<script>
+var LS_PREFIX='bw-monday-';
+var MODE='monday';
+/* people config: guiding question + KPI prompts baked in */
+var PEOPLE=[
+  { id:'regina', name:'Regina', role:'Sales', ava:'R', color:'#5aa9e6',
+    q:'What’s the single biggest constraint keeping us from closing more qualified breeders this week?',
+    kpi:'<b>Primary KPI:</b> qualified attended sales calls. <b>Outcome KPI:</b> Academy/BOSS sales &amp; cash collected. <b>Needs from:</b> Yasmin (leads), Jennifer (capacity), or the CEO.' },
+  { id:'yasmin', name:'Yasmin', role:'Marketing', ava:'Y', color:'#e0a955',
+    q:'Which marketing activity is most likely to produce qualified conversations for Regina this week?',
+    kpi:'<b>Primary KPI:</b> qualified inbound leads attributable to marketing. <b>Outcome KPI:</b> marketing-sourced qualified calls booked. <b>Needs from:</b> Regina (lead-quality feedback), Emmanuel (content).' },
+  { id:'jennifer', name:'Jennifer', role:'Member Success &amp; Delivery', ava:'J', color:'#a481d8',
+    q:'What is the biggest obstacle preventing our members from getting results this week?',
+    kpi:'<b>Primary KPI:</b> % of scheduled member-delivery milestones completed on time. <b>Outcome KPI:</b> at-risk accounts needing intervention. <b>Needs from:</b> Emmanuel (delivery), Regina (new enrollments).' },
+  { id:'emmanuel', name:'Dr. Emmanuel', role:'Veterinary Expertise &amp; Content', ava:'E', color:'#57b98a',
+    q:'What’s the most important content or veterinary deliverable you need to complete this week to support both marketing and our members?',
+    kpi:'<b>Primary KPI:</b> approved veterinary content delivered on schedule, against the existing commitment (e.g. 14 reels/wk). <b>Second KPI:</b> assigned veterinary education &amp; member-facing commitments on time.',
+    note:'Delivering his existing commitments at a consistently high standard IS a valid weekly contribution — he does <b>not</b> need to invent a new project every Monday, and he’s not responsible for leads or sales he doesn’t control.' }
+];
+var SCORES=[
+  {id:'newContracts', lab:'New contracts booked'},
+  {id:'cashCollected', lab:'Cash collected'},
+  {id:'mrr', lab:'True recurring (MRR)'},
+  {id:'mktgLeads', lab:'Marketing qualified leads'},
+  {id:'delivery', lab:'Member delivery health'}
+];
+var DEFAULT_PRIORITY='Build a predictable sales engine that brings the right breeders into our programs — and delivers on what we promise them.';
+
+function mondayOf(d){d=d||new Date();var x=new Date(d);var day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return x.toISOString().slice(0,10);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function $(s){return document.querySelector(s);}
+
+function blank(week){var o={week:week,priority:DEFAULT_PRIORITY,scores:{},people:{},memberWin:'',parking:[]};PEOPLE.forEach(function(p){o.people[p.id]={outcome:'',target:'',deadline:'Friday',blocker:'',hit:'',learn:''};});return o;}
+var DB=blank(mondayOf());
+function key(){return LS_PREFIX+DB.week;}
+function load(week){try{var r=localStorage.getItem(LS_PREFIX+week);if(r){DB=Object.assign(blank(week),JSON.parse(r));PEOPLE.forEach(function(p){DB.people[p.id]=Object.assign({outcome:'',target:'',deadline:'Friday',blocker:'',hit:'',learn:''},DB.people[p.id]||{});});}else{DB=blank(week);}}catch(e){DB=blank(week);}}
+var st;function save(){$('#save').textContent='Saving…';clearTimeout(st);st=setTimeout(function(){try{localStorage.setItem(key(),JSON.stringify(DB));}catch(e){}$('#save').textContent='Saved';renderRecap();},300);}
+
+/* ---------- render ---------- */
+function renderScores(){
+  var host=$('#scores');host.innerHTML='';
+  SCORES.forEach(function(s){
+    var w=el('div','sc');w.appendChild(el('div','lab',s.lab));
+    var i=el('input');i.value=DB.scores[s.id]||'';i.placeholder='—';
+    i.addEventListener('input',function(){DB.scores[s.id]=i.value;save();});
+    w.appendChild(i);host.appendChild(w);
+  });
+}
+function renderPeople(){
+  var host=$('#people');host.innerHTML='';
+  PEOPLE.forEach(function(p){
+    var d=DB.people[p.id];
+    var c=el('div','card person');c.style.setProperty('--pc',p.color);
+    c.appendChild(el('div','ph','<span class="ava">'+p.ava+'</span><div><div class="pn">'+p.name+'</div><div class="pr">'+p.role+'</div></div>'));
+    c.appendChild(el('div','pq','“'+p.q+'”'));
+    c.appendChild(el('div','kpi',p.kpi));
+    if(p.note)c.appendChild(el('div','note gold',p.note));
+    // Monday fields
+    var mon=el('div','monflds');
+    mon.appendChild(lab('One priority outcome this week'));
+    mon.appendChild(ta(d,'outcome','The single result that matters most for '+p.name.split(' ').pop()+' this week'));
+    var sb=el('div','row3 sb');
+    var c1=el('div');c1.appendChild(lab('One measurable target'));c1.appendChild(inp(d,'target','e.g. 10 attended calls · 85% on-time · 14 reels'));
+    var c2=el('div');c2.appendChild(lab('By (deadline)'));var di=inp(d,'deadline','Friday');di.className='f deadline';c2.appendChild(di);
+    sb.appendChild(c1);sb.appendChild(c2);mon.appendChild(sb);
+    mon.appendChild(lab('One dependency or blocker (what they need from another person)'));
+    mon.appendChild(inp(d,'blocker','e.g. Needs 40 qualified leads from Yasmin by Wed'));
+    c.appendChild(mon);
+    // Friday fields
+    var fri=el('div','frflds hide');
+    fri.appendChild(lab('Did we hit it?'));
+    var hitbox=el('div','fri');
+    ['yes','partial','no'].forEach(function(v){
+      var b=el('button','hit '+v+(d.hit===v?' on':''),v==='yes'?'Yes':v==='partial'?'Partial':'No');
+      b.addEventListener('click',function(){d.hit=(d.hit===v?'':v);[].forEach.call(hitbox.children,function(x){x.classList.remove('on');});if(d.hit)b.classList.add('on');save();});
+      hitbox.appendChild(b);
+    });
+    fri.appendChild(hitbox);
+    fri.appendChild(lab('What did we learn?'));
+    fri.appendChild(ta(d,'learn','What worked, what didn’t, what changes next week'));
+    c.appendChild(fri);
+    host.appendChild(c);
+  });
+  applyMode();
+}
+function lab(t){return el('label','fl',t);}
+function ta(obj,k,ph){var t=el('textarea','f');t.placeholder=ph||'';t.value=obj[k]||'';t.addEventListener('input',function(){obj[k]=t.value;save();});return t;}
+function inp(obj,k,ph){var i=el('input','f');i.placeholder=ph||'';i.value=obj[k]||'';i.addEventListener('input',function(){obj[k]=i.value;save();});return i;}
+
+function renderParking(){
+  var host=$('#parking');host.innerHTML='';
+  if(!DB.parking.length){host.appendChild(el('div','',' '));}
+  DB.parking.forEach(function(row,i){
+    var r=el('div','pkrow');
+    r.appendChild(pk(row,'issue','Issue / decision to revisit',i));
+    r.appendChild(pk(row,'owner','Owner',i));
+    r.appendChild(pk(row,'when','When',i));
+    var x=el('button','x','×');x.addEventListener('click',function(){DB.parking.splice(i,1);save();renderParking();});
+    r.appendChild(x);host.appendChild(r);
+  });
+}
+function pk(row,k,ph,i){var e=el('input');e.placeholder=ph;e.value=row[k]||'';e.addEventListener('input',function(){row[k]=e.value;save();});return e;}
+
+function renderRecap(){
+  var host=$('#recap');host.innerHTML='';var any=false;
+  PEOPLE.forEach(function(p){
+    var d=DB.people[p.id];if(!(d.outcome||d.target||d.blocker))return;any=true;
+    var det='<b>'+esc(d.outcome||'—')+'</b>';
+    var bits=[];if(d.target)bits.push('measure: '+esc(d.target));bits.push('by '+esc(d.deadline||'Friday'));if(d.blocker)bits.push('needs: '+esc(d.blocker));
+    if(MODE==='friday'&&d.hit){var tag=d.hit==='yes'?'✓ Hit':d.hit==='partial'?'◑ Partial':'✕ Missed';det+=' &nbsp;<span style="color:'+(d.hit==='yes'?'var(--green)':d.hit==='no'?'var(--red)':'var(--amber)')+'">'+tag+'</span>';if(d.learn)bits.push('learned: '+esc(d.learn));}
+    var ri=el('div','ri','<div class="who">'+p.name+'</div><div class="det">'+det+'<br><span style="color:var(--muted);font-size:13px">'+bits.map(esc).join(' · ')+'</span></div>');
+    host.appendChild(ri);
+  });
+  if(!any)host.appendChild(el('div','empty','Commitments will appear here as each person fills in their card.'));
+}
+function renderAll(){renderScores();renderPeople();renderParking();renderRecap();$('#priority').value=DB.priority||'';$('#memberWin').value=DB.memberWin||'';$('#weekDate').value=DB.week;}
+
+/* ---------- mode ---------- */
+function applyMode(){
+  var fri=MODE==='friday';
+  document.querySelectorAll('[data-mon]').forEach(function(e){e.style.display=fri?'none':'';});
+  document.querySelectorAll('.frflds').forEach(function(e){e.classList.toggle('hide',!fri);});
+  document.querySelectorAll('.monflds').forEach(function(e){e.classList.toggle('hide',fri);});
+  $('#friNote').style.display=fri?'block':'none';
+  $('#commH').textContent=fri?'Friday — did we hit it?':'Four individual commitments';
+  $('#commSub').textContent=fri?'For each person: did we achieve the measurable result we committed to on Monday — yes or no? What did we learn?':'Three minutes each. Same three questions for everyone: your most important contribution, the measurable result, and what you need from another department.';
+  $('#commT').textContent=fri?'Review':'6–18 min';
+  $('#recapH').textContent=fri?'Results recap':'Commitment recap';$('#recapT').textContent=fri?'':'27–30 min';
+  $('.timer').style.display=fri?'none':'';
+}
+function setMode(m){MODE=m;$('#vMon').classList.toggle('on',m==='monday');$('#vFri').classList.toggle('on',m==='friday');applyMode();renderRecap();window.scrollTo(0,0);}
+
+/* ---------- timer ---------- */
+var T={left:1800,iv:null};
+var AGENDA=[['Opening',3],['Scoreboard',3],['Commitments',12],['Blockers',6],['Member win',3],['Recap',3]];
+function fmt(s){var neg=s<0;s=Math.abs(s);var m=Math.floor(s/60);return (neg?'+':'')+m+':'+('0'+(s%60)).slice(-2);}
+function renderClock(){var c=$('#clock');c.textContent=fmt(T.left);c.className='clock'+(T.left<=0?' over':T.left<=300?' warn':'');}
+function tStart(){if(T.iv)return;T.iv=setInterval(function(){T.left--;renderClock();},1000);}
+function tPause(){clearInterval(T.iv);T.iv=null;}
+function tReset(){tPause();T.left=1800;renderClock();}
+function renderAgenda(){var h=$('#agenda');h.innerHTML='';AGENDA.forEach(function(a,i){var g=el('span','ag'+(DB._ag&&DB._ag[i]?' done':''),a[0]+' <b>'+a[1]+'m</b>');g.addEventListener('click',function(){DB._ag=DB._ag||[];DB._ag[i]=!DB._ag[i];save();renderAgenda();});h.appendChild(g);});}
+
+/* ---------- export as standalone HTML ---------- */
+function exportHTML(){
+  var P=function(id){return esc(DB[id]||'');};
+  var scoreRows=SCORES.map(function(s){return '<tr><td>'+esc(s.lab)+'</td><td style="text-align:right">'+esc(DB.scores[s.id]||'—')+'</td></tr>';}).join('');
+  var ppl=PEOPLE.map(function(p){var d=DB.people[p.id];
+    var fri=d.hit?(' &mdash; <b>'+(d.hit==='yes'?'Hit':d.hit==='partial'?'Partial':'Missed')+'</b>'+(d.learn?('<br><i>Learned:</i> '+esc(d.learn)):'')):'';
+    return '<div class="pc"><h3>'+p.name+' <span>'+p.role.replace(/&amp;/g,'&')+'</span></h3>'+
+      '<p><b>Priority:</b> '+esc(d.outcome||'—')+'</p>'+
+      '<p><b>Measure:</b> '+esc(d.target||'—')+' &nbsp; <b>By:</b> '+esc(d.deadline||'Friday')+'</p>'+
+      (d.blocker?'<p><b>Needs:</b> '+esc(d.blocker)+'</p>':'')+(fri?'<p>'+fri+'</p>':'')+'</div>';}).join('');
+  var park=DB.parking.filter(function(r){return r.issue;}).map(function(r){return '<li>'+esc(r.issue)+(r.owner?(' — <b>'+esc(r.owner)+'</b>'):'')+(r.when?(' ('+esc(r.when)+')'):'')+'</li>';}).join('');
+  var html='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BreedWise Monday Meeting — '+esc(DB.week)+'</title>'+
+  '<style>body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:760px;margin:0 auto;padding:40px 22px;color:#1a1a22;line-height:1.55}h1{font-size:26px;margin:0}h2{font-size:17px;border-bottom:2px solid #c9a862;padding-bottom:5px;margin:30px 0 10px;color:#7c5f1e}.k{color:#8a6d2e;letter-spacing:.14em;text-transform:uppercase;font-size:12px;font-weight:700}.pc{border:1px solid #e5ddcc;border-left:3px solid #c9a862;border-radius:10px;padding:12px 16px;margin:10px 0}.pc h3{margin:0 0 6px;font-size:16px}.pc h3 span{color:#888;font-weight:400;font-size:13px}.pc p{margin:4px 0;font-size:14px}table{width:100%;border-collapse:collapse;font-size:14px}td{padding:7px 4px;border-bottom:1px solid #eee}.pri{background:#faf6ec;border:1px solid #e5ddcc;border-radius:10px;padding:12px 16px;font-style:italic;color:#5a4a1e}.mw{background:#f0f7f2;border:1px solid #cfe6d8;border-radius:10px;padding:12px 16px}</style></head><body>'+
+  '<div class="k">BreedWise · Leadership Meeting</div><h1>Week of '+esc(DB.week)+'</h1>'+
+  '<div class="pri" style="margin-top:14px">90-day priority: '+P('priority')+'</div>'+
+  '<h2>Scoreboard</h2><table>'+scoreRows+'</table>'+
+  '<h2>Commitments</h2>'+(ppl||'<p>—</p>')+
+  (park?('<h2>Parked decisions</h2><ul>'+park+'</ul>'):'')+
+  (DB.memberWin?('<h2>Member win</h2><div class="mw">'+esc(DB.memberWin)+'</div>'):'')+
+  '<p style="color:#999;font-size:12px;margin-top:34px">Generated '+new Date().toLocaleString()+' · BreedWise Monday Meeting</p></body></html>';
+  var blob=new Blob([html],{type:'text/html'});var u=URL.createObjectURL(blob);var a=document.createElement('a');a.href=u;a.download='breedwise-monday-'+DB.week+'.html';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},1500);
+  $('#save').textContent='HTML saved';setTimeout(function(){$('#save').textContent='Saved';},1600);
+}
+
+/* ---------- wire ---------- */
+function wire(){
+  $('#priority').addEventListener('input',function(){DB.priority=$('#priority').value;save();});
+  $('#memberWin').addEventListener('input',function(){DB.memberWin=$('#memberWin').value;save();});
+  $('#weekDate').addEventListener('change',function(){var w=$('#weekDate').value||mondayOf();load(w);renderAll();renderAgenda();});
+  $('#addPk').addEventListener('click',function(){DB.parking.push({issue:'',owner:'',when:''});save();renderParking();});
+  $('#newWk').addEventListener('click',function(){var w=mondayOf();load(w);DB.week=w;renderAll();renderAgenda();setMode('monday');});
+  $('#exportBtn').addEventListener('click',exportHTML);
+  $('#tStart').addEventListener('click',tStart);$('#tPause').addEventListener('click',tPause);$('#tReset').addEventListener('click',tReset);
+}
+
+/* ---------- gate ---------- */
+(function(){
+  var OK='368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875'; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function reveal(){var g=$('#gate');if(g)g.remove();$('#app').style.display='block';document.title='Monday Meeting · BreedWise';
+    load(mondayOf());renderAll();renderAgenda();renderClock();wire();}
+  function tryUnlock(){var v=($('#pw').value||'').trim().toUpperCase();h(v).then(function(hex){if(hex===OK){try{sessionStorage.setItem('mm_ok','1');}catch(e){}reveal();}else{$('#gate-err').textContent='Incorrect code.';$('#pw').select();}});}
+  $('#unlock').addEventListener('click',tryUnlock);
+  $('#pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('mm_ok')==='1')reveal();else $('#pw').focus();}catch(e){$('#pw').focus();}
+})();
+</script>
+</body>
+</html>
