@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13;--bg2:#0e131a;--panel:#12181f;--panel2:#0f151c;--line:#212b36;--line2:#2c3846;
+    --ink:#f0f4f9;--mid:#c0cad6;--muted:#818d9b;--faint:#5a6572;
+    --gold:#c9a862;--gold-soft:#e4cf9a;--gold-deep:#a9863f;--green:#57b98a;--green-s:rgba(87,185,138,.1);--red:#e8695f;--red-s:rgba(232,105,95,.1);--blue:#5aa9e6;--blue-s:rgba(90,169,230,.1);--amber:#e0a955;--amber-s:rgba(224,169,85,.12);
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:radial-gradient(1200px 700px at 80% -12%,rgba(201,168,98,.06),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.6}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:80}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),var(--gold-deep));display:flex;align-items:center;justify-content:center}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#15100a;font-size:18px}
+  .logo .wm{font-size:15px;letter-spacing:.2em;font-weight:700}.logo .wm b{color:var(--gold)}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#1a130a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #gate .hint{color:var(--muted);font-size:12px;margin-top:14px}
+  #app{display:none}
+  nav.top{position:sticky;top:0;z-index:30;background:rgba(11,14,19,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav.top .in{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:12px 20px}
+  nav .sp{flex:1}
+  .tbtn{background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:8px 13px;font-size:12.5px;cursor:pointer;font-family:var(--sans)}
+  .tbtn:hover{border-color:var(--gold);color:var(--ink)}
+  .wrap{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+  header.hero{text-align:center;padding:14px 0 6px}
+  header.hero .k{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  header.hero h1{font-family:var(--disp);font-size:clamp(28px,5vw,40px);line-height:1.05;margin:12px 0 6px;font-weight:600;letter-spacing:-.4px}
+  header.hero p{color:var(--mid);font-size:15.5px;max-width:620px;margin:10px auto 0;font-weight:300}
+  .goalstats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:26px}
+  .gs{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line2);border-radius:14px;padding:18px 12px;text-align:center}
+  .gs.big{grid-column:1/-1;background:linear-gradient(120deg,rgba(201,168,98,.14),rgba(201,168,98,.03));border-color:rgba(201,168,98,.3)}
+  .gs .v{font-family:var(--disp);font-weight:600;color:var(--gold-soft)}
+  .gs.big .v{font-size:clamp(40px,9vw,64px);line-height:1}
+  .gs .v{font-size:28px}
+  .gs .lab{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-top:6px}
+  .sec-h{display:flex;align-items:center;gap:12px;margin:38px 0 6px}
+  .sec-h .n{font-family:var(--disp);font-size:14px;color:var(--gold);background:rgba(201,168,98,.1);border:1px solid rgba(201,168,98,.22);min-width:30px;height:30px;padding:0 8px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex:none;font-weight:600}
+  .sec-h h2{font-family:var(--disp);font-size:22px;font-weight:600}
+  .lead{color:var(--mid);font-size:15px;margin:10px 0}.lead b{color:var(--ink)}
+  table{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px}
+  th,td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line)}
+  th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  td{color:var(--mid)}td:first-child{color:var(--ink)}
+  .num{font-variant-numeric:tabular-nums;text-align:right}
+  tr.tot td{border-top:2px solid var(--line2);border-bottom:0;color:var(--ink);font-weight:700}
+  tr.tot td.num{color:var(--gold-soft)}
+  .note{border-radius:13px;padding:14px 17px;margin:16px 0;font-size:14px;line-height:1.55}
+  .note.gold{background:rgba(201,168,98,.08);border:1px solid rgba(201,168,98,.26);border-left:3px solid var(--gold);color:var(--mid)}
+  .note.red{background:var(--red-s);border:1px solid rgba(232,105,95,.26);border-left:3px solid var(--red);color:var(--mid)}
+  .note.blue{background:var(--blue-s);border:1px solid rgba(90,169,230,.26);border-left:3px solid var(--blue);color:var(--mid)}
+  .note b{color:var(--gold-soft)}.note.red b{color:#f2a59d}.note.blue b{color:#a9d6ff}
+  .calc{background:linear-gradient(165deg,var(--panel),var(--panel2));border:1px solid var(--line2);border-radius:16px;padding:20px;margin-top:14px}
+  .ins{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  @media(min-width:560px){.ins.three{grid-template-columns:repeat(3,1fr)}}
+  .fld label{display:block;font-size:11.5px;color:var(--muted);font-weight:600;margin-bottom:6px;line-height:1.3;min-height:30px}
+  .fld input{width:100%;padding:11px 12px;background:var(--bg2);border:1px solid var(--line2);border-radius:9px;color:var(--ink);font-size:17px;font-family:var(--sans);text-align:center;font-variant-numeric:tabular-nums}
+  .fld input:focus{outline:none;border-color:var(--gold)}
+  .out{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px;border-top:1px solid var(--line);padding-top:18px}
+  .o2{text-align:center}
+  .o2 .lab{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .o2 .v{font-family:var(--disp);font-size:24px;font-weight:600;margin-top:4px}
+  .o2.total .v{color:var(--gold-soft)}.o2.flag .v{color:var(--red)}
+  .o2 .sub{font-size:11px;color:var(--faint);margin-top:2px}
+  .dis{font-size:12px;color:var(--faint);margin-top:14px;line-height:1.5}
+  /* phases */
+  .phase{display:flex;gap:16px;background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-top:12px}
+  .phase .pn{font-family:var(--disp);font-size:30px;color:var(--gold);font-weight:600;flex:none;width:40px;line-height:1}
+  .phase .pt{font-family:var(--disp);font-size:18px;font-weight:600}
+  .phase .pw{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;margin:2px 0 7px}
+  .phase p{color:var(--mid);font-size:14px;margin:5px 0 0}
+  .quote{background:linear-gradient(120deg,rgba(201,168,98,.1),rgba(201,168,98,.02));border:1px solid rgba(201,168,98,.3);border-left:3px solid var(--gold);border-radius:14px;padding:20px 24px;margin-top:14px}
+  .quote p{font-family:var(--disp);font-style:italic;font-size:17px;color:var(--gold-soft);line-height:1.5;margin:0}
+  .fork{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
+  @media(min-width:620px){.fork{grid-template-columns:1fr 1fr}}
+  .fk{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .fk.setter{border-top:3px solid var(--blue)}.fk.closer{border-top:3px solid var(--green)}
+  .fk h3{font-family:var(--disp);font-size:17px;font-weight:600;margin-bottom:5px}
+  .fk.setter h3{color:#a9d6ff}.fk.closer h3{color:#9fe3c2}
+  .fk p{color:var(--mid);font-size:13.5px;margin:0}
+  footer.bf{text-align:center;color:#59657390;font-size:11px;margin-top:40px;letter-spacing:.04em}
+  @media print{nav.top,.tbtn{display:none}body{background:#fff;color:#111}.calc,.phase,.quote,.gs,.fk{background:#fff;border-color:#ccc}}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo" style="margin-bottom:18px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Open →</button>
+    <div class="err" id="gate-err"></div>
+    <div class="hint">Regina · path to $80K</div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top"><div class="in">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+      <span class="sp"></span>
+      <button class="tbtn" onclick="window.print()">Print</button>
+    </div></nav>
+
+    <div class="wrap">
+      <header class="hero">
+        <div class="k">Internal · Sales Comp Strategy</div>
+        <h1>Regina &rarr; $80,000/year</h1>
+        <p>To get Regina to $80K, we design a <b style="color:var(--ink)">compensation progression</b> — we don't just hope enough commissions pile up. At her current offer, $80K is mathematically possible, but it would take serious volume. Here's the honest math and the path I'd actually build.</p>
+        <div class="goalstats">
+          <div class="gs big"><div class="v">$80,000</div><div class="lab">Her income goal · per year</div></div>
+          <div class="gs"><div class="v">$6,667</div><div class="lab">Average / month</div></div>
+          <div class="gs"><div class="v">$1,538</div><div class="lab">Average / week</div></div>
+          <div class="gs"><div class="v">$200</div><div class="lab">Current weekly base</div></div>
+        </div>
+      </header>
+
+      <div class="sec-h"><span class="n">1</span><h2>The gap</h2></div>
+      <p class="lead">Her $200 weekly base is <b>$10,400</b> a year. To reach $80K she'd need roughly <b style="color:var(--gold-soft)">$69,600 in annual bonuses and commissions</b> — a large amount for someone who <i>exclusively books appointments and sells $97 memberships.</i></p>
+      <div class="note gold">Current offer on the table: <b>$200/week</b> base + <b>$25</b> per qualified attended appointment + <b>$20</b> per TPB sale + <b>3%</b> of collected Academy/BOSS revenue.</div>
+
+      <div class="sec-h"><span class="n">2</span><h2>What would it take under her current agreement?</h2></div>
+      <p class="lead">Enter the weekly results she'd have to hit, every week, 52 weeks a year. The example below annualizes to ~$80K — watch the high-ticket revenue she'd have to originate.</p>
+      <div class="calc">
+        <div class="ins three">
+          <div class="fld"><label>Qualified calls attended / week</label><input id="r_att" type="number" value="12"></div>
+          <div class="fld"><label>TPB memberships sold / week</label><input id="r_tpb" type="number" value="5"></div>
+          <div class="fld"><label>Academy/BOSS revenue collected / week</label><input id="r_ht" type="number" value="31300"></div>
+        </div>
+        <div class="out">
+          <div class="o2"><div class="lab">Earnings / week</div><div class="v num" id="r_wk">—</div><div class="sub">base + commissions</div></div>
+          <div class="o2 total"><div class="lab">Annualized</div><div class="v num" id="r_yr">—</div><div class="sub">× 52 weeks</div></div>
+          <div class="o2 flag"><div class="lab">High-ticket she must originate</div><div class="v num" id="r_orig">—</div><div class="sub">collected, per year</div></div>
+        </div>
+        <table style="margin-top:4px">
+          <thead><tr><th>Activity</th><th class="num">Weekly</th><th class="num">Earnings</th></tr></thead>
+          <tbody id="r_tbl"></tbody>
+        </table>
+      </div>
+      <div class="note red"><b>That's the catch.</b> Hitting $80K this way means Regina originating around <b id="r_origInline">$1.63M</b> in collected high-ticket revenue a year — sustained for 52 weeks. <b>For a part-time appointment setter, that is not a sensible base-case expectation.</b></div>
+
+      <div class="sec-h"><span class="n">3</span><h2>The path I'd actually create</h2></div>
+      <div class="phase"><div class="pn">1</div><div><div class="pt">Prove the role</div><div class="pw">First 30–60 days</div><p>$200/week base + current commissions. Success = dependable calling coverage, qualified appointments, accurate CRM records, and economically valuable sales opportunities. <b style="color:var(--ink)">Do not promise a particular income during this phase.</b></p></div></div>
+      <div class="phase"><div class="pn">2</div><div><div class="pt">Become a proven pipeline producer</div><div class="pw">Potentially months 2–6</div><p>Expand toward 20–25 authorized hours/week with a corresponding increase in guaranteed compensation — subject to lead demand and cash flow. Keep the attended-appointment and collected-revenue incentives. The promotion trigger is <b style="color:var(--ink)">sustained performance over several weeks, not time in the seat.</b></p></div></div>
+      <div class="phase"><div class="pn">3</div><div><div class="pt">Expand into a higher-value sales role</div><div class="pw">Only when company economics support it</div><p>To make $80K realistic, Regina would likely need to become a full-time sales producer / closer / pipeline manager with real revenue responsibility — higher guaranteed comp and commissions matched to expanded responsibility, <b style="color:var(--ink)">not simply more hours making calls.</b></p></div></div>
+
+      <div class="sec-h"><span class="n">4</span><h2>A realistic $80K structure — future closer role</h2></div>
+      <p class="lead">Illustrative, not an offer to make today. If Regina eventually becomes a full-time closer:</p>
+      <div class="calc">
+        <div class="ins three">
+          <div class="fld"><label>Guaranteed salary / year</label><input id="c_sal" type="number" value="45000"></div>
+          <div class="fld"><label>Commission %</label><input id="c_pct" type="number" step="0.5" value="7"></div>
+          <div class="fld"><label>Attributable collected revenue / year</label><input id="c_rev" type="number" value="500000"></div>
+        </div>
+        <div class="out">
+          <div class="o2"><div class="lab">Salary</div><div class="v num" id="c_salOut">—</div></div>
+          <div class="o2"><div class="lab">Commission</div><div class="v num" id="c_comm">—</div></div>
+          <div class="o2 total"><div class="lab">Total / year</div><div class="v num" id="c_total">—</div></div>
+        </div>
+        <div class="dis">Requires a genuine closing role, verified revenue attribution, sustainable margins, and enough qualified opportunities. At $4,500/Academy, <b id="c_count">$500,000</b> collected ≈ <b id="c_sales">111</b> Academy-equivalent sales a year — roughly <b id="c_mo">9</b> per month. A serious production requirement even for a full-time closer.</div>
+      </div>
+
+      <div class="sec-h"><span class="n">5</span><h2>What I'd promise Regina today</h2></div>
+      <div class="quote"><p>"I want to help you build toward $80,000 a year with BreedWise. I can't responsibly guarantee that today, but I can give you a clear path. First, we prove the outbound role produces profitable appointments. Then we expand your hours and responsibilities as the revenue supports it. Eventually, if you demonstrate you can own a larger part of our sales process, we can structure a full-time role with a compensation plan capable of reaching that income."</p></div>
+      <div class="note gold">Fair to her, financially responsible for BreedWise. <b>Keep her current commission plan for the pilot</b>, set a 30-day review, and document explicitly that future increases in authorized hours require corresponding compensation <i>and</i> a compliance review.</div>
+
+      <div class="sec-h"><span class="n">★</span><h2>The one strategic question</h2></div>
+      <p class="lead">Do you want Regina to <b>stay an appointment setter</b>, or eventually <b>become a high-ticket closer?</b> It decides whether $80K belongs in the budget.</p>
+      <div class="fork">
+        <div class="fk setter"><h3>If she stays booking</h3><p>Don't build the company budget around an $80K earning expectation for her. The volume required (~$1.6M originated) isn't a sensible base case for a part-time setter.</p></div>
+        <div class="fk closer"><h3>If she becomes a closer</h3><p>There's a far more direct economic path to $80K — a real closing role with salary + 7% on attributable revenue — once the sales operation can feed her enough qualified opportunities.</p></div>
+      </div>
+
+      <footer class="bf">BREEDWISE · Regina compensation progression. Proposed &amp; illustrative — confirm role (setter vs closer), classification, and margins before committing to any income target.</footer>
+    </div>
+  </div>
+
+<script>
+function money(n){return '$'+Math.round(n).toLocaleString();}
+function moneyM(n){ if(n>=1e6) return '$'+(n/1e6).toFixed(2)+'M'; return money(n); }
+function num(id){var e=document.getElementById(id);return e?(parseFloat(e.value)||0):0;}
+function set(id,t){var e=document.getElementById(id);if(e)e.textContent=t;}
+function calcCurrent(){
+  var att=num('r_att'),tpb=num('r_tpb'),ht=num('r_ht');
+  var eAtt=att*25,eTpb=tpb*20,eHt=ht*0.03,base=200;
+  var wk=base+eAtt+eTpb+eHt;
+  set('r_wk',money(wk));set('r_yr',money(wk*52));
+  set('r_orig',moneyM(ht*52));set('r_origInline',moneyM(ht*52));
+  document.getElementById('r_tbl').innerHTML=
+    '<tr><td>Guaranteed base</td><td class="num">—</td><td class="num">'+money(base)+'</td></tr>'+
+    '<tr><td>Qualified calls attended</td><td class="num">'+att+'</td><td class="num">'+money(eAtt)+'</td></tr>'+
+    '<tr><td>TPB memberships sold</td><td class="num">'+tpb+'</td><td class="num">'+money(eTpb)+'</td></tr>'+
+    '<tr><td>Academy/BOSS revenue collected</td><td class="num">'+money(ht)+'</td><td class="num">'+money(eHt)+'</td></tr>'+
+    '<tr class="tot"><td>Total</td><td class="num"></td><td class="num">'+money(wk)+'/wk</td></tr>';
+}
+function calcCloser(){
+  var sal=num('c_sal'),pct=num('c_pct'),rev=num('c_rev');
+  var comm=rev*pct/100;
+  set('c_salOut',money(sal));set('c_comm',money(comm));set('c_total',money(sal+comm));
+  set('c_count',money(rev));var sales=Math.round(rev/4500);set('c_sales',sales);set('c_mo',Math.round(sales/12));
+}
+function recalc(){calcCurrent();calcCloser();}
+(function(){
+  var OK='368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875'; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function el(id){return document.getElementById(id);}
+  function reveal(){var g=el('gate');if(g)g.remove();el('app').style.display='block';document.title='Regina → $80K · BreedWise';
+    ['r_att','r_tpb','r_ht','c_sal','c_pct','c_rev'].forEach(function(id){var e=el(id);if(e)e.addEventListener('input',recalc);});
+    recalc();
+  }
+  function tryUnlock(){var v=(el('pw').value||'').trim().toUpperCase();h(v).then(function(hex){if(hex===OK){try{sessionStorage.setItem('rc_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
+  el('unlock').addEventListener('click',tryUnlock);
+  el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('rc_ok')==='1')reveal();else el('pw').focus();}catch(e){el('pw').focus();}
+})();
+</script>
+</body>
+</html>
