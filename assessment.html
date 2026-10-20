@@ -119,10 +119,16 @@ async function tryCode(){
   if(await sha256(raw)===PASS_HASH){ MEMBER_CODE=raw; try{localStorage.setItem('bw-academy-code',raw);}catch(e){} openApp(); }
   else { $('#gErr').textContent='That passcode did not match. Check your Academy welcome for the current code.'; $('#code').value=''; $('#code').focus(); }
 }
-function openApp(){ $('#gate').classList.add('hide'); $('#app').classList.add('on'); renderForm(); }
+function openApp(){ $('#gate').classList.add('hide'); $('#app').classList.add('on'); renderForm(loadDraft()); }
 
 const PRIORITIES=['More qualified buyers','Puppies spoken for earlier','Better sales conversion','Higher / sustainable pricing','Better litter profitability','Better understanding of finances','Stronger brand','Better content / social media','Better systems / organization','Better reproductive preparation','Better whelping preparation','Better neonatal monitoring / records','Better genetics / health-testing understanding','Better veterinary communication','Reduce avoidable mistakes / risk','Reduce owner workload'];
 let PICKED=[];
+/* --- member draft autosave --- */
+const DRAFT_KEY='bw-academy-draft';
+function loadDraft(){try{const r=localStorage.getItem(DRAFT_KEY);if(r){const o=JSON.parse(r);PICKED=Array.isArray(o.priorities)?o.priorities.slice():[];return o;}}catch(e){}return null;}
+function flushDraft(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify(collect()));}catch(e){}}
+let _draftT;function scheduleDraft(){clearTimeout(_draftT);_draftT=setTimeout(flushDraft,400);}
+function clearDraft(){try{localStorage.removeItem(DRAFT_KEY);}catch(e){}}
 // field spec: [id,label,hint,type]  type: undefined=text, 'big'=textarea, [..]=select options
 const GROUPS=[
  ['Your program',[
@@ -223,8 +229,9 @@ function renderForm(prefill){
   });
   html+=`<div class="actions"><button class="btn" id="go">Next: sharpen my answers &rarr;</button><span class="err" id="fErr"></span></div>`;
   $('#body').innerHTML=html;
-  document.querySelectorAll('#prioChips .chip').forEach(el=>el.addEventListener('click',()=>{ el.classList.toggle('on'); const v=el.dataset.prio; PICKED=PICKED.filter(x=>x!==v); if(el.classList.contains('on')) PICKED.push(v); }));
+  document.querySelectorAll('#prioChips .chip').forEach(el=>el.addEventListener('click',()=>{ el.classList.toggle('on'); const v=el.dataset.prio; PICKED=PICKED.filter(x=>x!==v); if(el.classList.contains('on')) PICKED.push(v); scheduleDraft(); }));
   $('#go').addEventListener('click',submit);
+  const _b=$('#body'); if(_b) _b.addEventListener('input',scheduleDraft);
 }
 function collect(){ const o={}; FIELDS.forEach(([id])=>{ const el=$('#i_'+id); if(el) o[id]=el.value.trim(); }); o.priorities=PICKED.slice(); return o; }
 
@@ -278,10 +285,13 @@ function showResult(res){
     </div>
     <div class="actions"><button class="btn" id="printBtn">Save / print my roadmap</button><button class="btn ghost" id="again">Start a new assessment</button></div>`;
   $('#printBtn').addEventListener('click',()=>window.print());
-  $('#again').addEventListener('click',()=>{ PICKED=[]; renderForm(); });
+  $('#again').addEventListener('click',()=>{ PICKED=[]; clearDraft(); renderForm(); });
   window.scrollTo({top:0,behavior:'smooth'});
 }
-$('#startOver').addEventListener('click',()=>{ PICKED=[]; renderForm(); });
+$('#startOver').addEventListener('click',()=>{ PICKED=[]; clearDraft(); renderForm(); });
+window.addEventListener('pagehide',flushDraft);
+window.addEventListener('beforeunload',flushDraft);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushDraft();});
 
 (async function(){
   try{ const {data}=await sb.from('access_config').select('passcode_hash').eq('key','academy').maybeSingle(); if(data&&data.passcode_hash) PASS_HASH=data.passcode_hash; }catch(e){}

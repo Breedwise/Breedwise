@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;0,700;1,600&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#070708;--bg2:#0d0d10;--panel:#121216;--panel2:#0e0e12;--line:#20202a;--line2:#31313d;
+    --ink:#f4f1ea;--mid:#c0bbb0;--muted:#8a847a;--faint:#57524b;
+    --gold:#c9a24e;--gold-soft:#ecdaa4;--gold-deep:#8c6d2e;--green:#7bbf8f;--red:#e08a7a;
+    --disp:'Cormorant',Georgia,serif;--sans:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;}
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%}
+  body{background:radial-gradient(1200px 760px at 82% -14%,rgba(201,162,78,.13),transparent 58%),radial-gradient(800px 500px at 8% 6%,rgba(201,162,78,.05),transparent 55%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:90}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold-soft),var(--gold-deep));display:flex;align-items:center;justify-content:center;box-shadow:0 2px 14px rgba(201,162,78,.3)}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#14100a;font-size:19px}
+  .logo .wm{font-size:14px;letter-spacing:.26em;font-weight:700;display:inline-flex;align-items:center;gap:8px}
+  .logo .wm .boss{font-size:10px;letter-spacing:.2em;color:#14100a;background:linear-gradient(150deg,var(--gold-soft),var(--gold));padding:2px 7px;border-radius:5px;font-weight:800}
+  #gate h1{font-family:var(--disp);font-size:24px;font-weight:600;margin:16px 0 4px}
+  #gate .sub{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:linear-gradient(150deg,var(--gold-soft),var(--gold));border:0;border-radius:11px;color:#14100a;font-weight:800;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #app{display:none;height:100%;flex-direction:column}
+  nav.top{display:flex;align-items:center;gap:9px;padding:9px 16px;border-bottom:1px solid var(--line);background:rgba(7,7,8,.9);flex:none;flex-wrap:wrap}
+  nav .sp{flex:1}
+  .tbtn{background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+  .tbtn:hover{border-color:var(--gold);color:var(--ink)}
+  .tbtn.on{background:linear-gradient(150deg,var(--gold-soft),var(--gold));color:#14100a;border-color:transparent;font-weight:700}
+  .stage{flex:1;position:relative;overflow:hidden}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px clamp(20px,6vw,90px);overflow-y:auto}
+  .slide.on{display:flex;animation:fade .4s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .eye{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .slide h1{font-family:var(--disp);font-size:clamp(34px,6.5vw,68px);font-weight:600;line-height:1.04;margin:16px 0 0;max-width:15ch}
+  .slide h2{font-family:var(--disp);font-size:clamp(28px,5vw,48px);font-weight:600;line-height:1.08;margin:12px 0 0;max-width:18ch}
+  .slide .tagline{font-family:var(--disp);font-style:italic;font-size:clamp(16px,2.4vw,24px);color:var(--gold-soft);margin-top:14px}
+  .slide p.sub{color:var(--mid);font-size:clamp(14px,1.8vw,18px);margin-top:16px;max-width:52ch}
+  .blist{list-style:none;padding:0;margin:26px 0 0;text-align:left;max-width:640px;width:100%}
+  .blist li{display:flex;gap:13px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line);font-size:clamp(15px,2vw,19px);color:var(--mid)}
+  .blist li:before{content:"";width:9px;height:9px;border-radius:50%;background:linear-gradient(150deg,var(--gold-soft),var(--gold-deep));margin-top:9px;flex:none}
+  .blist.check li:before{content:"✓";background:none;color:var(--gold);font-weight:800;width:auto;height:auto;margin-top:0;font-size:17px}
+  .two{display:grid;gap:18px;width:100%;max-width:760px;margin-top:24px}
+  @media(min-width:720px){.two{grid-template-columns:1fr 1fr}}
+  .offer{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-top:3px solid var(--oc,var(--gold));border-radius:16px;padding:20px 22px;text-align:left}
+  .offer .on{font-family:var(--disp);font-size:24px;font-weight:600;color:var(--oc,var(--gold-soft))}
+  .offer .op{font-family:var(--disp);font-size:30px;font-weight:600;margin:4px 0}
+  .offer .om{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .offer ul{list-style:none;padding:0;margin:12px 0 0}
+  .offer li{font-size:14px;color:var(--mid);padding:5px 0;padding-left:20px;position:relative}
+  .offer li:before{content:"✓";position:absolute;left:0;color:var(--gold);font-weight:800}
+  .ed{outline:none;border-radius:6px;transition:background .15s}
+  body.editing .ed{background:rgba(201,162,78,.08);box-shadow:inset 0 0 0 1px rgba(201,162,78,.3);cursor:text;padding:0 4px}
+  body.editing .ed:focus{background:rgba(201,162,78,.14)}
+  /* testimonials */
+  .ttwrap{width:100%;max-width:960px;margin-top:22px}
+  .ttgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px}
+  .tt{background:var(--panel);border:1px solid var(--line2);border-radius:14px;overflow:hidden;text-align:left;position:relative}
+  .tt .ph{width:100%;aspect-ratio:4/3;background:var(--bg2) center/cover no-repeat;display:flex;align-items:center;justify-content:center;color:var(--faint);font-size:12px}
+  .tt .bd{padding:11px 13px}
+  .tt .nm{font-family:var(--disp);font-size:17px;font-weight:600;color:var(--gold-soft)}
+  .tt .me{font-size:11.5px;color:var(--muted);margin-bottom:5px}
+  .tt .qt{font-size:13px;color:var(--mid);line-height:1.5}
+  .tt .ei{width:100%;background:var(--bg2);border:1px solid var(--line2);border-radius:7px;color:var(--ink);font-family:var(--sans);font-size:13px;padding:7px 9px;margin-top:6px}
+  .tt .ei:focus{outline:none;border-color:var(--gold)}
+  .tt .tact{display:none;gap:6px;padding:0 13px 12px}
+  .tt .mini{flex:1;background:var(--bg2);border:1px solid var(--line2);color:var(--mid);border-radius:7px;padding:6px;font-size:11.5px;cursor:pointer;font-family:var(--sans)}
+  .tt .mini:hover{border-color:var(--gold);color:var(--ink)}
+  .tt .mini.del:hover{border-color:var(--red);color:var(--red)}
+  body.editing .tt .tact{display:flex}
+  body.editing .tt .ph{cursor:pointer}
+  .ttedit{display:none;gap:6px;margin-top:4px}
+  body.editing .tt .ttedit{display:flex;flex-direction:column}
+  .addtt{display:none;margin-top:16px;background:rgba(201,162,78,.1);border:1px dashed rgba(201,162,78,.45);color:var(--gold-soft);border-radius:11px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--sans)}
+  body.editing .addtt{display:inline-block}
+  .editnote{display:none;font-size:12.5px;color:var(--muted);margin-top:10px}
+  body.editing .editnote{display:block}
+  /* bottom bar */
+  .bar{display:flex;align-items:center;gap:12px;justify-content:center;padding:10px 16px;border-top:1px solid var(--line);background:rgba(7,7,8,.9);flex:none}
+  .navb{background:var(--panel);border:1px solid var(--line2);color:var(--ink);border-radius:9px;width:40px;height:38px;font-size:18px;cursor:pointer;font-family:var(--sans)}
+  .navb:hover{border-color:var(--gold);color:var(--gold-soft)}
+  .dots{display:flex;gap:7px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--line2);cursor:pointer}
+  .dot.on{background:linear-gradient(150deg,var(--gold-soft),var(--gold));transform:scale(1.25)}
+  .count{font-size:12px;color:var(--muted);min-width:46px;text-align:center}
+  .cta{display:inline-block;margin-top:26px;background:linear-gradient(150deg,var(--gold-soft),var(--gold));color:#14100a;font-weight:800;font-size:17px;padding:14px 30px;border-radius:12px;font-family:var(--sans)}
+  .hp{position:absolute;left:-9999px}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo" style="margin-bottom:16px"><span class="mk"><span>B</span></span><span class="wm">BREEDWISE</span></div>
+    <h1>Closing Presentation</h1><div class="sub">Team access</div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Enter →</button><div class="err" id="gate-err"></div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREEDWISE<span class="boss">CLOSE</span></span></span>
+      <span class="sp"></span>
+      <button class="tbtn" id="editBtn" title="Edit testimonials & on-screen text">✎ Edit</button>
+      <button class="tbtn" id="fsBtn" title="Present fullscreen">⛶ Present</button>
+      <button class="tbtn" id="saveFile" title="Download a backup">Backup</button>
+      <button class="tbtn" id="loadFile" title="Restore a backup">Restore</button>
+      <input id="loadInput" type="file" accept="application/json,.json" class="hp">
+      <input id="ttInput" type="file" accept="image/*" class="hp">
+    </nav>
+
+    <div class="stage" id="stage">
+      <!-- 1 -->
+      <div class="slide on">
+        <div class="eye">BreedWise · Your Breeder Game Plan</div>
+        <h1 class="ed" data-k="s1h">Let's build the program you actually want.</h1>
+        <div class="tagline ed" data-k="s1t">Better Your Breed. Build a Better Business.</div>
+      </div>
+      <!-- 2 -->
+      <div class="slide">
+        <div class="eye">Where you are now</div>
+        <h2 class="ed" data-k="s2h">Loving your dogs was never the problem.</h2>
+        <ul class="blist">
+          <li class="ed" data-k="s2a">You're great with the dogs — the business side is where it leaks.</li>
+          <li class="ed" data-k="s2b">Pricing by what others charge, not by the value you deliver.</li>
+          <li class="ed" data-k="s2c">Buyers you have to chase, convince, and sometimes regret.</li>
+          <li class="ed" data-k="s2d">Working harder every litter and keeping less of it.</li>
+        </ul>
+      </div>
+      <!-- 3 -->
+      <div class="slide">
+        <div class="eye">Where you want to be</div>
+        <h2 class="ed" data-k="s3h">Imagine twelve months from now.</h2>
+        <ul class="blist check">
+          <li class="ed" data-k="s3a">A premium program with a waitlist — not empty kennels.</li>
+          <li class="ed" data-k="s3b">Buyers who are pre-sold, qualified, and a joy to work with.</li>
+          <li class="ed" data-k="s3c">Pricing with confidence — and keeping what you earn.</li>
+          <li class="ed" data-k="s3d">A business that runs on systems, not on your exhaustion.</li>
+        </ul>
+      </div>
+      <!-- 4 -->
+      <div class="slide">
+        <div class="eye">Why most breeders stay stuck</div>
+        <h2 class="ed" data-k="s4h">It isn't effort. It's the absence of a system.</h2>
+        <p class="sub ed" data-k="s4p">Positioning, marketing, qualifying buyers, pricing, and the health &amp; genetics foundation — most breeders are piecing it together alone. BreedWise gives you the whole system, in the right order, with people who've done it.</p>
+      </div>
+      <!-- 5 -->
+      <div class="slide">
+        <div class="eye">The BreedWise method</div>
+        <h2 class="ed" data-k="s5h">Four pillars of a profitable, ethical program.</h2>
+        <ul class="blist">
+          <li class="ed" data-k="s5a"><b>Position</b> — become the premium, obvious choice in your breed.</li>
+          <li class="ed" data-k="s5b"><b>Attract</b> — marketing that brings qualified buyers to you.</li>
+          <li class="ed" data-k="s5c"><b>Convert</b> — pricing &amp; sales that respect you and the dogs.</li>
+          <li class="ed" data-k="s5d"><b>Elevate</b> — veterinary-informed health, genetics &amp; standards.</li>
+        </ul>
+      </div>
+      <!-- 6 · TESTIMONIALS -->
+      <div class="slide">
+        <div class="eye">Breeders already doing it</div>
+        <h2 class="ed" data-k="s6h">Real programs. Real results.</h2>
+        <div class="ttwrap">
+          <div class="ttgrid" id="ttgrid"></div>
+          <button class="addtt" id="addTt">+ Add testimonial</button>
+          <div class="editnote">Edit mode on — click a photo to change it, edit the name/result, or add a new testimonial. Use <b>Backup</b> to keep a copy.</div>
+        </div>
+      </div>
+      <!-- 7 -->
+      <div class="slide">
+        <div class="eye">Your options</div>
+        <h2 class="ed" data-k="s7h">Choose the level of support that fits.</h2>
+        <div class="two">
+          <div class="offer" style="--oc:#6fb4ea"><div class="on ed" data-k="s7an">BreedWise Academy</div><div class="op ed" data-k="s7ap">$4,500</div><div class="om ed" data-k="s7am">or 3 × $1,500</div>
+            <ul><li class="ed" data-k="s7a1">Structured coaching &amp; curriculum</li><li class="ed" data-k="s7a2">Accountability &amp; implementation</li><li class="ed" data-k="s7a3">Community &amp; tools</li></ul></div>
+          <div class="offer" style="--oc:#e68bab"><div class="on ed" data-k="s7bn">BOSS</div><div class="op ed" data-k="s7bp">$8,000</div><div class="om ed" data-k="s7bm">or 4 × $2,000</div>
+            <ul><li class="ed" data-k="s7b1">Done-with-you systems implementation</li><li class="ed" data-k="s7b2">Highest-touch, hands-on support</li><li class="ed" data-k="s7b3">For serious operators scaling</li></ul></div>
+        </div>
+      </div>
+      <!-- 8 -->
+      <div class="slide">
+        <div class="eye">Your first 90 days</div>
+        <h2 class="ed" data-k="s8h">Here's exactly how we start.</h2>
+        <ul class="blist">
+          <li class="ed" data-k="s8a"><b>Days 1–30</b> — foundations: positioning, offer, and pricing set.</li>
+          <li class="ed" data-k="s8b"><b>Days 31–60</b> — marketing live; qualified buyers coming in.</li>
+          <li class="ed" data-k="s8c"><b>Days 61–90</b> — convert, refine, and build the waitlist.</li>
+        </ul>
+      </div>
+      <!-- 9 -->
+      <div class="slide">
+        <div class="eye">The only question left</div>
+        <h2 class="ed" data-k="s9h">Are you ready to build it?</h2>
+        <p class="sub ed" data-k="s9p">You've seen where you are, where you could be, and the system that gets you there. Let's get you started today.</p>
+        <span class="cta ed" data-k="s9c">Let's begin →</span>
+      </div>
+    </div>
+
+    <div class="bar">
+      <button class="navb" id="prev">‹</button>
+      <div class="dots" id="dots"></div>
+      <span class="count" id="count">1 / 9</span>
+      <button class="navb" id="next">›</button>
+    </div>
+  </div>
+
+<script>
+var LS='bw-breeder-closing-deck-v1';
+var DB={text:{},tt:[]};
+var SEED=[
+  {id:'a',img:'',nm:'Add a client',me:'Breed · Location',qt:'Paste their result or a short quote here.'},
+  {id:'b',img:'',nm:'Add a client',me:'Breed · Location',qt:'Paste their result or a short quote here.'},
+  {id:'c',img:'',nm:'Add a client',me:'Breed · Location',qt:'Paste their result or a short quote here.'}
+];
+function $(s){return document.querySelector(s);}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function load(){try{var r=localStorage.getItem(LS);if(r){var o=JSON.parse(r);DB.text=o.text||{};DB.tt=o.tt&&o.tt.length?o.tt:SEED.slice();}else DB.tt=SEED.slice();}catch(e){DB.tt=SEED.slice();}}
+function flush(){try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){alert('Storage full — use Backup and remove a few photos.');}}
+var st;function save(){clearTimeout(st);st=setTimeout(flush,250);}
+/* editable text */
+function initText(){
+  document.querySelectorAll('.ed').forEach(function(e){
+    var k=e.getAttribute('data-k');if(DB.text[k]!=null)e.innerHTML=DB.text[k];
+    e.addEventListener('input',function(){if(document.body.classList.contains('editing')){DB.text[k]=e.innerHTML;save();}});
+  });
+}
+/* testimonials */
+var activeTt=null;
+function renderTt(){
+  var g=$('#ttgrid');g.innerHTML='';
+  DB.tt.forEach(function(t){
+    var c=el('div','tt');
+    var ph=el('div','ph');if(t.img){ph.style.backgroundImage='url('+JSON.stringify(t.img).slice(1,-1)+')';ph.textContent='';}else{ph.textContent='click to add photo';}
+    ph.addEventListener('click',function(){if(document.body.classList.contains('editing')){activeTt=t.id;$('#ttInput').click();}});
+    c.appendChild(ph);
+    var bd=el('div','bd');
+    var nm=el('div','nm');nm.textContent=t.nm||'';
+    var me=el('div','me');me.textContent=t.me||'';
+    var qt=el('div','qt');qt.textContent=t.qt||'';
+    bd.appendChild(nm);bd.appendChild(me);bd.appendChild(qt);
+    // edit inputs
+    var ed=el('div','ttedit');
+    var inm=el('input','ei');inm.placeholder='Name';inm.value=t.nm||'';inm.addEventListener('input',function(){t.nm=inm.value;nm.textContent=inm.value;save();});
+    var ime=el('input','ei');ime.placeholder='Breed · location';ime.value=t.me||'';ime.addEventListener('input',function(){t.me=ime.value;me.textContent=ime.value;save();});
+    var iqt=el('input','ei');iqt.placeholder='Result / short quote';iqt.value=t.qt||'';iqt.addEventListener('input',function(){t.qt=iqt.value;qt.textContent=iqt.value;save();});
+    ed.appendChild(inm);ed.appendChild(ime);ed.appendChild(iqt);bd.appendChild(ed);
+    c.appendChild(bd);
+    var act=el('div','tact');
+    var ch=el('button','mini','Change photo');ch.addEventListener('click',function(){activeTt=t.id;$('#ttInput').click();});
+    var dl=el('button','mini del','Delete');dl.addEventListener('click',function(){DB.tt=DB.tt.filter(function(z){return z.id!==t.id;});save();renderTt();});
+    act.appendChild(ch);act.appendChild(dl);c.appendChild(act);
+    g.appendChild(c);
+  });
+}
+function compress(file,cb){var r=new FileReader();r.onload=function(){var img=new Image();img.onload=function(){
+  var max=900,s=Math.min(1,max/Math.max(img.width,img.height));var cv=document.createElement('canvas');cv.width=Math.round(img.width*s);cv.height=Math.round(img.height*s);
+  cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);try{cb(cv.toDataURL('image/jpeg',0.78));}catch(e){cb(r.result);}};img.onerror=function(){cb(r.result);};img.src=r.result;};r.readAsDataURL(file);}
+/* deck nav */
+var idx=0,slides;
+function show(i){slides=document.querySelectorAll('.slide');idx=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach(function(s,j){s.classList.toggle('on',j===idx);});
+  $('#count').textContent=(idx+1)+' / '+slides.length;
+  document.querySelectorAll('.dot').forEach(function(d,j){d.classList.toggle('on',j===idx);});
+  var st=$('#stage');if(st)st.scrollTop=0;
+}
+function buildDots(){var d=$('#dots');d.innerHTML='';document.querySelectorAll('.slide').forEach(function(_,j){var b=el('span','dot');b.addEventListener('click',function(){show(j);});d.appendChild(b);});}
+function editingOrTyping(){var a=document.activeElement;return document.body.classList.contains('editing')&&a&&(a.tagName==='INPUT'||a.isContentEditable);}
+function wire(){
+  initText();renderTt();buildDots();show(0);
+  $('#prev').addEventListener('click',function(){show(idx-1);});
+  $('#next').addEventListener('click',function(){show(idx+1);});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'){if(!editingOrTyping()){show(idx+1);}}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){if(!editingOrTyping()){show(idx-1);}}
+  });
+  $('#editBtn').addEventListener('click',function(){var on=document.body.classList.toggle('editing');$('#editBtn').classList.toggle('on',on);
+    document.querySelectorAll('.ed').forEach(function(e){e.contentEditable=on?'true':'false';});});
+  $('#fsBtn').addEventListener('click',function(){var el2=document.documentElement;if(!document.fullscreenElement){(el2.requestFullscreen||el2.webkitRequestFullscreen||function(){}).call(el2);}else{(document.exitFullscreen||document.webkitExitFullscreen||function(){}).call(document);}});
+  $('#ttInput').addEventListener('change',function(e){var f=e.target.files&&e.target.files[0];if(f&&activeTt){compress(f,function(d){var t=DB.tt.filter(function(z){return z.id===activeTt;})[0];if(t){t.img=d;save();renderTt();}activeTt=null;});}e.target.value='';});
+  $('#addTt').addEventListener('click',function(){DB.tt.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),img:'',nm:'',me:'',qt:''});save();renderTt();});
+  $('#saveFile').addEventListener('click',function(){try{var b=new Blob([JSON.stringify(DB)],{type:'application/json'});var u=URL.createObjectURL(b);var a=el('a');a.href=u;a.download='breeder-closing-deck.json';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},1000);}catch(e){alert('Backup failed.');}});
+  $('#loadFile').addEventListener('click',function(){$('#loadInput').click();});
+  $('#loadInput').addEventListener('change',function(e){var f=e.target.files&&e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result);DB.text=o.text||{};DB.tt=o.tt||SEED.slice();flush();location.reload();}catch(x){alert('That file could not be read.');}};r.readAsText(f);e.target.value='';});
+  window.addEventListener('pagehide',flush);window.addEventListener('beforeunload',flush);
+}
+(function(){
+  var OK=['368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875']; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function reveal(){var g=$('#gate');if(g)g.remove();$('#app').style.display='flex';document.title='Breeder Closing Deck · BreedWise';load();wire();}
+  function tryUnlock(){var v=($('#pw').value||'').trim().toUpperCase();h(v).then(function(hex){if(OK.indexOf(hex)>=0){try{sessionStorage.setItem('cd_ok','1');}catch(e){}reveal();}else{$('#gate-err').textContent='Incorrect code.';$('#pw').select();}});}
+  $('#unlock').addEventListener('click',tryUnlock);$('#pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('cd_ok')==='1')reveal();else $('#pw').focus();}catch(e){$('#pw').focus();}
+})();
+</script>
+</body>
+</html>
