@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0e13;--bg2:#10141c;--panel:#141a24;--panel2:#111620;--line:#232c3a;--line2:#323e50;
+    --ink:#eef2f8;--mid:#c0c8d4;--muted:#8591a3;--faint:#5c6678;
+    --gold:#c9a862;--gold-soft:#e6cf96;--gold-deep:#9d8343;--green:#5bbd7a;--red:#e8697f;
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;}
+  *{box-sizing:border-box;margin:0}
+  body{background:radial-gradient(1100px 680px at 84% -12%,rgba(201,168,98,.07),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.62}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:90}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),var(--gold-deep));display:flex;align-items:center;justify-content:center}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#14110a;font-size:18px}
+  .logo .wm{font-size:15px;letter-spacing:.2em;font-weight:700}.logo .wm b{color:var(--gold)}
+  #gate h1{font-family:var(--disp);font-size:22px;font-weight:600;margin:16px 0 4px}
+  #gate .sub{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#14110a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #app{display:none}
+  nav.top{position:sticky;top:0;z-index:40;background:rgba(11,14,19,.93);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 20px;flex-wrap:wrap}
+  nav .sp{flex:1}
+  .save{font-size:11px;color:var(--green)}
+  .tbtn{background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:8px 12px;font-size:12px;cursor:pointer;font-family:var(--sans)}
+  .tbtn:hover{border-color:var(--gold);color:var(--ink)}
+  .wrap{max-width:760px;margin:0 auto;padding:16px 24px 110px}
+  .head{text-align:center;padding:24px 0 14px;border-bottom:1px solid var(--line)}
+  .head .k{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .head h1{font-family:var(--disp);font-size:clamp(24px,4.6vw,32px);font-weight:600;margin:8px 0 2px}
+  .head .s{color:var(--muted);font-size:13px}
+  .draft{display:inline-block;margin-top:10px;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);border:1px solid rgba(232,105,127,.4);border-radius:6px;padding:3px 10px}
+  .disc{background:rgba(232,105,127,.07);border:1px solid rgba(232,105,127,.24);border-left:3px solid var(--red);border-radius:12px;padding:12px 15px;margin:16px 0;font-size:12.5px;color:var(--mid)}
+  .disc b{color:#f0a4b0}
+  h2.cl{font-family:var(--disp);font-size:18px;font-weight:600;margin:24px 0 4px;color:var(--gold-soft);display:flex;gap:10px}
+  h2.cl .no{color:var(--gold);min-width:26px}
+  p{margin:8px 0;color:var(--mid);font-size:14px}
+  p strong,li strong{color:var(--ink);font-weight:600}
+  ul{margin:8px 0 8px 2px;padding-left:20px}li{margin:4px 0;color:var(--mid);font-size:14px}
+  .fin{background:var(--bg2);border:0;border-bottom:1px solid var(--gold-deep);color:var(--gold-soft);font-family:var(--sans);font-size:14px;padding:2px 6px;min-width:90px;border-radius:4px 4px 0 0}
+  .fin:focus{outline:none;border-bottom-color:var(--gold);background:#161d28}
+  .callout{background:rgba(201,168,98,.08);border:1px solid rgba(201,168,98,.24);border-left:3px solid var(--gold);border-radius:12px;padding:12px 15px;margin:12px 0;font-size:13px;color:var(--mid)}
+  .callout b{color:var(--gold-soft)}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.3px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--gold-soft);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em}td{color:var(--mid)}td b{color:var(--ink)}
+  .sign{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:20px}
+  @media(max-width:560px){.sign{grid-template-columns:1fr}}
+  .sigbox label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .sigline{height:40px;border-bottom:1px solid var(--line2);margin:8px 0 4px}
+  .sigbox input{width:100%;background:var(--bg2);border:1px solid var(--line2);border-radius:8px;color:var(--ink);font-family:var(--sans);font-size:13.5px;padding:8px 11px;margin-top:6px}
+  .sigbox input:focus{outline:none;border-color:var(--gold)}
+  footer.bf{text-align:center;color:#5c667840;font-size:11px;margin-top:40px}
+  .hp{position:absolute;left:-9999px}
+  @media print{nav.top,.tbtn,.save{display:none}body{background:#fff;color:#111}.wrap{max-width:100%}
+    h2.cl,.head .k,th{color:#9d8343!important}p,li,td{color:#222!important}.head h1{color:#111!important}
+    .fin{color:#111!important;background:transparent;border-bottom:1px solid #666}.callout,.disc,table{background:#fff!important;border-color:#ccc!important}.draft{color:#b00!important}}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo" style="margin-bottom:16px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
+    <h1>Compensation Agreement</h1><div class="sub">Confidential</div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Enter →</button><div class="err" id="gate-err"></div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top"><div class="in">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+      <span class="sp"></span><span class="save" id="save">Saved</span>
+      <button class="tbtn" id="printBtn">Print / PDF</button>
+    </div></nav>
+    <div class="wrap">
+      <div class="head">
+        <div class="k">BreedWise LLC</div>
+        <h1>DM Appointment Setter — Compensation Agreement</h1>
+        <div class="s">Between <b>BreedWise</b> and <input class="fin" id="empName" placeholder="Daniel [last name]" style="min-width:180px"></div>
+        <div class="draft">Draft · for review</div>
+      </div>
+
+      <div class="disc"><b>Draft for internal review — not legal advice.</b> This captures the terms discussed so the Setter Operating Manual has a governing document. Have it reviewed by qualified counsel and finalized/signed before relying on it. Fields in gold are fill-in; it prints clean for signature.</div>
+
+      <p><b>Effective date:</b> <input class="fin" id="effDate" placeholder="______, 2026"> &nbsp;·&nbsp; <b>Role:</b> DM Appointment Setter &amp; Lead Recovery &nbsp;·&nbsp; <b>Reports to:</b> Austin Shanks (Supervising Manager)</p>
+      <p><b>Classification:</b> <input class="fin" id="class" placeholder="W-2 employee / 1099 contractor"> &nbsp;·&nbsp; <b>Status:</b> <input class="fin" id="status" placeholder="Part-time"> &nbsp;·&nbsp; <b>Coverage hours:</b> <input class="fin" id="hours" placeholder="e.g. Mon–Fri, __–__ CT"></p>
+
+      <h2 class="cl"><span class="no">1.</span> Role &amp; scope</h2>
+      <p>The Setter starts genuine conversations with prospects, qualifies interest, and creates the right next step — a booked <b>Breeder Game Plan Call</b>, a consented callback, or a referral to The Profitable Breeder (TPB) / an educational resource. The Setter <b>does not</b> close Academy or BOSS, run a TPB sales pitch, quote unapproved prices, or provide veterinary advice. Game Plan Calls are run by Regina (qualification) and closed by Austin (Academy/BOSS), or routed to TPB.</p>
+
+      <h2 class="cl"><span class="no">2.</span> Base pay</h2>
+      <p><b>$200.00 per week</b>, paid on the Company's regular schedule, for the agreed coverage hours. The base is not an advance against commission.</p>
+
+      <h2 class="cl"><span class="no">3.</span> Commissions &amp; bonuses</h2>
+      <table>
+        <tr><th>Component</th><th>Amount</th><th>Earned on</th></tr>
+        <tr><td><b>TPB origination bonus</b></td><td>$20.00</td><td>Each <b>verified, eligible TPB membership</b> the Setter originates (payment successfully collected).</td></tr>
+        <tr><td><b>Academy commission</b></td><td>3% of cash collected</td><td>Academy sales on opportunities the Setter sourced &amp; qualified.</td></tr>
+        <tr><td><b>BOSS commission</b></td><td>3% of cash collected</td><td>BOSS sales on opportunities the Setter sourced &amp; qualified.</td></tr>
+      </table>
+      <p>Commissions are earned on <b>cash actually collected</b> (not contract value). On payment plans, commission is paid as each installment is collected.</p>
+
+      <h2 class="cl"><span class="no">4.</span> Attribution (how credit is assigned)</h2>
+      <ul>
+        <li>Credit follows the <b>documented source &amp; owner recorded in CC360 at first contact</b> — not whoever messaged most recently.</li>
+        <li>The Setter must log and tag each sourced lead to themselves at the start of the conversation. Unlogged work is not credited.</li>
+        <li>Where multiple people touch a lead (e.g., marketing-sourced, Regina on the phone, Austin closing), the Setter earns commission only where they are the documented <b>originating qualifier</b>. Genuine disputes are resolved by the Supervising Manager.</li>
+        <li>Company-assigned or pre-existing leads the Setter did not originate do not carry origination commission unless agreed in writing.</li>
+      </ul>
+
+      <h2 class="cl"><span class="no">5.</span> Backfill (historical lead recovery)</h2>
+      <p>Recovered/re-engaged historical leads are tracked under the <b>Backfill</b> tag and reported separately. A conversion the Setter originates through documented backfill is credited as: <input class="fin" id="backfill" placeholder="same rates as §3 / or specify bonus" style="min-width:240px">.</p>
+
+      <h2 class="cl"><span class="no">6.</span> Chargebacks, refunds &amp; reversals</h2>
+      <p>Commission is contingent on funds being retained by the Company. If a payment is <b>refunded, charged back, or reversed</b>, the related commission is reversed and deducted from future commission or, if none is available, repaid to the Company.</p>
+
+      <h2 class="cl"><span class="no">7.</span> Commission payment timing</h2>
+      <p>Commissions are reconciled from collected funds and paid <input class="fin" id="cadence" placeholder="e.g. monthly, by the 10th"> for the prior period. A statement of credited conversions and collected amounts accompanies each payment.</p>
+
+      <h2 class="cl"><span class="no">8.</span> Expectations &amp; conduct</h2>
+      <ul>
+        <li>Meet the response, booking, CRM-accuracy and reporting standards in the Setter Operating Manual (as updated).</li>
+        <li>Be truthful; make no income or puppy-health guarantees; give no veterinary advice; honor all opt-outs; follow platform rules and approved audiences/tools only.</li>
+        <li>Use only Company-approved accounts and systems; protect account access and confidential information.</li>
+      </ul>
+
+      <h2 class="cl"><span class="no">9.</span> Confidentiality &amp; Company property</h2>
+      <p>Prospect/member data, pricing, scripts, and systems are confidential and remain the Company's property. On separation, the Setter returns or loses access to all accounts, data, and materials, and does not retain or use Company contacts.</p>
+
+      <h2 class="cl"><span class="no">10.</span> Term, at-will &amp; post-termination</h2>
+      <p>This arrangement is <input class="fin" id="atwill" placeholder="at-will"> and may be ended by either party. After the end date, the Setter is paid commission only on <b>deals booked/originated before separation that collect within</b> <input class="fin" id="tail" placeholder="__ days"> of the end date, subject to §6; no commission accrues on activity after separation.</p>
+
+      <h2 class="cl"><span class="no">11.</span> Changes &amp; governing terms</h2>
+      <p>Compensation may be changed prospectively in writing by the Company. This Agreement governs compensation; the Setter Operating Manual governs day-to-day duties. Governed by the laws of <input class="fin" id="state" placeholder="State of ______">. This is the entire agreement on compensation and supersedes prior discussions.</p>
+
+      <div class="callout"><b>Fill before signing:</b> last name, classification (W-2/1099), coverage hours, backfill credit rule, payment cadence, post-termination tail window, and governing state. Everything else reflects the terms we set.</div>
+
+      <h2 class="cl"><span class="no">12.</span> Signatures</h2>
+      <div class="sign">
+        <div class="sigbox"><label>The Company — BreedWise</label><div class="sigline"></div>
+          <input id="coName" placeholder="Austin Shanks, Founder &amp; CEO"><input id="coDate" type="date"></div>
+        <div class="sigbox"><label>The Setter</label><div class="sigline"></div>
+          <input id="stName" placeholder="Daniel [last name]"><input id="stDate" type="date"></div>
+      </div>
+
+      <footer class="bf">BREEDWISE · DM Setter Compensation Agreement (draft) · Confidential. Fields save privately on this device.</footer>
+    </div>
+  </div>
+
+<script>
+var LS='bw-setter-comp-agreement-v1';
+var IDS=['empName','effDate','class','status','hours','backfill','cadence','atwill','tail','state','coName','coDate','stName','stDate'];
+var DB={};
+function $(s){return document.querySelector(s);}
+function load(){try{var r=localStorage.getItem(LS);if(r)DB=JSON.parse(r)||{};}catch(e){}}
+var st;function save(){$('#save').textContent='Saving…';clearTimeout(st);st=setTimeout(function(){try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}$('#save').textContent='Saved';},250);}
+function wire(){
+  IDS.forEach(function(id){var e=$('#'+id);if(!e)return;
+    if(DB[id]!=null)e.value=DB[id];
+    if(id==='empName'&&DB[id]==null)e.value='Daniel';
+    if(id==='coName'&&DB[id]==null)e.value='Austin Shanks, Founder & CEO';
+    var ev=(e.type==='date')?'change':'input';
+    e.addEventListener(ev,function(){DB[id]=e.value;save();});
+  });
+  $('#printBtn').addEventListener('click',function(){window.print();});
+  window.addEventListener('pagehide',function(){try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}});
+}
+(function(){
+  var OK=['10507e9b2f51ad6a5805328ce47310372a649109a9ff4e74805503693f54e655', /* SETTER2026 */
+          '368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875']; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function reveal(){var g=$('#gate');if(g)g.remove();$('#app').style.display='block';document.title='Setter Compensation Agreement · BreedWise';load();wire();}
+  function tryUnlock(){var v=($('#pw').value||'').trim().toUpperCase();h(v).then(function(hex){if(OK.indexOf(hex)>=0){try{sessionStorage.setItem('ca_ok','1');}catch(e){}reveal();}else{$('#gate-err').textContent='Incorrect code.';$('#pw').select();}});}
+  $('#unlock').addEventListener('click',tryUnlock);$('#pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('ca_ok')==='1')reveal();else $('#pw').focus();}catch(e){$('#pw').focus();}
+})();
+</script>
+</body>
+</html>

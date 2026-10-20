@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0e13;--bg2:#10141c;--panel:#141a24;--panel2:#111620;--line:#232c3a;--line2:#323e50;
+    --ink:#eef2f8;--mid:#c0c8d4;--muted:#8591a3;--faint:#5c6678;
+    --gold:#c9a862;--gold-soft:#e6cf96;--gold-deep:#9d8343;--green:#5bbd7a;--red:#e8697f;--blue:#6fb0e6;
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;}
+  *{box-sizing:border-box;margin:0}
+  body{background:radial-gradient(1100px 680px at 84% -12%,rgba(201,168,98,.08),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.6}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:90}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),var(--gold-deep));display:flex;align-items:center;justify-content:center}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#14110a;font-size:18px}
+  .logo .wm{font-size:15px;letter-spacing:.2em;font-weight:700}.logo .wm b{color:var(--gold)}
+  #gate h1{font-family:var(--disp);font-size:22px;font-weight:600;margin:16px 0 4px}
+  #gate .sub{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#14110a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #app{display:none}
+  nav.top{position:sticky;top:0;z-index:40;background:rgba(11,14,19,.93);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .in{max-width:800px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 20px;flex-wrap:wrap}
+  nav .sp{flex:1}
+  .prog{font-size:12px;color:var(--gold-soft);font-weight:600}
+  .tbtn{background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:8px 12px;font-size:12px;cursor:pointer;font-family:var(--sans)}
+  .tbtn:hover{border-color:var(--gold);color:var(--ink)}
+  .wrap{max-width:800px;margin:0 auto;padding:18px 22px 110px}
+  .hero{text-align:center;margin:14px 0 6px}
+  .hero .k{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .hero h1{font-family:var(--disp);font-size:clamp(26px,5vw,38px);font-weight:600;margin:10px 0 0}
+  .hero p{color:var(--muted);font-size:14px;margin:8px auto 0;max-width:560px}
+  .flowbar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin:16px 0}
+  .fb{background:var(--panel);border:1px solid var(--line2);border-radius:10px;padding:8px 12px;font-size:12.5px;color:var(--ink)}
+  .fb b{color:var(--gold-soft)}
+  .arr{color:var(--faint);font-size:15px}
+  .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:16px 0}
+  .card h2{font-family:var(--disp);font-size:21px;font-weight:600;display:flex;align-items:center;gap:9px}
+  .card .own{font-size:11px;color:var(--muted);margin:3px 0 10px}
+  .card .own b{color:var(--gold-soft)}
+  .ck{display:flex;align-items:flex-start;gap:11px;padding:8px 0;border-bottom:1px solid var(--line)}
+  .ck:last-child{border-bottom:0}
+  .ck input{width:18px;height:18px;accent-color:var(--gold);flex:none;margin-top:1px;cursor:pointer}
+  .ck .t{font-size:13.8px;color:var(--mid)}
+  .ck .t b{color:var(--ink)}
+  .ck.done .t{color:var(--faint);text-decoration:line-through}
+  .tagline{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px}
+  .tg{font-size:11px;color:var(--gold-soft);background:rgba(201,168,98,.1);border:1px solid rgba(201,168,98,.25);border-radius:14px;padding:2px 9px}
+  .warn{background:rgba(232,105,127,.08);border:1px solid rgba(232,105,127,.26);border-left:3px solid var(--red);border-radius:12px;padding:12px 15px;margin:12px 0;font-size:13px;color:var(--mid)}
+  .warn b{color:#f0a4b0}
+  .copybox{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;position:relative}
+  .copybox h4{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px}
+  .q{margin:9px 0;font-size:13.6px;color:var(--ink)}
+  .q .n{color:var(--gold);font-family:var(--disp);font-weight:700;margin-right:6px}
+  .q .opt{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+  .copybtn{position:absolute;top:12px;right:12px;background:var(--gold);border:0;color:#14110a;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans)}
+  footer.bf{text-align:center;color:#5c667840;font-size:11px;margin-top:40px}
+  .hp{position:absolute;left:-9999px}
+  @media print{nav.top,.tbtn,.copybtn{display:none}body{background:#fff;color:#111}.card,.copybox{background:#fff!important;border-color:#ccc!important}h1,h2,.q{color:#111!important}.ck .t,p{color:#222!important}}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo" style="margin-bottom:16px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
+    <h1>Lead-Flow &amp; Setup</h1><div class="sub">Team access</div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Enter →</button><div class="err" id="gate-err"></div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top"><div class="in">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+      <span class="sp"></span><span class="prog" id="prog">0 / 0</span>
+      <button class="tbtn" id="printBtn">Print</button>
+    </div></nav>
+    <div class="wrap">
+      <div class="hero"><div class="k">Ops · DM Setter Launch</div><h1>Lead-Flow &amp; System Setup</h1>
+        <p>The minimum build to run the setter seat cleanly — nothing unnecessary. Tick each item as it's done; progress saves on this device.</p></div>
+
+      <div class="flowbar">
+        <span class="fb">DM / comment</span><span class="arr">→</span>
+        <span class="fb"><b>Daniel</b> qualifies &amp; books</span><span class="arr">→</span>
+        <span class="fb">Game Plan Call · <b>Regina</b> qualifies</span><span class="arr">→</span>
+        <span class="fb"><b>Austin</b> closes</span><span class="arr">/</span><span class="fb">→ <b>TPB</b></span>
+      </div>
+
+      <div class="card">
+        <h2>① CC360 <span style="font-size:12px;color:var(--muted)">· system of record</span></h2>
+        <div class="own">Owner: <b>Austin / ops</b></div>
+        <div id="cc360"></div>
+      </div>
+
+      <div class="card">
+        <h2>② ManyChat <span style="font-size:12px;color:var(--muted)">· DM automation</span></h2>
+        <div class="own">Owner: <b>ops / Yasmin</b> · keep it lean — the bot captures &amp; routes, it never pitches</div>
+        <div id="manychat"></div>
+      </div>
+
+      <div class="card">
+        <h2>③ Meta Business Suite <span style="font-size:12px;color:var(--muted)">· inbox triage</span></h2>
+        <div class="own">Owner: <b>ops</b></div>
+        <div id="meta"></div>
+      </div>
+
+      <div class="warn"><b>Golden rule:</b> the human response has to feel human. Don't let ManyChat or Meta auto-replies answer a genuinely interested lead that Daniel should handle — tag &amp; route to him instead, and protect the 15-minute response standard.</div>
+
+      <div class="card">
+        <h2>④ Game Plan Call application</h2>
+        <div class="own">The booking form's qualifying questions — so <b>Regina</b> can pre-qualify and route to Austin vs TPB. Put on the booking page/application.</div>
+        <div class="copybox">
+          <button class="copybtn" id="copyApp">Copy</button>
+          <h4>Copy-paste into your booking form</h4>
+          <div id="appQs"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>⑤ Before go-live — confirm these</h2>
+        <div id="confirm"></div>
+      </div>
+
+      <footer class="bf">BREEDWISE · Lead-Flow &amp; System Setup · internal. Progress saves privately on this device.</footer>
+    </div>
+  </div>
+
+<script>
+var LS='bw-leadflow-setup-v1';
+var DB={done:{}};
+var GROUPS={
+cc360:[
+ '<b>One pipeline</b> with 8 stages: New Lead → Contacted → Engaged → Qualified → Call Invited → Booked → Attended → Outcome Recorded.',
+ '<b>Status tags:</b> Callback requested · TPB referred · Nurture · Not qualified · No-show/reschedule · Opted out.',
+ '<b>Source tags:</b> Reel/CTA · New follower · Ad keyword · Referral · Scorecard · <b>Backfill</b> (for separate recovery reporting).',
+ '<b>Owner field</b> + a source-of-record/attribution field set at first contact (not whoever messaged last).',
+ '<b>Game Plan Call calendar</b> → owner = <b>Regina</b>, with booking-confirmation + reminder automations and an auto no-show tag.',
+ '<b>Daniel’s user seat:</b> contacts + conversations + booking access only — <b>not</b> billing/admin.',
+ '<b>Three saved views for Daniel:</b> “Needs response (SLA)” · “My open conversations” · “Backfill queue.”'
+],
+manychat:[
+ '<b>Human-takeover rule:</b> genuine interest → tag “Needs human,” pause automation, assign to Daniel.',
+ '<b>Source tag on entry</b> (ad keyword / growth tool) → pass to CC360 as Lead Source.',
+ '<b>STOP keyword → opted-out</b>, kills all active sequences.',
+ '<b>Sync to CC360</b> via native integration (or Zapier) so DM leads become CRM contacts.',
+ '<b>No sales sequences that pitch</b> — capture, tag, route only.'
+],
+meta:[
+ '<b>Labels mirroring CC360:</b> New lead · In progress · Booked · Callback · TPB referred · No-show · Opted out.',
+ '<b>Assign conversations to Daniel;</b> give him Employee/Inbox access (not full admin).',
+ '<b>Auto-replies off</b> (or a tiny “got it, one sec”) so the 15-min human response stays real.',
+ '<b>Off-hours away message</b> pointing to the named backup owner.',
+ '<b>Saved replies</b> for the common openers (from the manual) — kept human, not auto-blasted.'
+],
+confirm:[
+ '<b>Regina’s backup</b> for the Game Plan Call (who runs it when she’s out).',
+ '<b>Daniel’s coverage hours</b> + the off-hours backup owner for urgent leads.',
+ '<b>Live links:</b> Game Plan Call booking calendar · TPB page/referral link · free resources/scorecards.',
+ '<b>CRM Looms</b> recorded &amp; linked in the manual’s Appendix B.',
+ '<b>Backfill incentive rule</b> documented (how recovered-lead conversions are credited).',
+ '<b>Vet-escalation contact</b> named for health questions.',
+ '<b>Approved audiences &amp; automation tools</b> defined for outreach.',
+ '<b>Signed compensation agreement</b> in place before first commission.'
+]
+};
+var APP=[
+ {q:'Full name',o:'short text'},
+ {q:'Best email',o:'email'},
+ {q:'Best phone (for your confirmation)',o:'phone'},
+ {q:'What breed(s) do you raise?',o:'short text'},
+ {q:'How long have you been breeding?',o:'Just getting started · Under 2 years · 2–5 years · 5+ years'},
+ {q:'Are your dogs registered?',o:'Yes, all · Some · No'},
+ {q:'About how many litters per year?',o:'0 (planning my first) · 1–2 · 3–5 · 6+'},
+ {q:'What’s the #1 thing holding your breeding business back right now?',o:'long text'},
+ {q:'If we fixed one thing in the next 3–6 months, what would you want to see change?',o:'long text'},
+ {q:'Are you ready to invest in growing this into a real business right now?',o:'Yes, I’m ready · Exploring options · Not yet'},
+ {q:'Anything else Regina should know before your call? (optional)',o:'long text'}
+];
+function $(s){return document.querySelector(s);}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function load(){try{var r=localStorage.getItem(LS);if(r)DB=Object.assign({done:{}},JSON.parse(r));}catch(e){}}
+var st;function save(){clearTimeout(st);st=setTimeout(function(){try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}},250);}
+function key(g,i){return g+':'+i;}
+function render(){
+  var total=0,done=0;
+  Object.keys(GROUPS).forEach(function(g){
+    var host=$('#'+g);host.innerHTML='';
+    GROUPS[g].forEach(function(txt,i){
+      total++;var k=key(g,i);var on=!!DB.done[k];if(on)done++;
+      var row=el('label','ck'+(on?' done':''));
+      var cb=el('input');cb.type='checkbox';cb.checked=on;
+      cb.addEventListener('change',function(){DB.done[k]=cb.checked;row.classList.toggle('done',cb.checked);save();updateProg();});
+      row.appendChild(cb);row.appendChild(el('span','t',txt));host.appendChild(row);
+    });
+  });
+  var aq=$('#appQs');aq.innerHTML='';
+  APP.forEach(function(a,i){aq.appendChild(el('div','q','<span class="n">'+(i+1)+'.</span>'+a.q+'<span class="opt">↳ '+a.o+'</span>'));});
+  updateProg();
+}
+function updateProg(){
+  var total=0,done=0;Object.keys(GROUPS).forEach(function(g){GROUPS[g].forEach(function(_,i){total++;if(DB.done[key(g,i)])done++;});});
+  $('#prog').textContent=done+' / '+total+' done';
+}
+function appText(){
+  return 'Breeder Game Plan Call — Application\n\n'+APP.map(function(a,i){return (i+1)+'. '+a.q+'\n   ('+a.o+')';}).join('\n\n');
+}
+function wire(){
+  render();
+  $('#printBtn').addEventListener('click',function(){window.print();});
+  $('#copyApp').addEventListener('click',function(){var t=appText();
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){flash();},function(){fallback(t);});}else{fallback(t);}});
+  window.addEventListener('pagehide',function(){try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}});
+}
+function flash(){var b=$('#copyApp');var o=b.textContent;b.textContent='Copied ✓';setTimeout(function(){b.textContent=o;},1400);}
+function fallback(t){try{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();flash();}catch(e){alert('Copy failed — select the text manually.');}}
+(function(){
+  var OK=['368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875']; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function reveal(){var g=$('#gate');if(g)g.remove();$('#app').style.display='block';document.title='Lead-Flow & Setup · BreedWise';load();wire();}
+  function tryUnlock(){var v=($('#pw').value||'').trim().toUpperCase();h(v).then(function(hex){if(OK.indexOf(hex)>=0){try{sessionStorage.setItem('lf_ok','1');}catch(e){}reveal();}else{$('#gate-err').textContent='Incorrect code.';$('#pw').select();}});}
+  $('#unlock').addEventListener('click',tryUnlock);$('#pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('lf_ok')==='1')reveal();else $('#pw').focus();}catch(e){$('#pw').focus();}
+})();
+</script>
+</body>
+</html>
