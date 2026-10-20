@@ -37,27 +37,28 @@
   .wrap{max-width:860px;margin:0 auto;padding:10px 22px 110px}
   .cover{text-align:center;padding:50px 0 30px;border-bottom:1px solid var(--line)}
   .cover .ey{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:700}
-  .cover h1{font-family:var(--disp);font-size:clamp(32px,6vw,52px);font-weight:600;margin:14px 0 6px;line-height:1.05}
-  .cover .dek{color:var(--mid);font-size:15px;max-width:580px;margin:10px auto 0}
+  .cover h1{font-family:var(--disp);font-size:clamp(32px,6vw,50px);font-weight:600;margin:14px 0 2px;line-height:1.05}
+  .cover .tag{font-family:var(--disp);font-size:16px;font-style:italic;color:var(--gold-soft);margin-top:6px}
+  .cover .dek{color:var(--mid);font-size:15px;max-width:600px;margin:12px auto 0}
   .docctl{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px}
   .docctl span{font-size:11.5px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:5px 11px}
   .docctl b{color:var(--gold-soft);font-weight:600}
-  .toc{max-width:600px;margin:24px auto 0;text-align:left;background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:18px 22px}
-  .toc h4{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:10px 0 6px}
+  .toc{max-width:620px;margin:24px auto 0;text-align:left;background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:16px 22px}
+  .toc h4{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:12px 0 5px}
   .toc h4:first-child{margin-top:0}
-  .toc a{display:flex;gap:10px;padding:4px 0;color:var(--mid);text-decoration:none;font-size:13.5px}
+  .toc a{display:flex;gap:10px;padding:3px 0;color:var(--mid);text-decoration:none;font-size:13px}
   .toc a:hover{color:var(--gold-soft)}
   .toc a b{color:var(--gold);font-family:var(--disp);min-width:26px}
   section{padding-top:28px;margin-top:8px}
   .sec-n{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700}
   section h2{font-family:var(--disp);font-size:clamp(23px,4.2vw,31px);font-weight:600;margin:7px 0 4px;line-height:1.12}
   .lead{color:var(--mid);font-size:15px;margin:6px 0 2px}
-  section h3{font-family:var(--disp);font-size:19px;font-weight:600;margin:22px 0 6px;color:var(--gold-soft)}
+  section h3{font-family:var(--disp);font-size:18px;font-weight:600;margin:20px 0 6px;color:var(--gold-soft)}
   section h4{font-size:13px;font-weight:700;color:var(--ink);margin:16px 0 4px;letter-spacing:.01em}
   p{margin:9px 0;color:var(--mid);font-size:14.5px}
   p strong,li strong,td strong{color:var(--ink);font-weight:600}
   ul,ol{margin:9px 0 9px 2px;padding-left:20px}
-  li{margin:5px 0;color:var(--mid);font-size:14.5px}
+  li{margin:5px 0;color:var(--mid);font-size:14px}
   .card{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0}
   .callout{background:rgba(201,168,98,.08);border:1px solid rgba(201,168,98,.24);border-left:3px solid var(--gold);border-radius:12px;padding:13px 16px;margin:14px 0;font-size:13.6px;color:var(--mid)}
   .callout b{color:var(--gold-soft)}
@@ -65,54 +66,47 @@
   .warn b{color:#f0a4b0}
   .ok{background:rgba(91,189,122,.08);border:1px solid rgba(91,189,122,.26);border-left:3px solid var(--green);border-radius:12px;padding:13px 16px;margin:14px 0;font-size:13.6px;color:var(--mid)}
   .ok b{color:#8fdca8}
-  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.3px}
-  th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
-  th{color:var(--gold-soft);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+  table{width:100%;border-collapse:collapse;margin:13px 0;font-size:13px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--gold-soft);font-weight:600;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
   td{color:var(--mid)}
-  .tier{display:grid;gap:12px;margin:14px 0}
-  @media(min-width:680px){.tier{grid-template-columns:repeat(3,1fr)}}
-  .tbox{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-top:3px solid var(--tc,var(--gold));border-radius:13px;padding:16px 17px}
-  .tbox .nm{font-family:var(--disp);font-size:18px;font-weight:600;color:var(--tc,var(--gold-soft))}
-  .tbox .pr{font-family:var(--disp);font-size:24px;font-weight:600;margin:3px 0 2px}
-  .tbox .mi{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-  .tbox ul{font-size:12.5px;margin-top:9px;padding-left:16px}
-  .tbox li{font-size:12.5px;margin:4px 0}
-  .person{display:flex;gap:13px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
-  .person .av{width:40px;height:40px;border-radius:10px;background:linear-gradient(150deg,var(--pc,var(--gold)),#2a3342);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:700;color:#0b0e13;font-size:17px;flex:none}
+  .routes{display:grid;gap:12px;margin:14px 0}
+  @media(min-width:680px){.routes{grid-template-columns:repeat(3,1fr)}}
+  .rbox{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-top:3px solid var(--rc,var(--gold));border-radius:13px;padding:15px 16px}
+  .rbox .rn{font-family:var(--disp);font-size:17px;font-weight:600;color:var(--rc,var(--gold-soft))}
+  .rbox p{font-size:12.8px;margin:6px 0 0}
+  .person{display:flex;gap:13px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line)}
+  .person .av{width:38px;height:38px;border-radius:10px;background:linear-gradient(150deg,var(--pc,var(--gold)),#2a3342);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:700;color:#0b0e13;font-size:15px;flex:none}
   .person .nm{font-weight:600;color:var(--ink);font-size:14.5px}
-  .person .rl{font-size:12px;color:var(--gold-soft);font-weight:600;letter-spacing:.02em}
-  .person .de{font-size:13px;color:var(--muted);margin-top:2px}
-  .flow{display:flex;flex-direction:column;gap:0;margin:14px 0}
-  .step{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start;padding:9px 0}
-  .step .no{width:28px;height:28px;border-radius:50%;background:var(--panel);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:700;color:var(--gold);font-size:13px}
+  .person .rl{font-size:12px;color:var(--gold-soft);font-weight:600}
+  .person .de{font-size:12.8px;color:var(--muted);margin-top:2px}
+  .flow{display:flex;flex-direction:column;gap:0;margin:13px 0}
+  .step{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start;padding:8px 0}
+  .step .no{width:28px;height:28px;border-radius:50%;background:var(--panel);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:700;color:var(--gold);font-size:12.5px}
   .step .bd b{color:var(--ink)}
-  .pill{display:inline-block;font-size:11px;color:var(--gold-soft);background:rgba(201,168,98,.1);border:1px solid rgba(201,168,98,.25);border-radius:20px;padding:3px 10px;margin:2px 4px 2px 0}
-  .loom{display:flex;gap:9px;align-items:center;padding:7px 11px;background:var(--bg2);border:1px solid var(--line);border-radius:9px;margin:6px 0;font-size:13px;color:var(--mid)}
+  .loom{display:flex;gap:9px;align-items:center;padding:7px 11px;background:var(--bg2);border:1px solid var(--line);border-radius:9px;margin:6px 0;font-size:12.8px;color:var(--mid)}
   .loom .ic{color:var(--red);font-weight:700;flex:none}
   .loom b{color:var(--ink)}
-  .script{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin:9px 0;font-size:13.6px;color:var(--mid);line-height:1.55}
+  .script{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:8px 0;font-size:13.4px;color:var(--mid);line-height:1.55}
   .script .q{color:var(--gold-soft);font-weight:600}
-  .wtag{display:inline-block;font-size:10.5px;font-weight:700;color:var(--muted);border:1px solid var(--line2);border-radius:6px;padding:1px 7px;margin-left:7px}
-  /* certification */
-  .sc-row{display:grid;grid-template-columns:1fr 130px 54px;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
-  .sc-row .lb{font-size:13.5px;color:var(--ink)}
-  .sc-row .lb small{display:block;color:var(--muted);font-size:12px;font-weight:400}
-  .sc-row .lb .w{color:var(--gold-soft);font-size:11px;font-weight:700}
+  .wtag{display:inline-block;font-size:10px;font-weight:700;color:var(--amber);border:1px solid rgba(224,169,85,.4);border-radius:6px;padding:1px 7px;margin-left:6px;letter-spacing:.02em}
+  .sc-row{display:grid;grid-template-columns:1fr 120px 50px;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+  .sc-row .lb{font-size:13px;color:var(--ink)}
   .sc-row input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:5px;background:var(--line2);outline:none}
-  .sc-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid #10141c}
-  .sc-row input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid #10141c}
-  .sc-row .vv{font-family:var(--disp);font-size:16px;font-weight:600;text-align:right;color:var(--gold-soft)}
+  .sc-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid #10141c}
+  .sc-row input[type=range]::-moz-range-thumb{width:17px;height:17px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid #10141c}
+  .sc-row .vv{font-family:var(--disp);font-size:15px;font-weight:600;text-align:right;color:var(--gold-soft)}
   .sctot{display:flex;align-items:baseline;gap:10px;justify-content:center;margin:16px 0 4px}
-  .sctot .v{font-family:var(--disp);font-size:44px;font-weight:600;color:var(--gold-soft)}
+  .sctot .v{font-family:var(--disp);font-size:42px;font-weight:600;color:var(--gold-soft)}
   .sctot .d{font-size:13px;color:var(--muted)}
   .sctag{text-align:center;font-size:14px;font-weight:600;margin-bottom:8px}
   input.f,textarea.f{width:100%;background:var(--bg2);border:1px solid var(--line2);border-radius:10px;color:var(--ink);font-family:var(--sans);font-size:14px;padding:10px 13px}
   input.f:focus,textarea.f:focus{outline:none;border-color:var(--gold)}
   .signrow{display:grid;grid-template-columns:1fr 150px;gap:12px;margin-top:10px}
   @media(max-width:560px){.signrow{grid-template-columns:1fr}}
-  .ckline{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+  .ckline{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)}
   .ckline input[type=checkbox]{width:17px;height:17px;accent-color:var(--gold);flex:none;margin-top:2px;cursor:pointer}
-  .ckline .t{font-size:13.5px;color:var(--mid)}
+  .ckline .t{font-size:13px;color:var(--mid)}
   .save{font-size:11px;color:var(--green)}
   footer.bf{text-align:center;color:#5c667840;font-size:11px;margin-top:46px;letter-spacing:.04em}
   .hp{position:absolute;left:-9999px}
@@ -120,9 +114,9 @@
     nav.top,.tbtn,nav select,.save{display:none}
     body{background:#fff;color:#111}.wrap{max-width:100%}
     section{page-break-before:always;border:0}.cover{page-break-after:always}
-    .card,.callout,.warn,.ok,.tbox,.toc{break-inside:avoid;background:#fff !important;border-color:#ccc !important}
+    .card,.callout,.warn,.ok,.rbox,.toc{break-inside:avoid;background:#fff !important;border-color:#ccc !important}
     h2,h3,h4,.cover h1{color:#111 !important}p,li,td,.lead{color:#222 !important}
-    .sec-n,.cover .ey,.tbox .nm,.person .rl,th{color:#9d8343 !important}
+    .sec-n,.cover .ey,.rbox .rn,.person .rl,th,.cover .tag{color:#9d8343 !important}
   }
 </style>
 </head>
@@ -148,431 +142,465 @@
     <div class="wrap">
       <!-- COVER -->
       <div class="cover">
-        <div class="ey">BreedWise · DM Setter</div>
+        <div class="ey">BreedWise · DM Appointment Setter</div>
         <h1>The Setter Operating Manual</h1>
-        <div class="dek">Not just what success looks like — exactly how to produce it. Read it once end-to-end, then keep Part 3 (Your First Shift) open on day one.</div>
-        <div class="docctl">
-          <span>Prepared for <b>Daniel</b></span><span>Version <b>2.0</b></span><span>Effective <b>Oct 20, 2026</b></span><span>Owner <b>Austin Shanks</b></span>
-        </div>
+        <div class="tag">Better Your Breed. Build a Better Business.</div>
+        <div class="dek">Your job is not to sell in the inbox. It's to start real conversations, find the breeder's real problem, and create the right next step — a booked call, a consented callback, or the right resource. Log in, prioritize, respond, route, recover, report.</div>
+        <div class="docctl"><span>Prepared for <b>Daniel</b></span><span>Version <b>3.0</b></span><span>Effective <b>Oct 20, 2026</b></span><span>Owner <b>Austin Shanks</b></span></div>
         <div class="toc">
-          <h4>Part 1 · Understand BreedWise</h4>
-          <a href="#s1"><b>00</b><span>How to use this &amp; document control</span></a>
-          <a href="#s2"><b>01</b><span>Who we are &amp; our story</span></a>
-          <a href="#s3"><b>02</b><span>The team</span></a>
-          <a href="#s4"><b>03</b><span>The offers, plans &amp; what you may say</span></a>
+          <h4>Part 1 · Understand</h4>
+          <a href="#s1"><b>01</b><span>Welcome, purpose &amp; expectations</span></a>
+          <a href="#s2"><b>02</b><span>Who BreedWise is</span></a>
+          <a href="#s3"><b>03</b><span>The team &amp; escalation directory</span></a>
+          <a href="#s4"><b>04</b><span>Understanding the offers</span></a>
           <h4>Part 2 · Your role</h4>
-          <a href="#s5"><b>04</b><span>Your role, hours, pay &amp; lead ownership</span></a>
-          <h4>Part 3 · Work the inbox</h4>
-          <a href="#s6"><b>05</b><span>Your first shift: start to finish</span></a>
-          <h4>Part 4 · Handle conversations</h4>
-          <a href="#s7"><b>06</b><span>Qualify, route &amp; handle objections</span></a>
-          <h4>Part 5 · Convert &amp; hand off</h4>
-          <a href="#s8"><b>07</b><span>Sell TPB, book calls &amp; hand off</span></a>
-          <h4>Part 6 · Follow through</h4>
-          <a href="#s9"><b>08</b><span>Follow-ups, no-shows, nurture &amp; opt-outs</span></a>
-          <h4>Part 7 · Operate responsibly</h4>
-          <a href="#s10"><b>09</b><span>Claims, privacy &amp; the escalation matrix</span></a>
-          <a href="#s11"><b>10</b><span>Messaging compliance</span></a>
-          <h4>Part 8 · Measure performance</h4>
-          <a href="#s12"><b>11</b><span>KPIs &amp; the EOD report</span></a>
-          <h4>Part 9 · Earn independent access</h4>
-          <a href="#s13"><b>12</b><span>Training path &amp; 30·60·90</span></a>
-          <a href="#s16"><b>13</b><span>Manager certification &amp; sign-off</span></a>
+          <a href="#s5"><b>05</b><span>Your exact responsibilities</span></a>
+          <h4>Part 3 · Execute</h4>
+          <a href="#s6"><b>06</b><span>First shift: recover missed opportunities ★</span></a>
+          <a href="#s7"><b>07</b><span>The daily operating process</span></a>
+          <a href="#s8"><b>08</b><span>Speed to lead &amp; coverage</span></a>
+          <h4>Part 4 · Converse</h4>
+          <a href="#s9"><b>09</b><span>The DM conversation framework</span></a>
+          <a href="#s10"><b>10</b><span>Conversation types &amp; examples</span></a>
+          <a href="#s11"><b>11</b><span>Qualification &amp; discernment</span></a>
+          <h4>Part 5 · Convert &amp; follow</h4>
+          <a href="#s12"><b>12</b><span>Booking calls properly</span></a>
+          <a href="#s13"><b>13</b><span>Follow-ups, confirmations &amp; reengagement</span></a>
+          <a href="#s14"><b>14</b><span>CRM procedures &amp; attribution</span></a>
+          <h4>Part 6 · Measure &amp; conduct</h4>
+          <a href="#s15"><b>15</b><span>Performance metrics</span></a>
+          <a href="#s16"><b>16</b><span>Compensation summary</span></a>
+          <a href="#s17"><b>17</b><span>Escalation &amp; professional conduct</span></a>
+          <h4>Part 7 · Ramp &amp; certify</h4>
+          <a href="#s18"><b>18</b><span>First 14 days: supervised ramp</span></a>
+          <a href="#s19"><b>19</b><span>Readiness certification &amp; sign-off</span></a>
           <h4>Appendices</h4>
-          <a href="#s14"><b>A</b><span>Glossary</span></a>
-          <a href="#s15"><b>B</b><span>Links, Looms, CRM fields &amp; FAQ</span></a>
+          <a href="#sA"><b>A–G</b><span>Links, tutorials, examples, standards, templates</span></a>
         </div>
       </div>
 
-      <!-- 00 -->
+      <!-- 01 -->
       <section id="s1">
-        <div class="sec-n">Section 00 · How to use this</div><h2>How to use this manual</h2>
-        <p class="lead">This is a system, not a story. It is built so you can log in on day one and know exactly what to do.</p>
-        <ul>
-          <li><b>Read it once, front to back</b> — so the whole picture clicks before you touch a live conversation.</li>
-          <li><b>Live in Part 3 (Your First Shift)</b> — that's your daily checklist. Keep it open until the steps are muscle memory.</li>
-          <li><b>You don't go live by self-rating.</b> You earn independent inbox access by passing a <b>manager-observed certification</b> (Section 13) — not by scoring yourself.</li>
-        </ul>
-        <div class="card">
-          <h4>Document control</h4>
+        <div class="sec-n">Part 1 · Section 01</div><h2>Welcome, purpose &amp; expectations</h2>
+        <p class="lead">Welcome, Daniel. This manual is built so you can run your seat with minimal supervision — log in, work the inbox, book calls, recover old leads, and report, without needing Austin for routine questions.</p>
+        <h4>What your work does for BreedWise</h4>
+        <p>You are often the first human a breeder talks to. You turn attention into real conversations, and real conversations into the right next step. Growth depends on this seat being fast, honest, and consistent.</p>
+        <h4>Know the difference between these four things</h4>
+        <table>
+          <tr><td><b>Conversation</b></td><td>A real back-and-forth with a prospect.</td></tr>
+          <tr><td><b>Qualified prospect</b></td><td>A breeder with a genuine need and a suitable next step.</td></tr>
+          <tr><td><b>Booked appointment</b></td><td>A confirmed calendar slot with full details — not just "sure, I'd talk."</td></tr>
+          <tr><td><b>Attended call</b></td><td>The prospect actually showed up. This is what counts.</td></tr>
+        </table>
+        <div class="callout"><b>Core principle.</b> We do <em>not</em> measure success by how many people receive a pitch. We measure it by the <b>quality of conversations, qualified appointments generated, calls attended, and opportunities recovered.</b> Honest qualification protects the breeder and the company — a forced call wastes everyone's time.</div>
+        <h4>How you'll be trained &amp; evaluated</h4>
+        <p>Read this manual, train on the real systems, pass a manager-observed certification (Section 19), then ramp on supervised live conversations (Section 18). You go live by demonstrated competence, not by the calendar.</p>
+        <div class="card"><h4>Document control</h4>
           <table>
-            <tr><td><b>Version</b></td><td>2.0</td></tr>
+            <tr><td><b>Version</b></td><td>3.0</td></tr>
             <tr><td><b>Effective date</b></td><td>October 20, 2026</td></tr>
-            <tr><td><b>Last updated</b></td><td>October 20, 2026</td></tr>
             <tr><td><b>Document owner</b></td><td>Austin Shanks</td></tr>
-            <tr><td><b>Review triggers</b></td><td>Any change to pricing, staffing/roles, or which funnels are live. The owner updates this doc before the change reaches a prospect.</td></tr>
+            <tr><td><b>Your supervising manager</b></td><td><span class="wtag">confirm — one accountable manager (Section 03)</span></td></tr>
+            <tr><td><b>Approved support contact</b></td><td>support@breedwise.io</td></tr>
+            <tr><td><b>Review triggers</b></td><td>Any change to pricing, staffing/roles, live funnels, or booking links.</td></tr>
           </table>
         </div>
-        <div class="callout"><b>If anything here conflicts with what you see in CC360 or hear from Austin, the live system and Austin win.</b> Treat this manual as the standard operating model; verify specifics (price, promos, live funnels, who's on calls) before you rely on them.</div>
-      </section>
-
-      <!-- 01 -->
-      <section id="s2">
-        <div class="sec-n">Part 1 · Section 01</div><h2>Who we are &amp; our story</h2>
-        <p class="lead">BreedWise exists to make dog breeding a real, profitable, ethical business — and to raise the standard of the whole industry while we do it.</p>
-        <p>Most breeders love their dogs and lose money. They're great at whelping and weak on marketing, pricing, systems, and sales. BreedWise gives serious breeders the business education, the health &amp; genetics knowledge, the tools, and the community to run a program they're proud of <em>and</em> that pays — without ever compromising the health of the dogs or the experience of the families who buy them. "Breed wiser": better decisions, better dogs, better business.</p>
-        <h4>What we've become</h4>
-        <ul>
-          <li>A tiered ecosystem from <b>$97/month education</b> to <b>high-ticket done-with-you coaching</b>.</li>
-          <li>A <b>community</b> (hosted on Skool) where members learn, share wins, and ascend.</li>
-          <li>A <b>veterinary-backed</b> health &amp; genetics arm, so the "wise" is earned.</li>
-          <li>A real <b>sales &amp; content engine</b> — ads, funnels, scorecards, webinars — feeding a team that follows up and converts.</li>
-        </ul>
-        <div class="callout"><b>Our 90-day north star:</b> a predictable, founder-independent sales engine. You are a core part of the top of that engine — often the first human a breeder talks to. The whole point of this manual is that you can run your seat <em>without</em> calling Austin for routine things.</div>
       </section>
 
       <!-- 02 -->
-      <section id="s3">
-        <div class="sec-n">Part 1 · Section 02</div><h2>The team</h2>
-        <p class="lead">A small, high-output team. Know who owns what — it's how you route questions without defaulting to the founder.</p>
-        <div class="card" style="padding:14px 18px">
-          <div class="person" style="--pc:#c9a862"><div class="av">A</div><div><div class="nm">Austin Shanks</div><div class="rl">Founder &amp; CEO — closes Academy &amp; BOSS</div><div class="de">Owns the vision, the offer, and the numbers. <b>Runs the high-ticket closing calls (Academy &amp; BOSS).</b> Final authority on pricing, exceptions, and sensitive situations. Escalate material exceptions here — not routine questions.</div></div></div>
-          <div class="person" style="--pc:#6fb0e6"><div class="av">R</div><div><div class="nm">Regina</div><div class="rl">Sales — Outbound Phone Setting &amp; TPB Sales</div><div class="de"><b>Outbound phone appointment setting and TPB sales.</b> She does <em>not</em> close Academy/BOSS — those go to Austin. Coordinate with Regina on phone-based prospects and shared leads so nothing is worked twice or double-credited.</div></div></div>
-          <div class="person" style="--pc:#b79ae8"><div class="av">F</div><div><div class="nm">Dr. Emmanuel Fontaine</div><div class="rl">Veterinary Expert &amp; Educational Content</div><div class="de">The health &amp; genetics authority behind our education, webinars, and much of our content (reproduction, whelping, genetics). Dr. Fontaine's credibility is a real reason breeders trust us — reference the veterinary backing, but never present yourself as giving veterinary advice.</div></div></div>
-          <div class="person" style="--pc:#5ec59a"><div class="av">An</div><div><div class="nm">Dr. Angela</div><div class="rl">Veterinary Contributor <span class="wtag">confirm role &amp; contact</span></div><div class="de">Veterinary contributor to our education/health content. <b>Austin to confirm</b> exact responsibilities and how/when to route questions to this contact.</div></div></div>
-          <div class="person" style="--pc:#5bbd7a"><div class="av">Dv</div><div><div class="nm">Dr. David</div><div class="rl">Veterinary Contributor <span class="wtag">confirm role &amp; contact</span></div><div class="de">Veterinary contributor to our education/health content. <b>Austin to confirm</b> exact responsibilities and routing.</div></div></div>
-          <div class="person" style="--pc:#e68bab"><div class="av">Y</div><div><div class="nm">Yasmin</div><div class="rl">Content Operations</div><div class="de">Runs the organic content engine that fills the top of your funnel. Route content/funnel-asset discrepancies and swipe-copy requests here.</div></div></div>
-          <div class="person" style="--pc:#e0a955"><div class="av">J</div><div><div class="nm">Jennifer</div><div class="rl">Operations / Member Support</div><div class="de">Keeps members &amp; operations moving. Route TPB billing, access, cancellation, and onboarding questions here.</div></div></div>
-        </div>
-        <div class="callout"><b>Austin — confirm &amp; complete:</b> verify each title/one-liner, and fill in Dr. Angela's and Dr. David's exact responsibilities and contact routing. Add anyone missing (additional closers, VAs, ops).</div>
+      <section id="s2">
+        <div class="sec-n">Part 1 · Section 02</div><h2>Who BreedWise is</h2>
+        <p class="lead">Better Your Breed. Build a Better Business.</p>
+        <p>BreedWise helps serious dog breeders do two things at once: <b>raise the standard of their breeding</b> — practices, preparation, education, and animal welfare — and <b>build a sustainable business</b> around it through better systems, marketing, buyer relationships, and financial awareness. "Breed wiser": better decisions, better dogs, better business.</p>
+        <h4>Who our community is for</h4>
+        <p>Breeders who want to improve their program and run it like a real, ethical business — whether they're established or preparing to start. We meet them where they are and point them to the right support. We don't make sweeping claims about breeders in general; we focus on fit.</p>
+        <h4>Our values</h4>
+        <p><span class="wtag" style="color:var(--gold-soft);border-color:rgba(201,168,98,.4)">Truthfulness</span> <span class="wtag" style="color:var(--gold-soft);border-color:rgba(201,168,98,.4)">Responsible breeding</span> <span class="wtag" style="color:var(--gold-soft);border-color:rgba(201,168,98,.4)">Veterinary-informed education</span> <span class="wtag" style="color:var(--gold-soft);border-color:rgba(201,168,98,.4)">Customer fit</span> <span class="wtag" style="color:var(--gold-soft);border-color:rgba(201,168,98,.4)">Professionalism</span> <span class="wtag" style="color:var(--gold-soft);border-color:rgba(201,168,98,.4)">Accountability</span></p>
+        <div class="callout"><b>Why this matters to your seat:</b> every message you send represents those values. You can be warm, honest, and genuinely helpful and <em>still</em> book more calls — in fact, that's exactly what books more calls.</div>
       </section>
 
       <!-- 03 -->
-      <section id="s4">
-        <div class="sec-n">Part 1 · Section 03</div><h2>The offers, plans &amp; what you may say</h2>
-        <p class="lead">Three rungs. You sell TPB in the DM; you <em>set</em> Academy &amp; BOSS for Austin to close. Know exactly what each includes and what you're authorized to promise.</p>
-        <div class="tier">
-          <div class="tbox" style="--tc:#c9a862"><div class="nm">The Profitable Breeder</div><div class="pr">$97<span style="font-size:14px">/mo</span></div><div class="mi">TPB · Membership</div><ul><li>Entry point &amp; community (Skool)</li><li>Core business education, tools, trainings, scorecards</li><li>Month-to-month membership</li></ul><p style="font-size:12px;margin-top:8px;color:var(--gold-soft)"><b>You earn $20</b> per membership.</p></div>
-          <div class="tbox" style="--tc:#6fb0e6"><div class="nm">Academy</div><div class="pr">$4,500</div><div class="mi">Mid-tier · Coaching</div><ul><li>Structured coaching &amp; accountability</li><li>Plan: <b>3 × $1,500</b> <span class="wtag">if offered — confirm</span></li><li>Application / qualify, then an <b>Austin call</b></li></ul><p style="font-size:12px;margin-top:8px;color:var(--blue)"><b>You earn 3%</b> of cash collected.</p></div>
-          <div class="tbox" style="--tc:#e68bab"><div class="nm">BOSS</div><div class="pr">$8,000</div><div class="mi">High-ticket · Implementation</div><ul><li>Intensive business-systems implementation</li><li>Plan: <b>4 × $2,000</b> <span class="wtag">if offered — confirm</span></li><li>Always an <b>Austin call</b> — never a DM close</li></ul><p style="font-size:12px;margin-top:8px;color:#f0a4b0"><b>You earn 3%</b> of cash collected.</p></div>
+      <section id="s3">
+        <div class="sec-n">Part 1 · Section 03</div><h2>The team &amp; escalation directory</h2>
+        <p class="lead">Know who owns what so you can route a question in seconds — without defaulting to Austin.</p>
+        <div class="card" style="padding:12px 18px">
+          <div class="person" style="--pc:#c9a862"><div class="av">A</div><div><div class="nm">Austin Shanks</div><div class="rl">Founder &amp; CEO</div><div class="de">Company direction, leadership, strategic decisions, and designated exceptions. <b>Closes Academy &amp; BOSS.</b></div></div></div>
+          <div class="person" style="--pc:#6fb0e6"><div class="av">R</div><div><div class="nm">Regina</div><div class="rl">Outbound Phone Appointment Setting</div><div class="de">Approved outbound phone activity, assigned callbacks, and appointment-related follow-up within her responsibilities. <b>Not the high-ticket closer.</b></div></div></div>
+          <div class="person" style="--pc:#e68bab"><div class="av">Y</div><div><div class="nm">Yasmin</div><div class="rl">Marketing &amp; Content Operations</div><div class="de">Marketing campaigns, content distribution, and related assets. Your source for approved copy &amp; asset questions.</div></div></div>
+          <div class="person" style="--pc:#e0a955"><div class="av">J</div><div><div class="nm">Jennifer</div><div class="rl">Member Success &amp; Delivery</div><div class="de">Current-member support, onboarding, delivery, and appropriate customer issues.</div></div></div>
+          <div class="person" style="--pc:#b79ae8"><div class="av">F</div><div><div class="nm">Dr. Emmanuel Fontaine</div><div class="rl">Veterinary Expert &amp; Educational Contributor</div><div class="de">Veterinary-informed expertise and educational content. Reference the veterinary backing; never present yourself as giving veterinary advice.</div></div></div>
+          <div class="person" style="--pc:#5ec59a"><div class="av">An</div><div><div class="nm">Dr. Angela</div><div class="rl">Veterinary Contributor</div></div></div>
+          <div class="person" style="--pc:#5bbd7a"><div class="av">Dv</div><div><div class="nm">Dr. David</div><div class="rl">Veterinary Contributor</div></div></div>
         </div>
-        <div class="warn"><b>Always confirm live pricing, plans, guarantee &amp; cancellation terms in CC360 before you quote.</b> Plans shown are "if currently offered." We run promotions. <b>Never improvise a price, plan, discount, or refund.</b> We no longer sell a separate "Accelerator" tier — redirect old references to Academy or BOSS by fit.</div>
-        <h4>Offer cheat sheet — what you may say</h4>
+        <h4>Where the call owner fits</h4>
+        <p>The <b>Breeder Game Plan Call</b> you book is run by the BreedWise sales team. <b>Academy &amp; BOSS closes are owned by Austin.</b> Regina handles assigned phone callbacks. <span class="wtag">Confirm the specific Game Plan Call owner + backup before go-live.</span></p>
+        <h4>Escalation directory</h4>
         <table>
-          <tr><th>Offer</th><th>Price &amp; plan</th><th>What they get</th><th>You're authorized to…</th></tr>
-          <tr><td><b>TPB</b></td><td>$97/mo (confirm promo); cancellation per policy <span class="wtag">confirm</span></td><td>Education, tools, community (Skool)</td><td>Explain it &amp; send the approved checkout link</td></tr>
-          <tr><td><b>Academy</b></td><td>$4,500 or 3×$1,500 <span class="wtag">confirm</span></td><td>Structured coaching &amp; accountability</td><td>Qualify &amp; book the Academy call — not quote exceptions</td></tr>
-          <tr><td><b>BOSS</b></td><td>$8,000 or 4×$2,000 <span class="wtag">confirm</span></td><td>Done-with-you systems implementation</td><td>Qualify &amp; book the BOSS call — Austin owns scope &amp; terms</td></tr>
+          <tr><th>Need</th><th>Go to</th></tr>
+          <tr><td>CRM access, tagging, lead assignment, duplicates</td><td>Supervising manager / sales-ops owner <span class="wtag">name it</span></td></tr>
+          <tr><td>Phone callback / shared-lead coordination</td><td>Regina</td></tr>
+          <tr><td>TPB billing, access, cancellation, member support</td><td>Jennifer</td></tr>
+          <tr><td>Marketing / content / funnel-asset questions</td><td>Yasmin</td></tr>
+          <tr><td>Veterinary or animal-welfare question</td><td>Designated qualified veterinary contact <span class="wtag">confirm</span></td></tr>
+          <tr><td>Unapproved price / contract exception; sensitive legal/safety</td><td>Austin</td></tr>
         </table>
-        <p style="font-size:12px;color:var(--muted)">Exact included-deliverables, guarantee, and cancellation language live in the appendix / CC360 — use the approved wording, never your own paraphrase of scope.</p>
+        <div class="callout"><b>Decision to finalize:</b> appoint <b>one accountable supervising manager</b> who reviews your daily quality and performance — so you aren't answering separately to Austin, Regina, Jennifer, and Yasmin. <span class="wtag">Austin to name.</span></div>
       </section>
 
       <!-- 04 -->
+      <section id="s4">
+        <div class="sec-n">Part 1 · Section 04</div><h2>Understanding the offers</h2>
+        <p class="lead">You need enough familiarity to recognize the right audience — you do <em>not</em> need to become an expert at pitching program details. You route; the sales team sells.</p>
+        <table>
+          <tr><th>Offer</th><th>What it is</th><th>Who it suits</th></tr>
+          <tr><td><b>The Profitable Breeder (TPB)</b></td><td>Self-directed education, scorecards, tools, community &amp; ongoing guidance. <b>$97/month.</b></td><td>Breeders wanting an accessible educational starting point</td></tr>
+          <tr><td><b>BreedWise Academy</b></td><td>Structured coaching, implementation &amp; accountability; higher-touch than TPB.</td><td>Appropriate prospects → referred to the sales team (a call)</td></tr>
+          <tr><td><b>BOSS</b></td><td>More intensive implementation &amp; business-systems support.</td><td>Appropriate prospects → referred to the sales team (a call)</td></tr>
+        </table>
+        <p style="font-size:12px;color:var(--muted)">Internal reference — current standard pricing (Academy ~$4,500, BOSS ~$8,000, plans may exist) lives in CC360. You don't introduce prices or plans during ordinary qualification.</p>
+        <div class="warn"><b>You do not</b> negotiate, discount, promise program deliverables, or hold extended pricing discussions. <b>But</b> when a prospect directly asks about price, never mislead them, never conceal an approved publicly advertised price, and never imply "we can only share pricing after a call." Give the approved short, factual answer and offer to connect them with the team for details.</div>
+        <div class="script"><span class="q">Price question — approved pattern:</span> "TPB is $97/month. Academy and BOSS are higher-touch programs — pricing depends on fit, and the team covers that on the call. Want me to set that up, or point you to TPB to start?"</div>
+        <p>We no longer sell a separate "Accelerator" tier — redirect old references to the right current step by fit.</p>
+      </section>
+
+      <!-- 05 -->
       <section id="s5">
-        <div class="sec-n">Part 2 · Section 04</div><h2>Your role, hours, pay &amp; lead ownership</h2>
-        <p class="lead">You convert attention into the right next step — across both the inbox you're assigned and the outreach you initiate.</p>
+        <div class="sec-n">Part 2 · Section 05</div><h2>Your exact responsibilities</h2>
+        <p class="lead">Create the right next conversation — don't finish the sale in the inbox.</p>
+        <div class="routes">
+          <div class="rbox" style="--rc:#5bbd7a"><div class="rn">1 · Booked Call</div><p>A qualified breeder <b>schedules &amp; confirms</b> a Breeder Game Plan Call.</p></div>
+          <div class="rbox" style="--rc:#6fb0e6"><div class="rn">2 · Qualified Callback</div><p>They consent to be contacted by the sales team when booking now isn't practical — you capture details.</p></div>
+          <div class="rbox" style="--rc:#c9a862"><div class="rn">3 · TPB or Nurture</div><p>Better suited to TPB or a resource than a high-ticket call — you refer, you don't hard-sell.</p></div>
+        </div>
+        <p style="text-align:center;font-size:13px;color:var(--muted)">Do not force a call when there's no meaningful reason for one.</p>
         <h4>What you own</h4>
         <ul>
-          <li><b>Inbound:</b> assigned new leads and replies in our DM inboxes — answered fast during your coverage window.</li>
-          <li><b>Outbound:</b> initiating conversations with eligible, approved audiences (see Section 10 for the rules).</li>
-          <li><b>Qualifying</b> every prospect, <b>selling TPB</b> directly, and <b>setting qualified Academy/BOSS calls</b> for Austin.</li>
-          <li><b>Recording</b> every contact, stage, and next action in CC360, and sending a daily EOD report.</li>
+          <li>Assigned Instagram &amp; Facebook inbox conversations, and comments that show genuine interest.</li>
+          <li>Approved proactive outreach to relevant engaged prospects, and re-engaging previous unanswered leads.</li>
+          <li>Understanding each prospect's situation and desired outcome; judging whether a call fits.</li>
+          <li>Inviting qualified prospects to a <b>Breeder Game Plan Call</b>; collecting consented callback details.</li>
+          <li>Booking &amp; confirming real appointments; recording lead details &amp; next actions in CC360; completing follow-ups; accurate reporting.</li>
         </ul>
         <h4>What you don't own</h4>
         <ul>
-          <li>You don't close Academy/BOSS — you set them for Austin.</li>
-          <li>You don't quote unconfirmed prices or invent discounts/refunds.</li>
-          <li>You're not responsible for ad spend, content production, or fulfillment — but you are responsible for honest, complete handoffs.</li>
+          <li>High-ticket closing, or explaining/pitching Academy &amp; BOSS details. Extended objection handling.</li>
+          <li>Selling TPB as a closer — you <b>refer</b> to TPB; you don't run a TPB sales pitch or carry a TPB sales quota.</li>
+          <li>Veterinary diagnosis/treatment; financial or revenue guarantees; changing prices or terms; unsupported claims.</li>
+          <li>Unapproved mass messaging or automation; existing-member fulfillment.</li>
         </ul>
-        <h4>Coverage &amp; ownership</h4>
-        <table>
-          <tr><td><b>Coverage window</b></td><td>Your approved working hours <span class="wtag">confirm with Austin</span>. During coverage, assigned inbound is answered within the response target (Section 11).</td></tr>
-          <tr><td><b>Backup / off-hours</b></td><td>Outside your window, time-sensitive conversations are assigned to the next available owner. Never leave a hot lead unassigned at end of shift.</td></tr>
-          <tr><td><b>Lead ownership</b></td><td>One owner per lead, recorded in CC360. You own what you source or are assigned, until it's handed off with full context.</td></tr>
-        </table>
-        <h4>Your pay (summary)</h4>
-        <table>
-          <tr><th>Component</th><th>Amount</th><th>Basis</th></tr>
-          <tr><td><b>Base</b></td><td>$200 / week</td><td>Guaranteed.</td></tr>
-          <tr><td><b>TPB</b></td><td>$20 / membership</td><td>Each membership you sell.</td></tr>
-          <tr><td><b>Academy / BOSS</b></td><td>3% of cash collected</td><td>Deals you are the documented source &amp; qualifier of.</td></tr>
-        </table>
-        <div class="callout"><b>Attribution &amp; the compensation agreement.</b> Credit for Academy/BOSS is based on <b>documented sourcing &amp; qualification in CC360 at first contact</b> — Austin runs the close, you keep sourcing credit per the agreement. Commission pays on <b>cash collected</b> (Stripe), and reverses on refunds/chargebacks. Multi-touch leads, existing-lead rules, payment timing, and post-termination terms are governed by your <b>separate signed compensation agreement</b> — this manual summarizes; the agreement controls.</div>
+        <div class="callout"><b>The one-line job:</b> start genuine conversations, identify the breeder's primary challenge and desired outcome, determine the right next step, and convert qualified interest into a confirmed call or consented callback.</div>
       </section>
 
-      <!-- 05 · FIRST SHIFT -->
+      <!-- 06 · BACKFILL -->
       <section id="s6">
-        <div class="sec-n">Part 3 · Section 05 · ★ Start here daily</div><h2>Your first shift: start to finish</h2>
-        <p class="lead">This is your daily operating checklist — the single most important page in the manual. Do it in this order, every shift.</p>
+        <div class="sec-n">Part 3 · Section 06 · ★ Priority initiative</div><h2>First shift: recover missed opportunities</h2>
+        <p class="lead">BreedWise is likely sitting on real opportunities — old DMs, Facebook comments, Instagram replies, and scorecard leads that never got a proper human response. Recovering them can beat hundreds of cold messages.</p>
+        <h4>Backfill workflow</h4>
         <div class="flow">
-          <div class="step"><div class="no">1</div><div class="bd"><b>Log in &amp; confirm coverage.</b> Open your approved accounts + CC360. Confirm today's coverage window and your backup contact.</div></div>
-          <div class="step"><div class="no">2</div><div class="bd"><b>Triage the inbox.</b> Check unread inbound DMs, new replies to existing conversations, and new lead assignments.</div></div>
-          <div class="step"><div class="no">3</div><div class="bd"><b>Prioritize by intent.</b> High-intent prospects and scheduled callbacks <em>before</em> new outbound. Speed on hot leads beats volume on cold ones.</div></div>
-          <div class="step"><div class="no">4</div><div class="bd"><b>Respond in context.</b> Use what the prospect actually said. Don't repeat questions an automation or teammate already answered — read the thread first.</div></div>
-          <div class="step"><div class="no">5</div><div class="bd"><b>Qualify &amp; route.</b> Recommend the right next step (Section 06). Record the contact's current <b>stage</b> and <b>next action</b> in CC360.</div></div>
-          <div class="step"><div class="no">6</div><div class="bd"><b>Follow up &amp; confirm.</b> Clear due follow-ups and confirm upcoming appointments so they show.</div></div>
-          <div class="step"><div class="no">7</div><div class="bd"><b>Check ownership.</b> Scan for duplicate contact ownership or unresolved handoffs; resolve or flag them.</div></div>
-          <div class="step"><div class="no">8</div><div class="bd"><b>Close out.</b> Submit the EOD report and assign any time-sensitive open conversations to the next available owner.</div></div>
+          <div class="step"><div class="no">1</div><div class="bd">Get approved access to Instagram, Facebook, <b>Meta Business Suite</b>, and CC360.</div></div>
+          <div class="step"><div class="no">2</div><div class="bd">Review existing inboxes &amp; comment threads <b>before</b> launching large new outreach.</div></div>
+          <div class="step"><div class="no">3</div><div class="bd">Identify messages/comments showing real interest (breeding education, business improvement, buyer acquisition, support).</div></div>
+          <div class="step"><div class="no">4</div><div class="bd">Check whether a teammate or automation already answered; check for an existing customer or assigned CRM owner.</div></div>
+          <div class="step"><div class="no">5</div><div class="bd">Prioritize unanswered, recent, high-intent leads. Re-engage using the <b>original context</b>.</div></div>
+          <div class="step"><div class="no">6</div><div class="bd">Update or create the CRM record: source, last interaction, status, owner, next action.</div></div>
+          <div class="step"><div class="no">7</div><div class="bd">Route qualified prospects toward a booking or a consented callback.</div></div>
         </div>
-        <h4>Watch these first (short screen-recordings)</h4>
-        <p style="font-size:13px">Each Loom shows one task in the real system. <b>Austin/ops: record these and paste the links in Appendix B.</b></p>
-        <div class="loom"><span class="ic">▶</span><span>Where the inbound inbox lives (Meta Business Suite / platform) and how to respond — <b>Loom link →</b> <span class="wtag">add</span></span></div>
-        <div class="loom"><span class="ic">▶</span><span>How to tell a <b>new</b> lead from an <b>existing</b> one — <b>Loom →</b> <span class="wtag">add</span></span></div>
-        <div class="loom"><span class="ic">▶</span><span>How to assign or change <b>contact ownership</b> in CC360 — <b>Loom →</b> <span class="wtag">add</span></span></div>
-        <div class="loom"><span class="ic">▶</span><span>How to create a <b>booked appointment</b> — <b>Loom →</b> <span class="wtag">add</span></span></div>
-        <div class="loom"><span class="ic">▶</span><span>How to <b>tag &amp; record a TPB purchase</b> — <b>Loom →</b> <span class="wtag">add</span></span></div>
-        <div class="loom"><span class="ic">▶</span><span>How to <b>hand an Academy/BOSS lead to Austin</b> with full context — <b>Loom →</b> <span class="wtag">add</span></span></div>
-        <div class="loom"><span class="ic">▶</span><span>How to set a <b>follow-up reminder</b> — <b>Loom →</b> <span class="wtag">add</span></span></div>
-        <div class="loom"><span class="ic">▶</span><span>How to <b>submit the EOD report</b> — <b>Loom →</b> <span class="wtag">add</span></span></div>
-        <div class="callout"><b>Rule of the shift:</b> log each outcome <em>as you go</em>, not at the end. The CRM is your memory and your paycheck — if it isn't in CC360, it didn't happen.</div>
-      </section>
-
-      <!-- 06 -->
-      <section id="s7">
-        <div class="sec-n">Part 4 · Section 06</div><h2>Qualify, route &amp; handle objections</h2>
-        <p class="lead">Learn the shape of a great conversation, then sound like a human inside it. Gather facts; don't improvise breeding ethics.</p>
-        <h4>The principle</h4>
-        <p><b>Money qualifies the tier — it does not qualify the person.</b> Your job is to gather the relevant facts and route to the right next step. Where fit touches breeding ethics, health testing, or welfare, you <em>collect the facts and refer</em> to a qualified reviewer — you don't rule on them yourself.</p>
-        <h4>Routing decision table</h4>
+        <h4>Priority order</h4>
         <table>
-          <tr><th>Prospect situation</th><th>Default next step</th></tr>
-          <tr><td>Wants self-directed education &amp; business tools</td><td>Explain TPB, send the approved checkout</td></tr>
-          <tr><td>Needs structured coaching &amp; accountability</td><td>Qualify for an Academy call (Austin)</td></tr>
-          <tr><td>Needs intensive business-systems implementation</td><td>Qualify for a BOSS discussion (Austin)</td></tr>
-          <tr><td>Interested but not ready to buy</td><td>Offer the relevant free resource; set an appropriate follow-up</td></tr>
-          <tr><td>Needs individual veterinary diagnosis / urgent medical guidance</td><td>Escalate appropriately; <b>no</b> clinical advice, no sales pressure</td></tr>
-          <tr><td>Program raises welfare / integrity concerns</td><td>Document the facts; refer for review — don't rule on it yourself</td></tr>
-          <tr><td>Existing customer needs help</td><td>Route to Jennifer / member support</td></tr>
+          <tr><td><b>P1</b></td><td>New inbound questions &amp; urgent, high-intent replies</td></tr>
+          <tr><td><b>P2</b></td><td>Prospects already in active sales conversations</td></tr>
+          <tr><td><b>P3</b></td><td>Interested people who got a booking link but never scheduled</td></tr>
+          <tr><td><b>P4</b></td><td>Old unanswered DMs &amp; relevant comments</td></tr>
+          <tr><td><b>P5</b></td><td>Approved proactive outreach to warm, engaged prospects</td></tr>
         </table>
-        <h4>Conversation shape</h4>
-        <div class="flow">
-          <div class="step"><div class="no">1</div><div class="bd"><b>Open — earn the reply.</b> Personalized, specific, no pitch. Reference what they engaged with.</div></div>
-          <div class="step"><div class="no">2</div><div class="bd"><b>Qualify — get them talking.</b> Where's their program now? What do they want? What's in the way? Listen more than you type.</div></div>
-          <div class="step"><div class="no">3</div><div class="bd"><b>Diagnose — name the gap.</b> Reflect the distance between where they are and where they want to be.</div></div>
-          <div class="step"><div class="no">4</div><div class="bd"><b>Route — the right step.</b> TPB in the DM; "let's get you a quick call with Austin" for serious Academy/BOSS fits.</div></div>
-          <div class="step"><div class="no">5</div><div class="bd"><b>Confirm &amp; log.</b> Lock time, set reminder, record stage + next action, tag ownership to you.</div></div>
-        </div>
-        <h4>Starter language (make it yours)</h4>
-        <div class="script"><span class="q">Opener:</span> "Hey [name] — saw you breed [breed]. Quick one: are you running this as a real business yet, or still mostly covering costs?"</div>
-        <div class="script"><span class="q">Route to TPB:</span> "Fastest first step for where you're at is our membership — $97/mo, exactly the playbook for that. Want the link?"</div>
-        <div class="script"><span class="q">Set the call:</span> "This is past what I can solve in DMs. You'd get more from a quick call with Austin — I've got [time]. Want me to lock it in?"</div>
-        <h4>Objection handling (honest reframes, never pressure)</h4>
-        <table>
-          <tr><th>Objection</th><th>Approved approach</th></tr>
-          <tr><td>"Too expensive"</td><td>Clarify tier fit — maybe TPB is the right first step. Never discount; frame value vs. the cost of staying stuck.</td></tr>
-          <tr><td>"I need to think about it"</td><td>Normalize it, find the real question, set a concrete follow-up time. Don't chase.</td></tr>
-          <tr><td>"I already do this"</td><td>Ask what's working and what isn't — the gap is the opening, not an argument.</td></tr>
-          <tr><td>"Will it work for my breed?"</td><td>It's business &amp; systems, breed-agnostic. If unsure, book the call rather than over-claim.</td></tr>
-          <tr><td>"I need to ask my spouse/partner"</td><td>Respect it; get both on the call or set a follow-up. No pressure.</td></tr>
-        </table>
-        <p style="font-size:12px;color:var(--muted)">The full qualification standard is a separate document — ask Austin/Regina for the deep version when a case is borderline.</p>
+        <div class="warn"><b>Never let backfill starve the live queue.</b> Current incoming leads come first (Section 08 speed-to-lead); backfill is worked when the live queue is clear.</div>
+        <h4>Rules for older conversations</h4>
+        <ul>
+          <li>Don't pretend the conversation happened recently — acknowledge a delay naturally when appropriate.</li>
+          <li>Don't send the same generic message to every old contact — use their original context.</li>
+          <li>Don't contact anyone who opted out; don't reopen resolved support issues as sales conversations.</li>
+          <li>Respect platform restrictions and consent requirements.</li>
+        </ul>
+        <div class="callout"><b>Measured separately (first 30 days):</b> Historical leads reviewed → eligible re-engaged → conversations restarted → qualified calls booked → calls attended → sales attributed. This tells us whether the recovery effort is paying — track it on its own, not mixed into cold outreach.</div>
+        <h4>Watch these first (screen-recordings)</h4>
+        <div class="loom"><span class="ic">▶</span><span>Meta Business Suite inbox + comments, and how to respond — <b>Loom →</b> <span class="wtag">add</span></span></div>
+        <div class="loom"><span class="ic">▶</span><span>New vs. existing lead · change CRM ownership · create a booking · tag a TPB referral · hand off to the call owner · set a follow-up · submit EOD — <b>Looms →</b> <span class="wtag">add in Appendix B</span></span></div>
       </section>
 
       <!-- 07 -->
-      <section id="s8">
-        <div class="sec-n">Part 5 · Section 07</div><h2>Sell TPB, book calls &amp; hand off</h2>
-        <p class="lead">A clean handoff is worth more than a clever pitch. Every transfer carries full context so the next owner wins.</p>
-        <h4>Handoff scenarios &amp; ownership</h4>
-        <table>
-          <tr><th>Situation</th><th>Required action</th></tr>
-          <tr><td>Prospect replies to an old DM</td><td>Assigned setter resumes the conversation</td></tr>
-          <tr><td>Prospect asks for a phone call</td><td>Assign to Regina / designated sales owner with full context</td></tr>
-          <tr><td>Got a booking link, didn't schedule</td><td>Follow up appropriately; log the next action</td></tr>
-          <tr><td>Prospect books a call</td><td>Confirm the actual calendar appointment; record qualification notes</td></tr>
-          <tr><td>Prospect misses a call</td><td>Follow the approved no-show / reschedule procedure (Section 08)</td></tr>
-          <tr><td>Attends but doesn't buy</td><td>Austin (closer) owns next step; setter assists only when assigned</td></tr>
-          <tr><td>Buys TPB</td><td>Verify payment, record the conversion, hand onboarding to Jennifer</td></tr>
-          <tr><td>Requests no further contact</td><td>Stop outreach; update opt-out status immediately</td></tr>
-        </table>
-        <h4>The handoff record (always include)</h4>
-        <p>Contact owner · lead source · breeding-program context · primary challenge · desired result · applicable offer · appointment status · next action · due date.</p>
-        <h4>TPB conversion</h4>
-        <ul><li>Send the <b>approved checkout link</b> (Appendix B) — never a made-up price or link.</li><li>Verify the payment actually collected (Stripe) before you record the sale.</li><li>Tag the TPB purchase in CC360 and hand onboarding to Jennifer.</li></ul>
-        <div class="callout"><b>Booking isn't real until it's confirmed.</b> A set call that isn't confirmed, reminded, and on the calendar is a no-show waiting to happen — and no commission.</div>
+      <section id="s7">
+        <div class="sec-n">Part 3 · Section 07</div><h2>The daily operating process</h2>
+        <p class="lead">Your start-to-finish checklist. Same order, every shift.</p>
+        <h4>Beginning of shift</h4>
+        <ul><li>Confirm assigned coverage time; open approved inboxes &amp; CC360.</li><li>Check newly assigned leads; review active conversations &amp; callbacks; review due follow-ups; note any leads owned by someone else.</li></ul>
+        <h4>During the shift</h4>
+        <ul><li>Answer active inbound first. Personalize using the prospect's actual context.</li><li>Ask only the questions needed to find the next step. Present the call invitation when there's a genuine fit; collect consented callback details when that's better.</li><li>Confirm appointments in the real booking system. Record meaningful updates immediately.</li><li>Work assigned backfill &amp; approved outreach <b>when the live queue is clear</b>.</li></ul>
+        <h4>End of shift</h4>
+        <ul><li>Update all worked leads; complete or reassign time-sensitive follow-ups.</li><li>Flag missing info or technical issues; check upcoming appointments &amp; confirmations.</li><li>Send the EOD report; note anything the next shift needs to know.</li></ul>
+        <div class="callout"><b>As-you-go rule:</b> log each outcome the moment it happens — the CRM is your memory and your paycheck. If it isn't in CC360, it didn't happen.</div>
       </section>
 
       <!-- 08 -->
-      <section id="s9">
-        <div class="sec-n">Part 6 · Section 08</div><h2>Follow-ups, no-shows, nurture &amp; opt-outs</h2>
-        <p class="lead">Most of the money is in the follow-up — done with respect, not with a pressure quota.</p>
-        <h4>Approved follow-up examples</h4>
-        <div class="script"><span class="q">Pricing question, went quiet:</span> "Hey [name], did that pricing make sense for where you're at — or want me to walk you through which option fits best?"</div>
-        <div class="script"><span class="q">Delayed decision:</span> "No rush at all. Want me to check back [specific day], or is there a question I can answer now?"</div>
-        <div class="script"><span class="q">Ghosted (gentle, final):</span> "I'll close this out so I'm not crowding your inbox — if the timing's better later, just say the word and I'll pick it right back up."</div>
-        <div class="script"><span class="q">No-show:</span> "Looks like we missed each other — totally happens. Here's the next opening: [time]. Want me to grab it for you?"</div>
-        <div class="script"><span class="q">Seasonally inactive breeder:</span> "Sounds like you're between litters. Want me to check back when you're planning the next one? I'll set a reminder."</div>
-        <h4>Opt-outs — non-negotiable</h4>
-        <p>If a prospect asks for no further contact, <b>stop immediately</b> and update their opt-out status in CC360. Never re-add them to outreach. Respect every platform's messaging rules and each prospect's stated preference.</p>
-        <div class="warn"><b>No aggressive follow-up quotas.</b> We do not spam. Cadence serves the prospect's preference and the platform's rules — not a number on a scoreboard. A respectful "no" protected is worth more than a forced "yes."</div>
+      <section id="s8">
+        <div class="sec-n">Part 3 · Section 08</div><h2>Speed to lead &amp; coverage</h2>
+        <p class="lead">A fast, human first response is the single biggest lever on whether a lead converts.</p>
+        <h4>Response standard</h4>
+        <p><b>90% of assigned new inbound leads receive an appropriate first human response within 15 minutes during agreed coverage hours.</b></p>
+        <p>Record, for each: when the message arrived · when it was assigned · when the first human response happened · whether it was during coverage · whether a response was even required. Evaluate the SLA by <b>cohort, not just an average</b>.</p>
+        <h4>Coverage &amp; backup</h4>
+        <table>
+          <tr><td><b>Paid coverage window</b></td><td><span class="wtag">confirm exact hours with Austin / your manager</span></td></tr>
+          <tr><td><b>Named backup owner</b></td><td><span class="wtag">confirm — who owns urgent opportunities when you're off</span></td></tr>
+          <tr><td><b>Off-hours</b></td><td>You are <b>not</b> required to monitor messages outside compensated hours. The designated backup owns urgent opportunities then.</td></tr>
+        </table>
+        <div class="callout"><b>Always:</b> prioritize existing high-intent replies over new cold outreach. A warm reply answered in 10 minutes is worth more than ten cold openers.</div>
       </section>
 
       <!-- 09 -->
-      <section id="s10">
-        <div class="sec-n">Part 7 · Section 09</div><h2>Claims, privacy &amp; the escalation matrix</h2>
-        <p class="lead">A few lines protect the brand, the breeder, the dogs — and you. These are non-negotiable.</p>
-        <h4>What you may claim</h4>
-        <ul><li>What each offer includes (approved wording), that a real repro vet backs our education, and honest member outcomes you can support.</li></ul>
-        <h4>What you must never do</h4>
+      <section id="s9">
+        <div class="sec-n">Part 4 · Section 09</div><h2>The DM conversation framework</h2>
+        <p class="lead">One framework, adapted to how the prospect entered. It guides your judgment — it does not replace it. Never fire eight canned messages in a row.</p>
+        <div class="flow">
+          <div class="step"><div class="no">1</div><div class="bd"><b>Open</b> — start naturally. <em>"Are you currently breeding, or just getting started?"</em> · New follower: <em>"Hey, thanks for the follow — here to get better results for your program, or just the content?"</em></div></div>
+          <div class="step"><div class="no">2</div><div class="bd"><b>Understand</b> — <em>"What breed are you focused on? How long have you been breeding?"</em> Don't ask what they've already answered.</div></div>
+          <div class="step"><div class="no">3</div><div class="bd"><b>Identify their focus</b> — better breeding practices, business operations, or both?</div></div>
+          <div class="step"><div class="no">4</div><div class="bd"><b>Ask permission</b> — <em>"Do you mind if I ask a couple quick questions to see if we can help?"</em></div></div>
+          <div class="step"><div class="no">5</div><div class="bd"><b>Main struggle</b> — <em>"What's the biggest thing holding you back right now?"</em> (personalize to what they mentioned).</div></div>
+          <div class="step"><div class="no">6</div><div class="bd"><b>Desired outcome</b> — <em>"If you could improve one thing over the next 3–6 months, what would you want to see change?"</em></div></div>
+          <div class="step"><div class="no">7</div><div class="bd"><b>Assess readiness</b> — do they actually want help, and does a call make sense now? (Not an interrogation about their finances.)</div></div>
+          <div class="step"><div class="no">8</div><div class="bd"><b>Invite to the call</b> — see the Game Plan Call script below.</div></div>
+        </div>
+        <div class="script"><span class="q">The Breeder Game Plan Call invite:</span> "Based on what you shared about [problem] and wanting to [goal], I think a quick conversation could help. We do a <b>15–20 minute Breeder Game Plan Call</b> to look at your situation, figure out what deserves attention first, and see whether BreedWise is the right fit. Open to a call this week?"</div>
+        <h4>Rules for the framework</h4>
         <ul>
-          <li><b>Never</b> diagnose, prescribe, or give clinical instructions for an animal.</li>
-          <li><b>Never</b> guarantee puppy survival or health outcomes.</li>
-          <li><b>Never</b> guarantee profits or income.</li>
-          <li><b>Never</b> promise an unapproved discount or refund.</li>
-          <li><b>Never</b> claim to be a veterinarian.</li>
-          <li><b>Never</b> disclose confidential member or prospect information.</li>
-          <li><b>Never</b> invent results, fake scarcity, or misrepresent the offer.</li>
+          <li>Never mechanically send eight messages; ask <b>one relevant question at a time</b> and acknowledge the answer.</li>
+          <li>Don't repeat a question they've answered; avoid unnecessary emotional probing.</li>
+          <li>If a qualified prospect asks to talk, <b>move to booking early</b> — don't stretch the script.</li>
+          <li>Keep it conversational and concise. Only promise a personalized plan/deliverable if the call team actually provides it.</li>
         </ul>
-        <h4>Escalation matrix — route by issue (not everything to Austin)</h4>
-        <table>
-          <tr><th>Issue</th><th>First point of escalation</th></tr>
-          <tr><td>CRM access, tagging, lead assignment</td><td>Sales operations owner <span class="wtag">name it</span></td></tr>
-          <tr><td>Duplicate prospect / unclear ownership</td><td>Regina (or designated sales lead)</td></tr>
-          <tr><td>TPB billing, access, cancellation</td><td>Jennifer</td></tr>
-          <tr><td>Veterinary / animal-welfare question</td><td>Designated qualified veterinary contact</td></tr>
-          <tr><td>Content or funnel-asset discrepancy</td><td>Yasmin</td></tr>
-          <tr><td>Unapproved price / contract exception</td><td>Austin (authorized decision-maker)</td></tr>
-          <tr><td>Sensitive legal, safety, or reputational situation</td><td>Austin or designated company authority</td></tr>
-        </table>
-        <div class="ok"><b>This is how we reduce founder dependency:</b> most questions have a non-Austin owner. Austin is for <em>material exceptions</em> — not routine operations. Learn this table.</div>
       </section>
 
       <!-- 10 -->
-      <section id="s11">
-        <div class="sec-n">Part 7 · Section 10</div><h2>Messaging compliance</h2>
-        <p class="lead">Before you message at volume, know the boundaries. These protect our accounts and our reputation.</p>
+      <section id="s10">
+        <div class="sec-n">Part 4 · Section 10</div><h2>Conversation types &amp; examples</h2>
+        <p class="lead">The lead's source shapes the opening and the path to booking. Adapt — don't copy a script word for word. For each: open → key discovery → decision → next step → what to log.</p>
         <table>
-          <tr><td><b>Approved audiences</b></td><td>Only the audiences &amp; lead sources you're assigned. <span class="wtag">Austin/ops to define the exact list.</span> No scraping or buying lists.</td></tr>
-          <tr><td><b>Account access</b></td><td>Use only the approved accounts you're given. Never use personal accounts for company outreach.</td></tr>
-          <tr><td><b>Consent &amp; opt-out</b></td><td>Honor every opt-out instantly; record it in CC360. Don't message people who've asked to stop.</td></tr>
-          <tr><td><b>Platform &amp; spam rules</b></td><td>Follow each platform's limits and anti-spam rules. Don't blast identical copy; personalize. Protect the accounts.</td></tr>
-          <tr><td><b>Automation</b></td><td>Only approved tools/automations. <span class="wtag">Confirm what's permitted.</span> Never run unapproved bots or mass-senders.</td></tr>
+          <tr><th>Lead type</th><th>Opening</th><th>Then…</th></tr>
+          <tr><td><b>1. Reel / CTA reply</b></td><td>"Saw you jumped on the [topic] post — breeding now or getting started?"</td><td>Find the struggle → if fit, invite the call. Log source = Reel/CTA.</td></tr>
+          <tr><td><b>2. New follower</b></td><td>"Thanks for the follow — here for better results in your program, or the content?"</td><td>Qualify lightly; route to call, TPB, or nurture.</td></tr>
+          <tr><td><b>3. Long-time follower, never reached out</b></td><td>"You've been around a while — what's the one thing you'd love to fix in your program?"</td><td>Name the gap → invite call if real intent.</td></tr>
+          <tr><td><b>4. Asking for free info</b></td><td>Give the approved resource, then: "Want me to see if a quick call would help you apply it?"</td><td>Resource first; call only if fit. Log as nurture if not.</td></tr>
+          <tr><td><b>5. Ad keyword reply</b></td><td>Acknowledge the keyword, confirm what they wanted, qualify.</td><td>Invite call or send resource per fit.</td></tr>
+          <tr><td><b>6. Referral from a member</b></td><td>"[Member] thought we could help — tell me a bit about your program?"</td><td>Warm; move to booking faster.</td></tr>
+          <tr><td><b>7. Explicitly asks for a call</b></td><td>"Love it — let's get you booked."</td><td>Don't over-qualify; go straight to booking (Section 12).</td></tr>
+          <tr><td><b>8. Old unanswered DM</b></td><td>Acknowledge the delay naturally; re-open with their original context.</td><td>Check it's still relevant → route. Log as backfill.</td></tr>
+          <tr><td><b>9. Asking about price</b></td><td>Approved factual answer (Section 04); don't conceal public pricing.</td><td>Offer the call or TPB; never improvise discounts.</td></tr>
+          <tr><td><b>10. Better suited to TPB</b></td><td>"Honestly, the best first step for you is probably TPB — want the link?"</td><td>Refer to TPB; set nurture follow-up. No forced call.</td></tr>
         </table>
-        <div class="warn"><b>When unsure, ask before you send.</b> A banned account costs the whole team its pipeline. "Message at volume" means <em>as much qualified, compliant outreach as the rules and your hours allow</em> — not spam.</div>
+        <div class="callout"><b>For every conversation, log:</b> lead source · the opening used · the key discovery (challenge + desired outcome) · the decision (book / callback / TPB / nurture) · the next action &amp; owner.</div>
+        <p style="font-size:12px;color:var(--muted)">Supplemental "Book Calls in the DMs" training is a reference for conversational technique only — adapt the principles to BreedWise's voice and offers. Never borrow pressure tactics, invent results, or use it to run a high-ticket close in DMs.</p>
       </section>
 
       <!-- 11 -->
-      <section id="s12">
-        <div class="sec-n">Part 8 · Section 11</div><h2>KPIs &amp; the EOD report</h2>
-        <p class="lead">We measure effectiveness per working hour — and we ramp. Your first two weeks set the baselines we'll hold you to.</p>
+      <section id="s11">
+        <div class="sec-n">Part 4 · Section 11</div><h2>Qualification &amp; discernment</h2>
+        <p class="lead">Recognize fit — without making decisions outside your expertise. Gather facts; refer the judgment calls.</p>
+        <h4>Ask yourself</h4>
+        <ul><li>Are they genuinely breeding, preparing to breed, or seeking relevant education?</li><li>What's their primary challenge, and what outcome do they want?</li><li>Do they want help <em>now</em>, or just gathering info? Is a high-ticket sales conversation appropriate?</li><li>Any welfare or integrity concerns that need escalation?</li></ul>
+        <h4>Three routing outcomes</h4>
         <table>
-          <tr><th>KPI</th><th>Initial standard</th></tr>
-          <tr><td>Response time</td><td>90% of new assigned inbound answered within <b>15 min</b> during covered hours</td></tr>
-          <tr><td>Outreach volume</td><td>Establish a <b>per-hour baseline</b> in the first 7–14 days (not an arbitrary daily quota)</td></tr>
-          <tr><td>Meaningful conversations</td><td>Track volume &amp; conversion from initiated contacts</td></tr>
-          <tr><td>Qualified appointments booked</td><td>Track weekly <b>against eligible lead volume</b></td></tr>
-          <tr><td>Attended appointment rate</td><td>Work toward <b>80%</b>, measured by actual cohort</td></tr>
-          <tr><td>Due follow-ups completed</td><td>95%+</td></tr>
-          <tr><td>CRM accuracy</td><td>95%+ on weekly record <b>audits</b> (accuracy, not just "a field is filled")</td></tr>
-          <tr><td>TPB paid conversions</td><td>Track weekly, incl. first payments actually collected</td></tr>
-          <tr><td>High-ticket attributed conversions</td><td>Track sales &amp; collected cash by source</td></tr>
+          <tr><th>Route</th><th>When</th></tr>
+          <tr><td><b>A · Book a Game Plan Call</b></td><td>Meaningful problem + appropriate goal + genuine interest in help.</td></tr>
+          <tr><td><b>B · Collect details &amp; arrange a callback</b></td><td>Welcomes direct contact but can't/won't schedule right now.</td></tr>
+          <tr><td><b>C · Route to TPB or an educational step</b></td><td>A lower-touch resource fits better, or they're not ready for a high-ticket call.</td></tr>
         </table>
-        <p>Every volume metric is measured <b>per approved working hour</b>, so performance compares fairly as coverage changes. Targets ramp from your baseline — they are performance goals, not day-one minimums.</p>
-        <div class="callout"><b>EOD report — make it useful to management, not just a tally.</b> Include: contacts &amp; conversations · TPB sold · appts set · shows/no-shows · <b>conversations awaiting someone else's action</b> · <b>any missed response targets</b> · <b>overdue follow-ups</b> · <b>the biggest objection you heard today</b> · 1 win · 1 blocker.</div>
+        <div class="warn"><b>Don't make categorical judgments</b> based solely on breed, registration status, crossbreeding, or geography. Follow the company's documented qualification standard (Appendix D) and refer uncertain or sensitive cases — welfare concerns, veterinary questions, disputed situations — for review. TPB is <b>not</b> an inferior destination, and not everyone must climb through every offer.</div>
       </section>
 
       <!-- 12 -->
+      <section id="s12">
+        <div class="sec-n">Part 5 · Section 12</div><h2>Booking calls properly</h2>
+        <p class="lead">"Sure, I'd like to talk" is <em>not</em> a booked appointment. A booking is real only when it's on the calendar with full details.</p>
+        <h4>The booking process</h4>
+        <ol>
+          <li>Get agreement to speak.</li>
+          <li>Offer real available times or the approved booking link.</li>
+          <li>Confirm the time zone.</li>
+          <li>Collect the necessary contact details.</li>
+          <li>Schedule it in the approved system.</li>
+          <li>Verify the calendar entry exists.</li>
+          <li>Confirm the prospect received the invitation.</li>
+          <li>Explain the call's purpose &amp; duration (15–20 min Game Plan Call).</li>
+          <li>Send the approved pre-call resource / application if required.</li>
+          <li>Record qualification context &amp; next owner in CC360.</li>
+        </ol>
+        <h4>A booked appointment has</h4>
+        <ul><li>Correct contact info · confirmed date/time · correct call owner · qualification notes · recorded lead source · a clear next action.</li></ul>
+        <div class="warn"><b>Never invent available times or imply a call is confirmed before it's on the calendar.</b></div>
+      </section>
+
+      <!-- 13 -->
       <section id="s13">
-        <div class="sec-n">Part 9 · Section 12</div><h2>Training path &amp; 30·60·90</h2>
-        <p class="lead">You earn independent inbox access by demonstrating competence — not by the calendar. Someone who needs more training doesn't get pushed live on Day 4.</p>
+        <div class="sec-n">Part 5 · Section 13</div><h2>Follow-ups, confirmations &amp; reengagement</h2>
+        <p class="lead">Most of the value is in the follow-up — done with respect and proportion, never pressure.</p>
         <table>
-          <tr><th>Stage</th><th>Expected achievement</th></tr>
-          <tr><td><b>Day 1</b></td><td>Understand the company, offers, current staff responsibilities, and access requirements</td></tr>
-          <tr><td><b>Day 2</b></td><td>Demonstrate CRM, inbox, qualification &amp; booking workflows in a safe training environment</td></tr>
-          <tr><td><b>Day 3</b></td><td>Complete the practical assessments (Section 13) and review mistakes</td></tr>
-          <tr><td><b>Days 4–5</b></td><td>Handle selected live conversations with supervision &amp; approval</td></tr>
-          <tr><td><b>Week 2</b></td><td>Own defined coverage blocks; manager audits conversations &amp; CRM entries daily</td></tr>
-          <tr><td><b>Days 15–30</b></td><td>Operate independently within approved scope; weekly KPI, conversion &amp; mistake review</td></tr>
-          <tr><td><b>Days 31–90</b></td><td>Improve conversion, consistency &amp; process quality against measured baselines</td></tr>
+          <tr><th>Situation</th><th>Approved action</th></tr>
+          <tr><td>Interested prospect stops replying</td><td>Brief, context-specific check-in in an appropriate window. No pressure.</td></tr>
+          <tr><td>Agreed to a call but didn't book</td><td>Follow up on the scheduling step; make booking easy.</td></tr>
+          <tr><td>Chose a time but no contact details</td><td>Request only what's needed to finalize.</td></tr>
+          <tr><td>Got an invite but didn't confirm</td><td>Verify delivery and that the time still works.</td></tr>
+          <tr><td>Upcoming appointment</td><td>Approved reminder cadence; avoid duplicate messages.</td></tr>
+          <tr><td>Missed appointment</td><td>Offer a reasonable reschedule, coordinated with the call owner.</td></tr>
+          <tr><td>Older unanswered lead</td><td>Acknowledge the prior inquiry naturally; check if the need is still live.</td></tr>
+          <tr><td>"Not interested / stop contacting me"</td><td>Respect it, mark the contact, discontinue outreach.</td></tr>
         </table>
-        <div class="callout"><b>Gate to independent access:</b> pass the manager certification (Section 13) <em>and</em> a short run of supervised live conversations. Progress is earned, not automatic.</div>
+        <div class="warn"><b>Boundaries:</b> no aggressive scarcity, deposit pressure, excessive confirmations, or manipulative language. No prolonged objection handling or negotiating financial commitments — that's the call team's job. Keep reminders useful and proportionate.</div>
       </section>
 
-      <!-- Glossary -->
+      <!-- 14 -->
       <section id="s14">
-        <div class="sec-n">Appendix A</div><h2>Glossary</h2>
-        <table>
-          <tr><td><b>TPB</b></td><td>The Profitable Breeder — our $97/mo membership &amp; community.</td></tr>
-          <tr><td><b>Academy</b></td><td>Mid-tier coaching program (~$4,500 / 3×$1,500), Austin closes.</td></tr>
-          <tr><td><b>BOSS</b></td><td>High-ticket implementation (~$8,000 / 4×$2,000), Austin closes.</td></tr>
-          <tr><td><b>Setter / Closer</b></td><td>You set (book qualified calls / sell TPB); Austin closes Academy/BOSS.</td></tr>
-          <tr><td><b>CC360</b></td><td>CourseCreator360 — our CRM &amp; system of record.</td></tr>
-          <tr><td><b>Close</b></td><td>The dialer / phone CRM for call workflows.</td></tr>
-          <tr><td><b>Skool</b></td><td>The community platform where members learn &amp; ascend.</td></tr>
-          <tr><td><b>Stripe</b></td><td>Where payments land — the source of truth for "cash collected."</td></tr>
-          <tr><td><b>Meta Business Suite</b></td><td>Where the Instagram/Facebook inbound inbox is managed.</td></tr>
-          <tr><td><b>VSL</b></td><td>Video Sales Letter — the video at the core of a funnel.</td></tr>
-          <tr><td><b>Cash collected</b></td><td>Money actually received (vs. contract value) — the basis for your 3%.</td></tr>
-          <tr><td><b>EOD</b></td><td>End-of-day report of activity, outcomes &amp; what needs attention.</td></tr>
-        </table>
+        <div class="sec-n">Part 5 · Section 14</div><h2>CRM procedures &amp; attribution</h2>
+        <p class="lead">CC360 is the system of record. Clean records are how you get credit and how the team wins.</p>
+        <h4>You must be able to</h4>
+        <ul><li>Find a record · spot duplicates · create a record when needed · record lead source · document the first meaningful conversation · add qualification notes · assign ownership · update pipeline stage · set a follow-up task · record bookings &amp; attendance · route to Regina or the call owner · mark TPB referral/purchase when verified · preserve history when re-engaging old leads.</li></ul>
+        <h4>Pipeline stages</h4>
+        <p style="font-family:var(--disp);color:var(--gold-soft);font-size:14px">New Lead → Contacted → Engaged → Qualified → Call Invited → Booked → Attended → Outcome Recorded</p>
+        <p>Plus statuses: <b>Callback requested · TPB referred · Nurture · Not qualified · No-show / reschedule · Opted out.</b> <span class="wtag">Austin/ops: define exact stage meanings &amp; what event triggers each change (Appendix B).</span></p>
+        <h4>Attribution</h4>
+        <p>Use approved CRM source &amp; owner rules — <b>don't infer ownership from whoever messaged most recently.</b> Define credit when: a lead came from marketing · you qualify it · Regina handles the phone call · Austin closes Academy/BOSS · an old lead is recovered via backfill · an existing customer buys again.</p>
+        <div class="callout"><b>Important:</b> this manual explains how attribution is <em>tracked</em>. The <b>signed compensation agreement</b> determines when commissions are actually earned and paid.</div>
       </section>
 
-      <!-- Appendices -->
+      <!-- 15 -->
       <section id="s15">
-        <div class="sec-n">Appendix B</div><h2>Links, Looms, CRM fields &amp; FAQ</h2>
-        <h4>Live links <span class="wtag">Austin/ops to fill &amp; keep current</span></h4>
-        <ul>
-          <li>TPB checkout link: __________</li>
-          <li>Academy booking link: __________</li>
-          <li>BOSS booking link: __________</li>
-          <li>Free resource / lead magnet links: __________</li>
-          <li>Approved guarantee &amp; cancellation wording: __________</li>
-        </ul>
-        <h4>Screen-recordings (Looms) — paste links from Section 05</h4>
-        <ul><li>Inbox · new-vs-existing · change ownership · booking · TPB tag · Academy/BOSS handoff · follow-up reminder · EOD report</li></ul>
-        <h4>CRM field definitions (CC360)</h4>
-        <table>
-          <tr><td><b>Contact owner</b></td><td>Who owns the relationship now.</td></tr>
-          <tr><td><b>Lead source</b></td><td>Where the lead came from (funnel/platform/campaign).</td></tr>
-          <tr><td><b>Stage</b></td><td>Where they are in the pipeline.</td></tr>
-          <tr><td><b>Program context</b></td><td>Breed, size of program, where they are in it.</td></tr>
-          <tr><td><b>Primary challenge / desired result</b></td><td>The gap you're solving for.</td></tr>
-          <tr><td><b>Offer</b></td><td>The tier they're routed toward.</td></tr>
-          <tr><td><b>Appointment status</b></td><td>Set / confirmed / showed / no-show.</td></tr>
-          <tr><td><b>Next action &amp; due date</b></td><td>The single next step and when.</td></tr>
-          <tr><td><b>Opt-out</b></td><td>Do-not-contact flag — honor instantly.</td></tr>
-        </table>
-        <h4>FAQ</h4>
-        <p><b>Can I quote a discount if they're hesitant?</b> No — never improvise price/discounts. Confirm the current offer in CC360 or escalate.</p>
-        <p><b>They're asking a health question — can I help?</b> Gather the facts, give no clinical advice, and route per the escalation matrix.</p>
-        <p><b>Who closes Academy/BOSS?</b> Austin. You qualify and set; you don't close.</p>
+        <div class="sec-n">Part 6 · Section 15</div><h2>Performance metrics</h2>
+        <p class="lead">We measure outcomes and reliability — not raw message volume. Baselines first; aggressive quotas only after we validate real lead inventory and hours.</p>
+        <h4>Daily</h4>
+        <p>Newly assigned inbound · timely first responses · proactive outreach attempts · meaningful conversations · re-engaged old leads · calls invited · calls booked · callbacks captured · follow-ups completed · CRM records updated.</p>
+        <h4>Weekly</h4>
+        <p>Inbound response-SLA achievement · qualified booked appointments · qualified appointments <b>attended</b> · booking-to-attendance rate · backfill leads reactivated · calls generated from backfill · TPB referrals &amp; verified paid conversions · high-ticket sales attributed to setter-originated opportunities · CRM accuracy · <b>qualified appointments per authorized working hour</b>.</p>
+        <div class="warn"><b>Do not auto-retain</b> the old "100 outbound/day, 20–30 conversations/day, 10 TPB/week, 5 calls/week" as required minimums. Establish a baseline in the first 1–2 weeks against real lead inventory and your approved hours, then set targets that ramp.</div>
+        <div class="callout"><b>EOD report (short &amp; consistent):</b> working hours · new leads handled · responses meeting SLA · meaningful conversations · new bookings · callbacks requested · backfill leads worked · upcoming appointments needing attention · overdue follow-ups · significant escalations · one operational blocker.</div>
       </section>
 
-      <!-- 13 · CERTIFICATION -->
+      <!-- 16 -->
       <section id="s16">
-        <div class="sec-n">Part 9 · Section 13</div><h2>Manager certification &amp; sign-off</h2>
-        <p class="lead">This is the gate to live access — and it is <b>manager-scored from observation</b>, not self-rated. Scores start at 0. Passing threshold is <b>85/100 with no critical safety or honesty failure.</b></p>
-        <div class="warn"><b>A score alone does not authorize access.</b> The employee must first <em>demonstrate</em> the scenarios below in realistic simulation, then handle a short run of supervised live conversations before independent inbox ownership.</div>
+        <div class="sec-n">Part 6 · Section 16</div><h2>Compensation summary</h2>
+        <p class="lead">A summary only — the <b>signed compensation agreement</b> governs what's earned and paid.</p>
+        <table>
+          <tr><th>Component</th><th>Amount</th><th>Basis</th></tr>
+          <tr><td><b>Base</b></td><td>$200 / week</td><td>Guaranteed.</td></tr>
+          <tr><td><b>TPB bonus</b></td><td>$20</td><td>Per <b>verified eligible TPB conversion you originate</b> (you refer; you don't run a TPB sales pitch).</td></tr>
+          <tr><td><b>Academy / BOSS</b></td><td>3% of collected</td><td>Eligible collected revenue on opportunities you sourced &amp; qualified.</td></tr>
+        </table>
+        <div class="warn"><b>Role/comp consistency:</b> because you <em>refer</em> rather than sell TPB, there is <b>no "10 TPB sales/week" quota</b>. The $20 is a referral/origination bonus on verified conversions — defined in the agreement.</div>
+        <div class="callout"><b>Backfill incentive:</b> historical lead recovery should be rewarded under a <b>documented rule</b> (not an informal promise) <span class="wtag">Austin to define</span>. Attribution, payment timing, refunds/chargebacks, employment classification, approved hours, and post-termination terms all live in the signed agreement — this manual does not change compensation.</div>
+      </section>
 
+      <!-- 17 -->
+      <section id="s17">
+        <div class="sec-n">Part 6 · Section 17</div><h2>Escalation &amp; professional conduct</h2>
+        <table>
+          <tr><th>Situation</th><th>Escalate to</th></tr>
+          <tr><td>Sales / CRM ownership questions</td><td>Supervising manager / sales-ops</td></tr>
+          <tr><td>Billing or existing-member support</td><td>Jennifer</td></tr>
+          <tr><td>Marketing / content inconsistencies</td><td>Yasmin</td></tr>
+          <tr><td>Veterinary / puppy-health concerns</td><td>Designated veterinary contact</td></tr>
+          <tr><td>Welfare or integrity concerns</td><td>Document facts → refer for review</td></tr>
+          <tr><td>Unapproved pricing requests</td><td>Austin</td></tr>
+          <tr><td>Privacy / account-security incident</td><td>Supervising manager → Austin</td></tr>
+          <tr><td>Threatening or abusive messages</td><td>Supervising manager / Austin — do not engage</td></tr>
+          <tr><td>Requests to stop contact</td><td>Honor instantly; mark opted-out</td></tr>
+        </table>
+        <h4>Always</h4>
+        <ul><li>Be truthful · respect privacy · protect company account access.</li></ul>
+        <h4>Never</h4>
+        <ul><li>Guarantee breeder revenue or puppy-health outcomes · diagnose or treat animals in DMs · misrepresent your identity or role · manufacture scarcity · exploit customer fears · contact people after an opt-out · publicly argue with prospects or competitors · disclose confidential information.</li></ul>
+      </section>
+
+      <!-- 18 -->
+      <section id="s18">
+        <div class="sec-n">Part 7 · Section 18</div><h2>First 14 days: training &amp; supervised ramp</h2>
+        <table>
+          <tr><td><b>Day 1</b></td><td>Understand BreedWise — read this manual, review offers, meet the team, get account access.</td></tr>
+          <tr><td><b>Day 2</b></td><td>Learn the systems — practice inbox, CRM, booking, follow-up &amp; handoff with supervision.</td></tr>
+          <tr><td><b>Day 3</b></td><td>Practice conversations — realistic DM scenarios with feedback on clarity, tone, qualification &amp; judgment.</td></tr>
+          <tr><td><b>Days 4–5</b></td><td>Supervised execution — approved live conversations with review; begin recovering eligible historical leads without neglecting live inbound.</td></tr>
+          <tr><td><b>Week 2</b></td><td>Owned coverage — own agreed blocks, book calls, work backfill, keep CRM accurate. Manager reviews conversation samples, booking quality, overdue follow-ups &amp; response performance.</td></tr>
+          <tr><td><b>Day 14</b></td><td>Readiness review — can you independently run the assigned inbox without routine CEO involvement?</td></tr>
+        </table>
+        <div class="callout"><b>Progression depends on demonstrated competence, not time served.</b> Someone who needs more training doesn't get pushed into unsupervised activity because the calendar says Day 4.</div>
+      </section>
+
+      <!-- 19 · CERTIFICATION -->
+      <section id="s19">
+        <div class="sec-n">Part 7 · Section 19</div><h2>Readiness certification &amp; sign-off</h2>
+        <p class="lead">Manager-observed — not self-rated. Scores start at 0. Clear only with a strong score, all demonstrations shown, and no critical safety/honesty failure.</p>
+        <div class="warn"><b>A score alone does not authorize access.</b> The candidate must demonstrate the scenarios below in realistic simulation, then handle supervised live conversations before independent inbox ownership.</div>
         <h4>Required demonstrations (check when observed)</h4>
         <div class="card" id="demos"></div>
-
-        <h4>Observed competency scores (manager fills in)</h4>
+        <h4>Observed competencies (manager scores 0–10)</h4>
         <div class="card" id="scwrap"></div>
-        <label class="ckline" style="margin-top:6px"><input type="checkbox" id="critFail"><span class="t"><b>Critical failure flagged</b> — a safety, honesty, privacy, or compliance failure occurred. If checked, the candidate is <b>not</b> cleared regardless of score.</span></label>
-        <div class="sctot"><span class="v" id="scTot">0</span><span class="d">/ 100 weighted</span></div>
+        <label class="ckline" style="margin-top:6px"><input type="checkbox" id="critFail"><span class="t"><b>Critical failure flagged</b> — a safety, honesty, privacy, or compliance failure occurred. If checked, <b>not cleared</b> regardless of score.</span></label>
+        <div class="sctot"><span class="v" id="scTot">0</span><span class="d">/ 100</span></div>
         <div class="sctag" id="scTag"></div>
-
-        <h4>Sign-off</h4>
-        <div class="card">
+        <div class="card"><h4>Sign-off</h4>
           <p style="font-size:13px">The candidate has read the Setter Operating Manual, demonstrated the required scenarios, and is assessed as above.</p>
           <div class="signrow"><input class="f" id="empName" placeholder="Candidate name"><input class="f" id="empDate" type="date"></div>
           <div class="signrow" style="margin-top:10px"><input class="f" id="mgrName" placeholder="Assessing manager"><input class="f" id="mgrDate" type="date"></div>
-          <textarea class="f" id="notes" placeholder="Observed strengths, gaps, and required follow-up before live access…" style="margin-top:12px;min-height:64px"></textarea>
+          <textarea class="f" id="notes" placeholder="Observed strengths, gaps, and required follow-up before live access…" style="margin-top:12px;min-height:60px"></textarea>
         </div>
         <div style="text-align:center;margin-top:14px"><button class="tbtn" id="printBtn2">Print / save as PDF</button></div>
       </section>
 
-      <footer class="bf">BREEDWISE · Setter Operating Manual v2.0 · Confidential — team use only. Progress saves privately on this device.</footer>
+      <!-- APPENDICES -->
+      <section id="sA">
+        <div class="sec-n">Appendices</div><h2>Appendices A–G</h2>
+        <h3>Appendix A · Live links <span class="wtag">Austin/ops to fill &amp; keep current</span></h3>
+        <ul><li>Breeder Game Plan Call booking calendar: __________</li><li>TPB page / referral link: __________</li><li>Scorecards &amp; approved free resources: __________</li><li>Approved pre-call materials / application: __________</li><li>Support &amp; company messaging assets: __________</li></ul>
+        <h3>Appendix B · CRM tutorials (Looms)</h3>
+        <ul><li>Meta inbox · new-vs-existing · change ownership · create booking · TPB referral tag · hand off to call owner · set follow-up · submit EOD · pipeline-stage definitions &amp; triggers — <span class="wtag">record &amp; link</span></li></ul>
+        <h3>Appendix C · Approved DM examples</h3>
+        <ul><li>Original BreedWise conversations adapted from Section 10 — build a small swipe file as real ones prove out. No invented results, no pressure tactics.</li></ul>
+        <h3>Appendix D · Qualification standard</h3>
+        <ul><li>The approved breeder qualification criteria &amp; escalation requirements (separate document — ask Austin/Regina for the current version).</li></ul>
+        <h3>Appendix E · Compensation &amp; attribution</h3>
+        <ul><li>Reference to the signed compensation agreement and the approved CRM attribution process (governs; this manual summarizes).</li></ul>
+        <h3>Appendix F · EOD report template</h3>
+        <p style="font-size:13px">Hours · new leads · SLA responses · meaningful convos · bookings · callbacks · backfill worked · upcoming appts needing attention · overdue follow-ups · escalations · 1 blocker.</p>
+        <h3>Appendix G · Objection &amp; question log</h3>
+        <ul><li>Record real objections/questions from the field — a learning resource for the company, <b>not</b> a cue to become a closer.</li></ul>
+      </section>
+
+      <footer class="bf">BREEDWISE · Setter Operating Manual v3.0 · Confidential — team use only. Progress saves privately on this device.</footer>
     </div>
   </div>
 
 <script>
-var LS='bw-setter-onboarding-v2';
+var LS='bw-setter-onboarding-v3';
 var DB={demos:{},scores:{},crit:false,sign:{}};
 var DEMOS=[
-  'Three realistic DM conversations — a TPB fit, an Academy fit, and a lead who should NOT be sold',
-  'One accurate CRM entry and a booked appointment',
-  'One clean handoff with a complete handoff record',
-  'One no-show follow-up using the approved procedure',
-  'One veterinary / safety escalation handled correctly (no clinical advice)'
+  'One inbound prospect conversation',
+  'One warm follower or comment interaction',
+  'One older unanswered lead (backfill), handled correctly',
+  'One appropriately qualified booking (confirmed on the calendar)',
+  'One TPB referral',
+  'One correct CRM handoff',
+  'One sensitive veterinary / safety escalation'
 ];
 var COMPS=[
-  {k:'offer',n:'Offer knowledge &amp; correct routing',w:20},
-  {k:'convo',n:'Natural DM conversations &amp; qualification',w:25},
-  {k:'crm',n:'CRM execution &amp; accurate handoffs',w:20},
-  {k:'obj',n:'Objection handling &amp; follow-ups',w:15},
-  {k:'safety',n:'Safety, privacy &amp; escalation judgment',w:15},
-  {k:'cover',n:'Response coverage &amp; work reporting',w:5}
+  {k:'co1',n:'Understands BreedWise &amp; its audience'},
+  {k:'co2',n:'Knows which conversations warrant a call'},
+  {k:'co3',n:'Understands TPB vs. Academy/BOSS routing'},
+  {k:'co4',n:'Communicates naturally'},
+  {k:'co5',n:'Qualifies respectfully'},
+  {k:'co6',n:'Books real appointments correctly'},
+  {k:'co7',n:'Collects callback info with consent'},
+  {k:'co8',n:'Handles older unanswered conversations'},
+  {k:'co9',n:'Operates CC360 accurately'},
+  {k:'co10',n:'Knows when to escalate'},
+  {k:'co11',n:'Respects safety &amp; privacy'},
+  {k:'co12',n:'Completes clear handoffs &amp; reporting'}
 ];
 function $(s){return document.querySelector(s);}
 function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
@@ -581,30 +609,22 @@ function flush(){try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}}
 var st;function save(){$('#save').textContent='Saving…';clearTimeout(st);st=setTimeout(function(){flush();$('#save').textContent='Saved';},300);}
 function renderDemos(){
   var host=$('#demos');host.innerHTML='';
-  DEMOS.forEach(function(d,i){
-    var row=el('label','ckline');
-    var cb=el('input');cb.type='checkbox';cb.checked=!!DB.demos[i];
-    cb.addEventListener('change',function(){DB.demos[i]=cb.checked;save();});
-    row.appendChild(cb);row.appendChild(el('span','t',d));host.appendChild(row);
-  });
+  DEMOS.forEach(function(d,i){var row=el('label','ckline');var cb=el('input');cb.type='checkbox';cb.checked=!!DB.demos[i];
+    cb.addEventListener('change',function(){DB.demos[i]=cb.checked;save();});row.appendChild(cb);row.appendChild(el('span','t',d));host.appendChild(row);});
 }
 function renderSc(){
   var host=$('#scwrap');host.innerHTML='';
-  COMPS.forEach(function(c){
-    var row=el('div','sc-row');
-    row.appendChild(el('div','lb',c.n+'<small><span class="w">'+c.w+'% weight</span></small>'));
+  COMPS.forEach(function(c){var row=el('div','sc-row');row.appendChild(el('div','lb',c.n));
     var r=el('input');r.type='range';r.min=0;r.max=10;r.step=1;r.value=DB.scores[c.k]||0;
     var v=el('div','vv',(DB.scores[c.k]||0)+'/10');
     r.addEventListener('input',function(){DB.scores[c.k]=+r.value;v.textContent=r.value+'/10';save();updateTot();});
-    row.appendChild(r);row.appendChild(v);host.appendChild(row);
-  });
-  $('#critFail').checked=!!DB.crit;
-  $('#critFail').addEventListener('change',function(){DB.crit=$('#critFail').checked;save();updateTot();});
+    row.appendChild(r);row.appendChild(v);host.appendChild(row);});
+  $('#critFail').checked=!!DB.crit;$('#critFail').addEventListener('change',function(){DB.crit=$('#critFail').checked;save();updateTot();});
   bindSign();updateTot();
 }
 function updateTot(){
-  var t=0;COMPS.forEach(function(c){t+=(DB.scores[c.k]||0)/10*c.w;});
-  t=Math.round(t);
+  var sum=0;COMPS.forEach(function(c){sum+=(DB.scores[c.k]||0);});
+  var t=Math.round(sum/(COMPS.length*10)*100);
   $('#scTot').textContent=t;
   var tag=$('#scTag');
   if(DB.crit){tag.textContent='⛔ Critical failure flagged — not cleared, regardless of score.';tag.style.color='var(--red)';}
@@ -612,12 +632,13 @@ function updateTot(){
   else{tag.textContent='Assessment incomplete / below threshold (need 85+).';tag.style.color='var(--muted)';}
 }
 function bindSign(){
-  var m={empName:'empName',empDate:'empDate',mgrName:'mgrName',mgrDate:'mgrDate',notes:'notes'};
-  Object.keys(m).forEach(function(id){var e=$('#'+id);if(!e)return;e.value=DB.sign[id]||(id==='empName'?'Daniel':'');var ev=(e.type==='date')?'change':'input';e.addEventListener(ev,function(){DB.sign[id]=e.value;save();});});
+  ['empName','empDate','mgrName','mgrDate','notes'].forEach(function(id){var e=$('#'+id);if(!e)return;
+    e.value=DB.sign[id]||(id==='empName'?'Daniel':'');var ev=(e.type==='date')?'change':'input';
+    e.addEventListener(ev,function(){DB.sign[id]=e.value;save();});});
 }
 function buildJump(){
   var sel=$('#jump');
-  var items=[['','Cover'],['s1','00 · How to use'],['s2','01 · Story'],['s3','02 · Team'],['s4','03 · Offers'],['s5','04 · Your role'],['s6','05 · First shift ★'],['s7','06 · Qualify & route'],['s8','07 · Convert & hand off'],['s9','08 · Follow through'],['s10','09 · Claims & escalation'],['s11','10 · Compliance'],['s12','11 · KPIs & EOD'],['s13','12 · Training path'],['s14','A · Glossary'],['s15','B · Appendix'],['s16','13 · Certification']];
+  var items=[['','Cover'],['s1','01 · Welcome'],['s2','02 · Who we are'],['s3','03 · Team & escalation'],['s4','04 · Offers'],['s5','05 · Your role'],['s6','06 · First shift ★ backfill'],['s7','07 · Daily process'],['s8','08 · Speed to lead'],['s9','09 · DM framework'],['s10','10 · Conversation types'],['s11','11 · Qualification'],['s12','12 · Booking'],['s13','13 · Follow-ups'],['s14','14 · CRM & attribution'],['s15','15 · Metrics'],['s16','16 · Compensation'],['s17','17 · Escalation & conduct'],['s18','18 · First 14 days'],['s19','19 · Certification'],['sA','Appendices A–G']];
   sel.innerHTML='';items.forEach(function(it){var o=el('option',null,it[1]);o.value=it[0];sel.appendChild(o);});
   sel.addEventListener('change',function(){var id=sel.value;if(!id){window.scrollTo(0,0);}else{var t=document.getElementById(id);if(t)t.scrollIntoView({behavior:'smooth'});}});
 }
