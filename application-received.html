@@ -149,14 +149,14 @@ try{var _eid=sessionStorage.getItem('bw_lead_eid')||'';if(_eid){fbq('track','Lea
     <!-- ══════ HERO ══════ -->
     <section class="rec">
       <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
-      <h1>Application <span class="u">Received</span></h1>
-      <p class="lead"><b>We manually review every application.</b> If you're a good fit, we'll reach out by text or call, often within a few minutes (no later than 24 hours).</p>
-      <div class="callout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Keep your phone nearby. We may reach out within the next few minutes.</div>
+      <h1 id="rec-h">Application <span class="u">Received</span></h1>
+      <p class="lead" id="rec-lead"><b>We manually review every application.</b> If you're a good fit, we'll reach out by text or call, often within a few minutes (no later than 24 hours).</p>
+      <div class="callout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span id="rec-callout">Keep your phone nearby. We may reach out within the next few minutes.</span></div>
     </section>
 
     <!-- ══════ DO THESE TWO THINGS ══════ -->
     <section class="sec">
-      <div class="sec-h"><div class="eyebrow">While you wait</div><h2>Do These Two Things While You Wait</h2><p>Watch them in order. It takes about 20 minutes and it makes our call far more useful, so we can skip the basics and get straight into your program.</p></div>
+      <div class="sec-h"><div class="eyebrow" id="wait-eyebrow">While you wait</div><h2 id="wait-h">Do These Two Things While You Wait</h2><p id="wait-p">Watch them in order. It takes about 20 minutes and it makes our call far more useful, so we can skip the basics and get straight into your program.</p></div>
       <div class="two">
         <div class="vc">
           <div class="vh"><span class="vn">1</span><div><div class="vt">Watch this first</div><div class="vd">Answers the questions almost every breeder has after applying.</div></div></div>
@@ -165,7 +165,7 @@ try{var _eid=sessionStorage.getItem('bw_lead_eid')||'';if(_eid){fbq('track','Lea
           </div></div>
         </div>
         <div class="vc" id="case-study" style="scroll-margin-top:24px">
-          <div class="vh"><span class="vn">2</span><div><div class="vt">Then watch the case study while you wait</div><div class="vd">See how ethical breeders turned unsold puppies into sold-out, profitable litters. Watch it before we reach out, so we can skip the basics.</div></div></div>
+          <div class="vh"><span class="vn">2</span><div><div class="vt" id="cs-t">Then watch the case study while you wait</div><div class="vd" id="cs-d">See how ethical breeders turned unsold puppies into sold-out, profitable litters. Watch it before we reach out, so we can skip the basics.</div></div></div>
           <div class="video16"><div class="ratio">
             <video id="v1" controls playsinline preload="metadata" poster="case-study-thumbnail.jpg">
               <source src="https://assets.cdn.filesafe.space/CaY2COJob6LTwRzXFsWD/media/6a53d48e9c9b37b5fdd1beba.mp4" type="video/mp4">
@@ -246,6 +246,19 @@ try{var _eid=sessionStorage.getItem('bw_lead_eid')||'';if(_eid){fbq('track','Lea
 
   <script>
     document.getElementById('yr').textContent = new Date().getFullYear();
+    // Booked variant: the CC360 calendar redirects here with ?booked=1 after the call is scheduled.
+    if (/[?&]booked=1\b/.test(location.search)) {
+      document.title = 'Call Booked | BreedWise Academy';
+      var set = function(id, h){ var el = document.getElementById(id); if (el) el.innerHTML = h; };
+      set('rec-h', 'Your Call Is <span class="u">Booked</span>');
+      set('rec-lead', "<b>You're all set.</b> Your confirmation and calendar invite are on the way by email and text. Add it to your calendar now so you don't miss it.");
+      set('rec-callout', 'Join from a quiet place with your camera on. Need a different time? Reply to your confirmation text or email.');
+      set('wait-eyebrow', 'Before your call');
+      set('wait-h', 'Do These Two Things Before Your Call');
+      set('wait-p', 'Watch them in order. It takes about 20 minutes and it makes your call far more useful, so we can skip the basics and get straight into your program.');
+      set('cs-t', 'Then watch the case study before your call');
+      set('cs-d', 'See how ethical breeders turned unsold puppies into sold-out, profitable litters. Watch it before your call, so we can skip the basics.');
+    }
     // Branded play button over each video: hide on play, restore on pause/end.
     document.querySelectorAll('.playbtn[data-for]').forEach(function(b){
       var vid = document.getElementById(b.getAttribute('data-for'));
