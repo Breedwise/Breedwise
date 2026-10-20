@@ -200,7 +200,7 @@
             <tr><td><b>Version</b></td><td>3.0</td></tr>
             <tr><td><b>Effective date</b></td><td>October 20, 2026</td></tr>
             <tr><td><b>Document owner</b></td><td>Austin Shanks</td></tr>
-            <tr><td><b>Your supervising manager</b></td><td><span class="wtag">confirm — one accountable manager (Section 03)</span></td></tr>
+            <tr><td><b>Your supervising manager</b></td><td>Austin Shanks — your single accountable manager for daily quality &amp; performance</td></tr>
             <tr><td><b>Approved support contact</b></td><td>support@breedwise.io</td></tr>
             <tr><td><b>Review triggers</b></td><td>Any change to pricing, staffing/roles, live funnels, or booking links.</td></tr>
           </table>
@@ -237,14 +237,14 @@
         <h4>Escalation directory</h4>
         <table>
           <tr><th>Need</th><th>Go to</th></tr>
-          <tr><td>CRM access, tagging, lead assignment, duplicates</td><td>Supervising manager / sales-ops owner <span class="wtag">name it</span></td></tr>
+          <tr><td>CRM access, tagging, lead assignment</td><td>Austin (supervising manager); duplicates / shared leads → coordinate with Regina</td></tr>
           <tr><td>Phone callback / shared-lead coordination</td><td>Regina</td></tr>
           <tr><td>TPB billing, access, cancellation, member support</td><td>Jennifer</td></tr>
           <tr><td>Marketing / content / funnel-asset questions</td><td>Yasmin</td></tr>
           <tr><td>Veterinary or animal-welfare question</td><td>Designated qualified veterinary contact <span class="wtag">confirm</span></td></tr>
           <tr><td>Unapproved price / contract exception; sensitive legal/safety</td><td>Austin</td></tr>
         </table>
-        <div class="callout"><b>Decision to finalize:</b> appoint <b>one accountable supervising manager</b> who reviews your daily quality and performance — so you aren't answering separately to Austin, Regina, Jennifer, and Yasmin. <span class="wtag">Austin to name.</span></div>
+        <div class="callout"><b>Your single accountable manager is Austin Shanks.</b> Your daily quality &amp; performance review is with Austin — you report to one person, not separately to Regina, Jennifer, and Yasmin. Those are domain owners you route specific questions to; your accountability sits with Austin.</div>
       </section>
 
       <!-- 04 -->
@@ -502,14 +502,14 @@
         <div class="sec-n">Part 6 · Section 17</div><h2>Escalation &amp; professional conduct</h2>
         <table>
           <tr><th>Situation</th><th>Escalate to</th></tr>
-          <tr><td>Sales / CRM ownership questions</td><td>Supervising manager / sales-ops</td></tr>
+          <tr><td>Sales / CRM ownership questions</td><td>Austin (supervising manager)</td></tr>
           <tr><td>Billing or existing-member support</td><td>Jennifer</td></tr>
           <tr><td>Marketing / content inconsistencies</td><td>Yasmin</td></tr>
           <tr><td>Veterinary / puppy-health concerns</td><td>Designated veterinary contact</td></tr>
           <tr><td>Welfare or integrity concerns</td><td>Document facts → refer for review</td></tr>
           <tr><td>Unapproved pricing requests</td><td>Austin</td></tr>
-          <tr><td>Privacy / account-security incident</td><td>Supervising manager → Austin</td></tr>
-          <tr><td>Threatening or abusive messages</td><td>Supervising manager / Austin — do not engage</td></tr>
+          <tr><td>Privacy / account-security incident</td><td>Austin (supervising manager)</td></tr>
+          <tr><td>Threatening or abusive messages</td><td>Austin (supervising manager) — do not engage</td></tr>
           <tr><td>Requests to stop contact</td><td>Honor instantly; mark opted-out</td></tr>
         </table>
         <h4>Always</h4>
@@ -633,7 +633,7 @@ function updateTot(){
 }
 function bindSign(){
   ['empName','empDate','mgrName','mgrDate','notes'].forEach(function(id){var e=$('#'+id);if(!e)return;
-    e.value=DB.sign[id]||(id==='empName'?'Daniel':'');var ev=(e.type==='date')?'change':'input';
+    e.value=DB.sign[id]||(id==='empName'?'Daniel':(id==='mgrName'?'Austin Shanks':''));var ev=(e.type==='date')?'change':'input';
     e.addEventListener(ev,function(){DB.sign[id]=e.value;save();});});
 }
 function buildJump(){
