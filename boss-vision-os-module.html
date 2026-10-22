@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BOSS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;0,700;1,600&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#060608;--bg2:#0d0d11;--panel:#121216;--line:#20202a;--line2:#31313d;
+    --ink:#f4f1ea;--mid:#c0bbb0;--muted:#8a847a;--faint:#57524b;
+    --gold:#c9a24e;--gold-soft:#ecdaa4;--gold-deep:#8c6d2e;
+    --blue:#6fb4ea;--green:#5ec59a;--rose:#e68bab;--amber:#e3b45f;--violet:#b79ae8;
+    --disp:'Cormorant',Georgia,serif;--sans:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:90}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold-soft),var(--gold-deep));display:flex;align-items:center;justify-content:center;box-shadow:0 2px 14px rgba(201,162,78,.3)}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#14100a;font-size:19px}
+  .logo .wm{font-size:13px;letter-spacing:.24em;font-weight:700;display:inline-flex;align-items:center;gap:8px}
+  .logo .wm .boss{font-size:9px;letter-spacing:.2em;color:#14100a;background:linear-gradient(150deg,var(--gold-soft),var(--gold));padding:2px 6px;border-radius:5px;font-weight:800}
+  #gate h1{font-family:var(--disp);font-size:26px;font-weight:600;margin:16px 0 4px}
+  #gate .sub{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:linear-gradient(150deg,var(--gold-soft),var(--gold));border:0;border-radius:11px;color:#14100a;font-weight:800;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:#e08a7a;font-size:12.5px;min-height:16px;margin-top:10px}
+  #app{display:none;height:100%;flex-direction:column}
+  nav.top{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--line);background:rgba(6,6,8,.9);flex:none;flex-wrap:wrap}
+  nav .sp{flex:1}
+  .seclabel{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--sc,var(--gold));font-weight:600}
+  .tbtn{background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:7px 11px;font-size:12px;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+  .tbtn:hover{border-color:var(--gold);color:var(--ink)}
+  .tbtn.on{background:linear-gradient(150deg,var(--gold-soft),var(--gold));color:#14100a;border-color:transparent;font-weight:700}
+  .stage{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;overflow:hidden;min-height:0}
+  .slidewrap{position:relative;width:min(100%, calc((100vh - 160px) * 1.7778));aspect-ratio:16/9;container-type:size;background:radial-gradient(1200px 720px at 84% -14%,rgba(201,162,78,.12),transparent 58%),linear-gradient(165deg,#0c0c10,#060608);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;padding:7cqw 7.5cqw}
+  .slide.on{display:flex;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(1cqw)}to{opacity:1;transform:none}}
+  .ey{font-size:1.7cqw;letter-spacing:.24em;text-transform:uppercase;color:var(--sc,var(--gold));font-weight:700}
+  .slide h1{font-family:var(--disp);font-weight:600;font-size:7.4cqw;line-height:1.02;margin:1.2cqw 0 0;letter-spacing:.005em}
+  .slide h2{font-family:var(--disp);font-weight:600;font-size:5.6cqw;line-height:1.05;margin:1cqw 0 0}
+  .slide .dek{font-size:2.4cqw;color:var(--mid);margin-top:2cqw;max-width:74cqw;line-height:1.45}
+  .big{font-family:var(--disp);font-weight:600;font-size:5.6cqw;line-height:1.08;margin-top:1cqw}
+  .big .g{color:var(--gold-soft);font-style:italic}
+  .pts{list-style:none;padding:0;margin:3cqw 0 0;display:flex;flex-direction:column;gap:1.5cqw;max-width:78cqw}
+  .pts li{display:flex;gap:1.4cqw;align-items:flex-start;font-size:2.5cqw;color:var(--mid);line-height:1.35}
+  .pts li:before{content:"";width:1.1cqw;height:1.1cqw;border-radius:50%;background:linear-gradient(150deg,var(--sc,var(--gold)),var(--gold-deep));margin-top:.7cqw;flex:none}
+  .pts.num{counter-reset:p}
+  .pts.num li:before{content:counter(p);counter-increment:p;background:none;color:var(--sc,var(--gold));font-family:var(--disp);font-weight:700;font-size:2.6cqw;width:auto;height:auto;margin:0;min-width:3cqw}
+  .pts b{color:var(--ink);font-weight:600}
+  .slide.sec{justify-content:center;align-items:flex-start}
+  .slide.sec .no{font-family:var(--disp);font-size:3cqw;color:var(--sc,var(--gold));font-style:italic}
+  .slide.sec h1{font-size:8.4cqw}
+  .areas{display:flex;flex-wrap:wrap;gap:1cqw;margin-top:2.6cqw;max-width:80cqw}
+  .areas span{font-size:1.9cqw;color:var(--gold-soft);border:1px solid rgba(201,162,78,.3);background:rgba(201,162,78,.07);border-radius:2cqw;padding:.6cqw 1.4cqw}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:3cqw;margin-top:2.4cqw}
+  .two .c h3{font-family:var(--disp);font-weight:600;font-size:3.2cqw;color:var(--gold-soft)}
+  .two .c p{font-size:2.1cqw;color:var(--mid);margin-top:.6cqw;line-height:1.4}
+  .wk{list-style:none;padding:0;margin:2.4cqw 0 0;display:flex;flex-direction:column;gap:1.6cqw;max-width:80cqw}
+  .wk li{display:flex;gap:1.5cqw;align-items:flex-start;font-size:2.4cqw;color:var(--mid)}
+  .wk li .n{font-family:var(--disp);font-weight:700;color:var(--gold);min-width:3.4cqw;font-size:2.8cqw}
+  .corner{position:absolute;top:4cqw;right:5cqw;font-size:1.5cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:700}
+  .brandline{position:absolute;bottom:4cqw;left:7.5cqw;font-size:1.4cqw;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);font-weight:700}
+  .brandline b{color:var(--gold)}
+  .cover-logo{display:inline-flex;align-items:center;gap:1.4cqw;margin-bottom:2cqw}
+  .cover-logo .mk{width:5cqw;height:5cqw;border-radius:1.2cqw;background:linear-gradient(150deg,var(--gold-soft),var(--gold-deep));display:flex;align-items:center;justify-content:center}
+  .cover-logo .mk span{font-family:var(--disp);font-weight:700;color:#14100a;font-size:3cqw}
+  .cover-logo .wm{font-size:1.9cqw;letter-spacing:.26em;font-weight:700;display:inline-flex;gap:1cqw;align-items:center}
+  .cover-logo .wm .boss{font-size:1.3cqw;letter-spacing:.2em;color:#14100a;background:linear-gradient(150deg,var(--gold-soft),var(--gold));padding:.3cqw 1cqw;border-radius:.6cqw;font-weight:800}
+  .tagline{font-family:var(--disp);font-style:italic;font-size:2.8cqw;color:var(--gold-soft);margin-top:2cqw}
+  .url{font-size:1.9cqw;color:var(--mid);margin-top:2.4cqw}
+  .url b{color:var(--gold-soft)}
+  .notes{display:none}
+  #notesPanel{display:none;flex:none;background:var(--bg2);border-top:1px solid var(--line);max-height:26vh;overflow:auto;padding:12px 18px}
+  body.noteson #notesPanel{display:block}
+  #notesPanel .nh{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:5px}
+  #notesPanel .nb{font-size:13.5px;color:var(--mid);line-height:1.5}
+  #notesPanel .nb b{color:var(--gold-soft)}
+  .bar{display:flex;align-items:center;gap:12px;padding:8px 14px;border-top:1px solid var(--line);background:rgba(6,6,8,.9);flex:none}
+  .navb{background:var(--panel);border:1px solid var(--line2);color:var(--ink);border-radius:9px;width:38px;height:36px;font-size:17px;cursor:pointer;font-family:var(--sans)}
+  .navb:hover{border-color:var(--gold);color:var(--gold-soft)}
+  .track{flex:1;height:5px;background:var(--line);border-radius:4px;overflow:hidden}
+  .track i{display:block;height:100%;background:linear-gradient(90deg,var(--gold-deep),var(--gold));width:0;transition:width .25s}
+  .count{font-size:12px;color:var(--muted);min-width:92px;text-align:right}
+  .hp{position:absolute;left:-9999px}
+  @media print{
+    nav.top,.bar{display:none}
+    body{overflow:visible;background:#fff}
+    #app{display:block!important;height:auto}
+    .stage{display:block;padding:0}
+    .slidewrap{width:100%;box-shadow:none;border:0;border-radius:0;page-break-after:always}
+    .slide{position:relative;display:flex!important;inset:auto;min-height:56vh}
+    .notes{display:block;background:#f6f3ec;color:#222;padding:14px 7.5cqw;border-top:1px solid #ccc;font-size:12px;page-break-after:always}
+    .notes:before{content:"Speaker notes";display:block;font-weight:700;color:#9d8343;margin-bottom:4px;text-transform:uppercase;letter-spacing:.1em;font-size:10px}
+  }
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo" style="margin-bottom:16px"><span class="mk"><span>B</span></span><span class="wm">BREEDWISE<span class="boss">BOSS</span></span></div>
+    <h1>BOSS Module</h1><div class="sub">Access</div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Enter →</button><div class="err" id="gate-err"></div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREEDWISE<span class="boss">BOSS</span></span></span>
+      <span class="seclabel" id="secLabel"></span>
+      <span class="sp"></span>
+      <button class="tbtn" id="notesBtn" title="Toggle speaker notes (N)">Notes</button>
+      <button class="tbtn" id="fsBtn" title="Present fullscreen (F)">⛶ Present</button>
+      <button class="tbtn" id="printBtn" title="Print / export PDF with notes">PDF</button>
+    </nav>
+
+    <div class="stage"><div class="slidewrap" id="wrap">
+
+      <!-- 1 COVER -->
+      <section class="slide" data-sec="BreedWise BOSS" data-sc="var(--gold)" data-min="1.5">
+        <div class="cover-logo"><span class="mk"><span>B</span></span><span class="wm">BREEDWISE<span class="boss">BOSS</span></span></div>
+        <div class="ey">Module · Your operating system</div>
+        <h1>Your Vision OS</h1>
+        <div class="tagline">Operate like the person you're becoming.</div>
+        <div class="url">Open it as we go → <b>review.breedwise.io/boss-vision-os.html</b> · code <b>BOSS2026</b></div>
+        <div class="brandline">BreedWise BOSS · <b>Vision &amp; Operating OS</b></div>
+        <div class="notes">Welcome. This module is a guided walkthrough of your Vision OS — the tool we built for you. About 40 minutes. Have them open it now on a second device or tab (boss-vision-os.html, BOSS2026) so they build their own as we go. By the end they'll have done today's check-in, written who they're becoming, and set this week's one signal.</div>
+      </section>
+
+      <!-- 2 what this is -->
+      <section class="slide" data-sec="Why it exists" data-sc="var(--gold)" data-min="1.5">
+        <div class="ey">What it is</div>
+        <h2>One place for your whole life</h2>
+        <ul class="pts">
+          <li><b>Who you're becoming</b> — your identity and vision.</li>
+          <li><b>Where you're going</b> — goals that cascade from 5 years down to today.</li>
+          <li><b>How you're actually operating</b> — scored daily, reviewed weekly.</li>
+        </ul>
+        <div class="corner">Intro</div>
+        <div class="notes">Frame the Vision OS as the operator's cockpit. Most people keep vision, goals, and daily life in three different places (or no place). This puts them in one system that talks to itself — the vision drives the goals, the goals drive the week, the week gets measured. That's what makes it an operating system, not a journal.</div>
+      </section>
+
+      <!-- 3 paradigm shift -->
+      <section class="slide" data-sec="Why it exists" data-sc="var(--gold)" data-min="1.5">
+        <div class="ey">The paradigm shift</div>
+        <div class="big">Become the person <span class="g">first.</span></div>
+        <div class="dek">Your mind moves toward what it sees most. Decide who you are, keep it in front of you, and the results follow who you've become — not the other way around.</div>
+        <div class="corner">Intro</div>
+        <div class="notes">This is the philosophy the whole tool is built on. Most people chase the result and hope to become someone along the way. Operators flip it: define the identity, put it in front of your eyes daily (the OS does this), and let your actions line up with who you've decided to be. The Vision Board and the identity box exist for exactly this reason.</div>
+      </section>
+
+      <!-- 4 measure -->
+      <section class="slide" data-sec="Why it exists" data-sc="var(--gold)" data-min="1.5">
+        <div class="big">You can't improve<br>what you don't <span class="g">measure.</span></div>
+        <div class="dek">The elite don't guess how life is going. They score it, see the trend, and adjust. This tool makes that take 60 seconds a day.</div>
+        <div class="corner">Intro</div>
+        <div class="notes">The second principle. Everything in the OS is built to measure: your 10 areas daily, your KPIs weekly, your week-over-week trend. Feelings lie; the trend tells the truth. Reassure them it's fast — a minute a day — so it actually gets done.</div>
+      </section>
+
+      <!-- 5 SECTION daily -->
+      <section class="slide sec" data-sec="The Daily Check-In" data-sc="var(--blue)" data-min="0.5">
+        <div class="no">Part 1</div>
+        <h1>The Daily<br>Check-In</h1>
+        <div class="dek">The "Today" tab — 60 seconds that keep you honest.</div>
+        <div class="notes">First tab, the daily habit. About 6 minutes on this section. This is the keystone habit — if they only do one thing, it's this.</div>
+      </section>
+
+      <!-- 6 rate 10 -->
+      <section class="slide" data-sec="The Daily Check-In" data-sc="var(--blue)" data-min="2">
+        <div class="ey">Today · "How did you operate today?"</div>
+        <h2>Rate ten areas, 1–10</h2>
+        <div class="areas"><span>Faith</span><span>Mental Health</span><span>Physical Health</span><span>Personal Development</span><span>Relationship</span><span>Dogs</span><span>Family &amp; Friends</span><span>Finance</span><span>Business</span><span>Purpose</span></div>
+        <div class="dek">Every evening, slide each area to where today really landed. No performing — the point is the truth.</div>
+        <div class="corner">01 · Today</div>
+        <div class="notes">Walk them through the Today tab live. Ten life areas, each scored 1–10 on a slider. Encourage brutal honesty — a 4 you're willing to write down is worth more than a fake 8. Have them actually do today's scores right now if they're following along.</div>
+      </section>
+
+      <!-- 7 radar -->
+      <section class="slide" data-sec="The Daily Check-In" data-sc="var(--blue)" data-min="1.5">
+        <div class="ey">See the whole picture</div>
+        <h2>The radar shows your balance</h2>
+        <ul class="pts">
+          <li>Your ten scores draw a shape — your life at a glance.</li>
+          <li>A spike in Business and a collapse in Relationship is not winning.</li>
+          <li>The goal is a <b>full, balanced shape</b> — not one tall spike.</li>
+        </ul>
+        <div class="corner">01 · Today</div>
+        <div class="notes">The radar is the emotional punch of the tool. Point out that a lopsided shape — all business, no health or relationship — is the exact trap high performers fall into. BOSS operators build a full life, not a tall, fragile spike. The radar makes imbalance impossible to ignore.</div>
+      </section>
+
+      <!-- 8 streak -->
+      <section class="slide" data-sec="The Daily Check-In" data-sc="var(--blue)" data-min="1">
+        <div class="big">Consistency <span class="g">compounds.</span></div>
+        <div class="dek">The 🔥 streak counts your consecutive days. The score matters less than showing up to look at it. Protect the streak.</div>
+        <div class="corner">01 · Today</div>
+        <div class="notes">The streak is the behavioral hook. Tell them the daily habit is the win — self-awareness compounds just like money. Missing a score isn't a moral failure, but protecting the streak builds the identity of someone who faces their life honestly every day.</div>
+      </section>
+
+      <!-- 9 30-day -->
+      <section class="slide" data-sec="The Daily Check-In" data-sc="var(--blue)" data-min="1">
+        <div class="ey">Read the trend</div>
+        <h2>One day lies. Thirty days don't.</h2>
+        <div class="dek">The 30-day averages under the radar show where each area is really trending. Don't react to a bad day — respond to a falling line.</div>
+        <div class="corner">01 · Today</div>
+        <div class="notes">Teach them to zoom out. A single rough day means nothing; a line sliding down over a month is a signal to act. This is where daily scoring becomes strategy — the averages tell them which area needs a system, not a pep talk.</div>
+      </section>
+
+      <!-- 10 rename -->
+      <section class="slide" data-sec="The Daily Check-In" data-sc="var(--blue)" data-min="1">
+        <div class="ey">Make it yours</div>
+        <h2>Rename any area</h2>
+        <div class="dek">Tap the ⚙ gear. Not everyone is faith-based — rename "Faith" to "Spirituality," "Mindfulness," or anything that's yours. Your OS, your language.</div>
+        <div class="corner">01 · Today</div>
+        <div class="notes">Show the gear. The ten areas are a starting point, not a rulebook. Renaming makes it genuinely theirs, which is what makes them actually use it. The new names flow everywhere — radar, weekly actions, lowest-area lifts.</div>
+      </section>
+
+      <!-- 11 SECTION vision -->
+      <section class="slide sec" data-sec="Vision &amp; Goals" data-sc="var(--violet)" data-min="0.5">
+        <div class="no">Part 2</div>
+        <h1>Vision<br>&amp; Goals</h1>
+        <div class="dek">Set the vision first — then let it cascade to today.</div>
+        <div class="notes">The Vision tab. About 5 minutes. This is where the long game lives and where the paradigm shift becomes concrete.</div>
+      </section>
+
+      <!-- 12 identity -->
+      <section class="slide" data-sec="Vision &amp; Goals" data-sc="var(--violet)" data-min="1.5">
+        <div class="ey">Start here</div>
+        <h2>The person you're becoming</h2>
+        <div class="dek">"I am the kind of operator and leader who…" Write it in the identity box. This is the paradigm shift made real — the results follow who you are.</div>
+        <div class="corner">02 · Vision</div>
+        <div class="notes">Have them write the identity statement now. Push for present tense — "I am," not "I want to be." This single sentence is the top of the whole cascade and the filter for every goal below it. If the goals don't serve this identity, they're the wrong goals.</div>
+      </section>
+
+      <!-- 13 cascade -->
+      <section class="slide" data-sec="Vision &amp; Goals" data-sc="var(--violet)" data-min="2">
+        <div class="ey">The cascade</div>
+        <h2>From the empire down to today</h2>
+        <ul class="pts num">
+          <li><b>5-Year Vision</b> — the empire.</li>
+          <li><b>3-Year &amp; 1-Year goals</b> — the milestones.</li>
+          <li><b>This Quarter</b> — the 90-day outcomes.</li>
+          <li><b>This Week → Today</b> — what actually moves it now.</li>
+        </ul>
+        <div class="corner">02 · Vision</div>
+        <div class="notes">Each layer exists to serve the one above it. Walk down the cascade: the 5-year sets the direction, and every level below is just "what has to be true next to get there." The power is the connection — today's work is visibly in service of the empire, not random busyness.</div>
+      </section>
+
+      <!-- 14 quarter feeds week -->
+      <section class="slide" data-sec="Vision &amp; Goals" data-sc="var(--violet)" data-min="1">
+        <div class="big">Your quarter<br>drives your <span class="g">week.</span></div>
+        <div class="dek">Your quarterly goal doesn't sit on a shelf — it shows up at the top of This Week and anchors your KPIs. The vision reaches all the way to Monday.</div>
+        <div class="corner">02 · Vision</div>
+        <div class="notes">Point out the integration: the Quarter field they just wrote appears as context on the This Week tab, right above their KPIs. That's the mechanism that stops goals from being forgotten — the OS carries the quarter into the week automatically.</div>
+      </section>
+
+      <!-- 15 SECTION this week -->
+      <section class="slide sec" data-sec="This Week" data-sc="var(--green)" data-min="0.5">
+        <div class="no">Part 3</div>
+        <h1>This Week</h1>
+        <div class="dek">Your operating page — where effective beats busy.</div>
+        <div class="notes">The weekly engine, about 10 minutes — the most important working tab. This is the Sunday-or-Monday ritual that makes the whole thing produce.</div>
+      </section>
+
+      <!-- 16 one signal -->
+      <section class="slide" data-sec="This Week" data-sc="var(--green)" data-min="1.5">
+        <div class="ey">Focus</div>
+        <h2>The one signal</h2>
+        <div class="dek">The single thing that will move your business forward this week. If you did only this, the week would be a win. Name it — then protect it from everything else.</div>
+        <div class="corner">03 · Week</div>
+        <div class="notes">Make them choose ONE. The discipline is subtraction — a week with five priorities has none. The one signal is what they'd keep if everything else fell away. Everything else on the page serves this.</div>
+      </section>
+
+      <!-- 17 KPIs -->
+      <section class="slide" data-sec="This Week" data-sc="var(--green)" data-min="1.5">
+        <div class="ey">Measure what matters</div>
+        <h2>KPIs → this quarter</h2>
+        <ul class="pts">
+          <li>Set a <b>target</b>, log the <b>actual</b> — the bar fills as you go.</li>
+          <li>Measure <b>effectiveness, not activity</b>. Outputs, not hours.</li>
+          <li>These ladder straight up to the quarterly goal shown above them.</li>
+        </ul>
+        <div class="corner">03 · Week</div>
+        <div class="notes">KPIs are how they keep score on the quarter, weekly. Steer them toward outcome metrics (deposits, placements, revenue) over activity metrics (hours, posts). The tool shows percent-to-target so progress is visible, not vibes.</div>
+      </section>
+
+      <!-- 18 one thing per area -->
+      <section class="slide" data-sec="This Week" data-sc="var(--green)" data-min="1.5">
+        <div class="ey">Stay whole</div>
+        <h2>One thing in every area</h2>
+        <div class="dek">One deliberate action in each of your ten areas this week. It's how you build a full life while you scale a business — be whole, not just busy.</div>
+        <div class="corner">03 · Week</div>
+        <div class="notes">This is the counterweight to the one signal. The signal drives the business; this keeps the rest of life from collapsing while you push. One small action per area — a date night, a workout block, a call to a parent — keeps the radar full.</div>
+      </section>
+
+      <!-- 19 lift lowest -->
+      <section class="slide" data-sec="This Week" data-sc="var(--green)" data-min="1.5">
+        <div class="ey">The OS works for you</div>
+        <h2>Lift your lowest areas</h2>
+        <div class="dek">The tool automatically surfaces your <b>three lowest-scored areas</b> this week and asks for one thing to lift each next week. Your data tells you where to aim.</div>
+        <div class="corner">03 · Week</div>
+        <div class="notes">This is the payoff of scoring daily — the OS reads their own numbers and hands them their three weakest areas with space to plan a fix. They don't have to guess what needs work; the data points at it. This closes the loop from measuring to improving.</div>
+      </section>
+
+      <!-- 20 week over week -->
+      <section class="slide" data-sec="This Week" data-sc="var(--green)" data-min="1">
+        <div class="ey">The scoreboard</div>
+        <h2>Week over week</h2>
+        <div class="dek">A bar for each of the last eight weeks, plus the change vs last week. One question every week: <b>am I trending up?</b></div>
+        <div class="corner">03 · Week</div>
+        <div class="notes">The week-over-week chart is the long-range mirror. Individual weeks bounce; the trend is what they manage. Green delta = momentum, red = a signal to adjust. This is the number they should actually care about over months.</div>
+      </section>
+
+      <!-- 21 win the week -->
+      <section class="slide" data-sec="This Week" data-sc="var(--green)" data-min="1">
+        <div class="big">Did you win<br>the <span class="g">week?</span></div>
+        <div class="dek">Close every week with an honest verdict — Won, Partial, or Missed — and one line on what carries into next week. Then reset and go again.</div>
+        <div class="corner">03 · Week</div>
+        <div class="notes">End the weekly ritual with a verdict. Naming it — won, partial, missed — builds accountability and a record they can look back on. The "what carries forward" note is how lessons compound week to week instead of evaporating.</div>
+      </section>
+
+      <!-- 22 SECTION program -->
+      <section class="slide sec" data-sec="Program" data-sc="var(--amber)" data-min="0.5">
+        <div class="no">Part 4</div>
+        <h1>Program</h1>
+        <div class="dek">Run your breeding business like a CEO — effective, not busy.</div>
+        <div class="notes">The Program tab, about 3 minutes. This is the business-execution layer, separate from the personal life areas.</div>
+      </section>
+
+      <!-- 23 program -->
+      <section class="slide" data-sec="Program" data-sc="var(--amber)" data-min="2">
+        <div class="ey">Weekly execution</div>
+        <h2>Outcomes, numbers, tasks</h2>
+        <ul class="pts num">
+          <li><b>The 3 outcomes that matter</b> this week in your program.</li>
+          <li><b>Program KPIs</b> — leads, deposits, litters on track, content shipped.</li>
+          <li><b>Key tasks</b> that serve those outcomes — nothing else.</li>
+        </ul>
+        <div class="dek">This doesn't replace your CRM. It's where you make sure the needle actually moves.</div>
+        <div class="corner">04 · Program</div>
+        <div class="notes">Clarify the boundary: Program is not their CRM or system of record — it's the weekly focus layer that makes sure the real work happens. Three outcomes, the few numbers that tell the truth, and only the tasks that serve those outcomes. Effective, not busy, applied to the business.</div>
+      </section>
+
+      <!-- 24 SECTION board -->
+      <section class="slide sec" data-sec="Vision Board" data-sc="var(--rose)" data-min="0.5">
+        <div class="no">Part 5</div>
+        <h1>Vision Board</h1>
+        <div class="dek">See it before you live it.</div>
+        <div class="notes">The Vision Board, about 2 minutes. This is the daily-reminder engine for the paradigm shift.</div>
+      </section>
+
+      <!-- 25 board -->
+      <section class="slide" data-sec="Vision Board" data-sc="var(--rose)" data-min="1.5">
+        <div class="ey">Keep it in front of you</div>
+        <h2>Build the picture of the empire</h2>
+        <div class="dek">Add images and words — the home, the program, the family, the freedom you're building. Then look at it daily. Your mind moves toward what it sees most.</div>
+        <div class="corner">05 · Board</div>
+        <div class="notes">Bring the paradigm shift full circle. The board is where "see it before you live it" becomes literal. Encourage real images that pull them forward, not clip art. Looking at it daily is the mechanism — it keeps the identity and the vision in front of their eyes.</div>
+      </section>
+
+      <!-- 26 SECTION rhythm -->
+      <section class="slide sec" data-sec="The Rhythm" data-sc="var(--gold)" data-min="0.5">
+        <div class="no">Part 6</div>
+        <h1>The Rhythm</h1>
+        <div class="dek">How to actually run it — daily, weekly, quarterly.</div>
+        <div class="notes">The operating cadence, about 4 minutes. A tool only works if it has a rhythm. Give them the exact one.</div>
+      </section>
+
+      <!-- 27 daily/weekly/quarterly -->
+      <section class="slide" data-sec="The Rhythm" data-sc="var(--gold)" data-min="2.5">
+        <div class="ey">Your cadence</div>
+        <div class="two">
+          <div class="c"><h3>Daily · 60 sec</h3><p>Score your ten areas. One honest line on how you operated today.</p></div>
+          <div class="c"><h3>Weekly · 15 min</h3><p>Set the one signal, log KPIs, review week-over-week, lift your lowest, call the win.</p></div>
+        </div>
+        <div class="two" style="margin-top:2cqw">
+          <div class="c"><h3>Quarterly · 30 min</h3><p>Reset the cascade. Pull fresh KPIs from your goals.</p></div>
+          <div class="c"><h3>Always</h3><p>Hit <b>Backup</b> to keep it safe and move it between devices.</p></div>
+        </div>
+        <div class="corner">06 · Rhythm</div>
+        <div class="notes">This is the takeaway slide — the actual routine. Daily 60-second check-in, a 15-minute weekly reset (Sunday or Monday), a quarterly 30-minute re-plan. And remind them it saves on their device only, so Backup is how they protect it and move it. If they run this cadence, the tool runs their life.</div>
+      </section>
+
+      <!-- 28 WORKSHOP -->
+      <section class="slide" data-sec="Workshop" data-sc="var(--gold)" data-min="4">
+        <div class="ey">Workshop · do it now</div>
+        <h2>Set yours up</h2>
+        <ul class="wk">
+          <li><span class="n">1</span><span>Open <b>boss-vision-os.html</b> (BOSS2026) and do <b>today's check-in</b>.</span></li>
+          <li><span class="n">2</span><span>Write the <b>person you're becoming</b> in the identity box.</span></li>
+          <li><span class="n">3</span><span>Set your <b>one signal</b> for this week.</span></li>
+          <li><span class="n">4</span><span>Add one image to your <b>Vision Board</b>. Hit <b>Backup</b>.</span></li>
+        </ul>
+        <div class="corner">Workshop</div>
+        <div class="notes">Give real time here — this is where it sticks. Everyone opens the tool and actually does it: today's scores, the identity line, this week's one signal, one board image, then Backup. If it's live, have a couple share their one signal out loud — public commitment makes it real.</div>
+      </section>
+
+      <!-- 29 CLOSE -->
+      <section class="slide" data-sec="Close" data-sc="var(--gold)" data-min="1">
+        <div class="ey">The takeaway</div>
+        <div class="big">Operate like the person<br>you're <span class="g">becoming.</span></div>
+        <div class="dek">Score the day. Set the week. See the vision. Every day you run it, you become more of who you decided to be.</div>
+        <div class="brandline">BreedWise BOSS · <b>review.breedwise.io/boss-vision-os.html</b></div>
+        <div class="notes">Land it on the identity. The tool isn't about perfect scores — it's about becoming. Every day they run it, the gap between who they are and who they're becoming closes. Their homework is already done if they did the workshop: keep the streak, run the weekly reset, look at the board.</div>
+      </section>
+
+    </div></div>
+
+    <div id="notesPanel"><div class="nh" id="nTime">Speaker notes</div><div class="nb" id="nBody"></div></div>
+
+    <div class="bar">
+      <button class="navb" id="prev">‹</button>
+      <div class="track"><i id="fill"></i></div>
+      <button class="navb" id="next">›</button>
+      <span class="count" id="count">1 / 29</span>
+    </div>
+  </div>
+
+<script>
+var idx=0,slides;
+function sc(s){return s.getAttribute('data-sc')||'var(--gold)';}
+function show(i){
+  slides=document.querySelectorAll('.slide');
+  idx=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach(function(s,j){s.classList.toggle('on',j===idx);});
+  var s=slides[idx];
+  document.getElementById('count').textContent=(idx+1)+' / '+slides.length;
+  document.getElementById('fill').style.width=((idx+1)/slides.length*100)+'%';
+  var sec=s.getAttribute('data-sec')||'';
+  var lab=document.getElementById('secLabel');lab.innerHTML=sec;lab.style.setProperty('--sc',sc(s));
+  var note=s.querySelector('.notes');
+  document.getElementById('nBody').innerHTML=note?note.innerHTML:'';
+  var mins=0,total=0;
+  for(var k=0;k<slides.length;k++){var m=parseFloat(slides[k].getAttribute('data-min')||0);total+=m;if(k<=idx)mins+=m;}
+  document.getElementById('nTime').textContent='Speaker notes · ~'+Math.round(mins)+' min in of ~'+Math.round(total)+' min';
+}
+function editingTyping(){var a=document.activeElement;return a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA');}
+function wire(){
+  show(0);
+  document.getElementById('prev').onclick=function(){show(idx-1);};
+  document.getElementById('next').onclick=function(){show(idx+1);};
+  document.getElementById('notesBtn').onclick=function(){document.body.classList.toggle('noteson');document.getElementById('notesBtn').classList.toggle('on',document.body.classList.contains('noteson'));};
+  document.getElementById('fsBtn').onclick=function(){var el=document.documentElement;if(!document.fullscreenElement){(el.requestFullscreen||el.webkitRequestFullscreen||function(){}).call(el);}else{(document.exitFullscreen||document.webkitExitFullscreen||function(){}).call(document);}};
+  document.getElementById('printBtn').onclick=function(){window.print();};
+  document.addEventListener('keydown',function(e){
+    if(editingTyping())return;
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();show(idx+1);}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();show(idx-1);}
+    else if(e.key==='n'||e.key==='N'){document.getElementById('notesBtn').click();}
+    else if(e.key==='f'||e.key==='F'){document.getElementById('fsBtn').click();}
+  });
+}
+(function(){
+  var OK=['d9d2b67dcc9ce4c718b0c6a11096cafc66edc71c77f0db0c1a0a7ddfde876ebe', /* BOSS2026 */
+          '368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875']; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function reveal(){var g=document.getElementById('gate');if(g)g.remove();document.getElementById('app').style.display='flex';document.title='Your Vision OS · BreedWise BOSS';wire();}
+  function tryUnlock(){var v=(document.getElementById('pw').value||'').trim().toUpperCase();h(v).then(function(hex){if(OK.indexOf(hex)>=0){try{sessionStorage.setItem('bvm_ok','1');}catch(e){}reveal();}else{document.getElementById('gate-err').textContent='Incorrect code.';document.getElementById('pw').select();}});}
+  document.getElementById('unlock').addEventListener('click',tryUnlock);
+  document.getElementById('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('bvm_ok')==='1')reveal();else document.getElementById('pw').focus();}catch(e){document.getElementById('pw').focus();}
+})();
+</script>
+</body>
+</html>
