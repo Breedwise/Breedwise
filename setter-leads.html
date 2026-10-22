@@ -65,6 +65,24 @@
   .msg{font-size:12.5px;color:var(--muted);margin-left:auto}
   a.cp{color:var(--mid);text-decoration:none;border-bottom:1px dotted var(--line2)}
   a.cp:hover{color:var(--gold-soft)}
+  .viewb{background:var(--panel);border:1px solid var(--line2);color:var(--gold-soft);border-radius:7px;padding:5px 10px;font-size:11.5px;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+  .viewb:hover{border-color:var(--gold)}
+  .modal{position:fixed;inset:0;background:rgba(6,9,14,.74);backdrop-filter:blur(4px);z-index:80;display:none;align-items:flex-start;justify-content:center;padding:28px 16px;overflow:auto}
+  .modalbox{background:var(--panel);border:1px solid var(--line2);border-radius:16px;padding:22px 24px;width:min(96vw,620px);margin:auto}
+  .dh{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:6px}
+  .dnm{font-family:var(--disp);font-size:21px;font-weight:600;color:var(--ink)}
+  .dmeta{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .mclose{background:none;border:0;color:var(--muted);font-size:22px;cursor:pointer;line-height:1}
+  .modalbox h4{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:18px 0 6px}
+  .qa{padding:8px 0;border-bottom:1px solid var(--line)}
+  .qq{font-size:13px;color:var(--mid)}
+  .aa{font-size:14px;color:var(--ink);font-weight:600;margin-top:2px}
+  .aa.gap{color:#f0a4b0}.aa.ns{color:var(--amber)}
+  .qa.free .aa{font-family:var(--disp);font-style:italic;font-weight:500;color:var(--gold-soft)}
+  ul.prio{margin:6px 0 0 2px;padding-left:18px}ul.prio li{color:var(--mid);font-size:13.5px;margin:4px 0}
+  .dh2{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .dbtn{background:var(--panel2);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:7px 12px;font-size:12px;text-decoration:none}
+  .dbtn:hover{border-color:var(--gold);color:var(--ink)}
 </style>
 </head>
 <body>
@@ -94,10 +112,15 @@
         <input class="search" id="q" placeholder="Search name, email, or @handle…">
       </div>
       <div class="tablewrap"><table><thead><tr>
-        <th>Instagram</th><th>Name</th><th>Scorecard</th><th>Status</th><th>Score</th><th>Email</th><th>Phone</th><th>Date</th>
+        <th>Instagram</th><th>Name</th><th>Scorecard</th><th>Status</th><th>Score</th><th>Email</th><th>Phone</th><th>Date</th><th></th>
       </tr></thead><tbody id="rows"></tbody></table></div>
     </div>
   </div>
+
+  <div class="modal" id="modal"><div class="modalbox">
+    <div class="dh"><div id="mHead"></div><button class="mclose" id="mClose">×</button></div>
+    <div id="mBody"></div>
+  </div></div>
 
 <script>
 var FN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/setter-leads';
@@ -116,11 +139,11 @@ function grouped(){
     var g=m[key];
     if(!g){m[key]=Object.assign({},r);return;}
     g.completed=g.completed||r.completed;
-    // keep the richer/newer values
     var newer=(r.created_at||'')>(g.created_at||'');
-    if(r.completed){ if(r.scorePct!=null)g.scorePct=r.scorePct; if(r.band)g.band=r.band; }
+    if(r.completed){ if(r.scorePct!=null)g.scorePct=r.scorePct; if(r.band)g.band=r.band; if(r.segment)g.segment=r.segment; if(r.qa)g.qa=r.qa; if(r.priorities)g.priorities=r.priorities; }
     if(newer)g.created_at=r.created_at;
     g.instagram=g.instagram||r.instagram; g.name=g.name||r.name; g.phone=g.phone||r.phone; g.email=g.email||r.email;
+    g.qa=g.qa||r.qa; g.priorities=g.priorities||r.priorities;
   });
   return Object.keys(m).map(function(k){return m[k];}).sort(function(a,b){return (b.created_at||'')<(a.created_at||'')?-1:1;});
 }
@@ -145,15 +168,15 @@ function renderStats(){
 function stat(v,l){return '<div class="stat"><div class="v">'+v+'</div><div class="l">'+esc(l)+'</div></div>';}
 function render(){
   renderStats();
-  var rows=filtered();
-  if(!rows.length){$('#rows').innerHTML='<tr><td colspan="8"><div class="empty">No leads match yet. As people finish your scorecards, they appear here.</div></td></tr>';return;}
-  $('#rows').innerHTML=rows.map(function(r){
+  var rows=filtered();CUR=rows;
+  if(!rows.length){$('#rows').innerHTML='<tr><td colspan="9"><div class="empty">No leads match yet. As people finish your scorecards, they appear here.</div></td></tr>';return;}
+  $('#rows').innerHTML=rows.map(function(r,i){
     var ig=r.instagram?('<a class="ig" href="'+igUrl(r.instagram)+'" target="_blank" rel="noopener">@'+esc(String(r.instagram).replace(/^@+/,''))+'</a>'):'<span class="mut">—</span>';
     var sc=r.scorecard==='Profitable Breeder'?'<span class="pill pb">Profitable Breeder</span>':'<span class="pill hl">Healthy Litter</span>';
     var stt=r.completed?'<span class="pill done">Completed</span>':'<span class="pill optin">Opted-in</span>';
     var score=(r.scorePct!=null)?(r.scorePct+'%'+(r.band?' · '+esc(r.band):'')):'<span class="mut">—</span>';
     var em=r.email?('<a class="cp" href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>'):'<span class="mut">—</span>';
-    return '<tr><td>'+ig+'</td><td class="nm">'+esc(r.name||'—')+'</td><td>'+sc+'</td><td>'+stt+'</td><td>'+score+'</td><td>'+em+'</td><td>'+esc(r.phone||'—')+'</td><td class="mut">'+esc(fmtDate(r.created_at))+'</td></tr>';
+    return '<tr><td>'+ig+'</td><td class="nm">'+esc(r.name||'—')+'</td><td>'+sc+'</td><td>'+stt+'</td><td>'+score+'</td><td>'+em+'</td><td>'+esc(r.phone||'—')+'</td><td class="mut">'+esc(fmtDate(r.created_at))+'</td><td><button class="viewb" data-k="'+i+'">View →</button></td></tr>';
   }).join('');
 }
 function buildChips(){
@@ -185,11 +208,33 @@ function fetchLeads(){
     })
     .catch(function(){$('#msg').textContent='Network error — try Refresh.';});
 }
+var CUR=[];
+function openDetail(r){
+  if(!r)return;
+  $('#mHead').innerHTML='<div class="dnm">'+esc(r.name||'—')+'</div><div class="dmeta">'+(r.instagram?'<a class="ig" target="_blank" rel="noopener" href="'+igUrl(r.instagram)+'">@'+esc(String(r.instagram).replace(/^@+/,''))+'</a> · ':'')+esc(r.scorecard)+(r.scorePct!=null?' · '+r.scorePct+'% '+esc(r.band||''):'')+(r.completed?' · Completed':' · Opted-in')+'</div>';
+  var h='';
+  var closing=(r.qa&&r.qa.closing)||[];
+  if(closing.length){ h+='<h4>Goals &amp; next steps</h4>'; closing.forEach(function(x,i){var free=(i===closing.length-1 && (x.q||'').toLowerCase().indexOf('anything else')>=0);h+='<div class="qa'+(free?' free':'')+'"><div class="qq">'+esc(x.q)+'</div><div class="aa">'+esc(x.a)+'</div></div>';}); }
+  if(r.priorities&&r.priorities.length){ h+='<h4>Recommended next moves</h4><ul class="prio">'+r.priorities.map(function(p){return '<li>'+esc(p)+'</li>';}).join('')+'</ul>'; }
+  var practice=(r.qa&&r.qa.practice)||[];
+  if(practice.length){ h+='<h4>Their answers</h4>'; practice.forEach(function(x){var cls=x.flag==='gap'?'gap':(x.flag==='notsure'?'ns':'');h+='<div class="qa"><div class="qq">'+esc(x.q)+'</div><div class="aa '+cls+'">'+esc(x.a)+'</div></div>';}); }
+  var contact='';
+  if(r.email)contact+='<a class="dbtn" href="mailto:'+esc(r.email)+'">Email</a>';
+  if(r.instagram)contact+='<a class="dbtn" target="_blank" rel="noopener" href="'+igUrl(r.instagram)+'">Open Instagram</a>';
+  if(contact)h+='<div class="dh2">'+contact+'</div>';
+  if(!closing.length && !practice.length && !(r.priorities&&r.priorities.length)){ h='<p class="mut" style="padding:12px 0">Detailed answers are captured for submissions going forward — this lead completed before answer-detail was switched on.</p>'+(contact?'<div class="dh2">'+contact+'</div>':''); }
+  $('#mBody').innerHTML=h; $('#modal').style.display='flex';
+}
+function closeDetail(){ $('#modal').style.display='none'; }
 function wire(){
   buildChips();
   $('#q').addEventListener('input',function(){q=$('#q').value;render();});
   $('#refresh').addEventListener('click',fetchLeads);
   $('#export').addEventListener('click',csvExport);
+  $('#rows').addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.viewb');if(b)openDetail(CUR[+b.getAttribute('data-k')]);});
+  $('#mClose').addEventListener('click',closeDetail);
+  $('#modal').addEventListener('click',function(e){if(e.target===$('#modal'))closeDetail();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeDetail();});
   fetchLeads();
 }
 (function(){

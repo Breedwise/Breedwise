@@ -789,6 +789,10 @@ function esc(s){return (s||'').replace(/[&<>"]/g,function(m){return {'&':'&amp;'
 function sendCompletion(pct,raw,band,goalStage,moves,program,seg,gaps){
   if(completionSent)return;completionSent=true;
   var answers={};BP.forEach(function(Q){answers['q'+Q.id]=A.bp[Q.id]||null;});
+  var AMAP={yes:'Yes',no:'No',notsure:'Not sure'};
+  var closingQA=QUAL.map(function(Q){if(Q.free)return {q:Q.q,a:A.q20||''};var i=A['q'+Q.id];return {q:Q.q,a:(i!=null?Q.opts[i]:'')};}).filter(function(x){return x.a!=='';});
+  var practiceQA=BP.map(function(Q){var v=A.bp[Q.id];return {q:Q.q,a:(AMAP[v]||'\u2014'),flag:(v==='no'?'gap':(v==='notsure'?'notsure':'ok'))};});
+
   var payload={action:'litter-scorecard',
     first:A.first,last:A.last,email:A.email,phone:A.phone,instagram:A.instagram,company:A.company||'',
     scorePct:pct,scoreRaw:raw,band:bandKey(pct),
@@ -798,7 +802,8 @@ function sendCompletion(pct,raw,band,goalStage,moves,program,seg,gaps){
     priorities:moves.map(function(Q){return Q.gap.title;}),
     goalStage:goalStage,segment:seg,programShown:program,
     answers:answers,
-    qual:{q16:A.q16,q17:A.q17,q18:A.q18,q19:A.q19,q20:A.q20}
+    qual:{q16:A.q16,q17:A.q17,q18:A.q18,q19:A.q19,q20:A.q20},
+    qa:{closing:closingQA,practice:practiceQA}
   };
   try{fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(){});}catch(e){}
 }
