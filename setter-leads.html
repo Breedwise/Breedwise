@@ -138,6 +138,7 @@ var ALL=[], scFilter='All', stFilter='All', iFilter='All', q='';
 function $(s){return document.querySelector(s);}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function intentPill(v){if(!v)return '<span class="mut">—</span>';var cls=v.replace(/[^a-z]/gi,'').toLowerCase();return '<span class="pill '+cls+'">'+esc(v)+'</span>';}
+function phoneCell(r){var p=r.phone?esc(r.phone):'';var c=r.country?esc(r.country):'';if(p&&c)return p+' <span class="mut">· '+c+'</span>';return p||c||'<span class="mut">—</span>';}
 function igUrl(h){return 'https://instagram.com/'+String(h||'').replace(/^@+/,'').replace(/[^A-Za-z0-9._]/g,'');}
 function fmtDate(d){if(!d)return '';try{var x=new Date(d);return x.toLocaleDateString(undefined,{month:'short',day:'numeric'})+' '+x.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});}catch(e){return '';}}
 
@@ -152,7 +153,7 @@ function grouped(){
     var newer=(r.created_at||'')>(g.created_at||'');
     if(r.completed){ if(r.scorePct!=null)g.scorePct=r.scorePct; if(r.band)g.band=r.band; if(r.segment)g.segment=r.segment; if(r.qa)g.qa=r.qa; if(r.priorities)g.priorities=r.priorities; if(r.intent)g.intent=r.intent; }
     if(newer)g.created_at=r.created_at;
-    g.instagram=g.instagram||r.instagram; g.name=g.name||r.name; g.phone=g.phone||r.phone; g.email=g.email||r.email;
+    g.instagram=g.instagram||r.instagram; g.name=g.name||r.name; g.phone=g.phone||r.phone; g.email=g.email||r.email; g.country=g.country||r.country;
     g.qa=g.qa||r.qa; g.priorities=g.priorities||r.priorities; g.intent=g.intent||r.intent;
   });
   return Object.keys(m).map(function(k){return m[k];}).sort(function(a,b){return (b.created_at||'')<(a.created_at||'')?-1:1;});
@@ -164,7 +165,7 @@ function filtered(){
     if(stFilter==='Completed' && !r.completed) return false;
     if(stFilter==='Opted-in' && r.completed) return false;
     if(iFilter!=='All' && (r.intent||'')!==iFilter) return false;
-    if(qq){ var hay=((r.name||'')+' '+(r.email||'')+' '+(r.instagram||'')+' '+(r.phone||'')+' '+(r.intent||'')).toLowerCase(); if(hay.indexOf(qq)<0) return false; }
+    if(qq){ var hay=((r.name||'')+' '+(r.email||'')+' '+(r.instagram||'')+' '+(r.phone||'')+' '+(r.country||'')+' '+(r.intent||'')).toLowerCase(); if(hay.indexOf(qq)<0) return false; }
     return true;
   });
 }
@@ -188,7 +189,7 @@ function render(){
     var want=intentPill(r.intent);
     var score=(r.scorePct!=null)?(r.scorePct+'%'+(r.band?' · '+esc(r.band):'')):'<span class="mut">—</span>';
     var em=r.email?('<a class="cp" href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>'):'<span class="mut">—</span>';
-    return '<tr><td>'+ig+'</td><td class="nm">'+esc(r.name||'—')+'</td><td>'+sc+'</td><td>'+stt+'</td><td>'+want+'</td><td>'+score+'</td><td>'+em+'</td><td>'+esc(r.phone||'—')+'</td><td class="mut">'+esc(fmtDate(r.created_at))+'</td><td><button class="viewb" data-k="'+i+'">View →</button></td></tr>';
+    return '<tr><td>'+ig+'</td><td class="nm">'+esc(r.name||'—')+'</td><td>'+sc+'</td><td>'+stt+'</td><td>'+want+'</td><td>'+score+'</td><td>'+em+'</td><td>'+phoneCell(r)+'</td><td class="mut">'+esc(fmtDate(r.created_at))+'</td><td><button class="viewb" data-k="'+i+'">View →</button></td></tr>';
   }).join('');
 }
 function buildChips(){
@@ -201,10 +202,10 @@ function syncChips(){
 }
 function csvExport(){
   var rows=filtered();
-  var head=['Instagram','Name','Scorecard','Status','Score','Band','Email','Phone','Date'];
+  var head=['Instagram','Name','Scorecard','Status','Score','Band','Email','Phone','Country','Date'];
   var lines=[head.join(',')];
   rows.forEach(function(r){
-    var cells=['@'+String(r.instagram||'').replace(/^@+/,''),r.name||'',r.scorecard,r.completed?'Completed':'Opted-in',(r.scorePct!=null?r.scorePct+'%':''),r.band||'',r.email||'',r.phone||'',r.created_at||''];
+    var cells=['@'+String(r.instagram||'').replace(/^@+/,''),r.name||'',r.scorecard,r.completed?'Completed':'Opted-in',(r.scorePct!=null?r.scorePct+'%':''),r.band||'',r.email||'',r.phone||'',r.country||'',r.created_at||''];
     lines.push(cells.map(function(c){var v=String(c==null?'':c);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}).join(','));
   });
   try{var b=new Blob([lines.join('\n')],{type:'text/csv'});var u=URL.createObjectURL(b);var a=document.createElement('a');a.href=u;a.download='scorecard-leads.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},1000);}catch(e){alert('Export failed.');}
@@ -223,7 +224,7 @@ function fetchLeads(){
 var CUR=[];
 function openDetail(r){
   if(!r)return;
-  $('#mHead').innerHTML='<div class="dnm">'+esc(r.name||'—')+'</div><div class="dmeta">'+(r.instagram?'<a class="ig" target="_blank" rel="noopener" href="'+igUrl(r.instagram)+'">@'+esc(String(r.instagram).replace(/^@+/,''))+'</a> · ':'')+esc(r.scorecard)+(r.scorePct!=null?' · '+r.scorePct+'% '+esc(r.band||''):'')+(r.completed?' · Completed':' · Opted-in')+'</div>';
+  $('#mHead').innerHTML='<div class="dnm">'+esc(r.name||'—')+'</div><div class="dmeta">'+(r.instagram?'<a class="ig" target="_blank" rel="noopener" href="'+igUrl(r.instagram)+'">@'+esc(String(r.instagram).replace(/^@+/,''))+'</a> · ':'')+esc(r.scorecard)+(r.country?' · '+esc(r.country):'')+(r.scorePct!=null?' · '+r.scorePct+'% '+esc(r.band||''):'')+(r.completed?' · Completed':' · Opted-in')+'</div>';
   var h='';
   if(r.intent){ h+='<div class="wantbox"><div class="l">What they want to do next</div><div class="v">'+esc(r.intent)+'</div></div>'; }
   var closing=(r.qa&&r.qa.closing)||[];
