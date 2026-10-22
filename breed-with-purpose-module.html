@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · The Profitable Breeder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f0c0a;--bg2:#161109;--panel:#17130e;--line:#2a241c;--line2:#3a3327;
+    --ink:#f4efe6;--mid:#cac1b2;--muted:#8f8676;--faint:#5f5747;
+    --gold:#c6a865;--gold-soft:#e4cc8f;--gold-deep:#937640;
+    --clay:#cd9b6a;--green:#8bb07f;--slate:#89a2b6;--rose:#d79aa2;
+    --disp:'Playfair Display',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:90}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),var(--gold-deep));display:flex;align-items:center;justify-content:center}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#14110a;font-size:18px}
+  .logo .wm{font-size:12.5px;letter-spacing:.2em;font-weight:700}.logo .wm b{color:var(--gold)}
+  #gate h1{font-family:var(--disp);font-size:25px;font-weight:600;margin:16px 0 4px}
+  #gate .sub{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#14110a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:#e08a7a;font-size:12.5px;min-height:16px;margin-top:10px}
+  #app{display:none;height:100%;flex-direction:column}
+  nav.top{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--line);background:rgba(15,12,10,.9);flex:none;flex-wrap:wrap}
+  nav .sp{flex:1}
+  .seclabel{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--sc,var(--gold));font-weight:600}
+  .tbtn{background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:7px 11px;font-size:12px;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+  .tbtn:hover{border-color:var(--gold);color:var(--ink)}
+  .tbtn.on{background:var(--gold);color:#14110a;border-color:transparent;font-weight:700}
+  .stage{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;overflow:hidden;min-height:0}
+  .slidewrap{position:relative;width:min(100%, calc((100vh - 160px) * 1.7778));aspect-ratio:16/9;container-type:size;background:radial-gradient(1200px 720px at 83% -13%,rgba(198,168,101,.12),transparent 60%),linear-gradient(165deg,#15110c,#0f0c0a);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;padding:7cqw 7.5cqw}
+  .slide.on{display:flex;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(1cqw)}to{opacity:1;transform:none}}
+  .ey{font-size:1.7cqw;letter-spacing:.22em;text-transform:uppercase;color:var(--sc,var(--gold));font-weight:700}
+  .slide h1{font-family:var(--disp);font-weight:600;font-size:7cqw;line-height:1.03;margin:1.2cqw 0 0}
+  .slide h2{font-family:var(--disp);font-weight:600;font-size:5.4cqw;line-height:1.06;margin:1cqw 0 0}
+  .slide .dek{font-size:2.4cqw;color:var(--mid);margin-top:2cqw;max-width:74cqw;line-height:1.45}
+  .big{font-family:var(--disp);font-weight:600;font-size:5.6cqw;line-height:1.08;margin-top:1cqw}
+  .big .g{color:var(--gold-soft);font-style:italic}
+  .pts{list-style:none;padding:0;margin:3cqw 0 0;display:flex;flex-direction:column;gap:1.5cqw;max-width:80cqw}
+  .pts li{display:flex;gap:1.4cqw;align-items:flex-start;font-size:2.5cqw;color:var(--mid);line-height:1.35}
+  .pts li:before{content:"";width:1.1cqw;height:1.1cqw;border-radius:50%;background:linear-gradient(150deg,var(--sc,var(--gold)),var(--gold-deep));margin-top:.7cqw;flex:none}
+  .pts.num{counter-reset:p}
+  .pts.num li:before{content:counter(p);counter-increment:p;background:none;color:var(--sc,var(--gold));font-family:var(--disp);font-weight:700;font-size:2.4cqw;width:auto;height:auto;margin:0;min-width:3cqw}
+  .pts b{color:var(--ink);font-weight:600}
+  .slide.sec{justify-content:center;align-items:flex-start}
+  .slide.sec .no{font-family:var(--disp);font-size:3cqw;color:var(--sc,var(--gold));font-style:italic}
+  .slide.sec h1{font-size:8.2cqw}
+  .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2.4cqw;margin-top:2.6cqw}
+  .three .c h3{font-family:var(--disp);font-weight:600;font-size:2.9cqw;color:var(--gold-soft)}
+  .three .c .n{font-size:1.5cqw;letter-spacing:.1em;text-transform:uppercase;color:var(--sc,var(--gold));font-weight:700}
+  .three .c p{font-size:1.9cqw;color:var(--mid);margin-top:.6cqw;line-height:1.4}
+  .wk{list-style:none;padding:0;margin:2.4cqw 0 0;display:flex;flex-direction:column;gap:1.5cqw;max-width:80cqw}
+  .wk li{display:flex;gap:1.5cqw;align-items:flex-start;font-size:2.4cqw;color:var(--mid)}
+  .wk li .n{font-family:var(--disp);font-weight:700;color:var(--gold);min-width:3.4cqw;font-size:2.8cqw}
+  .corner{position:absolute;top:4cqw;right:5cqw;font-size:1.5cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:700}
+  .brandline{position:absolute;bottom:4cqw;left:7.5cqw;font-size:1.4cqw;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);font-weight:700}
+  .brandline b{color:var(--gold)}
+  .cover-logo{display:inline-flex;align-items:center;gap:1.4cqw;margin-bottom:2cqw}
+  .cover-logo .mk{width:5cqw;height:5cqw;border-radius:1.2cqw;background:linear-gradient(150deg,var(--gold),var(--gold-deep));display:flex;align-items:center;justify-content:center}
+  .cover-logo .mk span{font-family:var(--disp);font-weight:700;color:#14110a;font-size:3cqw}
+  .cover-logo .wm{font-size:1.8cqw;letter-spacing:.22em;font-weight:700}
+  .tagline{font-family:var(--disp);font-style:italic;font-size:2.8cqw;color:var(--gold-soft);margin-top:2cqw}
+  .notes{display:none}
+  #notesPanel{display:none;flex:none;background:var(--bg2);border-top:1px solid var(--line);max-height:26vh;overflow:auto;padding:12px 18px}
+  body.noteson #notesPanel{display:block}
+  #notesPanel .nh{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:5px}
+  #notesPanel .nb{font-size:13.5px;color:var(--mid);line-height:1.5}
+  #notesPanel .nb b{color:var(--gold-soft)}
+  .bar{display:flex;align-items:center;gap:12px;padding:8px 14px;border-top:1px solid var(--line);background:rgba(15,12,10,.9);flex:none}
+  .navb{background:var(--panel);border:1px solid var(--line2);color:var(--ink);border-radius:9px;width:38px;height:36px;font-size:17px;cursor:pointer;font-family:var(--sans)}
+  .navb:hover{border-color:var(--gold);color:var(--gold-soft)}
+  .track{flex:1;height:5px;background:var(--line);border-radius:4px;overflow:hidden}
+  .track i{display:block;height:100%;background:linear-gradient(90deg,var(--gold-deep),var(--gold));width:0;transition:width .25s}
+  .count{font-size:12px;color:var(--muted);min-width:92px;text-align:right}
+  .hp{position:absolute;left:-9999px}
+  @media print{
+    nav.top,.bar{display:none}
+    body{overflow:visible;background:#fff}
+    #app{display:block!important;height:auto}
+    .stage{display:block;padding:0}
+    .slidewrap{width:100%;box-shadow:none;border:0;border-radius:0;page-break-after:always}
+    .slide{position:relative;display:flex!important;inset:auto;min-height:56vh}
+    .notes{display:block;background:#f6f3ec;color:#222;padding:14px 7.5cqw;border-top:1px solid #ccc;font-size:12px;page-break-after:always}
+    .notes:before{content:"Speaker notes";display:block;font-weight:700;color:#937640;margin-bottom:4px;text-transform:uppercase;letter-spacing:.1em;font-size:10px}
+  }
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo" style="margin-bottom:16px"><span class="mk"><span>B</span></span><span class="wm">THE PROFITABLE <b>BREEDER</b></span></div>
+    <h1>Breed With Purpose</h1><div class="sub">Member access</div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Enter →</button><div class="err" id="gate-err"></div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">THE PROFITABLE <b>BREEDER</b></span></span>
+      <span class="seclabel" id="secLabel"></span>
+      <span class="sp"></span>
+      <button class="tbtn" id="notesBtn" title="Toggle speaker notes (N)">Notes</button>
+      <button class="tbtn" id="fsBtn" title="Present fullscreen (F)">⛶ Present</button>
+      <button class="tbtn" id="printBtn" title="Print / export PDF with notes">PDF</button>
+    </nav>
+
+    <div class="stage"><div class="slidewrap" id="wrap">
+
+      <!-- 1 COVER -->
+      <section class="slide" data-sec="The Profitable Breeder" data-sc="var(--gold)" data-min="1">
+        <div class="cover-logo"><span class="mk"><span>B</span></span><span class="wm">THE PROFITABLE BREEDER</span></div>
+        <div class="ey">Foundations · 15 minutes</div>
+        <h1>Breed With Purpose</h1>
+        <div class="tagline">Your breed standard is the blueprint.</div>
+        <div class="brandline">The Profitable Breeder · <b>Breed wiser.</b></div>
+        <div class="notes">Welcome. Short, high-value module — about 15 minutes. If you can, take notes. Today is breed standards: the foundation for breeding success. Set the frame early — it's common for us to pick a dog apart on sight, but actually understanding your breed standard is what lets you improve your program on purpose.</div>
+      </section>
+
+      <!-- 2 the question -->
+      <section class="slide" data-sec="The foundation" data-sc="var(--gold)" data-min="0.8">
+        <div class="ey">Start here</div>
+        <div class="big">Do you actually know<br>your <span class="g">breed standard?</span></div>
+        <div class="dek">It's easy to look at a dog and pick it apart. It's another thing entirely to know the blueprint you're breeding toward — and most of us were never told to study it.</div>
+        <div class="corner">Intro</div>
+        <div class="notes">Make this personal and honest. Nobody sat most of us down and said "study the standard so you breed for the right reasons — to improve health and reduce flaws." That conversation rarely happens when you first invest in a dog, and it's exactly what sets a serious breeder apart.</div>
+      </section>
+
+      <!-- 3 blueprint -->
+      <section class="slide" data-sec="The foundation" data-sc="var(--gold)" data-min="1">
+        <div class="ey">The standard is a</div>
+        <h2>Blueprint for your breed</h2>
+        <ul class="pts">
+          <li>A blueprint makes a house <b>buildable</b> — "I think this goes here" does not.</li>
+          <li>It tells you what to aim for — and <b>which flaws to improve</b>.</li>
+          <li>It's your <b>North Star</b>. It never goes out of style.</li>
+        </ul>
+        <div class="corner">01 · Standard</div>
+        <div class="notes">Use the house analogy — a blueprint means you build with intention instead of guessing. The standard does two jobs: it shows you the target AND it names the flaws to breed out. And it never goes out of style — clients will always want the breed the way it was meant to be, so the standard is a safe north to steer by.</div>
+      </section>
+
+      <!-- 4 what it covers -->
+      <section class="slide" data-sec="The foundation" data-sc="var(--gold)" data-min="1">
+        <div class="ey">What a standard tells you</div>
+        <h2>Five things to read for</h2>
+        <ul class="pts num">
+          <li><b>Conformation</b> — the physical blueprint: proportions, head, angulation, color.</li>
+          <li><b>Flaws</b> — the traits you must <b>not</b> carry forward.</li>
+          <li><b>Movement &amp; gait</b> — does it move the way the breed should?</li>
+          <li><b>Temperament</b> — e.g. the bully bred for companionship.</li>
+          <li><b>Purpose</b> — herd, hunt, or companion. Breed for it.</li>
+        </ul>
+        <div class="corner">01 · Standard</div>
+        <div class="notes">Walk the five. Conformation is the measurable physical picture. Flaws matter just as much — if you don't know what you shouldn't have, you can breed inheritable problems right in. Movement, temperament, and purpose round it out: a dog that can't move or has the wrong temperament is going against the standard, not representing it.</div>
+      </section>
+
+      <!-- 5 SECTION trifecta -->
+      <section class="slide sec" data-sec="The Breeder Trifecta" data-sc="var(--clay)" data-min="0.3">
+        <div class="no">The framework</div>
+        <h1>The Breeder<br>Trifecta</h1>
+        <div class="dek">Standard → Vision → Market. In that order.</div>
+        <div class="notes">This is the framework I created to simplify how you put breedings together. Three parts, and the order is everything.</div>
+      </section>
+
+      <!-- 6 trifecta explained -->
+      <section class="slide" data-sec="The Breeder Trifecta" data-sc="var(--clay)" data-min="1.2">
+        <div class="ey">In order</div>
+        <div class="three">
+          <div class="c"><div class="n">First</div><h3>Standard</h3><p>The blueprint. Base every decision — every pairing, every acquisition — on it.</p></div>
+          <div class="c"><div class="n">Then</div><h3>Vision</h3><p>What you'll fix &amp; improve to get your dogs up to par. Cure your kennel blindness.</p></div>
+          <div class="c"><div class="n">Then</div><h3>Market</h3><p>The trends. It reacts to quality — so you lead with the standard, not the fad.</p></div>
+        </div>
+        <div class="corner">02 · Trifecta</div>
+        <div class="notes">Standard first — it's the foundation, so every decision runs through it. Vision is your honest plan to raise your own dogs to the standard. Market comes last on purpose: it's trends, and it will always respond to quality. Decide to the standard, bring your vision, and let the market react.</div>
+      </section>
+
+      <!-- 7 most flip it -->
+      <section class="slide" data-sec="The Breeder Trifecta" data-sc="var(--clay)" data-min="0.9">
+        <div class="big">Most breeders<br>run it <span class="g">backwards.</span></div>
+        <ul class="pts">
+          <li>They start with "what the market wants" — the standard becomes an afterthought.</li>
+          <li>Flip it: decide to the <b>standard</b>, add your <b>vision</b>, and the <b>market adopts you</b>.</li>
+          <li>Because people buy quality — no matter what.</li>
+        </ul>
+        <div class="corner">02 · Trifecta</div>
+        <div class="notes">Name the common mistake: chasing the market first and treating the standard as optional. Reference "bring the bully back" — that should have been the goal the whole time. When you breed to the standard with a clear vision, the market comes to you, because quality always wins in the end.</div>
+      </section>
+
+      <!-- 8 SECTION why it pays -->
+      <section class="slide" data-sec="Why it pays" data-sc="var(--green)" data-min="1">
+        <div class="ey">The business case</div>
+        <h2>The standard pays</h2>
+        <ul class="pts num">
+          <li><b>Standard</b> → consistent, predictable results.</li>
+          <li><b>Results</b> → more people want your dogs (demand).</li>
+          <li><b>Demand</b> → you can charge premium prices.</li>
+          <li><b>Premium</b> → a waitlist that fills before the litter does.</li>
+        </ul>
+        <div class="dek">Per the AKC, the dogs that best represent the standard carry waitlists of <b>over a year</b>.</div>
+        <div class="corner">03 · Business</div>
+        <div class="notes">This is the money slide. Make the chain explicit: understanding the standard produces consistent results; consistency drives demand; demand lets you raise prices and build a waitlist. And it's not just me saying it — the AKC backs that the dogs repping the standard best command the longest waitlists.</div>
+      </section>
+
+      <!-- 9 preserve -->
+      <section class="slide" data-sec="Why it pays" data-sc="var(--green)" data-min="0.9">
+        <div class="ey">Integrity</div>
+        <h2>Preserve — don't dilute</h2>
+        <ul class="pts">
+          <li>Fads and cash-grabs breed <b>outside</b> the standard.</li>
+          <li>That stacks genetic disorders and dilutes the breed.</li>
+          <li>Breed to preserve: healthier, longer-lived, serving a purpose in someone's life.</li>
+        </ul>
+        <div class="corner">03 · Business</div>
+        <div class="notes">We see breeds thrown out of proportion chasing new "styles" — most of it is a cash grab, not an improvement. Over-breeding outside the standard brings genetic disorders and waters the breed down. Your job is preservation: a healthy dog that fulfills a real purpose in a family's life for years.</div>
+      </section>
+
+      <!-- 10 breed vs pet -->
+      <section class="slide" data-sec="Decisions" data-sc="var(--slate)" data-min="1">
+        <div class="ey">Breed quality vs pet quality</div>
+        <h2>Not every dog should be bred</h2>
+        <ul class="pts">
+          <li>Be careful which dogs you let carry your lineage.</li>
+          <li>Take your time — be okay pet-homing the wrong pick. A temporary loss buys long-term success.</li>
+          <li><b>"Not all money is good money."</b> Vet your puppy <em>and</em> stud clients like business partners.</li>
+        </ul>
+        <div class="corner">04 · Decisions</div>
+        <div class="notes">Not every dog is meant to be bred, and handing out breeding rights to anyone who pays creates dogs that shouldn't reproduce. Give yourself time to make the right call — it's okay to say "this one's pet quality." And protect your name: a stud or puppy going to the wrong operator reflects on you, so treat them like a client you're choosing to work with.</div>
+      </section>
+
+      <!-- 11 health testing -->
+      <section class="slide" data-sec="Decisions" data-sc="var(--slate)" data-min="1">
+        <div class="ey">Health testing</div>
+        <h2>Health is a standard too</h2>
+        <ul class="pts">
+          <li>Test for your breed's known issues — reduce inherited disease.</li>
+          <li>Never line-breed blind — you can stack bad genetics you can't see.</li>
+          <li>Health is the quality a buyer <b>can't</b> see on the outside.</li>
+        </ul>
+        <div class="dek">Go deeper with the geneticist (Rob Westra) inside BreedWise.</div>
+        <div class="corner">04 · Decisions</div>
+        <div class="notes">Every breed has traceable, common health issues — test accordingly, and go the extra mile to prove what your dogs don't carry. Line-breeding without testing can quietly stack disease into your lineage and onto the families who buy from you. Point them to the geneticist resources inside the platform to go deeper than this call can.</div>
+      </section>
+
+      <!-- 12 kennel blindness -->
+      <section class="slide" data-sec="The craft" data-sc="var(--gold)" data-min="0.9">
+        <div class="big">Cure your <span class="g">kennel blindness.</span></div>
+        <ul class="pts">
+          <li>Compare <b>your own</b> dogs to the standard — honestly.</li>
+          <li>Breed to <b>complement</b> a flaw — don't over-exaggerate to fix it.</li>
+          <li>Look for consistency across the lineage, not one lucky litter.</li>
+        </ul>
+        <div class="corner">05 · Craft</div>
+        <div class="notes">Kennel blindness is loving your dog past its flaws. Go to the standard and honestly mark where your dog falls short, then choose a mate that corrects it — without swinging to an extreme that introduces new problems. And check the whole line: does the mate come from dogs that consistently don't carry the trait you're trying to remove?</div>
+      </section>
+
+      <!-- 13 definite aim -->
+      <section class="slide" data-sec="The craft" data-sc="var(--gold)" data-min="0.8">
+        <div class="big">With a definite aim,<br><span class="g">you cannot miss.</span></div>
+        <ul class="pts">
+          <li>Pair like a <b>puzzle</b>, not a gamble.</li>
+          <li>Think 4, 5, 6 generations — not one litter.</li>
+          <li>Strategic movement beats hoping it works out.</li>
+        </ul>
+        <div class="corner">05 · Craft</div>
+        <div class="notes">If you aim at a target you're far likelier to hit it than someone just hoping a pairing works. This is a game of consistency and patience — you're breeding traits out across generations, not rushing one result. Clarity on what you're building makes every decision move you forward instead of sideways.</div>
+      </section>
+
+      <!-- 14 receipts -->
+      <section class="slide" data-sec="The craft" data-sc="var(--gold)" data-min="0.9">
+        <div class="ey">Get rewarded</div>
+        <h2>Show your receipts</h2>
+        <ul class="pts">
+          <li>People reward what they can <b>see</b>. Nobody pays for work they don't know you did.</li>
+          <li>Document the health tests and the right breedings.</li>
+          <li>Receipts let you charge — and get — premium prices.</li>
+        </ul>
+        <div class="corner">05 · Craft</div>
+        <div class="notes">So many breeders do the right things in the right order and never get rewarded, because they don't show it. Document the work — "we health-tested, we made this pairing for this reason." People like receipts; when they can see the proof, they'll pay a premium. Content creation is how the quality becomes visible.</div>
+      </section>
+
+      <!-- 15 action plan -->
+      <section class="slide" data-sec="Action plan" data-sc="var(--gold)" data-min="1.2">
+        <div class="ey">Do this week</div>
+        <h2>Your action plan</h2>
+        <ul class="wk">
+          <li><span class="n">1</span><span>Go to your <b>breed standard</b> and study it — again and again, not once.</span></li>
+          <li><span class="n">2</span><span><b>Health test</b> your dogs and keep records of what they do and don't carry.</span></li>
+          <li><span class="n">3</span><span><b>Document &amp; showcase</b> the work so you get rewarded for it.</span></li>
+          <li><span class="n">4</span><span>Run every decision through the <b>Trifecta</b>: Standard → Vision → Market.</span></li>
+        </ul>
+        <div class="corner">Action</div>
+        <div class="notes">Give them the homework clearly. Study the standard — don't do it once and move on. Start (or formalize) health testing and track it. Document the work so the market can reward it. And run every acquisition and pairing through the Trifecta. If they do these four, their program improves on purpose.</div>
+      </section>
+
+      <!-- 16 CLOSE -->
+      <section class="slide" data-sec="Close" data-sc="var(--gold)" data-min="0.8">
+        <div class="ey">The takeaway</div>
+        <div class="big">Breed with <span class="g">purpose.</span></div>
+        <div class="dek">Do the right things, in the right order, and the market will adopt you — because people buy quality, no matter what.</div>
+        <div class="brandline">The Profitable Breeder · <b>Breed wiser.</b></div>
+        <div class="notes">Land it. The standard is the foundation of every program, no matter the breed. Breed to it with a definite aim, prove your quality with receipts, and you win on both sides — better dogs and a better business. That's breeding with purpose.</div>
+      </section>
+
+    </div></div>
+
+    <div id="notesPanel"><div class="nh" id="nTime">Speaker notes</div><div class="nb" id="nBody"></div></div>
+
+    <div class="bar">
+      <button class="navb" id="prev">‹</button>
+      <div class="track"><i id="fill"></i></div>
+      <button class="navb" id="next">›</button>
+      <span class="count" id="count">1 / 16</span>
+    </div>
+  </div>
+
+<script>
+var idx=0,slides;
+function sc(s){return s.getAttribute('data-sc')||'var(--gold)';}
+function show(i){
+  slides=document.querySelectorAll('.slide');
+  idx=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach(function(s,j){s.classList.toggle('on',j===idx);});
+  var s=slides[idx];
+  document.getElementById('count').textContent=(idx+1)+' / '+slides.length;
+  document.getElementById('fill').style.width=((idx+1)/slides.length*100)+'%';
+  var lab=document.getElementById('secLabel');lab.innerHTML=s.getAttribute('data-sec')||'';lab.style.setProperty('--sc',sc(s));
+  var note=s.querySelector('.notes');
+  document.getElementById('nBody').innerHTML=note?note.innerHTML:'';
+  var mins=0,total=0;
+  for(var k=0;k<slides.length;k++){var m=parseFloat(slides[k].getAttribute('data-min')||0);total+=m;if(k<=idx)mins+=m;}
+  document.getElementById('nTime').textContent='Speaker notes · ~'+Math.round(mins)+' min in of ~'+Math.round(total)+' min';
+}
+function editingTyping(){var a=document.activeElement;return a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA');}
+function wire(){
+  show(0);
+  document.getElementById('prev').onclick=function(){show(idx-1);};
+  document.getElementById('next').onclick=function(){show(idx+1);};
+  document.getElementById('notesBtn').onclick=function(){document.body.classList.toggle('noteson');document.getElementById('notesBtn').classList.toggle('on',document.body.classList.contains('noteson'));};
+  document.getElementById('fsBtn').onclick=function(){var el=document.documentElement;if(!document.fullscreenElement){(el.requestFullscreen||el.webkitRequestFullscreen||function(){}).call(el);}else{(document.exitFullscreen||document.webkitExitFullscreen||function(){}).call(document);}};
+  document.getElementById('printBtn').onclick=function(){window.print();};
+  document.addEventListener('keydown',function(e){
+    if(editingTyping())return;
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();show(idx+1);}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();show(idx-1);}
+    else if(e.key==='n'||e.key==='N'){document.getElementById('notesBtn').click();}
+    else if(e.key==='f'||e.key==='F'){document.getElementById('fsBtn').click();}
+  });
+}
+(function(){
+  var OK=['25e7b557235afa23f4d1ae0ac108bfdfefa7ea58ea50bd986321cbd0034c52dc', /* ACCELERATOR2026 */
+          '368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875']; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function reveal(){var g=document.getElementById('gate');if(g)g.remove();document.getElementById('app').style.display='flex';document.title='Breed With Purpose · The Profitable Breeder';wire();}
+  function tryUnlock(){var v=(document.getElementById('pw').value||'').trim().toUpperCase();h(v).then(function(hex){if(OK.indexOf(hex)>=0){try{sessionStorage.setItem('bwp_ok','1');}catch(e){}reveal();}else{document.getElementById('gate-err').textContent='Incorrect code.';document.getElementById('pw').select();}});}
+  document.getElementById('unlock').addEventListener('click',tryUnlock);
+  document.getElementById('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('bwp_ok')==='1')reveal();else document.getElementById('pw').focus();}catch(e){document.getElementById('pw').focus();}
+})();
+</script>
+</body>
+</html>
