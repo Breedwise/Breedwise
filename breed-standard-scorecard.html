@@ -103,6 +103,17 @@
   .verify{background:rgba(198,168,101,.08);border:1px solid rgba(198,168,101,.26);border-left:3px solid var(--gold);border-radius:12px;padding:12px 15px;margin:14px 0;font-size:13px;color:var(--mid)}
   .verify b{color:var(--gold-soft)}
   .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .ack{display:flex;gap:9px;align-items:flex-start;margin-top:16px;font-size:13px;color:var(--mid);background:rgba(198,168,101,.06);border:1px solid rgba(198,168,101,.2);border-radius:11px;padding:12px 14px}
+  .ack input{width:17px;height:17px;accent-color:var(--gold);flex:none;margin-top:1px;cursor:pointer}
+  .ack b{color:var(--gold-soft)}
+  .pastehint{font-size:11.5px;color:var(--red);margin-top:4px;display:none}
+  .addbtn{margin-top:14px;background:rgba(198,168,101,.1);border:1px dashed rgba(198,168,101,.4);color:var(--gold-soft);border-radius:11px;padding:11px 16px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:var(--sans)}
+  .addbtn:hover{border-color:var(--gold)}
+  .dogcard{border:1px solid var(--line2);border-radius:12px;padding:14px 15px;margin-top:12px;background:var(--bg2)}
+  .dogtop{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+  .dogtop .f{flex:1}
+  .dogrm{background:none;border:0;color:var(--faint);font-size:21px;cursor:pointer;line-height:1;padding:0 4px;flex:none}
+  .dogrm:hover{color:var(--red)}
   footer.bf{text-align:center;color:#5f574755;font-size:11px;margin-top:40px}
   .hp{position:absolute;left:-9999px}
   @media print{nav.top,.cta,.acts,#gate{display:none}body{background:#fff;color:#111}.card{background:#fff!important;border-color:#ccc!important}h1,h2,.score-hero .v,.score-hero .band{color:#111!important}}
@@ -147,7 +158,7 @@
 
         <div class="card">
           <div class="sec-k">Step 2</div><h2>How well do you know your standard?</h2>
-          <div class="note">For each pillar, rate your confidence honestly, then answer in your own words. Short is fine — specifics matter more than length.</div>
+          <div class="note">For each pillar, rate your confidence honestly, then answer in your own words. <b style="color:var(--gold-soft)">Answer from memory — don't look it up or use AI.</b> The point is to find your blind spots, not to pass.</div>
           <div id="pillars"></div>
           <div class="pill-q">
             <div class="fld" style="margin-top:0"><label>Which health tests matter most for your breed?</label><textarea class="f" id="health" placeholder="List the ones you'd run and why"></textarea></div>
@@ -155,10 +166,10 @@
         </div>
 
         <div class="card">
-          <div class="sec-k">Step 3 · the honest part</div><h2>Your own dog</h2>
-          <div class="note">Rate your main breeding dog against the standard — as objectively as you can. This is where kennel blindness hides.</div>
-          <div id="dog"></div>
-          <div class="fld"><label>Known flaws in your dog you're working to improve</label><textarea class="f" id="dogflaws" placeholder="Be honest — this is for you"></textarea></div>
+          <div class="sec-k">Step 3 · the honest part</div><h2>Your dogs</h2>
+          <div class="note">Add each dog in your program and rate it against the standard, as objectively as you can. The more you add, the more we can break down your whole program — this is where kennel blindness hides.</div>
+          <div id="dogs"></div>
+          <button class="addbtn" id="addDog" type="button">＋ Add another dog</button>
         </div>
 
         <div class="card">
@@ -168,6 +179,7 @@
           <div class="fld"><label>What are you trying to improve in your program?</label><textarea class="f" id="improving" placeholder="The flaw you're breeding out, the trait you're building in…"></textarea></div>
         </div>
 
+        <label class="ack"><input type="checkbox" id="ack"><span>I'm answering from <b>my own knowledge</b> — not looking it up or using AI. (That's the whole point: this only finds your blind spots if the answers are really yours.)</span></label>
         <button class="cta" id="submit">Score my breed knowledge →</button>
         <div class="msg" id="msg"></div>
       </div>
@@ -186,6 +198,8 @@ var SB_KEY='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
 var FN=SB_URL+'/functions/v1/breed-assessment';
 var DRAFT_KEY='bw-breed-scorecard-draft', RESULT_KEY='bw-breed-scorecard-result';
 var CODE='';
+var INTEGRITY={pasteBlocks:0,start:Date.now()};
+function lockFields(arr){arr.forEach(function(e){if(!e)return;['paste','drop'].forEach(function(ev){e.addEventListener(ev,function(x){x.preventDefault();INTEGRITY.pasteBlocks++;var hint=e.parentElement.querySelector('.pastehint');if(hint){hint.style.display='block';setTimeout(function(){hint.style.display='none';},2500);}});});});}
 var PILLARS=[
   {k:'conformation', n:'Conformation', q:'The ideal structure &amp; proportions you breed toward'},
   {k:'flaws', n:'Flaws &amp; DQs', q:'The top faults or disqualifications you actively avoid'},
@@ -203,11 +217,9 @@ function buildForm(){
   PILLARS.forEach(function(p){
     var w=el('div','pill-q');
     w.appendChild(sliderRow('conf_'+p.k, p.n, 'How confident are you?'));
-    var f=el('div','fld');f.innerHTML='<label>'+p.q+'</label><textarea class="f" id="ans_'+p.k+'"></textarea>';
+    var f=el('div','fld');f.innerHTML='<label>'+p.q+'</label><textarea class="f" id="ans_'+p.k+'"></textarea><div class="pastehint">Type it yourself — paste is off so this stays honest.</div>';
     w.appendChild(f);ph.appendChild(w);
   });
-  var dh=$('#dog');dh.innerHTML='';
-  DOGP.forEach(function(p){dh.appendChild(sliderRow('dog_'+p.k, p.n, null));});
 }
 function sliderRow(id,name,cap){
   var r=el('div','slide-row');
@@ -219,15 +231,40 @@ function sliderRow(id,name,cap){
   if(cap){var wrap=el('div');wrap.style.margin='6px 0 2px';wrap.appendChild(r);var c=el('div','scap','<span>Not sure</span><span>Know it cold</span>');wrap.appendChild(c);return wrap;}
   return r;
 }
+/* dynamic dogs */
+function dogSlider(df,name){
+  var r=el('div','slide-row');
+  r.appendChild(el('div','nm',name));
+  var rng=el('input');rng.type='range';rng.min=1;rng.max=10;rng.step=1;rng.value=5;rng.setAttribute('data-df',df);
+  var vv=el('div','vv','5');
+  rng.addEventListener('input',function(){vv.textContent=rng.value;scheduleSave();});
+  r.appendChild(rng);r.appendChild(vv);return r;
+}
+function dogCard(data){
+  data=data||{};
+  var c=el('div','dogcard');
+  var top=el('div','dogtop');
+  var nm=el('input','f');nm.setAttribute('data-df','name');nm.placeholder="Dog's name or ID";nm.value=data.name||'';nm.addEventListener('input',scheduleSave);
+  var rm=el('button','dogrm','\u00d7');rm.type='button';rm.addEventListener('click',function(){c.remove();if(!document.querySelectorAll('#dogs .dogcard').length)addDog();scheduleSave();});
+  top.appendChild(nm);top.appendChild(rm);c.appendChild(top);
+  DOGP.forEach(function(p){var row=dogSlider(p.k,p.n);if(data[p.k]!=null){var rng=row.querySelector('input');rng.value=data[p.k];row.querySelector('.vv').textContent=data[p.k];}c.appendChild(row);});
+  var fl=el('textarea','f');fl.setAttribute('data-df','flaws');fl.placeholder='Known flaws you\u2019re working to improve';fl.style.marginTop='8px';fl.value=data.flaws||'';fl.addEventListener('input',scheduleSave);
+  c.appendChild(fl);
+  return c;
+}
+function addDog(data){$('#dogs').appendChild(dogCard(data));}
+function readDogs(){var dogs=[];document.querySelectorAll('#dogs .dogcard').forEach(function(c){var o={};c.querySelectorAll('[data-df]').forEach(function(e){o[e.getAttribute('data-df')]=e.value;});dogs.push(o);});return dogs;}
 /* draft autosave */
 function collect(){
   var o={};
   document.querySelectorAll('#form input[id], #form textarea[id], #form select[id]').forEach(function(e){o[e.id]=e.value;});
+  o.dogs=readDogs();
   return o;
 }
 function restore(d){
   if(!d)return;
-  Object.keys(d).forEach(function(k){var e=document.getElementById(k);if(e){e.value=d[k];if(e.type==='range'){var vv=e.parentElement.querySelector('.vv');if(vv)vv.textContent=e.value;}}});
+  Object.keys(d).forEach(function(k){if(k==='dogs')return;var e=document.getElementById(k);if(e){e.value=d[k];if(e.type==='range'){var vv=e.parentElement.querySelector('.vv');if(vv)vv.textContent=e.value;}}});
+  if(Array.isArray(d.dogs)&&d.dogs.length){$('#dogs').innerHTML='';d.dogs.forEach(function(dog){addDog(dog);});}
 }
 function flush(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify(collect()));}catch(e){}}
 var st;function scheduleSave(){$('#save').textContent='Saving…';clearTimeout(st);st=setTimeout(function(){flush();$('#save').textContent='Saved';},350);}
@@ -245,6 +282,8 @@ async function generate(){
   var inputs=collect();
   if(!inputs.name||!inputs.name.trim()){err('Please add your name.');window.scrollTo(0,0);return;}
   if(!inputs.breed||!inputs.breed.trim()){err('Please tell us your breed.');window.scrollTo(0,0);return;}
+  if(!document.getElementById('ack').checked){err('Please confirm you\'re answering from your own knowledge.');document.getElementById('ack').scrollIntoView({block:'center'});return;}
+  inputs._integrity={paste_blocks:INTEGRITY.pasteBlocks,seconds:Math.round((Date.now()-INTEGRITY.start)/1000)};
   showLoading();
   try{
     var r=await fetch(FN,{method:'POST',headers:{'content-type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({passcode:CODE,inputs:inputs})});
@@ -284,11 +323,17 @@ function renderReport(res){
     h+='<div class="card"><div class="sec-k">Study this</div><h2>Your breed standard, distilled</h2><div class="std">'
       +stdRow('Conformation',s.conformation)+stdRow('Flaws &amp; DQs',s.faults)+stdRow('Movement &amp; gait',s.movement)+stdRow('Temperament',s.temperament)+stdRow('Purpose',s.purpose)+'</div></div>';
   }
-  // your dog
-  if(res.your_dog){var yd=res.your_dog;
-    h+='<div class="card"><div class="sec-k">Your dog vs the standard</div><h2>An honest read</h2><p style="color:var(--mid);font-size:14.5px">'+esc(yd.read)+'</p>';
-    if(yd.flaws_to_improve&&yd.flaws_to_improve.length){h+='<div class="fld"><label>Flaws to improve</label><ul class="clean">'+yd.flaws_to_improve.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>';}
-    if(yd.breed_toward)h+='<p style="color:var(--ink);font-size:14px;margin-top:10px"><b style="color:var(--gold-soft)">Breed toward:</b> '+esc(yd.breed_toward)+'</p>';
+  // your dogs (whole program)
+  var dogsArr=res.your_dogs||(res.your_dog?[Object.assign({name:'Your dog'},res.your_dog)]:[]);
+  if(dogsArr.length){
+    h+='<div class="card"><div class="sec-k">Your program vs the standard</div><h2>An honest read, dog by dog</h2>';
+    if(res.program_read)h+='<p style="color:var(--mid);font-size:14.5px;margin-bottom:4px">'+esc(res.program_read)+'</p>';
+    dogsArr.forEach(function(yd){
+      h+='<div class="bspot"><div class="a">'+esc(yd.name||'Dog')+'</div><div class="w">'+esc(yd.read)+'</div>';
+      if(yd.flaws_to_improve&&yd.flaws_to_improve.length)h+='<div class="fx" style="margin-top:4px"><b>Improve:</b> '+yd.flaws_to_improve.map(esc).join(', ')+'</div>';
+      if(yd.breed_toward)h+='<div class="fx" style="margin-top:3px"><b>Breed toward:</b> '+esc(yd.breed_toward)+'</div>';
+      h+='</div>';
+    });
     h+='</div>';
   }
   // health tests
@@ -318,10 +363,13 @@ function stdRow(k,v){return '<div class="r"><div class="k">'+k+'</div><div class
 function wire(){
   buildForm();
   var d=loadDraft(); if(d) restore(d);
+  if(!document.querySelectorAll('#dogs .dogcard').length) addDog();
+  lockFields([].slice.call(document.querySelectorAll('#pillars textarea')).concat([document.getElementById('health')]));
   document.querySelectorAll('#form input[id], #form textarea[id], #form select[id]').forEach(function(e){
     var ev=(e.tagName==='SELECT')?'change':'input';
     e.addEventListener(ev,scheduleSave);
   });
+  $('#addDog').addEventListener('click',function(){addDog();});
   $('#submit').addEventListener('click',generate);
   window.addEventListener('pagehide',flush);window.addEventListener('beforeunload',flush);
   document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')flush();});
