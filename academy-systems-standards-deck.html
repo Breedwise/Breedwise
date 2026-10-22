@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0a0f;--bg2:#121018;--panel:#161320;--line:#2a2535;--line2:#3a3247;
+    --ink:#f3efe8;--mid:#c7c0d2;--muted:#8c84a0;--faint:#5c556e;
+    --gold:#c9a862;--gold-soft:#e8d49c;--gold-deep:#9d8343;
+    --blue:#6fb0e6;--green:#6ec689;--rose:#e68bab;--amber:#e3b45f;--violet:#b79ae8;
+    --disp:'Anton',Impact,sans-serif;--sans:'Poppins',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+  /* gate */
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:90}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),var(--gold-deep));display:flex;align-items:center;justify-content:center}
+  .logo .mk span{font-family:var(--disp);color:#14110a;font-size:19px}
+  .logo .wm{font-size:14px;letter-spacing:.22em;font-weight:700}.logo .wm b{color:var(--gold)}
+  #gate h1{font-family:var(--disp);font-size:24px;font-weight:400;margin:16px 0 4px;letter-spacing:.01em;text-transform:uppercase}
+  #gate .sub{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#14110a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:#e8697f;font-size:12.5px;min-height:16px;margin-top:10px}
+  #app{display:none;height:100%;flex-direction:column}
+  /* top bar */
+  nav.top{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--line);background:rgba(11,10,15,.9);flex:none;flex-wrap:wrap}
+  nav .sp{flex:1}
+  .seclabel{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--sc,var(--gold));font-weight:600}
+  .tbtn{background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:7px 11px;font-size:12px;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+  .tbtn:hover{border-color:var(--gold);color:var(--ink)}
+  .tbtn.on{background:var(--gold);color:#14110a;border-color:transparent;font-weight:600}
+  /* stage */
+  .stage{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;overflow:hidden;min-height:0}
+  .slidewrap{position:relative;width:min(100%, calc((100vh - 160px) * 1.7778));aspect-ratio:16/9;container-type:size;background:radial-gradient(1200px 700px at 82% -12%,rgba(201,168,98,.10),transparent 60%),linear-gradient(165deg,#100e17,#0b0a0f);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;padding:7cqw 7.5cqw}
+  .slide.on{display:flex;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(1cqw)}to{opacity:1;transform:none}}
+  .ey{font-size:1.7cqw;letter-spacing:.22em;text-transform:uppercase;color:var(--sc,var(--gold));font-weight:600}
+  .slide h1{font-family:var(--disp);font-weight:400;font-size:6.6cqw;line-height:1.02;margin:1.4cqw 0 0;text-transform:uppercase;letter-spacing:.005em}
+  .slide h2{font-family:var(--disp);font-weight:400;font-size:5cqw;line-height:1.04;margin:1.2cqw 0 0;text-transform:uppercase}
+  .slide .dek{font-size:2.4cqw;color:var(--mid);margin-top:2cqw;max-width:72cqw;line-height:1.45}
+  .big{font-family:var(--disp);font-weight:400;font-size:5.2cqw;line-height:1.08;text-transform:uppercase;margin-top:1cqw}
+  .big .g{color:var(--gold-soft)}
+  .pts{list-style:none;padding:0;margin:3cqw 0 0;display:flex;flex-direction:column;gap:1.5cqw;max-width:78cqw}
+  .pts li{display:flex;gap:1.4cqw;align-items:flex-start;font-size:2.5cqw;color:var(--mid);line-height:1.35}
+  .pts li:before{content:"";width:1.1cqw;height:1.1cqw;border-radius:50%;background:linear-gradient(150deg,var(--sc,var(--gold)),var(--gold-deep));margin-top:.7cqw;flex:none}
+  .pts.num{counter-reset:p}
+  .pts.num li:before{content:counter(p);counter-increment:p;background:none;color:var(--sc,var(--gold));font-family:var(--disp);font-size:2.4cqw;width:auto;height:auto;margin:0;min-width:3cqw}
+  .pts b{color:var(--ink);font-weight:600}
+  /* section divider */
+  .slide.sec{justify-content:center;align-items:flex-start}
+  .slide.sec .no{font-family:var(--disp);font-size:3cqw;color:var(--sc,var(--gold))}
+  .slide.sec h1{font-size:8cqw}
+  /* system card */
+  .scard{display:grid;grid-template-columns:1fr;gap:1.6cqw;margin-top:2.4cqw;max-width:82cqw}
+  .kv{display:grid;grid-template-columns:16cqw 1fr;gap:1.6cqw;align-items:baseline}
+  .kv .k{font-size:1.7cqw;letter-spacing:.1em;text-transform:uppercase;color:var(--sc,var(--gold));font-weight:600}
+  .kv .v{font-size:2.3cqw;color:var(--mid);line-height:1.35}
+  .kv .v b{color:var(--ink)}
+  /* two col */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:3cqw;margin-top:2.4cqw}
+  .two .c h3{font-family:var(--disp);font-weight:400;font-size:3cqw;color:var(--gold-soft);text-transform:uppercase}
+  .two .c p{font-size:2.1cqw;color:var(--mid);margin-top:.8cqw;line-height:1.4}
+  /* workshop */
+  .wk{list-style:none;padding:0;margin:2.4cqw 0 0;display:flex;flex-direction:column;gap:1.6cqw;max-width:80cqw}
+  .wk li{display:flex;gap:1.5cqw;align-items:flex-start;font-size:2.4cqw;color:var(--mid)}
+  .wk li .n{font-family:var(--disp);color:var(--gold);min-width:3.4cqw;font-size:2.6cqw}
+  .corner{position:absolute;top:4cqw;right:5cqw;font-size:1.5cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:600}
+  .brandline{position:absolute;bottom:4cqw;left:7.5cqw;font-size:1.4cqw;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);font-weight:600}
+  .brandline b{color:var(--gold)}
+  .cover-logo{display:inline-flex;align-items:center;gap:1.4cqw;margin-bottom:2cqw}
+  .cover-logo .mk{width:5cqw;height:5cqw;border-radius:1.2cqw;background:linear-gradient(150deg,var(--gold),var(--gold-deep));display:flex;align-items:center;justify-content:center}
+  .cover-logo .mk span{font-family:var(--disp);color:#14110a;font-size:3cqw}
+  .cover-logo .wm{font-size:2cqw;letter-spacing:.24em;font-weight:700}.cover-logo .wm b{color:var(--gold)}
+  .tagline{font-family:var(--disp);font-size:2.6cqw;color:var(--gold-soft);margin-top:2cqw;text-transform:uppercase;letter-spacing:.02em}
+  .notes{display:none}
+  /* notes panel */
+  #notesPanel{display:none;flex:none;background:var(--bg2);border-top:1px solid var(--line);max-height:26vh;overflow:auto;padding:12px 18px}
+  body.noteson #notesPanel{display:block}
+  #notesPanel .nh{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:5px}
+  #notesPanel .nb{font-size:13.5px;color:var(--mid);line-height:1.5}
+  #notesPanel .nb b{color:var(--gold-soft)}
+  /* bottom bar */
+  .bar{display:flex;align-items:center;gap:12px;padding:8px 14px;border-top:1px solid var(--line);background:rgba(11,10,15,.9);flex:none}
+  .navb{background:var(--panel);border:1px solid var(--line2);color:var(--ink);border-radius:9px;width:38px;height:36px;font-size:17px;cursor:pointer;font-family:var(--sans)}
+  .navb:hover{border-color:var(--gold);color:var(--gold-soft)}
+  .track{flex:1;height:5px;background:var(--line);border-radius:4px;overflow:hidden}
+  .track i{display:block;height:100%;background:linear-gradient(90deg,var(--gold-deep),var(--gold));width:0;transition:width .25s}
+  .count{font-size:12px;color:var(--muted);min-width:92px;text-align:right}
+  .hp{position:absolute;left:-9999px}
+  @media print{
+    nav.top,.bar{display:none}
+    body{overflow:visible;background:#fff}
+    #app{display:block!important;height:auto}
+    .stage{display:block;padding:0}
+    .slidewrap{width:100%;box-shadow:none;border:0;border-radius:0;page-break-after:always}
+    .slide{position:relative;display:flex!important;inset:auto;min-height:56vh}
+    .notes{display:block;background:#f6f3ec;color:#222;padding:14px 7.5cqw;border-top:1px solid #ccc;font-size:12px;page-break-after:always}
+    .notes:before{content:"Speaker notes";display:block;font-weight:700;color:#9d8343;margin-bottom:4px;text-transform:uppercase;letter-spacing:.1em;font-size:10px}
+  }
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo" style="margin-bottom:16px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
+    <h1>Academy Module</h1><div class="sub">Access</div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Enter →</button><div class="err" id="gate-err"></div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b> ACADEMY</span></span>
+      <span class="seclabel" id="secLabel"></span>
+      <span class="sp"></span>
+      <button class="tbtn" id="notesBtn" title="Toggle speaker notes (N)">Notes</button>
+      <button class="tbtn" id="fsBtn" title="Present fullscreen (F)">⛶ Present</button>
+      <button class="tbtn" id="printBtn" title="Print / export PDF with notes">PDF</button>
+    </nav>
+
+    <div class="stage"><div class="slidewrap" id="wrap">
+
+      <!-- 1 COVER -->
+      <section class="slide" data-sec="BreedWise Academy" data-sc="var(--gold)" data-min="1.5">
+        <div class="cover-logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b> ACADEMY</span></div>
+        <div class="ey">Module · Build the engine</div>
+        <h1>Operating Systems<br>&amp; Standards</h1>
+        <div class="tagline">The program that runs without you.</div>
+        <div class="brandline">BreedWise Academy · <b>Better your breed. Build a better business.</b></div>
+        <div class="notes">Welcome. This is the Operating Systems &amp; Standards module — about 40 minutes. It's the business engine that sits underneath your Goal &amp; Vision OS: the vision tells you where you're going; this module builds the machine that gets you there. By the end you'll know the five systems every program runs on, the standards that protect your dogs and your brand, and exactly which one to build first this week.</div>
+      </section>
+
+      <!-- 2 Where this fits -->
+      <section class="slide" data-sec="Why this matters" data-sc="var(--gold)" data-min="1.5">
+        <div class="ey">Where this fits</div>
+        <h2>Your vision needs a machine</h2>
+        <ul class="pts">
+          <li>Your <b>Goal &amp; Vision OS</b> sets who you're becoming and where you're going.</li>
+          <li>This module builds the <b>engine</b> that delivers it — your systems and standards.</li>
+          <li>Vision without systems is a wish. Systems without vision is a treadmill.</li>
+        </ul>
+        <div class="corner">01 · Why</div>
+        <div class="notes">Tie it back to the Goal &amp; Vision OS they already use. That tool is the dream and the direction. This module is how the dream actually gets built — the repeatable machine. Make the point that most breeders have plenty of vision and almost no system, which is exactly why they stay stuck.</div>
+      </section>
+
+      <!-- 3 The problem -->
+      <section class="slide" data-sec="Why this matters" data-sc="var(--gold)" data-min="1.5">
+        <div class="ey">The real problem</div>
+        <div class="big">You're not short on effort.<br>You're short on <span class="g">systems.</span></div>
+        <ul class="pts">
+          <li>Great breeders, chaotic businesses — everything lives in your head.</li>
+          <li>Every litter is reinvented from scratch.</li>
+          <li><b>You</b> are the bottleneck, and the dogs feel it when you're stretched.</li>
+        </ul>
+        <div class="corner">01 · Why</div>
+        <div class="notes">Name the pain honestly and without judgment. Most of them work incredibly hard — that's not the issue. The issue is that none of it is written down or repeatable, so nothing compounds. Ask the room: "If you couldn't work your program for two weeks, what would fall apart?" That gap is what we're closing.</div>
+      </section>
+
+      <!-- 4 busy vs effective -->
+      <section class="slide" data-sec="Why this matters" data-sc="var(--gold)" data-min="1.5">
+        <div class="ey">The shift</div>
+        <h2>Busy is not the same as effective</h2>
+        <ul class="pts">
+          <li><b>Busy</b> protects the dogs by accident, on your best day.</li>
+          <li><b>Systems</b> protect them on purpose, on your worst day.</li>
+          <li>The goal of this module: work <b>on</b> the program, not just <b>in</b> it.</li>
+        </ul>
+        <div class="corner">01 · Why</div>
+        <div class="notes">This is the mindset hinge of the whole module. Effective breeders design the program so the standard holds even when they're exhausted, sick, or scaling. That's the whole promise of systems — consistency that doesn't depend on heroics.</div>
+      </section>
+
+      <!-- 5 SECTION Systems vs Standards -->
+      <section class="slide sec" data-sec="Systems vs Standards" data-sc="var(--blue)" data-min="0.5">
+        <div class="no">Part 1</div>
+        <h1>Systems<br>vs Standards</h1>
+        <div class="dek">Two words that do two different jobs — and you need both.</div>
+        <div class="notes">Quick framing section, about 5 minutes. People use these words interchangeably; separating them is where the clarity comes from.</div>
+      </section>
+
+      <!-- 6 definitions -->
+      <section class="slide" data-sec="Systems vs Standards" data-sc="var(--blue)" data-min="2">
+        <div class="ey">Two words, two jobs</div>
+        <div class="two">
+          <div class="c"><h3>Standard</h3><p>The <b>bar</b>. What "good" looks like, written down and non-negotiable. The <b>what</b>.</p></div>
+          <div class="c"><h3>System</h3><p>The <b>repeatable process</b> that hits the standard every time, without relying on memory. The <b>how</b>.</p></div>
+        </div>
+        <div class="corner">01 · Framing</div>
+        <div class="notes">Give a concrete example: a standard is "every puppy leaves vet-checked, microchipped, and with a written care pack." The system is the go-home checklist and the week-by-week process that guarantees it. Standard = the destination; system = the road that gets you there every time.</div>
+      </section>
+
+      <!-- 7 why both -->
+      <section class="slide" data-sec="Systems vs Standards" data-sc="var(--blue)" data-min="1.5">
+        <div class="ey">Why you need both</div>
+        <div class="big">A standard without a system is a <span class="g">wish.</span><br>A system without a standard is <span class="g">busywork.</span></div>
+        <div class="dek">Together they produce the only thing that scales: predictable excellence.</div>
+        <div class="corner">01 · Framing</div>
+        <div class="notes">Hammer this line. Lots of breeders have high standards they can't consistently hit (a wish), or busy routines that aren't aimed at a clear bar (busywork). The magic is pairing them — a clear standard with a system that delivers it on autopilot.</div>
+      </section>
+
+      <!-- 8 what standards protect -->
+      <section class="slide" data-sec="Systems vs Standards" data-sc="var(--blue)" data-min="1.5">
+        <div class="ey">What's at stake</div>
+        <h2>Standards protect four things</h2>
+        <ul class="pts num">
+          <li>The <b>dogs</b> — their health and welfare.</li>
+          <li>The <b>buyers</b> — the families who trust you.</li>
+          <li>The <b>brand</b> — the reputation that fills your waitlist.</li>
+          <li>The <b>price</b> — premium is a standard before it's a number.</li>
+        </ul>
+        <div class="corner">01 · Framing</div>
+        <div class="notes">Standards aren't bureaucracy — they're protection. Every standard you set is guarding one of these four. When you frame standards this way, holding them under pressure gets a lot easier because you know what you're protecting.</div>
+      </section>
+
+      <!-- 9 SECTION 5 systems -->
+      <section class="slide sec" data-sec="The 5 Core Systems" data-sc="var(--green)" data-min="0.5">
+        <div class="no">Part 2</div>
+        <h1>The 5 Core<br>Operating Systems</h1>
+        <div class="dek">Every breeding program, at every size, runs on these five.</div>
+        <div class="notes">This is the heart of the module — about 12 minutes. Five systems. Tell them we'll go one at a time, and for each we'll name the standard, the system, and the one number that tells the truth.</div>
+      </section>
+
+      <!-- 10 overview -->
+      <section class="slide" data-sec="The 5 Core Systems" data-sc="var(--green)" data-min="1.5">
+        <div class="ey">The map</div>
+        <h2>Five systems, one program</h2>
+        <ul class="pts num">
+          <li><b>Demand &amp; Buyers</b> — a waitlist before the litter.</li>
+          <li><b>Sales &amp; Deposits</b> — qualified buyers, signed and committed.</li>
+          <li><b>Breeding &amp; Whelping</b> — healthy, planned, veterinary-informed.</li>
+          <li><b>Puppy-Raising &amp; Go-Home</b> — raised and delivered to a standard.</li>
+          <li><b>Operations &amp; Numbers</b> — records, pricing, and the truth about profit.</li>
+        </ul>
+        <div class="corner">02 · Systems</div>
+        <div class="notes">Give them the whole map first so they see the shape. Then the key line: your program is only as strong as its weakest system. A breeder with great dogs and no demand system starves; a breeder with great demand and no whelping system loses puppies. Balance matters.</div>
+      </section>
+
+      <!-- 11 system 1 -->
+      <section class="slide" data-sec="The 5 Core Systems" data-sc="var(--green)" data-min="1.5">
+        <div class="ey">System 1</div>
+        <h2>Demand &amp; Buyers</h2>
+        <div class="scard">
+          <div class="kv"><span class="k">Standard</span><span class="v">A <b>qualified waitlist that fills before the puppies do</b> — aligned buyers, not whoever shows up.</span></div>
+          <div class="kv"><span class="k">System</span><span class="v">Content → capture → nurture → application, running whether or not you have a litter on the ground.</span></div>
+          <div class="kv"><span class="k">Metric</span><span class="v">Qualified inquiries per month · waitlist depth.</span></div>
+        </div>
+        <div class="corner">02 · Systems</div>
+        <div class="notes">Demand is the system most breeders ignore until they have puppies to place — which is exactly backwards. The standard is a waitlist that fills in advance with the right buyers. The system runs continuously. Scorecards and lead magnets (the Profitable Breeder Scorecard) are the capture mechanism here.</div>
+      </section>
+
+      <!-- 12 system 2 -->
+      <section class="slide" data-sec="The 5 Core Systems" data-sc="var(--green)" data-min="1.5">
+        <div class="ey">System 2</div>
+        <h2>Sales &amp; Deposits</h2>
+        <div class="scard">
+          <div class="kv"><span class="k">Standard</span><span class="v"><b>Qualify before you quote.</b> Every placement: a signed contract and a real deposit. No buyer's remorse.</span></div>
+          <div class="kv"><span class="k">System</span><span class="v">Inquiry → qualify call → deposit → contract → buyer onboarding.</span></div>
+          <div class="kv"><span class="k">Metric</span><span class="v">Inquiry-to-deposit rate.</span></div>
+        </div>
+        <div class="corner">02 · Systems</div>
+        <div class="notes">Leading with price turns you into a number to compare. The standard is to qualify first and build value, then price with context. A deposit and a contract aren't paperwork — they're how you filter serious buyers and protect both sides. This is also where a setter/booking system plugs in.</div>
+      </section>
+
+      <!-- 13 system 3 -->
+      <section class="slide" data-sec="The 5 Core Systems" data-sc="var(--green)" data-min="1.5">
+        <div class="ey">System 3 · veterinary-informed</div>
+        <h2>Breeding &amp; Whelping</h2>
+        <div class="scard">
+          <div class="kv"><span class="k">Standard</span><span class="v">Health &amp; genetic testing done and <b>verified</b>. Timing by data, not by guess. A written whelping plan.</span></div>
+          <div class="kv"><span class="k">System</span><span class="v">Pre-breeding checklist → progesterone timing → whelping protocol → newborn scoring &amp; weights.</span></div>
+          <div class="kv"><span class="k">Metric</span><span class="v">Live births · survival through 3 weeks.</span></div>
+        </div>
+        <div class="corner">02 · Systems</div>
+        <div class="notes">This is where the "wise" in BreedWise is earned, and where Dr. Fontaine's work lives. The standard is non-negotiable health and genetics plus data-driven timing. The system turns the riskiest, most emotional part of breeding into a protocol you follow instead of a crisis you react to. Measure births and three-week survival — the numbers that matter most.</div>
+      </section>
+
+      <!-- 14 system 4 -->
+      <section class="slide" data-sec="The 5 Core Systems" data-sc="var(--green)" data-min="1.5">
+        <div class="ey">System 4</div>
+        <h2>Puppy-Raising &amp; Go-Home</h2>
+        <div class="scard">
+          <div class="kv"><span class="k">Standard</span><span class="v">Early neuro stimulation, real socialization, health-checked, and a <b>go-home experience buyers rave about</b>.</span></div>
+          <div class="kv"><span class="k">System</span><span class="v">Week-by-week raising protocol → vet checks → go-home pack &amp; follow-up.</span></div>
+          <div class="kv"><span class="k">Metric</span><span class="v">Buyer satisfaction · referral rate.</span></div>
+        </div>
+        <div class="corner">02 · Systems</div>
+        <div class="notes">The puppy a family takes home is the product — and the experience around it is what generates referrals and premium pricing. The standard covers both the dog (development, health) and the handoff. A week-by-week protocol means nothing gets skipped in the chaos of a litter. Referrals are the metric: delighted buyers fill your next waitlist for free.</div>
+      </section>
+
+      <!-- 15 system 5 -->
+      <section class="slide" data-sec="The 5 Core Systems" data-sc="var(--green)" data-min="1.5">
+        <div class="ey">System 5</div>
+        <h2>Operations &amp; Numbers</h2>
+        <div class="scard">
+          <div class="kv"><span class="k">Standard</span><span class="v">Every buyer, deposit, and dollar in <b>one place</b>. You know your numbers — before and after every litter.</span></div>
+          <div class="kv"><span class="k">System</span><span class="v">One CRM/record system + pricing model + a living SOP library.</span></div>
+          <div class="kv"><span class="k">Metric</span><span class="v">Profit per litter · cash collected.</span></div>
+        </div>
+        <div class="corner">02 · Systems</div>
+        <div class="notes">This is the system that makes it a business instead of a hobby that eats money. One source of truth for contacts and cash — not sticky notes and memory. If you don't know your profit per litter, you're guessing. This system is also where every other system's SOPs get stored.</div>
+      </section>
+
+      <!-- 16 recap -->
+      <section class="slide" data-sec="The 5 Core Systems" data-sc="var(--green)" data-min="1">
+        <div class="ey">Recap</div>
+        <div class="big">Five systems.<br>One <span class="g">program.</span></div>
+        <div class="dek">Your program is only as strong as its weakest system. We'll find yours in the workshop.</div>
+        <div class="corner">02 · Systems</div>
+        <div class="notes">Quick breath and recap. Reinforce the weakest-link idea and tease the workshop at the end where they'll score each of the five. Ask them to privately start thinking about which of the five is weakest for them right now.</div>
+      </section>
+
+      <!-- 17 SECTION standards -->
+      <section class="slide sec" data-sec="The BreedWise Standards" data-sc="var(--rose)" data-min="0.5">
+        <div class="no">Part 3</div>
+        <h1>The BreedWise<br>Standards</h1>
+        <div class="dek">The non-negotiable bar your systems are built to hold.</div>
+        <div class="notes">About 7 minutes. These are the standards that define a BreedWise-caliber program. Systems are personal to each breeder; these standards are shared — they're what the name stands for.</div>
+      </section>
+
+      <!-- 18 non-negotiable -->
+      <section class="slide" data-sec="The BreedWise Standards" data-sc="var(--rose)" data-min="1.5">
+        <div class="ey">First principle</div>
+        <div class="big">A standard you'll break<br>under pressure <span class="g">isn't a standard.</span></div>
+        <ul class="pts">
+          <li>Money qualifies the <b>tier</b> — never the <b>person</b>.</li>
+          <li>Set the bar where you'll hold it on your hardest day.</li>
+        </ul>
+        <div class="corner">03 · Standards</div>
+        <div class="notes">Pressure reveals real standards — a buyer waving cash, a timing shortcut, a health test you'd rather skip. If you'd fold, it was a preference, not a standard. Tie this to the qualification standard: money tells you which program fits, it never makes a bad-fit breeder a good one.</div>
+      </section>
+
+      <!-- 19 standard 1 -->
+      <section class="slide" data-sec="The BreedWise Standards" data-sc="var(--rose)" data-min="1.5">
+        <div class="ey">Standard 1 · veterinary-informed</div>
+        <h2>Health &amp; Genetics</h2>
+        <ul class="pts">
+          <li>Test, <b>verify</b>, and breed for health — no shortcuts, no bluffing.</li>
+          <li>Breeding decisions follow the data and veterinary guidance.</li>
+          <li>The dog's welfare outranks the sale, every time.</li>
+        </ul>
+        <div class="corner">03 · Standards</div>
+        <div class="notes">This is the standard the whole brand rests on. "I health test" means nothing without verification — what tests, which dogs, which results. Breeding for health sometimes means not breeding a dog you love. That's the standard.</div>
+      </section>
+
+      <!-- 20 standard 2 -->
+      <section class="slide" data-sec="The BreedWise Standards" data-sc="var(--rose)" data-min="1.5">
+        <div class="ey">Standard 2</div>
+        <h2>Buyer Experience</h2>
+        <ul class="pts">
+          <li>Qualify, educate, and support — the family's experience is part of the product.</li>
+          <li>Every buyer leaves informed and set up to succeed.</li>
+          <li>You're placing a life, not closing a sale.</li>
+        </ul>
+        <div class="corner">03 · Standards</div>
+        <div class="notes">The experience you give families is what turns a one-time sale into a referral engine and premium pricing. It also protects the dogs — a well-prepared buyer is a better home. Qualifying out the wrong buyer is part of this standard, not a lost sale.</div>
+      </section>
+
+      <!-- 21 standard 3 -->
+      <section class="slide" data-sec="The BreedWise Standards" data-sc="var(--rose)" data-min="1.5">
+        <div class="ey">Standard 3</div>
+        <h2>Positioning &amp; Price</h2>
+        <ul class="pts">
+          <li>Premium is a <b>standard</b>, not a price tag.</li>
+          <li>Price on the value you deliver — and never apologize for it.</li>
+          <li>A fair price funds the standard of care the dogs deserve.</li>
+        </ul>
+        <div class="corner">03 · Standards</div>
+        <div class="notes">Underpricing isn't humble — it starves the standard of care. When your program is genuinely premium (health, experience, systems), the price is simply the truth about the value. Help them connect: higher standards cost money, and a fair price is what pays for them.</div>
+      </section>
+
+      <!-- 22 standard 4 -->
+      <section class="slide" data-sec="The BreedWise Standards" data-sc="var(--rose)" data-min="1.5">
+        <div class="ey">Standard 4</div>
+        <h2>Integrity</h2>
+        <ul class="pts">
+          <li>Registration, honesty, ethics — what you do when no one is watching.</li>
+          <li>No invented results, no hidden problems, no shortcuts that hurt a dog or a family.</li>
+          <li>Your reputation is the most valuable asset you own.</li>
+        </ul>
+        <div class="corner">03 · Standards</div>
+        <div class="notes">Integrity is the standard that protects every other one. The industry runs on trust, and trust compounds or collapses. One dishonest placement can undo years of reputation. This is the standard that makes the BreedWise name mean something.</div>
+      </section>
+
+      <!-- 23 SECTION build -->
+      <section class="slide sec" data-sec="Build Your Systems" data-sc="var(--amber)" data-min="0.5">
+        <div class="no">Part 4</div>
+        <h1>Build Your<br>Systems</h1>
+        <div class="dek">How to get the program out of your head and onto the page.</div>
+        <div class="notes">About 5 minutes. Now we make it practical — how to actually document a system so it runs without you.</div>
+      </section>
+
+      <!-- 24 SOP formula -->
+      <section class="slide" data-sec="Build Your Systems" data-sc="var(--amber)" data-min="1.5">
+        <div class="ey">The SOP formula</div>
+        <h2>Trigger → Steps → Standard → Owner → Metric</h2>
+        <ul class="pts">
+          <li><b>Trigger</b> — what starts it. <b>Steps</b> — the exact sequence.</li>
+          <li><b>Standard</b> — what "done right" means. <b>Owner</b> — who's responsible.</li>
+          <li><b>Metric</b> — the one number that proves it worked.</li>
+        </ul>
+        <div class="dek">Document it once. Run it forever.</div>
+        <div class="corner">04 · Build</div>
+        <div class="notes">This is the template for every SOP in the program. Walk one example end to end — say, the go-home process: trigger (puppy hits 8 weeks), steps (vet check, microchip, pack assembled, buyer briefed), standard (nothing skipped), owner (you, for now), metric (buyer satisfaction). Five parts, and suddenly it's repeatable.</div>
+      </section>
+
+      <!-- 25 out of your head -->
+      <section class="slide" data-sec="Build Your Systems" data-sc="var(--amber)" data-min="1.5">
+        <div class="ey">The discipline</div>
+        <div class="big">Checklists over <span class="g">memory.</span></div>
+        <ul class="pts">
+          <li>If it lives only in your head, <b>you</b> are the system — and the limit.</li>
+          <li>Written checklists don't get tired, distracted, or overwhelmed.</li>
+          <li>Every SOP you write buys back your time and protects the standard.</li>
+        </ul>
+        <div class="corner">04 · Build</div>
+        <div class="notes">Surgeons and pilots use checklists not because they're forgetful but because stakes are high and memory fails under load — exactly like whelping night. Reframe writing SOPs as buying back your own time and protecting the dogs, not as bureaucracy.</div>
+      </section>
+
+      <!-- 26 start with bottleneck -->
+      <section class="slide" data-sec="Build Your Systems" data-sc="var(--amber)" data-min="1.5">
+        <div class="ey">Where to start</div>
+        <h2>Don't systemize everything at once</h2>
+        <ul class="pts">
+          <li>Build the <b>one</b> system that's costing you the most — first.</li>
+          <li>Finish it, run it, then move to the next.</li>
+          <li>One system a month beats ten half-built ones.</li>
+        </ul>
+        <div class="corner">04 · Build</div>
+        <div class="notes">The fastest way to fail at systems is to try to build all five at once and burn out. Pick the weakest/most painful one, build it fully, let it run, then move on. Momentum comes from finishing, not starting. This sets up the workshop directly.</div>
+      </section>
+
+      <!-- 27 SECTION measure -->
+      <section class="slide sec" data-sec="Measure &amp; Improve" data-sc="var(--violet)" data-min="0.5">
+        <div class="no">Part 5</div>
+        <h1>Measure<br>&amp; Improve</h1>
+        <div class="dek">Where this module plugs back into your Goal &amp; Vision OS.</div>
+        <div class="notes">About 4 minutes, and the key callback to the Goal &amp; Vision OS. Systems and standards aren't "set and forget" — they live in a weekly loop.</div>
+      </section>
+
+      <!-- 28 every system a number -->
+      <section class="slide" data-sec="Measure &amp; Improve" data-sc="var(--violet)" data-min="1.5">
+        <div class="ey">Make it real</div>
+        <div class="big">A system you don't measure<br>is a <span class="g">hope.</span></div>
+        <ul class="pts">
+          <li>Give each of the five systems <b>one</b> metric.</li>
+          <li>If the number moves, the system works. If it doesn't, fix the system — not yourself.</li>
+        </ul>
+        <div class="corner">05 · Measure</div>
+        <div class="notes">One metric per system, no more — keep it simple enough to actually track. The reframe matters: when a number is off, it's a system problem to engineer, not a character flaw to feel bad about. That mindset keeps people improving instead of quitting.</div>
+      </section>
+
+      <!-- 29 close the loop -->
+      <section class="slide" data-sec="Measure &amp; Improve" data-sc="var(--violet)" data-min="2">
+        <div class="ey">Close the loop</div>
+        <h2>This lives in your Goal &amp; Vision OS</h2>
+        <ul class="pts num">
+          <li>Your system metrics become your <b>weekly KPIs</b>.</li>
+          <li>The system you're building is your <b>one signal</b> this week.</li>
+          <li>Each week: review the numbers, pick the next move, commit it.</li>
+        </ul>
+        <div class="dek"><b>Standard → System → Measure → Improve.</b> Every week.</div>
+        <div class="corner">05 · Measure</div>
+        <div class="notes">This is the integration moment — show them the exact handoff. Their five system metrics go straight into the KPIs section of the Goal &amp; Vision OS; the system they're building this week is their "one signal." The loop — set the standard, build the system, measure it, improve it — runs every single week inside the tool they already have. That's how vision becomes a running machine.</div>
+      </section>
+
+      <!-- 30 WORKSHOP -->
+      <section class="slide" data-sec="Workshop" data-sc="var(--gold)" data-min="4">
+        <div class="ey">Workshop · 5 minutes</div>
+        <h2>Map your program</h2>
+        <ul class="wk">
+          <li><span class="n">1</span><span>Score each of the <b>5 systems</b> 1–10. Be honest.</span></li>
+          <li><span class="n">2</span><span>Circle your <b>weakest</b> system — that's your focus.</span></li>
+          <li><span class="n">3</span><span>Name the <b>one standard</b> you'll set and the <b>one SOP</b> you'll write this week.</span></li>
+          <li><span class="n">4</span><span>Put it in your <b>Goal &amp; Vision OS</b> as this week's signal.</span></li>
+        </ul>
+        <div class="corner">Workshop</div>
+        <div class="notes">Give them real time here — this is where the module pays off. Have them score the five systems, find the weakest, and commit to one standard and one SOP for the week. Then they open their Goal &amp; Vision OS and log it as the one signal. If live, have a few share their weakest system and their one move.</div>
+      </section>
+
+      <!-- 31 CLOSE -->
+      <section class="slide" data-sec="Close" data-sc="var(--gold)" data-min="1">
+        <div class="ey">The takeaway</div>
+        <div class="big">Vision in your head.<br>Systems on the <span class="g">ground.</span></div>
+        <div class="tagline">Breed wiser — on systems and standards.</div>
+        <div class="brandline">BreedWise Academy · <b>Build the program that runs without you.</b></div>
+        <div class="notes">Land the plane. A beautiful vision with no systems stays a dream; systems with no standards become a grind. Put them together and you get a program that runs without you and protects everything you care about. Their homework is already set: one standard, one SOP, logged in the Goal &amp; Vision OS this week.</div>
+      </section>
+
+    </div></div>
+
+    <div id="notesPanel"><div class="nh" id="nTime">Speaker notes</div><div class="nb" id="nBody"></div></div>
+
+    <div class="bar">
+      <button class="navb" id="prev">‹</button>
+      <div class="track"><i id="fill"></i></div>
+      <button class="navb" id="next">›</button>
+      <span class="count" id="count">1 / 31</span>
+    </div>
+  </div>
+
+<script>
+var idx=0,slides;
+function sc(s){return s.getAttribute('data-sc')||'var(--gold)';}
+function show(i){
+  slides=document.querySelectorAll('.slide');
+  idx=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach(function(s,j){s.classList.toggle('on',j===idx);});
+  var s=slides[idx];
+  document.getElementById('count').textContent=(idx+1)+' / '+slides.length;
+  document.getElementById('fill').style.width=((idx+1)/slides.length*100)+'%';
+  var sec=s.getAttribute('data-sec')||'';
+  var lab=document.getElementById('secLabel');lab.textContent=sec;lab.style.setProperty('--sc',sc(s));
+  document.documentElement.style.setProperty('--run',sc(s));
+  // notes + running time to this slide
+  var note=s.querySelector('.notes');
+  document.getElementById('nBody').innerHTML=note?note.innerHTML:'';
+  var mins=0;for(var k=0;k<=idx;k++){mins+=parseFloat(slides[k].getAttribute('data-min')||0);}
+  var total=0;for(var k=0;k<slides.length;k++){total+=parseFloat(slides[k].getAttribute('data-min')||0);}
+  document.getElementById('nTime').textContent='Speaker notes · ~'+Math.round(mins)+' min in of ~'+Math.round(total)+' min';
+}
+function editingTyping(){var a=document.activeElement;return a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA');}
+function wire(){
+  show(0);
+  document.getElementById('prev').onclick=function(){show(idx-1);};
+  document.getElementById('next').onclick=function(){show(idx+1);};
+  document.getElementById('notesBtn').onclick=function(){document.body.classList.toggle('noteson');document.getElementById('notesBtn').classList.toggle('on',document.body.classList.contains('noteson'));};
+  document.getElementById('fsBtn').onclick=function(){var el=document.documentElement;if(!document.fullscreenElement){(el.requestFullscreen||el.webkitRequestFullscreen||function(){}).call(el);}else{(document.exitFullscreen||document.webkitExitFullscreen||function(){}).call(document);}};
+  document.getElementById('printBtn').onclick=function(){window.print();};
+  document.addEventListener('keydown',function(e){
+    if(editingTyping())return;
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();show(idx+1);}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();show(idx-1);}
+    else if(e.key==='n'||e.key==='N'){document.getElementById('notesBtn').click();}
+    else if(e.key==='f'||e.key==='F'){document.getElementById('fsBtn').click();}
+  });
+}
+(function(){
+  var OK=['25e7b557235afa23f4d1ae0ac108bfdfefa7ea58ea50bd986321cbd0034c52dc', /* ACCELERATOR2026 */
+          '368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875']; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function reveal(){var g=document.getElementById('gate');if(g)g.remove();document.getElementById('app').style.display='flex';document.title='Operating Systems & Standards · BreedWise Academy';wire();}
+  function tryUnlock(){var v=(document.getElementById('pw').value||'').trim().toUpperCase();h(v).then(function(hex){if(OK.indexOf(hex)>=0){try{sessionStorage.setItem('ssd_ok','1');}catch(e){}reveal();}else{document.getElementById('gate-err').textContent='Incorrect code.';document.getElementById('pw').select();}});}
+  document.getElementById('unlock').addEventListener('click',tryUnlock);
+  document.getElementById('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('ssd_ok')==='1')reveal();else document.getElementById('pw').focus();}catch(e){document.getElementById('pw').focus();}
+})();
+</script>
+</body>
+</html>
