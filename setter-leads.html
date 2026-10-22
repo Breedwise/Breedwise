@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0e13;--bg2:#10141c;--panel:#141a24;--panel2:#111620;--line:#232c3a;--line2:#323e50;
+    --ink:#eef2f8;--mid:#c0c8d4;--muted:#8591a3;--faint:#5c6678;
+    --gold:#c9a862;--gold-soft:#e6cf96;--gold-deep:#9d8343;--green:#5bbd7a;--red:#e8697f;--blue:#6fb0e6;--amber:#e0a955;
+    --disp:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;}
+  *{box-sizing:border-box;margin:0}
+  body{background:radial-gradient(1100px 680px at 84% -12%,rgba(201,168,98,.08),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.55}
+  #gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:90}
+  #gate .box{width:min(92vw,380px);text-align:center}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold),var(--gold-deep));display:flex;align-items:center;justify-content:center}
+  .logo .mk span{font-family:var(--disp);font-weight:700;color:#14110a;font-size:18px}
+  .logo .wm{font-size:15px;letter-spacing:.2em;font-weight:700}.logo .wm b{color:var(--gold)}
+  #gate h1{font-family:var(--disp);font-size:22px;font-weight:600;margin:16px 0 4px}
+  #gate .sub{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+  #gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+  #gate button{width:100%;margin-top:10px;padding:13px;background:var(--gold);border:0;border-radius:11px;color:#14110a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+  #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #app{display:none}
+  nav.top{position:sticky;top:0;z-index:40;background:rgba(11,14,19,.93);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .in{max-width:1040px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 20px;flex-wrap:wrap}
+  nav .sp{flex:1}
+  .tbtn{background:var(--panel);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:8px 12px;font-size:12px;cursor:pointer;font-family:var(--sans)}
+  .tbtn:hover{border-color:var(--gold);color:var(--ink)}
+  .wrap{max-width:1040px;margin:0 auto;padding:18px 20px 90px}
+  .hero{margin:6px 0 4px}
+  .hero .k{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .hero h1{font-family:var(--disp);font-size:clamp(23px,4vw,30px);font-weight:600;margin:6px 0 0}
+  .hero p{color:var(--muted);font-size:13.5px;margin:5px 0 0}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+  .stat{background:linear-gradient(162deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:13px;padding:14px 16px}
+  .stat .v{font-family:var(--disp);font-size:28px;font-weight:600;color:var(--gold-soft)}
+  .stat .l{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:4px 0 12px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{font-size:12px;color:var(--mid);background:var(--panel);border:1px solid var(--line2);border-radius:18px;padding:6px 13px;cursor:pointer}
+  .chip.on{background:var(--gold);color:#14110a;border-color:transparent;font-weight:600}
+  .search{flex:1;min-width:180px;background:var(--bg2);border:1px solid var(--line2);border-radius:9px;color:var(--ink);font-family:var(--sans);font-size:13.5px;padding:9px 12px}
+  .search:focus{outline:none;border-color:var(--gold)}
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:720px}
+  th,td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{color:var(--gold-soft);font-weight:600;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;background:var(--panel2);position:sticky;top:0}
+  td{color:var(--mid)}
+  tr:hover td{background:rgba(255,255,255,.015)}
+  .ig{color:var(--gold-soft);font-weight:600;text-decoration:none}
+  .ig:hover{text-decoration:underline}
+  .nm{color:var(--ink);font-weight:600}
+  .pill{display:inline-block;font-size:10.5px;font-weight:700;border-radius:20px;padding:2px 9px}
+  .pill.done{background:rgba(91,189,122,.16);color:var(--green)}
+  .pill.optin{background:rgba(224,169,85,.16);color:var(--amber)}
+  .pill.pb{background:rgba(201,168,98,.14);color:var(--gold-soft)}
+  .pill.hl{background:rgba(111,176,230,.16);color:var(--blue)}
+  .mut{color:var(--faint)}
+  .empty{text-align:center;color:var(--muted);padding:40px 20px;font-size:14px}
+  .msg{font-size:12.5px;color:var(--muted);margin-left:auto}
+  a.cp{color:var(--mid);text-decoration:none;border-bottom:1px dotted var(--line2)}
+  a.cp:hover{color:var(--gold-soft)}
+</style>
+</head>
+<body>
+  <div id="gate"><div class="box">
+    <div class="logo" style="margin-bottom:16px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
+    <h1>Scorecard Leads</h1><div class="sub">Setter access</div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="unlock">Enter →</button><div class="err" id="gate-err"></div>
+  </div></div>
+
+  <div id="app">
+    <nav class="top"><div class="in">
+      <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+      <span class="sp"></span>
+      <span class="msg" id="msg"></span>
+      <button class="tbtn" id="refresh">↻ Refresh</button>
+      <button class="tbtn" id="export">Export CSV</button>
+    </div></nav>
+    <div class="wrap">
+      <div class="hero"><div class="k">DM Setter · Scorecard Leads</div>
+        <h1>Who completed your scorecards</h1>
+        <p>Everyone who opted in or finished the Profitable Breeder or Healthy Litter scorecard you sent. Tap an Instagram handle to open their profile and backtrack the lead.</p></div>
+      <div class="stats" id="stats"></div>
+      <div class="controls">
+        <div class="chips" id="scChips"></div>
+        <div class="chips" id="stChips"></div>
+        <input class="search" id="q" placeholder="Search name, email, or @handle…">
+      </div>
+      <div class="tablewrap"><table><thead><tr>
+        <th>Instagram</th><th>Name</th><th>Scorecard</th><th>Status</th><th>Score</th><th>Email</th><th>Phone</th><th>Date</th>
+      </tr></thead><tbody id="rows"></tbody></table></div>
+    </div>
+  </div>
+
+<script>
+var FN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/setter-leads';
+var SECRET='sl_setter_7Hq2';
+var ALL=[], scFilter='All', stFilter='All', q='';
+function $(s){return document.querySelector(s);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function igUrl(h){return 'https://instagram.com/'+String(h||'').replace(/^@+/,'').replace(/[^A-Za-z0-9._]/g,'');}
+function fmtDate(d){if(!d)return '';try{var x=new Date(d);return x.toLocaleDateString(undefined,{month:'short',day:'numeric'})+' '+x.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});}catch(e){return '';}}
+
+/* collapse to one row per (email + scorecard): completed wins, latest date */
+function grouped(){
+  var m={};
+  ALL.forEach(function(r){
+    var key=(r.email||r.id)+'|'+r.scorecard;
+    var g=m[key];
+    if(!g){m[key]=Object.assign({},r);return;}
+    g.completed=g.completed||r.completed;
+    // keep the richer/newer values
+    var newer=(r.created_at||'')>(g.created_at||'');
+    if(r.completed){ if(r.scorePct!=null)g.scorePct=r.scorePct; if(r.band)g.band=r.band; }
+    if(newer)g.created_at=r.created_at;
+    g.instagram=g.instagram||r.instagram; g.name=g.name||r.name; g.phone=g.phone||r.phone; g.email=g.email||r.email;
+  });
+  return Object.keys(m).map(function(k){return m[k];}).sort(function(a,b){return (b.created_at||'')<(a.created_at||'')?-1:1;});
+}
+function filtered(){
+  var qq=q.trim().toLowerCase();
+  return grouped().filter(function(r){
+    if(scFilter!=='All' && r.scorecard!==scFilter) return false;
+    if(stFilter==='Completed' && !r.completed) return false;
+    if(stFilter==='Opted-in' && r.completed) return false;
+    if(qq){ var hay=((r.name||'')+' '+(r.email||'')+' '+(r.instagram||'')+' '+(r.phone||'')).toLowerCase(); if(hay.indexOf(qq)<0) return false; }
+    return true;
+  });
+}
+function renderStats(){
+  var g=grouped();
+  var pb=g.filter(function(r){return r.scorecard==='Profitable Breeder';});
+  var hl=g.filter(function(r){return r.scorecard==='Healthy Litter';});
+  var done=g.filter(function(r){return r.completed;});
+  $('#stats').innerHTML=
+    stat(g.length,'Total leads')+stat(done.length,'Completed')+stat(pb.length,'Profitable Breeder')+stat(hl.length,'Healthy Litter');
+}
+function stat(v,l){return '<div class="stat"><div class="v">'+v+'</div><div class="l">'+esc(l)+'</div></div>';}
+function render(){
+  renderStats();
+  var rows=filtered();
+  if(!rows.length){$('#rows').innerHTML='<tr><td colspan="8"><div class="empty">No leads match yet. As people finish your scorecards, they appear here.</div></td></tr>';return;}
+  $('#rows').innerHTML=rows.map(function(r){
+    var ig=r.instagram?('<a class="ig" href="'+igUrl(r.instagram)+'" target="_blank" rel="noopener">@'+esc(String(r.instagram).replace(/^@+/,''))+'</a>'):'<span class="mut">—</span>';
+    var sc=r.scorecard==='Profitable Breeder'?'<span class="pill pb">Profitable Breeder</span>':'<span class="pill hl">Healthy Litter</span>';
+    var stt=r.completed?'<span class="pill done">Completed</span>':'<span class="pill optin">Opted-in</span>';
+    var score=(r.scorePct!=null)?(r.scorePct+'%'+(r.band?' · '+esc(r.band):'')):'<span class="mut">—</span>';
+    var em=r.email?('<a class="cp" href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>'):'<span class="mut">—</span>';
+    return '<tr><td>'+ig+'</td><td class="nm">'+esc(r.name||'—')+'</td><td>'+sc+'</td><td>'+stt+'</td><td>'+score+'</td><td>'+em+'</td><td>'+esc(r.phone||'—')+'</td><td class="mut">'+esc(fmtDate(r.created_at))+'</td></tr>';
+  }).join('');
+}
+function buildChips(){
+  var sc=$('#scChips');['All','Profitable Breeder','Healthy Litter'].forEach(function(x){var c=document.createElement('span');c.className='chip'+(scFilter===x?' on':'');c.textContent=x;c.onclick=function(){scFilter=x;syncChips();render();};sc.appendChild(c);});
+  var st=$('#stChips');['All','Completed','Opted-in'].forEach(function(x){var c=document.createElement('span');c.className='chip'+(stFilter===x?' on':'');c.setAttribute('data-st',x);c.textContent=x;c.onclick=function(){stFilter=x;syncChips();render();};st.appendChild(c);});
+}
+function syncChips(){
+  document.querySelectorAll('#scChips .chip').forEach(function(c){c.classList.toggle('on',c.textContent===scFilter);});
+  document.querySelectorAll('#stChips .chip').forEach(function(c){c.classList.toggle('on',c.getAttribute('data-st')===stFilter);});
+}
+function csvExport(){
+  var rows=filtered();
+  var head=['Instagram','Name','Scorecard','Status','Score','Band','Email','Phone','Date'];
+  var lines=[head.join(',')];
+  rows.forEach(function(r){
+    var cells=['@'+String(r.instagram||'').replace(/^@+/,''),r.name||'',r.scorecard,r.completed?'Completed':'Opted-in',(r.scorePct!=null?r.scorePct+'%':''),r.band||'',r.email||'',r.phone||'',r.created_at||''];
+    lines.push(cells.map(function(c){var v=String(c==null?'':c);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}).join(','));
+  });
+  try{var b=new Blob([lines.join('\n')],{type:'text/csv'});var u=URL.createObjectURL(b);var a=document.createElement('a');a.href=u;a.download='scorecard-leads.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},1000);}catch(e){alert('Export failed.');}
+}
+function fetchLeads(){
+  $('#msg').textContent='Loading…';
+  fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'leads',secret:SECRET})})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(!d.ok){$('#msg').textContent=(d.error==='unauthorized'?'Access error — tell Austin.':'Error loading leads.');return;}
+      ALL=d.rows||[]; $('#msg').textContent=ALL.length+' submissions · '+new Date().toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+      render();
+    })
+    .catch(function(){$('#msg').textContent='Network error — try Refresh.';});
+}
+function wire(){
+  buildChips();
+  $('#q').addEventListener('input',function(){q=$('#q').value;render();});
+  $('#refresh').addEventListener('click',fetchLeads);
+  $('#export').addEventListener('click',csvExport);
+  fetchLeads();
+}
+(function(){
+  var OK=['10507e9b2f51ad6a5805328ce47310372a649109a9ff4e74805503693f54e655', /* SETTER2026 */
+          '368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875']; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function reveal(){var g=$('#gate');if(g)g.remove();$('#app').style.display='block';document.title='Scorecard Leads · BreedWise';wire();}
+  function tryUnlock(){var v=($('#pw').value||'').trim().toUpperCase();h(v).then(function(hex){if(OK.indexOf(hex)>=0){try{sessionStorage.setItem('sl_ok','1');}catch(e){}reveal();}else{$('#gate-err').textContent='Incorrect code.';$('#pw').select();}});}
+  $('#unlock').addEventListener('click',tryUnlock);$('#pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('sl_ok')==='1')reveal();else $('#pw').focus();}catch(e){$('#pw').focus();}
+})();
+</script>
+</body>
+</html>

@@ -347,7 +347,7 @@ var OBSTACLE=[
 var BRIDGE="You now know where the gaps are and what to do about each one. Knowing the path is the first half. Walking it, one habit at a time, is faster with a proven plan and serious breeders around you.";
 
 /* ===================== STATE ===================== */
-var A={first:"",last:"",email:"",phone:"",bp:{},q16:null,q17:null,q18:null,q19:null,q20:""};
+var A={first:"",last:"",email:"",phone:"",instagram:"",bp:{},q16:null,q17:null,q18:null,q19:null,q20:""};
 var STEPS=[];
 (function(){STEPS.push('landing','contact');BP.forEach(function(x){STEPS.push('bp'+x.id);});QUAL.forEach(function(x){STEPS.push('q'+x.id);});STEPS.push('results');})();
 var step=0, optinSent=false, completionSent=false;
@@ -419,6 +419,7 @@ function renderContact(){
     +'</div>'
     +'<div class="fld"><label>Email</label><input type="email" id="email" autocomplete="email" required></div>'
     +'<div class="fld"><label>Phone</label><input type="tel" id="phone" autocomplete="tel" required></div>'
+    +'<div class="fld"><label>Instagram handle <span style="color:#5b6775">(so we can follow up)</span></label><input type="text" id="instagram" placeholder="@yourhandle" autocomplete="off" required></div>'
     +'<button class="cta" id="c_next" style="margin-top:4px">Start question 1</button>'
     +'<div class="msg" id="c_msg"></div>'
     +'<div class="trust">Free. Your information stays private.</div>'
@@ -429,6 +430,7 @@ function renderContact(){
   document.getElementById('last').value=A.last||'';
   document.getElementById('email').value=A.email||'';
   document.getElementById('phone').value=A.phone||'';
+  document.getElementById('instagram').value=A.instagram||'';
   document.getElementById('c_back').onclick=function(){go(step-1);};
   document.getElementById('c_next').onclick=submitContact;
 }
@@ -437,14 +439,16 @@ function submitContact(){
   var first=document.getElementById('first').value.trim();
   var email=document.getElementById('email').value.trim();
   var phone=document.getElementById('phone').value.trim();
+  var instagram=document.getElementById('instagram').value.trim().replace(/^@+/,'');
   if(!first){msg.style.color='var(--red)';msg.textContent='Please add your first name.';return;}
   if(!emailRe.test(email)){msg.style.color='var(--red)';msg.textContent='Please enter a valid email.';return;}
   if(phone.replace(/\D/g,'').length<7){msg.style.color='var(--red)';msg.textContent='Please enter a valid phone number.';return;}
-  A.first=first;A.last=document.getElementById('last').value.trim();A.email=email;A.phone=phone;
+  if(!instagram){msg.style.color='var(--red)';msg.textContent='Please add your Instagram handle so we can follow up.';return;}
+  A.first=first;A.last=document.getElementById('last').value.trim();A.email=email;A.phone=phone;A.instagram=instagram;
   A.company=document.getElementById('company').value;
   if(!optinSent){optinSent=true;
     try{fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'pb-optin',first:A.first,last:A.last,email:A.email,phone:A.phone,company:A.company})}).catch(function(){});}catch(e){}
+      body:JSON.stringify({action:'pb-optin',first:A.first,last:A.last,email:A.email,phone:A.phone,instagram:A.instagram,company:A.company})}).catch(function(){});}catch(e){}
   }
   go(step+1);
 }
@@ -607,7 +611,7 @@ function esc(s){return (s||'').replace(/[&<>"]/g,function(m){return {'&':'&amp;'
 function sendCompletion(pct,raw,band,goalSec,moves,seg,gaps){
   if(completionSent)return;completionSent=true;
   var answers={};BP.forEach(function(Q){answers['q'+Q.id]=A.bp[Q.id]||null;});
-  var payload={action:'pb-scorecard',first:A.first,last:A.last,email:A.email,phone:A.phone,company:A.company||'',
+  var payload={action:'pb-scorecard',first:A.first,last:A.last,email:A.email,phone:A.phone,instagram:A.instagram,company:A.company||'',
     scorePct:pct,scoreRaw:raw,band:bandKey(pct),
     secScores:{1:secScore(1),2:secScore(2),3:secScore(3),4:secScore(4),5:secScore(5)},
     gaps:gaps.map(function(Q){return Q.id;}),
