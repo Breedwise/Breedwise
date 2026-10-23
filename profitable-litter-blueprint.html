@@ -78,6 +78,8 @@
   section{padding:48px 0;border-bottom:1px solid var(--line)}
   .sk{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;text-align:center}
   section h2{font-size:clamp(27px,4vw,40px);text-align:center;margin:12px auto 0;max-width:22ch}
+  section h2.preh{max-width:none;line-height:1.1}
+  @media(min-width:760px){section h2.preh{white-space:nowrap}}
   .lead{color:var(--muted);font-size:15px;text-align:center;max-width:60ch;margin:12px auto 0}
   .prob{max-width:620px;margin:22px auto 0;text-align:center}
   .prob p{color:var(--mid);font-size:16px;margin-top:14px;line-height:1.55}
@@ -190,7 +192,7 @@
   <!-- PRESERVATION / PROBLEM -->
   <section><div class="wrap">
     <div class="sk">Built for serious breeders</div>
-    <h2>You're committed to your breed.<br>Is your business built to support it?</h2>
+    <h2 class="preh">You're committed to your breed.<br>Is your business built to support it?</h2>
     <div class="prob">
       <p>You study pedigrees. You invest in health testing and veterinary care. You make thoughtful breeding decisions.</p>
       <p>But none of that automatically guarantees qualified puppy buyers, a consistent waitlist, or a financially sustainable program.</p>
