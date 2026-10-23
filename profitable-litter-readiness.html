@@ -248,14 +248,14 @@ var Q = [
 var DRAFT='bw-litter-readiness-draft', RESULT='bw-litter-readiness-result';
 var answers = new Array(Q.length).fill(null);
 
-// prefill name/email from the registration link, e.g. ?n=Jane&e=jane@x.com (optional &ln=&ph= for the qualifier handoff)
+// restore draft first (answers + any saved name/email)...
+try{var d=JSON.parse(localStorage.getItem(DRAFT)||'null');if(d){if(d.answers)answers=d.answers.slice(0,Q.length);if(d.n)document.getElementById('qn').value=d.n;if(d.e)document.getElementById('qe').value=d.e;}}catch(e){}
+
+// ...then let the registration link (?n=&e=, optional &ln=&ph= for the qualifier handoff) take precedence — it's authoritative.
 (function(){
   if(QP.get('n')) document.getElementById('qn').value=QP.get('n');
   if(QP.get('e')) document.getElementById('qe').value=QP.get('e');
 })();
-
-// restore draft
-try{var d=JSON.parse(localStorage.getItem(DRAFT)||'null');if(d){if(d.answers)answers=d.answers.slice(0,Q.length);if(d.n)document.getElementById('qn').value=d.n;if(d.e)document.getElementById('qe').value=d.e;}}catch(e){}
 
 // render questions grouped by pillar
 (function(){
