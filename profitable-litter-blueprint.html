@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Profitable Litter Blueprint · Free Masterclass · BreedWise</title>
-<meta name="description" content="Free live masterclass with Austin Shanks & Dr. Emmanuel Fontaine — build a qualified puppy waitlist before the litter arrives, prepare for a healthier whelp, and turn your program into a more profitable business without compromising your standards.">
-<meta property="og:title" content="The Profitable Litter Blueprint — Free Masterclass">
+<title>The Profitable Litter Blueprint · Live Masterclass · BreedWise</title>
+<meta name="description" content="Live masterclass with Austin Shanks & Dr. Emmanuel Fontaine — build a qualified puppy waitlist before the litter arrives, prepare for a healthier whelp, and turn your program into a more profitable business without compromising your standards.">
+<meta property="og:title" content="The Profitable Litter Blueprint — Live Masterclass">
 <meta property="og:description" content="Build a qualified puppy waitlist before the litter arrives, prepare for a healthier whelp & grow a more profitable program — without compromising your standards. With Austin Shanks & Dr. Emmanuel Fontaine.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -123,13 +123,13 @@
 <body>
   <nav><div class="in">
     <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
-    <span class="sp"></span><span class="navtag">Free Live Masterclass</span>
+    <span class="sp"></span><span class="navtag">Live Masterclass</span>
   </div></nav>
 
   <!-- HERO -->
   <header class="hero"><div class="wrap"><div class="grid">
     <div>
-      <div class="eyebrow">Free Live Masterclass</div>
+      <div class="eyebrow">Live Masterclass</div>
       <h1>The Profitable Litter Blueprint</h1>
       <p class="sub">How to build a qualified puppy waitlist <em>before</em> the litter arrives, prepare for a healthier whelp, and turn your program into a more profitable business — without compromising your standards.</p>
       <p class="aud">For dedicated breeders who want to improve their dogs, find the right buyers, and build a program that lasts.</p>
@@ -142,8 +142,8 @@
       <div class="heroline">One litter. Two responsibilities — the dogs and the business.</div>
     </div>
     <div class="reg" id="regCard">
-      <h3>Reserve your free seat</h3>
-      <div class="rs">Register below — we'll send your access link, a reminder before we go live, and your free scorecard.</div>
+      <h3>Reserve your seat</h3>
+      <div class="rs">Register below — we'll send your access link, a reminder before we go live, and your scorecard.</div>
       <form id="regForm" autocomplete="on">
         <input type="text" class="hp" id="company" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="frow">
@@ -180,8 +180,8 @@
           <option value="10+ years">10+ years</option>
         </select></div>
         <div class="fld"><input type="text" id="instagram" placeholder="Instagram handle (@yourkennel)" autocomplete="off"></div>
-        <button class="cta" id="regBtn" type="submit">Reserve Your Free Seat →</button>
-        <div class="micro">Plus: every registrant gets the free <b>Profitable Litter Readiness Scorecard</b>.</div>
+        <button class="cta" id="regBtn" type="submit">Reserve Your Seat →</button>
+        <div class="micro">Plus: every registrant gets the <b>Profitable Litter Readiness Scorecard</b>.</div>
         <div class="rmsg" id="regMsg"></div>
       </form>
     </div>
@@ -203,7 +203,7 @@
   <!-- DISCOVER -->
   <section><div class="wrap">
     <div class="sk">What you'll learn</div>
-    <h2>In this free training, discover</h2>
+    <h2>In this training, discover</h2>
     <ul class="disc-list">
       <li><span class="ck">✓</span><span>How to <b>build a qualified puppy waitlist before the litter arrives</b> — so homes are ready when the puppies are.</span></li>
       <li><span class="ck">✓</span><span><b>Why followers and puppy inquiries don't automatically become committed buyers</b> — and what actually does.</span></li>
@@ -246,12 +246,12 @@
   <section class="band"><div class="wrap">
     <div class="big">A successful litter doesn't automatically mean a <span class="g">profitable</span> breeding business.</div>
     <p class="lead">Learn how to approach both the dogs and the business more intentionally — before your next litter.</p>
-    <button class="ctabtn" onclick="document.getElementById('first').focus();window.scrollTo({top:0,behavior:'smooth'});">Reserve Your Free Seat</button>
+    <button class="ctabtn" onclick="document.getElementById('first').focus();window.scrollTo({top:0,behavior:'smooth'});">Reserve Your Seat</button>
   </div></section>
 
   <!-- BONUS -->
   <section><div class="wrap">
-    <div class="sk">Free for every registrant</div>
+    <div class="sk">For every registrant</div>
     <h2>The Profitable Litter Readiness Scorecard</h2>
     <p class="lead">A brief assessment so you know exactly where your biggest gap is — and leave with useful guidance whether or not you take it further.</p>
     <div class="bonus">
@@ -308,12 +308,12 @@ document.getElementById('regForm').addEventListener('submit',function(e){
   if(ref)payload.ref=ref;
   fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
     .then(function(r){return r.json().catch(function(){return {ok:r.ok};});})
-    .then(function(d){ if(d&&(d.ok||d.action)){ done(first); } else { btn.disabled=false;btn.textContent='Reserve Your Free Seat →';msg.textContent=(d&&d.error)||'Something went wrong — please try again.'; } })
-    .catch(function(){ btn.disabled=false;btn.textContent='Reserve Your Free Seat →';msg.textContent='Network error — please try again.'; });
+    .then(function(d){ if(d&&(d.ok||d.action)){ done(first); } else { btn.disabled=false;btn.textContent='Reserve Your Seat →';msg.textContent=(d&&d.error)||'Something went wrong — please try again.'; } })
+    .catch(function(){ btn.disabled=false;btn.textContent='Reserve Your Seat →';msg.textContent='Network error — please try again.'; });
 });
 function done(first){
   document.getElementById('regCard').innerHTML='<div class="done"><div class="ic">🎉</div><h3>You’re in'+(first?', '+first.replace(/[<>&]/g,''):'')+'!</h3>'
-    +'<p>Check your email for your seat confirmation and your free <b>Profitable Litter Readiness Scorecard</b>. We’ll send reminders before we go live.</p></div>';
+    +'<p>Check your email for your seat confirmation and your <b>Profitable Litter Readiness Scorecard</b>. We’ll send reminders before we go live.</p></div>';
   document.getElementById('regCard').scrollIntoView({behavior:'smooth',block:'center'});
 }
 </script>
