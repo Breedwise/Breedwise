@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profitable Litter Readiness Scorecard · BreedWise</title>
+<meta name="description" content="A 15-question readiness check across whelping, buyers and business — see exactly where your biggest gap is before your next litter.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0a;--band:#111114;--card:#15151a;--card-2:#1b1b21;
+    --line:rgba(245,242,234,.10);--ink:#f5f2ea;--mid:rgba(245,242,234,.74);--muted:rgba(245,242,234,.50);
+    --gold:#cdae72;--gold-2:#dcc185;--gold-soft:rgba(205,174,114,.12);--gold-line:rgba(205,174,114,.28);
+    --grad:linear-gradient(135deg,#e2cb86,#c3a35c);--green:#6dbf90;--red:#e0807e;--blue:#7aa6d6;
+    --display:'Anton',Impact,sans-serif;--body:'Poppins',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;line-height:1.6}
+  h1,h2,.disp{font-family:var(--display);font-weight:400;letter-spacing:.01em;line-height:1.05;text-transform:uppercase}
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px}
+  nav{border-bottom:1px solid var(--line);background:rgba(10,10,10,.9);position:sticky;top:0;z-index:30;backdrop-filter:blur(8px)}
+  nav .in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:12px 20px}
+  .logo{display:inline-flex;align-items:center;gap:11px}
+  .logo .mk{width:32px;height:32px;border-radius:9px;background:var(--grad);display:flex;align-items:center;justify-content:center}
+  .logo .mk span{font-family:var(--display);color:#1a1206;font-size:18px}
+  .logo .wm{font-size:14px;letter-spacing:.2em;font-weight:700}.logo .wm b{color:var(--gold)}
+  nav .sp{flex:1}
+  .navtag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .eyebrow{font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  /* intro */
+  .intro{padding:44px 0 10px;text-align:center}
+  .intro h1{font-size:clamp(30px,5.4vw,46px);margin:12px auto 0;max-width:16ch}
+  .intro .sub{color:var(--mid);font-size:16px;margin:16px auto 0;max-width:52ch}
+  .intro .note{color:var(--muted);font-size:13px;margin:14px auto 0;max-width:46ch;font-style:italic}
+  .idrow{display:grid;gap:11px;max-width:460px;margin:24px auto 0}
+  @media(min-width:560px){.idrow{grid-template-columns:1fr 1fr}}
+  .idrow input{width:100%;background:#0e0d0b;border:1px solid var(--line);border-radius:11px;color:var(--ink);font-family:var(--body);font-size:15px;padding:13px 14px}
+  .idrow input:focus{outline:none;border-color:var(--gold)}
+  /* progress */
+  .prog{position:sticky;top:57px;z-index:20;background:rgba(10,10,10,.92);backdrop-filter:blur(6px);padding:12px 0;border-bottom:1px solid var(--line)}
+  .prog .bar{height:6px;border-radius:4px;background:var(--card-2);overflow:hidden}
+  .prog .bar i{display:block;height:100%;width:0;background:var(--grad);transition:width .3s}
+  .prog .lab{font-size:12px;color:var(--muted);margin-top:6px;display:flex;justify-content:space-between}
+  /* pillar group */
+  .pgroup{margin-top:30px}
+  .phead{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:6px}
+  .phead .pn{font-family:var(--display);font-size:20px;color:var(--c,var(--gold))}
+  .phead .pt{font-size:12px;color:var(--muted);letter-spacing:.04em}
+  /* question */
+  .q{padding:20px 0;border-bottom:1px solid var(--line)}
+  .q .qx{font-size:16px;font-weight:600;color:var(--ink);margin-bottom:3px}
+  .q .qs{font-size:13px;color:var(--muted);margin-bottom:12px}
+  .opts{display:flex;flex-direction:column;gap:9px}
+  .opt{display:flex;gap:11px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:12px 14px;cursor:pointer;transition:border-color .15s,background .15s}
+  .opt:hover{border-color:var(--gold-line)}
+  .opt input{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:2px solid var(--muted);border-radius:50%;flex:none;margin-top:1px;position:relative;cursor:pointer}
+  .opt input:checked{border-color:var(--gold)}
+  .opt input:checked::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--grad)}
+  .opt.sel{border-color:var(--gold);background:var(--gold-soft)}
+  .opt .ot{font-size:14.5px;color:var(--mid);line-height:1.4}
+  .opt.sel .ot{color:var(--ink)}
+  /* submit */
+  .sub-wrap{text-align:center;padding:28px 0 60px}
+  .cta{background:var(--grad);border:0;border-radius:12px;color:#1a1206;font-weight:700;font-size:17px;padding:15px 36px;cursor:pointer;font-family:var(--body)}
+  .cta:hover{filter:brightness(1.05)}
+  .cta:disabled{opacity:.55;cursor:not-allowed}
+  .err{color:var(--red);font-size:13.5px;margin-top:12px;min-height:16px}
+  /* result */
+  #result{display:none;padding:40px 0 70px}
+  .score-card{background:linear-gradient(162deg,var(--card),var(--card-2));border:1px solid var(--line);border-radius:18px;padding:30px 24px;text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.45)}
+  .score-num{font-family:var(--display);font-size:clamp(56px,13vw,92px);line-height:1;color:var(--gold-2)}
+  .score-num small{font-size:.32em;color:var(--muted);letter-spacing:.02em}
+  .score-band{font-family:var(--display);font-size:clamp(22px,4vw,30px);margin-top:6px}
+  .score-head{color:var(--mid);font-size:15px;margin:12px auto 0;max-width:44ch}
+  .pillars{display:grid;gap:16px;margin-top:26px}
+  @media(min-width:620px){.pillars{grid-template-columns:repeat(3,1fr)}}
+  .pill{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:16px}
+  .pill .pl{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--c,var(--gold));font-weight:600}
+  .pill .pv{font-family:var(--display);font-size:26px;margin-top:4px}
+  .pill .track{height:6px;border-radius:4px;background:var(--card-2);margin-top:9px;overflow:hidden}
+  .pill .track i{display:block;height:100%;background:var(--c,var(--gold))}
+  .gaps{max-width:620px;margin:26px auto 0;text-align:left}
+  .gaps h3{font-family:var(--body);font-size:17px;font-weight:700;margin-bottom:4px}
+  .gaps .gsub{color:var(--muted);font-size:13.5px;margin-bottom:12px}
+  .gap{display:flex;gap:12px;align-items:flex-start;background:#0e0d0b;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;padding:13px 15px;margin-top:10px}
+  .gap .gi{color:var(--gold);font-weight:800;flex:none}
+  .gap .gt{font-size:14px;color:var(--mid)}
+  .book{background:linear-gradient(162deg,var(--card),var(--card-2));border:1px solid var(--gold-line);border-radius:16px;padding:28px 24px;text-align:center;margin-top:28px}
+  .book h2{font-size:clamp(24px,4.4vw,34px)}
+  .book p{color:var(--mid);font-size:15px;margin:10px auto 0;max-width:46ch}
+  .book .cta{margin-top:18px;display:inline-block;text-decoration:none}
+  .book .fine{color:var(--muted);font-size:12px;margin-top:12px}
+  .again{display:block;margin:20px auto 0;background:none;border:0;color:var(--muted);font-size:12.5px;text-decoration:underline;cursor:pointer}
+  .foot{padding:24px 0 50px;text-align:center;color:rgba(245,242,234,.35);font-size:11.5px}
+</style>
+</head>
+<body>
+  <nav><div class="in">
+    <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
+    <span class="sp"></span><span class="navtag">Readiness Scorecard</span>
+  </div></nav>
+
+  <!-- QUIZ -->
+  <div id="quiz">
+    <header class="intro"><div class="wrap">
+      <div class="eyebrow">Before the masterclass</div>
+      <h1>The Profitable Litter Readiness Scorecard</h1>
+      <p class="sub">15 questions across your whelping, your buyers and your business. In 4 minutes you'll see exactly where your biggest gap is before your next litter.</p>
+      <p class="note">Answer honestly — this is a private self-diagnosis, not a test to pass. The only person it helps is you.</p>
+      <div class="idrow">
+        <input type="text" id="qn" placeholder="First name" autocomplete="given-name">
+        <input type="email" id="qe" placeholder="Email" autocomplete="email">
+      </div>
+    </div></header>
+
+    <div class="prog"><div class="wrap">
+      <div class="bar"><i id="pbar"></i></div>
+      <div class="lab"><span id="plab">0 of 15 answered</span><span id="ppct">0%</span></div>
+    </div></div>
+
+    <div class="wrap"><div id="qlist"></div>
+      <div class="sub-wrap">
+        <button class="cta" id="seeBtn" disabled>See My Readiness Score</button>
+        <div class="err" id="qerr"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result"><div class="wrap">
+    <div class="score-card">
+      <div class="eyebrow">Your readiness score</div>
+      <div class="score-num"><span id="rScore">0</span><small>/100</small></div>
+      <div class="score-band" id="rBand">—</div>
+      <p class="score-head" id="rHead"></p>
+      <div class="pillars">
+        <div class="pill" style="--c:var(--green)"><div class="pl">Protect</div><div class="pv"><span id="rp0">0</span>%</div><div class="track"><i id="rb0"></i></div></div>
+        <div class="pill" style="--c:var(--gold)"><div class="pl">Attract</div><div class="pv"><span id="rp1">0</span>%</div><div class="track"><i id="rb1"></i></div></div>
+        <div class="pill" style="--c:var(--blue)"><div class="pl">Profit</div><div class="pv"><span id="rp2">0</span>%</div><div class="track"><i id="rb2"></i></div></div>
+      </div>
+    </div>
+
+    <div class="gaps" id="gapsBox">
+      <h3>Your biggest gaps to close</h3>
+      <div class="gsub">These are the areas you were least sure about — exactly what the team can help you tighten.</div>
+      <div id="gapList"></div>
+    </div>
+
+    <div class="book">
+      <div class="eyebrow">Next step</div>
+      <h2>Book a call with the team</h2>
+      <p id="bookP">Walk through your score with a BreedWise advisor and build a plan to close your biggest gaps before your next litter.</p>
+      <a class="cta" id="bookBtn" href="#" target="_blank" rel="noopener">Book Your Call →</a>
+      <div class="fine">Free · ~20 minutes · no obligation</div>
+    </div>
+    <button class="again" id="againBtn">Start over</button>
+  </div></div>
+
+  <div class="foot">© BreedWise · Profitable Litter Readiness Scorecard</div>
+
+<script>
+/* ───────────────────────────────────────────────────────────────
+   SETTINGS — Austin: paste Regina's booking calendar URL here.
+   (Calendly / CC360 / GHL booking link — whatever you share.)     */
+var CAL_URL = '';          // e.g. 'https://calendly.com/breedwise/readiness-call'
+var CAPTURE = 'https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/masterclass-optin';
+/* ─────────────────────────────────────────────────────────────── */
+
+/* 15 diagnostic questions — 5 per pillar. Options scored 0–3; the
+   more specific / systemised the answer, the higher the score.      */
+var PILLARS = [
+  {key:'Protect', tag:'Whelping & neonatal'},
+  {key:'Attract', tag:'Buyers & waitlist'},
+  {key:'Profit',  tag:'Business & numbers'}
+];
+var Q = [
+  // ---- PROTECT ----
+  {p:0, q:'How do you time your breedings around ovulation?', s:'', o:[
+    {t:'Progesterone testing to pinpoint the LH surge / ovulation, then counting the due date from there', v:3},
+    {t:'One progesterone test plus physical signs', v:2},
+    {t:'Vaginal cytology or counting days from her first standing heat', v:1},
+    {t:"When she's receptive and the male is interested", v:0}]},
+  {p:0, q:'Do you know your bitch’s due date to within ~24 hours — and your C-section threshold?', s:'', o:[
+    {t:'Yes — dated from the LH surge (63±1 day), with a vet C-section plan and progesterone-drop monitoring near term', v:3},
+    {t:'I count ~63 days from the breeding date', v:1},
+    {t:'I watch for signs as she gets close', v:0}]},
+  {p:0, q:'What is your protocol for a chilled or fading neonate in the first 72 hours?', s:'The puppy is cold, limp or not nursing.', o:[
+    {t:'Weigh every pup q12h, warm-before-feeding rule, tube/supplemental feeding + glucose on hand, vet on call', v:3},
+    {t:'Keep them warm and watch closely', v:1},
+    {t:"I'd call my vet and figure it out in the moment", v:0}]},
+  {p:0, q:'Which health screens does your breed’s parent club recommend — and are BOTH sire and dam cleared on all of them?', s:'', o:[
+    {t:'I can name every recommended test and both dogs are cleared and logged (OFA/registry)', v:3},
+    {t:"I've done the main ones (e.g. hips and a basic DNA panel)", v:1},
+    {t:'The dogs are healthy / the vet checked them', v:0}]},
+  {p:0, q:'Can you name the whelping signs that require immediate veterinary intervention?', s:'e.g. green discharge before the first pup, time between pups, straining without progress.', o:[
+    {t:'Yes — I know the specific time, temperature and discharge thresholds and have a transport plan ready', v:3},
+    {t:'I know a few warning signs', v:1},
+    {t:"I'd rely on my vet to tell me", v:0}]},
+  // ---- ATTRACT ----
+  {p:1, q:'How many approved, deposit-ready buyers are lined up BEFORE your next breeding?', s:'', o:[
+    {t:'More approved, deposited buyers than I expect puppies', v:3},
+    {t:'A few interested people, but no deposits yet', v:1},
+    {t:"I'll find homes after the puppies are born", v:0}]},
+  {p:1, q:'What is your process for qualifying a buyer before you accept a deposit?', s:'', o:[
+    {t:'A written application plus a screening call against criteria I can state', v:3},
+    {t:'A conversation and a gut feeling', v:1},
+    {t:'First come, first served', v:0}]},
+  {p:1, q:'Where do your buyers come from — and can you predict how many inquiries a litter will get?', s:'', o:[
+    {t:'A repeatable source (waitlist / referrals / content) with numbers I can predict', v:3},
+    {t:'Mostly word of mouth or Facebook — unpredictable', v:1},
+    {t:'I post when they arrive and hope', v:0}]},
+  {p:1, q:'What percentage of your deposits actually convert to completed sales — and is your deposit policy in writing?', s:'', o:[
+    {t:'I track the conversion rate and have a written deposit / refund policy', v:3},
+    {t:'Most show up; the policy is informal', v:1},
+    {t:"I don't track it and have nothing in writing", v:0}]},
+  {p:1, q:'Can you state, in one sentence, why a buyer should pay your price over a cheaper breeder of the same breed?', s:'', o:[
+    {t:'Yes — a clear, specific value proposition I use consistently', v:3},
+    {t:'Sort of — health testing and quality', v:1},
+    {t:'I mostly compete on price or availability', v:0}]},
+  // ---- PROFIT ----
+  {p:2, q:'Do you know your all-in cost to produce one weaned puppy?', s:'Stud/AI, progesterone testing, repro vet, C-section reserve, food, vaccines, neonatal care, your time.', o:[
+    {t:'Yes — I know the number within about 10%', v:3},
+    {t:'A rough ballpark', v:1},
+    {t:"I've never actually calculated it", v:0}]},
+  {p:2, q:'Do you set aside a dedicated cash reserve for an emergency C-section or NICU litter before each breeding?', s:'', o:[
+    {t:'Yes — a funded reserve set aside per litter', v:3},
+    {t:"I'd put it on a card and figure it out", v:1},
+    {t:'No reserve', v:0}]},
+  {p:2, q:'How did you set your puppy price?', s:'', o:[
+    {t:'From my costs + market + the value I deliver, reviewed regularly', v:3},
+    {t:'Based on what others in my breed or area charge', v:1},
+    {t:'A round number that felt right', v:0}]},
+  {p:2, q:'After ALL expenses, do you know your actual net profit or loss on your last litter?', s:'', o:[
+    {t:'Yes — I track income and expenses per litter', v:3},
+    {t:'I think I made money', v:1},
+    {t:'No idea', v:0}]},
+  {p:2, q:'Is your program set up as a business?', s:'Separate finances, records for taxes, written contracts, applicable licensing.', o:[
+    {t:'Yes — business banking, bookkeeping, written contracts and compliant licensing', v:3},
+    {t:'Some of it (contracts OR records, not all)', v:1},
+    {t:'No — it runs on personal cash and handshakes', v:0}]}
+];
+
+var DRAFT='bw-litter-readiness-draft', RESULT='bw-litter-readiness-result';
+var answers = new Array(Q.length).fill(null);
+
+// prefill name/email from the registration link, e.g. ?n=Jane&e=jane@x.com
+(function(){
+  var p=new URLSearchParams(location.search);
+  if(p.get('n')) document.getElementById('qn').value=p.get('n');
+  if(p.get('e')) document.getElementById('qe').value=p.get('e');
+})();
+
+// restore draft
+try{var d=JSON.parse(localStorage.getItem(DRAFT)||'null');if(d){if(d.answers)answers=d.answers.slice(0,Q.length);if(d.n)document.getElementById('qn').value=d.n;if(d.e)document.getElementById('qe').value=d.e;}}catch(e){}
+
+// render questions grouped by pillar
+(function(){
+  var host=document.getElementById('qlist'), html='', shown={};
+  var pcolors=['var(--green)','var(--gold)','var(--blue)'];
+  Q.forEach(function(q,i){
+    if(!shown[q.p]){ shown[q.p]=1;
+      html+='<div class="pgroup"><div class="phead" style="--c:'+pcolors[q.p]+'"><span class="pn">0'+(q.p+1)+'</span><span><div style="font-weight:700;color:'+pcolors[q.p]+'">'+PILLARS[q.p].key+'</div><div class="pt">'+PILLARS[q.p].tag+'</div></span></div>';
+    }
+    html+='<div class="q" data-i="'+i+'"><div class="qx">'+(i+1)+'. '+q.q+'</div>'+(q.s?'<div class="qs">'+q.s+'</div>':'')+'<div class="opts">';
+    q.o.forEach(function(o,j){
+      html+='<label class="opt"><input type="radio" name="q'+i+'" value="'+o.v+'" data-i="'+i+'" data-j="'+j+'"'+(answers[i]===j?' checked':'')+'><span class="ot">'+o.t+'</span></label>';
+    });
+    html+='</div></div>';
+    // close group before next pillar or at end
+    if(i===Q.length-1 || Q[i+1].p!==q.p) html+='</div>';
+  });
+  host.innerHTML=html;
+  // mark restored selections
+  host.querySelectorAll('input[type=radio]:checked').forEach(function(r){r.closest('.opt').classList.add('sel');});
+  host.addEventListener('change',function(e){
+    var r=e.target; if(r.type!=='radio')return;
+    var i=+r.getAttribute('data-i'), j=+r.getAttribute('data-j');
+    answers[i]=j;
+    var q=r.closest('.q'); q.querySelectorAll('.opt').forEach(function(o){o.classList.remove('sel');});
+    r.closest('.opt').classList.add('sel');
+    updateProgress(); saveDraft();
+  });
+})();
+
+function answeredCount(){return answers.filter(function(a){return a!==null;}).length;}
+function updateProgress(){
+  var n=answeredCount(), pct=Math.round(n/Q.length*100);
+  document.getElementById('pbar').style.width=pct+'%';
+  document.getElementById('plab').textContent=n+' of '+Q.length+' answered';
+  document.getElementById('ppct').textContent=pct+'%';
+  document.getElementById('seeBtn').disabled = n<Q.length;
+}
+var saveT;
+function saveDraft(){clearTimeout(saveT);saveT=setTimeout(function(){
+  try{localStorage.setItem(DRAFT,JSON.stringify({answers:answers,n:val('qn'),e:val('qe')}));}catch(e){}
+},300);}
+function val(id){return (document.getElementById(id).value||'').trim();}
+['qn','qe'].forEach(function(id){document.getElementById(id).addEventListener('input',saveDraft);});
+window.addEventListener('pagehide',saveDraft);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')saveDraft();});
+updateProgress();
+
+var emailRe=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+document.getElementById('seeBtn').addEventListener('click',function(){
+  var err=document.getElementById('qerr'); err.textContent='';
+  var name=val('qn'), email=val('qe');
+  if(!name){err.textContent='Please add your first name at the top.';scrollTo({top:0,behavior:'smooth'});return;}
+  if(!emailRe.test(email)){err.textContent='Please add a valid email at the top.';scrollTo({top:0,behavior:'smooth'});return;}
+  if(answeredCount()<Q.length){err.textContent='Please answer all 15 questions.';return;}
+  showResult(name,email);
+});
+
+function band(pct){
+  if(pct>=80) return {t:'Litter-Ready',  c:'var(--green)', h:"You're running a real operation. The call is about sharpening the edges and scaling what already works."};
+  if(pct>=60) return {t:'Nearly Ready',  c:'var(--gold-2)',h:"Strong foundation with a few clear gaps. Close them and your next litter is on solid ground."};
+  if(pct>=35) return {t:'Getting There', c:'var(--gold)', h:"The passion is there — the systems aren't yet. This is exactly the stage the team can accelerate."};
+  return             {t:'Foundations First',c:'var(--red)', h:"There are important gaps to close before your next litter. Better to find them now than mid-whelp."};
+}
+
+function showResult(name,email){
+  // per-pillar + total
+  var per=[0,0,0], max=[0,0,0];
+  Q.forEach(function(q,i){ per[q.p]+=q.o[answers[i]].v; max[q.p]+=3; });
+  var total=per[0]+per[1]+per[2], maxTotal=max[0]+max[1]+max[2];
+  var pct=Math.round(total/maxTotal*100);
+  var pp=[0,1,2].map(function(k){return Math.round(per[k]/max[k]*100);});
+  var b=band(pct);
+
+  document.getElementById('rScore').textContent=pct;
+  var be=document.getElementById('rBand'); be.textContent=b.t; be.style.color=b.c;
+  document.getElementById('rHead').textContent=b.h;
+  ['rp0','rp1','rp2'].forEach(function(id,k){document.getElementById(id).textContent=pp[k];});
+  ['rb0','rb1','rb2'].forEach(function(id,k){document.getElementById(id).style.width=pp[k]+'%';});
+
+  // biggest gaps = up to 3 lowest-scored questions
+  var ranked=Q.map(function(q,i){return {i:i,v:q.o[answers[i]].v,q:q.q,p:q.p};})
+              .filter(function(x){return x.v<3;}).sort(function(a,c){return a.v-c.v;}).slice(0,3);
+  var pcolors=['Protect','Attract','Profit'];
+  var gl=document.getElementById('gapList');
+  if(ranked.length){
+    gl.innerHTML=ranked.map(function(x){return '<div class="gap"><span class="gi">!</span><span class="gt"><b style="color:var(--ink)">'+pcolors[x.p]+':</b> '+x.q+'</span></div>';}).join('');
+  }else{
+    document.getElementById('gapsBox').style.display='none';
+  }
+
+  // book CTA
+  var bb=document.getElementById('bookBtn');
+  bb.href = CAL_URL || '#';
+  if(!CAL_URL){ bb.addEventListener('click',function(e){e.preventDefault();}); bb.textContent='Book Your Call (calendar coming soon)'; }
+
+  // show
+  document.getElementById('quiz').style.display='none';
+  document.getElementById('result').style.display='block';
+  scrollTo({top:0,behavior:'smooth'});
+
+  try{localStorage.setItem(RESULT,JSON.stringify({name:name,email:email,pct:pct,band:b.t,pillars:pp,ts:Date.now()}));localStorage.removeItem(DRAFT);}catch(e){}
+
+  // best-effort: mark completion in the funnel (they're already a registrant)
+  try{
+    fetch(CAPTURE,{method:'POST',headers:{'Content-Type':'application/json'},keepalive:true,
+      body:JSON.stringify({name:name,email:email,source:'Profitable Litter Readiness Scorecard',page:location.href,
+        readiness_score:pct, readiness_band:b.t, readiness_pillars:{protect:pp[0],attract:pp[1],profit:pp[2]}})});
+  }catch(e){}
+}
+
+document.getElementById('againBtn').addEventListener('click',function(){
+  answers=new Array(Q.length).fill(null);
+  try{localStorage.removeItem(DRAFT);localStorage.removeItem(RESULT);}catch(e){}
+  location.reload();
+});
+</script>
+</body>
+</html>
