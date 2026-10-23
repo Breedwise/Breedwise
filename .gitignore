@@ -123,3 +123,8 @@
 
 # --- Regina candidate-facing offer ---
 !/regina-offer.html
+
+# --- Profitable Litter Blueprint assets ---
+!/plb/
+!/plb/*.jpg
+!/plb/*.webp

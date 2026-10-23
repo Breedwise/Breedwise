@@ -214,7 +214,7 @@ var FN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/masterclass-optin'
 var EVENT_DATE='';   // e.g. 'Thursday, November 13'
 var EVENT_TIME='';   // e.g. '7:00 PM CT'
 /* Drop in photo URLs here when ready — each fills its slot. Leave blank to show the labeled placeholder. */
-var PHOTOS={ austin:'', fontaine:'', moment:'' };
+var PHOTOS={ austin:'plb/austin.jpg', fontaine:'plb/fontaine.jpg', moment:'plb/community.webp' };
 (function(){
   if(EVENT_DATE){ document.getElementById('evtLine').textContent='Live online · '+EVENT_DATE+(EVENT_TIME?' · '+EVENT_TIME:''); }
   function setImg(id,url){ if(!url)return; var e=document.getElementById(id); if(!e)return; e.style.backgroundImage='url("'+url+'")'; e.textContent=''; }
