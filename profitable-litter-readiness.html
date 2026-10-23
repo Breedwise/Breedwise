@@ -162,11 +162,14 @@
 
 <script>
 /* ───────────────────────────────────────────────────────────────
-   SETTINGS, Austin: paste Regina's booking calendar URL here.
-   (Calendly / CC360 / GHL booking link, whatever you share.)     */
-var CAL_URL = '';          // e.g. 'https://calendly.com/breedwise/readiness-call'
+   BOOKING: the Strategy Call Qualifier (Typeform). It routes
+   "ready/maybe" → Regina's calendar, "just exploring" → Skool.
+   We prefill its hidden fields (first_name/last_name/email/phone/utm_*)
+   from what we have, so leads don't retype. Set '' to show "coming soon". */
+var CAL_URL = 'https://form.typeform.com/to/r44lzVGR';
 var CAPTURE = 'https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/masterclass-optin';
 /* ─────────────────────────────────────────────────────────────── */
+var QP = new URLSearchParams(location.search);
 
 /* 15 diagnostic questions, 5 per pillar. Options scored 0–3; the
    more specific / systemised the answer, the higher the score.      */
@@ -245,11 +248,10 @@ var Q = [
 var DRAFT='bw-litter-readiness-draft', RESULT='bw-litter-readiness-result';
 var answers = new Array(Q.length).fill(null);
 
-// prefill name/email from the registration link, e.g. ?n=Jane&e=jane@x.com
+// prefill name/email from the registration link, e.g. ?n=Jane&e=jane@x.com (optional &ln=&ph= for the qualifier handoff)
 (function(){
-  var p=new URLSearchParams(location.search);
-  if(p.get('n')) document.getElementById('qn').value=p.get('n');
-  if(p.get('e')) document.getElementById('qe').value=p.get('e');
+  if(QP.get('n')) document.getElementById('qn').value=QP.get('n');
+  if(QP.get('e')) document.getElementById('qe').value=QP.get('e');
 })();
 
 // restore draft
@@ -318,6 +320,19 @@ function band(pct){
   return             {t:'Foundations First',c:'var(--red)', h:"There are important gaps to close before your next litter. Better to find them now than mid-whelp."};
 }
 
+// Build the qualifier link with Typeform hidden fields from what we have.
+// first_name + email come from the scorecard; last_name/phone/utm_* ride along
+// if the link that opened this page carried them (?ln=&ph=&utm_source=...).
+function bookURL(name,email){
+  if(!CAL_URL) return '#';
+  var parts=[];
+  function add(k,v){ if(v) parts.push(k+'='+encodeURIComponent(v)); }
+  add('first_name',name); add('last_name',QP.get('ln')||'');
+  add('email',email); add('phone',QP.get('ph')||'');
+  ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function(u){ add(u,QP.get(u)); });
+  return CAL_URL + (parts.length?('#'+parts.join('&')):'');
+}
+
 function showResult(name,email){
   // per-pillar + total
   var per=[0,0,0], max=[0,0,0];
@@ -344,10 +359,10 @@ function showResult(name,email){
     document.getElementById('gapsBox').style.display='none';
   }
 
-  // book CTA
+  // book CTA → Strategy Call Qualifier, prefilled with what we have (Typeform hidden fields via #hash)
   var bb=document.getElementById('bookBtn');
-  bb.href = CAL_URL || '#';
-  if(!CAL_URL){ bb.addEventListener('click',function(e){e.preventDefault();}); bb.textContent='Book Your Call (calendar coming soon)'; }
+  bb.href = bookURL(name,email);
+  if(!CAL_URL){ bb.addEventListener('click',function(e){e.preventDefault();}); bb.textContent='Book Your Call (booking coming soon)'; }
 
   // show
   document.getElementById('quiz').style.display='none';
