@@ -272,6 +272,7 @@ document.getElementById('regForm').addEventListener('submit',function(e){
   var email=document.getElementById('email').value.trim();
   var cc=document.getElementById('cc').value;
   var phoneDigits=document.getElementById('phone').value.replace(/\D/g,'');
+  if(cc!=='1')phoneDigits=phoneDigits.replace(/^0+/,'');   // drop national trunk prefix for E.164 (UK/AU/NZ/etc.)
   var phone=phoneDigits?('+'+cc+phoneDigits):'';
   var breeding=document.getElementById('breeding').value;
   var ig=document.getElementById('instagram').value.trim()
