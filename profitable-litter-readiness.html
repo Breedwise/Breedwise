@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Profitable Litter Readiness Scorecard · BreedWise</title>
-<meta name="description" content="A 15-question readiness check across whelping, buyers and business — see exactly where your biggest gap is before your next litter.">
+<meta name="description" content="A 15-question readiness check across whelping, buyers and business, see exactly where your biggest gap is before your next litter.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -108,7 +108,7 @@
       <div class="eyebrow">Before the masterclass</div>
       <h1>The Profitable Litter Readiness Scorecard</h1>
       <p class="sub">15 questions across your whelping, your buyers and your business. In 4 minutes you'll see exactly where your biggest gap is before your next litter.</p>
-      <p class="note">Answer honestly — this is a private self-diagnosis, not a test to pass. The only person it helps is you.</p>
+      <p class="note">Answer honestly, this is a private self-diagnosis, not a test to pass. The only person it helps is you.</p>
       <div class="idrow">
         <input type="text" id="qn" placeholder="First name" autocomplete="given-name">
         <input type="email" id="qe" placeholder="Email" autocomplete="email">
@@ -133,7 +133,7 @@
     <div class="score-card">
       <div class="eyebrow">Your readiness score</div>
       <div class="score-num"><span id="rScore">0</span><small>/100</small></div>
-      <div class="score-band" id="rBand">—</div>
+      <div class="score-band" id="rBand">·</div>
       <p class="score-head" id="rHead"></p>
       <div class="pillars">
         <div class="pill" style="--c:var(--green)"><div class="pl">Protect</div><div class="pv"><span id="rp0">0</span>%</div><div class="track"><i id="rb0"></i></div></div>
@@ -144,7 +144,7 @@
 
     <div class="gaps" id="gapsBox">
       <h3>Your biggest gaps to close</h3>
-      <div class="gsub">These are the areas you were least sure about — exactly what the team can help you tighten.</div>
+      <div class="gsub">These are the areas you were least sure about, exactly what the team can help you tighten.</div>
       <div id="gapList"></div>
     </div>
 
@@ -162,13 +162,13 @@
 
 <script>
 /* ───────────────────────────────────────────────────────────────
-   SETTINGS — Austin: paste Regina's booking calendar URL here.
-   (Calendly / CC360 / GHL booking link — whatever you share.)     */
+   SETTINGS, Austin: paste Regina's booking calendar URL here.
+   (Calendly / CC360 / GHL booking link, whatever you share.)     */
 var CAL_URL = '';          // e.g. 'https://calendly.com/breedwise/readiness-call'
 var CAPTURE = 'https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/masterclass-optin';
 /* ─────────────────────────────────────────────────────────────── */
 
-/* 15 diagnostic questions — 5 per pillar. Options scored 0–3; the
+/* 15 diagnostic questions, 5 per pillar. Options scored 0–3; the
    more specific / systemised the answer, the higher the score.      */
 var PILLARS = [
   {key:'Protect', tag:'Whelping & neonatal'},
@@ -182,20 +182,20 @@ var Q = [
     {t:'One progesterone test plus physical signs', v:2},
     {t:'Vaginal cytology or counting days from her first standing heat', v:1},
     {t:"When she's receptive and the male is interested", v:0}]},
-  {p:0, q:'Do you know your bitch’s due date to within ~24 hours — and your C-section threshold?', s:'', o:[
-    {t:'Yes — dated from the LH surge (63±1 day), with a vet C-section plan and progesterone-drop monitoring near term', v:3},
+  {p:0, q:'Do you know your bitch’s due date to within ~24 hours, and your C-section threshold?', s:'', o:[
+    {t:'Yes, dated from the LH surge (63±1 day), with a vet C-section plan and progesterone-drop monitoring near term', v:3},
     {t:'I count ~63 days from the breeding date', v:1},
     {t:'I watch for signs as she gets close', v:0}]},
   {p:0, q:'What is your protocol for a chilled or fading neonate in the first 72 hours?', s:'The puppy is cold, limp or not nursing.', o:[
     {t:'Weigh every pup q12h, warm-before-feeding rule, tube/supplemental feeding + glucose on hand, vet on call', v:3},
     {t:'Keep them warm and watch closely', v:1},
     {t:"I'd call my vet and figure it out in the moment", v:0}]},
-  {p:0, q:'Which health screens does your breed’s parent club recommend — and are BOTH sire and dam cleared on all of them?', s:'', o:[
+  {p:0, q:'Which health screens does your breed’s parent club recommend, and are BOTH sire and dam cleared on all of them?', s:'', o:[
     {t:'I can name every recommended test and both dogs are cleared and logged (OFA/registry)', v:3},
     {t:"I've done the main ones (e.g. hips and a basic DNA panel)", v:1},
     {t:'The dogs are healthy / the vet checked them', v:0}]},
   {p:0, q:'Can you name the whelping signs that require immediate veterinary intervention?', s:'e.g. green discharge before the first pup, time between pups, straining without progress.', o:[
-    {t:'Yes — I know the specific time, temperature and discharge thresholds and have a transport plan ready', v:3},
+    {t:'Yes, I know the specific time, temperature and discharge thresholds and have a transport plan ready', v:3},
     {t:'I know a few warning signs', v:1},
     {t:"I'd rely on my vet to tell me", v:0}]},
   // ---- ATTRACT ----
@@ -207,25 +207,25 @@ var Q = [
     {t:'A written application plus a screening call against criteria I can state', v:3},
     {t:'A conversation and a gut feeling', v:1},
     {t:'First come, first served', v:0}]},
-  {p:1, q:'Where do your buyers come from — and can you predict how many inquiries a litter will get?', s:'', o:[
+  {p:1, q:'Where do your buyers come from, and can you predict how many inquiries a litter will get?', s:'', o:[
     {t:'A repeatable source (waitlist / referrals / content) with numbers I can predict', v:3},
-    {t:'Mostly word of mouth or Facebook — unpredictable', v:1},
+    {t:'Mostly word of mouth or Facebook, unpredictable', v:1},
     {t:'I post when they arrive and hope', v:0}]},
-  {p:1, q:'What percentage of your deposits actually convert to completed sales — and is your deposit policy in writing?', s:'', o:[
+  {p:1, q:'What percentage of your deposits actually convert to completed sales, and is your deposit policy in writing?', s:'', o:[
     {t:'I track the conversion rate and have a written deposit / refund policy', v:3},
     {t:'Most show up; the policy is informal', v:1},
     {t:"I don't track it and have nothing in writing", v:0}]},
   {p:1, q:'Can you state, in one sentence, why a buyer should pay your price over a cheaper breeder of the same breed?', s:'', o:[
-    {t:'Yes — a clear, specific value proposition I use consistently', v:3},
-    {t:'Sort of — health testing and quality', v:1},
+    {t:'Yes, a clear, specific value proposition I use consistently', v:3},
+    {t:'Sort of, health testing and quality', v:1},
     {t:'I mostly compete on price or availability', v:0}]},
   // ---- PROFIT ----
   {p:2, q:'Do you know your all-in cost to produce one weaned puppy?', s:'Stud/AI, progesterone testing, repro vet, C-section reserve, food, vaccines, neonatal care, your time.', o:[
-    {t:'Yes — I know the number within about 10%', v:3},
+    {t:'Yes, I know the number within about 10%', v:3},
     {t:'A rough ballpark', v:1},
     {t:"I've never actually calculated it", v:0}]},
   {p:2, q:'Do you set aside a dedicated cash reserve for an emergency C-section or NICU litter before each breeding?', s:'', o:[
-    {t:'Yes — a funded reserve set aside per litter', v:3},
+    {t:'Yes, a funded reserve set aside per litter', v:3},
     {t:"I'd put it on a card and figure it out", v:1},
     {t:'No reserve', v:0}]},
   {p:2, q:'How did you set your puppy price?', s:'', o:[
@@ -233,13 +233,13 @@ var Q = [
     {t:'Based on what others in my breed or area charge', v:1},
     {t:'A round number that felt right', v:0}]},
   {p:2, q:'After ALL expenses, do you know your actual net profit or loss on your last litter?', s:'', o:[
-    {t:'Yes — I track income and expenses per litter', v:3},
+    {t:'Yes, I track income and expenses per litter', v:3},
     {t:'I think I made money', v:1},
     {t:'No idea', v:0}]},
   {p:2, q:'Is your program set up as a business?', s:'Separate finances, records for taxes, written contracts, applicable licensing.', o:[
-    {t:'Yes — business banking, bookkeeping, written contracts and compliant licensing', v:3},
+    {t:'Yes, business banking, bookkeeping, written contracts and compliant licensing', v:3},
     {t:'Some of it (contracts OR records, not all)', v:1},
-    {t:'No — it runs on personal cash and handshakes', v:0}]}
+    {t:'No, it runs on personal cash and handshakes', v:0}]}
 ];
 
 var DRAFT='bw-litter-readiness-draft', RESULT='bw-litter-readiness-result';
@@ -314,7 +314,7 @@ document.getElementById('seeBtn').addEventListener('click',function(){
 function band(pct){
   if(pct>=80) return {t:'Litter-Ready',  c:'var(--green)', h:"You're running a real operation. The call is about sharpening the edges and scaling what already works."};
   if(pct>=60) return {t:'Nearly Ready',  c:'var(--gold-2)',h:"Strong foundation with a few clear gaps. Close them and your next litter is on solid ground."};
-  if(pct>=35) return {t:'Getting There', c:'var(--gold)', h:"The passion is there — the systems aren't yet. This is exactly the stage the team can accelerate."};
+  if(pct>=35) return {t:'Getting There', c:'var(--gold)', h:"The passion is there, the systems aren't yet. This is exactly the stage the team can accelerate."};
   return             {t:'Foundations First',c:'var(--red)', h:"There are important gaps to close before your next litter. Better to find them now than mid-whelp."};
 }
 
