@@ -28,6 +28,9 @@
   .sec-h h2{font-size:clamp(26px,4.5vw,40px);margin-top:10px;color:var(--ink)}
   .sec-h p{color:var(--mid);font-weight:300;margin-top:12px;font-size:15.5px}
   .ph{background:var(--cream2);border:2px dashed var(--purple-line);border-radius:14px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);font-size:13px;font-style:italic;padding:16px;min-height:120px}
+  .heroimg .himg{width:100%;max-height:460px;object-fit:cover;border-radius:16px;display:block;box-shadow:0 14px 40px rgba(0,0,0,.12)}
+  .dog .pht img{width:100%;height:100%;object-fit:cover;display:block}
+  .pimg{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:14px;display:block}
   .btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--body);font-weight:600;font-size:15px;border-radius:44px;padding:14px 28px;cursor:pointer;border:0;transition:.18s}
   .btn.solid{background:var(--purple);color:#fff;box-shadow:0 12px 30px -12px rgba(111,74,158,.6)}
   .btn.solid:hover{background:var(--purple2);transform:translateY(-1px)}
@@ -163,7 +166,7 @@
   </div>
 </header>
 
-<div class="build-note wrap">⚙️ <b>Preview build (shell).</b> Structure, brand, and program details are in place. Sections marked <i>“Add photo / detail”</i> are ready for Dawn's photos and copy — see the Content Checklist we'll send her.</div>
+<div class="build-note wrap">⚙️ <b>Preview build.</b> Dog photos are in (matched from Dawn's texts). Still to add with Dawn: registered names, titles &amp; health testing per dog, her personal story, current litters, and a photo of Dawn/family — see the Content Checklist.</div>
 
 <!-- HERO -->
 <section class="hero" id="home">
@@ -177,7 +180,7 @@
       <a class="btn ghost" href="#dogs">Meet Our Dogs</a>
     </div>
     <div class="faith">✝ Faith · Family · Great Danes ✝</div>
-    <div class="heroimg"><div class="ph">Add hero photo — your dogs, your land, or a favorite litter shot (wide/landscape)</div></div>
+    <div class="heroimg"><img class="himg" src="abr/hero.jpg" alt="ABR Kennels — AKC Great Danes, Home of the Rain Danes"></div>
   </div>
 </section>
 
@@ -219,10 +222,10 @@
   <div class="wrap">
     <div class="sec-h"><div class="eyebrow">Our History</div><h2>Productions</h2><p>Great Danes we've produced and the families who love them. Proof of what our program puts into the world.</p></div>
     <div class="grid">
-      <div class="ph" style="aspect-ratio:1/1">Add past puppy / production photo</div>
-      <div class="ph" style="aspect-ratio:1/1">Add past puppy / production photo</div>
-      <div class="ph" style="aspect-ratio:1/1">Add past puppy / production photo</div>
-      <div class="ph" style="aspect-ratio:1/1">Add past puppy / production photo</div>
+      <img class="pimg" src="abr/prod-1.jpg" alt="An ABR family with their new Great Dane puppy" loading="lazy">
+      <img class="pimg" src="abr/prod-3.jpg" alt="ABR Great Dane puppy" loading="lazy">
+      <img class="pimg" src="abr/prod-2.jpg" alt="An ABR family on go-home day" loading="lazy">
+      <img class="pimg" src="abr/prod-4.jpg" alt="ABR Great Dane puppy" loading="lazy">
     </div>
   </div>
 </section>
@@ -300,14 +303,14 @@
 
   // Dawn's roster (from intake) — names, sex, color. Photos/titles/testing added later.
   var SIRES=[
-    {n:'JIF',c:'Chocolate Fawn'},{n:'Steel',c:'Blue Tan Point'},
-    {n:'Moxley',c:'Lilac Tan Point'},{n:'Barrett',c:'Lilac Harlequin'}
+    {n:'JIF',c:'Chocolate Fawn',p:'abr/sire-jif.jpg'},{n:'Steel',c:'Blue Tan Point',p:'abr/sire-steel.jpg'},
+    {n:'Moxley',c:'Lilac Tan Point',p:'abr/sire-moxley.jpg'},{n:'Barrett',c:'Lilac Harlequin',p:'abr/sire-barrett.jpg'}
   ];
   var DAMS=[
-    {n:'Ava',c:'Harlequin'},{n:'Claribel',c:'Blue Fawn'},
-    {n:'Yankee',c:'Chocolate Harlequin'},{n:'Ridley',c:'Chocolate Tan Point'}
+    {n:'Ava',c:'Harlequin',p:'abr/dam-ava.jpg'},{n:'Claribel',c:'Blue Fawn',p:'abr/dam-claribel.jpg'},
+    {n:'Yankee',c:'Chocolate Harlequin',p:'abr/dam-yankee.jpg'},{n:'Ridley',c:'Chocolate Tan Point',p:'abr/dam-ridley.jpg'}
   ];
-  function dogCard(d,role){return '<div class="dog"><div class="pht"><div class="ph">Add '+d.n+'’s photo</div></div>'+
+  function dogCard(d,role){return '<div class="dog"><div class="pht">'+(d.p?'<img src="'+d.p+'" alt="'+d.n+' — AKC Great Dane" loading="lazy">':'<div class="ph">Add '+d.n+'’s photo</div>')+'</div>'+
     '<div class="body"><div class="nm">'+d.n+'</div><div class="meta">'+role+' · '+d.c+' · AKC Great Dane</div>'+
     '<span class="tag2">'+(role==='Sire'?'Stud available':'Dam')+'</span>'+
     '<div class="todo">Add: registered name · titles · health testing</div></div></div>';}

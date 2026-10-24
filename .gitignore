@@ -129,3 +129,7 @@
 !/plb/*.jpg
 !/plb/*.webp
 !profitable-litter-readiness.html
+
+# --- ABR Kennels site photos ---
+!/abr/
+!/abr/*.jpg
