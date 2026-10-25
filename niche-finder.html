@@ -250,3 +250,19 @@ $('#startOver').addEventListener('click',()=>renderForm());
   if(saved && await sha256(saved)===PASS_HASH){ MEMBER_CODE=saved; openApp(); } else $('#code').focus();
 })();
 </script>
+
+<script>/* bw-universal-autosave v1 — self-contained draft save; restores only empty fields so it never clobbers a tool's own autosave or defaults */(function(){try{
+var KEY='bw-auto:'+location.pathname;
+function flds(){return [].slice.call(document.querySelectorAll('input,textarea,select')).filter(function(e){var t=(e.type||'').toLowerCase();return t!=='password'&&t!=='file'&&t!=='hidden'&&t!=='submit'&&t!=='button'&&t!=='reset'&&!e.closest('[data-no-autosave]');});}
+function keyOf(e,i){return e.id||e.name||('f'+i);}
+function save(){try{var d={};flds().forEach(function(e,i){var k=keyOf(e,i),t=(e.type||'').toLowerCase();if(t==='checkbox'||t==='radio'){d[k+'::'+e.value]=e.checked;}else{d[k]=e.value;}});localStorage.setItem(KEY,JSON.stringify(d));}catch(_){}}
+function restore(){try{var d=JSON.parse(localStorage.getItem(KEY)||'null');if(!d)return;flds().forEach(function(e,i){var k=keyOf(e,i),t=(e.type||'').toLowerCase();if(t==='checkbox'||t==='radio'){var kk=k+'::'+e.value;if((kk in d)&&d[kk]&&!e.checked){e.checked=true;e.dispatchEvent(new Event('change',{bubbles:true}));}}else if(e.tagName==='SELECT'){if((k in d)&&d[k]&&e.selectedIndex<=0){e.value=d[k];e.dispatchEvent(new Event('change',{bubbles:true}));}}else{if((k in d)&&d[k]&&(e.value===''||e.value===e.defaultValue)){e.value=d[k];e.dispatchEvent(new Event('input',{bubbles:true}));}}});}catch(_){}}
+var t;function deb(){clearTimeout(t);t=setTimeout(save,500);}
+document.addEventListener('input',deb,true);document.addEventListener('change',deb,true);
+function ready(){restore();}
+if(document.readyState==='loading'){window.addEventListener('load',function(){setTimeout(ready,300);});}else{setTimeout(ready,300);}
+var once=false;document.addEventListener('focusin',function(){if(once)return;once=true;setTimeout(restore,50);});
+function flush(){save();}
+window.addEventListener('pagehide',flush);window.addEventListener('beforeunload',flush);
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')flush();});
+}catch(_){}})();</script>
