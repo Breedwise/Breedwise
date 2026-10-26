@@ -119,6 +119,31 @@
   .bcard p{font-size:13px;color:var(--mid);margin-top:5px}
   .ctabtn{display:inline-block;background:var(--grad);color:#1a1206;font-weight:700;font-size:16px;padding:15px 34px;border-radius:12px;cursor:pointer;font-family:var(--body);border:0;margin-top:8px}
   .ctabtn:hover{filter:brightness(1.05)}
+  /* proof: 9:16 video testimonials + quotes */
+  .vgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:900px;margin:28px auto 0}
+  @media(max-width:760px){.vgrid{grid-template-columns:1fr 1fr;max-width:460px}}
+  @media(max-width:400px){.vgrid{grid-template-columns:1fr;max-width:260px}}
+  .vcard{display:flex;flex-direction:column;gap:9px}
+  .vwrap{position:relative;width:100%;padding-top:177.78%;border-radius:14px;overflow:hidden;border:1px solid var(--gold-line);background:#0e0d0b;box-shadow:0 20px 50px -24px rgba(0,0,0,.85)}
+  .vwrap video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .vcap{text-align:center}
+  .vcap .n{font-family:var(--body);font-weight:700;color:var(--gold);font-size:13.5px;line-height:1.25}
+  .vcap .o{font-size:11.5px;color:var(--muted);margin-top:2px}
+  .quotes{display:grid;gap:14px;max-width:820px;margin:22px auto 0}
+  @media(min-width:760px){.quotes{grid-template-columns:repeat(3,1fr)}}
+  .qc{background:linear-gradient(162deg,var(--card),var(--card-2));border:1px solid var(--line);border-radius:13px;padding:18px}
+  .qc .stars{color:var(--gold);font-size:13px;letter-spacing:2px}
+  .qc blockquote{font-size:13.5px;color:var(--mid);font-style:italic;line-height:1.6;margin:8px 0 0}
+  .qc .qn{font-size:12.5px;color:var(--gold-2);font-weight:600;margin-top:10px}
+  .disc-mini{font-size:11px;color:var(--muted);text-align:center;max-width:620px;margin:18px auto 0;line-height:1.5}
+  /* faq */
+  .faq{max-width:720px;margin:26px auto 0;display:flex;flex-direction:column;gap:10px}
+  .faq details{background:linear-gradient(162deg,var(--card),var(--card-2));border:1px solid var(--line);border-radius:12px;padding:0 18px}
+  .faq summary{list-style:none;cursor:pointer;padding:16px 0;font-family:var(--body);font-weight:600;font-size:15px;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:'+';color:var(--gold);font-size:20px;font-weight:400;flex:none}
+  .faq details[open] summary::after{content:'\2212'}
+  .faq details p{font-size:13.5px;color:var(--mid);line-height:1.6;margin:0 0 16px}
   footer{padding:30px 0 50px;text-align:center}
   footer .d{color:var(--muted);font-size:12.5px;max-width:620px;margin:0 auto 14px}
   footer .c{color:rgba(245,242,234,.35);font-size:11.5px;letter-spacing:.04em}
@@ -243,7 +268,25 @@
         <div><div class="nm">Dr. Emmanuel Fontaine<span class="cred">DVM, MSc, PhD, Diplomate ECAR</span></div><div class="rl">Veterinary Reproduction &amp; Neonatal Expert</div><p>Brings veterinary-informed guidance on reproductive preparation, whelping readiness and the critical early days of a litter.</p></div>
       </div>
     </div>
-    <div class="moment"><div class="imgslot" id="ph_moment_ph">Warm, real photo: a healthy litter, a go-home moment, or the two of you with your dogs · landscape ~1600×900</div><img id="ph_moment" class="momentimg" alt="The BreedWise community — breeders and the families they place puppies with" hidden></div>
+    <div class="moment"><div class="imgslot" id="ph_moment_ph">Warm, real photo: a healthy litter, a go-home moment, or the two of you with your dogs · landscape ~1600×900</div><img id="ph_moment" class="momentimg" alt="The BreedWise community: breeders and the families they place puppies with" hidden></div>
+  </div></section>
+
+  <!-- PROOF -->
+  <section><div class="wrap">
+    <div class="sk">Real BreedWise breeders</div>
+    <h2>Breeders doing both: the dogs and the business</h2>
+    <div class="vgrid">
+      <div class="vcard"><div class="vwrap"><video controls playsinline preload="none" poster="videos/cathy-soldout.jpg"><source src="videos/cathy-soldout.mp4" type="video/mp4"></video></div><div class="vcap"><div class="n">Sold the whole litter at $4,000</div><div class="o">Cathy Sjuve · Shoebox Doxies</div></div></div>
+      <div class="vcard"><div class="vwrap"><video controls playsinline preload="none" poster="videos/judith-deposits.jpg"><source src="videos/judith-deposits.mp4" type="video/mp4"></video></div><div class="vcap"><div class="n">Deposits before the puppies were born</div><div class="o">Judith · Contented Puppies</div></div></div>
+      <div class="vcard"><div class="vwrap"><video controls playsinline preload="none" poster="videos/judith-leads.jpg"><source src="videos/judith-leads.mp4" type="video/mp4"></video></div><div class="vcap"><div class="n">50 leads in one day</div><div class="o">Judith · Contented Puppies</div></div></div>
+      <div class="vcard"><div class="vwrap"><video controls playsinline preload="none" poster="videos/cathy-tirekickers.jpg"><source src="videos/cathy-tirekickers.mp4" type="video/mp4"></video></div><div class="vcap"><div class="n">No more tire-kickers</div><div class="o">Cathy Sjuve · Shoebox Doxies</div></div></div>
+    </div>
+    <div class="quotes">
+      <div class="qc"><div class="stars">★★★★★</div><blockquote>"We've bred for over 7 years and knew we were undervaluing our program. Less than a month after joining, we sold a puppy for the highest price in our program's history."</blockquote><div class="qn">Trina &amp; Dion · Breeding 7+ years</div></div>
+      <div class="qc"><div class="stars">★★★★★</div><blockquote>"I've bred for 7 years and never learned anything like this. I started OFA testing, I'm improving my breed, and my clients are paying me three times more than I've ever charged."</blockquote><div class="qn">Jasmin Garcia · Breeding 7 years</div></div>
+      <div class="qc"><div class="stars">★★★★★</div><blockquote>"His first litter since joining sold out at three weeks old, and at the highest price he's ever charged across the board."</blockquote><div class="qn">Mike Page · Thoroughbred Bullies</div></div>
+    </div>
+    <div class="disc-mini">Testimonials are from real BreedWise members. Results are not typical and are not a guarantee of your results.</div>
   </div></section>
 
   <!-- BAND -->
@@ -262,6 +305,20 @@
       <div class="bcard"><h4>Breeding readiness</h4><p>Have you reviewed applicable health screenings, reproduction planning and whelping preparation with appropriate veterinary support?</p></div>
       <div class="bcard"><h4>Buyer readiness</h4><p>Do you have identifiable, appropriately qualified prospective puppy buyers, and a process for following up?</p></div>
       <div class="bcard"><h4>Business readiness</h4><p>Do you understand your expected costs, required reserves and potential financial risks?</p></div>
+    </div>
+  </div></section>
+
+  <!-- FAQ -->
+  <section><div class="wrap">
+    <div class="sk">Questions</div>
+    <h2>Before you reserve your seat</h2>
+    <div class="faq">
+      <details><summary>Is this live, or a recording?</summary><p>It is a live online masterclass with Austin and Dr. Fontaine on Thursday, November 5 at 7:00 PM ET. Bring your questions; we teach in real time.</p></details>
+      <details><summary>What if I can't attend live?</summary><p>Reserve your seat anyway. Attending live is best because you can ask questions, and we will do our best to get registrants a replay, so register and we will keep you in the loop.</p></details>
+      <details><summary>Who is this for?</summary><p>Dedicated breeders who care about their dogs and their standards, whether you are preserving an established breed, improving your current program, or preparing for your first litter.</p></details>
+      <details><summary>Is this just about making money?</summary><p>No. We cover reproductive and whelping preparation, qualified buyer demand, and litter economics together, because a healthy litter and a sustainable business are the same responsibility. You should not have to sacrifice your standards to run a profitable program.</p></details>
+      <details><summary>How much does it cost to attend?</summary><p>Reserve your seat at no cost. Every registrant also gets the Profitable Litter Readiness Scorecard.</p></details>
+      <details><summary>Will you try to sell me something?</summary><p>The masterclass is genuine teaching you can act on whether or not you ever work with us. If it is a fit, we will share how BreedWise can help, with no obligation.</p></details>
     </div>
   </div></section>
 
