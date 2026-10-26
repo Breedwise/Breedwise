@@ -64,7 +64,7 @@
           </select>
         </div>
         <div class="field"><label for="f-msg">Your Message</label><textarea id="f-msg" name="message" placeholder="Tell us about your home and the companion you are hoping for..."></textarea></div>
-        <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input class="hp" type="text" name="hp_field" tabindex="-1" autocomplete="new-password" aria-hidden="true">
         <input type="hidden" name="puppy" id="f-puppy" value="">
         <button type="submit" class="btn gold lg" style="width:100%" id="f-submit">Send My Inquiry</button>
         <p class="formnote" style="text-align:center">Prefer another way? Call, text, or email us below, we answer within 24 hours.</p>
@@ -142,7 +142,7 @@
     }
     form.addEventListener('submit',function(e){
       e.preventDefault();
-      if(form.company && form.company.value){return;}
+      if(form.hp_field && form.hp_field.value){return;}
       var d={name:form.name.value.trim(),email:form.email.value.trim(),phone:form.phone.value.trim(),
              interest:form.interest.value,timing:form.timing.value,message:form.message.value.trim(),puppy:pfield.value};
       if(!d.name||!d.email){alert('Please add your name and email so we can reply.');return;}

@@ -147,7 +147,7 @@
       <h3>Reserve your seat</h3>
       <div class="rs">Register below. We'll send your access link, a reminder before we go live, and your scorecard.</div>
       <form id="regForm" autocomplete="on">
-        <input type="text" class="hp" id="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input type="text" class="hp" id="hp_field" name="hp_field" tabindex="-1" autocomplete="new-password" aria-hidden="true">
         <div class="frow">
           <div class="fld"><input type="text" id="first" placeholder="First name" autocomplete="given-name" required></div>
           <div class="fld"><input type="text" id="last" placeholder="Last name" autocomplete="family-name" required></div>
@@ -306,7 +306,7 @@ document.getElementById('regForm').addEventListener('submit',function(e){
   if(!breeding){msg.textContent='Please tell us how long you’ve been breeding.';return;}
   var btn=document.getElementById('regBtn');btn.disabled=true;btn.textContent='Reserving your seat…';
   var params=utm();var ref=params.ref;delete params.ref;
-  var payload={name:(first+' '+last).trim(),email:email,phone:phone,breeding:breeding,instagram:ig,source:'Profitable Litter Blueprint',page:location.href,utm:params,company:document.getElementById('company').value};
+  var payload={name:(first+' '+last).trim(),email:email,phone:phone,breeding:breeding,instagram:ig,source:'Profitable Litter Blueprint',page:location.href,utm:params,company:document.getElementById('hp_field').value};
   if(ref)payload.ref=ref;
   fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
     .then(function(r){return r.json().catch(function(){return {ok:r.ok};});})

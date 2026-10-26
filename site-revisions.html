@@ -102,7 +102,7 @@
       <div class="card"><textarea id="notes" placeholder="e.g. Please try to have these done before our open house on the 20th."></textarea></div>
     </div>
 
-    <input id="company" class="hp" tabindex="-1" autocomplete="off">
+    <input id="hp_field" name="hp_field" class="hp" tabindex="-1" autocomplete="new-password" aria-hidden="true">
     <button class="cta" id="submit">Send my changes</button>
     <div class="msg" id="msg"></div>
     <div class="draft" id="draft"></div>
@@ -279,13 +279,14 @@ function validate(){
 }
 
 async function submitForm(){
-  if(el('company').value)return;
   var msg=el('msg');msg.className='msg';msg.textContent='';
   var v=validate();
   if(!v.ok){ msg.className='msg err';msg.textContent=v.msg;
     if(v.focus)el(v.focus).focus();
     if(v.el)v.el.scrollIntoView({behavior:'smooth',block:'center'});
     return; }
+  // spam trap — checked AFTER validation so a real person (e.g. caught by browser autofill) is never left stuck silently
+  if(el('hp_field').value){ msg.className='msg err';msg.textContent='We couldn’t verify this submission. Please refresh the page and try again, or text your BreedWise contact.';return; }
   var kennel=el('kennel').value.trim(),email=el('email').value.trim(),name=el('name').value.trim(),phone=el('phone').value.trim(),site=el('site').value.trim();
 
   // flatten files, field = rev-<index> so each photo maps to its change

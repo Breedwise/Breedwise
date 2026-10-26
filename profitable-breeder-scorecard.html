@@ -412,7 +412,7 @@ function renderContact(){
    +'<h1>Where should we send your <span class="u">results</span>?</h1>'
    +'<p class="lead">Your results appear on screen as soon as you finish. Your details stay private.</p>'
    +'<div class="card" style="margin-top:22px;text-align:left">'
-    +'<input type="text" class="hp" id="company" tabindex="-1" autocomplete="off" aria-hidden="true">'
+    +'<input type="text" class="hp" id="hp_field" name="hp_field" tabindex="-1" autocomplete="new-password" aria-hidden="true">'
     +'<div class="row2">'
       +'<div class="fld"><label>First name</label><input type="text" id="first" autocomplete="given-name" required></div>'
       +'<div class="fld"><label>Last name <span style="color:#5b6775">(optional)</span></label><input type="text" id="last" autocomplete="family-name"></div>'
@@ -449,7 +449,7 @@ function submitContact(){
   if(!instagram){msg.style.color='var(--red)';msg.textContent='Please add your Instagram handle so we can follow up.';return;}
   if(!country){msg.style.color='var(--red)';msg.textContent='Please add your country.';return;}
   A.first=first;A.last=document.getElementById('last').value.trim();A.email=email;A.phone=phone;A.instagram=instagram;A.country=country;
-  A.company=document.getElementById('company').value;
+  A.company=document.getElementById('hp_field').value;
   if(!optinSent){optinSent=true;
     try{fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({action:'pb-optin',first:A.first,last:A.last,email:A.email,phone:A.phone,instagram:A.instagram,country:A.country,company:A.company})}).catch(function(){});}catch(e){}

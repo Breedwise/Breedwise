@@ -81,7 +81,7 @@
       <h2>Send me my Scorecard</h2>
       <div class="sub">Enter your details and we'll email it straight to you.</div>
       <form id="f" autocomplete="on">
-        <input type="text" class="hp" id="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input type="text" class="hp" id="hp_field" name="hp_field" tabindex="-1" autocomplete="new-password" aria-hidden="true">
         <div class="row2">
           <div class="fld"><label>First name</label><input type="text" id="first" required></div>
           <div class="fld"><label>Last name</label><input type="text" id="last"></div>
@@ -115,7 +115,7 @@ document.getElementById('f').addEventListener('submit',function(e){
   var phone=(document.getElementById('phone').value||'').trim();
   if(phone.replace(/\D/g,'').length<7){msg.style.color='#ff8178';msg.textContent='Please enter a valid phone number.';return;}
   btn.disabled=true;btn.textContent='Sending…';msg.style.color='var(--muted)';msg.textContent='';
-  var payload={first:document.getElementById('first').value.trim(),last:document.getElementById('last').value.trim(),email:email,phone:phone,company:document.getElementById('company').value};
+  var payload={first:document.getElementById('first').value.trim(),last:document.getElementById('last').value.trim(),email:email,phone:phone,company:document.getElementById('hp_field').value};
   fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
     .then(function(r){return r.json();}).then(function(d){
       if(d&&d.ok){try{sessionStorage.setItem('vo_name',payload.first);sessionStorage.setItem('vo_email',email);}catch(e){}window.location.href='vet-thankyou.html';}

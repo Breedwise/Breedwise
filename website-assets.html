@@ -82,7 +82,7 @@
     <h1>Upload <span class="u">everything</span> for your website</h1>
     <p class="lead">Add your dogs and your litters one by one, with photos for each — plus your brand and your story. The more you give us, the stronger your site. Nothing here is public until you approve it.</p>
 
-    <input type="text" class="hp" id="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <input type="text" class="hp" id="hp_field" name="hp_field" tabindex="-1" autocomplete="new-password" aria-hidden="true">
 
     <div class="sec"><div class="st">About you</div>
       <div class="card">
@@ -367,7 +367,7 @@ restoreDraft();
 el('submit').onclick=submit;
 async function submit(){
   var msg=el('msg');msg.className='msg';msg.textContent='';
-  if(el('company').value)return;
+  if(el('hp_field').value)return;
   var name=el('name').value.trim(),kennel=el('kennel').value.trim(),email=el('email').value.trim(),phone=el('phone').value.trim();
   if(!kennel){msg.className='msg err';msg.textContent='Please add your kennel / program name.';return;}
   if(!emailRe.test(email)){msg.className='msg err';msg.textContent='Please enter a valid email.';return;}

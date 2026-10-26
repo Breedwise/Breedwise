@@ -67,7 +67,7 @@
 
     <div id="form"></div>
 
-    <input id="company" class="hp" tabindex="-1" autocomplete="off">
+    <input id="hp_field" name="hp_field" class="hp" tabindex="-1" autocomplete="new-password" aria-hidden="true">
     <button class="cta" id="submit">Share my answers</button>
     <div class="msg" id="msg"></div>
     <div class="foot">Your answers are private and used only to make the Circle better for everyone.</div>
@@ -131,7 +131,7 @@ function build(){
 build();
 
 async function submit(){
-  if(el('company').value)return;               // honeypot
+  if(el('hp_field').value)return;               // honeypot
   var msg=el('msg');msg.className='msg';msg.textContent='';
   var any=Object.keys(ANS).some(function(k){return ANS[k]&&String(ANS[k]).trim();});
   if(!any){msg.className='msg err';msg.textContent='Add at least one answer before sharing.';window.scrollTo({top:0,behavior:'smooth'});return;}
