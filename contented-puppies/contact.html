@@ -103,8 +103,8 @@
   <script src="cp.js"></script>
   <script>
   (function(){
-    var FN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/puppy-inquiry';
-    var AK='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+    var FN='https://jrfdufemonjhafqyacge.supabase.co/functions/v1/kennel-os-api?key=kos_live_746f9b04ec694842a8c193d582cc1b33';
+    var AK='public';
     function qp(k){try{var v=new URLSearchParams(location.search).get(k);return v?v.replace(/[<>]/g,''):null;}catch(e){return null;}}
     var puppy=qp('puppy'), reserve=qp('reserve'), deposit=qp('deposit'), price=qp('price'), interest=qp('interest');
     var sel=document.getElementById('f-interest'), banner=document.getElementById('puppybanner'),
@@ -147,7 +147,12 @@
              interest:form.interest.value,timing:form.timing.value,message:form.message.value.trim(),puppy:pfield.value};
       if(!d.name||!d.email){alert('Please add your name and email so we can reply.');return;}
       btn.textContent='Sending...'; btn.disabled=true;
-      fetch(FN,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify(d)})
+      var parts=[];
+      if(d.interest){parts.push('Interested in: '+d.interest+(d.puppy?(' ('+d.puppy+')'):''));}
+      if(d.timing){parts.push('Timing: '+d.timing);}
+      if(d.message){parts.push(d.message);}
+      var payload={name:d.name,email:d.email,phone:d.phone,message:parts.join('\n'),source:'Website'};
+      fetch(FN,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify(payload)})
         .then(function(r){return r.ok?r.json():Promise.reject(r);})
         .then(function(){form.style.display='none';done.classList.add('on');done.scrollIntoView({behavior:'smooth',block:'center'});})
         .catch(function(){btn.textContent=reserveMode?'Request to Reserve':'Send My Inquiry';btn.disabled=false;mailtoFallback(d);});
