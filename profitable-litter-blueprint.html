@@ -104,8 +104,10 @@
   .hostc .rl{font-size:12px;color:var(--gold-2);font-weight:600;letter-spacing:.02em;margin-top:2px}
   .hostc p{font-size:13.5px;color:var(--mid);margin-top:8px}
   .moment{margin:30px auto 0;max-width:900px}
-  .moment .imgslot{width:100%;aspect-ratio:16/6;border-radius:16px}
+  .moment .imgslot{width:100%;aspect-ratio:16/9;border-radius:16px}
   @media(max-width:620px){.moment .imgslot{aspect-ratio:4/3}}
+  /* the community photo shows in full (no crop) at its natural aspect ratio */
+  .momentimg{width:100%;height:auto;display:block;border-radius:16px;border:1px solid var(--gold-line)}
   .band{text-align:center;background:var(--band)}
   .band .big{font-family:var(--display);font-weight:400;text-transform:uppercase;letter-spacing:.005em;line-height:1.08;font-size:clamp(22px,5vw,30px);max-width:26ch;margin:0 auto}
   @media(min-width:1000px){.band .big{white-space:nowrap;max-width:none;font-size:clamp(25px,2.8vw,31px)}}
@@ -241,7 +243,7 @@
         <div><div class="nm">Dr. Emmanuel Fontaine<span class="cred">DVM, MSc, PhD, Diplomate ECAR</span></div><div class="rl">Veterinary Reproduction &amp; Neonatal Expert</div><p>Brings veterinary-informed guidance on reproductive preparation, whelping readiness and the critical early days of a litter.</p></div>
       </div>
     </div>
-    <div class="moment"><div class="imgslot" id="ph_moment">Warm, real photo: a healthy litter, a go-home moment, or the two of you with your dogs · landscape ~1600×900</div></div>
+    <div class="moment"><div class="imgslot" id="ph_moment_ph">Warm, real photo: a healthy litter, a go-home moment, or the two of you with your dogs · landscape ~1600×900</div><img id="ph_moment" class="momentimg" alt="The BreedWise community — breeders and the families they place puppies with" hidden></div>
   </div></section>
 
   <!-- BAND -->
@@ -282,7 +284,9 @@ var PHOTOS={ austin:'plb/austin.jpg', fontaine:'plb/fontaine.jpg', moment:'plb/c
   function setImg(id,url){ if(!url)return; var e=document.getElementById(id); if(!e)return; e.style.backgroundImage='url("'+url+'")'; e.textContent=''; }
   setImg('ph_austin',PHOTOS.austin); setImg('ph_austin_sm',PHOTOS.austin);
   setImg('ph_fontaine',PHOTOS.fontaine); setImg('ph_fontaine_sm',PHOTOS.fontaine);
-  setImg('ph_moment',PHOTOS.moment);
+  // community photo renders as a real <img> so the whole image fits (no cropping)
+  (function(){var im=document.getElementById('ph_moment'),ph=document.getElementById('ph_moment_ph');
+    if(im&&PHOTOS.moment){ im.onload=function(){ im.hidden=false; if(ph)ph.style.display='none'; }; im.src=PHOTOS.moment; }})();
 })();
 function utm(){var o={},p=new URLSearchParams(location.search);['utm_source','utm_medium','utm_campaign','utm_content','utm_term','ref'].forEach(function(k){var v=p.get(k);if(v)o[k]=v;});return o;}
 var emailRe=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
@@ -308,15 +312,22 @@ document.getElementById('regForm').addEventListener('submit',function(e){
   var params=utm();var ref=params.ref;delete params.ref;
   var payload={name:(first+' '+last).trim(),email:email,phone:phone,breeding:breeding,instagram:ig,source:'Profitable Litter Blueprint',page:location.href,utm:params,company:document.getElementById('hp_field').value};
   if(ref)payload.ref=ref;
+  // After registering, send them to the Readiness Scorecard (the lead magnet) to prep for the webinar,
+  // carrying their details so the scorecard + its qualifier handoff are pre-filled.
+  var rparams=[];function radd(k,v){if(v)rparams.push(k+'='+encodeURIComponent(v));}
+  radd('n',first);radd('ln',last);radd('e',email);radd('ph',phone);
+  Object.keys(params).forEach(function(k){radd(k,params[k]);});
+  var scorecardURL='profitable-litter-readiness.html'+(rparams.length?('?'+rparams.join('&')):'');
   fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
     .then(function(r){return r.json().catch(function(){return {ok:r.ok};});})
-    .then(function(d){ if(d&&(d.ok||d.action)){ done(first); } else { btn.disabled=false;btn.textContent='Reserve Your Seat →';msg.textContent=(d&&d.error)||'Something went wrong. Please try again.'; } })
+    .then(function(d){ if(d&&(d.ok||d.action)){ done(first,scorecardURL); } else { btn.disabled=false;btn.textContent='Reserve Your Seat →';msg.textContent=(d&&d.error)||'Something went wrong. Please try again.'; } })
     .catch(function(){ btn.disabled=false;btn.textContent='Reserve Your Seat →';msg.textContent='Network error. Please try again.'; });
 });
-function done(first){
+function done(first,next){
   document.getElementById('regCard').innerHTML='<div class="done"><div class="ic">🎉</div><h3>You’re in'+(first?', '+first.replace(/[<>&]/g,''):'')+'!</h3>'
-    +'<p>Check your email for your seat confirmation and your <b>Profitable Litter Readiness Scorecard</b>. We’ll send reminders before we go live.</p></div>';
+    +'<p>Taking you to your <b>Profitable Litter Readiness Scorecard</b> to get ready for the masterclass…</p></div>';
   document.getElementById('regCard').scrollIntoView({behavior:'smooth',block:'center'});
+  if(next){ setTimeout(function(){ location.href=next; }, 1200); }
 }
 </script>
 </body>
