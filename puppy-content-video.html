@@ -42,6 +42,11 @@
   .module .md{font-size:13.5px;color:var(--mid);margin-top:3px;max-width:60ch}
   .vwrap{position:relative;width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;border:1px solid var(--gold-line);background:radial-gradient(120% 120% at 50% 0%,var(--gold-soft),#0b0b0e 72%);box-shadow:0 22px 56px -30px rgba(0,0,0,.9)}
   .vwrap iframe,.vwrap video{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .vlink{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-decoration:none;cursor:pointer}
+  .vlink .play{width:70px;height:70px;border-radius:50%;background:var(--gold-soft);border:1px solid var(--gold-line);display:flex;align-items:center;justify-content:center;transition:transform .15s,background .15s}
+  .vlink .play svg{width:26px;height:26px;fill:var(--gold-2);margin-left:4px}
+  .vlink:hover .play{transform:scale(1.06);background:rgba(205,174,114,.2)}
+  .vlink .vt{font-family:var(--body);font-weight:700;font-size:15px;color:var(--gold-2);letter-spacing:.02em}
   .book{background:linear-gradient(162deg,var(--card),var(--card-2));border:1px solid var(--gold-line);border-radius:18px;padding:32px 24px;text-align:center;margin:40px 0 0}
   .book .sk{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
   .book h2{font-family:var(--display);font-size:clamp(24px,4.2vw,34px);text-transform:uppercase;font-weight:400;margin-top:8px}
@@ -115,10 +120,18 @@ var CAL_URL='https://form.typeform.com/to/MFOGn2eF';   // Academy application ->
   // render modules
   var host=document.getElementById('modules');
   host.innerHTML=MODULES.map(function(m,i){
-    var src=m.yt ? ('https://www.youtube.com/embed/'+m.yt+'?rel=0')
-                 : ('https://drive.google.com/file/d/'+m.drive+'/preview');
-    return '<section class="module"><div class="mh"><div class="no">'+(i+1)+'</div><div><div class="mt">Part '+(i+1)+': '+m.t+'</div><div class="md">'+m.d+'</div></div></div>'
-      +'<div class="vwrap"><iframe src="'+src+'" title="Part '+(i+1)+': '+m.t+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div></section>';
+    var head='<section class="module"><div class="mh"><div class="no">'+(i+1)+'</div><div><div class="mt">Part '+(i+1)+': '+m.t+'</div><div class="md">'+m.d+'</div></div></div>';
+    var player;
+    if(m.yt){
+      // seamless inline player (set yt to switch any module over)
+      player='<div class="vwrap"><iframe src="https://www.youtube.com/embed/'+m.yt+'?rel=0" title="Part '+(i+1)+': '+m.t+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>';
+    } else {
+      // stopgap: open the video in its own tab (Drive embeds do not stream files this large)
+      player='<a class="vwrap vlink" href="https://drive.google.com/file/d/'+m.drive+'/view" target="_blank" rel="noopener">'
+        +'<span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>'
+        +'<span class="vt">Watch Part '+(i+1)+'</span></a>';
+    }
+    return head+player+'</section>';
   }).join('');
   // book a call, prefilled (Typeform hidden fields read from the query string)
   var parts=[];function add(k,v){if(v)parts.push(k+'='+encodeURIComponent(v));}
