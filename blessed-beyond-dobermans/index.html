@@ -183,7 +183,7 @@
   .foot .bottom{max-width:var(--maxw);margin:44px auto 0;padding:24px 24px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:var(--muted);font-size:12px}
   /* reveal */
   .rv{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
-  .rv.in{opacity:1;transform:none}
+  .rv.show{opacity:1;transform:none}
 </style>
 </head>
 <body>
@@ -368,7 +368,7 @@
   var nav=document.getElementById('nav');
   addEventListener('scroll',function(){nav.classList.toggle('scrolled',scrollY>40)});
   // reveal on scroll
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target);}})},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
   document.querySelectorAll('.rv').forEach(function(el,i){el.style.transitionDelay=(Math.min(i%4,3)*0.07)+'s';io.observe(el);});
   // inquiry -> Kennel OS
   var KOS='https://jrfdufemonjhafqyacge.supabase.co/functions/v1/kennel-os-api?key=kos_live_2bc2884f7395483d9808a0af954b36ba';
