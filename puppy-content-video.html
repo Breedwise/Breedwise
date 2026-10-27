@@ -55,6 +55,9 @@
   .book .cta{display:inline-block;margin-top:18px;background:var(--grad);color:#1a1206;font-weight:700;font-size:16px;padding:15px 34px;border-radius:12px;text-decoration:none}
   .book .cta:hover{filter:brightness(1.05)}
   .book .fine{color:var(--muted);font-size:12px;margin-top:12px}
+  .calembed{margin-top:20px;border-radius:12px;overflow:hidden;border:1px solid var(--gold-line)}
+  .calembed iframe{display:block;width:100%;height:660px;border:0;background:#0e0d0b}
+  @media(max-width:600px){.calembed iframe{height:600px}}
   .gets{display:grid;gap:12px;margin-top:22px}
   @media(min-width:680px){.gets{grid-template-columns:repeat(3,1fr)}}
   .get{background:#0e0d0b;border:1px solid var(--line);border-radius:13px;padding:16px 18px;text-align:left}
@@ -86,9 +89,9 @@
     <div class="book">
       <div class="sk">Next step</div>
       <h2>Want us to build it with you?</h2>
-      <p>You have the system. On a call, we will look at your program and map the fastest path to qualified buyers from your content.</p>
-      <a class="cta" id="bookBtn" href="#" target="_blank" rel="noopener">Book a Call →</a>
-      <div class="fine">~20 minutes · no obligation</div>
+      <p>You have the system. Answer a few quick questions below and pick a time, and we will map the fastest path to qualified buyers from your content.</p>
+      <div class="calembed" id="calEmbed"><iframe id="bookFrame" title="Book your call with the BreedWise team" loading="lazy" allow="camera; microphone; autoplay; encrypted-media;"></iframe></div>
+      <div class="fine">~20 minutes · no obligation · trouble loading? <a id="bookBtn" href="#" target="_blank" rel="noopener" style="color:var(--gold-2)">open in a new tab →</a></div>
       <div class="gets">
         <div class="get"><h4>Your content audit</h4><p>Where your current content is losing qualified buyers, and the quickest fixes.</p></div>
         <div class="get"><h4>A 30-day plan</h4><p>Exactly what to shoot and post over your next month to build momentum.</p></div>
@@ -138,7 +141,9 @@ var CAL_URL='https://form.typeform.com/to/MFOGn2eF';   // Academy application ->
   var parts=[];function add(k,v){if(v)parts.push(k+'='+encodeURIComponent(v));}
   add('first_name',name);add('email',email);
   ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function(u){add(u,QP.get(u));});
-  document.getElementById('bookBtn').href=CAL_URL+(parts.length?('?'+parts.join('&')):'');
+  var bookURL=CAL_URL+(parts.length?('?'+parts.join('&')):'');
+  var bf=document.getElementById('bookFrame'); if(bf) bf.src=bookURL;
+  var bb=document.getElementById('bookBtn'); if(bb) bb.href=bookURL;
 })();
 </script>
 </body>

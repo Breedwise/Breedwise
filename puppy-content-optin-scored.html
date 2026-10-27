@@ -50,6 +50,9 @@
   .reg .rs{font-size:12.5px;color:var(--muted);margin:4px 0 16px}
   .fld{margin-bottom:12px}
   .frow{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .frow .fld{margin-bottom:12px}
+  .phonerow{display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:stretch}
+  .phonerow select{width:auto;min-width:92px;padding-right:30px}
   .qlab{display:block;font-size:12.5px;color:var(--gold-2);font-weight:600;margin-bottom:6px}
   .fld input,.fld select{width:100%;background:#0e0d0b;border:1px solid var(--line);border-radius:11px;color:var(--ink);font-family:var(--body);font-size:15px;padding:13px 14px}
   .fld input:focus,.fld select:focus{outline:none;border-color:var(--gold)}
@@ -95,52 +98,43 @@
     </div>
     <div class="reg" id="regCard">
       <h3>Get the Puppy Content Masterclass</h3>
-      <div class="rs">A few quick questions so we can point you to the right next step, then instant access.</div>
+      <div class="rs">Tell us where to send your access and a bit about your program.</div>
       <form id="regForm" autocomplete="on">
         <input type="text" class="hp" id="hp_field" name="hp_field" tabindex="-1" autocomplete="new-password" aria-hidden="true">
-        <div class="fld"><label class="qlab" for="q_tenure">How long have you been breeding?</label>
-          <select id="q_tenure" required>
-            <option value="" disabled selected>Select one</option>
-            <option>Planning my first litter</option>
-            <option>Less than 1 year</option>
-            <option>1-3 years</option>
-            <option>3-5 years</option>
-            <option>5-10 years</option>
-            <option>10+ years</option>
-          </select>
-        </div>
-        <div class="fld"><label class="qlab" for="q_litters">How many litters do you produce a year?</label>
-          <select id="q_litters" required>
-            <option value="" disabled selected>Select one</option>
-            <option>Not yet, planning my first</option>
-            <option>1-2 a year</option>
-            <option>3-5 a year</option>
-            <option>6+ a year</option>
-          </select>
-        </div>
-        <div class="fld"><label class="qlab" for="q_goal">What is your biggest goal right now?</label>
-          <select id="q_goal" required>
-            <option value="" disabled selected>Select one</option>
-            <option>Find qualified buyers and build a waitlist</option>
-            <option>Charge what my program is worth</option>
-            <option>Grow my brand and content</option>
-            <option>Improve my breeding and health program</option>
-            <option>Just getting started</option>
-          </select>
-        </div>
-        <div class="fld"><label class="qlab" for="q_invest">How ready are you to invest in growing your program?</label>
-          <select id="q_invest" required>
-            <option value="" disabled selected>Select one</option>
-            <option>I am ready to invest in growing now</option>
-            <option>In the next few months</option>
-            <option>Just exploring for now</option>
-          </select>
-        </div>
-        <div class="divider">Where to send access</div>
         <div class="frow">
           <div class="fld"><input type="text" id="first" placeholder="First name" autocomplete="given-name" required></div>
-          <div class="fld"><input type="email" id="email" placeholder="Best email" autocomplete="email" required></div>
+          <div class="fld"><input type="text" id="last" placeholder="Last name" autocomplete="family-name" required></div>
         </div>
+        <div class="fld"><input type="email" id="email" placeholder="Best email" autocomplete="email" required></div>
+        <div class="fld phonerow">
+          <select id="cc" aria-label="Country code">
+            <option value="1" selected>🇺🇸 +1</option>
+            <option value="1">🇨🇦 +1</option>
+            <option value="44">🇬🇧 +44</option>
+            <option value="61">🇦🇺 +61</option>
+            <option value="64">🇳🇿 +64</option>
+            <option value="353">🇮🇪 +353</option>
+            <option value="27">🇿🇦 +27</option>
+            <option value="52">🇲🇽 +52</option>
+            <option value="49">🇩🇪 +49</option>
+            <option value="33">🇫🇷 +33</option>
+            <option value="31">🇳🇱 +31</option>
+            <option value="34">🇪🇸 +34</option>
+            <option value="91">🇮🇳 +91</option>
+            <option value="63">🇵🇭 +63</option>
+          </select>
+          <input type="tel" id="phone" placeholder="Phone number" autocomplete="tel" required>
+        </div>
+        <div class="fld"><select id="breeding" required>
+          <option value="" disabled selected>How long have you been breeding?</option>
+          <option value="Not started yet">Planning my first litter</option>
+          <option value="Less than 1 year">Less than 1 year</option>
+          <option value="1–3 years">1–3 years</option>
+          <option value="3–5 years">3–5 years</option>
+          <option value="5–10 years">5–10 years</option>
+          <option value="10+ years">10+ years</option>
+        </select></div>
+        <div class="fld"><input type="text" id="instagram" placeholder="Instagram handle (@yourkennel)" autocomplete="off"></div>
         <button class="cta" id="regBtn" type="submit">Get Instant Access →</button>
         <div class="micro">Four short modules plus a workbook you can run <b>this week</b>.</div>
         <div class="rmsg" id="regMsg"></div>
@@ -168,37 +162,37 @@
 <script>
 var FN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/masterclass-optin';
 var NEXT='puppy-content-video.html';
-/* ===== Lead scoring =====
-   Each answer adds points (max 100). Behavioral points (watching the masterclass,
-   downloading the workbook, booking a call) are added on top in CC360 as they happen.
-   Tune these values freely. */
-var POINTS={
-  q_tenure:{'Planning my first litter':4,'Less than 1 year':8,'1-3 years':12,'3-5 years':16,'5-10 years':18,'10+ years':20},
-  q_litters:{'Not yet, planning my first':5,'1-2 a year':12,'3-5 a year':20,'6+ a year':25},
-  q_goal:{'Find qualified buyers and build a waitlist':25,'Charge what my program is worth':25,'Grow my brand and content':20,'Improve my breeding and health program':15,'Just getting started':8},
-  q_invest:{'I am ready to invest in growing now':30,'In the next few months':18,'Just exploring for now':6}
-};
-function bandFor(score){ return score>=70?'Hot':score>=45?'Warm':'Cold'; }
+/* ===== Lead scoring (on breeding tenure) =====
+   Scores the one qualifying question. Behavioral points (watching the masterclass,
+   downloading the workbook, booking a call) stack on top in CC360. Tune freely. */
+var TENURE_POINTS={'Not started yet':40,'Less than 1 year':50,'1–3 years':65,'3–5 years':75,'5–10 years':85,'10+ years':100};
+function bandFor(score){ return score>=75?'Hot':score>=50?'Warm':'Cold'; }
 (function(){
   function utm(){var o={},p=new URLSearchParams(location.search);['utm_source','utm_medium','utm_campaign','utm_content','utm_term','ref'].forEach(function(k){var v=p.get(k);if(v)o[k]=v;});return o;}
   var emailRe=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-  function val(id){return (document.getElementById(id).value||'').trim();}
   document.getElementById('regForm').addEventListener('submit',function(e){
     e.preventDefault();
     if(document.getElementById('hp_field').value){return;}
     var msg=document.getElementById('regMsg');msg.textContent='';
-    var first=val('first'), email=val('email');
-    var tenure=val('q_tenure'), litters=val('q_litters'), goal=val('q_goal'), invest=val('q_invest');
-    if(!tenure||!litters||!goal||!invest){msg.textContent='Please answer the four questions above.';return;}
+    var first=document.getElementById('first').value.trim();
+    var last=document.getElementById('last').value.trim();
+    var email=document.getElementById('email').value.trim();
+    var cc=document.getElementById('cc').value;
+    var phoneDigits=document.getElementById('phone').value.replace(/\D/g,'');
+    if(cc!=='1')phoneDigits=phoneDigits.replace(/^0+/,'');   // drop national trunk prefix for E.164
+    var phone=phoneDigits?('+'+cc+phoneDigits):'';
+    var breeding=document.getElementById('breeding').value;
+    var ig=document.getElementById('instagram').value.trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i,'').replace(/^@/,'').replace(/[\/?].*$/,'').trim();
     if(!first){msg.textContent='Please add your first name.';return;}
+    if(!last){msg.textContent='Please add your last name.';return;}
     if(!emailRe.test(email)){msg.textContent='Please enter a valid email.';return;}
-    var score=(POINTS.q_tenure[tenure]||0)+(POINTS.q_litters[litters]||0)+(POINTS.q_goal[goal]||0)+(POINTS.q_invest[invest]||0);
+    if(phoneDigits.length<7){msg.textContent='Please enter a valid phone number.';return;}
+    if(!breeding){msg.textContent='Please tell us how long you have been breeding.';return;}
+    var score=TENURE_POINTS[breeding]||0;
     var band=bandFor(score);
     var btn=document.getElementById('regBtn');btn.disabled=true;btn.textContent='Getting your access…';
     var params=utm();var ref=params.ref;delete params.ref;
-    var payload={name:first,email:email,breeding:tenure,source:'Puppy Content Masterclass',page:location.href,utm:params,
-      lead_score:score,lead_band:band,
-      answers:{tenure:tenure,litters_per_year:litters,biggest_goal:goal,readiness_to_invest:invest}};
+    var payload={name:(first+' '+last).trim(),email:email,phone:phone,breeding:breeding,instagram:ig,source:'Puppy Content Masterclass',page:location.href,utm:params,lead_score:score,lead_band:band};
     if(ref)payload.ref=ref;
     var next=NEXT+'?n='+encodeURIComponent(first)+'&e='+encodeURIComponent(email);
     fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
