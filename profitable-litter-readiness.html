@@ -92,6 +92,10 @@
   .book p{color:var(--mid);font-size:15px;margin:10px auto 0;max-width:34rem;text-wrap:balance}
   .book .cta{margin-top:18px;display:inline-block;text-decoration:none}
   .book .fine{color:var(--muted);font-size:12px;margin-top:12px}
+  .idlabel{font-size:12.5px;color:var(--gold-2);font-weight:600;letter-spacing:.02em;margin:0 0 8px;text-align:center}
+  .calembed{margin-top:20px;border-radius:12px;overflow:hidden;border:1px solid var(--gold-line)}
+  .calembed iframe{display:block;width:100%;height:660px;border:0;background:#0e0d0b}
+  @media(max-width:600px){.calembed iframe{height:600px}}
   .again{display:block;margin:20px auto 0;background:none;border:0;color:var(--muted);font-size:12.5px;text-decoration:underline;cursor:pointer}
   .foot{padding:24px 0 50px;text-align:center;color:rgba(245,242,234,.35);font-size:11.5px}
 </style>
@@ -109,9 +113,10 @@
       <h1>The Profitable Litter<br>Readiness Scorecard</h1>
       <p class="sub">15 questions across your whelping, your buyers and your business. In 4 minutes you'll see exactly where your biggest gap is before your next litter.</p>
       <p class="note">Answer honestly, this is a private self-diagnosis, not a test to pass. The only person it helps is you.</p>
+      <div class="idlabel">Enter your name and email to get your score</div>
       <div class="idrow">
-        <input type="text" id="qn" placeholder="First name" autocomplete="given-name">
-        <input type="email" id="qe" placeholder="Email" autocomplete="email">
+        <input type="text" id="qn" placeholder="First name" autocomplete="given-name" required aria-required="true">
+        <input type="email" id="qe" placeholder="Email" autocomplete="email" required aria-required="true">
       </div>
     </div></header>
 
@@ -151,9 +156,9 @@
     <div class="book">
       <div class="eyebrow">Next step</div>
       <h2>Book a call with the team</h2>
-      <p id="bookP">Walk through your score with a BreedWise advisor and build a plan to close your biggest gaps before your next litter.</p>
-      <a class="cta" id="bookBtn" href="#" target="_blank" rel="noopener">Book Your Call →</a>
-      <div class="fine">Free · ~20 minutes · no obligation</div>
+      <p id="bookP">Answer a few quick questions below and pick a time that works. We'll have your scorecard in front of us, so the call goes straight to closing your biggest gaps.</p>
+      <div class="calembed" id="calEmbed"><iframe id="bookFrame" title="Book your call with the BreedWise team" loading="lazy" allow="camera; microphone; autoplay; encrypted-media;"></iframe></div>
+      <div class="fine">~20 minutes · no obligation · trouble loading? <a id="bookBtn" href="#" target="_blank" rel="noopener" style="color:var(--gold-2)">open in a new tab →</a></div>
     </div>
     <button class="again" id="againBtn">Start over</button>
   </div></div>
@@ -251,7 +256,7 @@ var answers = new Array(Q.length).fill(null);
 // restore draft first (answers + any saved name/email)...
 try{var d=JSON.parse(localStorage.getItem(DRAFT)||'null');if(d){if(d.answers)answers=d.answers.slice(0,Q.length);if(d.n)document.getElementById('qn').value=d.n;if(d.e)document.getElementById('qe').value=d.e;}}catch(e){}
 
-// ...then let the registration link (?n=&e=, optional &ln=&ph= for the qualifier handoff) take precedence — it's authoritative.
+// ...then let the registration link (?n=&e=, optional &ln=&ph= for the qualifier handoff) take precedence, it's authoritative.
 (function(){
   if(QP.get('n')) document.getElementById('qn').value=QP.get('n');
   if(QP.get('e')) document.getElementById('qe').value=QP.get('e');
@@ -292,14 +297,18 @@ function updateProgress(){
   document.getElementById('pbar').style.width=pct+'%';
   document.getElementById('plab').textContent=n+' of '+Q.length+' answered';
   document.getElementById('ppct').textContent=pct+'%';
-  document.getElementById('seeBtn').disabled = n<Q.length;
+  var ready = n>=Q.length && val('qn') && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val('qe'));
+  document.getElementById('seeBtn').disabled = !ready;
+  var hint=document.getElementById('qerr');
+  if(n>=Q.length && !ready){ hint.textContent='Add your first name and a valid email at the top to see your score.'; }
+  else if((hint.textContent||'').indexOf('Add your')===0){ hint.textContent=''; }
 }
 var saveT;
 function saveDraft(){clearTimeout(saveT);saveT=setTimeout(function(){
   try{localStorage.setItem(DRAFT,JSON.stringify({answers:answers,n:val('qn'),e:val('qe')}));}catch(e){}
 },300);}
 function val(id){return (document.getElementById(id).value||'').trim();}
-['qn','qe'].forEach(function(id){document.getElementById(id).addEventListener('input',saveDraft);});
+['qn','qe'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){saveDraft();updateProgress();});});
 window.addEventListener('pagehide',saveDraft);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')saveDraft();});
 updateProgress();
 
@@ -359,10 +368,11 @@ function showResult(name,email){
     document.getElementById('gapsBox').style.display='none';
   }
 
-  // book CTA → Strategy Call Qualifier, prefilled with what we have (Typeform hidden fields via #hash)
-  var bb=document.getElementById('bookBtn');
-  bb.href = bookURL(name,email);
-  if(!CAL_URL){ bb.addEventListener('click',function(e){e.preventDefault();}); bb.textContent='Book Your Call (booking coming soon)'; }
+  // booking: inline qualifier form that routes into the calendar, prefilled with what we have
+  var url=bookURL(name,email);
+  var bf=document.getElementById('bookFrame'); if(bf) bf.src=url;
+  var bb=document.getElementById('bookBtn'); if(bb) bb.href=url;
+  if(!CAL_URL){ var ce=document.getElementById('calEmbed'); if(ce) ce.style.display='none'; if(bb){bb.textContent='booking coming soon';bb.removeAttribute('href');} }
 
   // show
   document.getElementById('quiz').style.display='none';
