@@ -79,7 +79,7 @@
 <body>
   <nav><div class="wrap in">
     <span class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></span>
-    <span class="navtag">Breeder Playbook</span>
+    <span class="navtag">Video Masterclass</span>
   </div></nav>
 
   <header class="hero"><div class="wrap"><div class="grid">
@@ -94,15 +94,15 @@
       </ul>
     </div>
     <div class="reg" id="regCard">
-      <h3>Get the Puppy Content Playbook</h3>
-      <div class="rs">17 pages. Tell us where to send it.</div>
+      <h3>Get the Puppy Content Masterclass</h3>
+      <div class="rs">4 training videos + the workbook. Tell us where to send access.</div>
       <form id="regForm" autocomplete="on">
         <input type="text" class="hp" id="hp_field" name="hp_field" tabindex="-1" autocomplete="new-password" aria-hidden="true">
         <div class="fld"><input type="text" id="first" placeholder="First name" autocomplete="given-name" required></div>
         <div class="fld"><input type="email" id="email" placeholder="Best email" autocomplete="email" required></div>
         <div class="fld"><input type="text" id="instagram" placeholder="Instagram handle (optional)" autocomplete="off"></div>
-        <button class="cta" id="regBtn" type="submit">Send Me the Playbook →</button>
-        <div class="micro">Mindset, setup, angles and a posting plan you can run <b>this week</b>.</div>
+        <button class="cta" id="regBtn" type="submit">Get Instant Access →</button>
+        <div class="micro">Four short modules plus a workbook you can run <b>this week</b>.</div>
         <div class="rmsg" id="regMsg"></div>
       </form>
     </div>
@@ -110,7 +110,7 @@
 
   <section><div class="wrap">
     <div class="sk">What's inside</div>
-    <h2>Six parts, one content engine</h2>
+    <h2>Four video modules, plus the workbook</h2>
     <div class="inside">
       <div class="ic-card"><div class="no">01</div><h4>Mindset</h4><p>Why content is the most leveraged work a breeder can do, and how to think about it without burning out.</p></div>
       <div class="ic-card"><div class="no">02</div><h4>Environment</h4><p>Light, background and a simple setup that makes your puppies look their best, every time.</p></div>
@@ -149,15 +149,15 @@ var NEXT='puppy-content-video.html';
     var ig=document.getElementById('instagram').value.trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i,'').replace(/^@/,'').replace(/[\/?].*$/,'').trim();
     if(!first){msg.textContent='Please add your first name.';return;}
     if(!emailRe.test(email)){msg.textContent='Please enter a valid email.';return;}
-    var btn=document.getElementById('regBtn');btn.disabled=true;btn.textContent='Sending your playbook…';
+    var btn=document.getElementById('regBtn');btn.disabled=true;btn.textContent='Getting your access…';
     var params=utm();var ref=params.ref;delete params.ref;
     var payload={name:first,email:email,instagram:ig,source:'Puppy Content Playbook',page:location.href,utm:params};
     if(ref)payload.ref=ref;
     var next=NEXT+'?n='+encodeURIComponent(first)+'&e='+encodeURIComponent(email);
     fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
       .then(function(r){return r.json().catch(function(){return {ok:r.ok};});})
-      .then(function(d){ if(d&&(d.ok||d.action)){ location.href=next; } else { btn.disabled=false;btn.textContent='Send Me the Playbook →';msg.textContent=(d&&d.error)||'Something went wrong. Please try again.'; } })
-      .catch(function(){ btn.disabled=false;btn.textContent='Send Me the Playbook →';msg.textContent='Network error. Please try again.'; });
+      .then(function(d){ if(d&&(d.ok||d.action)){ location.href=next; } else { btn.disabled=false;btn.textContent='Get Instant Access →';msg.textContent=(d&&d.error)||'Something went wrong. Please try again.'; } })
+      .catch(function(){ btn.disabled=false;btn.textContent='Get Instant Access →';msg.textContent='Network error. Please try again.'; });
   });
 })();
 </script>
