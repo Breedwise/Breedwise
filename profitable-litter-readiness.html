@@ -339,7 +339,7 @@ function bookURL(name,email){
   add('first_name',name); add('last_name',QP.get('ln')||'');
   add('email',email); add('phone',QP.get('ph')||'');
   ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function(u){ add(u,QP.get(u)); });
-  return CAL_URL + (parts.length?('#'+parts.join('&')):'');
+  return CAL_URL + (parts.length?('?'+parts.join('&')):'');   // Typeform hidden fields read from the query string
 }
 
 function showResult(name,email){

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Launch Playbook | Profitable Litter Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0a; --band:#111114; --card:#15151a; --card-2:#1b1b21;
+    --line:rgba(245,242,234,.10); --ink:#f5f2ea; --mid:rgba(245,242,234,.74); --muted:rgba(245,242,234,.50);
+    --gold:#cdae72; --gold-2:#dcc185; --gold-soft:rgba(205,174,114,.12); --gold-line:rgba(205,174,114,.28);
+    --grad:linear-gradient(135deg,#e2cb86,#c3a35c); --green:#6dbf90; --blue:#7cc4ff;
+    --display:'Anton',Impact,sans-serif; --body:'Poppins',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  a{color:var(--gold-2)}
+  /* gate */
+  #gate{position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;align-items:center;justify-content:center;padding:24px}
+  .gatebox{max-width:380px;width:100%;text-align:center}
+  .gatebox .mk{width:48px;height:48px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+  .gatebox .mk span{font-family:var(--display);color:#1a1206;font-size:26px}
+  .gatebox h1{font-family:var(--display);font-size:26px;letter-spacing:.04em;text-transform:uppercase;font-weight:400}
+  .gatebox p{color:var(--muted);font-size:13.5px;margin:8px 0 18px}
+  .gatebox input{width:100%;background:#0e0d0b;border:1px solid var(--line);border-radius:11px;color:var(--ink);font-family:var(--body);font-size:15px;padding:13px 14px;text-align:center;letter-spacing:.1em}
+  .gatebox input:focus{outline:none;border-color:var(--gold)}
+  .gatebox button{width:100%;margin-top:10px;background:var(--grad);border:0;border-radius:11px;color:#1a1206;font-weight:700;font-size:15px;padding:13px;cursor:pointer;font-family:var(--body)}
+  .gatebox .err{color:#e0807e;font-size:12.5px;min-height:16px;margin-top:8px}
+  /* header */
+  header.top{border-bottom:1px solid var(--line);background:radial-gradient(900px 400px at 80% -20%,var(--gold-soft),transparent 60%)}
+  .logo{display:flex;align-items:center;gap:10px;padding:18px 0}
+  .logo .mk{width:30px;height:30px;border-radius:8px;background:var(--grad);display:flex;align-items:center;justify-content:center}
+  .logo .mk span{font-family:var(--display);color:#1a1206;font-size:17px}
+  .logo .wm{font-size:13px;letter-spacing:.2em;font-weight:700}.logo .wm b{color:var(--gold)}
+  .logo .tag{margin-left:auto;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .hero{padding:30px 0 34px}
+  .hero .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .hero h1{font-family:var(--display);font-size:clamp(30px,6vw,50px);text-transform:uppercase;letter-spacing:.01em;line-height:1.02;margin-top:10px;font-weight:400}
+  .hero .sub{color:var(--mid);font-size:15px;margin-top:12px;max-width:62ch}
+  .statusbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .pill{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink);background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:20px;padding:7px 13px;font-weight:600}
+  .pill .d{width:8px;height:8px;border-radius:50%;background:var(--green)}
+  /* sections */
+  section{padding:34px 0;border-top:1px solid var(--line)}
+  .sk{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  section h2{font-family:var(--display);font-size:clamp(22px,4vw,30px);text-transform:uppercase;letter-spacing:.01em;font-weight:400;margin-top:8px}
+  section .lead{color:var(--muted);font-size:14.5px;margin-top:8px;max-width:70ch}
+  h3.sub{font-family:var(--body);font-size:16px;font-weight:700;color:var(--gold-2);margin:22px 0 10px}
+  /* checklist */
+  .ck{list-style:none;margin-top:14px;display:flex;flex-direction:column;gap:9px}
+  .ck li{display:flex;gap:11px;align-items:flex-start;background:linear-gradient(162deg,var(--card),var(--card-2));border:1px solid var(--line);border-radius:12px;padding:13px 15px;font-size:14px;color:var(--mid)}
+  .ck li b{color:var(--ink);font-weight:600}
+  .ck .mk{flex:none;width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-top:1px}
+  .ck .done .mk,.ck li.done .mk{background:rgba(109,191,144,.16);color:var(--green);border:1px solid rgba(109,191,144,.4)}
+  .ck li.done{opacity:.82}
+  .ck .todo .mk,.ck li.todo .mk{background:var(--gold-soft);color:var(--gold);border:1px solid var(--gold-line)}
+  .grouplabel{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:22px 0 2px}
+  /* pipeline */
+  .pipe{display:grid;gap:12px;margin-top:18px}
+  @media(min-width:760px){.pipe{grid-template-columns:repeat(5,1fr)}}
+  .stage{background:linear-gradient(162deg,var(--card),var(--card-2));border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:13px;padding:15px 14px}
+  .stage .no{font-family:var(--display);font-size:18px;color:var(--gold)}
+  .stage h4{font-family:var(--body);font-size:14.5px;font-weight:700;margin:3px 0 6px}
+  .stage p{font-size:12px;color:var(--muted);line-height:1.45}
+  .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+  .tagchip{font-size:11.5px;color:var(--gold-2);background:#0e0d0b;border:1px solid var(--gold-line);border-radius:7px;padding:5px 9px;font-family:ui-monospace,Menlo,monospace}
+  .callout{background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:12px;padding:15px 17px;margin-top:18px;font-size:14px;color:var(--ink)}
+  .callout b{color:var(--gold-2)}
+  /* email/sms blocks */
+  .seq{display:flex;flex-direction:column;gap:14px;margin-top:16px}
+  .msg{background:linear-gradient(162deg,var(--card),var(--card-2));border:1px solid var(--line);border-radius:13px;overflow:hidden}
+  .msg .mh{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);background:#0e0d0b}
+  .msg .when{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);font-weight:700;background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:7px;padding:4px 9px}
+  .msg .subj{font-size:13.5px;font-weight:600;color:var(--ink)}
+  .msg .subj span{color:var(--muted);font-weight:500}
+  .msg .body{padding:14px 16px;font-size:13.5px;color:var(--mid);white-space:pre-wrap;line-height:1.6}
+  .msg .body code{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;color:var(--gold-2);background:#0e0d0b;padding:1px 5px;border-radius:5px}
+  .copy{margin-left:auto;background:transparent;border:1px solid var(--gold-line);color:var(--gold-2);border-radius:7px;font-size:11.5px;font-weight:600;padding:5px 11px;cursor:pointer;font-family:var(--body)}
+  .copy:hover{background:var(--gold-soft)}
+  .copy.ok{color:var(--green);border-color:rgba(109,191,144,.4)}
+  /* roles */
+  .roles{display:grid;gap:12px;margin-top:16px}
+  @media(min-width:680px){.roles{grid-template-columns:repeat(2,1fr)}}
+  .role{background:linear-gradient(162deg,var(--card),var(--card-2));border:1px solid var(--line);border-radius:13px;padding:16px 18px}
+  .role .nm{font-family:var(--body);font-size:15.5px;font-weight:700;color:var(--gold-2)}
+  .role .rl{font-size:11.5px;color:var(--gold);font-weight:600;letter-spacing:.03em;margin-top:1px}
+  .role ul{margin:10px 0 0;padding-left:18px}
+  .role li{font-size:13px;color:var(--mid);margin-top:6px}
+  .std{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+  .std .row{display:flex;gap:12px;align-items:baseline;background:#0e0d0b;border:1px solid var(--line);border-radius:10px;padding:11px 14px}
+  .std .k{font-size:12px;font-weight:700;color:var(--gold-2);flex:none;min-width:150px}
+  .std .v{font-size:13px;color:var(--mid)}
+  .steps{counter-reset:s;margin-top:16px;display:flex;flex-direction:column;gap:10px}
+  .steps .s{display:flex;gap:13px;align-items:flex-start;background:linear-gradient(162deg,var(--card),var(--card-2));border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .steps .s::before{counter-increment:s;content:counter(s);flex:none;width:24px;height:24px;border-radius:7px;background:var(--gold-soft);border:1px solid var(--gold-line);color:var(--gold);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+  .steps .s div{font-size:13.5px;color:var(--mid)}
+  .steps .s b{color:var(--ink)}
+  footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);font-size:12px}
+  .toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .toc a{font-size:12.5px;color:var(--mid);text-decoration:none;background:#0e0d0b;border:1px solid var(--line);border-radius:8px;padding:7px 12px}
+  .toc a:hover{border-color:var(--gold-line);color:var(--ink)}
+</style>
+</head>
+<body>
+
+<!-- GATE -->
+<div id="gate">
+  <div class="gatebox">
+    <div class="mk"><span>B</span></div>
+    <h1>Launch Playbook</h1>
+    <p>BreedWise team access only. Enter the team code to continue.</p>
+    <input id="gcode" type="password" placeholder="Team code" autocomplete="off" aria-label="Team code">
+    <button id="gbtn">Unlock</button>
+    <div class="err" id="gerr"></div>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+<header class="top"><div class="wrap">
+  <div class="logo"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span><span class="tag">Team Playbook</span></div>
+  <div class="hero">
+    <div class="eyebrow">Go-live operations</div>
+    <h1>Profitable Litter Blueprint<br>Launch Playbook</h1>
+    <p class="sub">Everything to take the masterclass funnel live and run it: the go-live checklist, one simple pipeline for every lead magnet, the email and SMS sequences to paste into CC360, and who on the team owns what.</p>
+    <div class="statusbar">
+      <span class="pill"><span class="d"></span>Pages built &amp; live on review.breedwise.io</span>
+      <span class="pill"><span class="d" style="background:var(--gold)"></span>Event: Thursday, Nov 5 · 7:00 PM ET</span>
+    </div>
+    <div class="toc">
+      <a href="#golive">1 · Go-live checklist</a>
+      <a href="#pipeline">2 · The one pipeline</a>
+      <a href="#email">3 · Email sequences</a>
+      <a href="#sms">4 · SMS</a>
+      <a href="#sops">5 · Team SOPs</a>
+      <a href="#template">6 · Every lead magnet</a>
+    </div>
+  </div>
+</div></header>
+
+<main class="wrap">
+
+<!-- 1. GO-LIVE -->
+<section id="golive">
+  <div class="sk">Step 1</div>
+  <h2>Go-live checklist</h2>
+  <p class="lead">The funnel is built and serving. Below is what is already done, then the short list that is yours to flip it fully live. Nothing here needs new tools, just connecting what exists.</p>
+
+  <div class="grouplabel">Already done (built &amp; live)</div>
+  <ul class="ck">
+    <li class="done"><span class="mk">✓</span><span><b>Registration page</b> — profitable-litter-blueprint.html captures name, email, required phone, breeding tenure and Instagram, and posts to the <code>masterclass-optin</code> edge function (tags <b>profitable-litter-blueprint</b>, <b>webinar-registrant</b>, <b>lead-magnet</b>), flowing into the Sales OS, CC360 and Close.</span></li>
+    <li class="done"><span class="mk">✓</span><span><b>Opt-in redirects to the lead magnet</b> — after registering, the person is taken straight to the Readiness Scorecard with their details carried in the link, so it prefills.</span></li>
+    <li class="done"><span class="mk">✓</span><span><b>Readiness Scorecard</b> — 15 questions, name and email <b>required</b> to see the score, inline qualifier form that routes into the calendar, completion is posted back with <code>readiness_score</code> and band.</span></li>
+    <li class="done"><span class="mk">✓</span><span><b>Booked / success page</b> — application-received.html reads <code>?booked=1</code> and shows "Your Call Is Booked" with testimonials and the two prep videos.</span></li>
+    <li class="done"><span class="mk">✓</span><span><b>Proof &amp; FAQ</b> live on the registration page, Nov 5 · 7:00 PM ET set, "free" removed per brand.</span></li>
+  </ul>
+
+  <div class="grouplabel">Your turn (to flip it fully live)</div>
+  <ul class="ck">
+    <li class="todo"><span class="mk">1</span><span><b>Pick the public URL.</b> review.breedwise.io is set to <code>noindex</code> (fine for warm traffic and the team). For <b>paid ads / public launch</b>, either remove noindex on these three pages or point a public funnel domain at them. Decide this first, everything else hangs off the live URL.</span></li>
+    <li class="todo"><span class="mk">2</span><span><b>Build one CC360 workflow</b> off the <code>profitable-litter-blueprint</code> tag: send the confirmation email (Section 3A), then the reminder sequence (3B) and SMS (Section 4). This is the only automation you have to build for launch.</span></li>
+    <li class="todo"><span class="mk">3</span><span><b>Connect the calendar.</b> In the Typeform qualifier, confirm the "Yes / Maybe" outcome redirects to <b>Regina's calendar</b> and the "Just exploring" outcome to Skool. Set the calendar's post-booking redirect to <code>application-received.html?booked=1</code>.</span></li>
+    <li class="todo"><span class="mk">4</span><span><b>Verify Typeform prefill.</b> The scorecard now passes hidden fields on the query string (<code>?first_name=&amp;last_name=&amp;email=&amp;phone=&amp;utm_*</code>). Confirm your Typeform has hidden fields with those exact names so the qualifier arrives prefilled.</span></li>
+    <li class="todo"><span class="mk">5</span><span><b>SMS prerequisite.</b> SMS only sends once your CC360 / sub-account number is A2P 10DLC registered and you have consent. The registration form collects phone; make sure the opt-in copy covers SMS consent, then turn on the Section 4 texts.</span></li>
+    <li class="todo"><span class="mk">6</span><span><b>If running paid ads:</b> add the Meta Pixel + CAPI Lead event on the registration page (dedupe browser + server) and a Schedule event on the booked page. Not needed for organic / list launch.</span></li>
+  </ul>
+  <div class="callout"><b>Minimum to go live today:</b> items 1, 2 and 3. Reminders, SMS and ads make it better, but a working page + confirmation email + connected calendar is a live funnel.</div>
+</section>
+
+<!-- 2. PIPELINE -->
+<section id="pipeline">
+  <div class="sk">Step 2</div>
+  <h2>One pipeline for every lead magnet</h2>
+  <p class="lead">Do not build a pipeline per lead magnet. Build <b>one</b> pipeline. Every magnet (this scorecard, the Profitable Breeder Scorecard, Healthy Litter, the Puppy Content Playbook) drops a lead into the same five stages and is told apart by a <b>source tag</b>. One pipeline, one nurture, clean reporting.</p>
+  <div class="pipe">
+    <div class="stage"><div class="no">01</div><h4>New Opt-In</h4><p>Any lead magnet form submitted. Auto-tagged by source.</p></div>
+    <div class="stage"><div class="no">02</div><h4>Magnet Engaged</h4><p>Completed the scorecard / watched the training. Higher intent.</p></div>
+    <div class="stage"><div class="no">03</div><h4>Call Booked</h4><p>Picked a time on Regina's calendar.</p></div>
+    <div class="stage"><div class="no">04</div><h4>Showed / Qualified</h4><p>Attended the call and fits a program.</p></div>
+    <div class="stage"><div class="no">05</div><h4>Won / Nurture</h4><p>Enrolled (Academy / Accelerator), or moved to long-term nurture.</p></div>
+  </div>
+  <div class="tags">
+    <span class="tagchip">source: profitable-litter</span>
+    <span class="tagchip">source: profitable-breeder</span>
+    <span class="tagchip">source: healthy-litter</span>
+    <span class="tagchip">source: puppy-content</span>
+  </div>
+  <div class="callout"><b>The rule:</b> a lead's <b>stage</b> tells you how close they are to a call. Their <b>source tag</b> tells you which magnet brought them in and which first email to send. Move people by stage, segment reports by source. That is the whole system.</div>
+</section>
+
+<!-- 3. EMAIL -->
+<section id="email">
+  <div class="sk">Step 3</div>
+  <h2>Email sequences</h2>
+  <p class="lead">Paste-ready copy. Merge fields are CC360 style. No em-dashes, no "free," BreedWise voice. Swap <code>[SCORECARD LINK]</code>, <code>[JOIN LINK]</code> and <code>[REPLAY LINK]</code> for your live URLs.</p>
+
+  <h3 class="sub">A · Confirmation (send immediately on the profitable-litter-blueprint tag)</h3>
+  <div class="seq">
+    <div class="msg">
+      <div class="mh"><span class="when">T-0 · instant</span><span class="subj">Subject: You're in. Your Readiness Scorecard is inside</span><button class="copy">Copy</button></div>
+      <div class="body">Hi {{contact.first_name}},
+
+You're registered for The Profitable Litter Blueprint with Austin Shanks and Dr. Emmanuel Fontaine.
+
+When: Thursday, November 5 at 7:00 PM ET.
+Add it to your calendar now so you do not miss it: [ADD TO CALENDAR]
+
+Before we go live, take 4 minutes to complete your Profitable Litter Readiness Scorecard. It shows you exactly where your biggest gap is, so on the training we can skip the basics and go straight to what moves your next litter.
+
+Take your scorecard: [SCORECARD LINK]
+
+See you on the 5th,
+The BreedWise Team</div>
+    </div>
+  </div>
+
+  <h3 class="sub">B · Reminder sequence (before the webinar)</h3>
+  <div class="seq">
+    <div class="msg">
+      <div class="mh"><span class="when">T-3 days</span><span class="subj">Subject: 3 days out, and one thing to do first</span><button class="copy">Copy</button></div>
+      <div class="body">Hi {{contact.first_name}},
+
+The Profitable Litter Blueprint is in 3 days: Thursday, Nov 5 at 7:00 PM ET.
+
+If you have not yet, complete your Readiness Scorecard before we go live. The breeders who get the most out of this already know their biggest gap walking in: [SCORECARD LINK]
+
+Talk soon,
+The BreedWise Team</div>
+    </div>
+    <div class="msg">
+      <div class="mh"><span class="when">T-1 day</span><span class="subj">Subject: Tomorrow at 7 PM ET, your seat is reserved</span><button class="copy">Copy</button></div>
+      <div class="body">Hi {{contact.first_name}},
+
+Quick reminder: we go live tomorrow, Thursday Nov 5 at 7:00 PM ET.
+
+Join from a quiet spot with a notepad. We will cover protecting the litter, building a qualified waitlist before the puppies arrive, and the litter economics most breeders never run.
+
+Your join link: [JOIN LINK]
+Not done with your scorecard yet? [SCORECARD LINK]
+
+See you tomorrow,
+The BreedWise Team</div>
+    </div>
+    <div class="msg">
+      <div class="mh"><span class="when">T-2 hours</span><span class="subj">Subject: We go live in 2 hours</span><button class="copy">Copy</button></div>
+      <div class="body">Hi {{contact.first_name}},
+
+The Profitable Litter Blueprint starts in 2 hours (7:00 PM ET).
+
+Here is your join link, save it now: [JOIN LINK]
+
+See you soon,
+The BreedWise Team</div>
+    </div>
+    <div class="msg">
+      <div class="mh"><span class="when">T-0 · live</span><span class="subj">Subject: We're live now, come on in</span><button class="copy">Copy</button></div>
+      <div class="body">Hi {{contact.first_name}},
+
+We are live now. Join us here: [JOIN LINK]
+
+The BreedWise Team</div>
+    </div>
+  </div>
+
+  <h3 class="sub">C · Post-webinar</h3>
+  <div class="seq">
+    <div class="msg">
+      <div class="mh"><span class="when">Attended · +1 hr</span><span class="subj">Subject: Your next step after tonight</span><button class="copy">Copy</button></div>
+      <div class="body">Hi {{contact.first_name}},
+
+Thank you for joining The Profitable Litter Blueprint tonight.
+
+If you want help applying this to your own program, book a call with the team. We will walk through your Readiness Scorecard and build a plan for your next litter: [SCORECARD LINK]
+
+The BreedWise Team</div>
+    </div>
+    <div class="msg">
+      <div class="mh"><span class="when">No-show · +1 hr</span><span class="subj">Subject: Sorry we missed you, here is the replay</span><button class="copy">Copy</button></div>
+      <div class="body">Hi {{contact.first_name}},
+
+We missed you on The Profitable Litter Blueprint tonight. Life happens.
+
+Here is the replay while it is up: [REPLAY LINK]
+And if you have not seen your biggest gap yet, your scorecard is still waiting: [SCORECARD LINK]
+
+The BreedWise Team</div>
+    </div>
+    <div class="msg">
+      <div class="mh"><span class="when">+2 days</span><span class="subj">Subject: The part most breeders get wrong</span><button class="copy">Copy</button></div>
+      <div class="body">Hi {{contact.first_name}},
+
+A successful litter and a profitable breeding business are not the same thing, and the gap between them is almost always the same: no qualified waitlist before the puppies arrive.
+
+That is fixable, and it is exactly what we help breeders build. If you want a plan for your program, book a call: [SCORECARD LINK]
+
+The BreedWise Team</div>
+    </div>
+  </div>
+
+  <h3 class="sub">D · Weekly newsletter (standing nurture for the whole list)</h3>
+  <div class="seq">
+    <div class="msg">
+      <div class="mh"><span class="when">Weekly</span><span class="subj">Template <span>· one insight + one soft CTA</span></span><button class="copy">Copy</button></div>
+      <div class="body">Subject: [One specific idea, e.g. "The waitlist question that filters tire-kickers"]
+
+Hi {{contact.first_name}},
+
+[2 to 4 short paragraphs: one useful, specific idea a serious breeder can use this week. Protecting the litter, attracting qualified buyers, or litter economics. Teach, do not pitch.]
+
+If you want help putting this to work in your program, your Readiness Scorecard is the fastest place to start: [SCORECARD LINK]
+
+The BreedWise Team
+
+(Keep it to one idea. Ship it the same day each week. Rotate Protect / Attract / Profit.)</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. SMS -->
+<section id="sms">
+  <div class="sk">Step 4</div>
+  <h2>SMS</h2>
+  <p class="lead">Short, link-first, and only to registrants who gave a phone with consent. Every message carries an opt-out. Send fewer than you think, timing beats volume.</p>
+  <div class="seq">
+    <div class="msg">
+      <div class="mh"><span class="when">T-1 day</span><span class="subj">Reminder</span><button class="copy">Copy</button></div>
+      <div class="body">{{contact.first_name}}, your Profitable Litter Blueprint seat is set for tomorrow at 7:00 PM ET. Save your link: [JOIN LINK] . Reply STOP to opt out.</div>
+    </div>
+    <div class="msg">
+      <div class="mh"><span class="when">T-2 hours</span><span class="subj">Starting soon</span><button class="copy">Copy</button></div>
+      <div class="body">We go live in 2 hours (7 PM ET). Here is your link: [JOIN LINK] . Reply STOP to opt out.</div>
+    </div>
+    <div class="msg">
+      <div class="mh"><span class="when">T-0 · live</span><span class="subj">Live now</span><button class="copy">Copy</button></div>
+      <div class="body">We are live now, {{contact.first_name}}. Join us: [JOIN LINK]</div>
+    </div>
+    <div class="msg">
+      <div class="mh"><span class="when">No-show · +15 min</span><span class="subj">Replay</span><button class="copy">Copy</button></div>
+      <div class="body">Missed you on the masterclass, {{contact.first_name}}. Replay here while it is up: [REPLAY LINK] . Reply STOP to opt out.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. SOPs -->
+<section id="sops">
+  <div class="sk">Step 5</div>
+  <h2>Team SOPs</h2>
+  <p class="lead">Who owns what, and the standards that keep leads warm. Keep it to these roles, overlap causes dropped balls.</p>
+  <div class="roles">
+    <div class="role">
+      <div class="nm">Regina</div><div class="rl">Setter / phone · owns booked calls</div>
+      <ul>
+        <li>Works the qualifier calls booked off the scorecard.</li>
+        <li>Confirms every new booking and runs the reminder cadence.</li>
+        <li>Qualified fits get booked through to Austin's close call; others are routed to the right next step.</li>
+      </ul>
+    </div>
+    <div class="role">
+      <div class="nm">Austin</div><div class="rl">Closer · Academy &amp; BOSS</div>
+      <ul>
+        <li>Runs the close calls for qualified breeders.</li>
+        <li>Teaches the live masterclass with Dr. Fontaine.</li>
+      </ul>
+    </div>
+    <div class="role">
+      <div class="nm">Daniel</div><div class="rl">DM setter · re-engagement</div>
+      <ul>
+        <li>Follows up no-shows and cold registrants in the DMs.</li>
+        <li>Re-books people who missed their call.</li>
+      </ul>
+    </div>
+    <div class="role">
+      <div class="nm">Yasmin</div><div class="rl">Content</div>
+      <ul>
+        <li>Owns the weekly newsletter and reminder copy.</li>
+        <li>Keeps the replay and promo assets ready for launch week.</li>
+      </ul>
+    </div>
+  </div>
+  <h3 class="sub">Standards</h3>
+  <div class="std">
+    <div class="row"><div class="k">New booked call</div><div class="v">Confirmed same business day, reminders auto-fire at T-1 day and T-1 hour.</div></div>
+    <div class="row"><div class="k">No-show</div><div class="v">Followed up within 24 hours (SMS + DM), one re-book offer.</div></div>
+    <div class="row"><div class="k">Daily</div><div class="v">Check who completed scorecards on the setter-leads dashboard, action the hot ones first.</div></div>
+    <div class="row"><div class="k">Weekly</div><div class="v">Review registrations, show-rate, calls booked and closes at the Monday meeting.</div></div>
+  </div>
+</section>
+
+<!-- 6. TEMPLATE -->
+<section id="template">
+  <div class="sk">Step 6</div>
+  <h2>Launching every other lead magnet</h2>
+  <p class="lead">Same system, every time. When you spin up a new lead magnet, do not reinvent, clone this.</p>
+  <div class="steps">
+    <div class="s"><div><b>Build the capture page</b> and post it to the opt-in function with a new <code>source</code> tag (e.g. <code>source: healthy-litter</code>).</div></div>
+    <div class="s"><div><b>Drop it into the one pipeline</b> at stage 1 (New Opt-In). No new pipeline.</div></div>
+    <div class="s"><div><b>Write one confirmation email</b> that delivers the magnet, then let it join the standing weekly newsletter.</div></div>
+    <div class="s"><div><b>If it has a live event</b>, clone the reminder sequence (Section 3B) and the SMS (Section 4) and swap the date and links.</div></div>
+    <div class="s"><div><b>Report by source tag.</b> Same five stages, so you can compare magnets on one board.</div></div>
+  </div>
+  <div class="callout"><b>That is the whole playbook.</b> One pipeline, source tags, one nurture, a reminder sequence per event. Resist the urge to build a separate system for each magnet, that is what makes funnels rot.</div>
+</section>
+
+</main>
+<footer><div class="wrap">BreedWise internal · Profitable Litter Blueprint launch playbook · keep this link to the team.</div></footer>
+</div>
+
+<script>
+(function(){
+  var CODE='BWTEAM2026';
+  var gate=document.getElementById('gate'), app=document.getElementById('app');
+  function unlock(){ gate.style.display='none'; app.style.display='block'; try{sessionStorage.setItem('mlp_ok','1');}catch(e){} }
+  try{ if(sessionStorage.getItem('mlp_ok')==='1') unlock(); }catch(e){}
+  function tryCode(){
+    var v=(document.getElementById('gcode').value||'').trim();
+    if(v.toUpperCase()===CODE){ unlock(); }
+    else { document.getElementById('gerr').textContent='That code is not right. Check with the team.'; }
+  }
+  document.getElementById('gbtn').addEventListener('click',tryCode);
+  document.getElementById('gcode').addEventListener('keydown',function(e){ if(e.key==='Enter') tryCode(); });
+  // copy buttons
+  document.querySelectorAll('.copy').forEach(function(b){
+    b.addEventListener('click',function(){
+      var body=b.closest('.msg').querySelector('.body');
+      var txt=body.innerText;
+      navigator.clipboard.writeText(txt).then(function(){
+        var o=b.textContent; b.textContent='Copied'; b.classList.add('ok');
+        setTimeout(function(){b.textContent=o;b.classList.remove('ok');},1400);
+      }).catch(function(){});
+    });
+  });
+})();
+</script>
+</body>
+</html>
