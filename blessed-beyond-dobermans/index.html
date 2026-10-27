@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blessed Beyond Dobermans · Exceptional Doberman Pinschers</title>
+<meta name="description" content="Blessed Beyond Dobermans. Twelve years raising exceptional Doberman Pinschers in Pueblo West, Colorado. Embark health tested, extraordinary temperament, unmatched socialization. Lifelong family companions, shipped nationwide.">
+<meta property="og:title" content="Blessed Beyond Dobermans">
+<meta property="og:description" content="Exceptional Temperament. Unmatched Socialization. Twelve years of purpose-bred Doberman Pinschers raised as lifelong family companions.">
+<meta property="og:image" content="assets/hero.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#09090b; --ink-2:#0e0e11; --panel:#141417; --panel-2:#1a1a1f;
+    --line:rgba(236,231,221,.09); --line-2:rgba(236,231,221,.14);
+    --text:#efeae0; --mid:rgba(239,234,224,.70); --muted:rgba(239,234,224,.44);
+    --copper:#d1832f; --copper-lt:#edb878; --rust:#9c5a1e; --gun:#45454c;
+    --copper-grad:linear-gradient(130deg,#f0c389 0%,#dd9748 32%,#c0742b 62%,#8f531b 100%);
+    --copper-sheen:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,0) 42%);
+    --display:'Sora',-apple-system,sans-serif; --body:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    --r:22px; --maxw:1200px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--text);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.035;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .cu{background:var(--copper-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .eyebrow{font-family:var(--body);font-size:11.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--copper-lt);font-weight:600}
+  .glass{background:linear-gradient(165deg,rgba(26,26,31,.72),rgba(14,14,17,.72));border:1px solid var(--line);border-radius:var(--r);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 30px 60px -40px rgba(0,0,0,.9)}
+  /* buttons */
+  .btn{position:relative;display:inline-flex;align-items:center;gap:9px;font-family:var(--body);font-weight:600;font-size:14.5px;letter-spacing:.01em;padding:14px 26px;border-radius:999px;cursor:pointer;border:0;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s;overflow:hidden}
+  .btn.primary{background:var(--copper-grad);color:#1a0f04;box-shadow:0 10px 30px -10px rgba(209,131,47,.6),inset 0 1px 0 rgba(255,255,255,.4)}
+  .btn.primary::after{content:"";position:absolute;inset:0;background:var(--copper-sheen);opacity:.8}
+  .btn.primary:hover{transform:translateY(-2px);box-shadow:0 16px 40px -10px rgba(209,131,47,.75),inset 0 1px 0 rgba(255,255,255,.5)}
+  .btn.ghost{background:rgba(255,255,255,.04);color:var(--text);border:1px solid var(--line-2);backdrop-filter:blur(8px)}
+  .btn.ghost:hover{background:rgba(255,255,255,.08);transform:translateY(-2px)}
+  /* nav */
+  nav{position:fixed;top:0;left:0;right:0;z-index:40;transition:background .3s,border-color .3s,backdrop-filter .3s;border-bottom:1px solid transparent}
+  nav.scrolled{background:rgba(9,9,11,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+  nav .in{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand img{width:42px;height:auto;filter:drop-shadow(0 3px 8px rgba(0,0,0,.5))}
+  .brand .nm{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.02em;line-height:1.05}
+  .brand .nm span{display:block;font-size:9.5px;letter-spacing:.3em;color:var(--copper-lt);font-weight:600}
+  .navlinks{margin-left:auto;display:flex;align-items:center;gap:30px}
+  .navlinks a{font-size:13.5px;color:var(--mid);font-weight:500;transition:color .2s}
+  .navlinks a:hover{color:var(--text)}
+  .navlinks .btn{padding:11px 22px}
+  @media(max-width:860px){.navlinks a:not(.btn){display:none}}
+  /* hero */
+  .hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 0 80px;overflow:hidden}
+  .hero .bg{position:absolute;inset:0;z-index:0}
+  .hero .bg img{width:100%;height:100%;object-fit:cover;object-position:60% 35%;opacity:.5;filter:saturate(1.05) contrast(1.05)}
+  .hero .bg::after{content:"";position:absolute;inset:0;background:
+    radial-gradient(120% 90% at 20% 30%,rgba(9,9,11,.55),rgba(9,9,11,.92) 70%),
+    linear-gradient(180deg,rgba(9,9,11,.75) 0%,rgba(9,9,11,.35) 40%,rgba(9,9,11,.97) 100%)}
+  .hero .glow{position:absolute;z-index:0;width:620px;height:620px;right:-120px;top:4%;border-radius:50%;
+    background:radial-gradient(circle,rgba(209,131,47,.32),transparent 62%);filter:blur(30px);animation:pulse 9s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:.75;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+  .hero .in{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:0 24px;width:100%}
+  .crest{width:118px;height:auto;margin-bottom:26px;filter:drop-shadow(0 12px 30px rgba(0,0,0,.6)) drop-shadow(0 0 24px rgba(209,131,47,.22))}
+  .hero h1{font-family:var(--display);font-weight:800;font-size:clamp(44px,8.2vw,104px);line-height:.96;letter-spacing:-.02em;margin:6px 0 0}
+  .hero .tag{font-family:var(--display);font-weight:600;font-size:clamp(16px,2.4vw,24px);margin-top:22px;color:var(--text);letter-spacing:.01em}
+  .hero .tag b{color:transparent;background:var(--copper-grad);-webkit-background-clip:text;background-clip:text;font-weight:700}
+  .hero .sub{color:var(--mid);font-size:16.5px;max-width:48ch;margin-top:16px;line-height:1.6}
+  .hero .cta{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+  .hero .meta{display:flex;gap:26px;margin-top:42px;flex-wrap:wrap}
+  .hero .meta .m{display:flex;flex-direction:column}
+  .hero .meta .m b{font-family:var(--display);font-size:26px;font-weight:700;color:var(--text)}
+  .hero .meta .m span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+  .hero .meta .m .cu{color:transparent}
+  .scrollcue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:2;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:8px}
+  .scrollcue i{width:1px;height:34px;background:linear-gradient(var(--copper),transparent);animation:drop 2s ease-in-out infinite}
+  @keyframes drop{0%{opacity:0;transform:scaleY(.3);transform-origin:top}50%{opacity:1}100%{opacity:0;transform:scaleY(1);transform-origin:top}}
+  /* marquee */
+  .marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink-2);padding:20px 0;overflow:hidden;white-space:nowrap}
+  .marquee .track{display:inline-flex;gap:50px;animation:scroll 32s linear infinite;will-change:transform}
+  .marquee span{font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--mid);display:inline-flex;align-items:center;gap:50px}
+  .marquee span::after{content:"◆";color:var(--copper);font-size:9px}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+  /* sections */
+  section{position:relative}
+  .sec{padding:clamp(80px,12vw,150px) 0}
+  .sec-h{max-width:720px}
+  .sec-h.center{margin:0 auto;text-align:center}
+  .sec-h h2{font-family:var(--display);font-weight:700;font-size:clamp(30px,5vw,54px);line-height:1.04;letter-spacing:-.015em;margin-top:14px}
+  .sec-h p{color:var(--mid);font-size:16.5px;margin-top:16px;line-height:1.65}
+  /* philosophy */
+  .philo{text-align:center;max-width:960px;margin:0 auto}
+  .philo .big{font-family:var(--display);font-weight:700;font-size:clamp(28px,4.6vw,52px);line-height:1.12;letter-spacing:-.01em}
+  .philo .big .cu{font-weight:800}
+  .philo p{color:var(--mid);font-size:17px;max-width:62ch;margin:26px auto 0;line-height:1.75}
+  /* standard cards */
+  .grid-4{display:grid;gap:18px;margin-top:52px;grid-template-columns:1fr}
+  @media(min-width:680px){.grid-4{grid-template-columns:1fr 1fr}}
+  @media(min-width:1000px){.grid-4{grid-template-columns:repeat(4,1fr)}}
+  .card{padding:30px 26px;border-radius:var(--r)}
+  .card .ic{width:52px;height:52px;border-radius:14px;background:linear-gradient(160deg,rgba(209,131,47,.22),rgba(209,131,47,.06));border:1px solid rgba(209,131,47,.3);display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+  .card .ic svg{width:24px;height:24px;stroke:var(--copper-lt);fill:none;stroke-width:1.7}
+  .card h3{font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:-.01em}
+  .card p{color:var(--mid);font-size:14px;margin-top:9px;line-height:1.6}
+  /* dogs */
+  .dogs{display:grid;gap:18px;margin-top:52px;grid-template-columns:1fr}
+  @media(min-width:760px){.dogs{grid-template-columns:1.3fr 1fr}}
+  .dcard{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);min-height:380px;background:var(--panel)}
+  .dcard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+  .dcard:hover img{transform:scale(1.05)}
+  .dcard .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;letter-spacing:.2em;text-transform:uppercase;background:radial-gradient(120% 120% at 50% 20%,rgba(209,131,47,.08),#0c0c0e 72%)}
+  .dcard .ov{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(9,9,11,.5) 68%,rgba(9,9,11,.95) 100%)}
+  .dcard .info{position:absolute;left:0;right:0;bottom:0;padding:26px;z-index:2}
+  .dcard .info .k{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--copper-lt);font-weight:600}
+  .dcard .info h3{font-family:var(--display);font-weight:700;font-size:26px;margin-top:5px;letter-spacing:-.01em}
+  .dcard .info .d{color:var(--mid);font-size:13.5px;margin-top:4px}
+  .dcard.tall{min-height:380px}
+  @media(min-width:760px){.dcard.tall{grid-row:span 2;min-height:unset}}
+  /* litter / reserve */
+  .reserve{position:relative;border-radius:30px;overflow:hidden;padding:clamp(40px,6vw,72px);border:1px solid var(--line-2);
+    background:linear-gradient(135deg,rgba(26,20,12,.9),rgba(14,14,17,.92));box-shadow:0 40px 80px -50px rgba(0,0,0,.9)}
+  .reserve::before{content:"";position:absolute;right:-120px;top:-80px;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(209,131,47,.22),transparent 64%);filter:blur(20px)}
+  .reserve .inner{position:relative;z-index:2;display:grid;gap:40px;align-items:center}
+  @media(min-width:860px){.reserve .inner{grid-template-columns:1.2fr .8fr}}
+  .reserve h2{font-family:var(--display);font-weight:700;font-size:clamp(28px,4.4vw,46px);line-height:1.05;letter-spacing:-.015em}
+  .reserve .lead{color:var(--mid);font-size:16px;margin-top:16px;max-width:46ch}
+  .litterspecs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+  .litterspecs .s{background:var(--panel);padding:20px 22px}
+  .litterspecs .s .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .litterspecs .s .v{font-family:var(--display);font-weight:600;font-size:19px;margin-top:5px;color:var(--text)}
+  .litterspecs .s .v.cu{color:transparent}
+  .badge-live{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--copper-lt);background:rgba(209,131,47,.12);border:1px solid rgba(209,131,47,.3);border-radius:999px;padding:7px 15px;text-transform:uppercase}
+  .badge-live i{width:7px;height:7px;border-radius:50%;background:var(--copper);box-shadow:0 0 0 3px rgba(209,131,47,.25);animation:blip 2s infinite}
+  @keyframes blip{50%{opacity:.4}}
+  /* process */
+  .steps{display:grid;gap:18px;margin-top:52px;grid-template-columns:1fr}
+  @media(min-width:760px){.steps{grid-template-columns:repeat(3,1fr)}}
+  .step{padding:32px 28px;border-radius:var(--r)}
+  .step .no{font-family:var(--display);font-weight:800;font-size:44px;line-height:1;color:transparent;background:var(--copper-grad);-webkit-background-clip:text;background-clip:text;opacity:.9}
+  .step h3{font-family:var(--display);font-weight:600;font-size:20px;margin-top:14px}
+  .step p{color:var(--mid);font-size:14px;margin-top:8px;line-height:1.6}
+  /* inquire */
+  .inq{display:grid;gap:46px;grid-template-columns:1fr}
+  @media(min-width:900px){.inq{grid-template-columns:1fr 1.05fr}}
+  .inq .left h2{font-family:var(--display);font-weight:700;font-size:clamp(30px,4.6vw,50px);line-height:1.04;letter-spacing:-.015em}
+  .inq .left p{color:var(--mid);font-size:16px;margin-top:16px;max-width:42ch}
+  .contactrow{display:flex;flex-direction:column;gap:14px;margin-top:30px}
+  .contactrow a{display:flex;align-items:center;gap:14px;color:var(--text);font-size:15px;transition:color .2s}
+  .contactrow a:hover{color:var(--copper-lt)}
+  .contactrow .ci{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none}
+  .contactrow .ci svg{width:18px;height:18px;stroke:var(--copper-lt);fill:none;stroke-width:1.7}
+  .contactrow .ci.filled svg{fill:var(--copper-lt);stroke:none}
+  .form{padding:34px}
+  .form h3{font-family:var(--display);font-weight:600;font-size:21px}
+  .form .fdesc{color:var(--muted);font-size:13px;margin:5px 0 20px}
+  .fld{margin-bottom:13px}
+  .fld label{display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;font-weight:500}
+  .fld input,.fld textarea{width:100%;background:rgba(9,9,11,.6);border:1px solid var(--line-2);border-radius:13px;color:var(--text);font-family:var(--body);font-size:15px;padding:14px 15px;transition:border-color .2s,box-shadow .2s}
+  .fld input:focus,.fld textarea:focus{outline:none;border-color:var(--copper);box-shadow:0 0 0 3px rgba(209,131,47,.14)}
+  .fld textarea{resize:vertical;min-height:110px}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+  .form .btn{width:100%;justify-content:center;margin-top:8px;font-size:15.5px;padding:16px}
+  .fmsg{font-size:13px;text-align:center;min-height:16px;margin-top:11px;color:var(--copper-lt)}
+  .hp{position:absolute;left:-9999px}
+  .done{text-align:center;padding:26px 10px}
+  .done .ic{font-size:40px}
+  .done h3{font-family:var(--display);font-weight:700;font-size:23px;margin:10px 0 6px}
+  .done p{color:var(--mid);font-size:14.5px}
+  /* footer */
+  footer{border-top:1px solid var(--line);padding:60px 0 40px;background:var(--ink-2)}
+  .foot{display:grid;gap:34px;grid-template-columns:1fr}
+  @media(min-width:760px){.foot{grid-template-columns:1.4fr 1fr 1fr}}
+  .foot .brand img{width:64px}
+  .foot .brand .nm{font-size:17px}
+  .foot p{color:var(--muted);font-size:13.5px;margin-top:14px;max-width:34ch;line-height:1.65}
+  .foot h4{font-family:var(--display);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--copper-lt);margin-bottom:14px}
+  .foot ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .foot ul a{color:var(--mid);font-size:14px;transition:color .2s}.foot ul a:hover{color:var(--text)}
+  .foot .bottom{max-width:var(--maxw);margin:44px auto 0;padding:24px 24px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:var(--muted);font-size:12px}
+  /* reveal */
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+  .rv.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<nav id="nav"><div class="in">
+  <a class="brand" href="#top"><img src="assets/logo.png" alt="Blessed Beyond Dobermans crest"><span class="nm">Blessed Beyond<span>DOBERMANS</span></span></a>
+  <div class="navlinks">
+    <a href="#philosophy">Philosophy</a>
+    <a href="#standard">The Standard</a>
+    <a href="#dobermans">Our Dobermans</a>
+    <a href="#litter">Available</a>
+    <a class="btn primary" href="#inquire">Inquire</a>
+  </div>
+</div></nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="bg"><img src="assets/hero.jpg" alt="Doberman Pinscher"></div>
+  <div class="glow"></div>
+  <div class="in">
+    <img class="crest rv" src="assets/logo.png" alt="Blessed Beyond Dobermans">
+    <div class="eyebrow rv">Pueblo West, Colorado · Est. 12 Years</div>
+    <h1 class="rv">Blessed Beyond<br><span class="cu">Dobermans</span></h1>
+    <div class="tag rv"><b>Exceptional Temperament.</b> Unmatched Socialization.</div>
+    <p class="sub rv">Purpose-bred American and European Doberman Pinschers, raised in our home and placed as lifelong family companions. Health tested, impeccably socialized, and loved from day one.</p>
+    <div class="cta rv">
+      <a class="btn primary" href="#litter">View Available Puppies →</a>
+      <a class="btn ghost" href="#dobermans">Meet Our Dobermans</a>
+    </div>
+    <div class="meta rv">
+      <div class="m"><b class="cu">12</b><span>Years Breeding</span></div>
+      <div class="m"><b>Embark</b><span>Health Tested</span></div>
+      <div class="m"><b>50</b><span>States Shipped</span></div>
+    </div>
+  </div>
+  <div class="scrollcue"><i></i>Scroll</div>
+</header>
+
+<!-- MARQUEE -->
+<div class="marquee"><div class="track">
+  <span>AKC Registered</span><span>Embark Health Tested</span><span>Exceptional Temperament</span><span>Raised In Our Home</span><span>Unmatched Socialization</span><span>Lifelong Companions</span>
+  <span>AKC Registered</span><span>Embark Health Tested</span><span>Exceptional Temperament</span><span>Raised In Our Home</span><span>Unmatched Socialization</span><span>Lifelong Companions</span>
+</div></div>
+
+<!-- PHILOSOPHY -->
+<section class="sec" id="philosophy"><div class="wrap">
+  <div class="philo rv">
+    <div class="eyebrow">Our Why</div>
+    <div class="big" style="margin-top:18px">We don't raise Dobermans to sell puppies. We raise Dobermans that become <span class="cu">lifelong family companions.</span></div>
+    <p>For twelve years, every decision we make has been in service of one thing: producing Doberman Pinschers with the structure, the health, and above all the temperament to spend a lifetime at the center of your family. Our puppies are born and raised inside our home in Pueblo West, Colorado, handled from their very first days, and placed only with families who will love them the way we do.</p>
+  </div>
+</div></section>
+
+<!-- STANDARD -->
+<section class="sec" id="standard" style="padding-top:0"><div class="wrap">
+  <div class="sec-h center rv">
+    <div class="eyebrow">The Standard</div>
+    <h2>Bred with intention.<br>Raised with devotion.</h2>
+    <p>Nothing here is left to chance. From the pairing to the day they go home, every detail is deliberate.</p>
+  </div>
+  <div class="grid-4">
+    <div class="card glass rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/></svg></div><h3>Temperament First</h3><p>Confident, stable, and deeply affectionate. We breed the character you can trust around your children and build a life around.</p></div>
+    <div class="card glass rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2v6m0 0 3.5 2M12 8 8.5 10M12 22a9 9 0 0 1-9-9c0-3 1.5-5.5 4-7M12 22a9 9 0 0 0 9-9c0-3-1.5-5.5-4-7"/></svg></div><h3>Health, Proven</h3><p>Every parent is Embark DNA tested and health screened. We breed for longevity, soundness, and genetic clarity you can verify.</p></div>
+    <div class="card glass rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg></div><h3>Early Socialization</h3><p>Raised underfoot in our home with sounds, surfaces, people, and handling from day one. They arrive ready for the world.</p></div>
+    <div class="card glass rv"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3.5-6 7-6s7 2 7 6"/></svg></div><h3>Lifetime Support</h3><p>You are never on your own. We mentor our families through every stage, for the entire life of your Doberman.</p></div>
+  </div>
+</div></section>
+
+<!-- DOBERMANS -->
+<section class="sec" id="dobermans" style="padding-top:0"><div class="wrap">
+  <div class="sec-h rv">
+    <div class="eyebrow">The Foundation</div>
+    <h2>Our Dobermans</h2>
+    <p>The dogs behind every litter. Proven temperament, tested health, and lineage we are proud to stand behind.</p>
+  </div>
+  <div class="dogs">
+    <div class="dcard tall rv"><img src="assets/portrait.jpg" alt="Blessed Beyond Doberman"><div class="ov"></div><div class="info"><div class="k">Foundation Sire</div><h3>Muafaza</h3><div class="d">Black &amp; Rust · Embark Health Tested · Exceptional structure and drive</div></div></div>
+    <div class="dcard rv" id="dog-dam"><div class="ph" id="ph-dam">Add Millie Rubi · landscape photo</div><div class="ov"></div><div class="info"><div class="k">Producing Dam</div><h3>Millie Rubi</h3><div class="d">Black &amp; Rust · Health tested · Proven, loving temperament</div></div></div>
+    <div class="dcard rv"><img src="assets/hero.jpg" alt="Blessed Beyond Doberman"><div class="ov"></div><div class="info"><div class="k">Our Home</div><h3>Raised Inside</h3><div class="d">Every puppy begins life in the middle of our family</div></div></div>
+  </div>
+</div></section>
+
+<!-- LITTER / RESERVE -->
+<section class="sec" id="litter" style="padding-top:0"><div class="wrap">
+  <div class="reserve rv"><div class="inner">
+    <div>
+      <div class="badge-live"><i></i>Now Reserving</div>
+      <h2 style="margin-top:18px">A new litter is<br>on the way.</h2>
+      <p class="lead">Millie Rubi is expecting a litter of exceptional Doberman puppies. Reservations are open now. Secure your place on the list and we will walk you through every step from reservation to the day you bring your companion home.</p>
+      <a class="btn primary" href="#inquire" style="margin-top:26px">Request to Reserve →</a>
+    </div>
+    <div class="litterspecs">
+      <div class="s"><div class="k">Dam</div><div class="v">Millie Rubi</div></div>
+      <div class="s"><div class="k">Expected</div><div class="v">September 2026</div></div>
+      <div class="s"><div class="k">Color</div><div class="v">Black &amp; Rust</div></div>
+      <div class="s"><div class="k">Litter Size</div><div class="v">Up to 10 pups</div></div>
+      <div class="s"><div class="k">Investment</div><div class="v cu">From $5,500</div></div>
+      <div class="s"><div class="k">Delivery</div><div class="v">Nationwide</div></div>
+    </div>
+  </div></div>
+</div></section>
+
+<!-- PROCESS -->
+<section class="sec" id="process" style="padding-top:0"><div class="wrap">
+  <div class="sec-h center rv">
+    <div class="eyebrow">How It Works</div>
+    <h2>From inquiry to home</h2>
+  </div>
+  <div class="steps">
+    <div class="step glass rv"><div class="no">01</div><h3>Reach Out</h3><p>Tell us about your family and what you are looking for. We reply quickly, every day from 8am to 8pm.</p></div>
+    <div class="step glass rv"><div class="no">02</div><h3>Reserve</h3><p>Choose your litter and place a reservation. We keep you close through the pregnancy, the whelp, and those first weeks.</p></div>
+    <div class="step glass rv"><div class="no">03</div><h3>Welcome Home</h3><p>Your well-started, socialized puppy comes home to you, with lifetime guidance from us for the road ahead.</p></div>
+  </div>
+</div></section>
+
+<!-- INQUIRE -->
+<section class="sec" id="inquire"><div class="wrap">
+  <div class="inq">
+    <div class="left rv">
+      <div class="eyebrow">Inquire</div>
+      <h2>Start the<br>conversation.</h2>
+      <p>Whether you are ready to reserve or simply have questions, we would love to hear from you. Tell us about your home and the companion you are hoping for.</p>
+      <div class="contactrow">
+        <a href="tel:+17192716865"><span class="ci"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg></span>(719) 271-6865</a>
+        <a href="mailto:todd@blessedbeyonddobermans.com"><span class="ci"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>todd@blessedbeyonddobermans.com</a>
+        <a href="https://www.tiktok.com/@blessed.beyond.dob" target="_blank" rel="noopener"><span class="ci"><svg viewBox="0 0 24 24"><path d="M9 3v12a3 3 0 1 1-3-3M9 3c0 3 2 5 6 5"/></svg></span>@blessed.beyond.dob</a>
+      </div>
+    </div>
+    <div class="form glass rv" id="formCard">
+      <h3>Send an inquiry</h3>
+      <div class="fdesc">We reply right away, every day from 8am to 8pm MT.</div>
+      <form id="inqForm" novalidate>
+        <input class="hp" type="text" name="hp_field" id="hp_field" tabindex="-1" autocomplete="new-password" aria-hidden="true">
+        <div class="frow">
+          <div class="fld"><label for="f-name">Your name</label><input id="f-name" type="text" autocomplete="name" required></div>
+          <div class="fld"><label for="f-phone">Phone</label><input id="f-phone" type="tel" autocomplete="tel"></div>
+        </div>
+        <div class="fld"><label for="f-email">Email</label><input id="f-email" type="email" autocomplete="email" required></div>
+        <div class="fld"><label for="f-msg">Tell us about your family</label><textarea id="f-msg" placeholder="What you are hoping for, timing, any questions..."></textarea></div>
+        <button class="btn primary" id="f-submit" type="submit">Send Inquiry →</button>
+        <div class="fmsg" id="f-msg-out"></div>
+      </form>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="foot">
+    <div>
+      <div class="brand"><img src="assets/logo.png" alt="Blessed Beyond Dobermans crest"><div class="nm">Blessed Beyond<span style="display:block;font-size:10px;letter-spacing:.3em;color:var(--copper-lt);font-weight:600">DOBERMANS</span></div></div>
+      <p>Twelve years raising exceptional Doberman Pinschers as lifelong family companions. Pueblo West, Colorado. Shipped with care, nationwide.</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="#philosophy">Our Philosophy</a></li>
+        <li><a href="#standard">The Standard</a></li>
+        <li><a href="#dobermans">Our Dobermans</a></li>
+        <li><a href="#litter">Available Puppies</a></li>
+        <li><a href="#inquire">Inquire</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="tel:+17192716865">(719) 271-6865</a></li>
+        <li><a href="mailto:todd@blessedbeyonddobermans.com">Email Us</a></li>
+        <li><a href="https://www.tiktok.com/@blessed.beyond.dob" target="_blank" rel="noopener">TikTok</a></li>
+        <li><a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="bottom">
+    <span>© <span id="yr"></span> Blessed Beyond Dobermans · Pueblo West, Colorado</span>
+    <span>Raised with love. Placed with purpose.</span>
+  </div>
+</div></footer>
+
+<script>
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  // nav bg on scroll
+  var nav=document.getElementById('nav');
+  addEventListener('scroll',function(){nav.classList.toggle('scrolled',scrollY>40)});
+  // reveal on scroll
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.rv').forEach(function(el,i){el.style.transitionDelay=(Math.min(i%4,3)*0.07)+'s';io.observe(el);});
+  // inquiry -> Kennel OS
+  var KOS='https://jrfdufemonjhafqyacge.supabase.co/functions/v1/kennel-os-api?key=kos_live_2bc2884f7395483d9808a0af954b36ba';
+  var form=document.getElementById('inqForm');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(form.hp_field.value){return;}
+    var out=document.getElementById('f-msg-out');out.style.color='var(--copper-lt)';out.textContent='';
+    var name=document.getElementById('f-name').value.trim();
+    var email=document.getElementById('f-email').value.trim();
+    var phone=document.getElementById('f-phone').value.trim();
+    var msg=document.getElementById('f-msg').value.trim();
+    if(!name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){out.style.color='#e08a6a';out.textContent='Please add your name and a valid email.';return;}
+    var btn=document.getElementById('f-submit');btn.disabled=true;btn.textContent='Sending...';
+    fetch(KOS,{method:'POST',headers:{'Content-Type':'application/json','apikey':'public'},
+      body:JSON.stringify({name:name,email:email,phone:phone,message:msg,source:'Website'})})
+      .then(function(r){return r.ok?r.json():Promise.reject(r);})
+      .then(function(){document.getElementById('formCard').innerHTML='<div class="done"><div class="ic">✦</div><h3>Thank you, '+name.replace(/[<>&]/g,'')+'.</h3><p>Your inquiry is in. We will be in touch right away, usually within the hour.</p></div>';})
+      .catch(function(){btn.disabled=false;btn.textContent='Send Inquiry →';out.style.color='#e08a6a';out.textContent='Something went wrong. Please call or email us directly.';});
+  });
+</script>
+</body>
+</html>

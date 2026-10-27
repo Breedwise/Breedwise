@@ -133,3 +133,5 @@
 # --- ABR Kennels site photos ---
 !/abr/
 !/abr/*.jpg
+!/blessed-beyond-dobermans/
+!/blessed-beyond-dobermans/**
