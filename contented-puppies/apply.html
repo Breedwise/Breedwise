@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Puppy Application — Contented Puppies Paradise | Apply for a Puppy</title>
+<meta name="description" content="Apply for a Contented Puppies Paradise puppy. A few questions about your home and the companion you are hoping for, so we can match you with the perfect puppy. We reply within 24 hours.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400;1,6..96,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="cp.css">
+<style>
+  .agrp{margin-top:34px;padding-top:28px;border-top:1px solid var(--line)}
+  .agrp:first-of-type{margin-top:0;padding-top:0;border-top:0}
+  .agrp .gh{font-family:var(--serif);font-style:italic;font-size:19px;color:var(--gold-deep);margin-bottom:18px}
+  .consent{display:flex;gap:11px;align-items:flex-start;margin-top:10px}
+  .consent input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--gold-deep)}
+  .consent label{font-family:var(--sans);font-size:13.5px;color:var(--ink-2);letter-spacing:0;text-transform:none;font-weight:400}
+</style>
+</head>
+<body>
+  <div class="topbar"><div class="in">
+    <span>Family-operated since 2005 · Hablamos Español</span>
+    <div class="tr"><a href="mailto:contentedpuppies@gmail.com">contentedpuppies@gmail.com</a><a href="tel:+13522200351">(352) 220-0351</a><a href="#form">Join the Waitlist</a></div>
+  </div></div>
+  <header class="site"><div class="in">
+    <a class="brand" href="index.html">
+      <svg class="crest" viewBox="0 0 60 60" aria-label="crest"><circle class="ring" cx="30" cy="30" r="27"/><circle class="ring2" cx="30" cy="30" r="23.5"/><text class="mono" x="30" y="34" text-anchor="middle">CP</text><text class="est" x="30" y="46" text-anchor="middle">EST. 2005</text><circle class="pw" cx="25" cy="15.5" r="1"/><circle class="pw" cx="30" cy="14.4" r="1"/><circle class="pw" cx="35" cy="15.5" r="1"/><ellipse class="pw" cx="30" cy="18.4" rx="2.1" ry="1.5"/></svg>
+      <span class="wm">Contented Puppies<small>Paradise</small></span>
+    </a>
+    <nav class="main">
+      <a href="index.html">Home</a><a href="available.html">Available Puppies</a><a href="reviews.html">Reviews</a><a href="parents.html">Meet the Parents</a><a href="story.html">Our Family</a><a href="process.html">The Process</a><a href="contact.html">Inquire</a><a class="apply active" href="apply.html">Apply</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div id="mnav"><a href="index.html">Home</a><a href="available.html">Available Puppies</a><a href="reviews.html">Reviews</a><a href="parents.html">Meet the Parents</a><a href="story.html">Our Family</a><a href="process.html">The Process</a><a href="contact.html">Inquire</a><a href="apply.html" class="active">Apply</a></div>
+  </header>
+
+  <section class="phero"><div class="wrap">
+    <span class="eyebrow">Puppy Application</span>
+    <h1>Apply for your puppy</h1>
+    <p>This does not obligate you to anything. It simply helps us understand your home and match you with the right little one. We read every application ourselves and reply within 24 hours.</p>
+  </div></section>
+
+  <section class="blk tight" id="form"><div class="wrap">
+    <div class="formwrap rev">
+      <form id="appf" novalidate>
+
+        <div class="agrp">
+          <div class="gh">About you</div>
+          <div class="formrow">
+            <div class="field"><label for="f-name">Your Name</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
+            <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" required></div>
+          </div>
+          <div class="formrow">
+            <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+            <div class="field"><label for="f-loc">City &amp; State</label><input id="f-loc" name="loc" type="text" autocomplete="address-level2" placeholder="e.g. Harrisburg, PA"></div>
+          </div>
+        </div>
+
+        <div class="agrp">
+          <div class="gh">Your home</div>
+          <div class="formrow">
+            <div class="field"><label for="f-home">Home type</label>
+              <select id="f-home" name="home"><option value="">Select...</option><option>House with a yard</option><option>House, no yard</option><option>Apartment or condo</option><option>Other</option></select></div>
+            <div class="field"><label for="f-house">Who is in the home?</label><input id="f-house" name="house" type="text" placeholder="Adults, kids &amp; ages"></div>
+          </div>
+          <div class="field"><label for="f-pets">Other pets</label><input id="f-pets" name="pets" type="text" placeholder="Any current dogs, cats, etc."></div>
+        </div>
+
+        <div class="agrp">
+          <div class="gh">Your puppy</div>
+          <div class="formrow">
+            <div class="field"><label for="f-breed">Which puppy are you hoping for?</label>
+              <select id="f-breed" name="breed"><option value="">Select...</option><option>Yorkshire Terrier</option><option>Biewer Terrier</option><option>Morkie</option><option>Not sure yet</option></select></div>
+            <div class="field"><label for="f-when">When are you hoping to bring one home?</label>
+              <select id="f-when" name="when"><option value="">Select...</option><option>As soon as possible</option><option>Within a few months</option><option>Just exploring for now</option></select></div>
+          </div>
+          <div class="formrow">
+            <div class="field"><label for="f-pref">Color / sex preference</label><input id="f-pref" name="pref" type="text" placeholder="Or 'no preference'"></div>
+            <div class="field"><label for="f-deliver">How would you like to receive your puppy?</label>
+              <select id="f-deliver" name="deliver"><option value="">Select...</option><option>Pick up in person</option><option>Nanny / delivery</option><option>A live video visit first</option><option>Not sure yet</option></select></div>
+          </div>
+          <div class="field"><label for="f-msg">Tell us a little about what you are looking for</label><textarea id="f-msg" name="message" placeholder="Why this breed, what your days look like, any questions..."></textarea></div>
+          <div class="field"><label for="f-hear">How did you hear about us?</label><input id="f-hear" name="hear" type="text" placeholder="Referral, social media, search..."></div>
+        </div>
+
+        <div class="consent">
+          <input type="checkbox" id="f-consent">
+          <label for="f-consent">I agree to be contacted by Contented Puppies Paradise by phone, text, or email about my application.</label>
+        </div>
+
+        <input class="hp" type="text" name="hp_field" tabindex="-1" autocomplete="new-password" aria-hidden="true">
+        <button type="submit" class="btn gold lg" style="width:100%;margin-top:26px" id="f-submit">Submit Application</button>
+        <p class="formnote" style="text-align:center">Prefer another way? Call, text, or email us below, we answer within 24 hours.</p>
+      </form>
+      <div class="formmsg" id="done">
+        <div class="ic">✦</div>
+        <h3 id="donehead">Thank you, your application is on its way.</h3>
+        <p id="donebody">We have received your application and will personally reply within <b>24 hours</b>. We cannot wait to help you find your perfect companion.</p>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="blk tight band-dark"><div class="wrap">
+    <div class="shead"><div class="num" style="color:var(--gold-lt2)">Other Ways to Reach Us</div><h2 style="color:var(--paper-4)">We would love to hear from you</h2></div>
+    <div class="cgrid ondark rev">
+      <div class="cc"><div class="l">Email Us</div><div class="v"><a href="mailto:contentedpuppies@gmail.com">contentedpuppies@gmail.com</a></div></div>
+      <div class="cc"><div class="l">Call or Text</div><div class="v">(352) 220-0351</div>
+        <div class="actions"><a class="btn ondark" href="tel:+13522200351" style="padding:11px 22px;font-size:13px">Call</a><a class="btn ondark" href="sms:+13522200351" style="padding:11px 22px;font-size:13px">Text</a></div>
+      </div>
+      <div class="cc"><div class="l">Our Home</div><div class="v">McClure, Pennsylvania</div></div>
+    </div>
+    <div class="social ondark">
+      <a href="https://www.facebook.com/profile.php?id=61584042657220" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://www.instagram.com/contentedpuppies/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.youtube.com/@contentedpuppies" target="_blank" rel="noopener">YouTube</a>
+    </div>
+  </div></section>
+
+  <footer class="ft">
+    <div class="wm">Contented Puppies<small>Paradise</small></div>
+    <nav><a href="index.html">Home</a><a href="available.html">Available Puppies</a><a href="reviews.html">Reviews</a><a href="parents.html">Meet the Parents</a><a href="story.html">Our Family</a><a href="process.html">The Process</a><a href="guarantee.html">Health Guarantee</a><a href="apply.html">Apply</a><a href="contact.html">Inquire</a></nav>
+    <div class="meta">Family-raised Yorkshire Terriers, Biewers &amp; Morkies · McClure, Pennsylvania · Hablamos Español<br><a href="mailto:contentedpuppies@gmail.com">contentedpuppies@gmail.com</a> &nbsp;·&nbsp; <a href="tel:+13522200351">(352) 220-0351</a></div>
+    <div class="fine">© 2026 Contented Puppies Paradise · Established 2005</div>
+  </footer>
+
+  <script src="cp.js"></script>
+  <script>
+  (function(){
+    var FN='https://jrfdufemonjhafqyacge.supabase.co/functions/v1/kennel-os-api?key=kos_live_746f9b04ec694842a8c193d582cc1b33';
+    var AK='public';
+    var form=document.getElementById('appf'), done=document.getElementById('done'), btn=document.getElementById('f-submit');
+    function v(id){var el=document.getElementById(id);return el?el.value.trim():'';}
+    function mailtoFallback(d,msg){
+      var body='Name: '+d.name+'%0D%0AEmail: '+d.email+'%0D%0APhone: '+(d.phone||'-')+'%0D%0A%0D%0A'+encodeURIComponent(msg);
+      window.location.href='mailto:contentedpuppies@gmail.com?subject='+encodeURIComponent('Puppy Application — '+d.name)+'&body='+body;
+    }
+    form.addEventListener('submit',function(e){
+      e.preventDefault();
+      if(form.hp_field && form.hp_field.value){return;}
+      var d={name:v('f-name'),email:v('f-email'),phone:v('f-phone')};
+      if(!d.name||!d.phone||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.email)){alert('Please add your name, phone, and a valid email so we can reply.');return;}
+      if(!document.getElementById('f-consent').checked){alert('Please check the consent box so we can reply.');return;}
+      var lines=[
+        ['Location',v('f-loc')],['Home type',v('f-home')],['Household',v('f-house')],['Other pets',v('f-pets')],
+        ['Breed interest',v('f-breed')],['Timing',v('f-when')],['Color/sex preference',v('f-pref')],
+        ['Delivery preference',v('f-deliver')],['Looking for',v('f-msg')],['Heard about us',v('f-hear')]
+      ].filter(function(r){return r[1];}).map(function(r){return r[0]+': '+r[1];});
+      var msg='PUPPY APPLICATION\n'+lines.join('\n');
+      btn.textContent='Submitting...'; btn.disabled=true;
+      fetch(FN,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({name:d.name,email:d.email,phone:d.phone,message:msg,source:'Puppy Application'})})
+        .then(function(r){return r.ok?r.json():Promise.reject(r);})
+        .then(function(){form.style.display='none';done.classList.add('on');done.scrollIntoView({behavior:'smooth',block:'center'});})
+        .catch(function(){btn.textContent='Submit Application';btn.disabled=false;mailtoFallback(d,msg);});
+    });
+  })();
+  </script>
+</body>
+</html>
