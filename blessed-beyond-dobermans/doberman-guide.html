@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Doberman Owner's Guide · Blessed Beyond Dobermans</title>
+<meta name="description" content="A complete, honest owner's guide to the Doberman Pinscher from Blessed Beyond Dobermans: temperament, colors, health testing, puppy raising, socialization, training, and how to choose a responsible breeder.">
+<meta property="og:title" content="The Doberman Owner's Guide · Blessed Beyond Dobermans">
+<meta property="og:description" content="Everything a first-time or returning Doberman owner should know, from twelve years of raising them. Temperament, health, socialization, and more.">
+<meta property="og:image" content="assets/dog-action.jpg">
+<meta property="og:type" content="article">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="bbd.css">
+<style>
+  /* guide-specific */
+  .guidehero{position:relative;padding:150px 0 60px;overflow:hidden;border-bottom:1px solid var(--line)}
+  .guidehero .bg{position:absolute;inset:0;z-index:0}
+  .guidehero .bg img{width:100%;height:100%;object-fit:cover;opacity:.26;object-position:50% 36%}
+  .guidehero .bg::after{content:"";position:absolute;inset:0;background:radial-gradient(90% 120% at 80% 0%,rgba(209,131,47,.16),transparent 55%),linear-gradient(180deg,rgba(9,9,11,.55),rgba(9,9,11,.97))}
+  .guidehero .gin{position:relative;z-index:2;display:grid;gap:44px;align-items:center}
+  @media(min-width:900px){.guidehero .gin{grid-template-columns:1.1fr .9fr}}
+  .guidehero h1{font-family:var(--display);font-weight:800;font-size:clamp(34px,5.6vw,62px);line-height:1.02;letter-spacing:-.02em;margin-top:14px}
+  .guidehero .lede{color:var(--mid);font-size:17px;margin-top:18px;max-width:50ch;line-height:1.7}
+  .guidehero ul.ticks{list-style:none;margin-top:22px;display:flex;flex-direction:column;gap:10px}
+  .guidehero ul.ticks li{display:flex;gap:11px;align-items:flex-start;color:var(--text);font-size:14.5px}
+  .guidehero ul.ticks li::before{content:"";flex:none;width:20px;height:20px;margin-top:1px;border-radius:50%;background:var(--copper-grad);
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M5 12l4 4 10-11'/%3E%3C/svg%3E") center/13px no-repeat;
+    mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M5 12l4 4 10-11'/%3E%3C/svg%3E") center/13px no-repeat}
+  .gate{padding:32px}
+  .gate h3{font-family:var(--display);font-weight:700;font-size:21px}
+  .gate .gsub{color:var(--muted);font-size:13px;margin:6px 0 20px}
+  /* locked guide body */
+  #guide{position:relative}
+  #guide.locked{max-height:620px;overflow:hidden}
+  #guide.locked::after{content:"";position:absolute;left:0;right:0;bottom:0;height:420px;background:linear-gradient(180deg,transparent,var(--ink) 82%);pointer-events:none}
+  .lockmsg{text-align:center;padding:30px 16px;color:var(--muted);font-size:13.5px}
+  /* prose */
+  .guide-sec{max-width:800px;margin:0 auto}
+  .guide-sec h2{font-family:var(--display);font-weight:700;font-size:clamp(24px,3.6vw,38px);line-height:1.1;letter-spacing:-.015em;margin:56px 0 4px;scroll-margin-top:90px}
+  .guide-sec h2:first-child{margin-top:0}
+  .guide-sec h3{font-family:var(--display);font-weight:600;font-size:19px;margin:30px 0 6px;color:var(--text)}
+  .guide-sec p{color:var(--mid);font-size:16px;line-height:1.75;margin-top:12px}
+  .guide-sec p b,.guide-sec li b{color:var(--text);font-weight:600}
+  .guide-sec ul{margin:14px 0 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+  .guide-sec ul li{color:var(--mid);font-size:15.5px;line-height:1.6;padding-left:26px;position:relative}
+  .guide-sec ul li::before{content:"◆";position:absolute;left:4px;top:1px;color:var(--copper);font-size:9px}
+  .kcard{border-left:3px solid var(--copper);background:rgba(209,131,47,.06);border-radius:0 14px 14px 0;padding:18px 22px;margin-top:22px}
+  .kcard .kh{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--copper-lt)}
+  .kcard p{margin-top:7px;font-size:15px;color:var(--mid)}
+  .toc{margin-top:40px;border:1px solid var(--line);border-radius:18px;padding:26px 28px;background:var(--panel)}
+  .toc h4{font-family:var(--display);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--copper-lt);margin-bottom:14px}
+  .toc ol{margin:0;padding-left:20px;columns:2;column-gap:30px}
+  @media(max-width:620px){.toc ol{columns:1}}
+  .toc li{color:var(--mid);font-size:14px;margin-bottom:9px}
+  .toc li a:hover{color:var(--copper-lt)}
+  .toolbar{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+  @media print{
+    nav.site,.mobilemenu,.guidehero .gate,.toolbar,footer,.ctaband{display:none!important}
+    body{background:#fff;color:#111}
+    #guide.locked{max-height:none;overflow:visible}#guide.locked::after{display:none}
+    .guide-sec p,.guide-sec ul li{color:#333}.cu{color:#9c5a1e!important;-webkit-text-fill-color:#9c5a1e}
+  }
+</style>
+</head>
+<body id="top">
+
+<nav class="site" id="nav"><div class="in">
+  <a class="brand" href="index.html"><img src="assets/logo.png" alt="Blessed Beyond Dobermans crest"><span class="nm">Blessed Beyond<span>DOBERMANS</span></span></a>
+  <div class="navlinks">
+    <a href="index.html">Home</a>
+    <a href="available.html">Available</a>
+    <a href="dogs.html">Our Dobermans</a>
+    <a href="story.html">Our Story</a>
+    <a href="process.html">Process</a>
+    <a class="btn primary" href="contact.html">Inquire</a>
+  </div>
+  <button class="burger" id="burger" aria-label="Menu"><i></i><i></i><i></i></button>
+</div></nav>
+
+<div class="mobilemenu" id="mobilemenu">
+  <a href="index.html">Home</a>
+  <a href="available.html">Available</a>
+  <a href="dogs.html">Our Dobermans</a>
+  <a href="story.html">Our Story</a>
+  <a href="process.html">Process</a>
+  <a class="btn primary" href="contact.html">Inquire</a>
+</div>
+
+<!-- GUIDE HERO + GATE -->
+<header class="guidehero"><div class="bg"><img src="assets/dog-action.jpg" alt=""></div>
+  <div class="wrap gin">
+    <div>
+      <div class="eyebrow">The Blessed Beyond Owner's Guide</div>
+      <h1>The Doberman<br><span class="cu">Owner's Guide</span></h1>
+      <p class="lede">Twelve years of raising Dobermans, distilled into one honest guide. Whether this is your first Doberman or your fifth, here is everything we wish every owner knew before they brought one home.</p>
+      <ul class="ticks">
+        <li>What the Doberman temperament is really like, and who they are not for</li>
+        <li>Colors, American vs European, and the health tests that actually matter</li>
+        <li>The critical first 16 weeks: socialization, training, and raising a stable dog</li>
+        <li>The exact questions to ask any breeder before you reserve</li>
+      </ul>
+    </div>
+    <div class="gate glass" id="gateCard">
+      <h3>Get the complete guide</h3>
+      <div class="gsub">Enter your details to unlock the full guide and get litter updates from us. No spam, ever.</div>
+      <form id="guideForm" novalidate>
+        <input class="hp" type="text" name="hp_field" id="hp_field" tabindex="-1" autocomplete="new-password" aria-hidden="true">
+        <div class="fld"><label for="g-name">Your name</label><input id="g-name" type="text" autocomplete="name" required></div>
+        <div class="fld"><label for="g-email">Email</label><input id="g-email" type="email" autocomplete="email" required></div>
+        <div class="fld"><label for="g-phone">Phone (optional)</label><input id="g-phone" type="tel" autocomplete="tel"></div>
+        <button class="btn primary" id="g-submit" type="submit" style="width:100%;justify-content:center;margin-top:6px;padding:15px;font-size:15px">Unlock the Guide →</button>
+        <div class="fmsg" id="g-msg-out"></div>
+      </form>
+    </div>
+  </div>
+</header>
+
+<!-- GUIDE BODY -->
+<section class="sec" style="padding-top:clamp(50px,7vw,90px)"><div class="wrap">
+  <div class="toc guide-sec" style="margin-top:0">
+    <h4>What's Inside</h4>
+    <ol>
+      <li><a href="#s1">Is a Doberman right for you?</a></li>
+      <li><a href="#s2">The Doberman temperament</a></li>
+      <li><a href="#s3">Colors &amp; types</a></li>
+      <li><a href="#s4">American vs European</a></li>
+      <li><a href="#s5">Health &amp; genetic testing</a></li>
+      <li><a href="#s6">Ears, tails &amp; grooming</a></li>
+      <li><a href="#s7">The first two weeks home</a></li>
+      <li><a href="#s8">Socialization: the first 16 weeks</a></li>
+      <li><a href="#s9">Training &amp; exercise</a></li>
+      <li><a href="#s10">Choosing a responsible breeder</a></li>
+    </ol>
+  </div>
+
+  <div id="guide" class="locked">
+   <article class="guide-sec">
+    <h2 id="s1">Is a Doberman right for you?</h2>
+    <p>The Doberman is one of the most loyal, intelligent, and devoted companions a family can have. They are also a serious commitment. Being honest about that up front is the kindest thing a breeder can do, so let's start there.</p>
+    <p>A Doberman wants to be <b>with you</b>. They are often called a "velcro" breed because they genuinely do not like being left alone for long stretches. They are highly intelligent, which means they learn quickly, but it also means a bored Doberman will find its own entertainment, and you may not like what it chooses.</p>
+    <p>A Doberman may be a great fit if you want a dog that is deeply bonded to the family, thrives on training and inclusion, and will be a natural, confident deterrent simply by being present. A Doberman is probably not the right choice if the dog will be alone most of the day, if no one has time for daily exercise and training, or if you want a dog that is content to be left in the yard.</p>
+
+    <h2 id="s2">The Doberman temperament</h2>
+    <p>Properly bred and raised, the modern Doberman is affectionate, people-oriented, and remarkably gentle at home. The guarding instinct is real but it should be <b>stable and discerning</b>, never nervous or reactive. Temperament comes from two things: genetics and early handling. One without the other is not enough.</p>
+    <ul>
+      <li><b>Loyal and bonded.</b> Expect a dog that follows you room to room and wants to be part of everything.</li>
+      <li><b>Intelligent and trainable.</b> They rank among the smartest breeds and need mental work, not just physical.</li>
+      <li><b>Naturally protective.</b> A well-bred Doberman is confident and clear-headed, protective without being aggressive.</li>
+      <li><b>Sensitive.</b> They respond far better to consistency and relationship than to heavy-handed correction.</li>
+    </ul>
+    <div class="kcard"><div class="kh">What we breed for</div><p>At Blessed Beyond, temperament comes before color and before show points. We want confidence without nervousness and loyalty without anxiety, because this dog is going to share your home and your children's childhoods.</p></div>
+
+    <h2 id="s3">Colors &amp; types</h2>
+    <p>The Doberman comes in four recognized colors. All can make wonderful companions; the differences are mostly cosmetic, with one health note below.</p>
+    <ul>
+      <li><b>Black &amp; Rust.</b> The classic, most common coloring. Deep black with rich rust markings.</li>
+      <li><b>Red &amp; Rust.</b> A warm chocolate-brown base with rust points. Stunning and fully standard.</li>
+      <li><b>Blue.</b> A diluted black, steel-gray in appearance.</li>
+      <li><b>Fawn (Isabella).</b> A diluted red, a soft tan with rust points.</li>
+    </ul>
+    <p>Blue and fawn are "dilute" colors and can be prone to <b>Color Dilution Alopecia</b>, a coat/skin condition. It is manageable and many dilute Dobermans live perfectly healthy lives, but it is worth understanding before you choose a dilute puppy.</p>
+
+    <h2 id="s4">American vs European</h2>
+    <p>You will hear these terms constantly. Both are the same breed, bred to slightly different standards and tendencies.</p>
+    <ul>
+      <li><b>American Dobermans</b> tend to be more refined and elegant, often a touch lighter in build, and frequently a wonderful fit for family life.</li>
+      <li><b>European (working-line) Dobermans</b> tend to be larger-boned, blockier, and bred with more working drive.</li>
+    </ul>
+    <p>Neither is "better." What matters far more than the label is the <b>individual dog's temperament and health</b> and whether its energy and drive match your lifestyle. A good breeder will help you choose honestly, not just sell you a label.</p>
+
+    <h2 id="s5">Health &amp; genetic testing</h2>
+    <p>This is the single most important section in this guide. The Doberman is a wonderful breed, but it carries real genetic risks, and a responsible breeder tests for them. If a breeder cannot show you results, keep looking.</p>
+    <ul>
+      <li><b>Dilated Cardiomyopathy (DCM).</b> The most serious concern in the breed, a heart condition. Breeding dogs should have regular cardiac evaluation (echocardiogram and Holter monitor) in addition to DNA screening.</li>
+      <li><b>von Willebrand's Disease (vWD).</b> A blood-clotting disorder, screened by DNA test.</li>
+      <li><b>Hip dysplasia.</b> Evaluated by OFA or PennHIP.</li>
+      <li><b>Cervical Vertebral Instability (Wobbler Syndrome).</b> A neurological/spinal condition.</li>
+      <li><b>Hypothyroidism.</b> Common and very manageable, worth monitoring.</li>
+    </ul>
+    <div class="kcard"><div class="kh">How we test</div><p>Every Blessed Beyond parent is Embark DNA tested and health screened, and results are available to our families. We breed for longevity and soundness, because a Doberman is going to be loved for a lifetime.</p></div>
+
+    <h2 id="s6">Ears, tails &amp; grooming</h2>
+    <p><b>Ear cropping and tail docking</b> are personal choices and are done (or not) based on your preference and local norms. Cropped ears require weeks of posting and aftercare; natural ears are beautiful and zero-maintenance. There is no wrong answer, only an informed one.</p>
+    <p>Grooming is refreshingly simple. The short coat needs only a weekly wipe-down or brush and the occasional bath. Far more important are the <b>basics owners forget</b>:</p>
+    <ul>
+      <li><b>Nails:</b> trim every few weeks; long nails hurt and change their gait.</li>
+      <li><b>Teeth:</b> brush regularly and provide appropriate chews.</li>
+      <li><b>Ears:</b> check and clean to prevent infection, cropped or not.</li>
+      <li><b>Warmth:</b> their short coat means they feel the cold; a coat in winter is kindness, not vanity.</li>
+    </ul>
+
+    <h2 id="s7">The first two weeks home</h2>
+    <p>The way you start sets the tone for years. Keep the first weeks calm, structured, and predictable.</p>
+    <ul>
+      <li>Set up a crate as a safe den from day one, and use it for naps and nights.</li>
+      <li>Keep introductions short and positive; do not overwhelm a new puppy with a houseful of visitors.</li>
+      <li>Start a potty routine immediately: out after waking, eating, playing, and every couple of hours.</li>
+      <li>Keep feeding consistent with what the breeder used, then transition slowly if needed.</li>
+      <li>Begin gentle handling of paws, ears, and mouth so vet and grooming visits are easy for life.</li>
+    </ul>
+
+    <h2 id="s8">Socialization: the first 16 weeks</h2>
+    <p>If you remember one thing from this guide, make it this. A Doberman's lifelong confidence is largely built in its <b>first sixteen weeks</b>. This is the window where positive, varied experiences wire a stable adult temperament.</p>
+    <p>Expose your puppy, gently and positively, to as many different sights, sounds, surfaces, and people as you safely can: different floors, car rides, stairs, umbrellas, hats, children, calm adult dogs, household noise. The goal is not to flood them, but to teach them that <b>the world is safe and new things are normal</b>. Pair everything with calm praise and treats. This is also why we raise our puppies underfoot in our home, so this work begins before they ever leave us.</p>
+
+    <h2 id="s9">Training &amp; exercise</h2>
+    <p>A Doberman needs a job, a relationship, and an outlet. Meet those three needs and you will have a dream dog.</p>
+    <ul>
+      <li><b>Exercise:</b> plan on real daily activity, a mix of physical (walks, running, play) and mental (training, puzzles, scent games).</li>
+      <li><b>Training:</b> start early, keep sessions short and upbeat, and reward generously. They are eager to please and bore easily.</li>
+      <li><b>Structure:</b> clear, consistent rules make a Doberman feel secure. Ambiguity makes them anxious.</li>
+      <li><b>Inclusion:</b> the more you involve them in daily life, the better behaved they are. This is not a "backyard" breed.</li>
+    </ul>
+
+    <h2 id="s10">Choosing a responsible breeder</h2>
+    <p>The right breeder is the single biggest predictor of a healthy, stable Doberman. Here is exactly what to ask, and what good answers sound like.</p>
+    <ul>
+      <li><b>"Can I see the parents' health testing?"</b> A good breeder says yes immediately, including cardiac testing, and shows you results.</li>
+      <li><b>"Where are the puppies raised?"</b> You want "in our home, underfoot," not in a barn or kennel run.</li>
+      <li><b>"What do you breed for?"</b> Listen for temperament and health first, not color or price.</li>
+      <li><b>"What support do you offer after I take the puppy home?"</b> The best breeders are a resource for the life of the dog.</li>
+      <li><b>"Will you take the dog back if my situation ever changes?"</b> A responsible breeder always says yes.</li>
+      <li><b>"Can I talk to your past families?"</b> They should be proud to connect you.</li>
+    </ul>
+    <div class="kcard"><div class="kh">Our promise</div><p>Blessed Beyond Dobermans has spent twelve years answering yes to every one of these questions. Our puppies are raised in our home, our parents are health tested, and our families keep our number for the life of their dog.</p></div>
+   </article>
+  </div>
+
+  <div class="toolbar" id="toolbar" style="display:none">
+    <button class="btn ghost" onclick="window.print()">Save as PDF / Print</button>
+    <a class="btn primary" href="available.html">See Available Puppies →</a>
+  </div>
+</div></section>
+
+<!-- CTA BAND -->
+<section class="sec tight"><div class="wrap">
+  <div class="ctaband rv show"><div class="inr">
+    <div class="eyebrow">Ready For The Next Step?</div>
+    <h2 style="margin-top:14px">Let's find your Doberman.</h2>
+    <p>If this guide sounds like the kind of breeder you want to work with, we would love to hear from you.</p>
+    <a class="btn primary" href="contact.html">Start the Conversation →</a>
+  </div></div>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="foot">
+    <div>
+      <div class="brand"><img src="assets/logo.png" alt="Blessed Beyond Dobermans crest"><div class="nm">Blessed Beyond<span>DOBERMANS</span></div></div>
+      <p>Twelve years raising exceptional Doberman Pinschers as lifelong family companions. Pueblo West, Colorado. Shipped with care, nationwide.</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="available.html">Available Puppies</a></li>
+        <li><a href="dogs.html">Our Dobermans</a></li>
+        <li><a href="story.html">Our Story</a></li>
+        <li><a href="process.html">The Process</a></li>
+        <li><a href="doberman-guide.html">Owner’s Guide</a></li>
+        <li><a href="contact.html">Inquire</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="tel:+17192716865">(719) 271-6865</a></li>
+        <li><a href="mailto:todd@blessedbeyonddobermans.com">Email Us</a></li>
+        <li><a href="https://www.tiktok.com/@blessed.beyond.dob" target="_blank" rel="noopener">TikTok</a></li>
+        <li><a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="bottom">
+    <span>&copy; <span data-yr></span> Blessed Beyond Dobermans &middot; Pueblo West, Colorado</span>
+    <span>Raised with love. Placed with purpose.</span>
+  </div>
+</div></footer>
+
+<script src="bbd.js"></script>
+<script>
+(function(){
+  var KOS='https://jrfdufemonjhafqyacge.supabase.co/functions/v1/kennel-os-api?key=kos_live_2bc2884f7395483d9808a0af954b36ba';
+  var form=document.getElementById('guideForm');
+  function unlock(){
+    document.getElementById('guide').classList.remove('locked');
+    document.getElementById('toolbar').style.display='flex';
+    try{localStorage.setItem('bbd_guide_unlocked','1');}catch(e){}
+  }
+  // returning visitors who already opted in
+  try{if(localStorage.getItem('bbd_guide_unlocked')==='1'){
+    unlock();
+    document.getElementById('gateCard').innerHTML='<div class="done"><div class="ic">✦</div><h3>Welcome back.</h3><p>The full guide is unlocked below. Save it or reach out any time.</p></div>';
+  }}catch(e){}
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(form.hp_field.value){return;}
+    var out=document.getElementById('g-msg-out');out.style.color='var(--copper-lt)';out.textContent='';
+    var name=document.getElementById('g-name').value.trim();
+    var email=document.getElementById('g-email').value.trim();
+    var phone=document.getElementById('g-phone').value.trim();
+    if(!name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){out.style.color='#e08a6a';out.textContent='Please add your name and a valid email.';return;}
+    var btn=document.getElementById('g-submit');btn.disabled=true;btn.textContent='Unlocking...';
+    fetch(KOS,{method:'POST',headers:{'Content-Type':'application/json','apikey':'public'},
+      body:JSON.stringify({name:name,email:email,phone:phone,message:'Downloaded the Doberman Owner’s Guide',source:'Doberman Owner’s Guide'})})
+      .then(function(r){return r.ok?r.json():Promise.reject(r);})
+      .then(function(){
+        document.getElementById('gateCard').innerHTML='<div class="done"><div class="ic">✦</div><h3>You’re in, '+name.replace(/[<>&]/g,'')+'.</h3><p>The full guide is unlocked below. We’ll also send you litter updates as new puppies become available.</p></div>';
+        unlock();
+      })
+      .catch(function(){
+        // still unlock so the reader gets the value; note the capture may have failed
+        btn.disabled=false;btn.textContent='Unlock the Guide →';
+        out.style.color='#e08a6a';out.textContent='We had trouble saving that, but the guide is unlocked below.';
+        unlock();
+      });
+  });
+})();
+</script>
+</body>
+</html>
