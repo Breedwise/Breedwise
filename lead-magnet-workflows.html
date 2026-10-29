@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lead Magnet Automation — Build Runbook · BreedWise</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0c0f;--bg2:#121419;--panel:#161922;--panel2:#1b1f29;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);
+  --ink:#f3f1ec;--mid:rgba(243,241,236,.72);--mut:rgba(243,241,236,.46);
+  --gold:#e8b84b;--gold2:#f5d27e;--grn:#4bd08a;--red:#ff6b5e;--blu:#5aa6ff;--amb:#ffb454;
+  --mono:'SFMono-Regular',ui-monospace,Menlo,Consolas,monospace;--disp:'Anton',sans-serif;--body:'Poppins',sans-serif;--r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.62;font-size:15px;-webkit-font-smoothing:antialiased}
+a{color:var(--gold2);text-decoration:none}a:hover{text-decoration:underline}
+code,.k{font-family:var(--mono);font-size:.86em;background:rgba(232,184,75,.12);color:var(--gold2);padding:1.5px 6px;border-radius:5px;border:1px solid rgba(232,184,75,.2);white-space:nowrap}
+/* gate */
+#gate{position:fixed;inset:0;z-index:99;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
+#gate .box{max-width:380px;width:100%;text-align:center}
+#gate .lab{font-family:var(--disp);font-size:13px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase}
+#gate h1{font-family:var(--disp);font-size:30px;font-weight:400;letter-spacing:.01em;margin:10px 0 6px}
+#gate p{color:var(--mut);font-size:13.5px;margin-bottom:22px}
+#gate input{width:100%;background:var(--panel);border:1px solid var(--line2);border-radius:12px;color:var(--ink);font-family:var(--body);font-size:16px;padding:14px 16px;text-align:center;letter-spacing:.1em}
+#gate input:focus{outline:none;border-color:var(--gold)}
+#gate button{width:100%;margin-top:12px;background:var(--gold);color:#1a1405;border:0;border-radius:12px;padding:14px;font-family:var(--body);font-weight:600;font-size:15px;cursor:pointer}
+#gate .err{color:var(--red);font-size:13px;min-height:18px;margin-top:10px}
+#doc{display:none}
+.wrap{max-width:1060px;margin:0 auto;padding:0 22px}
+/* header */
+header.hd{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#14161d,#0b0c0f);padding:46px 0 34px}
+.hd .lab{font-family:var(--disp);font-size:13px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase}
+.hd h1{font-family:var(--disp);font-weight:400;font-size:clamp(34px,6vw,60px);line-height:1;letter-spacing:.01em;margin:10px 0 0}
+.hd p{color:var(--mid);max-width:70ch;margin-top:16px;font-size:15.5px}
+.hd .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.pill{font-size:11.5px;letter-spacing:.04em;padding:6px 12px;border-radius:999px;border:1px solid var(--line2);color:var(--mid);background:var(--panel)}
+.pill.g{color:var(--gold2);border-color:rgba(232,184,75,.35);background:rgba(232,184,75,.08)}
+/* layout w/ toc */
+.shell{display:grid;grid-template-columns:230px 1fr;gap:38px;align-items:start;padding:34px 0 90px}
+@media(max-width:900px){.shell{grid-template-columns:1fr}.toc{display:none}}
+.toc{position:sticky;top:18px;font-size:13px}
+.toc .th{font-family:var(--disp);font-size:12px;letter-spacing:.2em;color:var(--mut);text-transform:uppercase;margin:16px 0 8px}
+.toc a{display:block;color:var(--mid);padding:4px 0}.toc a:hover{color:var(--ink);text-decoration:none}
+.toc a.sub{padding-left:14px;color:var(--mut);font-size:12.5px}
+/* sections */
+section{margin-bottom:46px;scroll-margin-top:16px}
+h2.s{font-family:var(--disp);font-weight:400;font-size:26px;letter-spacing:.01em;margin:0 0 4px;padding-top:8px}
+h2.s .n{color:var(--gold);margin-right:10px}
+.lede{color:var(--mid);margin:6px 0 18px;max-width:78ch}
+h3{font-size:17px;font-weight:600;margin:26px 0 8px;color:var(--ink)}
+h4{font-size:14px;font-weight:600;margin:18px 0 6px;color:var(--gold2);letter-spacing:.02em}
+p{margin:8px 0;color:var(--mid)}
+ul,ol{margin:8px 0 8px 2px;padding-left:20px;color:var(--mid)}li{margin:5px 0}
+strong{color:var(--ink);font-weight:600}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin:14px 0}
+.card.wf{border-left:3px solid var(--gold)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+.kv{display:grid;grid-template-columns:140px 1fr;gap:4px 14px;font-size:13.5px;margin:10px 0}
+.kv .kk{color:var(--mut);letter-spacing:.02em}
+.note{border-left:3px solid var(--blu);background:rgba(90,166,255,.07);padding:12px 16px;border-radius:0 10px 10px 0;margin:14px 0;font-size:14px}
+.warn{border-left:3px solid var(--amb);background:rgba(255,180,84,.08);padding:12px 16px;border-radius:0 10px 10px 0;margin:14px 0;font-size:14px}
+.danger{border-left:3px solid var(--red);background:rgba(255,107,94,.08);padding:12px 16px;border-radius:0 10px 10px 0;margin:14px 0;font-size:14px}
+.ok{border-left:3px solid var(--grn);background:rgba(75,208,138,.07);padding:12px 16px;border-radius:0 10px 10px 0;margin:14px 0;font-size:14px}
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:12px 0}
+.steps>li{counter-increment:st;position:relative;padding:10px 0 10px 44px;border-bottom:1px solid var(--line)}
+.steps>li:last-child{border-bottom:0}
+.steps>li::before{content:counter(st);position:absolute;left:0;top:9px;width:28px;height:28px;border-radius:8px;background:rgba(232,184,75,.12);border:1px solid rgba(232,184,75,.3);color:var(--gold2);font-family:var(--mono);font-size:13px;display:flex;align-items:center;justify-content:center}
+.chk{list-style:none;padding-left:0}
+.chk li{position:relative;padding:5px 0 5px 28px}
+.chk li::before{content:"";position:absolute;left:2px;top:9px;width:14px;height:14px;border-radius:4px;border:1.5px solid var(--gold);background:transparent}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--mut);font-weight:600;letter-spacing:.03em;font-size:12px;text-transform:uppercase}
+.tag{font-family:var(--mono);font-size:12px;background:rgba(75,208,138,.12);color:var(--grn);padding:2px 7px;border-radius:5px;border:1px solid rgba(75,208,138,.22);white-space:nowrap}
+.email{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:10px 0;font-size:13.5px}
+.email .sub{color:var(--ink);font-weight:600}.email .pre{color:var(--mut);font-size:12.5px;margin:2px 0 8px}
+.email .bd{color:var(--mid);white-space:pre-wrap;font-size:13px;line-height:1.55}
+.rate{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.score{font-family:var(--disp);font-size:52px;color:var(--gold);line-height:1}
+.bar{flex:1;min-width:200px;height:10px;border-radius:6px;background:var(--panel2);overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;width:85%;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.foot{border-top:1px solid var(--line);padding:26px 0;color:var(--mut);font-size:12.5px;text-align:center}
+</style>
+</head>
+<body>
+
+<div id="gate"><div class="box">
+  <div class="lab">BreedWise · Internal</div>
+  <h1>Automation Runbook</h1>
+  <p>Team access only. Enter the code to continue.</p>
+  <input id="gp" type="password" placeholder="Access code" autocomplete="off" autofocus>
+  <button id="gb">Unlock</button>
+  <div class="err" id="ge"></div>
+</div></div>
+
+<div id="doc">
+<header class="hd"><div class="wrap">
+  <div class="lab">Lead Magnet Automation</div>
+  <h1>CC360 Workflow Build Runbook</h1>
+  <p>One source of truth for building, firing, and <strong>self-testing</strong> the automation behind every BreedWise lead magnet — team alerts, email + SMS sequences, reminders, and book-a-call prompts. Written to be executed by a browser-driving Claude inside CourseCreator360 (GoHighLevel), step by step, with a test protocol so nothing misfires.</p>
+  <div class="meta">
+    <span class="pill g">v1 · 2026-10-29</span>
+    <span class="pill">6 funnels</span>
+    <span class="pill">Triggers verified against live edge functions</span>
+    <span class="pill">Self-test protocol included</span>
+  </div>
+</div></header>
+
+<div class="wrap"><div class="shell">
+
+<!-- TOC -->
+<nav class="toc">
+  <div class="th">Start here</div>
+  <a href="#how">0 · How to use this</a>
+  <a href="#pre">1 · Pre-flight (must pass)</a>
+  <a href="#std">2 · Global standards</a>
+  <div class="th">The workflows</div>
+  <a href="#w1" class="sub">W1 · Free Case Study</a>
+  <a href="#w2" class="sub">W2 · Profitable Breeder</a>
+  <a href="#w3" class="sub">W3 · Healthy Litter</a>
+  <a href="#w4" class="sub">W4 · Program Scorecard</a>
+  <a href="#w5" class="sub">W5 · Puppy Content</a>
+  <a href="#w6" class="sub">W6 · Litter Blueprint</a>
+  <div class="th">Verify</div>
+  <a href="#test">3 · Self-test protocol</a>
+  <a href="#misfire">4 · Misfire prevention</a>
+  <a href="#rate">5 · Self-rating & gaps</a>
+</nav>
+
+<main>
+
+<!-- 0 HOW TO USE -->
+<section id="how">
+  <h2 class="s"><span class="n">0</span>How to use this runbook</h2>
+  <p class="lede">Read this whole section before touching anything. It tells the executor (you, the Claude building these in the browser) what you are, what you must not assume, and the one hard constraint about CC360.</p>
+
+  <div class="card">
+    <h4>Who runs this</h4>
+    <p>A Claude with the <strong>Claude-in-Chrome</strong> extension driving Austin's own authenticated CC360 browser session. CC360 workflows are <strong>UI-only</strong> — there is no API to create or edit them (confirmed "under review" in 2026). So every node below is built by clicking through the Workflow builder, not by calling an endpoint.</p>
+  </div>
+
+  <div class="danger"><strong>Hard constraint — confirm first.</strong> Before building anything, open <code>app.coursecreator360.com</code> and confirm you can actually see and click the <strong>Automation → Workflows</strong> builder. If the page will not load for you, STOP and tell Austin — do not fake progress. (The in-app preview browser has historically been blocked here; the Chrome extension on Austin's logged-in session is the supported path.)</p></div>
+
+  <div class="note"><strong>Golden rule:</strong> the edge functions already fire — opt-ins and scorecard completions already <em>upsert the contact and stamp the trigger tags</em> in CC360. Your job is only the <strong>workflow that reacts to those tags</strong>. Never rebuild the lead capture; never change the tag names. Build to the tags exactly as written in each workflow's "Trigger" box.</p></div>
+
+  <h4>What each workflow spec gives you</h4>
+  <ul>
+    <li><strong>Trigger</strong> — the exact CC360 "Contact Tag" (or calendar) event that starts it. Copy the tag verbatim.</li>
+    <li><strong>Goal</strong> — the single outcome that counts as success (used as the workflow Goal / exit).</li>
+    <li><strong>Build steps</strong> — the ordered nodes to add, with the config for each.</li>
+    <li><strong>Messages</strong> — ready email/SMS copy (brand voice; no the word "free" in customer-facing copy per brand rule).</li>
+    <li><strong>Branches, exit, misfire guards</strong> — what to split on, when to stop, and the traps to avoid.</li>
+  </ul>
+</section>
+
+<!-- 1 PRE-FLIGHT -->
+<section id="pre">
+  <h2 class="s"><span class="n">1</span>Pre-flight prerequisites — must pass before building</h2>
+  <p class="lede">90% of "the automation misfired" is really one of these not being set. Verify every box. If one fails, fix or flag it <em>before</em> building workflows on top of it, or messages will silently never send.</p>
+
+  <div class="card">
+    <h4>A · Deliverability (the #1 misfire source)</h4>
+    <ul class="chk">
+      <li><strong>Email sending domain verified</strong> in CC360 (Settings → Email Services → Dedicated Domain). Send a live test to a Gmail + an Outlook address and confirm it lands in the inbox, not spam. If unverified, every email node fails silently.</li>
+      <li><strong>From name / from email / reply-to</strong> set (e.g. From "BreedWise", reply-to a monitored inbox — <code>support@breedwise.io</code> or the setter's).</li>
+      <li><strong>Physical mailing address + unsubscribe</strong> present in the email footer (CAN-SPAM). CC360 adds these via the account business profile — confirm it's filled.</li>
+      <li><strong>SMS A2P 10DLC registered & approved</strong> (Settings → Phone Numbers). If pending/declined, <strong>every SMS node silently drops</strong> — in that case, build the SMS nodes but leave them OFF and note it, or skip them. Do not ship broken SMS.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h4>B · Calendars & the closer</h4>
+    <ul class="chk">
+      <li>A booking <strong>calendar exists</strong> for discovery/enrollment calls, connected to the closer's real Google/Outlook calendar (so double-booking can't happen).</li>
+      <li>The two Typeforms that route to booking are live and point at that calendar: application/book-a-call <code>MFOGn2eF</code> and the readiness qualifier <code>r44lzVGR</code>.</li>
+      <li>Round-robin / assignment set: one setter today (<strong>Regina</strong>); closer (<strong>Austin</strong>) assigned at booking. Add Yasmin to round-robin only when she starts.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h4>C · Tags, fields, pipeline (already created by the edge functions — just confirm they exist)</h4>
+    <ul class="chk">
+      <li>The pipeline <strong>"New VSL Funnel"</strong> exists with stages: Application Submitted · Qualified - No Booking · Enrollment Call Booked · Lost / No Response · Not Qualified.</li>
+      <li>Custom fields exist: <code>breeding_stage</code>, <code>instagram</code>, <code>lead_score</code>. (Missing a field never blocks the tag — but confirm so nurture can personalize.)</li>
+      <li>The trigger tags listed in each workflow appear under Settings → Tags after one live/test submission. If a tag is missing, the capture hasn't fired yet — do a real test submission first (see §3).</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h4>D · Team notification channel</h4>
+    <ul class="chk">
+      <li>Decide the alert channel per funnel: <strong>Slack</strong> (a webhook already exists and Case-Study opt-ins already post to it from the edge function), <strong>internal email</strong> to the team, and/or <strong>SMS</strong> to the setter for hot leads.</li>
+      <li>Have the recipient list ready: setter (Regina), Jennifer, Austin, Dr. Fontaine for litter. Put these in a single "Team — Internal" user/email group so you reference one thing.</li>
+    </ul>
+  </div>
+
+  <div class="warn"><strong>Do not duplicate the Slack alert.</strong> Case-Study opt-ins <em>already</em> post to Slack from the <code>masterclass-optin</code> edge function. If you also add a Slack node in W1, the team gets two pings per lead. For W1, use <em>internal email/SMS</em> for the team, not Slack — or explicitly replace the edge-function ping (don't run both).</p></div>
+</section>
+
+<!-- 2 GLOBAL STANDARDS -->
+<section id="std">
+  <h2 class="s"><span class="n">2</span>Global standards — apply to every workflow</h2>
+  <p class="lede">Build all six to the same conventions so they're predictable, testable, and never step on each other.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <h4>Naming</h4>
+      <p>Workflow name = <code>LM · &lt;Funnel&gt; · &lt;purpose&gt;</code>, e.g. <code>LM · Puppy Content · Nurture + Book</code>. Folder: <strong>Lead Magnets</strong>. This makes them findable and the self-test reports legible.</p>
+    </div>
+    <div class="card">
+      <h4>Trigger pattern</h4>
+      <p>Trigger = <strong>Contact Tag</strong> → "tag added" → the exact tag. Add filter <em>Contact → Tag is not <code>lm-&lt;funnel&gt;-done</code></em> so a re-tag can't re-run a finished contact.</p>
+    </div>
+    <div class="card">
+      <h4>Re-entry / dedup</h4>
+      <p>Workflow settings → <strong>Allow re-entry = OFF</strong>. First node after trigger: <em>If contact already has <code>lm-&lt;funnel&gt;-active</code> → exit.</em> Last node: remove <code>-active</code>, add <code>-done</code>.</p>
+    </div>
+    <div class="card">
+      <h4>Quiet hours & DND</h4>
+      <p>Enable <strong>"Allow sending within business hours only"</strong> for SMS (e.g. 8am–8pm lead's timezone). Every send node: <strong>skip if DND</strong>. Honor unsubscribe/opt-out globally.</p>
+    </div>
+    <div class="card">
+      <h4>Stop-on-reply / stop-on-book</h4>
+      <p>Add a workflow <strong>Goal</strong>: "Appointment booked" and "Replied to a message." When hit, the contact exits the nurture so they never get "did you forget?" after they already booked or replied.</p>
+    </div>
+    <div class="card">
+      <h4>Team-notify sub-pattern</h4>
+      <p>Reused block: <em>Internal Notification</em> (email + optional SMS to the setter) carrying name, email, phone, source, lead band, and a deep link to the contact. Hot bands notify immediately; cold bands roll up daily.</p>
+    </div>
+    <div class="card" style="grid-column:1/-1;border-left:3px solid var(--gold)">
+      <h4>Qualifier gate before booking — one gate only</h4>
+      <p><strong>Rule: exactly one qualifier between a lead and the calendar.</strong> Never stack scorecard + Typeform + calendar questions — three gates kill conversion. Pick the lightest gate that still qualifies, then book.</p>
+      <ul>
+        <li><strong>Keep the Typeform qualifier</strong> on the high-ticket application calls — <strong>W1 Free Case Study (MFOGn2eF)</strong>, <strong>W5 Puppy Content (MFOGn2eF)</strong>, <strong>W6 Litter Blueprint (r44lzVGR)</strong>. It routes qualified → calendar vs disqualified → downsell, captures breeding stage/budget/timeline for the closer, and lifts show + close rate (worth the friction on a $6k offer).</li>
+        <li><strong>No second form on the scorecards</strong> — <strong>W2 Profitable Breeder, W3 Healthy Litter, W4 Program</strong>. The scorecard <em>is</em> the qualifier (it already scored them and pushed answers into CC360). Send qualified bands <strong>straight to the calendar</strong>; capture any extra data with <strong>CC360 calendar intake questions</strong>, not a separate Typeform.</li>
+        <li>On paid/cold traffic, A/B the gate — gated usually wins on <em>qualified calls booked</em> and <em>show-rate</em> even if raw bookings dip.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note"><strong>Timezone:</strong> set each contact's timezone from the opt-in (CC360 infers from phone/IP). All "wait until 9am" and reminder offsets use the contact's timezone, not the account's.</p></div>
+
+  <h4>The reusable "Internal Team Notification" block (build once, reference in each workflow)</h4>
+  <ul class="steps">
+    <li><strong>Email → Internal</strong> to the Team group. Subject: <code>🔔 New {{contact.source}} lead — {{contact.first_name}} ({band})</code>. Body: all fields + <code>{{contact.profile_url}}</code>.</li>
+    <li><strong>If</strong> lead band = hot/qualified <strong>→ SMS → Internal</strong> to the setter: <code>Hot {{source}} lead: {{first_name}} {{phone}}. Call within 10 min.</code></li>
+    <li><strong>Else</strong> → add to a daily digest tag <code>digest-new</code> (a separate once-a-day workflow emails the rolled-up list).</li>
+  </ul>
+</section>
+
+<!-- W1 FREE CASE STUDY -->
+<section id="w1">
+  <h2 class="s">W1 · Free Case Study → Academy Application</h2>
+  <div class="card wf">
+    <div class="kv">
+      <span class="kk">Capture fires</span><span><code>masterclass-optin</code> (case-study branch) + Typeform <code>MFOGn2eF</code> → <code>vsl-apply</code></span>
+      <span class="kk">Opt-in trigger</span><span><span class="tag">case study - opted in</span> (paid adds <span class="tag">case study - fb ad lead</span>)</span>
+      <span class="kk">Application tags</span><span><span class="tag">academy-qualified</span> &nbsp; <span class="tag">academy-disqualified</span></span>
+      <span class="kk">Pipeline</span><span>New VSL Funnel · $6,000 qualified / $291 disqualified (set by edge fn)</span>
+      <span class="kk">Goal</span><span>Enrollment call booked</span>
+      <span class="kk">Owner</span><span>Setter (Regina) → closer (Austin) at booking</span>
+    </div>
+  </div>
+
+  <p>This is two linked workflows: <strong>1A Opt-in nurture</strong> (watch the case study → apply) and <strong>1B Application router</strong> (qualified vs not → book or downsell).</p>
+
+  <h3>1A · Opt-in nurture — "watch it, then apply"</h3>
+  <p><strong>Trigger:</strong> tag added <span class="tag">case study - opted in</span>. (Team Slack alert already fires from the edge function — do <em>not</em> add another.)</p>
+  <ul class="steps">
+    <li><strong>Internal notify</strong> — email the team only (Slack already pinged). One line, link to contact.</li>
+    <li><strong>Email 1 · instant</strong> — deliver the case study. Subject <em>"Your case study is inside 👇"</em>. Big button to the VSL/case-study page. Set custom field <code>cs_sent=yes</code>.</li>
+    <li><strong>Wait 45 min</strong> → <strong>If</strong> page not visited (no <code>cs_watched</code>) → <strong>Email 2</strong> nudge: "Did the link work? Here it is again."</li>
+    <li><strong>Wait to next day 9am</strong> → <strong>Email 3</strong> — the "is this you?" qualifier email with the <strong>Apply</strong> button (Typeform <code>MFOGn2eF</code>).</li>
+    <li><strong>SMS · day 1 (if opted in & A2P live)</strong> — "Watched the case study? Reply YES and I'll send the next step." (stop-on-reply goal catches replies.)</li>
+    <li><strong>Day 2, Day 4, Day 6</strong> — 3 value emails (objection → proof → urgency), each ending in the Apply button.</li>
+    <li><strong>Goal: tag <span class="tag">academy-qualified</span> OR <span class="tag">academy-disqualified</span> added</strong> → exit 1A (they applied; 1B takes over). Also exit on "appointment booked."</li>
+  </ul>
+
+  <h3>1B · Application router — qualified vs not</h3>
+  <p><strong>Trigger A:</strong> tag added <span class="tag">academy-qualified</span>. <strong>Trigger B:</strong> tag added <span class="tag">academy-disqualified</span>. (Build as one workflow with a filter, or two — one per tag is cleaner for testing.)</p>
+  <h4>Qualified path</h4>
+  <ul class="steps">
+    <li><strong>Internal notify — HOT</strong>: email + SMS the setter immediately ("Call within 10 minutes"). Move opportunity to <em>Qualified - No Booking</em> (the edge fn already created it).</li>
+    <li><strong>Email · instant</strong> — "You're a fit — grab your call time." Button = the CC360 calendar (the Typeform already routes here, but re-send in case they bounced).</li>
+    <li><strong>SMS · instant</strong> (if live) — "This is Regina with BreedWise — saw your application, you're a great fit. Here's my calendar: {link}".</li>
+    <li><strong>Wait 1 hr → If no booking</strong> → reminder email + task for the setter to manually call.</li>
+    <li><strong>Day 1, Day 2, Day 3 → If still no booking</strong> → 3 "book your call" nudges, escalating. After day 5 no response → move opportunity to <em>Lost / No Response</em> and exit.</li>
+    <li><strong>Goal: appointment booked</strong> → go to <strong>1C Booking</strong> (below) and exit.</li>
+  </ul>
+  <h4>Disqualified path (TPB downsell)</h4>
+  <ul class="steps">
+    <li>Move opportunity to <em>Not Qualified</em>. <strong>No</strong> hot alert, no setter SMS.</li>
+    <li><strong>Email · instant</strong> — gracious "not a fit right now" + the $291 TPB (The Profitable Breeder) offer link.</li>
+    <li><strong>3-email TPB nurture</strong> over a week. Exit on purchase tag or after the sequence.</li>
+  </ul>
+
+  <h3>1C · Booking confirmation + reminders + no-show (shared by W1/W5)</h3>
+  <p><strong>Trigger:</strong> Appointment booked (CC360 calendar). Reused by every funnel that books a call.</p>
+  <ul class="steps">
+    <li>Move opportunity → <em>Enrollment Call Booked</em>. Internal notify: "Call booked — {name}, {time}" to setter + closer.</li>
+    <li><strong>Instant</strong> confirmation email + SMS with date/time, add-to-calendar, and what to bring.</li>
+    <li><strong>Reminders:</strong> 24 h before (email+SMS), 1 h before (SMS), 10 min before (SMS).</li>
+    <li><strong>On "appointment status = showed"</strong> → thank-you + next-step. <strong>On "no-show"</strong> → immediate "we missed you, rebook" email+SMS, then one more at +1 day; after that mark <em>Lost / No Response</em>.</li>
+    <li><strong>On cancel/reschedule</strong> → stop reminders, re-trigger on the new time.</li>
+  </ul>
+
+  <div class="warn"><strong>W1 misfire guards:</strong> (1) don't double-Slack (edge fn owns it). (2) Qualified and disqualified are mutually exclusive — add a filter so a mis-tagged contact can't run both. (3) The edge fn <em>removes</em> <code>application-partial/started</code> on completion — don't build nurture that depends on those sticking. (4) Exit 1A the instant either application tag lands, or the lead gets both "apply" nudges and "book" nudges at once.</div>
+</section>
+
+<!-- W2 PROFITABLE BREEDER -->
+<section id="w2">
+  <h2 class="s">W2 · Profitable Breeder Scorecard</h2>
+  <div class="card wf">
+    <div class="kv">
+      <span class="kk">Capture fires</span><span><code>pb-scorecard</code> edge fn (cold quiz lead magnet)</span>
+      <span class="kk">Opt-in trigger</span><span>partial/started tags from <code>pb-scorecard-optin</code></span>
+      <span class="kk">Complete trigger</span><span><span class="tag">pb-scorecard-complete</span> + <span class="tag">tpb-lead</span></span>
+      <span class="kk">Band tags</span><span><span class="tag">pb-band-&lt;band&gt;</span> · <span class="tag">pb-segment-&lt;seg&gt;</span> · <span class="tag">pb-gap-q&lt;n&gt;</span></span>
+      <span class="kk">Goal</span><span>Books a strategy call (or buys TPB)</span>
+      <span class="kk">Owner</span><span>Regina</span>
+    </div>
+  </div>
+  <p><strong>Trigger:</strong> tag added <span class="tag">pb-scorecard-complete</span>. Personalize by band (the <code>pb-band-*</code> tag) and by their biggest gap (<code>pb-gap-q*</code>).</p>
+  <ul class="steps">
+    <li><strong>Internal notify</strong> — email the team; SMS the setter only if band = top tier.</li>
+    <li><strong>Email 1 · instant</strong> — deliver the scored result + the single biggest gap. Subject: <em>"Your Profitable Breeder score: {{band}}"</em>. CTA: book a 15-min gap-plan call.</li>
+    <li><strong>Branch on band:</strong>
+      <ul>
+        <li><strong>High / ready</strong> → straight to a book-a-call sequence (Day 0, 1, 3) + setter task.</li>
+        <li><strong>Middle (prime for ascension)</strong> → 3-part value sequence mapped to their gap tags, then book-a-call.</li>
+        <li><strong>Low / foundation</strong> → nurture to TPB ($291) first; book-a-call later.</li>
+      </ul>
+    </li>
+    <li><strong>SMS Day 1</strong> (if live) — "Saw your scorecard — your #1 gap is {{gap}}. Want the 10-min fix? {link}".</li>
+    <li><strong>Goal:</strong> appointment booked → hand to <strong>1C Booking</strong>. Exit on book or reply.</li>
+  </ul>
+  <div class="warn"><strong>W2 guards:</strong> only act on <code>pb-scorecard-complete</code>, never the <em>optin/started</em> tag (that's a half-finished quiz — a separate 2-email "finish your scorecard" nudge handles those, exiting the moment <code>pb-scorecard-complete</code> lands). Dedup across pb + program scorecards: a contact who did both should not get two overlapping nurtures — add a filter <em>not tag <code>tpb-scorecard-complete</code> in last 14 days</em>.</div>
+</section>
+
+<!-- W3 HEALTHY LITTER -->
+<section id="w3">
+  <h2 class="s">W3 · Healthy Litter Scorecard (Dr. Fontaine)</h2>
+  <div class="card wf">
+    <div class="kv">
+      <span class="kk">Capture fires</span><span><code>vet-optin</code> edge fn (Dr. Fontaine science funnel)</span>
+      <span class="kk">Opt-in trigger</span><span><span class="tag">litter-scorecard-optin</span> (+ <span class="tag">emmanuel-audience</span> · <span class="tag">owner-regina</span>)</span>
+      <span class="kk">Complete trigger</span><span><span class="tag">litter-scorecard-complete</span> + <span class="tag">litter-band-&lt;band&gt;</span></span>
+      <span class="kk">Goal</span><span>Register/attend Dr. Fontaine webinar → book</span>
+      <span class="kk">Owner</span><span>Regina · audience: Dr. Fontaine (Emmanuel)</span>
+    </div>
+  </div>
+  <p>Two phases: <strong>deliver the scorecard</strong> (on opt-in), then <strong>drive to the whelping/science webinar + a call</strong> (on completion).</p>
+  <h4>On opt-in — <span class="tag">litter-scorecard-optin</span></h4>
+  <ul class="steps">
+    <li><strong>Email · instant</strong> — deliver the scorecard link. From Dr. Fontaine's voice (science/health authority). Set <code>litter_sent=yes</code>.</li>
+    <li><strong>Wait 30 min → If not completed</strong> → "finish your scorecard" nudge. Exit this nudge on <code>litter-scorecard-complete</code>.</li>
+  </ul>
+  <h4>On completion — <span class="tag">litter-scorecard-complete</span></h4>
+  <ul class="steps">
+    <li><strong>Internal notify</strong> — team email; flag band. SMS setter for top band.</li>
+    <li><strong>Email 1 · instant</strong> — scored result + the one health risk to fix, CTA to register for the webinar (whelping/healthy litter).</li>
+    <li><strong>Webinar sequence</strong> — confirmation, then reminders 24 h / 1 h / 10 min before (see the W6 webinar reminder block — reuse it).</li>
+    <li><strong>Post-webinar</strong> — attended → book a call with Regina; no-show → replay + rebook.</li>
+    <li><strong>Goal:</strong> booked a call. Exit on book/reply.</li>
+  </ul>
+  <div class="warn"><strong>W3 guards:</strong> voice/sender must be Dr. Fontaine's, not the sales voice — wrong sender tanks this audience. Band tag drives urgency only; everyone still gets the webinar invite. If the webinar has a fixed date, use the W6 date-based reminder pattern (not relative waits).</div>
+</section>
+
+<!-- W4 PROGRAM SCORECARD -->
+<section id="w4">
+  <h2 class="s">W4 · Program Scorecard (ascension)</h2>
+  <div class="card wf">
+    <div class="kv">
+      <span class="kk">Capture fires</span><span><code>program-scorecard</code> edge fn (member-facing AI diagnostic)</span>
+      <span class="kk">Started trigger</span><span><span class="tag">tpb-scorecard-started</span> + <span class="tag">owner-jennifer</span></span>
+      <span class="kk">Complete trigger</span><span><span class="tag">tpb-scorecard-complete</span> + verdict <span class="tag">academy-ready</span>/<span class="tag">watch</span>/<span class="tag">nurture</span> (+<span class="tag">tpb-improving</span>)</span>
+      <span class="kk">Goal</span><span>Ascension — book an Academy/strategy call when ready</span>
+      <span class="kk">Owner</span><span>Jennifer</span>
+    </div>
+  </div>
+  <div class="note">This is <strong>member-facing</strong> (existing members / warm audience), not a cold lead magnet. Keep it low-pressure and segmented by the ascension verdict. Include it because its completions flow into the same book-a-call engine.</div>
+  <p><strong>Trigger:</strong> tag added <span class="tag">tpb-scorecard-complete</span>. Branch on verdict:</p>
+  <ul class="steps">
+    <li><strong>academy-ready</strong> → internal notify Jennifer (hot). Email: "You're ready for the next level" → book an Academy call (Day 0/1/3). Opportunity into New VSL Funnel if not already.</li>
+    <li><strong>watch</strong> → 2-week value nurture tied to their gaps; re-offer the call at the end.</li>
+    <li><strong>nurture / foundation</strong> → long, gentle education track; no call push yet. Re-score invite in 30 days.</li>
+    <li><strong>tpb-improving</strong> present → add "you're trending up 📈" proof email in whichever track.</li>
+    <li><strong>Goal:</strong> booked a call → hand to 1C. Exit on book/reply.</li>
+  </ul>
+  <div class="warn"><strong>W4 guards:</strong> owner = Jennifer, not Regina — route internal alerts and the booked-call assignment accordingly. Started-but-not-complete (<code>tpb-scorecard-started</code>) gets only a single "finish it" nudge, exited by the complete tag. Don't let W4 and W2 both nurture the same contact — W4 (member) takes precedence; filter W2 out if <code>tpb-scorecard-complete</code> is present.</div>
+</section>
+
+<!-- W5 PUPPY CONTENT -->
+<section id="w5">
+  <h2 class="s">W5 · Puppy Content Masterclass</h2>
+  <div class="card wf">
+    <div class="kv">
+      <span class="kk">Capture fires</span><span><code>masterclass-optin</code> (puppy-content branch, scored)</span>
+      <span class="kk">Opt-in trigger</span><span><span class="tag">puppy-content-playbook</span> + <span class="tag">lead-magnet</span></span>
+      <span class="kk">Lead band</span><span><span class="tag">lead-hot</span> / <span class="tag">lead-warm</span> / <span class="tag">lead-cold</span> (from breeding-tenure scoring)</span>
+      <span class="kk">Book-a-call</span><span>Typeform <code>MFOGn2eF</code> (inline on the video page) → CC360 calendar</span>
+      <span class="kk">Goal</span><span>Books a "build it with you" call</span>
+      <span class="kk">Owner</span><span>Setter (Regina) → Austin</span>
+    </div>
+  </div>
+  <p><strong>Trigger:</strong> tag added <span class="tag">puppy-content-playbook</span>. The 4 masterclass videos are the deliverable; the call is the conversion. The workbook PDF is the <em>booked</em> bonus (on the success page only).</p>
+  <ul class="steps">
+    <li><strong>Internal notify</strong> — team email; <strong>SMS the setter immediately if <span class="tag">lead-hot</span></strong>.</li>
+    <li><strong>Email 1 · instant</strong> — "Your masterclass is unlocked" → button to the video portal. Set <code>pc_sent=yes</code>.</li>
+    <li><strong>Branch on band:</strong>
+      <ul>
+        <li><span class="tag">lead-hot</span> → fast track: Day 0 deliver, Day 0 (+3h) "want us to build it with you?" book-a-call, Day 1 + Day 2 book nudges. Setter task to DM.</li>
+        <li><span class="tag">lead-warm</span> → Day 0 deliver, Day 1 recap + CTA, Day 2/4 value + book.</li>
+        <li><span class="tag">lead-cold</span> → Day 0 deliver, longer education (Day 1/3/5), soft book CTA at the end.</li>
+      </ul>
+    </li>
+    <li><strong>Watched-all-4 branch</strong> — if they hit the success page (tag/field), jump straight to the book-a-call ask (they're warm).</li>
+    <li><strong>SMS Day 1</strong> (if live, by band) — hot: "Ready to fill your waitlist? Grab a time: {link}".</li>
+    <li><strong>Goal:</strong> appointment booked → hand to <strong>1C Booking</strong>. Exit on book/reply.</li>
+  </ul>
+  <div class="warn"><strong>W5 guards:</strong> the scored opt-in sets the band at capture — build the band branch to read the tag, don't re-score. Don't promise the PDF before booking (it moved to the success page). Puppy-content books on the same calendar as Academy — make sure the booked-call internal alert says which funnel so the closer preps right.</div>
+</section>
+
+<!-- W6 LITTER BLUEPRINT -->
+<section id="w6">
+  <h2 class="s">W6 · Profitable Litter Blueprint Masterclass</h2>
+  <div class="card wf">
+    <div class="kv">
+      <span class="kk">Capture fires</span><span><code>masterclass-optin</code> (litter branch) → readiness scorecard</span>
+      <span class="kk">Register trigger</span><span><span class="tag">profitable-litter-blueprint</span> + <span class="tag">webinar-registrant</span></span>
+      <span class="kk">Readiness done</span><span><span class="tag">readiness-scorecard-completed</span> + <span class="tag">readiness-&lt;band&gt;</span></span>
+      <span class="kk">Qualifier/book</span><span>Typeform <code>r44lzVGR</code> → CC360 calendar (→ <code>typeform-note</code> writes the answers on the contact)</span>
+      <span class="kk">Goal</span><span>Attend the masterclass → book a strategy call</span>
+      <span class="kk">Owner</span><span>Regina</span>
+    </div>
+  </div>
+  <p>This is a <strong>live/evergreen webinar</strong> funnel — it needs real date-based reminders, not just relative waits. Flow: register → (optional) readiness scorecard → attend → book.</p>
+
+  <div class="danger"><strong>Set the event date first.</strong> The blueprint page has an <code>EVENT_DATE</code> that must be set. All reminders below anchor to that date. For evergreen (just-in-time) webinars, anchor to the registrant's chosen session time instead.</div>
+
+  <h4>On register — <span class="tag">profitable-litter-blueprint</span> / <span class="tag">webinar-registrant</span></h4>
+  <ul class="steps">
+    <li><strong>Internal notify</strong> — team email (registrant count matters; roll these up daily rather than per-lead unless paid traffic).</li>
+    <li><strong>Email · instant confirmation</strong> — "You're registered for the Profitable Litter Blueprint" + date/time + add-to-calendar + the pre-work: the <strong>Readiness Scorecard</strong> (primes them + scores them).</li>
+    <li><strong>Reminder cadence (date-anchored):</strong> 3 days before, 1 day before, "today" morning, 1 hour before (email+SMS), 10 min before (SMS "we're live: {join link}").</li>
+  </ul>
+  <h4>On readiness completed — <span class="tag">readiness-scorecard-completed</span></h4>
+  <ul class="steps">
+    <li>Tag drives setter prep; <code>readiness-&lt;band&gt;</code> = how ready. Email: "Here's your readiness result + what to focus on before the class."</li>
+    <li>The qualifier Typeform <code>r44lzVGR</code> routes high-readiness folks to the calendar; <code>typeform-note</code> posts their answers to the contact so the setter walks in informed.</li>
+  </ul>
+  <h4>Post-webinar</h4>
+  <ul class="steps">
+    <li><strong>Attended</strong> → "here's your next step" → book a strategy call (Day 0/1/3) + replay link.</li>
+    <li><strong>No-show</strong> → "you missed it — watch the replay" (replay expires in 48 h for urgency) → book CTA.</li>
+    <li><strong>Goal:</strong> booked a call → hand to 1C. Exit on book/reply/purchase.</li>
+  </ul>
+  <div class="warn"><strong>W6 guards:</strong> use <strong>date-based</strong> reminders anchored to the event (or the registrant's session), not relative waits, or late registrants get reminders after the event. Don't send readiness-result emails to people who never started the scorecard. Roll up registrant alerts daily so the team isn't pinged hundreds of times during a launch.</div>
+</section>
+
+<!-- 3 SELF-TEST -->
+<section id="test">
+  <h2 class="s"><span class="n">3</span>Self-test protocol — the executor Claude tests itself</h2>
+  <p class="lede">You are not done when a workflow is built. You are done when you have <strong>proven each one fires correctly end to end with a test contact and then cleaned up</strong>. Run this for every workflow before reporting it live. Never report "done" without a passing test log.</p>
+
+  <div class="card">
+    <h4>Setup — one reusable test identity</h4>
+    <ul>
+      <li>Create a test contact with a <strong>real inbox you control</strong> and (if testing SMS) a real phone: name <code>ZZ Test &lt;funnel&gt;</code>, email <code>zztest+&lt;funnel&gt;@&lt;yourinbox&gt;</code> (the <code>+tag</code> keeps them separate and searchable).</li>
+      <li>Tag it manually with the funnel's <strong>trigger tag</strong> to simulate a real capture — <em>or</em>, better, do a real submission on the live page so you also prove the capture→tag step.</li>
+    </ul>
+  </div>
+
+  <h4>Per-workflow assertions (tick every one)</h4>
+  <ul class="chk">
+    <li><strong>Enrolled:</strong> the contact appears in the workflow's <em>Enrollment History</em> within ~1 min of the tag.</li>
+    <li><strong>Each node executed:</strong> walk the contact's execution log — every email/SMS node shows <em>Sent</em>, not Skipped/Error. Investigate any Skipped (usually DND, quiet hours, missing domain, or A2P).</li>
+    <li><strong>Email received & renders:</strong> open the actual inbox — subject, personalization tokens resolved (no raw <code>{{first_name}}</code>), links go to the right page, unsubscribe present, not in spam.</li>
+    <li><strong>SMS received</strong> (if A2P live): correct text, link works, within quiet hours.</li>
+    <li><strong>Branch correctness:</strong> run the test once per band/path (e.g. tag <code>lead-hot</code> vs <code>lead-cold</code>) and confirm it took the right branch each time.</li>
+    <li><strong>Internal alert fired:</strong> the team email/SMS arrived with the right fields and the contact deep-link works. Confirm hot vs. digest routing.</li>
+    <li><strong>Booking path:</strong> actually book a slot via the Typeform/calendar → confirm 1C fires (stage moves to Enrollment Call Booked, confirmation + reminders scheduled, nurture STOPS).</li>
+    <li><strong>No double-send:</strong> re-add the trigger tag → confirm the contact does <em>not</em> re-enter (re-entry OFF / <code>-done</code> guard works).</li>
+    <li><strong>Stop-on-goal:</strong> after booking, confirm no further "please book" messages are scheduled.</li>
+  </ul>
+
+  <div class="ok"><strong>Master smoke test (run after all 6 built):</strong> one test lead through each funnel, back to back. Produce a table: <em>Funnel · Enrolled? · Emails sent/received · SMS · Internal alert · Branch correct · Booking→1C · Re-entry blocked</em>. Every cell must be ✅ or carry a written reason. That table is the deliverable to Austin, not "I built them."</div>
+
+  <div class="danger"><strong>Cleanup — mandatory.</strong> After testing: delete every <code>ZZ Test</code> contact and opportunity, remove test tags, and confirm no test record remains in the pipeline or in <code>submissions-admin.html</code>. Leaving test data in skews the dashboards and the reports.</div>
+
+  <div class="note"><strong>Debugging a "misfire" fast:</strong> Skipped email → sending domain unverified or contact unsubscribed. Skipped SMS → A2P not approved or DND. Node never reached → wrong trigger tag spelling, or a filter upstream excluded it. Wrong branch → band tag read incorrectly. Double messages → re-entry ON or two workflows share a trigger. Nothing enrolled → the tag never actually landed (test the capture first).</div>
+</section>
+
+<!-- 4 MISFIRE -->
+<section id="misfire">
+  <h2 class="s"><span class="n">4</span>Misfire-prevention checklist (consolidated)</h2>
+  <ul class="chk">
+    <li>Sending domain verified; A2P approved (or SMS nodes OFF with a note).</li>
+    <li>Every workflow: re-entry OFF + <code>-active</code>/<code>-done</code> guards + goal-based exit.</li>
+    <li>Triggers use the <em>exact</em> tag strings from each spec — copy, don't retype.</li>
+    <li>Mutually-exclusive paths (qualified/disqualified, bands) filtered so none can run twice.</li>
+    <li>No duplicate team alerts — Case Study Slack is owned by the edge function.</li>
+    <li>Cross-funnel dedup: member scorecards (W4) suppress cold nurtures (W2) for the same contact.</li>
+    <li>Date-anchored reminders for webinars (W6, dated W3), not relative waits.</li>
+    <li>Quiet hours + DND + unsubscribe honored on every send.</li>
+    <li>Correct owner per funnel (Regina / Jennifer / Austin / Dr. Fontaine voice).</li>
+    <li>Stop-on-reply and stop-on-book everywhere a human might respond.</li>
+    <li>Test lead cleaned up; dashboards clean.</li>
+  </ul>
+</section>
+
+<!-- 5 RATING -->
+<section id="rate">
+  <h2 class="s"><span class="n">5</span>Self-rating &amp; what would make it a 10</h2>
+  <div class="card">
+    <div class="rate">
+      <div class="score">8.5</div>
+      <div class="bar"><i></i></div>
+      <div style="min-width:160px;color:var(--mid);font-size:13.5px">Design &amp; triggers: solid and <em>verified against the live edge functions.</em> Held back from 10 only by things that can't be confirmed from outside the CC360 account.</div>
+    </div>
+  </div>
+
+  <h4>Why it's strong</h4>
+  <ul>
+    <li>Every trigger tag, pipeline, deal value, and booking Typeform is pulled from the actual edge-function source — not guessed. The workflows will trigger on real events.</li>
+    <li>Each funnel has team alerts, email+SMS, reminders, and a book-a-call path, with explicit branches and exits.</li>
+    <li>Misfire guards and a real self-test protocol are baked in, so the executor proves it works instead of assuming.</li>
+  </ul>
+
+  <h4>What would make it a 10 (confirm these in the account, then I'll tighten)</h4>
+  <ol>
+    <li><strong>Deliverability status</strong> — is the CC360 sending domain verified and is A2P 10DLC approved? This decides whether SMS ships now or waits. (Biggest unknown.)</li>
+    <li><strong>Exact calendar(s) &amp; assignment</strong> — the real booking calendar link(s) and whether Academy + Puppy Content + Blueprint share one calendar or each has its own.</li>
+    <li><strong>Team-notify channel per funnel</strong> — Slack vs internal email vs setter SMS, and the exact recipient group.</li>
+    <li><strong>Existing workflows</strong> — are any of these partially built already in CC360? If so, we edit, not duplicate (I can't see the account from here).</li>
+    <li><strong>Webinar model for W6</strong> — fixed live date vs evergreen just-in-time (changes the whole reminder engine).</li>
+    <li><strong>Email/SMS copy depth</strong> — this runbook gives subjects + structure + key copy; say the word and I'll write every email/SMS in full brand voice, ready to paste.</li>
+  </ol>
+
+  <div class="note"><strong>Honest scope note:</strong> I built the <em>blueprint the browser-Claude executes</em> — I can't create CC360 workflows directly (UI-only, no API) and I can't see inside the account, so the final 1.5 points are confirmation + live-account tightening, which happen during the build + self-test, not before it.</div>
+</section>
+
+</main>
+</div></div>
+
+<div class="foot">BreedWise · Internal automation runbook · build + self-test before reporting live · v1 2026-10-29</div>
+</div>
+
+<script>
+(function(){
+  var CODE='BWTEAM2026';
+  var g=document.getElementById('gate'),d=document.getElementById('doc'),inp=document.getElementById('gp'),btn=document.getElementById('gb'),err=document.getElementById('ge');
+  function tryUnlock(){
+    if(inp.value.trim().toUpperCase()===CODE){
+      try{sessionStorage.setItem('wf_ok','1');}catch(e){}
+      g.style.display='none';d.style.display='block';
+    }else{err.textContent='Incorrect code.';inp.select();}
+  }
+  try{if(sessionStorage.getItem('wf_ok')==='1'){g.style.display='none';d.style.display='block';}}catch(e){}
+  btn.addEventListener('click',tryUnlock);
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+})();
+</script>
+</body>
+</html>
