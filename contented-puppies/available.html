@@ -8,6 +8,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400;1,6..96,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="cp.css">
+<style>
+  .pc .thumbs{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+  .pc .thumbs img{width:50px;height:50px;object-fit:cover;border-radius:7px;cursor:pointer;border:2px solid transparent;transition:border-color .2s}
+  .pc .thumbs img.on,.pc .thumbs img:hover{border-color:var(--gold)}
+  .ploading{text-align:center;color:var(--ink-2);padding:50px 0;font-family:var(--sans)}
+  .ploading .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--gold);margin:0 3px;animation:pb 1s infinite}
+  .ploading .dot:nth-child(2){animation-delay:.15s}.ploading .dot:nth-child(3){animation-delay:.3s}
+  @keyframes pb{0%,100%{opacity:.3}50%{opacity:1}}
+  .pfallback{text-align:center;padding:44px 20px;background:var(--paper-2);border-radius:18px;border:1px solid var(--line)}
+  .pfallback h3{font-family:var(--serif);font-weight:400;font-size:26px;margin-bottom:10px}
+  .pfallback p{color:var(--ink-2);max-width:48ch;margin:0 auto 20px}
+</style>
 </head>
 <body>
   <div class="topbar"><div class="in">
@@ -32,103 +44,13 @@
   </div></section>
 
   <section class="blk tight"><div class="wrap">
-    <div class="filters rev">
+    <div class="filters rev" id="filters" style="display:none">
       <button class="on" data-f="all">All Puppies</button>
       <button data-f="biewer">Biewer Yorkie</button>
       <button data-f="yorkie">Yorkshire Terrier</button>
     </div>
     <div class="plist" id="plist">
-
-      <div class="pc rev" data-breed="yorkie">
-        <div class="img"><span class="badge">Available</span><img src="img/pup-scooby.jpg" data-full="img/pup-scooby.jpg" alt="Scooby, Yorkshire Terrier"></div>
-        <div class="bd"><div class="brd">Yorkshire Terrier · Male</div><h3>Scooby</h3>
-          <div class="meta"><div class="m"><small>Born</small><b>Aug 7, 2026</b></div><div class="m"><small>Full Price</small><b class="price">$3,000</b></div></div>
-          <p class="blurb">Scooby is such an adorable little guy — he loves adventure, toys, and everything fun and happy! Huge eyes, a short cobby body, and a super-thick coat; he'll grow up to be the most handsome guy in town. Tracking to 5–6 lbs. Mom: our gorgeous 6 lb Pheebe · Sire: our little 3 lb Seely.</p>
-          <div class="acts"><a class="btn gold" href="contact.html?reserve=Scooby&deposit=500&price=3000">Reserve · $500 Deposit</a><a class="ask tlink" href="contact.html?puppy=Scooby">Ask about Scooby →</a></div>
-        </div>
-      </div>
-
-      <div class="pc rev d1" data-breed="yorkie">
-        <div class="img"><span class="badge">Available</span><img src="img/pup-sushi.jpg" data-full="img/pup-sushi.jpg" alt="Sushi, Yorkshire Terrier"></div>
-        <div class="bd"><div class="brd">Yorkshire Terrier · Female</div><h3>Sushi</h3>
-          <div class="meta"><div class="m"><small>Born</small><b>Jul 8, 2026</b></div><div class="m"><small>Full Price</small><b class="price">$3,500</b></div></div>
-          <p class="blurb">Sushi is the cuddliest, sweetest baby ever — mild-natured and loves to be held. Love at first sight: she'll cuddle right into your arms and fall asleep. One of the most gorgeous faces you'll find in a Yorkie, and a stunning little lady in the making. Tracking to 4–5 lbs. Mom: Pheebe (6 lb) · Sire: Seely (3 lb).</p>
-          <div class="acts"><a class="btn gold" href="contact.html?reserve=Sushi&deposit=500&price=3500">Reserve · $500 Deposit</a><a class="ask tlink" href="contact.html?puppy=Sushi">Ask about Sushi →</a></div>
-        </div>
-      </div>
-
-      <div class="pc rev d2" data-breed="biewer">
-        <div class="img"><span class="badge">Available</span><img src="img/pup-waldo.jpg" data-full="img/pup-waldo.jpg" alt="Waldo, Biewer Terrier"></div>
-        <div class="bd"><div class="brd">Biewer Terrier · Male</div><h3>Waldo</h3>
-          <div class="meta"><div class="m"><small>Born</small><b>Aug 7, 2026</b></div><div class="m"><small>Full Price</small><b class="price">$3,000</b></div></div>
-          <p class="blurb">Waldo is the happiest little guy on the planet — sparky, fun, and full of himself! Romping with his littermates is his favorite thing, and he absolutely loves his humans. Tracking to 4–5 lbs. Mom: our gorgeous Opal (~6 lb) · Sire: Cooper (4 lb).</p>
-          <div class="acts"><a class="btn gold" href="contact.html?reserve=Waldo&deposit=500&price=3000">Reserve · $500 Deposit</a><a class="ask tlink" href="contact.html?puppy=Waldo">Ask about Waldo →</a></div>
-        </div>
-      </div>
-
-      <div class="pc rev d2" data-breed="yorkie">
-        <div class="img"><span class="badge">Available</span><img src="img/pup-bonnie.jpg" data-full="img/pup-bonnie.jpg" alt="Bonnie, Yorkshire Terrier"></div>
-        <div class="bd"><div class="brd">Yorkshire Terrier · Female</div><h3>Bonnie</h3>
-          <div class="meta"><div class="m"><small>Born</small><b>Jun 15, 2026</b></div><div class="m"><small>Full Price</small><b class="price">$2,500</b></div></div>
-          <p class="blurb">Bonnie is a lovely little princess, playful and funny, who just loves her people. She bounces around and makes life so much better, with a very thick coat.</p>
-          <div class="acts"><a class="btn gold" href="contact.html?reserve=Bonnie&deposit=500&price=2500">Reserve · $500 Deposit</a><a class="ask tlink" href="contact.html?puppy=Bonnie">Ask about Bonnie →</a></div>
-        </div>
-      </div>
-
-      <div class="pc rev" data-breed="yorkie">
-        <div class="img"><span class="badge">Available</span><img src="img/pup-sosha.jpg" data-full="img/pup-sosha.jpg" alt="Sosha, Yorkshire Terrier"></div>
-        <div class="bd"><div class="brd">Yorkshire Terrier · Female</div><h3>Sosha</h3>
-          <div class="meta"><div class="m"><small>Born</small><b>Jun 10, 2026</b></div><div class="m"><small>Full Price</small><b class="price">$2,500</b></div></div>
-          <p class="blurb">Sosha is a lovely little lady with the thickest coat ever. We pride ourselves on raising puppies with the most gorgeous, luxurious coats in the world.</p>
-          <div class="acts"><a class="btn gold" href="contact.html?reserve=Sosha&deposit=500&price=2500">Reserve · $500 Deposit</a><a class="ask tlink" href="contact.html?puppy=Sosha">Ask about Sosha →</a></div>
-        </div>
-      </div>
-
-      <div class="pc rev d1" data-breed="yorkie">
-        <div class="img"><span class="badge">Available</span><img src="img/pup-felicity.jpg" data-full="img/pup-felicity.jpg" alt="Felicity, Yorkshire Terrier"></div>
-        <div class="bd"><div class="brd">Yorkshire Terrier · Female</div><h3>Felicity</h3>
-          <div class="meta"><div class="m"><small>Born</small><b>Jun 24, 2026</b></div><div class="m"><small>Full Price</small><b class="price">$2,500</b></div></div>
-          <p class="blurb">Felicity is absolutely a precious little love. She has a super thick coat, a gorgeous face, and a happy little personality, a stunning Yorkie in the making.</p>
-          <div class="acts"><a class="btn gold" href="contact.html?reserve=Felicity&deposit=500&price=2500">Reserve · $500 Deposit</a><a class="ask tlink" href="contact.html?puppy=Felicity">Ask about Felicity →</a></div>
-        </div>
-      </div>
-
-      <div class="pc rev d2" data-breed="other">
-        <div class="img"><span class="badge">Available</span><img src="img/pup-fido.jpg" data-full="img/pup-fido.jpg" alt="Fido"></div>
-        <div class="bd"><div class="brd">Male</div><h3>Fido</h3>
-          <div class="meta"><div class="m"><small>Born</small><b>Jun 24, 2026</b></div><div class="m"><small>Full Price</small><b class="price">$2,500</b></div></div>
-          <p class="blurb">Folks, this little guy is just adorable! He will make your head spin with all his cuteness. He is sweet and social and loves being cuddled.</p>
-          <div class="acts"><a class="btn gold" href="contact.html?reserve=Fido&deposit=500&price=2500">Reserve · $500 Deposit</a><a class="ask tlink" href="contact.html?puppy=Fido">Ask about Fido →</a></div>
-        </div>
-      </div>
-
-      <div class="pc rev" data-breed="yorkie">
-        <div class="img"><span class="badge">Available</span><img src="img/pup-flo.jpg" data-full="img/pup-flo.jpg" alt="Flo, Yorkshire Terrier"></div>
-        <div class="bd"><div class="brd">Yorkshire Terrier · Female</div><h3>Flo</h3>
-          <div class="meta"><div class="m"><small>Born</small><b>Jun 24, 2026</b></div><div class="m"><small>Full Price</small><b class="price">$2,500</b></div></div>
-          <p class="blurb">Flo is a sweet little girl, more on the quiet side. She loves cuddles but nothing too crazy. She has a beautiful coat and a lovely face.</p>
-          <div class="acts"><a class="btn gold" href="contact.html?reserve=Flo&price=2500">Reserve Flo</a><a class="ask tlink" href="contact.html?puppy=Flo">Ask about Flo →</a></div>
-        </div>
-      </div>
-
-      <div class="pc rev d1" data-breed="biewer">
-        <div class="img"><span class="badge">Available</span><img src="img/pup-tucker.jpg" data-full="img/pup-tucker.jpg" alt="Tucker, F1 Biewer Yorkie"></div>
-        <div class="bd"><div class="brd">F1 Biewer Yorkie · Male</div><h3>Tucker</h3>
-          <div class="meta"><div class="m"><small>Born</small><b>Jun 15, 2026</b></div><div class="m"><small>Full Price</small><b class="price">$2,000</b></div></div>
-          <p class="blurb">Tucker is a lovely little guy with so much to bring to your family. He will fill your home with cuddles, kisses, and laughter. What a little joy!</p>
-          <div class="acts"><a class="btn gold" href="contact.html?reserve=Tucker&deposit=500&price=2000">Reserve · $500 Deposit</a><a class="ask tlink" href="contact.html?puppy=Tucker">Ask about Tucker →</a></div>
-        </div>
-      </div>
-
-      <div class="pc rev d2" data-breed="biewer">
-        <div class="img"><span class="badge">Available</span><img src="img/pup-benji.jpg" data-full="img/pup-benji.jpg" alt="Benji, Biewer Yorkie"></div>
-        <div class="bd"><div class="brd">Biewer Yorkie · Male</div><h3>Benji</h3>
-          <div class="meta"><div class="m"><small>Born</small><b>Jun 4, 2026</b></div><div class="m"><small>Full Price</small><b class="price">$2,000</b></div></div>
-          <p class="blurb">Benji is a happy little guy, super friendly and loves everyone. His markings are so cute and he has a very thick coat. A larger Biewer, he could be 9–10 lbs full grown.</p>
-          <div class="acts"><a class="btn gold" href="contact.html?reserve=Benji&deposit=500&price=2000">Reserve · $500 Deposit</a><a class="ask tlink" href="contact.html?puppy=Benji">Ask about Benji →</a></div>
-        </div>
-      </div>
-
+      <div class="ploading" id="ploading">Loading our available puppies <span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
     </div>
     <p id="nomatch" style="display:none;text-align:center;color:var(--ink-2);margin-top:30px">No puppies in that breed right now. <a class="tlink gold" href="contact.html?interest=Waitlist">Join the waitlist →</a></p>
   </div></section>
@@ -162,13 +84,93 @@
   <script src="cp.js"></script>
   <script>
   (function(){
-    var btns=document.querySelectorAll('.filters button'), cards=document.querySelectorAll('#plist .pc'), nm=document.getElementById('nomatch');
-    btns.forEach(function(b){b.addEventListener('click',function(){
-      btns.forEach(function(x){x.classList.remove('on')}); b.classList.add('on');
-      var f=b.getAttribute('data-f'), shown=0;
-      cards.forEach(function(c){var ok=(f==='all'||c.getAttribute('data-breed')===f);c.style.display=ok?'':'none';if(ok)shown++;});
-      nm.style.display=shown?'none':'block';
-    });});
+    var API='https://jrfdufemonjhafqyacge.supabase.co/functions/v1/kennel-os-api?key=kos_live_746f9b04ec694842a8c193d582cc1b33&resource=puppies';
+    var plist=document.getElementById('plist'), filters=document.getElementById('filters'), nm=document.getElementById('nomatch');
+    function esc(s){return String(s==null?'':s).replace(/[<>&"]/g,function(c){return{'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});}
+    function money(n){return '$'+Number(n||0).toLocaleString('en-US');}
+    function born(dob){ if(!dob)return ''; var d=new Date(dob+'T00:00:00'); if(isNaN(d))return esc(dob);
+      return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+    function breedClass(b){ b=String(b||'').toLowerCase(); return /biewer/.test(b)?'biewer':(/york/.test(b)?'yorkie':'other'); }
+    function photosOf(p){ var a=(p.photos&&p.photos.length)?p.photos:(p.photo_url?[p.photo_url]:[]); return a.filter(Boolean); }
+
+    function cardHTML(p){
+      var photos=photosOf(p), main=photos[0]||'', bc=breedClass(p.breed);
+      var brd=[p.breed,p.sex].filter(Boolean).join(' · ') || (p.sex||'');
+      var reserved=String(p.status).toLowerCase()==='reserved';
+      var reserveHref='contact.html?reserve='+encodeURIComponent(p.name)+(p.deposit?('&deposit='+p.deposit):'')+(p.price?('&price='+p.price):'');
+      var askHref='contact.html?puppy='+encodeURIComponent(p.name);
+      var thumbs = photos.length>1 ? '<div class="thumbs">'+photos.map(function(u,i){
+          return '<img src="'+esc(u)+'" alt="'+esc(p.name)+' photo '+(i+1)+'" class="'+(i===0?'on':'')+'" data-src="'+esc(u)+'">';
+        }).join('')+'</div>' : '';
+      var reserveBtn = reserved
+        ? '<span class="btn line" style="pointer-events:none;opacity:.7">Reserved</span>'
+        : '<a class="btn gold" href="'+reserveHref+'">'+(p.deposit?('Reserve · '+money(p.deposit)+' Deposit'):('Reserve '+esc(p.name)))+'</a>';
+      return '<div class="pc rev" data-breed="'+bc+'">'+
+        '<div class="img"><span class="badge">'+(reserved?'Reserved':'Available')+'</span>'+
+          (main?'<img src="'+esc(main)+'" data-full="'+esc(main)+'" alt="'+esc(p.name)+(p.breed?(', '+esc(p.breed)):'')+'">':'<div style="aspect-ratio:1;display:flex;align-items:center;justify-content:center;color:var(--mut)">Photo coming soon</div>')+
+        '</div>'+
+        '<div class="bd"><div class="brd">'+esc(brd)+'</div><h3>'+esc(p.name)+'</h3>'+
+          '<div class="meta">'+(p.dob?'<div class="m"><small>Born</small><b>'+esc(born(p.dob))+'</b></div>':'')+
+            (p.price?'<div class="m"><small>Full Price</small><b class="price">'+money(p.price)+'</b></div>':'')+'</div>'+
+          (p.description?'<p class="blurb">'+esc(p.description)+'</p>':'')+
+          thumbs+
+          '<div class="acts">'+reserveBtn+'<a class="ask tlink" href="'+askHref+'">Ask about '+esc(p.name)+' →</a></div>'+
+        '</div></div>';
+    }
+
+    function wireCards(){
+      // thumbnail -> swap the main image
+      plist.querySelectorAll('.pc .thumbs').forEach(function(tw){
+        var card=tw.closest('.pc'), mainImg=card.querySelector('.img img');
+        tw.querySelectorAll('img').forEach(function(t){
+          t.addEventListener('click',function(){
+            var src=t.getAttribute('data-src'); if(mainImg){mainImg.src=src;mainImg.setAttribute('data-full',src);}
+            tw.querySelectorAll('img').forEach(function(x){x.classList.remove('on');}); t.classList.add('on');
+          });
+        });
+      });
+      // lightbox for the main images (cp.js wired only the static ones on load)
+      var lb=document.getElementById('lb'), lbimg=lb&&lb.querySelector('img');
+      plist.querySelectorAll('.pc .img img[data-full]').forEach(function(im){
+        im.style.cursor='zoom-in';
+        im.addEventListener('click',function(){ if(lbimg){lbimg.src=im.getAttribute('data-full');lb.classList.add('on');} });
+      });
+    }
+
+    function wireFilters(){
+      var btns=filters.querySelectorAll('button'), cards=plist.querySelectorAll('.pc');
+      btns.forEach(function(b){b.addEventListener('click',function(){
+        btns.forEach(function(x){x.classList.remove('on')}); b.classList.add('on');
+        var f=b.getAttribute('data-f'), shown=0;
+        cards.forEach(function(c){var ok=(f==='all'||c.getAttribute('data-breed')===f);c.style.display=ok?'':'none';if(ok)shown++;});
+        nm.style.display=shown?'none':'block';
+      });});
+    }
+
+    function fallback(msg){
+      plist.innerHTML='<div class="pfallback"><h3>'+esc(msg||'Our available puppies')+'</h3>'+
+        '<p>For our current available Yorkshire Terrier, Biewer, and Morkie puppies, reach out and we will send you photos and details right away.</p>'+
+        '<a class="btn gold" href="contact.html">Ask About Available Puppies</a> &nbsp; '+
+        '<a class="btn line" href="contact.html?interest=Waitlist">Join the Waitlist</a></div>';
+    }
+
+    var done=false;
+    function render(list){
+      if(done)return; done=true;
+      if(!list||!list.length){ fallback('New litters on the way'); return; }
+      list.sort(function(a,b){var ra=String(a.status).toLowerCase()==='reserved'?1:0,rb=String(b.status).toLowerCase()==='reserved'?1:0;return ra-rb;});
+      plist.innerHTML=list.map(cardHTML).join('');
+      plist.querySelectorAll('.rev').forEach(function(el){el.classList.add('show');}); // cp.js observer already ran; reveal dynamic cards
+      filters.style.display='';
+      wireCards(); wireFilters();
+    }
+
+    // robust fetch: timeout + graceful fallback, never a broken page
+    var to=setTimeout(function(){ if(!done) fallback('Our available puppies'); },9000);
+    fetch(API,{headers:{'apikey':'public'}})
+      .then(function(r){return r.ok?r.json():Promise.reject(r);})
+      .then(function(d){ clearTimeout(to); render((d&&d.puppies)||[]); })
+      .catch(function(){ clearTimeout(to); fallback('Our available puppies'); });
   })();
   </script>
 </body>
