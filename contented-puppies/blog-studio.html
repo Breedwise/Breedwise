@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blog Studio — Contented Puppies Paradise</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<style>
+  :root{--paper:#fbf9f5;--paper2:#f3eee5;--ink:#1c2535;--ink2:#51607a;--mut:#8c99ad;--line:#e6ded2;--line2:#d7ccbb;
+    --gold:#b8922e;--gold-deep:#8f6f1f;--sable:#20304a;--grn:#2f9e6b;--red:#c0503f;--sans:'Jost',sans-serif;--serif:'Bodoni Moda',serif;--ease:cubic-bezier(.2,.8,.2,1)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--gold-deep)}
+  .bar{position:sticky;top:0;z-index:20;background:rgba(251,249,245,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:12px 20px}
+  .bar .logo{font-family:var(--serif);font-weight:600;font-size:17px}.bar .logo small{display:block;font-family:var(--sans);font-size:9px;letter-spacing:.3em;color:var(--gold-deep);text-transform:uppercase}
+  .bar .sp{flex:1}
+  .btn{font-family:var(--sans);font-weight:600;font-size:14px;letter-spacing:.02em;border:1.5px solid var(--line2);background:#fff;color:var(--ink);border-radius:999px;padding:11px 22px;cursor:pointer;transition:all .25s var(--ease)}
+  .btn:hover{border-color:var(--gold)}
+  .btn.gold{background:var(--gold);border-color:var(--gold);color:#fff}.btn.gold:hover{background:var(--gold-deep);border-color:var(--gold-deep)}
+  .btn.ghost{background:transparent}
+  .btn:disabled{opacity:.5;cursor:default}
+  .who{font-size:13px;color:var(--ink2)}
+  /* login */
+  #login{max-width:380px;margin:12vh auto;padding:0 22px;text-align:center}
+  #login .mk{font-family:var(--sans);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-deep)}
+  #login h1{font-family:var(--serif);font-weight:600;font-size:30px;margin:8px 0 4px}
+  #login p{color:var(--ink2);font-size:14px;margin-bottom:22px}
+  #login input{width:100%;background:#fff;border:1px solid var(--line2);border-radius:12px;color:var(--ink);font-family:var(--sans);font-size:16px;padding:14px 16px;margin-bottom:10px}
+  #login input:focus{outline:none;border-color:var(--gold)}
+  #login .err{color:var(--red);font-size:13px;min-height:18px;margin-top:8px}
+  /* app */
+  #app{display:none;max-width:1180px;margin:0 auto;padding:22px;gap:22px;grid-template-columns:1.05fr .95fr}
+  @media(min-width:960px){#app{display:none;grid-template-columns:1.05fr .95fr}#app.on{display:grid}}
+  #app.on{display:block}
+  @media(min-width:960px){#app.on{display:grid}}
+  .pane{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px}
+  .pane h2{font-family:var(--serif);font-weight:600;font-size:20px;margin-bottom:4px}
+  .hint{color:var(--mut);font-size:12.5px;margin-bottom:14px}
+  label{display:block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin:14px 0 6px}
+  input.f,textarea.f,select.f{width:100%;background:var(--paper);border:1px solid var(--line2);border-radius:10px;color:var(--ink);font-family:var(--sans);font-size:15px;padding:11px 13px}
+  input.f:focus,textarea.f:focus{outline:none;border-color:var(--gold)}
+  .slug{font-size:12.5px;color:var(--mut);margin-top:5px}
+  .count{float:right;font-size:11px;color:var(--mut)}
+  /* toolbar + editor */
+  .tb{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 0;border:1px solid var(--line2);border-bottom:0;border-radius:10px 10px 0 0;padding:8px;background:var(--paper2)}
+  .tb button{border:1px solid transparent;background:#fff;border-radius:7px;padding:6px 11px;font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;color:var(--ink)}
+  .tb button:hover{border-color:var(--line2)}
+  #body{min-height:320px;border:1px solid var(--line2);border-radius:0 0 10px 10px;padding:16px 18px;background:#fff;overflow:auto}
+  #body:focus{outline:none}
+  #body h2{font-family:var(--serif);font-weight:500;font-size:24px;margin:18px 0 6px}
+  #body h3{font-size:17px;font-weight:600;margin:14px 0 4px}
+  #body p{font-size:16px;line-height:1.7;color:var(--ink2);margin:10px 0}
+  #body ul{margin:10px 0 10px 22px}#body li{margin:5px 0;color:var(--ink2)}
+  #body img{max-width:100%;border-radius:10px;margin:10px 0}
+  #body:empty:before{content:attr(data-ph);color:var(--mut)}
+  /* cover + library */
+  .cover{margin-top:6px;border:1px dashed var(--line2);border-radius:12px;min-height:150px;background:var(--paper) center/cover no-repeat;display:flex;align-items:center;justify-content:center;color:var(--mut);font-size:13px;cursor:pointer;overflow:hidden}
+  .cover.set{border-style:solid}
+  .lib{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:8px;max-height:168px;overflow:auto;padding:3px}
+  .lib img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent}
+  .lib img:hover{border-color:var(--gold)}
+  /* google preview */
+  .gp{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fff;margin-top:6px}
+  .gp .u{color:#1a7e37;font-size:13px}
+  .gp .t{color:#1a0dab;font-size:19px;line-height:1.25;margin:2px 0}
+  .gp .d{color:#4d5156;font-size:13.5px}
+  /* preview pane */
+  .prev{background:var(--paper);border-radius:14px;padding:18px;border:1px solid var(--line)}
+  .prev .pv-cover{width:100%;aspect-ratio:16/8;object-fit:cover;border-radius:12px;background:var(--paper2)}
+  .prev .pv-t{font-family:var(--serif);font-weight:500;font-size:28px;line-height:1.1;margin:14px 0 4px}
+  .prev .pv-meta{font-size:12px;color:var(--mut)}
+  .prev .pv-body{margin-top:10px}
+  .prev .pv-body h2{font-family:var(--serif);font-weight:500;font-size:22px;margin:16px 0 4px}
+  .prev .pv-body p{font-size:15px;color:var(--ink2);line-height:1.65;margin:8px 0}
+  .prev .pv-body ul{margin:8px 0 8px 20px}.prev .pv-body img{max-width:100%;border-radius:10px;margin:8px 0}
+  .msg{font-size:13px;margin-top:12px;min-height:18px}
+  .posts .row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .posts .row .t{flex:1;font-weight:500}.posts .row .s{font-size:12px;color:var(--mut)}
+  .modal{position:fixed;inset:0;background:rgba(28,37,53,.4);display:none;align-items:center;justify-content:center;z-index:40;padding:20px}
+  .modal.on{display:flex}
+  .modal .mx{background:#fff;border-radius:16px;padding:22px;max-width:520px;width:100%}
+  @media(max-width:620px){.lib{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="mk">Contented Puppies · Studio</div>
+  <h1>Blog Studio</h1>
+  <p>Sign in with your Contented Puppies account, the same login you use to manage your puppies.</p>
+  <input id="le" type="email" placeholder="Email" autocomplete="username">
+  <input id="lp" type="password" placeholder="Password" autocomplete="current-password">
+  <button class="btn gold" id="lb" style="width:100%">Sign in</button>
+  <div class="err" id="lerr"></div>
+</div>
+
+<!-- TOP BAR -->
+<div class="bar" id="bar" style="display:none">
+  <div class="logo">Contented Puppies<small>Studio</small></div>
+  <div class="sp"></div>
+  <span class="who" id="who"></span>
+  <button class="btn ghost" id="newBtn">New post</button>
+  <button class="btn gold" id="pubBtn">Publish</button>
+  <button class="btn ghost" id="out">Sign out</button>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <!-- editor -->
+  <div class="pane">
+    <h2>Write your post</h2>
+    <div class="hint">Type like a document. Add headings, lists, and your photos. We handle the SEO and publish it to your website.</div>
+
+    <label>Title</label>
+    <input class="f" id="title" placeholder="e.g. How to Groom a Yorkie at Home">
+    <div class="slug" id="slugline">Web address: /blog/…</div>
+
+    <label>Cover photo</label>
+    <div class="cover" id="cover" title="Click to choose a photo">Click to choose a cover photo</div>
+
+    <label>Category</label>
+    <select class="f" id="cat">
+      <option>Puppy Care</option><option>Choosing a Breed</option><option>Grooming</option>
+      <option>Health</option><option>Training</option><option>Our Family</option><option>News</option>
+    </select>
+
+    <label>Body <span class="count" id="bc">0 words</span></label>
+    <div class="tb">
+      <button type="button" data-cmd="formatBlock" data-val="H2">Heading</button>
+      <button type="button" data-cmd="formatBlock" data-val="H3">Subhead</button>
+      <button type="button" data-cmd="bold"><b>B</b></button>
+      <button type="button" data-cmd="italic"><i>I</i></button>
+      <button type="button" data-cmd="insertUnorderedList">• List</button>
+      <button type="button" data-cmd="createLink">Link</button>
+      <button type="button" id="imgBtn">Insert photo</button>
+      <button type="button" data-cmd="formatBlock" data-val="P">Normal</button>
+    </div>
+    <div id="body" contenteditable="true" data-ph="Start writing here…"></div>
+
+    <label>Search description (SEO) <span class="count" id="mc">0 / 160</span></label>
+    <textarea class="f" id="meta" rows="2" placeholder="One or two sentences that describe this post. This is what shows up in Google."></textarea>
+    <div class="gp">
+      <div class="u">contentedpuppies.com › blog</div>
+      <div class="t" id="gpT">Your post title</div>
+      <div class="d" id="gpD">Your search description will appear here…</div>
+    </div>
+
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <!-- preview + posts -->
+  <div>
+    <div class="pane">
+      <h2>Live preview</h2>
+      <div class="hint">This is roughly how your post will look on your website.</div>
+      <div class="prev">
+        <img class="pv-cover" id="pvCover" alt="">
+        <div class="pv-t" id="pvT">Your post title</div>
+        <div class="pv-meta">By Contented Puppies Paradise · <span id="pvCat">Puppy Care</span></div>
+        <div class="pv-body" id="pvB"></div>
+      </div>
+    </div>
+    <div class="pane" style="margin-top:18px">
+      <h2>Your posts</h2>
+      <div class="hint">Published posts on your website.</div>
+      <div class="posts" id="postList"><div class="s">Loading…</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- IMAGE LIBRARY MODAL -->
+<div class="modal" id="imgModal"><div class="mx">
+  <h2 style="font-family:var(--serif);font-weight:600;font-size:20px;margin-bottom:4px">Choose a photo</h2>
+  <div class="hint">Pick from your photo library, or paste a photo link below.</div>
+  <div class="lib" id="lib"></div>
+  <input class="f" id="imgUrl" placeholder="…or paste an image URL" style="margin-top:12px">
+  <div style="display:flex;gap:10px;margin-top:14px;justify-content:flex-end">
+    <button class="btn ghost" id="imgCancel">Cancel</button>
+    <button class="btn gold" id="imgUse">Use this photo</button>
+  </div>
+</div></div>
+
+<script>
+(function(){
+  var SB_URL='https://jrfdufemonjhafqyacge.supabase.co';
+  var SB_KEY='sb_publishable_qkW_hfFpTpsrpGqwIWo-dg_9ZoQwmqo';
+  var PUBLISH_FN=SB_URL+'/functions/v1/site-publish';
+  var SITE='https://contentedpuppies.com';
+  var sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,detectSessionInUrl:true}});
+  var $=function(s){return document.querySelector(s);};
+  var S={kennel:null};
+
+  // her photo library (from /img) — add new ones here as uploaded
+  var LIB=['hero-home','litter-1','litter-2','litter-3','litter-4','litter-5','litter-6','litter-7','litter-8','litter-9','litter-10','litter-11',
+    'molly-1','molly-2','opal-1','opal-2','opal-3','opal-4','pheebe-1','pheebe-2','cooper-1','cooper-2','cooper-3','cooper-4',
+    'lindie-1','lindie-2','lindie-3','lindie-4','fam-1','fam-2','fam-3','fam-4','fam-5','fam-6','fam-7','fam-8',
+    'pup-benji','pup-bonnie','pup-felicity','pup-fido'].map(function(n){return SITE+'/img/'+n+'.jpg';});
+
+  /* ---------- auth ---------- */
+  async function boot(){
+    var s=await sb.auth.getSession();
+    if(!s.data||!s.data.session){showLogin();return;}
+    var u=s.data.session.user; $('#who').textContent=u.email;
+    // resolve kennel (member of)
+    try{
+      var k=await sb.from('kennels').select('id,slug,name').limit(1);
+      S.kennel=(k.data&&k.data[0])||null;
+    }catch(e){}
+    $('#login').style.display='none';$('#bar').style.display='flex';$('#app').classList.add('on');
+    buildLib(); loadPosts(); sync();
+  }
+  function showLogin(){$('#login').style.display='block';$('#bar').style.display='none';$('#app').classList.remove('on');}
+  $('#lb').onclick=async function(){
+    var em=$('#le').value.trim(),pw=$('#lp').value; $('#lerr').textContent='';
+    if(!em||!pw){$('#lerr').textContent='Enter your email and password.';return;}
+    this.disabled=true;this.textContent='Signing in…';
+    var r=await sb.auth.signInWithPassword({email:em,password:pw});
+    this.disabled=false;this.textContent='Sign in';
+    if(r.error){$('#lerr').textContent=r.error.message;return;}
+    boot();
+  };
+  ['le','lp'].forEach(function(id){$('#'+id).addEventListener('keydown',function(e){if(e.key==='Enter')$('#lb').click();});});
+  $('#out').onclick=async function(){await sb.auth.signOut();location.reload();};
+
+  /* ---------- editor state ---------- */
+  var coverUrl='';
+  function slugify(t){return (t||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60);}
+  function words(t){t=(t||'').trim();return t?t.split(/\s+/).length:0;}
+  function sync(){
+    var title=$('#title').value.trim();
+    var slug=slugify(title);
+    $('#slugline').textContent='Web address: /blog/'+(slug||'…')+'.html';
+    $('#pvT').textContent=title||'Your post title';
+    $('#gpT').textContent=title||'Your post title';
+    $('#pvCat').textContent=$('#cat').value;
+    var meta=$('#meta').value.trim();
+    $('#gpD').textContent=meta||'Your search description will appear here…';
+    $('#mc').textContent=meta.length+' / 160';
+    $('#bc').textContent=words($('#body').innerText)+' words';
+    $('#pvB').innerHTML=$('#body').innerHTML;
+    if(coverUrl){$('#cover').style.backgroundImage='url('+coverUrl+')';$('#cover').classList.add('set');$('#cover').textContent='';
+      $('#pvCover').src=coverUrl;$('#pvCover').style.display='block';}
+    else{$('#pvCover').style.display='none';}
+  }
+  ['title','meta','cat'].forEach(function(id){$('#'+id).addEventListener('input',sync);});
+  $('#body').addEventListener('input',sync);
+  // toolbar
+  document.querySelectorAll('.tb [data-cmd]').forEach(function(b){
+    b.onclick=function(){
+      var cmd=b.getAttribute('data-cmd'),val=b.getAttribute('data-val');
+      $('#body').focus();
+      if(cmd==='createLink'){var u=prompt('Link to (https://…)');if(u)document.execCommand('createLink',false,u);}
+      else document.execCommand(cmd,false,val||null);
+      sync();
+    };
+  });
+
+  /* ---------- image library ---------- */
+  var imgTarget=null; // 'cover' | 'body'
+  function buildLib(){
+    var html=LIB.map(function(u){return '<img src="'+u+'" loading="lazy" data-u="'+u+'">';}).join('');
+    $('#lib').innerHTML=html;
+    $('#lib').querySelectorAll('img').forEach(function(im){im.onclick=function(){useImg(im.getAttribute('data-u'));};});
+  }
+  function openImg(target){imgTarget=target;$('#imgUrl').value='';$('#imgModal').classList.add('on');}
+  function useImg(u){
+    if(!u)return;
+    if(imgTarget==='cover'){coverUrl=u;}
+    else{$('#body').focus();document.execCommand('insertHTML',false,'<img src="'+u+'" alt="">');}
+    $('#imgModal').classList.remove('on');sync();
+  }
+  $('#cover').onclick=function(){openImg('cover');};
+  $('#imgBtn').onclick=function(){openImg('body');};
+  $('#imgCancel').onclick=function(){$('#imgModal').classList.remove('on');};
+  $('#imgUse').onclick=function(){var u=$('#imgUrl').value.trim();if(u)useImg(u);};
+
+  /* ---------- posts list ---------- */
+  async function loadPosts(){
+    try{
+      var r=await sb.from('kos_posts').select('title,slug,status,published_at').order('published_at',{ascending:false}).limit(50);
+      if(r.error)throw r.error;
+      var rows=r.data||[];
+      $('#postList').innerHTML=rows.length?rows.map(function(p){
+        return '<div class="row"><span class="t">'+esc(p.title)+'</span><span class="s">'+(p.status||'draft')+'</span>'+
+          '<a class="s" href="blog/'+esc(p.slug)+'.html" target="_blank">view →</a></div>';
+      }).join(''):'<div class="s">No posts yet. Write your first one!</div>';
+    }catch(e){
+      $('#postList').innerHTML='<div class="s">Your posts will appear here once publishing is switched on.</div>';
+    }
+  }
+  function esc(s){return String(s==null?'':s).replace(/[<>&"]/g,function(c){return{'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});}
+
+  /* ---------- new ---------- */
+  $('#newBtn').onclick=function(){
+    if($('#title').value&&!confirm('Start a new post? Unsaved changes will be lost.'))return;
+    $('#title').value='';$('#meta').value='';$('#body').innerHTML='';coverUrl='';$('#cover').style.backgroundImage='';
+    $('#cover').classList.remove('set');$('#cover').textContent='Click to choose a cover photo';$('#msg').textContent='';sync();
+  };
+
+  /* ---------- publish ---------- */
+  $('#pubBtn').onclick=async function(){
+    var title=$('#title').value.trim(), meta=$('#meta').value.trim(), body=$('#body').innerHTML.trim();
+    var m=$('#msg');m.style.color='var(--ink2)';
+    if(!title||!body){m.style.color='var(--red)';m.textContent='Add a title and some body text first.';return;}
+    if(!meta){m.style.color='var(--red)';m.textContent='Add a short search description for SEO.';return;}
+    var sess=await sb.auth.getSession(); var tok=sess.data&&sess.data.session&&sess.data.session.access_token;
+    if(!tok){m.style.color='var(--red)';m.textContent='Please sign in again.';return;}
+    this.disabled=true;this.textContent='Publishing…';m.textContent='Publishing to your website…';
+    var post={title:title,slug:slugify(title),cover_url:coverUrl,category:$('#cat').value,meta:meta,body_html:body};
+    try{
+      var res=await fetch(PUBLISH_FN,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+tok,'apikey':SB_KEY},body:JSON.stringify({post:post})});
+      var j=await res.json().catch(function(){return{};});
+      if(!res.ok||!j.ok)throw new Error(j.error||('HTTP '+res.status));
+      m.style.color='var(--grn)';m.innerHTML='Published! Your post is live at <a href="blog/'+post.slug+'.html" target="_blank">/blog/'+post.slug+'.html</a> (may take a minute to appear).';
+      loadPosts();
+    }catch(e){
+      m.style.color='var(--red)';
+      m.textContent='Could not publish yet: '+(e.message||'error')+'. (Publishing needs to be switched on by the BreedWise team.)';
+    }
+    this.disabled=false;this.textContent='Publish';
+  };
+
+  sb.auth.onAuthStateChange(function(ev){if(ev==='SIGNED_OUT')showLogin();});
+  boot();
+})();
+</script>
+</body>
+</html>
