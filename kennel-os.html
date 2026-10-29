@@ -647,7 +647,7 @@ var RES={
  puppies:{table:'kos_puppies',title:'Puppies',sub:'',order:'name',asc:true,
    search:['name','collar','color'],filterKey:'status',filters:['available','reserved','sold','kept','hold'],
    fields:[
-     {k:'litter_id',l:'Litter',t:'ref',opts:litterOpts,req:1},
+     {k:'litter_id',l:'Litter',t:'ref',opts:litterOpts},
      {k:'name',l:'Name / ID',t:'text',h:1},{k:'collar',l:'Collar',t:'text',h:1},
      {k:'sex',l:'Sex',t:'sel',opts:['Male','Female'],h:1},{k:'color',l:'Color',t:'text',h:1},
      {k:'status',l:'Status',t:'sel',opts:['available','reserved','sold','kept','hold','deceased'],h:1},
@@ -655,8 +655,10 @@ var RES={
      {k:'price',l:'Price',t:'money',h:1},{k:'deposit',l:'Deposit paid',t:'money',h:1},
      {k:'buyer_id',l:'Buyer',t:'ref',opts:contactOpts,h:1},{k:'go_home_date',l:'Go-home date',t:'date',h:1},
      {k:'is_public',l:'Show on my website',t:'bool',h:1},
-     {k:'photo_url',l:'Photo',t:'photo'},{k:'notes',l:'Notes',t:'area'}],
-   row:function(p){return {img:p.photo_url,ini:initials(p.name||p.collar||'P'),t:p.name||p.collar||'Puppy',
+     {k:'breed',l:'Breed',t:'text',h:1},{k:'dob',l:'Born',t:'date',h:1},
+     {k:'photos',l:'Photos (up to 5)',t:'gallery'},
+     {k:'description',l:'Website description',t:'area'},{k:'notes',l:'Private notes',t:'area'}],
+   row:function(p){return {img:(p.photos&&p.photos[0])||p.photo_url,ini:initials(p.name||p.collar||'P'),t:p.name||p.collar||'Puppy',
      s:[p.sex,p.color,contactName(p.buyer_id)].filter(Boolean).join(' · '),
      right:p.price?money(p.price):'',rsub:p.deposit?money(p.deposit)+' dep':'',status:p.status};}},
 
@@ -795,6 +797,12 @@ function fieldHTML(f,v){
       '</div>'+
       '<input type="hidden" id="f_'+f.k+'" value="'+esc(v||'')+'">'+
       '<input type="file" accept="image/*" id="ph_'+f.k+'_f" style="display:none"></div>';
+  }else if(f.t==='gallery'){
+    var arr=Array.isArray(v)?v:(v?[].concat(v):[]);
+    out='<div class="gal" id="gal_'+f.k+'"></div>'+
+      '<input type="hidden" id="f_'+f.k+'" value="'+esc(JSON.stringify(arr))+'">'+
+      '<input type="file" accept="image/*" id="galf_'+f.k+'" style="display:none">'+
+      '<div style="color:var(--mut,#8c99ad);font-size:12px;margin-top:6px">Add up to 5 photos. The first photo is the main one shown on your website. Changes go live when you save.</div>';
   }else if(f.t==='bool'){
     out='<select id="'+id+'"><option value="false"'+(!v?' selected':'')+'>No</option>'+
         '<option value="true"'+(v?' selected':'')+'>Yes</option></select>';
@@ -824,9 +832,43 @@ function wirePhoto(f){
     b.disabled=false;this.value='';
   };
 }
+function wireGallery(f){
+  var wrap=el('gal_'+f.k),hid=el('f_'+f.k),inp=el('galf_'+f.k);
+  if(!wrap||!hid||!inp)return;
+  var arr=[];try{arr=JSON.parse(hid.value||'[]');}catch(e){arr=[];}
+  if(!Array.isArray(arr))arr=[];
+  var MAX=5;
+  function sync(){hid.value=JSON.stringify(arr);}
+  function render(){
+    var h='';
+    arr.forEach(function(u,i){
+      h+='<div style="position:relative;width:78px;height:78px;border-radius:10px;overflow:hidden;border:1px solid var(--line)">'+
+        '<img src="'+esc(u)+'" style="width:100%;height:100%;object-fit:cover" alt="">'+
+        (i===0?'<span style="position:absolute;left:3px;top:3px;background:var(--gold,#b8922e);color:#fff;font-size:9px;padding:1px 5px;border-radius:5px">MAIN</span>':
+          '<button type="button" data-main="'+i+'" title="Make main" style="position:absolute;left:3px;bottom:3px;background:rgba(0,0,0,.6);color:#fff;border:0;border-radius:5px;font-size:10px;padding:2px 5px;cursor:pointer">make main</button>')+
+        '<button type="button" data-rm="'+i+'" title="Remove" style="position:absolute;right:3px;top:3px;background:rgba(0,0,0,.65);color:#fff;border:0;border-radius:50%;width:18px;height:18px;line-height:16px;padding:0;cursor:pointer">&times;</button>'+
+      '</div>';
+    });
+    if(arr.length<MAX)h+='<button type="button" id="galadd_'+f.k+'" style="width:78px;height:78px;border:1.5px dashed var(--line-2,#ccc);border-radius:10px;background:transparent;color:var(--mut,#8c99ad);cursor:pointer;font-size:13px">+ Add</button>';
+    wrap.innerHTML=h;wrap.style.cssText='display:flex;flex-wrap:wrap;gap:8px';
+    var add=el('galadd_'+f.k);if(add)add.onclick=function(){inp.click();};
+    wrap.querySelectorAll('[data-rm]').forEach(function(b){b.onclick=function(){arr.splice(+b.getAttribute('data-rm'),1);sync();render();};});
+    wrap.querySelectorAll('[data-main]').forEach(function(b){b.onclick=function(){var i=+b.getAttribute('data-main'),x=arr.splice(i,1)[0];arr.unshift(x);sync();render();};});
+  }
+  inp.onchange=async function(){
+    var file=this.files&&this.files[0];if(!file){return;}
+    if(arr.length>=MAX){toast('Up to '+MAX+' photos');this.value='';return;}
+    var add=el('galadd_'+f.k);if(add){add.disabled=true;add.textContent='…';}
+    try{var url=await uploadMedia(file,'photos');arr.push(url);sync();render();}
+    catch(e){toast(e.message||'Upload failed');}
+    this.value='';
+  };
+  render();
+}
 function readField(f){
   var e=el('f_'+f.k);if(!e)return undefined;
   var v=e.value;
+  if(f.t==='gallery'){try{var a=JSON.parse(v||'[]');return Array.isArray(a)?a:[];}catch(e){return [];}}
   if(f.t==='bool')return v==='true';
   if(v===''||v==null)return null;
   if(f.t==='num')return parseInt(v,10);
@@ -859,7 +901,7 @@ function openForm(key,rec,opts){
     confirmSheet('Delete this record?','This cannot be undone.',async function(){
       try{await del(R.table,rec.id);toast('Deleted');await refreshCaches();render();}
       catch(e){toast(e.message||'Delete failed');}});};
-  R.fields.forEach(function(f){if(f.t==='photo')wirePhoto(f);});
+  R.fields.forEach(function(f){if(f.t==='photo')wirePhoto(f);else if(f.t==='gallery')wireGallery(f);});
   el('fSave').onclick=async function(){
     var row={},bad=null;
     R.fields.forEach(function(f){
@@ -868,6 +910,7 @@ function openForm(key,rec,opts){
       var v=readField(f);if(v===undefined)return;
       if(f.req&&(v===null||v===''))bad=f.l;
       row[f.k]=v;});
+    if(Array.isArray(row.photos))row.photo_url=row.photos[0]||null;  // keep the cover in sync
     if(bad){el('fErr').textContent=bad+' is required';return;}
     this.disabled=true;
     try{
