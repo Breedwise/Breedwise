@@ -49,7 +49,7 @@ p{margin:0 0 18px}
 /* --- buttons (high contrast, generous) --- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--sans);
   font-size:15px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
-  padding:17px 34px;cursor:pointer;border:1.5px solid transparent;transition:all .35s var(--ease);line-height:1}
+  padding:17px 34px;cursor:pointer;border:1.5px solid transparent;transition:all .35s var(--ease);line-height:1;border-radius:999px}
 .btn.solid{background:var(--sable);color:var(--paper-4);border-color:var(--sable)}
 .btn.solid:hover{background:var(--gold-deep);border-color:var(--gold-deep);transform:translateY(-2px);box-shadow:0 14px 30px -12px rgba(43,85,131,.5)}
 .btn.gold{background:var(--gold);color:#fff;border-color:var(--gold)}
