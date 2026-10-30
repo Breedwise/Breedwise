@@ -524,7 +524,7 @@ var NAV=[
  {g:'Overview',items:[['','home','Dashboard'],['calendar','calendar','Calendar'],['tasks','check','Tasks','tasks_open']]},
  {g:'Relationships',items:[['contacts','users','CRM & Contacts'],['leads','target','Leads & Sales','leads_open']]},
  {g:'Kennel',items:[['dogs','dog','Dogs'],['breedings','heart','Breedings'],
-   ['litters','paw','Litters & Puppies'],['health','check','Health & Vaccines'],
+   ['litters','paw','Litters'],['puppies','paw','Puppies'],['health','check','Health & Vaccines'],
    ['breeding-tools','spark','Breeding Tools']]},
  {g:'Business',items:[['money','dollar','Finances'],['documents','file','Documents']]},
  {g:'Intelligence',items:[['reports','chart','Reports'],['settings','cog','Settings']]}
@@ -628,7 +628,7 @@ var RES={
      return {ini:'♥',t:d+' × '+s,s:[b.method,b.bred_on?'bred '+fshort(b.bred_on):''].filter(Boolean).join(' · '),
        right:b.due_date?fshort(b.due_date):'',rsub:n!=null&&n>=0&&b.status!=='whelped'?'due in '+n+'d':'',status:b.status};}},
 
- litters:{table:'kos_litters',title:'Litters & Puppies',sub:'From whelp to go-home day',order:'whelp_date',asc:false,
+ litters:{table:'kos_litters',title:'Litters',sub:'From whelp to go-home day',order:'whelp_date',asc:false,
    search:['name','notes'],filterKey:'status',filters:['expecting','whelped','weaning','placing','closed'],
    detail:true,
    fields:[
@@ -1933,7 +1933,7 @@ async function adminView(){
 
 /* ─── render dispatcher ────────────────────────────────────────── */
 var TITLES={'':'Dashboard',calendar:'Calendar',tasks:'Tasks',contacts:'CRM & Contacts',leads:'Leads & Sales',
-  dogs:'Dogs',breedings:'Breedings',litters:'Litters & Puppies',health:'Health & Vaccines',
+  dogs:'Dogs',breedings:'Breedings',litters:'Litters',puppies:'Puppies',health:'Health & Vaccines',
   money:'Finances',documents:'Documents',reports:'Reports',settings:'Settings',
   'breeding-tools':'Breeding Tools',admin:'White-label Admin'};
 
