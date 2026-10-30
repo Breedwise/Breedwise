@@ -122,6 +122,30 @@
   .proj.open .pbody{display:block}
   .owner{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px}
   .owner span{font-size:11px;color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:20px;padding:4px 11px;font-weight:600}
+  /* rollout */
+  .tl{position:relative;margin:14px 0 4px;padding-left:26px}
+  .tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--gold),rgba(205,174,114,.15))}
+  .tlx{position:relative;padding:0 0 18px 10px}
+  .tlx::before{content:"";position:absolute;left:-24px;top:3px;width:12px;height:12px;border-radius:50%;background:var(--grad);box-shadow:0 0 0 4px rgba(205,174,114,.16)}
+  .tlx .w{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .tlx h4{font-size:14.5px;color:var(--ink);margin:3px 0 4px;text-transform:none;font-family:var(--body);font-weight:700}
+  .tlx p{color:var(--mid);font-size:13px;margin:0}
+  .raci{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+  .raci th,.raci td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  .raci th{color:var(--gold);font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--panel2)}
+  .raci td b{color:var(--ink)}
+  .raci td .o{color:var(--gold2);font-weight:600}
+  .list2{list-style:none;padding:0;margin:8px 0}
+  .list2 li{position:relative;padding:7px 0 7px 26px;color:var(--mid);font-size:13.5px;border-top:1px solid rgba(245,242,234,.05)}
+  .list2 li:first-child{border-top:0}
+  .list2 li::before{content:"";position:absolute;left:3px;top:11px;width:13px;height:13px;border-radius:4px;background:var(--grad)}
+  .list2 li b{color:var(--ink)}
+  .open li::before{background:var(--amber);border-radius:50%}
+  .fac{display:grid;gap:10px;margin:10px 0}
+  .fac .fi{background:var(--panel2);border-radius:10px;padding:12px 14px}
+  .fac .fi .t{color:var(--ink);font-weight:700;font-size:13.5px}
+  .fac .fi .d{color:var(--mid);font-size:13px;margin-top:3px}
+  .fac .fi .e{color:var(--muted);font-size:12px;font-style:italic;margin-top:4px}
   footer{margin:60px 0 46px;text-align:center;color:var(--muted);font-size:11px;line-height:1.7;border-top:1px solid var(--line);padding-top:22px}
   @media print{ #gate,.tabs,.cbar button,.cbar select,.saveline,footer,.fs-h .chev{display:none!important}
     body{background:#fff;color:#111} fieldset,.finalcard,.proj,.ov-card,.vcard{border-color:#ccc;background:#fff;color:#111} .fs-body,.pbody{display:block!important} .ov-card p,.vcard p,.ov-card li{color:#333} }
@@ -153,6 +177,7 @@
       </div>
       <div class="tabs">
         <button id="tabStd" class="on" onclick="showTab('std')">The Standard</button>
+        <button id="tabRoll" onclick="showTab('roll')">Rollout &amp; Comms</button>
         <button id="tabAudit" onclick="showTab('audit')">Candidate Audit</button>
         <button id="tabBuild" onclick="showTab('build')">28-Day Buildout</button>
       </div>
@@ -192,6 +217,108 @@
           <li><b>Angela owns Gate D genetics &amp; health-testing standard</b> end to end, including the carrier policy.</li>
           <li><b>Audits are run by a trained reviewer</b> against the rubric. Dr. Fontaine takes <b>scientific escalations only</b> — carrier results, unclear health documents, a facility that looks wrong on video.</li>
           <li>If either condition does not hold, the launch date moves.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ROLLOUT & COMMS -->
+    <div id="viewRollout" style="display:none">
+      <div class="note-legal"><b>The reframe that resolves both concerns.</b> Dr. Fontaine's concern is <b>rigor</b>; Jennifer's is <b>change management</b> — members who've been here a year weren't told the depth, and we're a month out. The fix isn't to pick one: it's to <b>separate "launch the standard" from "require everyone to complete it," and lead with communication.</b> The standard stays rigorous. The experience is warm, supported, and framed as recognition.</div>
+
+      <div class="ov-card">
+        <h3>The four moves</h3>
+        <ul>
+          <li><b>Nov 28 = the program opens, not the date everyone is certified.</b> The standard, assessment, forms and process go live, the announcement goes out, and the <b>first founding cohort is invited.</b> (Certifying a whole legacy cohort in four weeks isn't even possible — ~40–55 reviewer hours per 10 members.)</li>
+          <li><b>Communicate before you require.</b> A feature-release message — from Austin — explains what the Founding Certification is, why the depth exists, that it's an <b>invitation and an honor</b>, and that it <b>fulfills</b> the original promise with favorable grandfathering.</li>
+          <li><b>Invitation-based, rolling — not mandatory by date.</b> A small, ready founding cohort goes first with white-glove support; everyone else joins on a rolling schedule. Nobody is blindsided or rushed.</li>
+          <li><b>Close the logistics gaps.</b> One named owner of the member experience (Jennifer), a plain "here's how it works / how long it takes / who helps you," and a week-by-week timeline.</li>
+        </ul>
+      </div>
+
+      <div class="sec-h" style="margin-top:22px">Timeline</div>
+      <div class="ov-card" style="padding-top:14px">
+        <div class="tl">
+          <div class="tlx"><div class="w">This week</div><h4>Lock the light standard + this rollout plan</h4><p>Founding standard, audit rubric, and this plan ready. Confirm Dr. E's availability and send him this page ahead of the meeting.</p></div>
+          <div class="tlx"><div class="w">End of next week · Fri (approx. Nov 7)</div><h4>Working session with Dr. E (+ Austin + Jennifer)</h4><p>Walk through the standard &amp; this rollout. Lock: the facility minimum list (Dr. E drafts), the science-section pass rule, his &amp; Dr. Hughes' capacity + pay, and the final-pass sign-off question.</p></div>
+          <div class="tlx"><div class="w">Following Monday (approx. Nov 10)</div><h4>Member feature release</h4><p>Announcement from Austin to members (recognition framing) + the clear "what to expect" outline. Gives members two weeks to prepare and put their best foot forward.</p></div>
+          <div class="tlx"><div class="w">Nov 28</div><h4>Founding cohort window opens</h4><p>Invited founding members submit; reviews begin. Assessment, vet attestation, facility video, and portfolio all live.</p></div>
+          <div class="tlx"><div class="w">Dec onward</div><h4>Rolling cohorts</h4><p>Everyone else is invited on a rolling schedule — so we never again have a whole cohort due at once.</p></div>
+        </div>
+      </div>
+
+      <div class="sec-h" style="margin-top:22px">Who owns what</div>
+      <table class="raci">
+        <tr><th>Lane</th><th>Owner</th><th>Does</th></tr>
+        <tr><td><b>Founder / standard / final word</b></td><td class="o">Austin</td><td>Owns the standard and the founder chair, sends the member communication, holds the final certification decision with the team.</td></tr>
+        <tr><td><b>Member experience (the face)</b></td><td class="o">Jennifer</td><td>Walks each founding member through it, receives submissions, does first-line review (modules completed, Embark results, documents), keeps it warm. The only voice members hear.</td></tr>
+        <tr><td><b>Science standard + rubric</b></td><td class="o">Dr. Fontaine</td><td>Owns the scientific standard, the assessment science section, and the facility minimum list. <b>Escalations only</b> + an optional 15-min final pass (his name is on it). Never member-facing.</td></tr>
+        <tr><td><b>Genetics &amp; health-testing (Gate D)</b></td><td class="o">Angela</td><td>Owns the genetics / health-testing standard and carrier policy end to end.</td></tr>
+        <tr><td><b>Audit execution</b></td><td class="o">Trained reviewer</td><td>Runs each audit against the rubric (later outsourceable to a trusted vet tech). Escalates flagged cases to Jennifer / Austin / Dr. E.</td></tr>
+      </table>
+      <div class="note-inline sci">Flow: member submits → <b>Jennifer / reviewer</b> checks against the rubric → anything unclear (carrier results, odd health docs, a facility that looks off) is escalated to <b>Dr. E</b> for a 15–30 min scientific pass → <b>Austin + team</b> confirm the decision.</div>
+
+      <div class="sec-h" style="margin-top:22px">The founding cohort — recognition, not a test</div>
+      <div class="verify">
+        <div class="vcard"><div class="n">RIGOR IN THE STANDARD</div><h4>Dr. E stays off the member path</h4><p>His rigor lives in the standard and in silent escalation review. He is never the one who talks to a founding member. You keep his scientific credibility without his bedside manner ever reaching a member.</p><span class="tag">Relationship rule</span></div>
+        <div class="vcard"><div class="n">WARMTH IN DELIVERY</div><h4>White-glove, assisted</h4><p>Jennifer (or whoever has the relationship) walks each founding member through it, helps gather documents, and records the facility video <b>with</b> them. A conversation, not an inspection.</p><span class="tag">High-touch</span></div>
+        <div class="vcard"><div class="n">NO "FAIL"</div><h4>Certified, or finish together</h4><p>Outcomes are <b>Certified</b> or <b>"a couple things to finish together"</b> with the exact steps — never a blunt "not qualified." Generous grandfathering credits years of demonstrated work.</p><span class="tag">Supported</span></div>
+      </div>
+      <div class="note-legal">The name does the work: <b>Founding</b> Breeder Certification honors them as founders. The invitation reads as an honor — because it is one. Confidential, team-only, never publicly displayed. We owe the first 10–12 founding members who trusted us before there was anything to trust.</div>
+
+      <div class="sec-h" style="margin-top:22px">Member communication (feature release · from Austin)</div>
+      <div class="ov-card">
+        <p>One message, framed as a <b>feature release / recognition</b>, that covers:</p>
+        <ul>
+          <li><b>What it is</b> — the first vet-backed certification for domestic breeders, and why that depth makes it worth having.</li>
+          <li><b>Why you're being invited</b> — you're a founding member; this certifies what you've already been building with us.</li>
+          <li><b>Exactly what's asked</b> — assessment, clinic vet attestation, facility video, documents (with the outline below so nobody is guessing).</li>
+          <li><b>Timeline + redo window</b> — when it opens, how long review takes, and that there's always a "finish together" path, never a dead end.</li>
+          <li><b>Grandfathering</b> — this fulfills the original promise and transitions into the full certification as it expands.</li>
+        </ul>
+        <div class="note-inline">It's also a <b>business asset</b>: certified members can use "BreedWise Certified" in their sales pitch. A future module can break down the standard.</div>
+      </div>
+
+      <div class="sec-h" style="margin-top:22px">What members submit — the plain-language outline</div>
+      <div class="ov-card" style="padding-bottom:10px">
+        <p>Give members this up front so they put their best foot forward (and don't just pan the camera). The facility bar is about a <b>dedicated, clean, appropriate setup</b> — not a clinical build-out.</p>
+        <div class="fac">
+          <div class="fi"><div class="t">Whelping / neonatal area</div><div class="d">A dedicated space for whelping and newborns, separate from general household/dog traffic.</div><div class="e">e.g., a spare/guest room or a sectioned area the other dogs don't walk through — not a built clinic.</div></div>
+          <div class="fi"><div class="t">Hygiene &amp; sanitation routine</div><div class="d">A simple, shown cleaning/disinfection routine for the whelping and housing areas.</div></div>
+          <div class="fi"><div class="t">Isolation / quarantine space</div><div class="d">A way to separate a new or unwell dog from the others when needed.</div></div>
+          <div class="fi"><div class="t">Housing &amp; climate control</div><div class="d">Clean, appropriate housing with reasonable temperature control for the breed and the season.</div></div>
+          <div class="fi"><div class="t">Capacity vs. number of dogs</div><div class="d">Space that is appropriate for how many dogs are kept — not overcrowded.</div></div>
+        </div>
+        <div class="note-inline sci"><b>Video guidance for members:</b> a short, steady walkthrough showing each area above, narrated ("this is our whelping room…"). Recorded or live with Jennifer. Dr. E only sees it if the reviewer flags something.</div>
+      </div>
+
+      <div class="sec-h" style="margin-top:22px">Grading &amp; turnaround</div>
+      <div class="ov-card">
+        <ul>
+          <li><b>Not a harsh binary.</b> Each gate is <b>Pass / Corrections / Escalate</b>. The assessment is scored, but the <b>science section must pass on its own.</b> So it's criteria-based with a clear path to finish, not a 0/10 guillotine.</li>
+          <li><b>Turnaround (SLA):</b> a decision within <b>~2 weeks of a complete submission</b>, with a clear corrections window and the exact steps to pass.</li>
+          <li><b>Review time:</b> ~2.5–3.5 hrs per candidate for a trained reviewer. Dr. E: 15–30 min on flagged cases only (not every candidate) — his hours scale with problems, not headcount.</li>
+        </ul>
+      </div>
+
+      <div class="sec-h" style="margin-top:22px">Reviewer time &amp; pay (recommended)</div>
+      <div class="ov-card">
+        <ul>
+          <li><b>Pay per completed certification</b>, not hourly — predictable and rewards finishing.</li>
+          <li><b>Trained reviewer:</b> ~<b>$100–150</b> per completed Founding cert (≈3 hrs), + ~<b>$40</b> for a corrections re-review.</li>
+          <li><b>Dr. Fontaine:</b> specialist rate on escalations + optional final pass; his build contribution (standard, science bank, facility list) is project work (~1 week spread over Nov).</li>
+          <li><b>Angela:</b> project fee to build the Gate D genetics standard, + a small per-escalation if she reviews flagged genetics.</li>
+        </ul>
+      </div>
+
+      <div class="sec-h" style="margin-top:22px">Open items to confirm at the Dr. E / Dr. Hughes meeting</div>
+      <div class="ov-card">
+        <ul class="list2 open">
+          <li><b>Facility minimum list</b> — Dr. E drafts the exact thresholds to drop into Gate C.</li>
+          <li><b>Vet capacity</b> — Dr. E (~3–5 hrs/week in Nov) and Dr. Hughes: how many escalations/final passes can each take, and when.</li>
+          <li><b>Final-pass sign-off</b> — since a vet's name is on it, does Dr. E (or Dr. Hughes) do a 15-min final review per candidate, or only on flagged cases?</li>
+          <li><b>Compensation</b> — confirm the per-cert / escalation rates for the reviewer, Dr. E, Dr. Hughes, and Angela.</li>
+          <li><b>Assessment science bank + pass rule</b> — finalize the MCQ bank and the independent science-section cutoff.</li>
+          <li><b>Who is in the founding cohort</b> — the first invited list, and what each was originally promised, so the invitation is tailored.</li>
         </ul>
       </div>
     </div>
@@ -415,9 +542,11 @@ function renderBuild(){
 }
 function showTab(t){
   document.getElementById('viewStd').style.display=t==='std'?'':'none';
+  document.getElementById('viewRollout').style.display=t==='roll'?'':'none';
   document.getElementById('viewAudit').style.display=t==='audit'?'':'none';
   document.getElementById('viewBuild').style.display=t==='build'?'':'none';
   document.getElementById('tabStd').classList.toggle('on',t==='std');
+  document.getElementById('tabRoll').classList.toggle('on',t==='roll');
   document.getElementById('tabAudit').classList.toggle('on',t==='audit');
   document.getElementById('tabBuild').classList.toggle('on',t==='build');
   if(t==='build')renderBuild();
