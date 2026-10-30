@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Private · BreedWise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#0a0a0a; --panel:#141419; --panel2:#1a1a20; --line:rgba(245,242,234,.10);
+    --ink:#f5f2ea; --mid:rgba(245,242,234,.72); --muted:rgba(245,242,234,.46);
+    --gold:#cdae72; --gold2:#e2cb86; --gold-soft:rgba(205,174,114,.12); --gold-line:rgba(205,174,114,.30);
+    --grad:linear-gradient(135deg,#e2cb86,#c3a35c);
+    --green:#6dbf90; --green-soft:rgba(109,191,144,.14); --amber:#e0b062; --amber-soft:rgba(224,176,98,.14); --red:#e0807e; --red-soft:rgba(224,128,126,.12);
+    --blue:#7fb8e6; --blue-soft:rgba(127,184,230,.12);
+    --disp:'Anton',Impact,sans-serif; --body:'Poppins',-apple-system,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(120% 50% at 50% -6%,rgba(205,174,114,.08),transparent 60%)}
+  .wrap{max-width:900px;margin:0 auto;padding:0 18px}
+  h1,h2,h3,.disp{font-family:var(--disp);font-weight:400;letter-spacing:.01em;text-transform:uppercase;line-height:1.05}
+  a{color:var(--gold2)}
+  #gate{position:fixed;inset:0;z-index:9999;background:#0a0a0a;display:flex;align-items:center;justify-content:center;padding:24px}
+  .gate-card{width:100%;max-width:400px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:34px 30px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  .gate-brand{font-family:var(--disp);font-size:24px;letter-spacing:2px}.gate-brand b{color:var(--gold)}
+  .gate-title{font-family:var(--disp);font-size:20px;color:var(--gold2);margin-top:16px}
+  .gate-sub{color:var(--muted);font-size:13px;margin-top:8px}
+  #pw{width:100%;margin-top:22px;background:#0d0d0d;border:1px solid var(--line);border-radius:10px;color:var(--ink);font-family:var(--body);font-size:16px;padding:13px 15px;outline:none;text-align:center}
+  #pw:focus{border-color:var(--gold)}
+  #unlock{width:100%;margin-top:12px;background:var(--grad);color:#0a0a0a;font-family:var(--body);font-weight:700;font-size:15px;letter-spacing:.04em;text-transform:uppercase;border:0;border-radius:10px;padding:14px;cursor:pointer}
+  #gate-err{color:#ff6a5d;font-size:13px;margin-top:12px;min-height:16px}
+  #app{display:none}
+  header{padding:36px 0 6px;text-align:center}
+  .brand{font-family:var(--disp);font-size:20px;letter-spacing:2px}.brand b{color:var(--gold)}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-top:20px}
+  header h1{font-size:clamp(26px,5vw,42px);margin-top:10px}
+  header h1 .u{color:var(--gold)}
+  .sub{color:var(--mid);font-weight:300;font-size:13.5px;margin-top:8px}
+  .pillrow{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+  .pill{font-size:11px;letter-spacing:.04em;padding:6px 12px;border-radius:999px;border:1px solid var(--line);color:var(--mid);background:var(--panel)}
+  .pill.g{color:var(--gold2);border-color:var(--gold-line);background:var(--gold-soft)}
+  .tabs{display:flex;gap:6px;justify-content:center;margin:22px 0 4px;flex-wrap:wrap}
+  .tabs button{font-family:var(--body);font-weight:600;font-size:13.5px;color:var(--mid);background:var(--panel);border:1px solid var(--line);border-radius:30px;padding:10px 20px;cursor:pointer}
+  .tabs button.on{background:var(--grad);color:#1a1206;border-color:transparent}
+  .note-legal{background:var(--panel2);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:12px 16px;margin:18px 0;font-size:12.5px;color:var(--muted);line-height:1.55}
+  .note-legal b{color:var(--gold2)}
+  /* overview blocks */
+  .ov-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 20px;margin:12px 0}
+  .ov-card h3{font-size:16px;color:var(--ink);margin-bottom:8px}
+  .ov-card p{color:var(--mid);font-size:13.5px;margin:6px 0}
+  .ov-card ul{margin:8px 0 2px;padding-left:18px;color:var(--mid);font-size:13.5px}.ov-card li{margin:5px 0}
+  .verify{display:grid;gap:12px;margin:14px 0;grid-template-columns:1fr}
+  @media(min-width:720px){.verify{grid-template-columns:1fr 1fr 1fr}}
+  .vcard{background:linear-gradient(180deg,var(--panel),#101015);border:1px solid var(--gold-line);border-radius:14px;padding:18px}
+  .vcard .n{font-family:var(--disp);color:var(--gold);font-size:13px;letter-spacing:.1em}
+  .vcard h4{font-size:14.5px;color:var(--ink);margin:6px 0 6px;text-transform:none;font-family:var(--body);font-weight:700}
+  .vcard p{color:var(--mid);font-size:12.8px;line-height:1.5}
+  .vcard .tag{display:inline-block;margin-top:9px;font-size:10.5px;color:var(--green);background:var(--green-soft);border:1px solid rgba(109,191,144,.35);border-radius:20px;padding:3px 10px;font-weight:600}
+  .cbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:16px;position:sticky;top:8px;z-index:40;backdrop-filter:blur(8px)}
+  .cbar select{flex:1;min-width:150px;font-family:var(--body);font-size:14px;color:var(--ink);background:#0d0d0d;border:1px solid var(--line);border-radius:9px;padding:9px 11px;outline:none}
+  .cbar button{font-family:var(--body);font-weight:600;font-size:12.5px;border-radius:9px;padding:9px 12px;cursor:pointer;border:1px solid var(--line);background:var(--panel2);color:var(--mid)}
+  .cbar button.pri{background:var(--gold-soft);border-color:var(--gold-line);color:var(--gold2)}
+  .cbar .ov{width:100%;display:flex;align-items:center;gap:10px;margin-top:4px}
+  .cbar .ov .bar{flex:1;height:6px;background:var(--panel2);border-radius:6px;overflow:hidden}
+  .cbar .ov .bar i{display:block;height:100%;background:var(--grad);width:0;transition:width .3s}
+  .cbar .ov .lbl{font-size:11.5px;color:var(--muted);white-space:nowrap}
+  fieldset{border:1px solid var(--line);border-radius:14px;padding:0;margin:0 0 12px;background:var(--panel)}
+  .fs-h{display:flex;align-items:center;gap:12px;padding:15px 18px;cursor:pointer;user-select:none}
+  .fs-h .cv{font-family:var(--disp);color:var(--gold);font-size:15px;flex:0 0 auto}
+  .fs-h legend,.fs-h .lg{font-family:var(--body);font-weight:700;font-size:15px;color:var(--ink);flex:1;text-transform:none}
+  .fs-h .pbar{width:80px;height:6px;background:var(--panel2);border-radius:6px;overflow:hidden;flex:0 0 auto}
+  .fs-h .pbar i{display:block;height:100%;background:var(--grad);width:0;transition:width .3s}
+  .fs-h .chev{color:var(--muted);transition:transform .2s;flex:0 0 auto}
+  fieldset.open .fs-h .chev{transform:rotate(90deg)}
+  .fs-body{display:none;padding:0 18px 18px}
+  fieldset.open .fs-body{display:block}
+  .sec-h{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:16px 0 8px}
+  .sec-h:first-child{margin-top:4px}
+  label.ck{display:flex;align-items:flex-start;gap:11px;padding:8px 0;cursor:pointer;font-size:14px;color:var(--mid);border-top:1px solid rgba(245,242,234,.05)}
+  label.ck:first-of-type{border-top:0}
+  label.ck input{appearance:none;flex:0 0 auto;width:20px;height:20px;border:1.6px solid var(--gold-line);border-radius:6px;margin-top:1px;cursor:pointer;position:relative;transition:.12s}
+  label.ck input:checked{background:var(--grad);border-color:transparent}
+  label.ck input:checked::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#1a1206;font-size:13px;font-weight:800}
+  label.ck input:checked + span{color:var(--ink)}
+  .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 4px}
+  @media(max-width:560px){.fgrid{grid-template-columns:1fr}}
+  .fld label{display:block;font-size:11px;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:5px}
+  .fld input,textarea{width:100%;font-family:var(--body);font-size:14px;color:var(--ink);background:#0d0d0d;border:1px solid var(--line);border-radius:9px;padding:10px 12px;outline:none}
+  .fld input:focus,textarea:focus{border-color:var(--gold-line);box-shadow:0 0 0 3px var(--gold-soft)}
+  textarea{resize:vertical;min-height:64px;line-height:1.5;margin-top:6px}
+  .note-inline{font-size:12px;color:var(--muted);font-style:italic;background:var(--panel2);border-radius:9px;padding:10px 13px;margin:10px 0 2px;line-height:1.5}
+  .note-inline.sci{border-left:3px solid var(--blue);background:var(--blue-soft);font-style:normal;color:var(--mid)}
+  .statusrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+  .statusrow .sl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .seg{display:inline-flex;gap:6px;flex-wrap:wrap}
+  .seg button{font-family:var(--body);font-size:12px;font-weight:600;color:var(--mid);background:#0d0d0d;border:1px solid var(--line);border-radius:8px;padding:8px 13px;cursor:pointer}
+  .seg button[data-v="pass"].on,.seg button[data-v="certified"].on{background:var(--green-soft);border-color:rgba(109,191,144,.4);color:var(--green)}
+  .seg button[data-v="corrections"].on,.seg button[data-v="conditional"].on{background:var(--amber-soft);border-color:rgba(224,176,98,.4);color:var(--amber)}
+  .seg button[data-v="incomplete"].on,.seg button[data-v="notyet"].on,.seg button[data-v="escalate"].on{background:var(--red-soft);border-color:rgba(224,128,126,.4);color:var(--red)}
+  .seg button.on{font-weight:700}
+  .finalcard{background:linear-gradient(180deg,var(--panel),#101015);border:1px solid var(--gold-line);border-radius:16px;padding:20px 20px;margin-top:14px}
+  .finalcard h3{font-size:18px;margin-bottom:4px}
+  .gateroll{display:grid;gap:8px;margin:12px 0}
+  .gateroll .gr{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;color:var(--mid);background:var(--panel2);border-radius:9px;padding:9px 13px}
+  .gateroll .gr .st{font-family:var(--disp);font-size:13px;padding:2px 10px;border-radius:20px}
+  .st.pass{color:var(--green);background:var(--green-soft)} .st.corrections{color:var(--amber);background:var(--amber-soft)} .st.incomplete,.st.none{color:var(--muted);background:var(--panel)}
+  .saveline{text-align:center;font-size:11.5px;color:var(--muted);margin-top:4px}
+  .countdown{display:flex;align-items:center;justify-content:center;gap:14px;background:var(--panel);border:1px solid var(--gold-line);border-radius:16px;padding:18px;margin-bottom:16px}
+  .countdown .big{font-family:var(--disp);font-size:38px;color:var(--gold);line-height:1}
+  .countdown .lbl{font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+  .proj{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:12px}
+  .proj .ph{display:flex;align-items:center;gap:12px;padding:15px 18px;cursor:pointer}
+  .proj .ph .pn{font-family:var(--disp);color:var(--gold);font-size:15px}
+  .proj .ph .pt{flex:1;font-weight:700;font-size:14.5px;color:var(--ink)}
+  .proj .ph .pbar{width:70px;height:6px;background:var(--panel2);border-radius:6px;overflow:hidden}
+  .proj .ph .pbar i{display:block;height:100%;background:var(--grad);width:0;transition:.3s}
+  .proj .pbody{display:none;padding:0 18px 16px}
+  .proj.open .pbody{display:block}
+  .owner{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px}
+  .owner span{font-size:11px;color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:20px;padding:4px 11px;font-weight:600}
+  footer{margin:60px 0 46px;text-align:center;color:var(--muted);font-size:11px;line-height:1.7;border-top:1px solid var(--line);padding-top:22px}
+  @media print{ #gate,.tabs,.cbar button,.cbar select,.saveline,footer,.fs-h .chev{display:none!important}
+    body{background:#fff;color:#111} fieldset,.finalcard,.proj,.ov-card,.vcard{border-color:#ccc;background:#fff;color:#111} .fs-body,.pbody{display:block!important} .ov-card p,.vcard p,.ov-card li{color:#333} }
+</style>
+</head>
+<body>
+  <div id="gate">
+    <div class="gate-card">
+      <div class="gate-brand">BREED<b>WISE</b></div>
+      <div class="gate-title">Founding Certification</div>
+      <div class="gate-sub">Private · Reviewers &amp; team only.</div>
+      <input id="pw" type="password" placeholder="Password" autocomplete="off" spellcheck="false">
+      <button id="unlock" type="button">Unlock →</button>
+      <div id="gate-err"></div>
+    </div>
+  </div>
+
+  <div id="app"><div class="wrap">
+    <header>
+      <div class="brand">BREED<b>WISE</b></div>
+      <div class="eyebrow">Certified Breeder™ · Founding Certification (v1)</div>
+      <h1>Founding Breeder<br><span class="u">Certification</span></h1>
+      <div class="sub">A verified, official certification for established members, issued while the full Certified Breeder™ program is built. It validates <b>verified</b> knowledge, a <b>real</b> veterinary relationship, a <b>seen</b> facility, documented standards and ethics. It does <b>not</b> certify or guarantee medical outcomes, pregnancy, litter size, puppy health, or profitability.</div>
+      <div class="pillrow">
+        <span class="pill g">Launch target · Nov 28, 2026</span>
+        <span class="pill">For 12+ month members</span>
+        <span class="pill">Verified, not paper-only</span>
+        <span class="pill">Transitions to the full cert</span>
+      </div>
+      <div class="tabs">
+        <button id="tabStd" class="on" onclick="showTab('std')">The Standard</button>
+        <button id="tabAudit" onclick="showTab('audit')">Candidate Audit</button>
+        <button id="tabBuild" onclick="showTab('build')">28-Day Buildout</button>
+      </div>
+    </header>
+
+    <!-- STANDARD -->
+    <div id="viewStd">
+      <div class="note-legal"><b>Why a Founding certification.</b> Dr. Fontaine's review of the full system: the structure is right (gates, evidence, audit, disclaimers), but a checklist that confirms paperwork was "submitted" is not the same as verifying a standard was met. His conclusion: <b>a smaller certification that is actually verified is worth more than a full one audited on paper.</b> This Founding certification keeps fewer requirements, and verifies the three that matter.</div>
+
+      <div class="ov-card">
+        <h3>What it is</h3>
+        <p>An <b>official, provisional certification</b> for members who have been with BreedWise for a year or more and have done the work. It is issued now, under a standard that is deliberately smaller than the full system but <b>fully verified</b>, and certificants transition into the full Certified Breeder™ program as it is completed. It is a real credential, not a participation badge, and it will keep expanding.</p>
+      </div>
+
+      <div class="ov-card">
+        <h3>Who is eligible</h3>
+        <ul>
+          <li>Member in good standing for <b>12+ months</b></li>
+          <li><b>All required science modules completed</b> (mandatory for every path, including legacy, no credit given)</li>
+          <li>Minimum curriculum completion reached</li>
+          <li>No unresolved ethics or conduct concerns</li>
+        </ul>
+      </div>
+
+      <div class="sec-h" style="margin-top:24px">The three things BreedWise verifies — not just declares</div>
+      <div class="verify">
+        <div class="vcard"><div class="n">01 · SCIENCE</div><h4>Completed the science, and can prove it</h4><p>Every science module is required and verified against the record — legacy included, no credit. The <b>science section of the assessment must pass on its own</b>, independent of the overall score. Weak science can never be carried by business questions.</p><span class="tag">Verified by BreedWise</span></div>
+        <div class="vcard"><div class="n">02 · VETERINARY</div><h4>A real relationship with their vet</h4><p>A short attestation <b>signed by the clinic</b>: active client, breeding dogs seen in the last 12 months, program discussed with the vet, emergency plan reviewed. "Knows when to call the vet" becomes scenario questions in the assessment.</p><span class="tag">Signed by the clinic</span></div>
+        <div class="vcard"><div class="n">03 · FACILITY</div><h4>The facility has been seen</h4><p>A recorded or live <b>video walkthrough</b> against a defined minimum list (whelping/neonatal area, hygiene, isolation, housing, climate, capacity vs. number of dogs). Reviewed against the list; anything that looks wrong is escalated to Dr. Fontaine.</p><span class="tag">Verified by video</span></div>
+      </div>
+
+      <div class="note-legal"><b>Carrier &amp; abnormal results.</b> The hardest scientific question in the system. It stays at <b>"disclosed, and the pairing plan is documented."</b> BreedWise never states that it approves an individual dog for breeding.</div>
+
+      <div class="ov-card">
+        <h3>How it is run (so the dates hold)</h3>
+        <ul>
+          <li><b>Angela owns Gate D genetics &amp; health-testing standard</b> end to end, including the carrier policy.</li>
+          <li><b>Audits are run by a trained reviewer</b> against the rubric. Dr. Fontaine takes <b>scientific escalations only</b> — carrier results, unclear health documents, a facility that looks wrong on video.</li>
+          <li>If either condition does not hold, the launch date moves.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- AUDIT -->
+    <div id="viewAudit" style="display:none">
+      <div class="cbar">
+        <select id="candSel" onchange="switchCand(this.value)"></select>
+        <button class="pri" onclick="newCand()">+ New</button>
+        <button onclick="renameCand()">Rename</button>
+        <button onclick="delCand()">Delete</button>
+        <button onclick="window.print()">Print</button>
+        <div class="ov"><div class="bar"><i id="ovBar"></i></div><div class="lbl" id="ovLbl">0%</div></div>
+      </div>
+      <div class="note-legal"><b>Certification principle:</b> BreedWise verifies completed science, a real veterinary relationship, a seen facility, documentation, and ethics. It does not determine whether an individual dog is medically appropriate for breeding, and certification does not constitute veterinary approval of breeding decisions.</div>
+      <div id="auditBody"></div>
+      <div class="saveline">Every entry saves automatically on this device, per candidate.</div>
+    </div>
+
+    <!-- BUILDOUT -->
+    <div id="viewBuild" style="display:none">
+      <div class="countdown"><div><div class="big" id="cdDays">—</div></div><div><div class="lbl">days to launch</div><div style="font-size:13px;color:var(--mid);margin-top:2px">Founding certification target · <b style="color:var(--ink)">November 28, 2026</b></div></div></div>
+      <div class="note-legal sci" style="border-left-color:var(--blue)"><b>Scope discipline.</b> The full system is 111 tasks at 0 done with four weeks left — not achievable verified. This Founding list is the minimum to launch something <b>real and verified</b>. Two conditions, from Dr. Fontaine: Angela owns the genetics standard; audits run by a trained reviewer with Dr. Fontaine on escalations only.</div>
+      <div class="cbar" style="position:static"><div class="ov" style="margin-top:0"><div class="bar"><i id="boBar"></i></div><div class="lbl" id="boLbl">0%</div></div></div>
+      <div id="buildBody"></div>
+      <div class="saveline">Shared team checklist — saves on this device.</div>
+    </div>
+
+    <footer>BreedWise — Internal certification tool. Confidential. BOSS™ and BreedWise Certified Breeder™ are BreedWise standards.<br>Founding Certification v1 · <span id="yr"></span></footer>
+  </div></div>
+
+<script>
+/* ---------------- config ---------------- */
+var MEMBER={ identity:'Member identity verified',
+  fields:[['name','Member Name'],['kennel','Breeding Program / Kennel'],['breeds','Breed(s)'],['enroll','Academy Enrollment Date'],['tenure','Months as a Member'],['revstart','Review Started'],['reviewer','Assigned Reviewer']],
+  path:['Founding Cohort · 12+ Months'] };
+
+var GATES=[
+ {key:'elig',title:'Eligibility · Founding Cohort',secs:[
+   {h:'',checks:[
+     'Member in good standing for 12+ months (verified)',
+     'All required science modules completed — mandatory, legacy included, NO credit',
+     'Minimum curriculum completion reached (verified against record)',
+     'No unresolved ethics or conduct concerns'],
+    note:'Eligibility is confirmed before the audit begins. Science completion is verified against the curriculum record, never credited.'}
+ ]},
+ {key:'gA',title:'Gate A · Science (Verified)',secs:[
+   {h:'Science Modules',checks:[
+     'Every required science module completed',
+     'Completion verified by BreedWise against the curriculum record',
+     'No module credited or waived']},
+   {h:'Certification Assessment',checks:[
+     'Certification Assessment completed',
+     'SCIENCE section passed on its own (independent of the overall score)',
+     'Veterinary "when to call the vet" scenario questions passed',
+     'Overall passing score achieved'],
+    fields:[['score','Overall Score (/100)'],['sci','Science Section (/100)'],['vetsc','Vet Scenarios (/100)'],['date','Assessment Date']],
+    note:'The science section is passed on its own. Weak science can never be carried by business questions.'}
+ ]},
+ {key:'gB',title:'Gate B · Veterinary Relationship (Clinic-Verified)',secs:[
+   {h:'',checks:[
+     'Clinic-signed attestation received (clinic letterhead or signed BreedWise form)',
+     'Attestation confirms: active client of the clinic',
+     'Attestation confirms: breeding dogs seen by the clinic in the last 12 months',
+     'Attestation confirms: breeding program discussed with the veterinarian',
+     'Emergency / whelping plan reviewed with that clinic',
+     'Primary and emergency veterinary contacts documented'],
+    fields:[['clinic','Clinic Name'],['vet','Veterinarian'],['attdate','Attestation Date']],
+    note:'The clinic signs this, not the member. A signed attestation is the verification — BreedWise does not need to call every clinic. Certification is not veterinary approval of breeding decisions.'}
+ ]},
+ {key:'gC',title:'Gate C · Facility & Husbandry (Video-Verified)',secs:[
+   {h:'',checks:[
+     'Video walkthrough submitted (recorded or live)',
+     'Whelping / neonatal area shown and meets the minimum',
+     'Hygiene & sanitation routine shown',
+     'Isolation / quarantine space shown',
+     'Housing & climate control shown',
+     'Capacity appropriate for the number of dogs',
+     'Walkthrough reviewed against the BreedWise facility minimum list'],
+    fields:[['walkdate','Walkthrough Date'],['walklink','Video Link / Reference']],
+    note:'Facility minimum list is drafted by Dr. Fontaine. The reviewer checks the video against the list; anything that looks wrong is escalated to Dr. Fontaine (not approved by the reviewer).'}
+ ]},
+ {key:'gD',title:'Gate D · Standards, Ethics & Documentation',secs:[
+   {h:'Genetics & Health Testing (owned by Angela)',checks:[
+     'Breed-relevant genetic + health-testing documentation submitted',
+     'Documentation reviewed against the BreedWise standard',
+     'Carrier / abnormal results DISCLOSED and the pairing plan documented'],
+    note:'BreedWise verifies disclosure and documentation against the standard. It never states that it approves an individual dog for breeding.'},
+   {h:'Program, Placement & Ethics',checks:[
+     'BreedWise Code of Ethics acknowledged',
+     'Breeding-program overview + active breeding-dog list submitted',
+     'Buyer screening process + puppy agreement/contract submitted',
+     'Whelping & emergency preparedness documented',
+     'No unverified medical claims identified during audit',
+     'Certification / brand language used appropriately']}
+ ]}
+];
+var PORTFOLIO=['Science modules completion record','Certification Assessment result (overall + science + vet scenarios)','Clinic-signed veterinary attestation','Emergency / whelping plan (reviewed with the clinic)','Facility video walkthrough','Genetic + health-testing documentation','Carrier/abnormal disclosure + pairing-plan note (if applicable)','Code of Ethics acknowledgment','Breeding-program overview + active dog list','Buyer screening process + puppy contract'];
+var FINAL_FIELDS=[['deadline','Correction Deadline'],['auditdate','Audit Completed'],['finalrev','Reviewer'],['escal','Escalations to Dr. Fontaine'],['effective','Effective Date'],['certid','Founding Cert ID']];
+
+var BUILD=[
+ {t:'Founding Certification Standard v1',own:['Austin','Sci: Emmanuel','Genetics: Angela','Legal'],c:['Define purpose + provisional/official positioning','Define what it verifies vs does NOT verify','Lock the four verified gates (A science, B vet, C facility, D standards)','Define eligibility (12+ months, science complete, curriculum %)','Define the transition path to the full certification','Disclaimers reviewed (no medical / outcome claims)','Scientific review (Emmanuel) complete','Legal review complete','v1 approved']},
+ {t:'Assessment — Science Section',own:['Sci: Emmanuel'],c:['Science MCQ bank written','Independent science pass rule set (passes on its own)','Vet "when to call" scenario questions written','Overall + section scoring built','Retake policy set','Piloted internally','Scientific approval','Published']},
+ {t:'Genetics & Health-Testing Standard + Carrier Policy',own:['Genetics: Angela'],c:['Minimum health-testing requirement defined','Breed-relevant testing approach defined','Carrier/abnormal = DISCLOSED + pairing plan documented (never approved)','Acceptable documentation defined','Reviewer instructions written','Member-facing requirements written','Scientific approval']},
+ {t:'Veterinary Attestation (clinic-signed)',own:['Ops: Jenn','Sci/Legal review'],c:['Clinic attestation form drafted','Confirms active client','Confirms breeding dogs seen in last 12 months','Confirms program discussed with the vet','Emergency-plan-reviewed line included','Legal + scientific review']},
+ {t:'Facility Minimum List + Video Walkthrough',own:['Sci: Emmanuel (list)','Ops: Jenn (process)'],c:['Facility minimum list drafted (Emmanuel)','Minimum thresholds defined (whelping, hygiene, isolation, housing, climate, capacity)','Video walkthrough submission method built','Reviewer facility rubric written','Escalation-to-Emmanuel trigger defined']},
+ {t:'Portfolio + Submission',own:['Ops: Jenn'],c:['Required document list finalized','Upload + file-naming convention','Member certification folder template','Missing-document + complete notifications','Submission workflow tested']},
+ {t:'Audit Rubric + Reviewer Training',own:['Austin + Jenn','Sci escalations: Emmanuel'],c:['Per-gate PASS / CONDITIONAL / NOT-YET criteria','Correction process + deadline','Scientific escalation process (carrier, unclear docs, facility)','One trained reviewer certified on the rubric','Candidate dry-run against the rubric']},
+ {t:'Eligibility & Member Mapping',own:['Austin','Ops: Jenn'],c:['Eligibility rule finalized (12+ mo, science, curriculum %)','Eligible member cohort identified','Science-completion verified per member','Individual eligibility confirmed']},
+ {t:'Administration & Credential',own:['Ops: Jenn'],c:['Certification tracker built','Founding Cert IDs assigned','Founding certificate template','Approved / conditional / not-yet emails','Certification registry','Transition-to-full note on each certificate']},
+ {t:'November 28 Launch Readiness',own:['All'],c:['Standard v1 approved','Assessment live (science passes independently)','Genetics standard + carrier policy approved (Angela)','Clinic attestation form live','Facility minimum list + video process live','Portfolio submission live','Audit rubric approved','Reviewer trained','Eligible members mapped','Member communications prepared','Certificates / credential ready','Legal + scientific sign-off','First candidate audited end-to-end (incl. facility video)']}
+];
+
+/* ---------------- state ---------------- */
+var DB={active:null,list:{}}, BO={};
+function loadDB(){try{DB=JSON.parse(localStorage.getItem('bw_certlight_v1'))||DB;}catch(e){} try{BO=JSON.parse(localStorage.getItem('bw_certlight_bo_v1'))||{};}catch(e){}
+  if(!DB.active||!DB.list[DB.active]){var id=Object.keys(DB.list)[0]; if(!id){id=mkCand('Candidate 1');} DB.active=id;}}
+function saveDB(){try{localStorage.setItem('bw_certlight_v1',JSON.stringify(DB));}catch(e){}}
+function saveBO(){try{localStorage.setItem('bw_certlight_bo_v1',JSON.stringify(BO));}catch(e){}}
+function mkCand(label){var id='c'+Date.now()+Math.floor(Math.random()*999);DB.list[id]={label:label,rec:{}};DB.active=id;saveDB();return id;}
+function rec(){return DB.list[DB.active].rec;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
+function ck(k,txt){return '<label class="ck"><input type="checkbox" data-k="'+k+'"><span>'+esc(txt)+'</span></label>';}
+function fld(k,label){return '<div class="fld"><label>'+esc(label)+'</label><input type="text" data-k="'+k+'"></div>';}
+
+function renderAudit(){
+  var h='';
+  h+='<fieldset class="open"><div class="fs-h" onclick="tog(this)"><span class="cv">◈</span><span class="lg">Member Information</span><span class="chev">›</span></div><div class="fs-body">';
+  h+=ck('mem.identity',MEMBER.identity);
+  h+='<div class="fgrid">'+MEMBER.fields.map(function(f){return fld('mem.f.'+f[0],f[1]);}).join('')+'</div>';
+  h+='</div></fieldset>';
+  GATES.forEach(function(g){
+    h+='<fieldset data-gate="'+g.key+'"><div class="fs-h" onclick="tog(this)"><span class="cv" data-cv="'+g.key+'">0/0</span><span class="lg">'+g.title+'</span><span class="pbar"><i data-pb="'+g.key+'"></i></span><span class="chev">›</span></div><div class="fs-body">';
+    g.secs.forEach(function(s,si){
+      if(s.h) h+='<div class="sec-h">'+esc(s.h)+'</div>';
+      s.checks.forEach(function(c,ci){h+=ck(g.key+'.'+si+'.c.'+ci,c);});
+      if(s.fields) h+='<div class="fgrid">'+s.fields.map(function(f){return fld(g.key+'.f.'+f[0],f[1]);}).join('')+'</div>';
+      if(s.note) h+='<div class="note-inline'+(g.key==='gA'||g.key==='gB'||g.key==='gC'||g.key==='gD'?' sci':'')+'">'+esc(s.note)+'</div>';
+    });
+    h+='<div class="statusrow"><span class="sl">Gate status</span><div class="seg" data-seg="'+g.key+'.status"><button type="button" data-v="pass">Pass</button><button type="button" data-v="corrections">Corrections</button><button type="button" data-v="escalate">Escalate</button><button type="button" data-v="incomplete">Not complete</button></div></div>';
+    h+='<div class="fld" style="margin-top:12px"><label>Reviewer notes</label><textarea data-k="'+g.key+'.notes"></textarea></div>';
+    h+='</div></fieldset>';
+  });
+  h+='<fieldset data-gate="port"><div class="fs-h" onclick="tog(this)"><span class="cv" data-cv="port">0/0</span><span class="lg">Portfolio · Evidence Submitted</span><span class="pbar"><i data-pb="port"></i></span><span class="chev">›</span></div><div class="fs-body">';
+  PORTFOLIO.forEach(function(c,i){h+=ck('port.c.'+i,c);});
+  h+='</div></fieldset>';
+  h+='<div class="finalcard"><h3>Founding Certification Decision</h3><div class="gateroll" id="gateRoll"></div>';
+  h+='<div class="sl" style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:6px 0 8px">Final decision</div>';
+  h+='<div class="seg" data-seg="final.decision"><button type="button" data-v="certified">Certified (Founding)</button><button type="button" data-v="conditional">Conditional</button><button type="button" data-v="notyet">Not yet certified</button></div>';
+  h+='<div class="fld" style="margin-top:14px"><label>Corrections required</label><textarea data-k="final.corrections"></textarea></div>';
+  h+='<div class="fgrid" style="margin-top:10px">'+FINAL_FIELDS.map(function(f){return fld('final.f.'+f[0],f[1]);}).join('')+'</div></div>';
+  document.getElementById('auditBody').innerHTML=h;
+  applyValues(); wireInputs(); refreshProgress(); renderGateRoll();
+}
+function tog(el){el.parentElement.classList.toggle('open');}
+function applyValues(){
+  var r=rec();
+  document.querySelectorAll('#auditBody [data-k]').forEach(function(el){
+    var v=r[el.getAttribute('data-k')];
+    if(el.type==='checkbox') el.checked=!!v; else el.value=(v==null?'':v);
+  });
+  document.querySelectorAll('#auditBody .seg[data-seg]').forEach(function(seg){
+    var v=r[seg.getAttribute('data-seg')];
+    seg.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-v')===v);});
+  });
+}
+function wireInputs(){
+  document.querySelectorAll('#auditBody [data-k]').forEach(function(el){
+    el.addEventListener(el.type==='checkbox'?'change':'input',function(){
+      rec()[el.getAttribute('data-k')] = el.type==='checkbox'?el.checked:el.value; saveDB();
+      if(el.type==='checkbox'){refreshProgress();renderGateRoll();}
+    });
+  });
+  document.querySelectorAll('#auditBody .seg[data-seg]').forEach(function(seg){
+    seg.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){
+      var key=seg.getAttribute('data-seg'),val=b.getAttribute('data-v');
+      rec()[key]=(rec()[key]===val?'':val); saveDB();
+      seg.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x.getAttribute('data-v')===rec()[key]);});
+      if(key.indexOf('.status')>0||key==='final.decision') renderGateRoll();
+    });});
+  });
+}
+function gateTotals(gk){var t=0;var g=GATES.filter(function(x){return x.key===gk;})[0];
+  if(g){g.secs.forEach(function(s){t+=s.checks.length;});} else if(gk==='port'){t=PORTFOLIO.length;} return t;}
+function gateDone(gk){var r=rec(),n=0;Object.keys(r).forEach(function(k){if(k.indexOf(gk+'.')===0&&k.indexOf('.c.')>0&&r[k]===true)n++;});return n;}
+function refreshProgress(){
+  var totalChecks=0,doneChecks=0;
+  GATES.forEach(function(g){var t=gateTotals(g.key),d=gateDone(g.key);totalChecks+=t;doneChecks+=d;
+    var pb=document.querySelector('[data-pb="'+g.key+'"]');if(pb)pb.style.width=(t?d/t*100:0)+'%';
+    var cv=document.querySelector('[data-cv="'+g.key+'"]');if(cv)cv.textContent=d+'/'+t;});
+  var pt=gateTotals('port'),pd=gateDone('port');totalChecks+=pt;doneChecks+=pd;
+  var ppb=document.querySelector('[data-pb="port"]');if(ppb)ppb.style.width=(pt?pd/pt*100:0)+'%';
+  var pcv=document.querySelector('[data-cv="port"]');if(pcv)pcv.textContent=pd+'/'+pt;
+  var pctv=totalChecks?Math.round(doneChecks/totalChecks*100):0;
+  document.getElementById('ovBar').style.width=pctv+'%';document.getElementById('ovLbl').textContent=pctv+'% · '+doneChecks+'/'+totalChecks;
+}
+function renderGateRoll(){
+  var r=rec(),roll=document.getElementById('gateRoll');if(!roll)return;var h='';
+  GATES.forEach(function(g){var st=r[g.key+'.status']||'none';h+='<div class="gr"><span>'+g.title+'</span><span class="st '+st+'">'+(st==='none'?'—':st)+'</span></div>';});
+  roll.innerHTML=h;
+}
+function fillCandSel(){var s=document.getElementById('candSel');s.innerHTML=Object.keys(DB.list).map(function(id){return '<option value="'+id+'"'+(id===DB.active?' selected':'')+'>'+esc(DB.list[id].label)+'</option>';}).join('');}
+function switchCand(id){DB.active=id;saveDB();fillCandSel();renderAudit();}
+function newCand(){var nm=prompt('New candidate name:','Candidate '+(Object.keys(DB.list).length+1));if(nm===null)return;mkCand(nm.trim()||'Candidate');fillCandSel();renderAudit();}
+function renameCand(){var nm=prompt('Rename candidate:',DB.list[DB.active].label);if(nm===null)return;DB.list[DB.active].label=nm.trim()||DB.list[DB.active].label;saveDB();fillCandSel();}
+function delCand(){if(Object.keys(DB.list).length<=1){alert('Keep at least one candidate.');return;}if(!confirm('Delete '+DB.list[DB.active].label+'? This cannot be undone.'))return;delete DB.list[DB.active];DB.active=Object.keys(DB.list)[0];saveDB();fillCandSel();renderAudit();}
+function renderBuild(){
+  var h='',done=0,total=0;
+  BUILD.forEach(function(p,pi){
+    var pd=0;p.c.forEach(function(_,ci){if(BO['bo.'+pi+'.'+ci])pd++;});done+=pd;total+=p.c.length;
+    h+='<div class="proj"><div class="ph" onclick="this.parentElement.classList.toggle(\'open\')"><span class="pn">'+String(pi+1).padStart(2,'0')+'</span><span class="pt">'+esc(p.t)+'</span><span class="pbar"><i style="width:'+(pd/p.c.length*100)+'%" data-bpb="'+pi+'"></i></span><span style="font-size:11.5px;color:var(--muted);min-width:38px;text-align:right">'+pd+'/'+p.c.length+'</span></div><div class="pbody">';
+    if(p.own.length)h+='<div class="owner">'+p.own.map(function(o){return '<span>'+esc(o)+'</span>';}).join('')+'</div>';
+    p.c.forEach(function(c,ci){h+=ck('bo.'+pi+'.'+ci,c);});
+    h+='</div></div>';
+  });
+  document.getElementById('buildBody').innerHTML=h;
+  document.querySelectorAll('#buildBody [data-k]').forEach(function(el){el.checked=!!BO[el.getAttribute('data-k')];
+    el.addEventListener('change',function(){BO[el.getAttribute('data-k')]=el.checked;saveBO();renderBuild();});});
+  var pct=total?Math.round(done/total*100):0;document.getElementById('boBar').style.width=pct+'%';document.getElementById('boLbl').textContent=pct+'% · '+done+'/'+total;
+  var t=new Date('2026-11-28T00:00:00');var days=Math.ceil((t-new Date())/86400000);document.getElementById('cdDays').textContent=days>0?days:'0';
+}
+function showTab(t){
+  document.getElementById('viewStd').style.display=t==='std'?'':'none';
+  document.getElementById('viewAudit').style.display=t==='audit'?'':'none';
+  document.getElementById('viewBuild').style.display=t==='build'?'':'none';
+  document.getElementById('tabStd').classList.toggle('on',t==='std');
+  document.getElementById('tabAudit').classList.toggle('on',t==='audit');
+  document.getElementById('tabBuild').classList.toggle('on',t==='build');
+  if(t==='build')renderBuild();
+}
+/* ---------------- gate ---------------- */
+(function(){
+  var HASH="7c80836fc0ce4e3956aa136771a24b98d946bece11d70efef268e3612037234d"; // BreedWiseSetters26
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  function reveal(){var g=document.getElementById('gate');if(g)g.remove();document.getElementById('app').style.display='block';document.title='Founding Certification · BreedWise';document.getElementById('yr').textContent=new Date().getFullYear();loadDB();fillCandSel();renderAudit();}
+  function tryUnlock(){var v=(document.getElementById('pw').value||'');h(v).then(function(hex){if(hex===HASH){try{sessionStorage.setItem('cert_ok','1');}catch(e){}reveal();}else{document.getElementById('gate-err').textContent='Incorrect password. Try again.';document.getElementById('pw').select();}});}
+  document.getElementById('unlock').addEventListener('click',tryUnlock);
+  document.getElementById('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+  try{if(sessionStorage.getItem('cert_ok')==='1'){reveal();}else{document.getElementById('pw').focus();}}catch(e){document.getElementById('pw').focus();}
+})();
+</script>
+<script>/* bw-autosave-hardening */(function(){function _bwF(){['flush','flushDraft','saveState','persist','autosave','saveLocal','saveDraft','save','saveDB','saveBO'].forEach(function(n){try{if(typeof window[n]==='function')window[n]();}catch(e){}});}window.addEventListener('pagehide',_bwF);window.addEventListener('beforeunload',_bwF);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')_bwF();});})();</script>
+</body>
+</html>
