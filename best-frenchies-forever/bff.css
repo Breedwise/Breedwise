@@ -142,9 +142,9 @@ section.block{padding:72px 0}
 .step p{color:var(--muted);font-size:.92rem}
 
 /* checklist */
-.checklist{list-style:none;display:grid;gap:12px}
-.checklist li{display:flex;gap:12px;color:var(--muted);align-items:flex-start}
-.checklist li::before{content:"✓";color:#201327;background:linear-gradient(135deg,var(--gold-hi),var(--gold));width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;flex:0 0 auto;margin-top:3px}
+.checklist{list-style:none;display:grid;gap:14px}
+.checklist li{position:relative;padding-left:36px;color:var(--muted);line-height:1.6}
+.checklist li::before{content:"✓";position:absolute;left:0;top:2px;color:#201327;background:linear-gradient(135deg,var(--gold-hi),var(--gold));width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800}
 .checklist li b{color:#fff;font-weight:700}
 
 /* ---- CTA band ---- */
