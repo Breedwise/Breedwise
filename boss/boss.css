@@ -1,0 +1,113 @@
+/* BOSS — shared brand system for the module library + every module piece.
+   BreedWise Operating System & Standards. Cormorant + Manrope, black / metallic gold. */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060608; --bg2:#0d0d11; --panel:#121216; --panel2:#17171d;
+  --line:#20202a; --line2:#31313d;
+  --ink:#f4f1ea; --mid:#c0bbb0; --muted:#8a847a; --faint:#57524b;
+  --gold:#c9a24e; --gold-soft:#ecdaa4; --gold-deep:#8c6d2e;
+  --blue:#6fb4ea; --green:#5ec59a; --rose:#e68bab; --amber:#e3b45f; --violet:#b79ae8;
+  --disp:'Cormorant',Georgia,serif;
+  --sans:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;
+  --radius:16px; --maxw:1120px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:
+  radial-gradient(1100px 620px at 50% -12%,rgba(201,162,78,.10),transparent 60%),
+  var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.disp{font-family:var(--disp)}
+.eyebrow{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.muted{color:var(--muted)}
+
+/* ---- gate (shared, used by boss-gate.js) ---- */
+#gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:90}
+#gate .box{width:min(92vw,380px);text-align:center}
+#gate .logo{display:flex;align-items:center;justify-content:center;gap:11px}
+#gate .mk,.brand .mk{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--gold-soft),var(--gold-deep));display:flex;align-items:center;justify-content:center;box-shadow:0 2px 14px rgba(201,162,78,.3);font-family:var(--disp);font-weight:700;color:#14100a;font-size:18px}
+#gate h1{font-family:var(--disp);font-size:26px;font-weight:600;margin:16px 0 4px}
+#gate .sub{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+#gate input{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line2);border-radius:11px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--sans)}
+#gate input:focus{outline:none;border-color:var(--gold-deep)}
+#gate button{width:100%;margin-top:10px;padding:13px;background:linear-gradient(150deg,var(--gold-soft),var(--gold));border:0;border-radius:11px;color:#14100a;font-weight:800;font-size:15px;cursor:pointer;font-family:var(--sans)}
+#gate .err{color:#e08a7a;font-size:12.5px;min-height:16px;margin-top:10px}
+
+/* ---- header ---- */
+header.boss{border-bottom:1px solid var(--line);background:rgba(6,6,8,.78);backdrop-filter:blur(12px);position:sticky;top:0;z-index:40}
+header.boss .bar{display:flex;align-items:center;justify-content:space-between;gap:16px;height:72px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .wm{line-height:1.1}
+.brand .wm b{font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:.02em;display:block}
+.brand .wm span{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+header.boss nav{display:flex;gap:6px;align-items:center}
+header.boss nav a{font-size:13px;color:var(--mid);padding:8px 13px;border-radius:9px;transition:.16s}
+header.boss nav a:hover{color:var(--ink);background:var(--panel)}
+
+/* ---- buttons ---- */
+.btn{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;padding:12px 22px;border-radius:30px;cursor:pointer;border:0;transition:.18s;font-family:var(--sans)}
+.btn.gold{background:linear-gradient(150deg,var(--gold-soft),var(--gold));color:#14100a}
+.btn.gold:hover{filter:brightness(1.05);transform:translateY(-1px)}
+.btn.ghost{background:transparent;border:1px solid var(--line2);color:var(--ink)}
+.btn.ghost:hover{border-color:var(--gold-deep)}
+
+/* ---- hub hero ---- */
+.hub-hero{padding:58px 0 30px}
+.hub-hero h1{font-family:var(--disp);font-weight:600;font-size:clamp(2.4rem,5vw,3.6rem);letter-spacing:-.01em}
+.hub-hero h1 em{font-style:italic;color:var(--gold-soft)}
+.hub-hero p{color:var(--mid);max-width:60ch;margin-top:14px;font-size:1.05rem}
+
+/* ---- status legend ---- */
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin:22px 0 6px;font-size:12px;color:var(--muted)}
+.legend .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.dot.live{background:var(--green)} .dot.building{background:var(--amber)} .dot.planned{background:var(--faint)}
+
+/* ---- module grid ---- */
+.modules{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;padding:26px 0 70px}
+.mod{background:linear-gradient(165deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:var(--radius);padding:24px;transition:.2s;display:flex;flex-direction:column}
+.mod:hover{border-color:var(--line2);transform:translateY(-3px)}
+.mod.is-planned{opacity:.72}
+.mod .top{display:flex;align-items:flex-start;gap:14px}
+.mod .ic{width:46px;height:46px;flex:0 0 auto;border-radius:12px;background:rgba(201,162,78,.1);border:1px solid var(--line2);display:grid;place-items:center;font-family:var(--disp);font-size:22px;color:var(--gold-soft)}
+.mod h3{font-family:var(--disp);font-size:1.5rem;font-weight:600;line-height:1.1}
+.mod .tag{color:var(--muted);font-size:.92rem;margin-top:3px}
+.mod .st{margin-left:auto;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:4px 10px;border-radius:30px;white-space:nowrap}
+.st.live{color:var(--green);background:rgba(94,197,154,.1);border:1px solid rgba(94,197,154,.25)}
+.st.building{color:var(--amber);background:rgba(227,180,95,.1);border:1px solid rgba(227,180,95,.25)}
+.st.planned{color:var(--faint);background:rgba(87,82,75,.12);border:1px solid var(--line2)}
+.mod .desc{color:var(--mid);font-size:.95rem;margin:14px 0 16px;flex:1}
+
+/* piece chips */
+.pieces{display:flex;flex-wrap:wrap;gap:8px}
+.piece{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;padding:8px 13px;border-radius:10px;border:1px solid var(--line2);background:var(--bg2);color:var(--ink);transition:.16s}
+a.piece:hover{border-color:var(--gold-deep);background:rgba(201,162,78,.08);color:var(--gold-soft)}
+.piece .pic{color:var(--gold)}
+.piece.off{opacity:.4;border-style:dashed;color:var(--muted);cursor:default}
+.piece.off .pic{color:var(--faint)}
+.piece .core{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-deep);margin-left:2px}
+
+/* ---- "how it's organized" panel ---- */
+.howto{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:26px;margin-bottom:60px}
+.howto summary{cursor:pointer;font-family:var(--disp);font-size:1.3rem;color:var(--gold-soft);list-style:none}
+.howto summary::-webkit-details-marker{display:none}
+.howto summary::before{content:"▸ ";color:var(--gold)}
+.howto[open] summary::before{content:"▾ "}
+.howto .body{margin-top:16px;color:var(--mid);font-size:.95rem}
+.howto code{background:var(--bg2);border:1px solid var(--line2);border-radius:6px;padding:1px 7px;font-size:12.5px;color:var(--gold-soft);font-family:ui-monospace,Menlo,monospace}
+.howto ol{margin:12px 0 12px 20px}.howto li{margin-bottom:8px}
+.howto .tree{background:var(--bg2);border:1px solid var(--line2);border-radius:10px;padding:16px 18px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;color:var(--mid);white-space:pre;overflow-x:auto;margin:14px 0}
+
+/* ---- generic module-page helpers (for template pieces) ---- */
+.mpage{padding:40px 0 80px}
+.mpage h1{font-family:var(--disp);font-weight:600;font-size:clamp(2rem,4vw,3rem)}
+.mpage h2{font-family:var(--disp);font-weight:600;font-size:1.6rem;margin:34px 0 10px;color:var(--gold-soft)}
+.mpage p{color:var(--mid);margin-bottom:12px;max-width:68ch}
+.crumbs{font-size:12.5px;color:var(--muted);margin-bottom:10px}
+.crumbs a{color:var(--gold)}
+
+footer.boss{border-top:1px solid var(--line);padding:26px 0;text-align:center;color:var(--faint);font-size:12.5px}
+
+@media(max-width:780px){
+  .modules{grid-template-columns:1fr}
+  header.boss nav{display:none}
+}

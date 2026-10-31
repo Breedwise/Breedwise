@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Private · BOSS Module Library</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;0,700;1,600&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="boss.css">
+</head><body>
+
+<!-- GATE -->
+<div id="gate"><div class="box">
+  <div class="logo"><span class="mk">B</span></div>
+  <h1>BOSS Module Library</h1><div class="sub">Access</div>
+  <input id="boss-pw" type="password" placeholder="Access code" autocomplete="off">
+  <button id="boss-unlock">Enter &rarr;</button>
+  <div class="err" id="boss-gate-err"></div>
+</div></div>
+
+<!-- APP -->
+<div id="app" hidden>
+  <header class="boss"><div class="wrap bar">
+    <a class="brand" href="index.html">
+      <span class="mk">B</span>
+      <span class="wm"><b>BOSS</b><span>BreedWise Operating System &amp; Standards</span></span>
+    </a>
+    <nav><a href="../boss.html">Overview</a><a href="../team-hub.html">Team Hub</a></nav>
+  </div></header>
+
+  <section class="hub-hero"><div class="wrap">
+    <span class="eyebrow">Module Library</span>
+    <h1>Every BOSS module, <em>in one place.</em></h1>
+    <p>Each module is its own operating system, built from a few standard pieces. Open any piece below. Teach and The OS are the core of every module; workbooks, checklists, and assessments appear when a module has them.</p>
+    <div class="legend">
+      <span><span class="dot live"></span>Live</span>
+      <span><span class="dot building"></span>Building</span>
+      <span><span class="dot planned"></span>Planned</span>
+    </div>
+  </div></section>
+
+  <div class="wrap">
+    <div class="modules" id="grid"></div>
+
+    <details class="howto">
+      <summary>How this library is organized</summary>
+      <div class="body">
+        <p>One manifest is the source of truth. The hub renders whatever it lists, so adding a module is an edit, not a rebuild.</p>
+        <div class="tree">boss/
+├─ index.html        the hub (this page)
+├─ modules.js        the manifest  ← edit this to add a module
+├─ boss.css          shared brand for every piece
+├─ boss-gate.js      shared BOSS2026 access gate
+├─ _template/        copy this to start a new module
+└─ &lt;module-id&gt;/      one folder per module
+     ├─ teach.html       core
+     ├─ os.html          core
+     ├─ workbook.html    optional
+     ├─ checklist.html   optional
+     └─ assess.html      optional</div>
+        <p><b>To add a module:</b></p>
+        <ol>
+          <li>Duplicate <code>boss/_template/</code> to <code>boss/&lt;your-module-id&gt;/</code>.</li>
+          <li>Fill in the pieces you need (leave out the ones you don't).</li>
+          <li>Add a block to <code>modules.js</code> pointing each piece at its file and set its <code>status</code>.</li>
+        </ol>
+        <p class="muted">Every piece links <code>../boss.css</code> and <code>../boss-gate.js</code>, so it inherits the BOSS brand and unlocks with the same code. Existing modules can keep their current URLs, the manifest just points to them.</p>
+      </div>
+    </details>
+  </div>
+
+  <footer class="boss"><div class="wrap">BreedWise BOSS &middot; Operating System &amp; Standards &middot; Private</div></footer>
+</div>
+
+<script src="boss-gate.js"></script>
+<script src="modules.js"></script>
+<script>
+(function(){
+  var ORDER=['teach','os','workbook','checklist','assess','resources'];
+  var LABEL={teach:'Teach',os:'The OS',workbook:'Workbook',checklist:'Checklist',assess:'Assess',resources:'Resources'};
+  var ICON ={teach:'▤',os:'◉',workbook:'✎',checklist:'☑',assess:'◐',resources:'⇣'};
+  var CORE ={teach:1,os:1};
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function pieceHTML(key,p){
+    var label=LABEL[key],icon=ICON[key],core=CORE[key]?'<span class="core">core</span>':'';
+    var live=p.url&&p.status==='live';
+    if(live) return '<a class="piece" href="'+esc(p.url)+'" title="'+esc(p.meta||label)+'"><span class="pic">'+icon+'</span>'+label+core+'</a>';
+    var st=p.status&&p.status!=='live'?' · '+p.status:'';
+    return '<span class="piece off" title="'+esc(p.meta||('Not built yet'))+'"><span class="pic">'+icon+'</span>'+label+'<span class="core" style="color:var(--faint)">'+st+'</span></span>';
+  }
+  function card(m){
+    var pieces=ORDER.filter(function(k){return m.pieces&&m.pieces[k];})
+                    .map(function(k){return pieceHTML(k,m.pieces[k]);}).join('');
+    return '<div class="mod is-'+esc(m.status)+'">'
+      +'<div class="top"><div class="ic">'+esc(m.icon||'◎')+'</div>'
+        +'<div><h3>'+esc(m.title)+'</h3><div class="tag">'+esc(m.tagline||'')+'</div></div>'
+        +'<span class="st '+esc(m.status)+'">'+esc(m.status)+'</span></div>'
+      +'<p class="desc">'+esc(m.desc||'')+'</p>'
+      +'<div class="pieces">'+pieces+'</div></div>';
+  }
+  function render(){
+    var grid=document.getElementById('grid');
+    var mods=(window.BOSS_MODULES||[]).slice().sort(function(a,b){return (a.order||99)-(b.order||99);});
+    grid.innerHTML = mods.length ? mods.map(card).join('') :
+      '<div class="mod"><p class="desc">No modules yet. Add one in <code>modules.js</code>.</p></div>';
+  }
+  // render once content is unlocked (or immediately if already unlocked)
+  document.documentElement.addEventListener('boss:unlocked',render);
+  if(!document.getElementById('gate')) render();
+})();
+</script>
+</body></html>
