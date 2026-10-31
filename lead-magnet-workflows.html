@@ -240,6 +240,16 @@ th{color:var(--mut);font-weight:600;letter-spacing:.03em;font-size:12px;text-tra
         <li>On paid/cold traffic, A/B the gate — gated usually wins on <em>qualified calls booked</em> and <em>show-rate</em> even if raw bookings dip.</li>
       </ul>
     </div>
+    <div class="card" style="grid-column:1/-1;border-left:3px solid var(--gold)">
+      <h4>SMS consent — legacy contacts (one-time gate)</h4>
+      <p><strong>Rule: do not send marketing texts to any contact who opted in on or before Oct 31, 2026 until they re-confirm.</strong> Those leads opted in before the consent disclosure ("receive emails &amp; texts · msg/data rates · reply STOP") went live, so their numbers are not consented for marketing SMS. New opt-ins from the updated forms <em>are</em> consented — this gate only applies to the back-catalog. Email to these contacts is unaffected; only SMS is held.</p>
+      <ul>
+        <li><strong>Segment:</strong> Smart List = <em>created on/before 2026-10-31</em> AND <em>has phone</em> AND <em>does not have tag <code>sms-consent-confirmed</code></em>. Tag it <code>sms-legacy</code>.</li>
+        <li><strong>One-time confirmation (email-first):</strong> email a short "want texts too?" note whose reply/click adds <code>sms-consent-confirmed</code>. If A2P is approved you may send <strong>one</strong> confirmation SMS — <code>Reply YES to get texts from BreedWise. Msg &amp; data rates may apply, reply STOP to opt out.</code> A single opt-in prompt is permitted; a marketing blast to this segment is not.</li>
+        <li><strong>Gate every SMS node</strong> (all six workflows): add filter <em>send SMS only if tag <code>sms-consent-confirmed</code> OR contact created after 2026-10-31</em>. Old contact with no tag → <strong>skip the SMS, keep the email</strong>. Nobody is dropped; they just stay email-only until they confirm.</li>
+        <li><strong>STOP / HELP</strong> handling stays global (CC360 honors it automatically) and is now documented in the privacy policy.</li>
+      </ul>
+    </div>
   </div>
 
   <div class="note"><strong>Timezone:</strong> set each contact's timezone from the opt-in (CC360 infers from phone/IP). All "wait until 9am" and reminder offsets use the contact's timezone, not the account's.</p></div>
