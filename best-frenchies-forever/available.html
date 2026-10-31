@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Available French Bulldog Puppies — Best Frenchies Forever</title>
+<meta name="description" content="Available French Bulldog puppies from Best Frenchies Forever in Hemet, California. Health-tested, family-raised Frenchies in koi, lilac, white, pink, and merle. Nationwide delivery.">
+<meta property="og:title" content="Available Puppies — Best Frenchies Forever">
+<meta property="og:image" content="https://review.breedwise.io/best-frenchies-forever/img/balto-1.jpg">
+<link rel="icon" href="img/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="bff.css">
+</head><body>
+
+<header class="site"><div class="wrap bar">
+  <a class="brand" href="index.html">
+    <span class="chip"><img src="img/logo.jpg" alt="Best Frenchies Forever"></span>
+    <span class="wm"><b>Best Frenchies Forever</b><span>California · French Bulldogs</span></span>
+  </a>
+  <button class="burger" id="burger" aria-label="Menu">&#9776;</button>
+  <nav class="main" id="nav">
+    <a href="index.html">Home</a>
+    <a href="available.html" class="active">Available</a>
+    <a href="program.html">Our Program</a>
+    <a href="about.html">About</a>
+    <a href="process.html">Process</a>
+    <a href="contact.html">Contact</a>
+    <a href="apply.html" class="cta">Apply</a>
+  </nav>
+</div></header>
+
+<section class="hero" style="padding:54px 0 20px"><div class="wrap">
+  <div class="shead rev in">
+    <span class="eyebrow">Available Puppies</span>
+    <h1 style="font-size:clamp(2.1rem,5vw,3.2rem)">Our October litter</h1>
+    <p class="lede" style="margin-top:14px">Kiki paired with our dual sires, Raider and Taxman. Born October 22, 2026. Every puppy is 6-panel health tested, raised in our home, and ready to join your family. Tap any puppy to see more photos.</p>
+  </div>
+  <div class="trust" style="border-radius:16px;background:rgba(27,15,46,.55);margin-top:22px"><div class="wrap"><div class="row" style="padding:20px 0">
+    <div class="item"><div class="k"><span>6</span></div><div class="l">PUPPIES · 4 BOYS, 2 GIRLS</div></div>
+    <div class="item"><div class="k"><span>Oct 22</span></div><div class="l">BORN 2026</div></div>
+    <div class="item"><div class="k"><span>5</span> colors</div><div class="l">KOI · LILAC · WHITE · PINK · MERLE</div></div>
+    <div class="item"><div class="k">$3.5<span>-5k</span></div><div class="l">PRICE RANGE</div></div>
+  </div></div></div>
+</div></section>
+
+<section class="block" style="padding-top:30px"><div class="wrap">
+  <div id="pupgrid" class="pups"><div class="empty-note" style="grid-column:1/-1">Loading available puppies…</div></div>
+  <div class="center" style="margin-top:28px;color:var(--muted);font-size:.95rem">Looking for a specific color or a boy? We have additional puppies in this litter. <a href="apply.html" style="color:var(--gold);text-decoration:underline">Apply</a> or <a href="contact.html" style="color:var(--gold);text-decoration:underline">message us</a> and we'll match you.</div>
+</div></section>
+
+<section class="block" style="padding-top:0"><div class="wrap"><div class="ctaband rev">
+  <h2>Found your match?</h2>
+  <p>Puppies are placed first-come. Submit a quick application and we'll confirm availability and next steps.</p>
+  <div class="cta-row"><a href="apply.html" class="btn gold">Apply Now</a><a href="contact.html" class="btn ghost">Ask a Question</a></div>
+</div></div></section>
+
+<footer class="site"><div class="wrap">
+  <div class="cols">
+    <div><span class="logo-img"><img src="img/logo.jpg" alt="Best Frenchies Forever"></span>
+      <p>Health tested, family-raised French Bulldogs in Hemet, California. Delivery available nationwide.</p></div>
+    <div><h4>Explore</h4>
+      <a class="fl" href="available.html">Available Puppies</a><a class="fl" href="program.html">Our Program</a><a class="fl" href="about.html">About Russell</a><a class="fl" href="process.html">The Process</a></div>
+    <div><h4>Connect</h4>
+      <a class="fl" href="tel:+14424877808">(442) 487-7808</a>
+      <a class="fl" href="https://instagram.com/bestfrenchiesforeverca" target="_blank" rel="noopener">@bestfrenchiesforeverca</a>
+      <a class="fl" href="apply.html">Puppy Application</a>
+      <span class="fl" style="color:var(--faint)">Hemet, CA · Replies within 24 hrs</span></div>
+  </div>
+  <div class="fine">© <span data-year></span> Best Frenchies Forever · Hemet, California · Built by BreedWise</div>
+</div></footer>
+
+<script src="bff.js"></script>
+<script>
+(function(){
+  var API='https://jrfdufemonjhafqyacge.supabase.co/functions/v1/kennel-os-api?key=kos_live_3be047c12507469e099bd198bec0b792&resource=puppies';
+  var grid=document.getElementById('pupgrid');
+  function money(n){ if(n==null||n==='') return 'Inquire'; var v=Number(n); return isNaN(v)?'Inquire':'$'+v.toLocaleString('en-US'); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function statusClass(s){ s=(s||'available').toLowerCase(); if(s==='reserved'||s==='hold'||s==='pending') return 'reserved'; if(s==='sold'||s==='kept') return 'sold'; return ''; }
+  function statusLabel(s){ s=(s||'available').toLowerCase(); return s==='hold'?'On Hold':s.charAt(0).toUpperCase()+s.slice(1); }
+
+  function render(pups){
+    if(!pups||!pups.length){ fallback(); return; }
+    // available first
+    var order={available:0,hold:1,reserved:1,pending:1,sold:2,kept:2};
+    pups.sort(function(a,b){ return (order[(a.status||'available').toLowerCase()]||0)-(order[(b.status||'available').toLowerCase()]||0); });
+    grid.innerHTML='';
+    pups.forEach(function(p){
+      var photos=(p.photos&&p.photos.length)?p.photos:(p.photo_url?[p.photo_url]:[]);
+      var cover=photos[0]||'img/litter-hero.jpg';
+      var tags=[];
+      if(p.sex) tags.push('<span class="tag">'+esc(p.sex)+'</span>');
+      if(p.color) tags.push('<span class="tag">'+esc(p.color)+'</span>');
+      var sc=statusClass(p.status);
+      var a=document.createElement('div'); a.className='pup rev';
+      a.innerHTML=
+        '<div class="ph">'+
+          '<img src="'+esc(cover)+'" alt="'+esc(p.name||'French Bulldog puppy')+'" loading="lazy">'+
+          '<span class="status '+sc+'">'+esc(statusLabel(p.status))+'</span>'+
+          (photos.length>1?'<span class="gcount">'+photos.length+' photos</span>':'')+
+        '</div>'+
+        '<div class="body">'+
+          '<h3>'+esc(p.name||'Puppy')+' <span class="price">'+money(p.price)+'</span></h3>'+
+          '<div class="tags">'+tags.join('')+'</div>'+
+          '<p class="desc">'+esc(p.description||'')+'</p>'+
+          '<a class="btn gold block" href="apply.html?pup='+encodeURIComponent(p.name||'')+'">Inquire About '+esc(p.name||'This Puppy')+'</a>'+
+        '</div>';
+      if(photos.length){ a.querySelector('.ph').addEventListener('click',function(){ window.bffLightbox(photos,0); }); }
+      grid.appendChild(a);
+    });
+    window.bffReveal(grid);
+  }
+  function fallback(){
+    grid.innerHTML='<div class="empty-note" style="grid-column:1/-1">Our next litter is on the way. <a href="apply.html" style="color:var(--gold);text-decoration:underline">Join the waitlist</a> or <a href="contact.html" style="color:var(--gold);text-decoration:underline">message us</a> to be first to know.</div>';
+  }
+  var done=false, timer=setTimeout(function(){ if(!done){ done=true; fallback(); } },8000);
+  fetch(API,{headers:{'apikey':'public'}}).then(function(r){ return r.ok?r.json():Promise.reject(r); })
+    .then(function(d){ if(done)return; done=true; clearTimeout(timer); render((d&&d.puppies)||[]); })
+    .catch(function(){ if(done)return; done=true; clearTimeout(timer); fallback(); });
+})();
+</script>
+</body></html>
