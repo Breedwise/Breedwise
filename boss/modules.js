@@ -28,9 +28,19 @@ window.BOSS_MODULES = [
     }
   },
 
+  {
+    id:'content-os', order:2, icon:'◈', title:'Content OS', status:'building',
+    tagline:'Make content a repeatable system, one concept at a time.',
+    desc:'A library of short, visual trainings — one per concept — so content creation becomes a system instead of a scramble. Built from Austin’s outline; trainings in production.',
+    pieces:{
+      teach:{ url:'content-os/index.html', status:'building', meta:'Topic trainings · 5-10 min each' },
+      os:   { status:'planned' }
+    }
+  },
+
   /* ---- placeholder slots: rename / fill / delete as you build ---- */
   {
-    id:'standards-os', order:2, icon:'✧', title:'Standards OS', status:'planned',
+    id:'standards-os', order:3, icon:'✧', title:'Standards OS', status:'planned',
     tagline:'Your breeding standard, written down and operated.',
     desc:'Placeholder slot. The module that holds the standard, the decisions, and the checks that keep every litter on standard.',
     pieces:{
@@ -39,7 +49,7 @@ window.BOSS_MODULES = [
     }
   },
   {
-    id:'growth-os', order:3, icon:'△', title:'Growth OS', status:'planned',
+    id:'growth-os', order:4, icon:'△', title:'Growth OS', status:'planned',
     tagline:'Demand, pricing, and buyer pipeline as a system.',
     desc:'Placeholder slot. The module for filling the waitlist and pricing with confidence.',
     pieces:{
