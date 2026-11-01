@@ -33,7 +33,7 @@ window.BOSS_MODULES = [
     tagline:'Make content a repeatable system, one concept at a time.',
     desc:'A library of short, visual trainings — one per concept — so content creation becomes a system instead of a scramble. Built from Austin’s outline; trainings in production.',
     pieces:{
-      teach:{ url:'content-os/index.html', status:'building', meta:'Topic trainings · 5-10 min each' },
+      teach:{ url:'content-os/index.html', status:'live', meta:'Topic trainings · 5-10 min each · Module 1 live' },
       os:   { status:'planned' }
     }
   },
