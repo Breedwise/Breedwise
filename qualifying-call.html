@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Qualifying Call · BreedWise Setters</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0e13;--bg2:#0e131a;--panel:#111722;--panel2:#141b27;--line:#212b36;--line2:#2c3846;--ink:#f0f4f9;--mid:#aeb9c8;--muted:#7d8898;--faint:#566070;--gold:#c9a862;--gold-soft:#e6cf95;--green:#5ec59a;--amber:#e3b45f;--rose:#e68bab;--red:#e07a6a;--disp:'Fraunces',Georgia,serif;--sans:'Inter',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+a{color:var(--gold)}
+/* gate */
+#gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:90}
+#gate .box{width:min(92vw,360px);text-align:center}
+#gate .mk{width:36px;height:36px;border-radius:9px;background:linear-gradient(150deg,var(--gold-soft),#9a7d3c);margin:0 auto;display:grid;place-items:center;font-family:var(--disp);font-weight:700;color:#14100a}
+#gate h1{font-family:var(--disp);font-size:24px;font-weight:600;margin:14px 0 4px}
+#gate .sub{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+#gate input{width:100%;padding:12px 14px;background:var(--panel);border:1px solid var(--line2);border-radius:10px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em}
+#gate button{width:100%;margin-top:9px;padding:12px;background:linear-gradient(150deg,var(--gold-soft),var(--gold));border:0;border-radius:10px;color:#14100a;font-weight:700;font-size:15px;cursor:pointer;font-family:var(--sans)}
+#gate .err{color:var(--red);font-size:12.5px;min-height:15px;margin-top:9px}
+
+/* header */
+header{position:sticky;top:0;z-index:40;background:rgba(11,14,19,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header .bar{display:flex;align-items:center;gap:14px;height:62px}
+.brand{font-family:var(--disp);font-weight:600;font-size:17px}.brand b{color:var(--gold)}
+header .spacer{flex:1}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:17px;background:var(--panel);border:1px solid var(--line2);border-radius:9px;padding:6px 12px;cursor:pointer;min-width:118px;text-align:center}
+.timer.warn{border-color:var(--amber);color:var(--amber)} .timer.over{border-color:var(--red);color:var(--red)}
+.timer small{display:block;font-size:9px;letter-spacing:.1em;color:var(--muted);font-weight:600;text-transform:uppercase}
+.tgl{display:flex;background:var(--panel);border:1px solid var(--line2);border-radius:9px;overflow:hidden}
+.tgl button{background:none;border:0;color:var(--muted);font-size:12px;font-weight:600;padding:8px 11px;cursor:pointer;font-family:var(--sans)}
+.tgl button.on{background:linear-gradient(150deg,var(--gold-soft),var(--gold));color:#14100a}
+.hbtn{background:var(--panel);border:1px solid var(--line2);color:var(--ink);border-radius:9px;padding:8px 12px;font-size:12.5px;cursor:pointer;font-family:var(--sans)}
+.hbtn:hover{border-color:var(--gold)}
+
+/* intro */
+.intro{padding:26px 0 8px}
+.intro .eye{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.intro h2{font-family:var(--disp);font-weight:600;font-size:clamp(1.5rem,3.4vw,2.1rem);margin-top:6px}
+.intro p{color:var(--mid);max-width:66ch;margin-top:8px;font-size:.95rem}
+.goals{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.goal{background:var(--panel);border:1px solid var(--line2);border-radius:20px;padding:6px 13px;font-size:12.5px;color:var(--mid)}
+.goal b{color:var(--gold-soft)}
+
+/* sections */
+section.step{background:linear-gradient(165deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:14px 0}
+section.step.hid{display:none}
+.sh{display:flex;align-items:baseline;gap:12px;margin-bottom:4px}
+.sh .n{font-family:var(--disp);font-size:1.3rem;color:var(--gold);font-weight:600;min-width:26px}
+.sh h3{font-family:var(--disp);font-weight:600;font-size:1.3rem}
+.sh .tag{margin-left:auto;font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--faint);border:1px solid var(--line2);border-radius:20px;padding:3px 9px}
+.goalnote{color:var(--muted);font-size:12.5px;margin:2px 0 14px 38px}
+.say{margin:0 0 10px 38px;padding:11px 14px;border-left:2px solid var(--gold-deep,#8c6d2e);background:rgba(201,168,98,.06);border-radius:0 8px 8px 0;font-size:14.5px;color:var(--ink)}
+.say .q{color:var(--gold-soft);font-weight:600}
+.say.opt{border-left-color:var(--line2);background:rgba(255,255,255,.02);color:var(--mid);font-size:13.5px}
+.say.opt:before{content:"optional probe · ";color:var(--faint);font-size:11px;letter-spacing:.04em}
+.cap{margin:12px 0 0 38px}
+.cap label{display:block;font-size:11.5px;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
+.cap input,.cap select,.cap textarea{width:100%;background:var(--bg2);border:1px solid var(--line2);border-radius:9px;padding:10px 12px;color:var(--ink);font-size:14px;font-family:var(--sans)}
+.cap textarea{min-height:52px;resize:vertical;line-height:1.5}
+.cap input:focus,.cap select:focus,.cap textarea:focus{outline:none;border-color:var(--gold)}
+.capgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chipset{display:flex;gap:8px;flex-wrap:wrap}
+.chipset button{background:var(--bg2);border:1px solid var(--line2);color:var(--mid);border-radius:8px;padding:9px 14px;font-size:13px;cursor:pointer;font-family:var(--sans);font-weight:600}
+.chipset button.sel{border-color:var(--gold);color:#14100a;background:linear-gradient(150deg,var(--gold-soft),var(--gold))}
+.rangewrap{display:flex;align-items:center;gap:12px}
+.rangewrap input[type=range]{flex:1;accent-color:var(--gold)}
+.rangewrap .rv{font-family:var(--disp);font-size:1.4rem;color:var(--gold-soft);min-width:30px;text-align:center}
+.flag{margin:10px 0 0 38px;font-size:12.5px;color:var(--amber);background:rgba(227,180,95,.08);border:1px solid rgba(227,180,95,.25);border-radius:8px;padding:9px 12px;display:none}
+.flag.on{display:block}
+
+/* verdict */
+.verdict{position:sticky;bottom:0;z-index:30;background:rgba(11,14,19,.95);backdrop-filter:blur(10px);border-top:1px solid var(--line);margin-top:20px}
+.verdict .vin{display:flex;align-items:center;gap:14px;padding:12px 0}
+.vchip{font-weight:700;font-size:14px;padding:8px 16px;border-radius:30px;white-space:nowrap}
+.vchip.book{background:rgba(94,197,154,.14);color:var(--green);border:1px solid rgba(94,197,154,.3)}
+.vchip.nurture{background:rgba(227,180,95,.14);color:var(--amber);border:1px solid rgba(227,180,95,.3)}
+.vchip.decline{background:rgba(224,122,106,.14);color:var(--red);border:1px solid rgba(224,122,106,.3)}
+.vchip.pending{background:var(--panel);color:var(--muted);border:1px solid var(--line2)}
+.vreason{font-size:13px;color:var(--mid);flex:1}
+.verdict .vbtn{background:linear-gradient(150deg,var(--gold-soft),var(--gold));color:#14100a;border:0;border-radius:9px;padding:10px 16px;font-weight:700;font-size:13.5px;cursor:pointer;font-family:var(--sans)}
+.footer{color:var(--faint);font-size:12px;text-align:center;padding:30px 0 60px}
+@media(max-width:620px){.capgrid{grid-template-columns:1fr}.say,.cap,.goalnote,.flag{margin-left:0}.tgl,.hbtn{display:none}.verdict .vin{flex-wrap:wrap}}
+</style>
+</head><body>
+
+<!-- GATE -->
+<div id="gate"><div class="box">
+  <div class="mk">B</div>
+  <h1>Qualifying Call</h1><div class="sub">Setter access</div>
+  <input id="pw" type="password" placeholder="Access code" autocomplete="off">
+  <button id="unlock">Enter &rarr;</button><div class="err" id="gerr"></div>
+</div></div>
+
+<!-- APP -->
+<div id="app" style="display:none">
+<header><div class="wrap bar">
+  <span class="brand">Breed<b>Wise</b> · Qualifying Call</span>
+  <span class="spacer"></span>
+  <div class="tgl"><button id="s1" class="on">Problems first</button><button id="s2">Goals first</button></div>
+  <button class="hbtn" id="copyTop">Copy notes</button>
+  <div class="timer" id="timer" title="Click to start / pause"><span id="tval">0:00</span><small id="tlabel">tap to start</small></div>
+</div></header>
+
+<div class="wrap">
+  <div class="intro">
+    <div class="eye">NEPQ · 7-belief syntax</div>
+    <h2>Qualify in 10 minutes. Book the fit.</h2>
+    <p>Run top to bottom. Read the <span style="color:var(--gold-soft)">gold lines</span> as written, capture the short answers, and let the verdict at the bottom tell you whether to book. Two goals on every call: find out <b>if/how we can help</b>, and <b>eliminate objections before the close</b>. Stay brief — the prospect should talk 80% of the time.</p>
+    <div class="goals">
+      <span class="goal"><b>Pain</b> · Doubt · Cost · Desire · Money · Support · Trust</span>
+      <span class="goal">Permission <b>&rarr;</b> Context <b>&rarr;</b> Question</span>
+      <span class="goal"><b>Goal:</b> financially qualified + urgent + decision-maker</span>
+    </div>
+  </div>
+
+  <!-- ============ SYNTAX 1 : PROBLEMS FIRST ============ -->
+  <div id="flow1">
+
+  <section class="step">
+    <div class="sh"><span class="n">0</span><h3>Open &amp; frame</h3><span class="tag">30 sec</span></div>
+    <div class="goalnote">Lower resistance and earn permission to ask questions.</div>
+    <div class="say"><span class="q">"Hey [name], appreciate you jumping on. Before I tell you anything about us, I want to make sure this is even a fit — so do you mind if I ask you a few quick questions about your program?"</span></div>
+    <div class="say opt">"And just so I know — what made you [fill out the scorecard / watch the case study / register]?"</div>
+    <div class="cap capgrid">
+      <div><label>Prospect name</label><input id="name" placeholder="First name"></div>
+      <div><label>Lead source</label><select id="lead_source"><option value="">Which lead magnet…</option><option>Free Case Study</option><option>Profitable Breeder Scorecard</option><option>Healthy Litter Scorecard</option><option>Program Scorecard</option><option>Puppy Content Masterclass</option><option>Profitable Litter Blueprint</option><option>Other / referral</option></select></div>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="sh"><span class="n">1</span><h3>Isolate the problem</h3><span class="tag">core</span></div>
+    <div class="goalnote">Stay here until you know the real problem. Then put your shovel in the ground.</div>
+    <div class="say"><span class="q">"When it comes to your breeding program right now — what's the biggest challenge? What's not working at the level it really should be?"</span></div>
+    <div class="say opt">"Besides that — is there any other roadblock that's in the way right now?"</div>
+    <div class="cap"><label>The biggest problem (their words)</label><textarea id="problem" placeholder="e.g. not enough qualified buyers, pricing too low, slow sales, no waitlist…"></textarea></div>
+  </section>
+
+  <section class="step">
+    <div class="sh"><span class="n">2</span><h3>Background</h3><span class="tag">context · brief</span></div>
+    <div class="goalnote">Just enough context to understand the program and whether we can help. Move fast.</div>
+    <div class="say"><span class="q">"Got it. Real quick so I have context — what breed(s) do you raise, roughly how many litters a year, and what do your puppies usually go for?"</span></div>
+    <div class="say"><span class="q">"And right now, how do people find you and buy — walk me through how a stranger becomes a buyer."</span></div>
+    <div class="cap capgrid">
+      <div><label>Breed(s) · litters/yr</label><input id="breed" placeholder="e.g. Frenchies · 4 litters/yr"></div>
+      <div><label>Typical puppy price</label><input id="price" placeholder="e.g. $3,500"></div>
+    </div>
+    <div class="cap"><label>How they currently get &amp; close buyers</label><input id="sales_method" placeholder="e.g. Facebook groups + word of mouth, no real system"></div>
+  </section>
+
+  <section class="step">
+    <div class="sh"><span class="n">3</span><h3>Current situation</h3><span class="tag">dig here</span></div>
+    <div class="goalnote">Probe the problem, assess efforts, chunk down the money, widen the gap.</div>
+    <div class="say"><span class="q">"Tell me more — what do you mean by that? … Why's that the biggest one? … How's that actually impacting your income / the program?"</span></div>
+    <div class="say"><span class="q">"So what are you doing right now to [get buyers / fill the waitlist / raise prices]?"</span></div>
+    <div class="say"><span class="q">Chunk down: "Let's look at the numbers — last couple months, how many puppies did you actually place? … At what price? … So revenue's around what? … Is that what you want to be charging, or what do you really want to be at?"</span></div>
+    <div class="say"><span class="q">"How long's it been like this?"</span></div>
+    <div class="say"><span class="q">Widen the gap: "That long — has that had an impact on you? In what way? … Does that put you in a tough spot with [income / your family / your time]?"</span></div>
+    <div class="cap capgrid">
+      <div><label>Current revenue / reality</label><input id="revenue" placeholder="e.g. ~$7k over 2 mo, wants $15k+"></div>
+      <div><label>How long it's been this way</label><input id="how_long" placeholder="e.g. 2 years"></div>
+    </div>
+    <div class="cap"><label>Impact / what's it costing them</label><textarea id="impact" placeholder="On income, family, stress, time…"></textarea></div>
+  </section>
+
+  <section class="step">
+    <div class="sh"><span class="n">4</span><h3>Doubt &amp; what they've tried</h3><span class="tag">belief</span></div>
+    <div class="say"><span class="q">"Can I ask you honestly — what do you think's been keeping you from figuring this out on your own? What's in the way?"</span></div>
+    <div class="say"><span class="q">"Have you tried anything to fix it before — courses, mentors, programs? Working with anyone now?"</span></div>
+    <div class="cap"><label>Doubt + what they've tried</label><textarea id="tried" placeholder="What's in the way; past programs/mentors; current help"></textarea></div>
+  </section>
+
+  <section class="step">
+    <div class="sh"><span class="n">5</span><h3>Why now / Cost</h3><span class="tag">urgency</span></div>
+    <div class="goalnote">This is where it gets real. Find out why NOW — and what happens if nothing changes.</div>
+    <div class="say"><span class="q">"You've dealt with this a while — why is now the time you're finally doing something about it? What changed?"</span></div>
+    <div class="say opt">"Any other reason this is important now?"</div>
+    <div class="say"><span class="q">"Real talk — what's the plan if nothing changes? If you're in the same spot a year from now… would that be okay with you?"</span></div>
+    <div class="say opt">If apathetic: "Whose decision is that? … Are you willing to settle for that? … If you're willing to settle, how do you expect me to help you as a client?"</div>
+    <div class="cap"><label>Why now / the trigger</label><textarea id="why_now" placeholder="What shifted; the final straw; what happens if nothing changes"></textarea></div>
+    <div class="cap"><label>Urgency read (1 = tire-kicker, 10 = must fix now)</label>
+      <div class="rangewrap"><input type="range" id="urgency" min="1" max="10" value="5"><span class="rv" id="urgencyv">5</span></div></div>
+    <div class="flag" id="urgflag">Low urgency. Test it harder or move to nurture — don't book a soft lead onto the closer's calendar.</div>
+  </section>
+
+  <section class="step">
+    <div class="sh"><span class="n">6</span><h3>Support &amp; decision-maker</h3><span class="tag">belief</span></div>
+    <div class="say"><span class="q">"Is there anyone else involved in a decision like this — a spouse or partner?"</span></div>
+    <div class="say"><span class="q">"Are they supportive of you investing in the program? … Do they know you're on this call? … What would they think if they did?"</span></div>
+    <div class="cap"><label>Who decides</label>
+      <div class="chipset" data-field="decision"><button data-v="Just them">Just them</button><button data-v="Them + partner (on board)">Them + partner (on board)</button><button data-v="Partner not aligned">Partner not aligned</button></div></div>
+    <div class="flag" id="supflag">Partner needs to be on the next call. Set that expectation now and book both.</div>
+  </section>
+
+  <section class="step">
+    <div class="sh"><span class="n">7</span><h3>Desired situation</h3><span class="tag">desire + money</span></div>
+    <div class="say"><span class="q">"So if we fixed [problem] — what's the goal? What do you want this program to become?"</span></div>
+    <div class="say"><span class="q">"What's the monetary goal — what do you want to be making from your breeding?" … "You've clearly thought about that number — why that number?"</span></div>
+    <div class="say"><span class="q">"Long-term, what's the vision?"</span></div>
+    <div class="say"><span class="q">Non-monetary: "Beyond the money — what do you want this to give you? The freedom, the lifestyle, the legacy?"</span></div>
+    <div class="cap capgrid">
+      <div><label>Monetary goal</label><input id="monetary" placeholder="e.g. $15k/mo from breeding"></div>
+      <div><label>Ultimate goal / vision</label><input id="goal" placeholder="e.g. breed full-time, quit the day job"></div>
+    </div>
+    <div class="cap"><label>Non-monetary / personal goal</label><input id="nonmon" placeholder="Freedom, time with family, legacy, pride in the program"></div>
+  </section>
+
+  <section class="step">
+    <div class="sh"><span class="n">8</span><h3>Financial qualifier</h3><span class="tag">must-get</span></div>
+    <div class="goalnote">Don't quote the price. Test their capacity and willingness to invest in a real solution.</div>
+    <div class="say"><span class="q">"If this were the right fit and we could actually get you to [goal] — are you in a position to invest in yourself and your program right now?"</span></div>
+    <div class="cap"><label>Can they invest if it's a fit?</label>
+      <div class="chipset" data-field="financial"><button data-v="Yes">Yes — ready to invest</button><button data-v="Maybe">Maybe — tight but motivated</button><button data-v="No">No — not right now</button></div></div>
+    <div class="cap"><label>Notes on their financial position</label><input id="budget_note" placeholder="Context — savings, access to funds, cash flow"></div>
+    <div class="flag" id="finflag">Not financially qualified. Be honest — don't book a call they can't act on. Move to nurture.</div>
+  </section>
+
+  <section class="step">
+    <div class="sh"><span class="n">9</span><h3>Tie-down &amp; transition</h3><span class="tag">commit temp</span></div>
+    <div class="say"><span class="q">"Feels like we covered a lot — is there anything I didn't ask that you think I should know?"</span></div>
+    <div class="say"><span class="q">Time: "Let's say you went ahead with something that fixed [problem] — most of our breeders put in about a few focused hours a week to get there. Is that something you'd be willing to commit to?"</span></div>
+    <div class="say"><span class="q">Partner: "And if we worked together, would [spouse/partner] be part of that decision?"</span></div>
+    <div class="say"><span class="q">Book it: "Based on everything you told me, I'm confident we can help. The next step is a call with [closer] who'll walk you through exactly how — let's get you booked while we're on the phone."</span></div>
+    <div class="cap"><label>Time commitment</label>
+      <div class="chipset" data-field="commit"><button data-v="Yes">Willing</button><button data-v="Unsure">Unsure</button><button data-v="No">No</button></div></div>
+  </section>
+
+  </div><!-- /flow1 -->
+
+  <!-- ============ SYNTAX 2 : GOALS FIRST ============ -->
+  <div id="flow2" style="display:none">
+    <section class="step">
+      <div class="sh"><span class="n">!</span><h3>When to switch to Goals-First</h3><span class="tag">read me</span></div>
+      <div class="goalnote">Default to Problems-First. Switch here only when:</div>
+      <div class="say opt">· It's a <b>new direction</b> for them (just getting into breeding, or a big pivot).</div>
+      <div class="say opt">· They <b>can't diagnose</b> the problem, give the wrong one ("my website"), or say "I don't know where to start."</div>
+      <div class="say opt">· They're <b>confused</b> — defaulting to "so what do you actually want?" cuts through it.</div>
+    </section>
+    <section class="step">
+      <div class="sh"><span class="n">1</span><h3>Isolate, then pivot to the goal</h3></div>
+      <div class="say"><span class="q">"What's the biggest challenge right now?" → (they're unclear) → "What might make more sense is to start with the end in mind. So ultimately — what's the goal?"</span></div>
+    </section>
+    <section class="step">
+      <div class="sh"><span class="n">2</span><h3>Desired situation</h3><span class="tag">desire + money</span></div>
+      <div class="say"><span class="q">"What's the goal?" · "What's the monetary goal — why that number?" · "Long-term vision?" · "Beyond money — the personal goal?"</span></div>
+      <div class="say"><span class="q">Financial qualifier: "If it were the right fit, are you in a position to invest in getting there?"</span></div>
+      <div class="goalnote">Capture into the same fields above (monetary goal, vision, non-monetary, financial qualifier) — scroll up or fill after the call.</div>
+    </section>
+    <section class="step">
+      <div class="sh"><span class="n">3</span><h3>Current situation</h3></div>
+      <div class="say"><span class="q">"What do you do now — and do you like it?" → dig the pain or the "why change now."</span></div>
+      <div class="say"><span class="q">Doubt: "What's been the biggest thing stopping you from getting this started yourself?"</span></div>
+      <div class="say"><span class="q">Solution + support: "Tried anyone before? Working with anyone now?" · "Anyone else part of the decision — partner?"</span></div>
+    </section>
+    <section class="step">
+      <div class="sh"><span class="n">4</span><h3>Outline 1-2 keys to success</h3><span class="tag">authority + doubt</span></div>
+      <div class="goalnote">Build authority, give insight, and create healthy doubt (they won't have both dialed in).</div>
+      <div class="say"><span class="q">"Can I give you a little coaching for a second? To build a breeding program that actually pays you what it should, you really only need two things:"</span></div>
+      <div class="say"><span class="q"><b>1 — A program people want at a premium</b> (your quality + a brand that commands the price). <b>2 — A reliable way to get buyers</b> (demand you can turn on, not luck each litter).</span></div>
+      <div class="say"><span class="q">"On your offer and brand — where do you feel you're at? … And on getting buyers on demand — do you have a system, or is that something you'd need help building?"</span></div>
+      <div class="say opt">They'll almost always say they need help with demand. That's the gap — then transition.</div>
+    </section>
+    <section class="step">
+      <div class="sh"><span class="n">5</span><h3>Tie-down &amp; transition</h3></div>
+      <div class="say"><span class="q">"Feels like we covered a lot — anything about your program or goals we didn't cover that I should know?"</span> → then book the fit call.</div>
+    </section>
+  </div>
+
+  <section class="step">
+    <div class="sh"><span class="n">+</span><h3>Setter notes</h3></div>
+    <div class="cap"><label>Anything else for the closer (objections sensed, vibe, specifics)</label><textarea id="setter_notes" placeholder="Context the closer should walk in knowing…"></textarea></div>
+  </section>
+
+  <div class="footer">Super-basic transition if you ever freeze: <i>"I don't feel like I have any more questions. Based on what you told me, we can definitely help. Where do you want to go from here — I can walk you through exactly how we'd help you get to [goal] if you'd like?"</i></div>
+</div>
+
+<!-- VERDICT BAR -->
+<div class="verdict"><div class="wrap vin">
+  <span class="vchip pending" id="vchip">Fill the call…</span>
+  <span class="vreason" id="vreason">Verdict updates as you capture financial qualifier, urgency and decision-maker.</span>
+  <button class="vbtn" id="copyBtn">Copy CC360 notes</button>
+</div></div>
+</div>
+
+<script>
+(function(){
+  var OK=['10507e9b2f51ad6a5805328ce47310372a649109a9ff4e74805503693f54e655', /* SETTER2026 */
+          '368f5e7178dc18a1928df554c7251674d47b8cce87724d7a502d4aba67c99875']; /* BWTEAM2026 */
+  function h(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
+  var $=function(id){return document.getElementById(id);};
+  function reveal(){var g=$('gate');if(g)g.remove();$('app').style.display='';init();}
+  function tryU(){var v=($('pw').value||'').trim().toUpperCase();h(v).then(function(x){if(OK.indexOf(x)>=0){try{sessionStorage.setItem('qc_ok','1');}catch(e){}reveal();}else{$('gerr').textContent='Incorrect code.';$('pw').select();}});}
+  $('unlock').addEventListener('click',tryU);
+  $('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryU();});
+  try{if(sessionStorage.getItem('qc_ok')==='1')reveal();}catch(e){}
+
+  var LS='bw_qualcall_v1';
+  var TEXT=['name','lead_source','problem','breed','price','sales_method','revenue','how_long','impact','tried','why_now','monetary','goal','nonmon','budget_note','setter_notes'];
+  var CHIP={decision:'',financial:'',commit:''};
+
+  function init(){
+    // chipsets
+    document.querySelectorAll('.chipset').forEach(function(cs){
+      var field=cs.dataset.field;
+      cs.querySelectorAll('button').forEach(function(b){
+        b.addEventListener('click',function(){
+          cs.querySelectorAll('button').forEach(function(x){x.classList.remove('sel');});
+          b.classList.add('sel');CHIP[field]=b.dataset.v;save();verdict();
+        });
+      });
+    });
+    // urgency
+    $('urgency').addEventListener('input',function(){$('urgencyv').textContent=this.value;save();verdict();});
+    TEXT.forEach(function(id){var el=$(id);if(el)el.addEventListener('input',function(){save();verdict();});});
+    // syntax toggle
+    $('s1').addEventListener('click',function(){flow(1);});
+    $('s2').addEventListener('click',function(){flow(2);});
+    // timer
+    $('timer').addEventListener('click',toggleTimer);
+    // copy
+    $('copyBtn').addEventListener('click',copyNotes);
+    $('copyTop').addEventListener('click',copyNotes);
+    load();verdict();
+    ['pagehide','visibilitychange'].forEach(function(ev){window.addEventListener(ev,save);});
+  }
+
+  function flow(n){
+    $('flow1').style.display=n===1?'':'none';
+    $('flow2').style.display=n===2?'':'none';
+    $('s1').classList.toggle('on',n===1);$('s2').classList.toggle('on',n===2);
+    try{localStorage.setItem(LS+'_flow',n);}catch(e){}
+  }
+
+  function save(){try{var d={chip:CHIP,urg:$('urgency').value};TEXT.forEach(function(id){var el=$(id);if(el)d[id]=el.value;});localStorage.setItem(LS,JSON.stringify(d));}catch(e){}}
+  function load(){try{
+    var d=JSON.parse(localStorage.getItem(LS)||'{}');
+    TEXT.forEach(function(id){var el=$(id);if(el&&d[id]!=null)el.value=d[id];});
+    if(d.urg){$('urgency').value=d.urg;$('urgencyv').textContent=d.urg;}
+    if(d.chip){CHIP=d.chip;Object.keys(CHIP).forEach(function(f){var cs=document.querySelector('.chipset[data-field="'+f+'"]');if(cs&&CHIP[f])cs.querySelectorAll('button').forEach(function(b){b.classList.toggle('sel',b.dataset.v===CHIP[f]);});});}
+    var f=localStorage.getItem(LS+'_flow');if(f)flow(+f);
+  }catch(e){}}
+
+  // ---- timer counts up, target 10:00 ----
+  var secs=0,tmr=null;
+  function fmt(s){var m=Math.floor(s/60);return m+':'+('0'+(s%60)).slice(-2);}
+  function tick(){secs++;$('tval').textContent=fmt(secs);var t=$('timer');t.classList.toggle('warn',secs>=480&&secs<600);t.classList.toggle('over',secs>=600);if(secs>=600)$('tlabel').textContent='over 10 min';}
+  function toggleTimer(){if(tmr){clearInterval(tmr);tmr=null;$('tlabel').textContent='paused';}else{tmr=setInterval(tick,1000);$('tlabel').textContent='target 10:00';}}
+
+  // ---- verdict ----
+  function verdict(){
+    var fin=CHIP.financial, urg=+$('urgency').value, dec=CHIP.decision;
+    var problem=$('problem').value.trim(), goal=($('monetary').value||$('goal').value).trim();
+    var chip=$('vchip'),reason=$('vreason');
+    chip.className='vchip';
+    if(!fin||!problem){chip.classList.add('pending');chip.textContent='Keep going…';reason.textContent='Capture the problem and the financial qualifier to get a read.';return;}
+    if(fin==='No'){chip.classList.add('decline');chip.textContent='Not qualified · nurture';reason.textContent='Not in a position to invest. Be honest, add to nurture — don’t book the closer.';return;}
+    if(urg<=3){chip.classList.add('nurture');chip.textContent='Low urgency · test / nurture';reason.textContent='Urgency is low ('+urg+'/10). Re-test why-now, or nurture rather than book a soft lead.';return;}
+    if(dec==='Partner not aligned'){chip.classList.add('nurture');chip.textContent='Book with partner';reason.textContent='Decision needs the partner. Set the expectation and book both onto the fit call.';return;}
+    if(fin==='Maybe'){chip.classList.add('nurture');chip.textContent='Borderline · setter call';reason.textContent='Motivated but tight. If urgency and goal are strong, book it and flag the budget for the closer.';return;}
+    if(fin==='Yes'&&urg>=6&&(dec==='Just them'||dec==='Them + partner (on board)')){chip.classList.add('book');chip.textContent='QUALIFIED · book the fit call';reason.textContent='Financially qualified, urgent ('+urg+'/10), decision-maker in. Book the closer now.';return;}
+    chip.classList.add('nurture');chip.textContent='Borderline · your judgment';reason.textContent='Mixed signals — weigh urgency, goal and decision-maker before booking.';
+  }
+
+  // ---- CC360 notes ----
+  function copyNotes(){
+    var g=function(id){return ($(id).value||'').trim();};
+    var L=[
+      'QUALIFYING CALL · '+(g('name')||'(prospect)')+(g('lead_source')?' · '+g('lead_source'):''),
+      'Verdict: '+$('vchip').textContent,
+      '',
+      'Program: '+g('breed')+(g('price')?' · '+g('price'):''),
+      'Biggest problem: '+g('problem'),
+      'Current reality: '+g('revenue')+(g('how_long')?' · '+g('how_long'):''),
+      'How they sell now: '+g('sales_method'),
+      'Impact / cost: '+g('impact'),
+      'Doubt / tried before: '+g('tried'),
+      'Why now: '+g('why_now'),
+      'Urgency: '+$('urgency').value+'/10',
+      'Decision-maker: '+(CHIP.decision||'-'),
+      'Monetary goal: '+g('monetary')+(g('goal')?' · '+g('goal'):''),
+      'Non-monetary goal: '+g('nonmon'),
+      'Financially qualified: '+(CHIP.financial||'-')+(g('budget_note')?' ('+g('budget_note')+')':''),
+      'Time commitment: '+(CHIP.commit||'-'),
+      '',
+      'For the closer: '+g('setter_notes')
+    ].filter(function(x){return !/: *$/.test(x);});
+    var txt=L.join('\n');
+    (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){
+      var b=$('copyBtn');var t=b.textContent;b.textContent='Copied ✓';setTimeout(function(){b.textContent=t;},1400);
+    }).catch(function(){ window.prompt('Copy the call notes:',txt); });
+  }
+})();
+</script>
+</body></html>
