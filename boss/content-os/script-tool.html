@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Private · Script Generator · Content OS</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;0,700;1,600&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../boss.css">
+<style>
+  .wrap2{max-width:1080px;margin:0 auto;padding:0 24px}
+  .lead{padding:40px 0 10px}
+  .lead h1{font-family:var(--disp);font-weight:600;font-size:clamp(2.1rem,4.4vw,3.1rem)}
+  .lead h1 em{font-style:italic;color:var(--gold-soft)}
+  .lead p{color:var(--mid);max-width:62ch;margin-top:12px}
+  .cols{display:grid;grid-template-columns:400px 1fr;gap:28px;align-items:start;padding:22px 0 80px}
+  @media(max-width:880px){.cols{grid-template-columns:1fr}}
+  .panel{background:linear-gradient(165deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:24px}
+  .panel.sticky{position:sticky;top:90px}
+  .fld{margin-bottom:15px}
+  .fld label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:6px}
+  .fld label .req{color:var(--gold)}
+  .fld input,.fld select,.fld textarea{width:100%;background:#0c0c10;border:1px solid var(--line2);border-radius:10px;padding:11px 13px;color:var(--ink);font-size:14.5px;font-family:var(--sans);transition:.16s}
+  .fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--gold-deep);box-shadow:0 0 0 3px rgba(201,162,78,.12)}
+  .fld textarea{min-height:92px;resize:vertical;line-height:1.5}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--sans);font-weight:700;font-size:14.5px;padding:13px 20px;border-radius:30px;cursor:pointer;border:0;transition:.18s;width:100%}
+  .btn.gold{background:linear-gradient(150deg,var(--gold-soft),var(--gold));color:#14100a}
+  .btn.gold:hover{filter:brightness(1.05)} .btn.gold:disabled{opacity:.55;cursor:default;filter:none}
+  .btn.ghost{background:transparent;border:1px solid var(--line2);color:var(--ink)}
+  .btn.ghost:hover{border-color:var(--gold-deep);color:var(--gold-soft)}
+  .mini{font-size:12px;color:var(--faint);text-align:center;margin-top:10px}
+
+  /* result */
+  #out{min-height:200px}
+  .placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--muted);border:1px dashed var(--line2);border-radius:16px;padding:60px 30px;min-height:360px}
+  .placeholder .big{font-family:var(--disp);font-size:2rem;color:var(--gold-soft)}
+  .loading{text-align:center;color:var(--gold-soft);padding:70px 20px;font-family:var(--disp);font-size:1.5rem}
+  .loading .dots:after{content:'';animation:dots 1.4s steps(4,end) infinite}
+  @keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+  .err{background:rgba(224,138,122,.1);border:1px solid rgba(224,138,122,.3);color:#e8a99b;border-radius:12px;padding:14px 16px;font-size:14px}
+
+  .result .rhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+  .result h2{font-family:var(--disp);font-weight:600;font-size:1.8rem;flex:1;min-width:0}
+  .result .meta{font-size:12px;color:var(--muted);letter-spacing:.04em}
+  .hookbox{background:linear-gradient(165deg,rgba(201,162,78,.14),transparent);border:1px solid var(--gold-deep);border-radius:12px;padding:16px 18px;margin:14px 0}
+  .hookbox .lbl{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .hookbox .txt{font-size:1.15rem;color:var(--ink);font-weight:600;margin-top:5px;line-height:1.35}
+  .block{margin-top:18px}
+  .block .bl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+  .block .bl .cp{margin-left:auto;font-size:11px;color:var(--muted);cursor:pointer;border:1px solid var(--line2);border-radius:20px;padding:3px 10px;letter-spacing:.02em;text-transform:none}
+  .block .bl .cp:hover{border-color:var(--gold-deep);color:var(--gold-soft)}
+  .script{background:#0c0c10;border:1px solid var(--line2);border-radius:12px;padding:20px;font-size:1.12rem;line-height:1.65;color:var(--ink);white-space:pre-wrap}
+  .cta{color:var(--gold-soft);font-style:italic;font-family:var(--disp);font-size:1.15rem}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{background:var(--bg2);border:1px solid var(--line2);border-radius:20px;padding:6px 12px;font-size:13px;color:var(--mid)}
+  .chip.gold{color:var(--gold-soft);border-color:var(--gold-deep)}
+  ul.list{list-style:none;display:grid;gap:8px}
+  ul.list li{position:relative;padding-left:22px;color:var(--mid);font-size:14px;line-height:1.4}
+  ul.list li:before{content:"\25B8";position:absolute;left:0;color:var(--gold)}
+  .cap{background:#0c0c10;border:1px solid var(--line2);border-radius:12px;padding:16px;font-size:14px;color:var(--mid);line-height:1.5;white-space:pre-wrap}
+  .ractions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+  .ractions .btn{width:auto;flex:1;min-width:150px}
+
+  /* history */
+  .hist{margin-top:22px}
+  .hist h3{font-family:var(--disp);font-size:1.2rem;color:var(--gold-soft);margin-bottom:10px}
+  .hitem{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin-bottom:8px;cursor:pointer;transition:.15s}
+  .hitem:hover{border-color:var(--gold-deep)}
+  .hitem .ht{flex:1;min-width:0;font-size:13.5px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hitem .hm{font-size:11px;color:var(--faint);white-space:nowrap}
+  .hitem .hx{color:var(--faint);font-size:16px;line-height:1}
+
+  /* teleprompter */
+  .tp{position:fixed;inset:0;background:#000;z-index:120;display:none;flex-direction:column}
+  .tp.on{display:flex}
+  .tp .tpbar{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--line);color:var(--mid);font-size:13px}
+  .tp .tpbar .tbtn{background:var(--panel);border:1px solid var(--line2);color:var(--ink);border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer}
+  .tp .tpbar .tbtn:hover{border-color:var(--gold-deep)}
+  .tp .tpbar input[type=range]{accent-color:var(--gold)}
+  .tp .tpview{flex:1;overflow:hidden;position:relative}
+  .tp .tptext{padding:40vh 8vw;font-size:4.2vw;line-height:1.5;color:#fff;font-weight:600;max-width:1100px;margin:0 auto}
+  @media(max-width:700px){.tp .tptext{font-size:7vw}}
+</style>
+</head><body>
+
+<!-- GATE -->
+<div id="gate"><div class="box">
+  <div class="logo"><span class="mk">B</span></div>
+  <h1>Content OS</h1><div class="sub">Access</div>
+  <input id="boss-pw" type="password" placeholder="Access code" autocomplete="off">
+  <button id="boss-unlock">Enter &rarr;</button>
+  <div class="err" id="boss-gate-err" style="background:none;border:0;padding:0"></div>
+</div></div>
+
+<!-- APP -->
+<div id="app" hidden>
+  <header class="boss"><div class="wrap bar">
+    <a class="brand" href="index.html"><span class="mk">B</span>
+      <span class="wm"><b>Script Generator</b><span>Content OS &middot; the Film-Yourself tool</span></span></a>
+    <nav><a href="film-yourself.html">Film Yourself training</a><a href="index.html">&larr; Library</a></nav>
+  </div></header>
+
+  <div class="wrap2">
+    <div class="lead">
+      <span class="eyebrow">Content OS</span>
+      <h1>Your viral <em>script</em>, in 15 seconds</h1>
+      <p>Plug in your breed, your topic, and the hook you want. We&rsquo;ll write a word-for-word script built on today&rsquo;s best practices &mdash; load it into the teleprompter and read it straight to camera.</p>
+    </div>
+
+    <div class="cols">
+      <!-- FORM -->
+      <form class="panel sticky" id="f" autocomplete="off">
+        <div class="fld"><label>Your breed <span class="req">*</span></label><input id="breed" placeholder="e.g. French Bulldog" required></div>
+        <div class="fld"><label>Topic of the post <span class="req">*</span></label><input id="topic" placeholder="e.g. why health testing matters" required></div>
+        <div class="row2">
+          <div class="fld"><label>Hook style</label>
+            <select id="hook_type">
+              <option value="">Let AI choose</option>
+              <option>Bold claim</option><option>Question</option><option>Story</option>
+              <option>Myth / mistake</option><option>How-to</option><option>Curiosity gap</option>
+              <option>Hot take</option><option>Relatable</option>
+            </select></div>
+          <div class="fld"><label>Platform</label>
+            <select id="platform">
+              <option>Instagram Reels</option><option>TikTok</option><option>YouTube Shorts</option>
+              <option>Facebook</option><option value="Any">Any / all</option>
+            </select></div>
+        </div>
+        <div class="fld"><label>Post details <span class="req">*</span></label>
+          <textarea id="details" placeholder="The specifics. What's happening, what point you want to make, any facts or story (e.g. 'new lilac litter, all parents 6-panel + OFA tested, I want to show the whelping setup')." required></textarea></div>
+        <div class="row2">
+          <div class="fld"><label>Call to action</label><input id="cta" placeholder="Optional — e.g. DM 'puppy'"></div>
+          <div class="fld"><label>Voice / angle</label><input id="voice" placeholder="Optional — e.g. warm, premium"></div>
+        </div>
+        <div class="row2">
+          <div class="fld"><label>Your name</label><input id="name" placeholder="Optional"></div>
+          <div class="fld"><label>IG handle</label><input id="handle" placeholder="Optional — @you"></div>
+        </div>
+        <button type="submit" class="btn gold" id="gen">Generate my script</button>
+        <div class="mini">Builds on current short-form best practices. Every script is saved to your library.</div>
+      </form>
+
+      <!-- OUTPUT -->
+      <div>
+        <div id="out"><div class="placeholder"><div class="big">Your script appears here</div><p style="margin-top:8px;max-width:38ch">Fill in your breed, topic and details, then hit generate. You&rsquo;ll get a hook, a word-for-word script, B-roll shots, a caption and hashtags.</p></div></div>
+        <div class="hist" id="hist" style="display:none"><h3>Your saved scripts</h3><div id="hlist"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="boss"><div class="wrap">BreedWise BOSS &middot; Content OS &middot; Private</div></footer>
+</div>
+
+<!-- TELEPROMPTER -->
+<div class="tp" id="tp">
+  <div class="tpbar">
+    <button class="tbtn" id="tpPlay">&#9654; Play</button>
+    <button class="tbtn" id="tpReset">&#8634; Top</button>
+    <span>Speed</span><input type="range" id="tpSpeed" min="1" max="10" value="4">
+    <span style="flex:1"></span>
+    <button class="tbtn" id="tpClose">&times; Close</button>
+  </div>
+  <div class="tpview" id="tpView"><div class="tptext" id="tpText"></div></div>
+</div>
+
+<script src="../boss-gate.js"></script>
+<script>
+(function(){
+  var API='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/content-script';
+  var LS_DRAFT='bw_scripttool_draft', LS_HIST='bw_scripttool_hist';
+  var $=function(s){return document.getElementById(s);};
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  var FIELDS=['breed','topic','hook_type','platform','details','cta','voice','name','handle'];
+
+  // ---- autosave draft ----
+  function saveDraft(){try{var d={};FIELDS.forEach(function(k){d[k]=$(k).value;});localStorage.setItem(LS_DRAFT,JSON.stringify(d));}catch(e){}}
+  function loadDraft(){try{var d=JSON.parse(localStorage.getItem(LS_DRAFT)||'{}');FIELDS.forEach(function(k){if(d[k]!=null&&$(k))$(k).value=d[k];});}catch(e){}}
+  FIELDS.forEach(function(k){var el=$(k);if(el)el.addEventListener('input',saveDraft);});
+  ['pagehide','visibilitychange'].forEach(function(ev){window.addEventListener(ev,saveDraft);});
+
+  // ---- history (local) ----
+  function hist(){try{return JSON.parse(localStorage.getItem(LS_HIST)||'[]');}catch(e){return [];}}
+  function pushHist(rec){var h=hist();h.unshift(rec);h=h.slice(0,30);try{localStorage.setItem(LS_HIST,JSON.stringify(h));}catch(e){}renderHist();}
+  function delHist(i){var h=hist();h.splice(i,1);try{localStorage.setItem(LS_HIST,JSON.stringify(h));}catch(e){}renderHist();}
+  function renderHist(){
+    var h=hist(); var box=$('hist'); if(!h.length){box.style.display='none';return;} box.style.display='';
+    $('hlist').innerHTML=h.map(function(r,i){
+      return '<div class="hitem" data-i="'+i+'"><div class="ht">'+esc(r.result.title||r.inputs.topic)+'</div>'
+        +'<div class="hm">'+esc(r.inputs.breed||'')+'</div><span class="hx" data-del="'+i+'">&times;</span></div>';
+    }).join('');
+    Array.prototype.forEach.call($('hlist').querySelectorAll('.hitem'),function(el){
+      el.addEventListener('click',function(e){ if(e.target.dataset.del!=null){e.stopPropagation();delHist(+e.target.dataset.del);return;} render(hist()[+el.dataset.i].result); window.scrollTo({top:0,behavior:'smooth'}); });
+    });
+  }
+
+  // ---- copy ----
+  function copy(txt,btn){ (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){var t=btn.textContent;btn.textContent='Copied';setTimeout(function(){btn.textContent=t;},1200);}).catch(function(){}); }
+
+  // ---- render result ----
+  var last=null;
+  function render(r){
+    last=r;
+    var chips=function(arr,cls){return (arr||[]).map(function(x){return '<span class="chip '+(cls||'')+'">'+esc(x)+'</span>';}).join('');};
+    var listOf=function(arr){return '<ul class="list">'+(arr||[]).map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>';};
+    $('out').innerHTML=
+      '<div class="result panel">'
+      +'<div class="rhead"><h2>'+esc(r.title||'Your script')+'</h2>'+(r.est_seconds?'<span class="meta">~'+r.est_seconds+' sec</span>':'')+'</div>'
+      +'<div class="hookbox"><div class="lbl">The hook &middot; first 3 seconds</div><div class="txt">'+esc(r.hook||'')+'</div></div>'
+      +'<div class="block"><div class="bl">The script &mdash; read it word for word <span class="cp" id="cpScript">Copy</span></div><div class="script" id="scriptText">'+esc(r.script||'')+'</div></div>'
+      +(r.cta?'<div class="block"><div class="bl">Call to action</div><div class="cta">'+esc(r.cta)+'</div></div>':'')
+      +((r.on_screen_text&&r.on_screen_text.length)?'<div class="block"><div class="bl">On-screen text</div><div class="chips">'+chips(r.on_screen_text,'gold')+'</div></div>':'')
+      +((r.broll&&r.broll.length)?'<div class="block"><div class="bl">B-roll to film</div>'+listOf(r.broll)+'</div>':'')
+      +(r.caption?'<div class="block"><div class="bl">Caption <span class="cp" id="cpCap">Copy</span></div><div class="cap" id="capText">'+esc(r.caption)+'</div></div>':'')
+      +((r.hashtags&&r.hashtags.length)?'<div class="block"><div class="bl">Hashtags</div><div class="chips">'+chips(r.hashtags.map(function(h){return h[0]==='#'?h:'#'+h;}))+'</div></div>':'')
+      +((r.tips&&r.tips.length)?'<div class="block"><div class="bl">Delivery tips</div>'+listOf(r.tips)+'</div>':'')
+      +'<div class="ractions"><button class="btn gold" id="openTp">&#9655; Teleprompter</button><button class="btn ghost" id="again">Generate another</button></div>'
+      +'</div>';
+    $('cpScript').onclick=function(){copy(r.script||'',this);};
+    if($('cpCap'))$('cpCap').onclick=function(){copy(r.caption||'',this);};
+    $('openTp').onclick=function(){openTp(r.script||'');};
+    $('again').onclick=function(){$('out').scrollIntoView({behavior:'smooth'});$('breed').focus();};
+  }
+
+  // ---- generate ----
+  $('f').addEventListener('submit',function(e){
+    e.preventDefault();
+    var inputs={}; FIELDS.forEach(function(k){inputs[k]=$(k).value.trim();});
+    if(!inputs.breed||!inputs.topic||!inputs.details){alert('Please add your breed, topic, and post details.');return;}
+    var btn=$('gen'); btn.disabled=true; btn.textContent='Writing your script…';
+    $('out').innerHTML='<div class="loading">Writing your script<span class="dots"></span></div>';
+    fetch(API,{method:'POST',headers:{'Content-Type':'application/json','apikey':'public'},body:JSON.stringify({passcode:'BOSS2026',inputs:inputs})})
+      .then(function(r){return r.json();})
+      .then(function(d){
+        btn.disabled=false; btn.textContent='Generate my script';
+        if(d.error||!d.result){ $('out').innerHTML='<div class="err">'+esc(d.error||'Something went wrong. Please try again.')+'</div>'; return; }
+        render(d.result);
+        pushHist({inputs:inputs,result:d.result,ts:Date.now()});
+      })
+      .catch(function(){ btn.disabled=false; btn.textContent='Generate my script'; $('out').innerHTML='<div class="err">Network error. Please try again.</div>'; });
+  });
+
+  // ---- teleprompter ----
+  var tpAnim=null;
+  function openTp(text){ $('tpText').textContent=text; $('tpView').scrollTop=0; $('tp').classList.add('on'); }
+  function tpStop(){ if(tpAnim){cancelAnimationFrame(tpAnim);tpAnim=null;} $('tpPlay').innerHTML='&#9654; Play'; }
+  function tpPlay(){
+    if(tpAnim){tpStop();return;}
+    $('tpPlay').innerHTML='&#10073;&#10073; Pause';
+    var view=$('tpView');
+    var step=function(){ var sp=+$('tpSpeed').value; view.scrollTop+=sp*0.6; if(view.scrollTop+view.clientHeight>=view.scrollHeight-2){tpStop();return;} tpAnim=requestAnimationFrame(step); };
+    tpAnim=requestAnimationFrame(step);
+  }
+  $('tpPlay').onclick=tpPlay;
+  $('tpReset').onclick=function(){$('tpView').scrollTop=0;};
+  $('tpClose').onclick=function(){tpStop();$('tp').classList.remove('on');};
+
+  // init after unlock
+  function init(){ loadDraft(); renderHist(); }
+  document.documentElement.addEventListener('boss:unlocked',init);
+  if(!document.getElementById('gate')) init();
+})();
+</script>
+</body></html>

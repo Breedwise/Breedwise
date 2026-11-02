@@ -29,12 +29,12 @@ window.BOSS_MODULES = [
   },
 
   {
-    id:'content-os', order:2, icon:'◈', title:'Content OS', status:'building',
+    id:'content-os', order:2, icon:'◈', title:'Content OS', status:'live',
     tagline:'Make content a repeatable system, one concept at a time.',
-    desc:'A library of short, visual trainings — one per concept — so content creation becomes a system instead of a scramble. Built from Austin’s outline; trainings in production.',
+    desc:'Seven short, visual trainings — attention, brand, platforms, gear, styles, filming yourself, batching — plus an AI script generator. Content creation as a system, not a scramble.',
     pieces:{
-      teach:{ url:'content-os/index.html', status:'live', meta:'Topic trainings · 5-10 min each · Module 1 live' },
-      os:   { status:'planned' }
+      teach:{ url:'content-os/index.html',      status:'live', meta:'7 trainings · 5-10 min each' },
+      os:   { url:'content-os/script-tool.html', status:'live', meta:'AI viral-script generator + teleprompter' }
     }
   },
 
