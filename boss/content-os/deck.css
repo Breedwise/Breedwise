@@ -145,6 +145,14 @@
 .gcard.have{border-style:dashed}
 .gcard.have .gt{color:var(--ink)}
 
+/* ---- week schedule ---- */
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:1cqw;margin-top:2.4cqw}
+.day{background:var(--panel);border:1px solid var(--line2);border-radius:1cqw;padding:1.4cqw .7cqw;text-align:center;min-height:14cqw;display:flex;flex-direction:column;gap:.5cqw}
+.day .dn{font-size:1.25cqw;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.day .da{font-size:1.5cqw;color:var(--ink);line-height:1.2;margin-top:.4cqw}
+.day.batch{border-color:var(--gold-deep);background:linear-gradient(165deg,rgba(201,162,78,.18),transparent)}
+.day.batch .dn{color:var(--gold)} .day.batch .da{color:var(--gold-soft);font-family:var(--disp);font-weight:700;font-size:1.75cqw}
+
 /* ---- chip cloud ---- */
 .cloud{display:flex;flex-wrap:wrap;gap:1.2cqw;margin-top:2.2cqw}
 .cloud.center{justify-content:center}
