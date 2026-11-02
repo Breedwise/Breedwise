@@ -134,6 +134,17 @@
 .styles .s b{color:var(--ink);font-weight:700}
 .purpose{margin-top:2cqw;font-size:1.7cqw;font-style:italic;font-family:var(--disp);color:var(--gold-soft)}
 
+/* ---- gear cards ---- */
+.gear{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8cqw;margin-top:2.4cqw}
+.gcard{background:var(--panel);border:1px solid var(--line2);border-radius:1.4cqw;padding:2cqw 1.7cqw;display:flex;flex-direction:column;text-align:left}
+.gcard .gt{font-family:var(--disp);font-size:2.05cqw;color:var(--gold-soft);line-height:1.1}
+.gcard .gp{font-size:1.3cqw;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-top:.4cqw;font-weight:700}
+.gcard .gn{font-size:1.5cqw;color:var(--mid);margin-top:1cqw;line-height:1.35;flex:1}
+.gcard .glink{margin-top:1.4cqw;align-self:flex-start;font-size:1.35cqw;color:#14100a;background:linear-gradient(150deg,var(--gold-soft),var(--gold));padding:.75cqw 1.5cqw;border-radius:5cqw;font-weight:700;text-decoration:none}
+.gcard .glink:hover{filter:brightness(1.06)}
+.gcard.have{border-style:dashed}
+.gcard.have .gt{color:var(--ink)}
+
 /* ---- chip cloud ---- */
 .cloud{display:flex;flex-wrap:wrap;gap:1.2cqw;margin-top:2.2cqw}
 .cloud.center{justify-content:center}
