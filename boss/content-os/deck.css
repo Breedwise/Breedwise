@@ -124,6 +124,16 @@
 .pillars .col .pn{font-family:var(--disp);color:var(--gold);font-size:1.9cqw}
 .pillars .col .pt{font-size:1.75cqw;color:var(--ink);font-weight:700;line-height:1.1}
 
+/* ---- platform header + style list ---- */
+.plat{display:flex;align-items:center;gap:1.8cqw}
+.plat .pm{width:7cqw;height:7cqw;border-radius:1.4cqw;background:linear-gradient(150deg,var(--gold-soft),var(--gold-deep));color:#14100a;font-family:var(--disp);font-weight:700;font-size:2.7cqw;display:grid;place-items:center;flex:0 0 auto;box-shadow:0 .4cqw 1.6cqw rgba(201,162,78,.25)}
+.plat h2{margin:0}
+.styles{display:grid;grid-template-columns:1fr 1fr;gap:1.3cqw 3.4cqw;margin-top:2.2cqw}
+.styles .s{position:relative;padding-left:2.9cqw;font-size:1.95cqw;color:var(--mid);line-height:1.32}
+.styles .s:before{content:"\25B8";position:absolute;left:0;top:.05cqw;color:var(--gold);font-size:1.7cqw}
+.styles .s b{color:var(--ink);font-weight:700}
+.purpose{margin-top:2cqw;font-size:1.7cqw;font-style:italic;font-family:var(--disp);color:var(--gold-soft)}
+
 /* ---- chip cloud ---- */
 .cloud{display:flex;flex-wrap:wrap;gap:1.2cqw;margin-top:2.2cqw}
 .cloud.center{justify-content:center}
