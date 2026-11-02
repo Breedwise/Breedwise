@@ -72,11 +72,11 @@
 .pane.neu{border-color:var(--line2)}
 
 /* ---- funnel ---- */
-.funnel{display:flex;flex-direction:column;align-items:center;gap:.6cqw;margin-top:1cqw}
-.funnel .tier{position:relative;text-align:center;padding:1.1cqw 2cqw;border-radius:1cqw;color:#14100a;font-family:var(--sans);font-weight:700}
-.funnel .tier .tl{font-size:1.95cqw;line-height:1}
-.funnel .tier .ts{display:block;font-size:1.2cqw;font-weight:600;opacity:.8;margin-top:.15cqw;letter-spacing:.04em}
-.funnel .conv{font-size:1.35cqw;color:var(--gold-soft);font-family:var(--disp);font-style:italic}
+.funnel{display:flex;flex-direction:column;align-items:center;gap:.3cqw;margin-top:.3cqw}
+.funnel .tier{position:relative;text-align:center;padding:.72cqw 2cqw;border-radius:.9cqw;color:#14100a;font-family:var(--sans);font-weight:700}
+.funnel .tier .tl{font-size:1.75cqw;line-height:1}
+.funnel .tier .ts{display:block;font-size:1.05cqw;font-weight:600;opacity:.8;margin-top:.1cqw;letter-spacing:.04em}
+.funnel .conv{font-size:1.2cqw;color:var(--gold-soft);font-family:var(--disp);font-style:italic}
 .funnel .t1{width:82%;background:linear-gradient(90deg,var(--gold-soft),var(--gold))}
 .funnel .t2{width:64%;background:linear-gradient(90deg,#e4c877,#cda85f)}
 .funnel .t3{width:46%;background:linear-gradient(90deg,#d8b968,#bb9850)}
@@ -108,6 +108,13 @@
 
 /* two-column generic */
 .cols{display:grid;grid-template-columns:1.05fr .95fr;gap:3.2cqw;align-items:center}
+
+/* ---- numbered steps (4-col) ---- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.6cqw;counter-reset:s;margin-top:2.4cqw}
+.step{background:linear-gradient(165deg,var(--panel),var(--panel2));border:1px solid var(--line2);border-radius:1.2cqw;padding:2cqw 1.4cqw;position:relative}
+.step::before{counter-increment:s;content:"0" counter(s);display:block;font-family:var(--disp);font-weight:700;font-size:2.4cqw;background:linear-gradient(120deg,var(--gold-soft),var(--gold-deep));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:.5cqw}
+.step h3{font-family:var(--disp);font-size:1.95cqw;font-weight:600;margin-bottom:.5cqw;color:var(--ink);line-height:1.08}
+.step p{font-size:1.42cqw;color:var(--muted);line-height:1.32}
 
 /* ---- 4-card grid ---- */
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.6cqw;margin-top:2.2cqw}
