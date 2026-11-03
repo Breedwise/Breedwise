@@ -802,8 +802,8 @@ function fieldHTML(f,v){
     var arr=Array.isArray(v)?v:(v?[].concat(v):[]);
     out='<div class="gal" id="gal_'+f.k+'"></div>'+
       '<input type="hidden" id="f_'+f.k+'" value="'+esc(JSON.stringify(arr))+'">'+
-      '<input type="file" accept="image/*" id="galf_'+f.k+'" style="display:none">'+
-      '<div style="color:var(--mut,#8c99ad);font-size:12px;margin-top:6px">Add up to 5 photos. The first photo is the main one shown on your website. Changes go live when you save.</div>';
+      '<input type="file" accept="image/*" multiple id="galf_'+f.k+'" style="display:none">'+
+      '<div style="color:var(--mut,#8c99ad);font-size:12px;margin-top:6px">Add up to 5 photos &mdash; you can pick several at once. The first photo is the main one shown on your website. Changes go live when you save.</div>';
   }else if(f.t==='bool'){
     out='<select id="'+id+'"><option value="false"'+(!v?' selected':'')+'>No</option>'+
         '<option value="true"'+(v?' selected':'')+'>Yes</option></select>';
@@ -857,12 +857,20 @@ function wireGallery(f){
     wrap.querySelectorAll('[data-main]').forEach(function(b){b.onclick=function(){var i=+b.getAttribute('data-main'),x=arr.splice(i,1)[0];arr.unshift(x);sync();render();};});
   }
   inp.onchange=async function(){
-    var file=this.files&&this.files[0];if(!file){return;}
-    if(arr.length>=MAX){toast('Up to '+MAX+' photos');this.value='';return;}
-    var add=el('galadd_'+f.k);if(add){add.disabled=true;add.textContent='…';}
-    try{var url=await uploadMedia(file,'photos');arr.push(url);sync();render();}
-    catch(e){toast(e.message||'Upload failed');}
+    var files=this.files?[].slice.call(this.files):[];
     this.value='';
+    if(!files.length)return;
+    var room=MAX-arr.length;
+    if(room<=0){toast('Up to '+MAX+' photos');return;}
+    var pick=files.slice(0,room);
+    if(files.length>room)toast('Added '+room+' of '+files.length+' — max '+MAX+' photos');
+    var add=el('galadd_'+f.k);if(add)add.disabled=true;
+    for(var i=0;i<pick.length;i++){
+      if(add)add.textContent='Uploading '+(i+1)+'/'+pick.length+'…';
+      try{var url=await uploadMedia(pick[i],'photos');arr.push(url);sync();}
+      catch(e){toast(e.message||'Upload failed');}
+    }
+    render();
   };
   render();
 }
