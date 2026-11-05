@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="build" content="1793900001">
+<script>window.__BV__='1793900001';(function(){try{fetch(location.pathname+'?_c='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){var m=t.match(/name="build" content="(\d+)"/);if(m&&m[1]&&m[1]!==window.__BV__){var k='rl_'+m[1];try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');}catch(e){}location.replace(location.pathname+'?v='+m[1]);}}).catch(function(){});}catch(e){}})();</script>
+<title>Get Started — B.O.S.S.™ by BreedWise</title>
+<meta name="description" content="Build a waitlist that pays for the program — or you don't pay. B.O.S.S. is BreedWise's done-with-you program that builds your website, CRM and systems and fills your next litter. See if you qualify.">
+<meta property="og:title" content="Build a Waitlist That Pays for the Program — or You Don't Pay">
+<meta property="og:description" content="B.O.S.S. by BreedWise: done-with-you systems that fill your next litter. See if you qualify.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#080808;--bg2:#0d0c0a;--panel:#131210;--panel2:#1a1813;--line:rgba(247,245,240,.09);--line2:rgba(212,175,55,.32);
+    --ink:#f7f5f0;--mid:#c3bfb4;--muted:#827e74;--faint:#5b574e;--gold:#d4af37;--gold-soft:#f0dd9a;--gold-deep:#9e7b24;
+    --disp:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;--serif:'Cormorant Garamond',Georgia,serif}
+  *{box-sizing:border-box;margin:0}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1100px 620px at 50% -10%,#1a1509,#080808 60%),var(--bg);color:var(--ink);font-family:var(--disp);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+  .narrow{max-width:820px}
+  .gold{color:var(--gold)}
+  .goldgrad{background:linear-gradient(160deg,#f3e2a6,#d4af37 46%,#9e7b24 74%,#eccf82);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .serif{font-family:var(--serif)}
+  .eyebrow{font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .btn{display:inline-block;background:linear-gradient(180deg,#f3e2a6,#d4af37);color:#171003;font-weight:700;font-size:15px;padding:14px 26px;border-radius:12px;cursor:pointer;border:0;font-family:var(--disp);transition:transform .15s,box-shadow .15s;box-shadow:0 8px 30px rgba(212,175,55,.2)}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 12px 36px rgba(212,175,55,.3)}
+  .btn.ghost{background:transparent;border:1px solid var(--line2);color:var(--gold-soft);box-shadow:none}
+  .btn.lg{font-size:16px;padding:16px 34px}
+  /* nav */
+  header.nav{position:sticky;top:0;z-index:40;background:rgba(8,8,8,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brand{font-family:var(--disp);font-weight:800;font-size:19px;letter-spacing:.02em}
+  .brand sup{color:var(--gold);font-size:10px;vertical-align:super}
+  .brand b{color:var(--gold)}
+  .nav .btn{padding:9px 18px;font-size:13.5px}
+  @media(max-width:560px){.nav .brand span{display:none}}
+  /* hero */
+  .hero{text-align:center;padding:52px 0 40px}
+  .rating{display:inline-flex;align-items:center;gap:10px;font-size:13px;color:var(--mid);border:1px solid var(--line2);background:rgba(212,175,55,.06);padding:8px 16px;border-radius:30px}
+  .rating .stars{color:var(--gold);letter-spacing:2px;font-size:14px}
+  .rating b{color:var(--ink);font-weight:700}
+  .hero h1{font-size:clamp(30px,6vw,60px);font-weight:800;letter-spacing:-1.2px;line-height:1.06;margin:24px auto 0;max-width:880px}
+  .hero h1 .pt{display:inline-block}
+  .hero .lead{color:var(--mid);font-size:clamp(16px,2.2vw,20px);max-width:640px;margin:20px auto 0}
+  .hero .cta{margin-top:30px}
+  .hero .micro{margin-top:16px;font-size:12.5px;color:var(--muted)}
+  .point{font-size:28px;line-height:1;vertical-align:-2px}
+  /* vsl */
+  .vslwrap{margin:30px auto 0;max-width:940px;border:1px solid var(--line2);border-radius:22px;background:linear-gradient(170deg,#141210,#0b0a08);padding:14px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  .vsl{display:grid;grid-template-columns:1.25fr .9fr;gap:16px;align-items:stretch}
+  @media(max-width:760px){.vsl{grid-template-columns:1fr}}
+  .video{position:relative;border-radius:14px;overflow:hidden;background:#0a0908;border:1px solid var(--line);aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;min-height:220px}
+  .video .ph{text-align:center;color:var(--muted);font-size:13px;padding:20px}
+  .video .play{width:68px;height:68px;border-radius:50%;background:rgba(212,175,55,.95);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 10px 30px rgba(212,175,55,.3)}
+  .video .play::after{content:"";border-left:20px solid #171003;border-top:12px solid transparent;border-bottom:12px solid transparent;margin-left:5px}
+  .vsl .bullets{padding:18px 14px;display:flex;flex-direction:column;justify-content:center;gap:16px;text-align:left}
+  .vsl .bullets .b{display:flex;gap:12px;align-items:flex-start}
+  .vsl .bullets .b .ic{flex:none;font-size:20px;margin-top:1px}
+  .vsl .bullets .b h4{font-size:15.5px;font-weight:800}
+  .vsl .bullets .b p{font-size:13.5px;color:var(--mid);line-height:1.45}
+  /* sections */
+  section{padding:56px 0}
+  .st{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700;text-align:center}
+  .sh{font-size:clamp(24px,4vw,38px);font-weight:800;letter-spacing:-.7px;text-align:center;margin:12px auto 0;max-width:780px;line-height:1.14}
+  .ssub{color:var(--mid);text-align:center;max-width:640px;margin:14px auto 0;font-size:16px}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--line2),transparent);margin:6px 0}
+  .shade{background:linear-gradient(180deg,transparent,rgba(212,175,55,.035),transparent)}
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:34px}
+  @media(max-width:620px){.stats{grid-template-columns:1fr}}
+  .stat{border:1px solid var(--line);border-radius:16px;padding:26px 18px;background:var(--panel);text-align:center}
+  .stat .big{font-family:var(--disp);font-weight:800;font-size:clamp(34px,6vw,48px);line-height:1}
+  .stat .lab{color:var(--mid);font-size:13.5px;margin-top:8px}
+  /* built-with strip */
+  .built{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:30px}
+  @media(max-width:760px){.built{grid-template-columns:1fr 1fr}}
+  .site{border:1px solid var(--line);border-radius:14px;padding:20px 16px;background:var(--panel);text-align:center;transition:.16s;display:block}
+  .site:hover{border-color:var(--line2);transform:translateY(-2px)}
+  .site .nm{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink)}
+  .site .ty{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+  .site .go{font-size:12px;color:var(--gold);margin-top:10px}
+  /* testimonials */
+  .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:32px}
+  @media(max-width:820px){.tgrid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.tgrid{grid-template-columns:1fr}}
+  .tcard{border:1px solid var(--line);border-radius:16px;padding:22px;background:var(--panel)}
+  .tcard .stars{color:var(--gold);letter-spacing:2px;font-size:13px}
+  .tcard .quote{font-size:15px;color:var(--ink);margin-top:12px;line-height:1.55}
+  .tcard .who{display:flex;align-items:center;gap:11px;margin-top:16px}
+  .tcard .av{width:40px;height:40px;border-radius:50%;background:linear-gradient(150deg,var(--gold-soft),var(--gold-deep));display:flex;align-items:center;justify-content:center;color:#171003;font-weight:800;font-size:15px;flex:none}
+  .tcard .who b{font-size:14px;display:block}
+  .tcard .who span{font-size:12.5px;color:var(--muted)}
+  /* before/after */
+  .ba{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:34px}
+  @media(max-width:680px){.ba{grid-template-columns:1fr}}
+  .bacol{border:1px solid var(--line);border-radius:18px;padding:26px 22px;background:var(--panel)}
+  .bacol.after{border-color:var(--line2);background:linear-gradient(170deg,#1b1710,#0f0d09)}
+  .bacol .tag{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+  .bacol.after .tag{color:var(--gold)}
+  .bacol h3{font-size:20px;font-weight:800;margin:8px 0 14px}
+  .bacol ul{list-style:none;display:grid;gap:11px}
+  .bacol li{font-size:14.5px;color:var(--mid);padding-left:26px;position:relative;line-height:1.5}
+  .bacol.before li::before{content:"\2715";position:absolute;left:0;color:var(--faint);font-weight:800}
+  .bacol.after li::before{content:"\2713";position:absolute;left:0;color:var(--gold);font-weight:800}
+  /* guarantee */
+  .guar{max-width:760px;margin:34px auto 0;border:1px solid var(--line2);border-radius:22px;background:linear-gradient(170deg,#1b1710,#0c0b09);padding:38px 32px;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.45)}
+  .guar .seal{width:64px;height:64px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:var(--gold);font-size:28px}
+  .guar h3{font-family:var(--serif);font-style:italic;font-size:clamp(24px,4.5vw,34px);font-weight:600;color:var(--gold-soft);line-height:1.2}
+  .guar p{color:var(--mid);font-size:15px;margin-top:16px;line-height:1.65}
+  .guar .terms{text-align:left;max-width:600px;margin:22px auto 0;display:grid;gap:12px}
+  .guar .terms .t{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--mid)}
+  .guar .terms .t .n{flex:none;width:24px;height:24px;border-radius:7px;background:rgba(212,175,55,.12);border:1px solid var(--line2);color:var(--gold);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}
+  .guar .terms .t b{color:var(--ink)}
+  .guar .fine{font-size:12px;color:var(--faint);margin-top:20px;line-height:1.6}
+  /* faq */
+  .faq{max-width:760px;margin:30px auto 0}
+  .q{border-top:1px solid var(--line);padding:20px 0}
+  .q h4{font-size:17px;font-weight:700}
+  .q p{font-size:14.5px;color:var(--mid);margin-top:8px;line-height:1.6}
+  /* form */
+  .formwrap{max-width:620px;margin:30px auto 0;border:1px solid var(--line2);border-radius:22px;background:linear-gradient(170deg,#141210,#0b0a08);padding:34px 30px;box-shadow:0 24px 70px rgba(0,0,0,.45)}
+  .formwrap h3{font-size:22px;font-weight:800;text-align:center}
+  .formwrap .fsub{color:var(--mid);text-align:center;font-size:14px;margin:8px auto 22px;max-width:440px}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:12.5px;font-weight:700;color:var(--mid);margin-bottom:6px;letter-spacing:.02em}
+  .field input,.field select,.field textarea{width:100%;padding:13px 15px;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;font-family:var(--disp)}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--gold-deep)}
+  .field textarea{resize:vertical;min-height:84px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:520px){.row2{grid-template-columns:1fr}}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  .consent{font-size:11.5px;color:var(--faint);line-height:1.5;margin:6px 0 16px}
+  .consent a{color:var(--gold);text-decoration:underline}
+  .formwrap .btn{width:100%}
+  .done{display:none;text-align:center;padding:30px 10px}
+  .done.on{display:block}
+  .done .chk{width:58px;height:58px;border-radius:50%;background:rgba(94,197,154,.14);border:1px solid rgba(94,197,154,.4);color:#5ec59a;font-size:28px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+  .done h3{font-size:22px;font-weight:800}
+  .done p{color:var(--mid);font-size:14.5px;margin-top:8px;max-width:420px;margin-left:auto;margin-right:auto}
+  /* final */
+  .final{text-align:center;border:1px solid var(--line2);border-radius:22px;background:linear-gradient(170deg,#1b1710,#0c0b09);padding:50px 26px;margin:20px 0}
+  .final h2{font-size:clamp(26px,4.5vw,42px);font-weight:800;letter-spacing:-.6px;max-width:660px;margin:0 auto;line-height:1.12}
+  .final p{color:var(--mid);max-width:520px;margin:14px auto 0}
+  .final .btn{margin-top:26px}
+  footer.foot{border-top:1px solid var(--line);padding:34px 0;text-align:center;color:var(--muted);font-size:12.5px;line-height:1.7}
+  footer.foot b{color:var(--mid)}
+  footer.foot .disc{max-width:720px;margin:14px auto 0;color:var(--faint);font-size:11.5px}
+  footer.foot a{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header class="nav"><div class="wrap">
+  <div class="brand">B<b>.</b>O<b>.</b>S<b>.</b>S<sup>&trade;</sup> <span style="color:var(--muted);font-weight:600;font-size:13px">by BreedWise</span></div>
+  <a class="btn" href="#form-frame">See If You Qualify</a>
+</div></header>
+
+<!-- HERO -->
+<section class="hero"><div class="wrap">
+  <div class="rating">
+    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    <span>Vet-backed by <b>Dr. Emmanuel Fontaine, DVM</b> &middot; Built by breeders, for breeders</span>
+  </div>
+  <h1>Build a Waitlist That <span class="goldgrad">Pays for the Program</span> <span class="pt">&mdash; or You Don't Pay <span class="point">&#128071;</span></span></h1>
+  <p class="lead">B.O.S.S. is BreedWise's done-with-you program. In 120 days we build your website, your CRM and the systems that fill your next litter &mdash; and we stand behind it with a guarantee.</p>
+  <div class="cta"><a class="btn lg" href="#form-frame">See If You Qualify</a></div>
+  <div class="micro">By application only &middot; Limited starts per month</div>
+
+  <!-- VSL -->
+  <div class="vslwrap">
+    <div class="vsl">
+      <!-- REPLACE the .video block below with your embedded VSL (YouTube/Vimeo/Wistia iframe). -->
+      <div class="video">
+        <div class="ph"><div class="play"></div>Watch: how B.O.S.S. builds a waitlist that pays for the program<br><span style="opacity:.6">[ Add your VSL here ]</span></div>
+      </div>
+      <div class="bullets">
+        <div class="b"><span class="ic">&#129309;</span><div><h4>We build it with you</h4><p>Website, CRM and lead systems built and installed by our team &mdash; not left as homework.</p></div></div>
+        <div class="b"><span class="ic">&#128241;</span><div><h4>The waitlist that fills litters</h4><p>The exact system we use to turn attention into deposits before your puppies hit the ground.</p></div></div>
+        <div class="b"><span class="ic">&#128737;&#65039;</span><div><h4>Backed by a guarantee</h4><p>Build a waitlist that pays for the program, or you don't pay. Terms below.</p></div></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<!-- STATS / PROOF -->
+<section><div class="wrap">
+  <div class="st">The proof behind the system</div>
+  <div class="sh">Real programs. Real systems. <span class="goldgrad">Already live.</span></div>
+  <!-- REPLACE the three numbers below with your real, verifiable figures before promoting this page. -->
+  <div class="stats">
+    <div class="stat"><div class="big goldgrad">[ 0 ]</div><div class="lab">Breeder programs built with BreedWise</div></div>
+    <div class="stat"><div class="big goldgrad">[ 0 ]</div><div class="lab">Websites &amp; CRMs launched</div></div>
+    <div class="stat"><div class="big goldgrad">[ 0 ]</div><div class="lab">Deposits collected through member waitlists</div></div>
+  </div>
+</div></section>
+
+<!-- BUILT WITH BREEDWISE (real, live client sites) -->
+<section class="shade"><div class="wrap">
+  <div class="st">Built with BreedWise</div>
+  <div class="sh">Done-with-you programs, <span class="goldgrad">live right now.</span></div>
+  <p class="ssub">These are real breeder programs whose sites and systems we built. Click through &mdash; every one is live.</p>
+  <div class="built">
+    <a class="site" href="https://contentedpuppies.com" target="_blank" rel="noopener"><div class="nm">Contented Puppies</div><div class="ty">Multi-page site + inquiries</div><div class="go">View site &rarr;</div></a>
+    <a class="site" href="https://w3godsboerboels.com" target="_blank" rel="noopener"><div class="nm">W3 Gods Boerboels</div><div class="ty">Website + Kennel OS</div><div class="go">View site &rarr;</div></a>
+    <a class="site" href="https://review.breedwise.io/best-frenchies-forever/" target="_blank" rel="noopener"><div class="nm">Best Frenchies Forever</div><div class="ty">Site + live puppy system</div><div class="go">View site &rarr;</div></a>
+    <a class="site" href="https://review.breedwise.io/blessed-beyond-dobermans/" target="_blank" rel="noopener"><div class="nm">Blessed Beyond Dobermans</div><div class="ty">Premium site + application</div><div class="go">View site &rarr;</div></a>
+  </div>
+</div></section>
+
+<!-- TESTIMONIALS -->
+<section><div class="wrap">
+  <div class="st">Hear from breeders</div>
+  <div class="sh">Don't just take our <span class="goldgrad">word for it.</span></div>
+  <p class="ssub">What breeders say after their program stops living in their head and starts running on systems.</p>
+  <!-- PLACEHOLDER testimonials. Replace each quote + name with a REAL member before promoting this page.
+       Bracketed text is intentionally obvious so it can't be mistaken for a real quote. -->
+  <div class="tgrid">
+    <div class="tcard"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="quote">&ldquo;[ Add a real member quote here &mdash; what changed once their systems were built. ]&rdquo;</div><div class="who"><div class="av">?</div><div><b>[ Member name ]</b><span>[ Breed &middot; Kennel ]</span></div></div></div>
+    <div class="tcard"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="quote">&ldquo;[ Add a real member quote here &mdash; results from their waitlist or litter. ]&rdquo;</div><div class="who"><div class="av">?</div><div><b>[ Member name ]</b><span>[ Breed &middot; Kennel ]</span></div></div></div>
+    <div class="tcard"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="quote">&ldquo;[ Add a real member quote here &mdash; what the done-with-you build felt like. ]&rdquo;</div><div class="who"><div class="av">?</div><div><b>[ Member name ]</b><span>[ Breed &middot; Kennel ]</span></div></div></div>
+  </div>
+</div></section>
+
+<!-- BEFORE / AFTER -->
+<section class="shade"><div class="wrap">
+  <div class="st">Before &rarr; After</div>
+  <div class="sh">See the difference a <span class="goldgrad">system</span> makes.</div>
+  <div class="ba">
+    <div class="bacol before">
+      <div class="tag">Before B.O.S.S.</div>
+      <h3>The program lives in your head</h3>
+      <ul>
+        <li>Buyers come through DMs &mdash; and slip through the cracks.</li>
+        <li>No website, or one that doesn't sell your program.</li>
+        <li>Pricing by guess, follow-up by memory.</li>
+        <li>Every litter starts the scramble over again.</li>
+        <li>You're doing everything, so nothing gets built.</li>
+      </ul>
+    </div>
+    <div class="bacol after">
+      <div class="tag">After B.O.S.S.</div>
+      <h3>The program runs on systems</h3>
+      <ul>
+        <li>A professional website built around your buyer journey.</li>
+        <li>A CRM and lead system that catches every inquiry.</li>
+        <li>A waitlist that collects deposits before pups hit the ground.</li>
+        <li>Clear pricing, clear follow-up, clear next step.</li>
+        <li>A dashboard that shows the program moving.</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<!-- GUARANTEE -->
+<section><div class="wrap">
+  <div class="st">The guarantee</div>
+  <div class="sh">Build a waitlist that <span class="goldgrad">pays for the program</span> &mdash; or you don't pay.</div>
+  <div class="guar">
+    <div class="seal">&#10003;</div>
+    <h3>If your waitlist doesn't make back what you invested, you get your money back.</h3>
+    <p>We're not here to sell you another course and disappear. If you do the work and your program doesn't collect at least what you paid for B.O.S.S. during your 120 days, we refund you. Here's exactly how that works:</p>
+    <div class="terms">
+      <div class="t"><span class="n">1</span><div><b>What counts.</b> Deposits and puppy sales your program collects through the systems we build, during your 120-day program window, measured on your BreedWise dashboard.</div></div>
+      <div class="t"><span class="n">2</span><div><b>The goal line.</b> When that collected total reaches what you paid for the program, the guarantee is met &mdash; you can watch it climb on a simple <b>collected / goal</b> counter.</div></div>
+      <div class="t"><span class="n">3</span><div><b>Do the work.</b> You complete the build steps, attend your reviews, and implement what we build together. The guarantee is for breeders who show up &mdash; not a free look.</div></div>
+      <div class="t"><span class="n">4</span><div><b>If we miss it.</b> Do all of the above and fall short of the goal line, and you get your money back. Simple.</div></div>
+    </div>
+    <div class="fine">Full guarantee terms are provided in your program agreement before you start. The guarantee rewards breeders who implement; it is not a guarantee of any specific income, and results depend on your breed, market and effort.</div>
+  </div>
+</div></section>
+
+<!-- FAQ -->
+<section class="shade"><div class="wrap">
+  <div class="st">Questions</div>
+  <div class="sh">Before you apply</div>
+  <div class="faq">
+    <div class="q"><h4>How does the guarantee actually work?</h4><p>You do the work, we build the systems, and your waitlist collects deposits and sales. If that collected total doesn't reach what you paid for B.O.S.S. during your 120 days &mdash; while you've completed the program and shown up &mdash; you get your money back. You can watch your progress toward the goal on your dashboard the whole time.</p></div>
+    <div class="q"><h4>What exactly gets built?</h4><p>Your website, your CRM and lead system, and the waitlist, workflows, dashboards, templates and trackers your program needs &mdash; across both the breeding and the business side. Not access to software. Systems that are running.</p></div>
+    <div class="q"><h4>Do I need to be good with technology?</h4><p>No. Our team configures the core systems with you and keeps the build moving. You bring your program and your effort; we bring the build and the structure.</p></div>
+    <div class="q"><h4>I've tried &lsquo;content&rsquo; and funnels before. Why is this different?</h4><p>Because we build it with you instead of handing you a course and hoping. You leave with a website, a CRM and an operating system that fills litters &mdash; not a folder of videos and a to-do list.</p></div>
+    <div class="q"><h4>How much time does it take?</h4><p>It's a 120-day commitment with formal reviews at Day 30, 60, 90 and 120, strategy sessions, and a private channel so you can get unstuck fast. The more you show up, the more gets built.</p></div>
+    <div class="q"><h4>Is this for me?</h4><p>B.O.S.S. is for breeders who are done learning and ready to build &mdash; who'll show up, provide what we need, and do the work over 120 days. It's by application so every member gets built properly. The quickest way to find out is the form below.</p></div>
+  </div>
+</div></section>
+
+<!-- QUALIFY FORM -->
+<section id="form-frame"><div class="wrap">
+  <div class="st">Apply</div>
+  <div class="sh">See if you <span class="goldgrad">qualify</span>.</div>
+  <p class="ssub">A few quick questions. If B.O.S.S. is a fit for your program, we'll reach out to book your call.</p>
+  <div class="formwrap">
+    <form id="f" novalidate>
+      <div class="hp"><label>Leave this empty<input id="hp" tabindex="-1" autocomplete="off"></label></div>
+      <div class="row2">
+        <div class="field"><label for="name">Your name *</label><input id="name" name="name" autocomplete="name" required></div>
+        <div class="field"><label for="phone">Phone *</label><input id="phone" name="phone" type="tel" autocomplete="tel" required></div>
+      </div>
+      <div class="field"><label for="email">Email *</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+      <div class="row2">
+        <div class="field"><label for="kennel">Kennel / program name</label><input id="kennel" name="kennel"></div>
+        <div class="field"><label for="breed">Breed(s)</label><input id="breed" name="breed"></div>
+      </div>
+      <div class="field"><label for="stage">Where is your program today?</label>
+        <select id="stage" name="stage">
+          <option value="">Select one…</option>
+          <option>Just getting started &mdash; first or second litter</option>
+          <option>Breeding regularly, but no real systems yet</option>
+          <option>Established program, ready to professionalize</option>
+          <option>Established &amp; profitable, want to scale</option>
+        </select>
+      </div>
+      <div class="field"><label for="invest">If B.O.S.S. is the right fit, are you ready to invest in building your systems over the next 120 days?</label>
+        <select id="invest" name="invest">
+          <option value="">Select one…</option>
+          <option>Yes &mdash; I'm ready to invest and do the work</option>
+          <option>Maybe &mdash; depends on the details</option>
+          <option>Not yet &mdash; just exploring</option>
+        </select>
+      </div>
+      <div class="field"><label for="goal">What's the one thing you most want built or fixed?</label><textarea id="goal" name="goal" placeholder="e.g. a website that sells, a waitlist that fills my next litter, a system so leads stop slipping…"></textarea></div>
+      <div class="consent">By submitting, you agree to receive emails and text messages from BreedWise about B.O.S.S. Msg &amp; data rates may apply. Reply STOP to opt out. <a href="/freecasestudy/terms/">Terms</a> &middot; <a href="/freecasestudy/privacy/">Privacy</a></div>
+      <button type="submit" class="btn" id="submitBtn">See If I Qualify &rarr;</button>
+    </form>
+    <div class="done" id="done">
+      <div class="chk">&#10003;</div>
+      <h3>Application received.</h3>
+      <p>Thank you &mdash; we've got your answers. If B.O.S.S. is a fit for your program, a member of our team will reach out to book your call. Keep an eye on your email and phone.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- FINAL CTA -->
+<section><div class="wrap">
+  <div class="final">
+    <div class="eyebrow">You already know</div>
+    <h2 style="margin-top:14px">You know your program is good. <span class="goldgrad">Now build the system that sells it.</span></h2>
+    <p>Stop learning. Start building. Apply and we'll see if B.O.S.S. is the right next step &mdash; backed by a guarantee that the waitlist pays for the program, or you don't pay.</p>
+    <a class="btn lg" href="#form-frame">See If You Qualify</a>
+  </div>
+</div></section>
+
+<footer class="foot"><div class="wrap">
+  <div><b>B.O.S.S.&trade;</b> &middot; BreedWise Operating System &amp; Standards &middot; <a href="/freecasestudy/terms/">Terms</a> &middot; <a href="/freecasestudy/privacy/">Privacy</a></div>
+  <div style="margin-top:8px">&copy; <span id="yr"></span> Breedwise LLC. Educational and implementation support for breeding programs. Not veterinary, legal or financial advice. Decisions about your dogs remain with your own veterinarian.</div>
+  <div class="disc">Member results, where shown, are real but not typical. Outcomes vary with your breed, market, effort and countless other factors, and no specific income or result is guaranteed beyond the written terms of the B.O.S.S. program guarantee provided in your program agreement.</div>
+</div></footer>
+
+<script>
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  (function(){
+    var API='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/masterclass-optin';
+    var f=document.getElementById('f'),done=document.getElementById('done'),btn=document.getElementById('submitBtn');
+    function v(id){var e=document.getElementById(id);return e?e.value.trim():'';}
+    // lightweight autosave draft (per autosave standard)
+    var KEY='boss_getstarted_draft';var ids=['name','phone','email','kennel','breed','stage','invest','goal'];
+    try{var d=JSON.parse(localStorage.getItem(KEY)||'{}');ids.forEach(function(id){var e=document.getElementById(id);if(e&&d[id])e.value=d[id];});}catch(e){}
+    var sv;function save(){try{var o={};ids.forEach(function(id){o[id]=v(id);});localStorage.setItem(KEY,JSON.stringify(o));}catch(e){}}
+    ids.forEach(function(id){var e=document.getElementById(id);if(e)e.addEventListener('input',function(){clearTimeout(sv);sv=setTimeout(save,400);});});
+    window.addEventListener('pagehide',save);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')save();});
+    f.addEventListener('submit',function(e){
+      e.preventDefault();
+      if(document.getElementById('hp').value)return;
+      var name=v('name'),email=v('email'),phone=v('phone');
+      if(!name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){alert('Please add your name and a valid email.');return;}
+      if(!phone){alert('Please add a phone number so we can reach you.');return;}
+      var message=['Kennel: '+v('kennel'),'Breed: '+v('breed'),'Stage: '+v('stage'),'Ready to invest: '+v('invest'),'','Most wants built/fixed:',v('goal')].filter(Boolean).join('\n');
+      btn.textContent='Sending…';btn.disabled=true;
+      fetch(API,{method:'POST',headers:{'Content-Type':'application/json','apikey':'public'},body:JSON.stringify({name:name,email:email,phone:phone,source:'BOSS Application',message:message,notes:message})})
+        .then(function(r){return r.ok?r.json():Promise.reject(r);})
+        .then(function(){try{localStorage.removeItem(KEY);}catch(e){}f.style.display='none';done.classList.add('on');done.scrollIntoView({behavior:'smooth',block:'center'});})
+        .catch(function(){btn.textContent='See If I Qualify →';btn.disabled=false;window.location.href='mailto:support@breedwise.io?subject='+encodeURIComponent('B.O.S.S. application — '+name)+'&body='+encodeURIComponent(message+'\n\n'+email+' '+phone);});
+    });
+  })();
+</script>
+</body>
+</html>
