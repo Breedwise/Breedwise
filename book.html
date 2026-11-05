@@ -118,6 +118,16 @@
           <blockquote>"The information I learned through BreedWise in 3 months would have saved me years had I known it sooner."</blockquote>
           <div class="who"><b>Michael Page</b>Breeding 13 years</div>
         </div>
+        <div class="quote">
+          <div class="stars">★★★★★</div>
+          <blockquote>"I've bred for 7 years and never learned anything like what BreedWise offers. I started OFA testing, I'm improving my breed, and my clients are paying me three times more than I've ever charged."</blockquote>
+          <div class="who"><b>Jasmin Garcia</b>Breeding 7 years</div>
+        </div>
+        <div class="quote">
+          <div class="stars">★★★★★</div>
+          <blockquote>"Before BreedWise I was a complete mess with sales. After a few months I understand my market, how to position myself, and how to communicate my program's value in a way that converts. The best part is the community."</blockquote>
+          <div class="who"><b>Madison Gorruso</b>BreedWise Academy member</div>
+        </div>
       </div>
 
       <div class="expect">
@@ -152,6 +162,37 @@
           }
         }
       }catch(err){}
+    })();
+
+    // On a successful booking, send them to the Call Booked page.
+    // Primary path is the redirect configured inside the GHL calendar
+    // (set it to https://review.breedwise.io/application-received.html?booked=1).
+    // This listener is a safety net that catches the booking-complete message
+    // the GHL widget posts, in case that redirect isn't configured.
+    (function(){
+      var done = false;
+      function goBooked(){
+        if(done) return; done = true;
+        var p = new URLSearchParams(location.search);
+        var u = 'application-received.html?booked=1';
+        var f = (p.get('fname') || p.get('name') || '').trim();
+        var e = (p.get('email') || '').trim();
+        if(f) u += '&fname=' + encodeURIComponent(f);
+        if(e) u += '&email=' + encodeURIComponent(e);
+        window.location.href = u;
+      }
+      window.addEventListener('message', function(ev){
+        try{
+          var host = String(ev.origin || '').replace(/^https?:\/\//,'');
+          if(!/(^|\.)(link\.breedwise\.io|leadconnectorhq\.com|msgsndr\.com)$/.test(host)) return;
+          var d = ev.data;
+          var s = typeof d === 'string' ? d : JSON.stringify(d || {});
+          // only fire on an explicit booking-complete signal (not resize/load messages)
+          if(/appointment[_\s-]?booked|booking[_\s-]?(confirmed|completed|success)|appointment[_\s-]?(scheduled|confirmed)/i.test(s)){
+            goBooked();
+          }
+        }catch(err){}
+      });
     })();
   </script>
 </body>

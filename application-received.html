@@ -154,8 +154,8 @@ try{var _eid=sessionStorage.getItem('bw_lead_eid')||'';if(_eid){fbq('track','Lea
     <section class="rec">
       <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
       <h1 id="rec-h">Your Call Is <span class="u">Booked</span></h1>
-      <p class="lead" id="rec-lead"><b>You're all set.</b> Your confirmation and calendar invite are on the way by email and text. Add it to your calendar now so you don't miss it.</p>
-      <div class="callout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span id="rec-callout">Join from a quiet place with your camera on. Need a different time? Reply to your confirmation text or email.</span></div>
+      <p class="lead" id="rec-lead"><b>You're all set.</b> <b>Check your email now</b> — your confirmation, calendar invite, and the link to join your call are on their way. Add it to your calendar so you don't miss it.</p>
+      <div class="callout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg><span id="rec-callout">Your link to join is inside that email — if you don't see it in a few minutes, check your spam or promotions folder. Join from a quiet place with your camera on.</span></div>
     </section>
 
     <!-- ══════ DO THESE TWO THINGS ══════ -->
@@ -257,8 +257,8 @@ try{var _eid=sessionStorage.getItem('bw_lead_eid')||'';if(_eid){fbq('track','Lea
       document.title = 'Call Booked | BreedWise Academy';
       var set = function(id, h){ var el = document.getElementById(id); if (el) el.innerHTML = h; };
       set('rec-h', 'Your Call Is <span class="u">Booked</span>');
-      set('rec-lead', "<b>You're all set.</b> Your confirmation and calendar invite are on the way by email and text. Add it to your calendar now so you don't miss it.");
-      set('rec-callout', 'Join from a quiet place with your camera on. Need a different time? Reply to your confirmation text or email.');
+      set('rec-lead', "<b>You're all set.</b> <b>Check your email now</b> — your confirmation, calendar invite, and the link to join your call are on their way. Add it to your calendar so you don't miss it.");
+      set('rec-callout', "Your link to join is inside that email — if you don't see it in a few minutes, check your spam or promotions folder. Join from a quiet place with your camera on.");
       set('wait-eyebrow', 'Before your call');
       set('wait-h', 'Do These Two Things Before Your Call');
       set('wait-p', 'Watch them in order. It takes about 20 minutes and it makes your call far more useful, so we can skip the basics and get straight into your program.');
