@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache">
-<meta name="build" content="1793900001">
-<script>window.__BV__='1793900001';(function(){try{fetch(location.pathname+'?_c='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){var m=t.match(/name="build" content="(\d+)"/);if(m&&m[1]&&m[1]!==window.__BV__){var k='rl_'+m[1];try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');}catch(e){}location.replace(location.pathname+'?v='+m[1]);}}).catch(function(){});}catch(e){}})();</script>
+<meta name="build" content="1793900002">
+<script>window.__BV__='1793900002';(function(){try{fetch(location.pathname+'?_c='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){var m=t.match(/name="build" content="(\d+)"/);if(m&&m[1]&&m[1]!==window.__BV__){var k='rl_'+m[1];try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');}catch(e){}location.replace(location.pathname+'?v='+m[1]);}}).catch(function(){});}catch(e){}})();</script>
 <title>Get Started — B.O.S.S.™ by BreedWise</title>
 <meta name="description" content="Build a waitlist that pays for the program — or you don't pay. B.O.S.S. is BreedWise's done-with-you program that builds your website, CRM and systems and fills your next litter. See if you qualify.">
 <meta property="og:title" content="Build a Waitlist That Pays for the Program — or You Don't Pay">
@@ -44,7 +44,7 @@
   .rating{display:inline-flex;align-items:center;gap:10px;font-size:13px;color:var(--mid);border:1px solid var(--line2);background:rgba(212,175,55,.06);padding:8px 16px;border-radius:30px}
   .rating .stars{color:var(--gold);letter-spacing:2px;font-size:14px}
   .rating b{color:var(--ink);font-weight:700}
-  .hero h1{font-size:clamp(30px,6vw,60px);font-weight:800;letter-spacing:-1.2px;line-height:1.06;margin:24px auto 0;max-width:880px}
+  .hero h1{font-size:clamp(30px,6vw,60px);font-weight:800;letter-spacing:-1.2px;line-height:1.12;margin:24px auto 0;max-width:880px}
   .hero h1 .pt{display:inline-block}
   .hero .lead{color:var(--mid);font-size:clamp(16px,2.2vw,20px);max-width:640px;margin:20px auto 0}
   .hero .cta{margin-top:30px}
@@ -117,6 +117,14 @@
   .guar .terms .t .n{flex:none;width:24px;height:24px;border-radius:7px;background:rgba(212,175,55,.12);border:1px solid var(--line2);color:var(--gold);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}
   .guar .terms .t b{color:var(--ink)}
   .guar .fine{font-size:12px;color:var(--faint);margin-top:20px;line-height:1.6}
+  .counter{max-width:480px;margin:22px auto 2px;border:1px solid var(--line2);border-radius:14px;background:rgba(212,175,55,.05);padding:16px 18px;text-align:left}
+  .counter .ctop{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;color:var(--mid);font-weight:600}
+  .counter .cpct{color:var(--gold);font-weight:800;font-size:16px}
+  .counter .cbar{height:12px;border-radius:8px;background:rgba(247,245,240,.07);overflow:hidden;margin:10px 0}
+  .counter .cbar i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,var(--gold-deep),var(--gold) 60%,var(--gold-soft))}
+  .counter .cfoot{font-size:12px;color:var(--muted);line-height:1.5}
+  .counter .cfoot b{color:var(--ink);font-weight:700}
+  .counter .cex{color:var(--faint);font-style:italic}
   /* faq */
   .faq{max-width:760px;margin:30px auto 0}
   .q{border-top:1px solid var(--line);padding:20px 0}
@@ -264,15 +272,20 @@
   <div class="sh">Build a waitlist that <span class="goldgrad">pays for the program</span> &mdash; or you don't pay.</div>
   <div class="guar">
     <div class="seal">&#10003;</div>
-    <h3>If your waitlist doesn't make back what you invested, you get your money back.</h3>
-    <p>We're not here to sell you another course and disappear. If you do the work and your program doesn't collect at least what you paid for B.O.S.S. during your 120 days, we refund you. Here's exactly how that works:</p>
-    <div class="terms">
-      <div class="t"><span class="n">1</span><div><b>What counts.</b> Deposits and puppy sales your program collects through the systems we build, during your 120-day program window, measured on your BreedWise dashboard.</div></div>
-      <div class="t"><span class="n">2</span><div><b>The goal line.</b> When that collected total reaches what you paid for the program, the guarantee is met &mdash; you can watch it climb on a simple <b>collected / goal</b> counter.</div></div>
-      <div class="t"><span class="n">3</span><div><b>Do the work.</b> You complete the build steps, attend your reviews, and implement what we build together. The guarantee is for breeders who show up &mdash; not a free look.</div></div>
-      <div class="t"><span class="n">4</span><div><b>If we miss it.</b> Do all of the above and fall short of the goal line, and you get your money back. Simple.</div></div>
+    <h3>If your waitlist doesn't collect what you paid, you get every dollar back.</h3>
+    <p>We don't sell courses and disappear. Do the work, and if the systems we build together don't collect at least what you paid for B.O.S.S. inside your 120 days, we refund you in full &mdash; no fine-print games. Here's exactly how it's measured:</p>
+    <div class="counter">
+      <div class="ctop"><span>Your waitlist, on your dashboard</span><span class="cpct">82%</span></div>
+      <div class="cbar"><i style="width:82%"></i></div>
+      <div class="cfoot"><b>Collected</b> toward <b>your goal line</b> &mdash; the exact amount you paid, nothing more. <span class="cex">(example)</span></div>
     </div>
-    <div class="fine">Full guarantee terms are provided in your program agreement before you start. The guarantee rewards breeders who implement; it is not a guarantee of any specific income, and results depend on your breed, market and effort.</div>
+    <div class="terms">
+      <div class="t"><span class="n">1</span><div><b>What counts.</b> Every deposit and puppy-sale payment you take in from your start date through Day 120, logged in the CRM we build with you. Countable, dated, on one screen &mdash; no guesswork about what qualifies.</div></div>
+      <div class="t"><span class="n">2</span><div><b>The goal line.</b> Your goal is simply what you paid for B.O.S.S. &mdash; nothing more. When your collected total reaches it, the guarantee is met, and you watch it fill on a live <b>collected / goal</b> bar the whole way.</div></div>
+      <div class="t"><span class="n">3</span><div><b>Your part.</b> Complete your build steps, show up to your Day 30 / 60 / 90 / 120 reviews, and launch what we build. The guarantee backs breeders who do the work &mdash; not a free look.</div></div>
+      <div class="t"><span class="n">4</span><div><b>If we fall short.</b> Do your part and still miss your goal line, and we refund every dollar you paid for the program. That's the whole deal.</div></div>
+    </div>
+    <div class="fine">Full written terms are in your program agreement before you start. The guarantee rewards breeders who implement; it is not a promise of any specific income, and results depend on your breed, market and effort.</div>
   </div>
 </div></section>
 
