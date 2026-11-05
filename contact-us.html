@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="build" content="1793901005">
+<script>window.__BV__='1793901005';(function(){try{fetch(location.pathname+'?_c='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){var m=t.match(/name="build" content="(\d+)"/);if(m&&m[1]&&m[1]!==window.__BV__){var k='rl_'+m[1];try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');}catch(e){}location.replace(location.pathname+'?v='+m[1]);}}).catch(function(){});}catch(e){}})();</script>
+<title>Contact — B.O.S.S.™ by BreedWise</title>
+<meta name="description" content="Questions about B.O.S.S. by BreedWise? Reach the team. We'll point you to the right next step for your program.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="boss-site.css">
+</head>
+<body>
+<div class="glow"><b class="g1"></b><b class="g2"></b><b class="g3"></b></div>
+
+<header class="nav"><div class="wrap">
+  <a class="brand" href="get-started.html">B<b>.</b>O<b>.</b>S<b>.</b>S<sup>&trade;</sup> <span>by BreedWise</span></a>
+  <button class="burger" id="burger" aria-label="Menu"><i></i><i></i><i></i></button>
+  <nav class="navlinks" id="navlinks">
+    <a href="how-it-works.html">How It Works</a>
+    <a href="success.html">Success</a>
+    <a href="about-us.html">About</a>
+    <a href="growth-team.html">Growth Team</a>
+    <a class="btn" href="get-started.html#form-frame">See If You Qualify</a>
+  </nav>
+</div></header>
+
+<!-- HERO -->
+<section class="phero"><span class="beam"></span><div class="wrap">
+  <div class="eyebrow">Contact</div>
+  <h1>Let's talk about <span class="goldgrad">your program.</span></h1>
+  <p class="lead">Have a question about B.O.S.S., or not sure if it's the right fit yet? Send us a note and we'll point you to the right next step.</p>
+  <p class="micro">Ready to apply? <a href="get-started.html#form-frame" style="color:var(--gold);text-decoration:underline">See if you qualify &rarr;</a></p>
+</div></section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<!-- CONTACT FORM -->
+<section><div class="wrap">
+  <div class="formwrap">
+    <form id="f" novalidate>
+      <div class="hp"><label>Leave this empty<input id="hp" tabindex="-1" autocomplete="off"></label></div>
+      <div class="row2">
+        <div class="field"><label for="name">Your name *</label><input id="name" autocomplete="name" required></div>
+        <div class="field"><label for="phone">Phone</label><input id="phone" type="tel" autocomplete="tel"></div>
+      </div>
+      <div class="field"><label for="email">Email *</label><input id="email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="kennel">Kennel / program (optional)</label><input id="kennel"></div>
+      <div class="field"><label for="msg">How can we help? *</label><textarea id="msg" placeholder="Tell us a bit about your program and your question…"></textarea></div>
+      <div class="consent">By submitting, you agree to receive emails and text messages from BreedWise. Msg &amp; data rates may apply. Reply STOP to opt out. <a href="/freecasestudy/terms/">Terms</a> &middot; <a href="/freecasestudy/privacy/">Privacy</a></div>
+      <button type="submit" class="btn" id="submitBtn">Send Message &rarr;</button>
+    </form>
+    <div class="done" id="done">
+      <div class="chk">&#10003;</div>
+      <h3>Message sent.</h3>
+      <p>Thanks for reaching out &mdash; we've got your note and a member of our team will get back to you. For anything urgent, email <a href="mailto:support@breedwise.io" style="color:var(--gold)">support@breedwise.io</a>.</p>
+    </div>
+    <p style="text-align:center;color:var(--muted);font-size:13px;margin-top:20px">Or email us directly at <a href="mailto:support@breedwise.io" style="color:var(--gold)">support@breedwise.io</a></p>
+  </div>
+</div></section>
+
+<footer class="foot"><div class="wrap">
+  <div class="flinks"><a href="how-it-works.html">How It Works</a><a href="success.html">Success</a><a href="about-us.html">About</a><a href="growth-team.html">Growth Team</a><a href="contact-us.html">Contact</a><a href="/freecasestudy/terms/">Terms</a><a href="/freecasestudy/privacy/">Privacy</a></div>
+  <div><b>B.O.S.S.&trade;</b> &middot; BreedWise Operating System &amp; Standards</div>
+  <div style="margin-top:8px">&copy; <span id="yr"></span> Breedwise LLC. Educational and implementation support for breeding programs. Not veterinary, legal or financial advice. Decisions about your dogs remain with your own veterinarian.</div>
+</div></footer>
+
+<script>
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  var b=document.getElementById('burger'),n=document.getElementById('navlinks');
+  b.addEventListener('click',function(){n.classList.toggle('open');});
+  n.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){n.classList.remove('open');});});
+  (function(){
+    var API='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/masterclass-optin';
+    var f=document.getElementById('f'),done=document.getElementById('done'),btn=document.getElementById('submitBtn');
+    function v(id){var e=document.getElementById(id);return e?e.value.trim():'';}
+    f.addEventListener('submit',function(e){
+      e.preventDefault();
+      if(document.getElementById('hp').value)return;
+      var name=v('name'),email=v('email');
+      if(!name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){alert('Please add your name and a valid email.');return;}
+      if(!v('msg')){alert('Please add a short message.');return;}
+      var message=['Kennel: '+v('kennel'),'',v('msg')].filter(Boolean).join('\n');
+      btn.textContent='Sending…';btn.disabled=true;
+      fetch(API,{method:'POST',headers:{'Content-Type':'application/json','apikey':'public'},body:JSON.stringify({name:name,email:email,phone:v('phone'),source:'BOSS Contact',message:message,notes:message})})
+        .then(function(r){return r.ok?r.json():Promise.reject(r);})
+        .then(function(){f.style.display='none';done.classList.add('on');done.scrollIntoView({behavior:'smooth',block:'center'});})
+        .catch(function(){btn.textContent='Send Message →';btn.disabled=false;window.location.href='mailto:support@breedwise.io?subject='+encodeURIComponent('BOSS inquiry — '+name)+'&body='+encodeURIComponent(message+'\n\n'+email+' '+v('phone'));});
+    });
+  })();
+</script>
+</body>
+</html>
