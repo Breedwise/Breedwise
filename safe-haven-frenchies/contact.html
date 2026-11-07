@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inquire · Safe Haven Frenchies</title>
+<meta name="description" content="Get in touch with Safe Haven Frenchies about available French Bulldog puppies, upcoming litters, and joining our waitlist. We reply within 24 hours.">
+<meta property="og:title" content="Inquire · Safe Haven Frenchies">
+<meta property="og:image" content="assets/logo.webp">
+<link rel="icon" type="image/webp" href="assets/logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shf.css">
+</head>
+<body id="top">
+
+<nav class="site" id="nav"><div class="in">
+  <a class="brand" href="index.html"><img src="assets/logo.webp" alt="Safe Haven Frenchies"><span class="nm">Safe Haven<span>FRENCHIES</span></span></a>
+  <div class="navlinks">
+    <a href="index.html">Home</a><a href="available.html">Available</a><a href="dogs.html">Our Dogs</a><a href="story.html">Our Story</a><a href="process.html">Process</a><a href="contact.html" class="active">Inquire</a><a class="btn primary" href="apply.html">Apply</a>
+  </div>
+  <button class="burger" id="burger" aria-label="Menu"><i></i><i></i><i></i></button>
+</div></nav>
+<div class="mobilemenu" id="mobilemenu">
+  <a href="index.html">Home</a><a href="available.html">Available</a><a href="dogs.html">Our Dogs</a><a href="story.html">Our Story</a><a href="process.html">Process</a><a href="contact.html">Inquire</a><a class="btn primary" href="apply.html">Apply</a>
+</div>
+
+<section class="phero"><div class="wrap pin">
+  <div class="eyebrow rv">Inquire</div>
+  <h1 class="rv">Let's talk</h1>
+  <p class="rv">Questions about a puppy, an upcoming litter, or joining our waitlist? Send us a note — we'd love to hear from you.</p>
+</div></section>
+
+<section class="sec" style="padding-top:clamp(50px,7vw,86px)"><div class="wrap">
+  <div class="inq">
+    <div class="left rv">
+      <h2>We reply within a day.</h2>
+      <p>Tell us about your family and what you're hoping for, and we'll help you find the right Frenchie — or let you know when the right one is on the way.</p>
+      <div class="contactrow">
+        <!-- TODO: replace the Instagram href with Adam & Kayden's real handle, and add phone/email if desired -->
+        <a href="#" target="_blank" rel="noopener"><span class="ci"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></span>Follow us on Instagram</a>
+        <div class="row"><span class="ci"><svg viewBox="0 0 24 24"><path d="M12 22a9 9 0 0 1-9-9c0-3 1.5-5.5 4-7M12 22a9 9 0 0 0 9-9c0-3-1.5-5.5-4-7M8 3l4 4 4-4"/></svg></span>Delivery available nationwide</div>
+        <div class="row"><span class="ci"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>We reply within 24 hours</div>
+      </div>
+    </div>
+    <div id="formCard" class="form glass rv">
+      <h3>Send an inquiry</h3>
+      <div class="fdesc">A few quick details and we'll be in touch.</div>
+      <form id="inqForm" novalidate>
+        <input class="hp" type="text" name="hp_field" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="frow">
+          <div class="fld"><label for="f-name">Your name</label><input id="f-name" name="name" autocomplete="name" required></div>
+          <div class="fld"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
+        </div>
+        <div class="fld"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="fld"><label for="f-interest">What are you interested in?</label>
+          <select id="f-interest" name="interest">
+            <option value="">Select one…</option>
+            <option>An available puppy</option>
+            <option>An upcoming litter / waitlist</option>
+            <option>A specific color or sex</option>
+            <option>Just a question</option>
+          </select>
+        </div>
+        <div class="fld"><label for="f-msg">Your message</label><textarea id="f-msg" name="message" placeholder="Tell us a little about your family and what you're looking for…"></textarea></div>
+        <button type="submit" class="btn primary" id="f-submit">Send Inquiry →</button>
+        <div class="fmsg" id="f-msg-out"></div>
+      </form>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="foot">
+    <div><div class="brand"><img src="assets/logo.webp" alt="Safe Haven Frenchies"><div class="nm">Safe Haven<span>FRENCHIES</span></div></div>
+      <p>Purpose-bred French Bulldogs, raised in faith and family and placed as lifelong companions. Delivery available nationwide.</p></div>
+    <div><h4>Explore</h4><ul><li><a href="index.html">Home</a></li><li><a href="available.html">Available Puppies</a></li><li><a href="dogs.html">Our Dogs</a></li><li><a href="story.html">Our Story</a></li><li><a href="process.html">The Process</a></li><li><a href="apply.html">Apply</a></li></ul></div>
+    <div><h4>Connect</h4><ul><li><a href="contact.html">Message Us</a></li><li><a href="apply.html">Puppy Application</a></li><li><a href="#" rel="noopener">Instagram</a></li><li><span style="color:var(--faint)">Replies within 24 hrs</span></li></ul></div>
+  </div>
+  <div class="bottom"><span>© <span data-yr></span> Safe Haven Frenchies</span><span class="cu">Purposed Bred. Family Raised.</span></div>
+</div></footer>
+
+<script src="shf.js"></script>
+</body>
+</html>
