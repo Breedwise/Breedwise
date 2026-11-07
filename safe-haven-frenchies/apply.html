@@ -28,7 +28,7 @@
 <section class="phero"><div class="wrap pin">
   <div class="eyebrow rv">Puppy Application</div>
   <h1 class="rv">Apply for a puppy</h1>
-  <p class="rv">This isn't a contract — it just helps us get to know you so we can match you with the right Frenchie. We'll be in touch within a day.</p>
+  <p class="rv">This isn't a contract, it just helps us get to know you so we can match you with the right Frenchie. We'll be in touch within a day.</p>
 </div></section>
 
 <section class="sec" style="padding-top:clamp(50px,7vw,86px)"><div class="wrap" style="max-width:760px">
@@ -98,10 +98,10 @@
     ].filter(function(x){return x && x.replace(/^.*: $/,'')!=='';});
     var message=lines.join('\n');
     var btn=document.getElementById('a-submit'); btn.disabled=true; btn.textContent='Submitting...';
-    var done=function(){ var c=document.getElementById('formCard'); if(c) c.innerHTML='<div class="done"><div class="ic">✦</div><h3>Thank you, '+name.replace(/[<>&]/g,'')+'.</h3><p>Your application is in. We’ll review it and be in touch soon — usually within a day.</p></div>'; };
+    var done=function(){ var c=document.getElementById('formCard'); if(c) c.innerHTML='<div class="done"><div class="ic">✦</div><h3>Thank you, '+name.replace(/[<>&]/g,'')+'.</h3><p>Your application is in. We’ll review it and be in touch soon, usually within a day.</p></div>'; };
     var toOptin=function(){ fetch(OPTIN,{method:'POST',headers:{'Content-Type':'application/json','apikey':'public'},body:JSON.stringify({name:name,email:email,phone:phone,source:'Safe Haven Frenchies Application',message:message,notes:message})})
       .then(function(r){return r.ok?r.json():Promise.reject(r);}).then(done)
-      .catch(function(){ btn.disabled=false; btn.textContent='Submit Application →'; if(out){out.style.color='#b4563f';out.textContent='Something went wrong — please email us directly.';} window.location.href='mailto:'+OWNER_EMAIL+'?subject='+encodeURIComponent('Puppy application — '+name)+'&body='+encodeURIComponent(message+'\n\n'+email+' · '+phone); }); };
+      .catch(function(){ btn.disabled=false; btn.textContent='Submit Application →'; if(out){out.style.color='#b4563f';out.textContent='Something went wrong. Please email us directly.';} window.location.href='mailto:'+OWNER_EMAIL+'?subject='+encodeURIComponent('Puppy application: '+name)+'&body='+encodeURIComponent(message+'\n\n'+email+' · '+phone); }); };
     fetch(KOS,{method:'POST',headers:{'Content-Type':'application/json','apikey':'public'},body:JSON.stringify({name:name,email:email,phone:phone,message:message,source:'Puppy Application'})})
       .then(function(r){return r.ok?r.json():Promise.reject(r);}).then(done).catch(toOptin);
   });

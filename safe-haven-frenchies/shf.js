@@ -1,4 +1,4 @@
-/* Safe Haven Frenchies — shared behavior */
+/* Safe Haven Frenchies, shared behavior */
 (function () {
   // year stamps
   document.querySelectorAll('[data-yr]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
@@ -78,7 +78,7 @@
       var done = function () {
         var card = document.getElementById('formCard');
         if (card) card.innerHTML = '<div class="done"><div class="ic">✦</div><h3>Thank you, ' +
-          name.replace(/[<>&]/g, '') + '.</h3><p>Your inquiry is received. We will be in touch soon — usually within a day.</p></div>';
+          name.replace(/[<>&]/g, '') + '.</h3><p>Your inquiry is received. We will be in touch soon, usually within a day.</p></div>';
       };
       var toOptin = function () {
         fetch(OPTIN, { method: 'POST', headers: { 'Content-Type': 'application/json', 'apikey': 'public' },
@@ -86,8 +86,8 @@
           .then(function (r) { return r.ok ? r.json() : Promise.reject(r); }).then(done)
           .catch(function () {
             btn.disabled = false; btn.textContent = 'Send Inquiry →';
-            if (out) { out.style.color = '#b4563f'; out.textContent = 'Something went wrong — please email us directly.'; }
-            window.location.href = 'mailto:' + OWNER_EMAIL + '?subject=' + encodeURIComponent('Puppy inquiry — ' + name) +
+            if (out) { out.style.color = '#b4563f'; out.textContent = 'Something went wrong. Please email us directly.'; }
+            window.location.href = 'mailto:' + OWNER_EMAIL + '?subject=' + encodeURIComponent('Puppy inquiry: ' + name) +
               '&body=' + encodeURIComponent(message + '\n\n' + email + ' · ' + phone);
           });
       };
