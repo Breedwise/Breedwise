@@ -59,8 +59,8 @@ h3.disp{font-size:clamp(20px,2.4vw,26px)}
 /* ---------- nav ---------- */
 .nav{position:sticky;top:0;z-index:50;background:rgba(16,15,12,.72);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .nav .in{max-width:var(--maxw);margin:0 auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.brand{font-family:var(--disp);font-size:24px;font-weight:600;letter-spacing:.3px;display:flex;align-items:center;gap:9px}
-.brand b{color:var(--gold);font-weight:600}
+.brand{font-family:var(--disp);font-size:24px;font-weight:600;letter-spacing:0;display:flex;align-items:center;gap:9px}
+.brand b{color:var(--gold);font-weight:600;margin-left:-7px}
 .brand .chip{font-family:var(--body);font-size:10px;letter-spacing:.24em;font-weight:700;color:var(--bg);background:var(--grad);padding:3px 7px;border-radius:5px}
 .navlinks{display:flex;align-items:center;gap:26px}
 .navlinks a{font-size:14px;color:var(--sub);font-weight:500;transition:color .2s}
