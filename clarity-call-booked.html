@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>You're Booked | BreedWise Clarity Call</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#0a0a0a; --panel:#141414; --line:#242424;
+    --gold:#cdae72; --gold2:#e2cb86; --grad:linear-gradient(135deg,#e2cb86,#c3a35c);
+    --ink:#f4f1ea; --sub:#c9c3b8; --muted:#8f8a80;
+    --disp:'Anton',Impact,sans-serif; --body:'Poppins',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px}
+  .disp{font-family:var(--disp);font-weight:400;letter-spacing:.5px;line-height:1.04}
+  .eyebrow{font-family:var(--body);font-weight:600;font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold)}
+  b,strong{font-weight:600}
+
+  .topbar{border-bottom:1px solid var(--line);padding:16px 0;text-align:center}
+  .brand{font-family:var(--disp);font-size:22px;letter-spacing:1.5px}
+  .brand b{color:var(--gold)}
+
+  .hero{position:relative;text-align:center;padding-block:54px 16px;overflow:hidden}
+  .hero::before{content:"";position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:760px;max-width:130%;height:440px;
+    background:radial-gradient(closest-side, rgba(205,174,114,.22), transparent 72%);pointer-events:none}
+  .hero .in{position:relative}
+  .check{width:74px;height:74px;border-radius:50%;background:var(--grad);color:#1a1405;display:grid;place-items:center;
+    font-size:38px;margin:0 auto 18px;box-shadow:0 14px 40px rgba(205,174,114,.35)}
+  .hero h1{font-size:clamp(32px,6vw,54px);margin:0}
+  .hero .sub{color:var(--sub);font-size:clamp(15px,2vw,18px);max-width:52ch;margin:16px auto 0}
+  .hero .sub b{color:var(--ink);font-weight:500}
+
+  .section{padding-block:20px}
+  .shead{text-align:center;margin-bottom:20px}
+  .shead h2{font-family:var(--disp);font-weight:400;font-size:clamp(20px,3.4vw,26px);letter-spacing:.5px;margin:0}
+
+  .btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--body);font-weight:600;font-size:15px;
+    padding:14px 26px;border-radius:999px;border:1px solid transparent;cursor:pointer;text-decoration:none}
+  .btn.primary{background:var(--grad);color:#1a1405}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .addcal{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+
+  /* steps to prepare */
+  .prep{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:8px 8px;margin-top:8px}
+  .prep .row{display:flex;gap:16px;align-items:flex-start;padding:18px 20px;border-bottom:1px solid var(--line)}
+  .prep .row:last-child{border-bottom:none}
+  .prep .n{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1d1d1d;border:1px solid var(--line);
+    color:var(--gold2);font-family:var(--disp);font-size:16px;display:grid;place-items:center}
+  .prep .rt b{color:var(--ink);font-weight:600;font-size:15.5px;display:block;margin-bottom:3px}
+  .prep .rt p{margin:0;color:var(--sub);font-size:14px}
+
+  /* video */
+  .video{margin-top:10px}
+  .videoframe{aspect-ratio:16/9;background:#111;border:1px solid var(--line);border-radius:16px;display:grid;place-items:center;color:var(--muted);
+    font-size:13px;letter-spacing:.04em;text-align:center;padding:20px}
+  .videoframe .play{width:62px;height:62px;border-radius:50%;background:var(--grad);color:#1a1405;display:grid;place-items:center;font-size:24px;margin-bottom:10px}
+
+  /* prep reply callout */
+  .reply{background:linear-gradient(135deg,rgba(205,174,114,.12),rgba(205,174,114,.04));border:1px solid rgba(205,174,114,.4);
+    border-radius:18px;padding:24px 24px;text-align:center;margin-top:10px}
+  .reply .t{font-family:var(--disp);font-size:19px;letter-spacing:.5px;color:var(--ink);margin-bottom:8px}
+  .reply p{color:var(--sub);font-size:14.5px;margin:0 auto;max-width:54ch}
+  .reply b{color:var(--gold2);font-weight:600}
+
+  footer{border-top:1px solid var(--line);padding-block:30px 60px;text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
+  footer .fb{font-family:var(--disp);font-size:16px;letter-spacing:1px;color:var(--gold)}
+  footer .disc{max-width:62ch;margin:10px auto 0;line-height:1.6;font-size:11.5px}
+</style>
+</head>
+<body>
+
+  <div class="topbar"><span class="brand disp">BREED<b>WISE</b></span></div>
+
+  <div class="hero">
+    <div class="wrap in">
+      <div class="check">✓</div>
+      <span class="eyebrow">You're booked</span>
+      <h1 class="disp">Your Clarity Call Is Set.</h1>
+      <p class="sub">Check your inbox for the confirmation and calendar invite. On the call, we'll pinpoint the <b>#1 thing holding your program back</b> and what to fix first. Two minutes of prep below will make it count.</p>
+    </div>
+  </div>
+
+  <!-- add to calendar -->
+  <section class="section">
+    <div class="wrap">
+      <div class="addcal">
+        <!-- TODO(Austin): swap in the real add-to-calendar links from the CC360 booking confirmation. -->
+        <a href="#" class="btn primary">Add to Calendar</a>
+        <a href="#" class="btn ghost">Reschedule</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3-min pre-call video -->
+  <section class="section">
+    <div class="wrap">
+      <div class="shead"><h2 class="disp">Watch This First (3 min)</h2></div>
+      <div class="video">
+        <div class="videoframe">
+          <!-- TODO(Austin): embed the 3-minute pre-call video (what to expect + how to get the most out of it). -->
+          <div class="play">▶</div>
+          3-minute pre-call video goes here
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- prepare -->
+  <section class="section">
+    <div class="wrap">
+      <div class="shead"><h2 class="disp">Come Ready With These</h2></div>
+      <div class="prep">
+        <div class="row"><div class="n">1</div><div class="rt"><b>Your breed(s) and current pricing</b><p>What you raise and what you're charging today.</p></div></div>
+        <div class="row"><div class="n">2</div><div class="rt"><b>The one thing you wish was working</b><p>Pricing, health testing, waitlist, or marketing — whatever nags at you most.</p></div></div>
+        <div class="row"><div class="n">3</div><div class="rt"><b>Be somewhere you can focus</b><p>20 quiet minutes, with your Instagram handy. That's all it takes.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- reply to prep -->
+  <section class="section">
+    <div class="wrap">
+      <div class="reply">
+        <div class="t disp">One Quick Favor</div>
+        <p>Reply to your confirmation with your <b>website or price list</b> (and your Instagram handle, if we don't have it). We'll review it before we meet so the call is built around your program — not generic advice.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="fb">BREEDWISE</div>
+    <div class="disc">BreedWise Academy, LLC · 800 N King Street, Suite 304 #4050, Wilmington, DE<br>Nothing on this page is veterinary, legal, tax, or investment advice. Consult your own licensed professionals before making decisions that affect your dogs, business, or finances.</div>
+  </footer>
+
+</body>
+</html>
