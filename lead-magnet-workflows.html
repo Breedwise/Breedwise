@@ -119,6 +119,7 @@ th{color:var(--mut);font-weight:600;letter-spacing:.03em;font-size:12px;text-tra
   <a href="#pre">1 · Pre-flight (must pass)</a>
   <a href="#std">2 · Global standards</a>
   <div class="th">The workflows</div>
+  <a href="#w0" class="sub">W0 · New Lead → Team Alert</a>
   <a href="#w1" class="sub">W1 · Free Case Study</a>
   <a href="#w2" class="sub">W2 · Profitable Breeder</a>
   <a href="#w3" class="sub">W3 · Healthy Litter</a>
@@ -260,6 +261,35 @@ th{color:var(--mut);font-weight:600;letter-spacing:.03em;font-size:12px;text-tra
     <li><strong>If</strong> lead band = hot/qualified <strong>→ SMS → Internal</strong> to the setter: <code>Hot {{source}} lead: {{first_name}} {{phone}}. Call within 10 min.</code></li>
     <li><strong>Else</strong> → add to a daily digest tag <code>digest-new</code> (a separate once-a-day workflow emails the rolled-up list).</li>
   </ul>
+</section>
+
+<!-- W0 NEW LEAD TEAM ALERT -->
+<section id="w0">
+  <h2 class="s">W0 · New Lead → Team Alert <span style="font-weight:400;opacity:.7">(every lead magnet)</span></h2>
+  <div class="card wf">
+    <div class="kv">
+      <span class="kk">Purpose</span><span>The moment anyone opts into <em>any</em> lead magnet, alert the whole team so someone reaches out fast.</span>
+      <span class="kk">Trigger</span><span>tag added <span class="tag">lead-magnet</span> — one shared tag applied by every opt-in form (see setup note)</span>
+      <span class="kk">Covers</span><span>Case Study · Profitable Breeder Scorecard · Healthy Litter Scorecard · Puppy Content Masterclass · Profitable Litter Blueprint · any future magnet</span>
+      <span class="kk">Notify via</span><span>Email + SMS + CC360 in-app notification — to the whole <strong>Team</strong> group</span>
+      <span class="kk">Ownership</span><span>Whole team, first to claim (apply <span class="tag">lead-claimed</span> to take it)</span>
+      <span class="kk">Reminder</span><span>24h after opt-in if still unclaimed</span>
+    </div>
+  </div>
+
+  <p><strong>One-time setup — the shared tag.</strong> On every lead-magnet opt-in (each funnel's capture fn / form), add <span class="tag">lead-magnet</span> <em>alongside</em> its own tag (<span class="tag">case study - opted in</span>, <span class="tag">pb-scorecard-complete</span>, <span class="tag">litter-scorecard-optin</span>, <span class="tag">puppy-content-playbook</span>, <span class="tag">profitable-litter-blueprint</span>, …). That one tag is this workflow's only trigger — add a new magnet later and it's covered the instant it applies <span class="tag">lead-magnet</span>. Also create a CC360 <strong>Team</strong> user-group (everyone who should get alerts) and the tag <span class="tag">lead-claimed</span>.</p>
+
+  <p><strong>Trigger:</strong> tag added <span class="tag">lead-magnet</span>. This workflow <em>only alerts the team</em> — it never messages the lead (that's W1–W6, running in parallel).</p>
+  <ul class="steps">
+    <li><strong>1 · Email → Internal</strong> to the <strong>Team</strong> group, instant. Subject: <code>🔔 New lead: {{contact.first_name}} — {{contact.source}}</code>. Body: name, email, phone, Instagram, which magnet (<code>{{contact.source}}</code>), and <code>{{contact.profile_url}}</code>. CTA: "First to reach out, claim it in CC360."</li>
+    <li><strong>2 · SMS → Internal</strong> to each Team member, instant: <code>New {{contact.source}} lead: {{contact.first_name}} {{contact.phone}}. First to reach out, claim it in CC360.</code></li>
+    <li><strong>3 · In-app notification</strong> to the Team (CC360 notification / Manual Action) so it also surfaces for anyone logged in.</li>
+    <li><strong>4 · Create task</strong> "Reach out to {{first_name}} ({{source}})", due in 1 hour, assigned to the Team pool (unassigned — first to claim).</li>
+    <li><strong>5 · Wait 24 hours.</strong></li>
+    <li><strong>6 · If</strong> contact does <em>not</em> have <span class="tag">lead-claimed</span> → re-notify <strong>Email + SMS → Internal</strong>: <code>⏰ Still no outreach: {{first_name}} ({{source}}) opted in 24h ago — someone grab this.</code></li>
+    <li><strong>7 · Exit</strong> the moment <span class="tag">lead-claimed</span> is added (whoever reaches out applies it — cancels the 24h reminder). Otherwise exit after the reminder.</li>
+  </ul>
+  <div class="warn"><strong>W0 guards:</strong> Alerts only — never messages the lead. Keep SMS copy to one segment. "First to claim" needs discipline: whoever calls must add <span class="tag">lead-claimed</span> immediately or two people double-dial — if that happens, switch Ownership to round-robin (assign the task to one rotating user instead of the group). Prevent re-fire on the <em>same</em> opt-in: trigger on <span class="tag">lead-magnet</span> <em>added</em> (not "contact updated"), set <em>re-entry off</em>, and have each funnel remove <span class="tag">lead-magnet</span> at the end of its nurture so a genuine <em>second</em> opt-in later can alert again.</div>
 </section>
 
 <!-- W1 FREE CASE STUDY -->
