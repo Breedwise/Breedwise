@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Contact | BreedWise B.O.S.S.</title>
+<meta name="description" content="Get in touch with the BreedWise B.O.S.S. team.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="boss.css">
+</head>
+<body id="top">
+
+<div class="glow" aria-hidden="true"><b class="g1"></b><b class="g2"></b><b class="g3"></b></div>
+
+<nav class="nav"><div class="in">
+  <a class="brand" href="get-started.html">Breed<b>Wise</b> <span class="chip">BOSS</span></a>
+  <div class="navlinks">
+    <a href="how-it-works.html">How It Works</a>
+    <a href="success.html">Success</a>
+    <a href="growth-team.html">Growth Team</a>
+    <a href="about.html">About</a>
+    <a href="contact.html" class="active">Contact</a>
+    <a class="btn primary" href="get-started.html#apply">See If You Qualify</a>
+  </div>
+  <button class="burger" id="burger" aria-label="Menu"><i></i><i></i><i></i></button>
+</div></nav>
+<div class="mobilemenu" id="mobilemenu">
+  <a href="how-it-works.html">How It Works</a>
+  <a href="success.html">Success</a>
+  <a href="growth-team.html">Growth Team</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+  <a href="get-started.html#apply">See If You Qualify</a>
+</div>
+
+<header class="sec hero" style="padding-bottom:0">
+  <div class="wrap">
+    <div class="eyebrow rv">Contact</div>
+    <h1 class="disp rv">Let's talk.</h1>
+    <p class="lead rv" style="margin:20px auto 0">Questions about BOSS, or want to know if your program is a fit? Send a note and we'll get back to you, usually within a day.</p>
+  </div>
+</header>
+
+<section class="sec">
+  <div class="wrap applywrap">
+    <div class="form rv" id="contactCard">
+      <form id="contactForm" novalidate>
+        <input type="text" name="company_url" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="grid2">
+          <div class="field"><label for="c-name">Your name</label><input id="c-name" type="text" autocomplete="name" required></div>
+          <div class="field"><label for="c-email">Email</label><input id="c-email" type="email" autocomplete="email" required></div>
+        </div>
+        <div class="field"><label for="c-phone">Phone (optional)</label><input id="c-phone" type="tel" autocomplete="tel"></div>
+        <div class="field"><label for="c-msg">How can we help?</label><textarea id="c-msg" required></textarea></div>
+        <button class="btn primary lg" id="contactBtn" type="submit" style="width:100%;justify-content:center">Send Message →</button>
+        <div class="msg" id="contactMsg" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+    <div class="center" style="margin-top:22px;color:var(--sub);font-size:14px">
+      Prefer email? <a href="mailto:support@breedwise.io" style="color:var(--gold)">support@breedwise.io</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec tight ctaband">
+  <div class="wrap rv">
+    <h2 class="disp">Ready to build?</h2>
+    <p class="sub">Skip the back-and-forth, apply for your fit call.</p>
+    <a class="btn primary lg" href="get-started.html#apply">See If You Qualify →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div><a class="brand" href="get-started.html">Breed<b>Wise</b> <span class="chip">BOSS</span></a><p>You raise the dogs. We build everything else.</p></div>
+      <div class="fcol"><h4>Company</h4><a href="about.html">About</a><a href="how-it-works.html">How It Works</a><a href="success.html">Success</a><a href="growth-team.html">Growth Team</a></div>
+      <div class="fcol"><h4>Connect</h4><a href="https://instagram.com/" rel="noopener">Instagram</a><a href="contact.html">Contact</a><a href="get-started.html#apply">Get Started</a><a href="mailto:support@breedwise.io">support@breedwise.io</a></div>
+    </div>
+    <div class="fbottom"><span>© <span data-yr></span> Breedwise LLC. All rights reserved.</span><span><a href="privacy.html">Privacy Policy</a> &nbsp;·&nbsp; <a href="terms.html">Terms of Service</a></span></div>
+  </div>
+</footer>
+
+<script src="boss.js"></script>
+<script>
+(function(){
+  var form=document.getElementById('contactForm'); if(!form)return;
+  var OPTIN='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/masterclass-optin';
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(form.company_url && form.company_url.value) return;
+    var out=document.getElementById('contactMsg');
+    var g=function(id){var el=document.getElementById(id);return el?el.value.trim():'';};
+    var name=g('c-name'), email=g('c-email'), phone=g('c-phone'), msg=g('c-msg');
+    if(!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || !msg){
+      if(out){out.style.color='#e0896f';out.textContent='Add your name, a valid email, and a message.';}
+      return;
+    }
+    var btn=document.getElementById('contactBtn'); btn.disabled=true; btn.textContent='Sending…';
+    fetch(OPTIN,{method:'POST',headers:{'Content-Type':'application/json','apikey':'public'},
+      body:JSON.stringify({name:name,email:email,phone:phone,source:'BOSS Contact',message:msg,notes:msg})})
+    .then(function(r){return r.ok?r.json():Promise.reject(r);})
+    .then(function(){
+      var card=document.getElementById('contactCard');
+      if(card)card.innerHTML='<div class="done"><div class="ic">✦</div><h3>Thanks, '+name.replace(/[<>&]/g,'')+'.</h3><p>Your message is in. We\'ll be in touch soon, usually within a day.</p></div>';
+    })
+    .catch(function(){
+      btn.disabled=false; btn.textContent='Send Message →';
+      if(out){out.style.color='#e0896f';out.textContent='Something went wrong. Please email support@breedwise.io.';}
+    });
+  });
+})();
+</script>
+</body>
+</html>
