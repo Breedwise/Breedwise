@@ -155,6 +155,72 @@
   .flow .st{background:var(--card2);border:1px solid var(--line2);border-radius:8px;padding:8px 14px;font-size:12px;font-weight:500}
   .flow .ar{color:var(--faint)}
   .hidden{display:none!important}
+
+/* ── nav grouping ───────────────────────────────────────────── */
+.navgrp{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);
+  font-weight:700;padding:16px 14px 6px;margin-top:4px}
+.navgrp:first-child{margin-top:0}
+
+/* ── who am I ───────────────────────────────────────────────── */
+.whobar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card2);
+  border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:16px}
+.whobar b{color:var(--ink)}
+.whobar select{background:var(--card3);border:1px solid var(--line2);border-radius:8px;
+  padding:8px 12px;color:var(--ink);font-family:inherit;font-size:14px}
+
+/* ── record cards (clients / members) ───────────────────────── */
+.recs{display:grid;gap:12px}
+.rec{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.rec>summary{cursor:pointer;list-style:none;padding:14px 16px;display:flex;align-items:center;gap:12px}
+.rec>summary::-webkit-details-marker{display:none}
+.rec>summary::after{content:'▾';margin-left:auto;color:var(--muted);font-size:13px}
+.rec[open]>summary::after{content:'▴'}
+.rec .nm{font-weight:600;font-size:15.5px}
+.rec .meta{font-size:12.5px;color:var(--muted)}
+.rec .bd{padding:0 16px 16px;border-top:1px solid var(--line)}
+.fieldgrid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
+@media(min-width:720px){.fieldgrid.c2{grid-template-columns:1fr 1fr}.fieldgrid.c3{grid-template-columns:1fr 1fr 1fr}}
+.fw label{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);font-weight:700;margin-bottom:5px}
+.chk{display:flex;align-items:center;gap:9px;padding:7px 0;font-size:14px;border-top:1px solid var(--line)}
+.chk:first-of-type{border-top:0}
+.chk input{width:17px;height:17px;accent-color:var(--gold);flex:0 0 auto}
+.chk.done span{color:var(--muted);text-decoration:line-through}
+.subh{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);
+  font-weight:700;margin:18px 0 8px}
+.warn{background:var(--amber-s);border:1px solid var(--amber);color:var(--ink);
+  border-radius:10px;padding:10px 13px;font-size:13.5px;margin-top:10px}
+.danger{background:var(--red-s);border-color:var(--red)}
+.ok{background:var(--green-s);border-color:var(--green)}
+
+/* ── who-am-I bar ───────────────────────────────────────────────── */
+.whobar .lbl0{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);font-weight:700}
+.whobar .muted{font-size:12px}
+
+/* ── three across ──────────────────────────────────────────────── */
+.tiles.c3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:1000px){.tiles.c3{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.tiles,.tiles.c3{grid-template-columns:1fr}}
+
+/* ── record cards ──────────────────────────────────────────────── */
+.rec .av{flex:0 0 auto;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  background:var(--gold-soft);border:1px solid var(--gold-line);color:var(--gold2);
+  font-size:12px;font-weight:700;letter-spacing:.04em}
+.rec .recid{min-width:0}
+.rec .nm,.rec .meta{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.recdel{margin-top:22px;background:transparent;border:1px solid var(--line2);color:var(--muted);
+  border-radius:9px;padding:8px 14px;font-family:var(--body);font-size:12px;cursor:pointer}
+.recdel:hover{border-color:var(--red);color:var(--red)}
+.chkcnt{font-size:11.5px;margin-top:7px}
+
+/* ── end-of-day entries ────────────────────────────────────────── */
+.eodrow{border-top:1px solid var(--line);padding:13px 0;font-size:14px;font-weight:300;line-height:1.55}
+.eodrow:first-of-type{border-top:0;padding-top:4px}
+.eodwho{font-weight:600;font-size:13px;margin-bottom:4px}
+.eodnum{display:inline-block;margin-left:8px;background:var(--gold-soft);border:1px solid var(--gold-line);
+  color:var(--gold2);border-radius:20px;padding:2px 10px;font-size:11px;font-weight:600;letter-spacing:.03em}
+.eodrow .warn{margin-top:7px}
 </style>
 </head>
 <body>
@@ -302,7 +368,20 @@ function seed(){return {
   {name:"Regina",role:"Sales",outcomes:"Pipeline, qualification, conversions",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"},
   {name:"Dr. Emmanuel",role:"Scientific / Veterinary",outcomes:"Scientific accuracy and education quality",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"},
   {name:"Bookkeeper",role:"Finance",outcomes:"Accurate books and timely reporting",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"}
- ]
+ ],
+ calendar:{
+  rhythm:[
+   {day:"Monday",time:"",what:"Leadership scorecard \u2014 numbers, blockers, decisions",who:"Austin"},
+   {day:"Monday",time:"",what:"Weekly commitments set for the week",who:"Austin"},
+   {day:"Tuesday",time:"",what:"Sales pipeline review",who:"Regina"},
+   {day:"Wednesday",time:"",what:"Delivery / client health review",who:"Jenn"},
+   {day:"Thursday",time:"",what:"Content + lead review",who:"Yasamine"},
+   {day:"Friday",time:"",what:"Week closed out \u2014 commitments kept or missed",who:"Austin"}
+  ],
+  events:[]
+ },
+ boss:[],
+ academy:[]
 };}
 
 /* ---------- state ---------- */
@@ -318,20 +397,66 @@ function save(){DB.updated=Date.now();lastEdit=Date.now();setSync('saving');
   clearTimeout(saveT);saveT=setTimeout(function(){try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}},300);
   clearTimeout(srvT);srvT=setTimeout(serverSave,900);
 }
+/* ── three-way merge, by section ───────────────────────────────────
+   The store used to accept any write and overwrite the whole document,
+   so whoever saved last erased everyone else. It now refuses a stale
+   write (409) and hands back the current version. BASE holds a copy of
+   each section as it stood at our last successful sync, which is what
+   makes a real merge possible: a section we have not touched takes the
+   server's version, a section we have edited keeps ours. Two people in
+   different sections never collide. Two people in the SAME section —
+   ours wins and we say so out loud, rather than losing work silently.
+   ────────────────────────────────────────────────────────────────── */
+var BASE={};
+function snapBase(){BASE={};for(var k in DB){try{BASE[k]=JSON.stringify(DB[k]);}catch(e){}}}
+function mergeFrom(serverData){
+  if(!serverData||typeof serverData!=='object')return [];
+  var clashes=[],k;
+  for(k in serverData){
+    var theirs=JSON.stringify(serverData[k]);
+    var base=BASE.hasOwnProperty(k)?BASE[k]:undefined;
+    var ours;try{ours=JSON.stringify(DB[k]);}catch(e){ours=undefined;}
+    if(theirs===ours)continue;                       /* already agree */
+    if(ours===base){DB[k]=serverData[k];continue;}   /* we never touched it — take theirs */
+    if(theirs===base)continue;                       /* they never touched it — keep ours */
+    if(k!=='updated')clashes.push(k);                /* both changed it */
+  }
+  for(k in serverData)if(!DB.hasOwnProperty(k))DB[k]=serverData[k];
+  return clashes;
+}
 function serverSave(){
   fetch(FN_OS,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({action:'set',secret:OS_SECRET,data:DB,rev:myRev})})
-    .then(function(r){return r.ok?r.json():Promise.reject(r);})
-    .then(function(resp){myRev=resp.rev||myRev;serverOnline=true;setSync('synced');
-      $('#savedAt').textContent='Synced '+new Date(resp.updated||Date.now()).toLocaleString();})
+    .then(function(r){return r.json().then(function(d){return {status:r.status,d:d};},function(){return {status:r.status,d:null};});})
+    .then(function(res){
+      serverOnline=true;
+      if(res.status===409&&res.d&&res.d.conflict){
+        var clashes=mergeFrom(res.d.data);
+        myRev=res.d.rev||myRev;
+        try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}
+        var cur=currentSection();build(cur);
+        toast(clashes.length
+          ? 'Merged with the team — your edits kept in: '+clashes.map(sectionName).join(', ')
+          : 'Merged with the team');
+        clearTimeout(srvT);srvT=setTimeout(serverSave,600);   /* retry on the fresh rev */
+        return;
+      }
+      if(res.status>=400||!res.d||!res.d.ok){
+        setSync('local');$('#savedAt').textContent='Saved locally '+new Date().toLocaleString();
+        return;
+      }
+      myRev=res.d.rev||myRev;snapBase();setSync('synced');
+      $('#savedAt').textContent='Synced '+new Date(res.d.updated||Date.now()).toLocaleString();
+    })
     .catch(function(){serverOnline=false;setSync('local');
       $('#savedAt').textContent='Saved locally '+new Date().toLocaleString();});
 }
+function sectionName(k){for(var i=0;i<SECTIONS.length;i++)if(SECTIONS[i].id===k)return SECTIONS[i].name;return k;}
 function serverLoad(cb){
   fetch(FN_OS,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({action:'get',secret:OS_SECRET})})
     .then(function(r){return r.ok?r.json():Promise.reject(r);})
     .then(function(resp){serverOnline=true;
       if(resp&&resp.data){DB=Object.assign(seed(),resp.data);myRev=resp.rev||0;try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}}
-      cb&&cb(true,!!(resp&&resp.data));})
+      snapBase();cb&&cb(true,!!(resp&&resp.data));})
     .catch(function(){serverOnline=false;cb&&cb(false,false);});
 }
 function currentSection(){var a=document.querySelector('#nav a.on');return a?a.dataset.id:'command';}
@@ -342,8 +467,9 @@ function startPoll(){clearInterval(pollT);pollT=setInterval(function(){
   fetch(FN_OS,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({action:'get',secret:OS_SECRET})})
     .then(function(r){return r.json();}).then(function(resp){
       if(resp&&resp.rev&&resp.rev>myRev&&resp.data){
-        DB=Object.assign(seed(),resp.data);myRev=resp.rev;try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}
+        DB=Object.assign(seed(),resp.data);myRev=resp.rev;snapBase();try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}
         var cur=currentSection();build(cur);toast('Updated from the team');
+        loadEod();
       }
     }).catch(function(){});
 },25000);}
@@ -417,27 +543,38 @@ function listEditor(mount,arr,ph,addLabel){
 
 /* ========================= SECTIONS ========================= */
 var SECTIONS=[
- {id:'command',n:'01',name:'Command Center',q:'Company health at a glance'},
- {id:'roles',n:'02',name:'Roles & Accountability',q:'Who owns what?'},
- {id:'scorecard',n:'03',name:'Company Scorecard',q:'Are we hitting our numbers?'},
- {id:'depts',n:'04',name:'Department Dashboards',q:'Performance by function'},
- {id:'goals',n:'05',name:'Goals & Priorities',q:'What matters this quarter?'},
- {id:'projects',n:'06',name:'Projects & Tasks',q:'What needs to happen next?'},
- {id:'sops',n:'07',name:'SOPs & Resources',q:'How we do the work'},
- {id:'meetings',n:'08',name:'Meetings & Reporting',q:'Our operating rhythm'},
- {id:'finance',n:'09',name:'Finance & Performance',q:'The financial picture'},
- {id:'people',n:'10',name:'People & Performance',q:'How each person is doing'}
+ /* Daily — touched every day */
+ {id:'command',  g:'Daily',     n:'01', name:'Command Center',       q:'Company health at a glance'},
+ {id:'eod',      g:'Daily',     n:'02', name:'EOD Reports',          q:'What moved today?'},
+ {id:'calendar', g:'Daily',     n:'03', name:'Master Calendar',      q:'Our rhythm and what is coming'},
+ /* Clients & Members */
+ {id:'boss',     g:'Clients',   n:'04', name:'B.O.S.S Clients',      q:'Delivery, activation and guarantee'},
+ {id:'academy',  g:'Clients',   n:'05', name:'Academy Members',      q:'Pathway, attendance and upsell'},
+ /* Company — numbers and plan */
+ {id:'scorecard',g:'Company',   n:'06', name:'Company Scorecard',    q:'Are we hitting our numbers?'},
+ {id:'goals',    g:'Company',   n:'07', name:'Goals & Priorities',   q:'What matters this quarter?'},
+ {id:'projects', g:'Company',   n:'08', name:'Projects & Tasks',     q:'What needs to happen next?'},
+ {id:'depts',    g:'Company',   n:'09', name:'Department Dashboards',q:'Performance by function'},
+ {id:'finance',  g:'Company',   n:'10', name:'Finance & Performance',q:'The financial picture'},
+ /* Reference — read more than written */
+ {id:'roles',    g:'Reference', n:'11', name:'Roles & Accountability',q:'Who owns what?'},
+ {id:'people',   g:'Reference', n:'12', name:'People & Performance', q:'How each person is doing'},
+ {id:'meetings', g:'Reference', n:'13', name:'Meetings & Reporting', q:'Our operating rhythm'},
+ {id:'sops',     g:'Reference', n:'14', name:'SOPs & Resources',     q:'How we do the work'}
 ];
 
 function build(keep){
   /* nav */
-  var nav=$('#nav');nav.innerHTML='';
-  SECTIONS.forEach(function(s){var a=el('a');a.dataset.id=s.id;a.innerHTML='<span class="nn">'+s.n+'</span>'+esc(s.name);
+  var nav=$('#nav');nav.innerHTML='';var lastG='';
+  SECTIONS.forEach(function(s){
+    if(s.g&&s.g!==lastG){lastG=s.g;var h=el('div','navgrp');h.textContent=s.g;nav.appendChild(h);}
+    var a=el('a');a.dataset.id=s.id;a.innerHTML='<span class="nn">'+s.n+'</span>'+esc(s.name);
     a.addEventListener('click',function(){go(s.id);});nav.appendChild(a);});
   /* panels */
   var w=$('#wrap');w.innerHTML='';
   SECTIONS.forEach(function(s){var p=el('div','panel');p.id='p-'+s.id;w.appendChild(p);});
   renderCommand();renderRoles();renderScorecard();renderDepts();renderGoals();renderProjects();renderSops();renderMeetings();renderFinance();renderPeople();
+  renderEod();renderCalendar();renderBoss();renderAcademy();
   go(keep||'command');
 }
 function go(id){
@@ -464,6 +601,11 @@ function renderCommand(){var p=$('#p-command');p.innerHTML='';
     '<div class="tile"><div class="t">Applications · 7d</div><div class="v" id="lv-apps">—</div><div class="s">CRM</div></div>'+
     '<div class="tile"><div class="t">Ad Spend · 7d</div><div class="v" id="lv-spend">—</div><div class="s">Meta</div></div>');
   live.appendChild(lt);p.appendChild(live);
+
+  /* Client & team pulse — the signals that used to live nowhere */
+  p.appendChild(secH('Client &amp; Team Pulse'));
+  var pulse=el('div','tiles');pulse.id='pulse';p.appendChild(pulse);
+  renderPulse();
 
   /* mission / vision */
   p.appendChild(el('div','sec-h','<h3>Mission & Vision</h3><span class="ln"></span>'));
@@ -708,6 +850,410 @@ function renderPeople(){var p=$('#p-people');p.innerHTML='';
 }
 
 /* ---------- export / import ---------- */
+
+/* ══════════════════════════════════════════════════════════════════
+   WHO AM I
+   The OS had one shared passcode and no notion of who was typing,
+   which makes an EOD report worthless — a report with no author is
+   just a note. Roster comes from People & Performance so there is
+   only ever one list of the team. Choice is per device, not shared.
+   ══════════════════════════════════════════════════════════════════ */
+var WHO_KEY='bw-os-who';
+function who(){try{return localStorage.getItem(WHO_KEY)||'';}catch(e){return '';}}
+function setWho(v){try{localStorage.setItem(WHO_KEY,v);}catch(e){}}
+function team(){return (DB.people||[]).map(function(p){return p&&p.name;}).filter(Boolean);}
+function secH(t,extra){return el('div','sec-h','<h3>'+t+'</h3><span class="ln"></span>'+(extra||''));}
+function tile(label,val,sub,cls){return '<div class="tile"><div class="t">'+esc(label)+
+  '</div><div class="v'+(cls?' '+cls:'')+'">'+esc(val)+'</div><div class="s">'+esc(sub||'')+'</div></div>';}
+function whoBar(mount,after){
+  var b=el('div','whobar');
+  b.appendChild(el('span','lbl0','You are'));
+  var sel=el('select');
+  sel.appendChild(el('option',null,'— choose —'));
+  team().forEach(function(n){var o=el('option');o.value=n;o.textContent=n;if(n===who())o.selected=true;sel.appendChild(o);});
+  sel.addEventListener('change',function(){setWho(sel.value);after&&after();});
+  b.appendChild(sel);
+  b.appendChild(el('span','muted','remembered on this device only · add people in People & Performance'));
+  mount.appendChild(b);
+}
+
+/* ---------- multi-document calls against the shared store ---------- */
+function osDoc(action,doc,extra,cb){
+  var body={action:action,secret:OS_SECRET,doc:doc};
+  for(var k in (extra||{}))body[k]=extra[k];
+  fetch(FN_OS,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify(body)})
+    .then(function(r){return r.json().then(function(d){return d;},function(){return {error:'bad response'};});})
+    .then(function(d){cb&&cb(null,d);})
+    .catch(function(e){cb&&cb(e);});
+}
+function ymd(d){d=d||new Date();return new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);}
+function eodDoc(){return 'eod/'+ymd().slice(0,7);}
+function prettyDate(s){try{return new Date(s+'T12:00:00').toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'});}catch(e){return s;}}
+
+/* ══════════════════════════════════════════════════════════════════
+   02 · END OF DAY
+   Appended to a monthly list document, so two people filing at the
+   same moment cannot overwrite each other.
+   ══════════════════════════════════════════════════════════════════ */
+var EOD=[],EOD_LOADED=false;
+/* Rolls up the things that only show as a problem once it is too late:
+   who is quiet, who is behind on money, who has not filed today. */
+function renderPulse(){
+  var m=$('#pulse');if(!m)return;
+  var boss=DB.boss||[],acad=DB.academy||[];
+  var bossA=boss.filter(function(c){return (c.status||'Active')==='Active';}).length;
+  var atRisk=boss.concat(acad).filter(function(c){return c.risk==='At risk'||c.risk==='Watch';}).length;
+  var money=boss.concat(acad).filter(function(c){return c.payments==='Failed payment'||c.payments==='Behind';}).length;
+  var gtee=boss.concat(acad).filter(function(c){return c.guarantee==='Behind'||c.guarantee==='Claimed';}).length;
+  var today=ymd(),filed={};EOD.forEach(function(x){if(x&&x.date===today)filed[x.who]=1;});
+  var missing=team().filter(function(n){return !filed[n];}).length;
+  m.innerHTML=
+    tile('B.O.S.S. capacity',bossA+' / 10','active clients',bossA>10?'':'gold')+
+    tile('Clients at risk',String(atRisk),'across B.O.S.S. and Academy',atRisk?'':'green')+
+    tile('Payment problems',String(money),'failed or behind',money?'':'green')+
+    tile('Guarantee exposure',String(gtee),'behind or claimed',gtee?'':'green')+
+    tile('EOD not filed',EOD_LOADED?String(missing):'\u2014','today, out of '+team().length+' people',(EOD_LOADED&&!missing)?'green':'')+
+    tile('Academy members',String(acad.filter(function(x){return (x.status||'Active')==='Active';}).length),'currently active')+
+    tile('Upsell ready',String(acad.filter(function(x){return x.upsell==='Ready';}).length),'earned the B.O.S.S. conversation','gold')+
+    tile('Open projects',String((DB.projects||[]).filter(function(x){return x.s!=='green';}).length),'not yet on track');
+}
+
+function renderEod(){
+  var p=$('#p-eod');if(!p)return;p.innerHTML='';
+  p.appendChild(el('p','intro','<b>Four lines, every day.</b> Not paperwork — it is so tomorrow starts with yesterday’s blockers visible instead of forgotten, and so the weekly scorecard has something real behind it.'));
+  whoBar(p,renderEod);
+
+  var today=ymd();
+
+  if(!team().length){
+    p.appendChild(el('div','warn','Add your team in <b>People &amp; Performance</b> first — a report with no author is just a note.'));
+    return;
+  }
+  /* Reading the team’s reports needs no identity. Only filing one does. */
+  if(!who()){
+    p.appendChild(el('div','warn','Choose who you are above to file your own report. You can read everyone else’s below either way.'));
+    eodRollup(p,today);
+    return;
+  }
+
+  var myId=today+'|'+who(),mine=null;
+  for(var i=0;i<EOD.length;i++)if(EOD[i]&&EOD[i].id===myId)mine=EOD[i];
+
+  p.appendChild(secH('Today · '+prettyDate(today)));
+  var card=el('div','card');
+  var draft={moved:(mine&&mine.moved)||'',number:(mine&&mine.number)||'',
+             blocker:(mine&&mine.blocker)||'',tomorrow:(mine&&mine.tomorrow)||''};
+  [['moved','What moved today?','The thing that actually progressed'],
+   ['number','Your number','Calls, sets, closes, lessons shipped — whatever you own'],
+   ['blocker','What is in the way?','Leave blank if nothing'],
+   ['tomorrow','Tomorrow’s one thing','The single most important thing']
+  ].forEach(function(f){
+    var w=el('div','fw');w.appendChild(el('label',null,f[1]));
+    var t=el('textarea','f');t.rows=1;t.placeholder=f[2];t.value=draft[f[0]];
+    t.addEventListener('input',function(){draft[f[0]]=t.value;autoGrow(t);});
+    setTimeout(function(){autoGrow(t);},0);
+    w.appendChild(t);card.appendChild(w);
+  });
+  var btn=el('button','addbtn',mine?'Update my report':'File my report');
+  btn.addEventListener('click',function(){
+    if(!draft.moved.trim()){toast('Say what moved — even if it is "nothing, here is why"');return;}
+    btn.disabled=true;btn.textContent='Filing…';
+    osDoc('append',eodDoc(),{entry:{id:myId,who:who(),date:today,moved:draft.moved,
+      number:draft.number,blocker:draft.blocker,tomorrow:draft.tomorrow}},function(err,d){
+      btn.disabled=false;
+      if(err||!d||!d.ok){
+        btn.textContent=mine?'Update my report':'File my report';
+        toast(d&&/unknown action/i.test(d.error||'')?'Backend needs the new bw-os deploy':((d&&d.error)||'Could not file — try again'));
+        return;
+      }
+      toast('Filed. Thank you.');loadEod();
+    });
+  });
+  card.appendChild(btn);
+  p.appendChild(card);
+  eodRollup(p,today);
+}
+
+/* The last seven days, grouped by day then by person — plus the one
+   line that makes the whole thing work: who has not filed yet. */
+function eodRollup(p,today){
+  if(!EOD_LOADED){p.appendChild(el('p','muted','Loading this month’s reports…'));return;}
+
+  /* who has not filed today */
+  var filed={};EOD.forEach(function(x){if(x&&x.date===today)filed[x.who]=1;});
+  var missing=team().filter(function(n){return !filed[n];});
+  p.appendChild(el('div','warn'+(missing.length?'':' ok'),missing.length
+    ? '<b>Not filed today:</b> '+missing.map(esc).join(', ')
+    : '<b>Everyone has filed today.</b>'));
+
+  /* last 7 days */
+  var days={};EOD.forEach(function(x){if(x&&x.date)(days[x.date]=days[x.date]||[]).push(x);});
+  var keys=Object.keys(days).sort().reverse().slice(0,7);
+  if(!keys.length){p.appendChild(el('p','muted','No reports yet this month.'));return;}
+  p.appendChild(secH('The last seven days'));
+  keys.forEach(function(d){
+    var c=el('div','card');
+    c.appendChild(el('div','lbl',prettyDate(d)));
+    days[d].sort(function(a,b){return String(a.who).localeCompare(String(b.who));}).forEach(function(r){
+      var box=el('div','eodrow');
+      box.appendChild(el('div','eodwho',esc(r.who)+(r.number?' <span class="eodnum">'+esc(r.number)+'</span>':'')));
+      if(r.moved)   box.appendChild(el('div',null,esc(r.moved)));
+      if(r.blocker) box.appendChild(el('div','warn danger','<b>Blocked:</b> '+esc(r.blocker)));
+      if(r.tomorrow)box.appendChild(el('div','muted','Tomorrow: '+esc(r.tomorrow)));
+      c.appendChild(box);
+    });
+    p.appendChild(c);
+  });
+}
+
+function loadEod(){
+  osDoc('get',eodDoc(),{},function(err,d){
+    if(!err&&d&&d.ok&&Array.isArray(d.data))EOD=d.data;
+    EOD_LOADED=true;renderEod();renderPulse();
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   03 · MASTER CALENDAR
+   Two different things, deliberately separated: the rhythm that
+   repeats, and the dated things that do not.
+   ══════════════════════════════════════════════════════════════════ */
+function renderCalendar(){
+  var p=$('#p-calendar');if(!p)return;p.innerHTML='';
+  p.appendChild(el('p','intro','<b>One calendar for the company.</b> The weekly rhythm is what repeats; events are what is coming. Client and member sessions live on each record in B.O.S.S. and Academy, not here — one owner per fact.'));
+  var C=DB.calendar=DB.calendar||{rhythm:[],events:[]};
+  var today=ymd();
+
+  var soon=C.events.filter(function(e){return e.date&&e.date>=today;}).sort(function(a,b){return a.date<b.date?-1:1;});
+  var wk=soon.filter(function(e){return e.date<=ymd(new Date(Date.now()+6048e5));}).length;
+  p.appendChild(el('div','tiles c3',
+    tile('Next up',soon.length?(soon[0].what||'untitled'):'nothing scheduled',
+      soon.length?prettyDate(soon[0].date):'add an event below','gold')+
+    tile('Next 7 days',String(wk),'events on the calendar')+
+    tile('Recurring blocks',String(C.rhythm.length),'the weekly rhythm')));
+
+  p.appendChild(secH('Weekly rhythm'));
+  var c1=el('div');
+  tableEditor(c1,C.rhythm,[
+    {k:'day',label:'Day',type:'select',opts:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],w:'130px'},
+    {k:'time',label:'Time',w:'110px',ph:'9:00 AM CT'},
+    {k:'what',label:'What'},
+    {k:'who',label:'Who runs it',type:'select',opts:[''].concat(team()),w:'160px'}
+  ],{day:'Monday',time:'',what:'',who:''},'Add a recurring block',function(){renderCalendar();});
+  p.appendChild(c1);
+
+  p.appendChild(secH('Dated events'));
+  var c2=el('div');
+  tableEditor(c2,C.events,[
+    {k:'date',label:'Date',w:'130px',ph:'YYYY-MM-DD'},
+    {k:'what',label:'What'},
+    {k:'type',label:'Type',type:'select',opts:['Launch','Webinar','Content','Internal','Travel','Deadline','Other'],w:'140px'},
+    {k:'who',label:'Owner',type:'select',opts:[''].concat(team()),w:'150px'},
+    {k:'notes',label:'Notes',type:'area'}
+  ],{date:today,what:'',type:'Internal',who:'',notes:''},'Add an event',function(){renderCalendar();});
+  p.appendChild(c2);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   RECORD CARDS — shared by B.O.S.S. and Academy
+   ══════════════════════════════════════════════════════════════════ */
+function recField(rec,f){
+  var w=el('div','fw');w.appendChild(el('label',null,f.label));
+  var e;
+  if(f.type==='area')        e=ta(rec,f.k,f.ph);
+  else if(f.type==='select') e=selField(rec,f.k,f.opts);
+  else { e=inp(rec,f.k,f.ph); if(f.type==='date')e.type='date'; }
+  w.appendChild(e);
+  return w;
+}
+function fieldGrid(rec,fields,cls){
+  var g=el('div','fieldgrid '+(cls||''));
+  fields.forEach(function(f){g.appendChild(recField(rec,f));});
+  return g;
+}
+function checklist(mount,rec,key,items,title){
+  mount.appendChild(el('div','subh',title));
+  rec[key]=rec[key]||{};
+  var cnt=el('div','muted chkcnt');
+  function count(){var n=0;items.forEach(function(i){if(rec[key][i])n++;});
+    cnt.textContent=n+' of '+items.length+' complete';}
+  items.forEach(function(it){
+    var row=el('label','chk'+(rec[key][it]?' done':''));
+    var cb=el('input');cb.type='checkbox';cb.checked=!!rec[key][it];
+    cb.addEventListener('change',function(){rec[key][it]=cb.checked;
+      row.className='chk'+(cb.checked?' done':'');count();save();});
+    row.appendChild(cb);row.appendChild(el('span',null,esc(it)));mount.appendChild(row);
+  });
+  count();mount.appendChild(cnt);
+}
+function recordList(p,arr,cfg){
+  var wrap=el('div','recs');
+  function draw(){
+    wrap.innerHTML='';
+    if(!arr.length)wrap.appendChild(el('p','muted','Nobody here yet — add the first record below.'));
+    arr.forEach(function(rec){
+      var d=el('details','rec');
+      var sm=el('summary');
+      sm.appendChild(el('span','av',esc(initials(rec.name||'?'))));
+      var box=el('div','recid');
+      box.appendChild(el('div','nm',esc(rec.name||'Unnamed')));
+      box.appendChild(el('div','meta',cfg.meta(rec)));
+      sm.appendChild(box);
+      d.appendChild(sm);
+      var bd=el('div','bd');
+      cfg.body(bd,rec);
+      var del=el('button','recdel','Remove this record');
+      del.addEventListener('click',function(){
+        if(!confirm('Remove '+(rec.name||'this record')+'? This cannot be undone.'))return;
+        var i=arr.indexOf(rec);if(i>-1)arr.splice(i,1);save();draw();cfg.after&&cfg.after();
+      });
+      bd.appendChild(del);
+      d.appendChild(bd);wrap.appendChild(d);
+    });
+  }
+  draw();
+  p.appendChild(wrap);
+  var add=el('button','addbtn','+ '+cfg.addLabel);
+  add.addEventListener('click',function(){
+    arr.push(cfg.blank());save();draw();cfg.after&&cfg.after();
+    var last=wrap.querySelector('.rec:last-of-type');if(last){last.open=true;last.scrollIntoView({block:'center'});}
+  });
+  p.appendChild(add);
+}
+
+var BOSS_DELIVERABLES=['Kickoff call held','Assessment completed','Implementation pathway agreed',
+  'Brand & positioning work','Offer and pricing built','Website or funnel live','CRM and follow-up installed',
+  'Content system running','90-day review held'];
+var ACTIVATION_7=['Agreement signed','Payment cleared','Onboarding form returned','Kickoff booked',
+  'Joined the community','First session attended','First action completed'];
+
+function clientBody(bd,rec,opts){
+  bd.appendChild(fieldGrid(rec,[
+    {k:'email',label:'Email',ph:'name@example.com'},
+    {k:'phone',label:'Phone'},
+    {k:'joined',label:'Date joined',type:'date'}
+  ],'c3'));
+  bd.appendChild(fieldGrid(rec,[
+    {k:'owner',label:'Owner (us)',type:'select',opts:[''].concat(team())},
+    {k:'status',label:'Status',type:'select',opts:['Active','Paused','Completed','Refunded','Churned']},
+    {k:'risk',label:'Risk',type:'select',opts:['OK','Watch','At risk']}
+  ],'c3'));
+  bd.appendChild(fieldGrid(rec,[
+    {k:'terms',label:'Payment terms',ph:opts.termsPh},
+    {k:'payments',label:'Payments',type:'select',opts:['Current','Failed payment','Behind','Paid in full']},
+    {k:'agreement',label:'Agreement',type:'select',opts:['Not sent','Sent','Signed']}
+  ],'c3'));
+  bd.appendChild(fieldGrid(rec,[
+    {k:'guarantee',label:'Guarantee',type:'select',opts:['N/A','On track','Behind','Met','Claimed']},
+    {k:'guaranteeNote',label:'Guarantee terms & exposure',ph:'What we promised, by when, and what it costs if claimed'}
+  ],'c2'));
+
+  checklist(bd,rec,'activation',ACTIVATION_7,opts.activationLabel);
+  if(opts.deliverables)checklist(bd,rec,'deliverables',BOSS_DELIVERABLES,'Deliverables we owe');
+
+  if(opts.attendance){
+    bd.appendChild(el('div','subh','Call attendance'));
+    rec.attendance=rec.attendance||[];
+    var aw=el('div');bd.appendChild(aw);
+    tableEditor(aw,rec.attendance,[
+      {k:'date',label:'Date',w:'130px',ph:'YYYY-MM-DD'},
+      {k:'call',label:'Call',ph:'Weekly coaching, Q&A…'},
+      {k:'status',label:'Attended',type:'select',opts:['Attended','Watched replay','Missed'],w:'160px'}
+    ],{date:'',call:'',status:'Attended'},'Log a call');
+  }
+
+  bd.appendChild(el('div','subh','Expert strategy sessions'));
+  rec.sessions=rec.sessions||[];
+  var sw=el('div');bd.appendChild(sw);
+  tableEditor(sw,rec.sessions,[
+    {k:'date',label:'Date',w:'130px',ph:'YYYY-MM-DD'},
+    {k:'expert',label:'Expert',w:'170px'},
+    {k:'topic',label:'Focus'},
+    {k:'status',label:'Status',type:'select',opts:['Booked','Held','No-show','Cancelled'],w:'140px'}
+  ],{date:'',expert:'',topic:'',status:'Booked'},'Schedule a session');
+
+  bd.appendChild(el('div','subh','Profile, assessment & pathway'));
+  bd.appendChild(fieldGrid(rec,[
+    {k:'profile',label:'Member profile',type:'area',ph:'Kennel, breed, where they sell, team, years breeding'},
+    {k:'assessment',label:'Assessment data',type:'area',ph:'Scorecard results, the binding constraint, starting numbers'},
+    {k:'pathway',label:'Implementation pathway',type:'area',ph:'What we are building, in order'},
+    {k:'notes',label:'Notes',type:'area'}
+  ]));
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   04 · B.O.S.S. CLIENTS
+   ══════════════════════════════════════════════════════════════════ */
+function renderBoss(){
+  var p=$('#p-boss');if(!p)return;p.innerHTML='';
+  p.appendChild(el('p','intro','<b>Ten at a time, by design.</b> Every B.O.S.S. client, what we owe them, and whether the guarantee is on track. If a client has gone quiet for two weeks, that is the signal — not the refund request that arrives a month later.'));
+  DB.boss=DB.boss||[];
+  var A=DB.boss.filter(function(c){return (c.status||'Active')==='Active';}).length;
+  var R=DB.boss.filter(function(c){return c.risk==='At risk'||c.risk==='Watch';}).length;
+  var G=DB.boss.filter(function(c){return c.guarantee==='Behind'||c.guarantee==='Claimed';}).length;
+  var F=DB.boss.filter(function(c){return c.payments==='Failed payment'||c.payments==='Behind';}).length;
+  p.appendChild(el('div','tiles',
+    tile('Active clients',A+' / 10','delivery capacity',A>10?'':'gold')+
+    tile('At risk or watch',String(R),'quiet, behind, or struggling')+
+    tile('Guarantee exposure',String(G),'behind or claimed')+
+    tile('Payment problems',String(F),'failed or behind')));
+  if(A>10)p.appendChild(el('div','warn danger','<b>Over capacity.</b> B.O.S.S. is capped at 10 active clients — delivery quality <i>is</i> the product. Close one out before taking the next.'));
+
+  recordList(p,DB.boss,{
+    addLabel:'Add a B.O.S.S. client',
+    after:function(){renderBoss();},
+    blank:function(){return {name:'',email:'',phone:'',joined:ymd(),owner:'',status:'Active',risk:'OK',
+      terms:'',payments:'Current',agreement:'Not sent',guarantee:'On track',guaranteeNote:'',
+      profile:'',assessment:'',pathway:'',notes:'',activation:{},deliverables:{},sessions:[]};},
+    meta:function(r){return [r.status||'Active',r.owner?'owner '+r.owner:'',r.joined?'joined '+r.joined:'',
+      (r.risk&&r.risk!=='OK')?'⚠ '+r.risk:'',
+      (r.payments&&r.payments!=='Current'&&r.payments!=='Paid in full')?'⚠ '+r.payments:''
+      ].filter(Boolean).map(esc).join(' · ');},
+    body:function(bd,rec){clientBody(bd,rec,{termsPh:'e.g. $10,000 paid in full, or 2 × $5,000',
+      activationLabel:'First 7 days',deliverables:true,attendance:false});}
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   05 · ACADEMY MEMBERS
+   ══════════════════════════════════════════════════════════════════ */
+function renderAcademy(){
+  var p=$('#p-academy');if(!p)return;p.innerHTML='';
+  p.appendChild(el('p','intro','<b>Every member, and how fast they are moving.</b> Attendance and pathway progress are the early warning. By the time someone asks for a refund, the signal has usually been sitting here for weeks.'));
+  DB.academy=DB.academy||[];
+  var A=DB.academy.filter(function(m){return (m.status||'Active')==='Active';}).length;
+  var R=DB.academy.filter(function(m){return m.risk==='At risk'||m.risk==='Watch';}).length;
+  var U=DB.academy.filter(function(m){return m.upsell==='Ready';}).length;
+  var F=DB.academy.filter(function(m){return m.payments==='Failed payment'||m.payments==='Behind';}).length;
+  p.appendChild(el('div','tiles',
+    tile('Active members',String(A),'currently enrolled','gold')+
+    tile('At risk or watch',String(R),'absent or stalled')+
+    tile('Upsell ready',String(U),'earned the B.O.S.S. conversation')+
+    tile('Payment problems',String(F),'failed or behind')));
+
+  recordList(p,DB.academy,{
+    addLabel:'Add an Academy member',
+    after:function(){renderAcademy();},
+    blank:function(){return {name:'',email:'',phone:'',joined:ymd(),owner:'',status:'Active',risk:'OK',
+      terms:'',payments:'Current',agreement:'Not sent',guarantee:'On track',guaranteeNote:'',
+      upsell:'Not yet',profile:'',assessment:'',pathway:'',notes:'',activation:{},attendance:[],sessions:[]};},
+    meta:function(r){return [r.status||'Active',r.owner?'owner '+r.owner:'',r.joined?'joined '+r.joined:'',
+      r.upsell==='Ready'?'★ upsell ready':'',
+      (r.risk&&r.risk!=='OK')?'⚠ '+r.risk:'',
+      (r.payments&&r.payments!=='Current'&&r.payments!=='Paid in full')?'⚠ '+r.payments:''
+      ].filter(Boolean).map(esc).join(' · ');},
+    body:function(bd,rec){
+      clientBody(bd,rec,{termsPh:'e.g. $6,000 paid in full, or $291/mo',
+        activationLabel:'First 7 days (activation window)',deliverables:false,attendance:true});
+      bd.appendChild(el('div','subh','Ascension'));
+      bd.appendChild(fieldGrid(rec,[
+        {k:'upsell',label:'Upsell opportunity',type:'select',opts:['Not yet','Watching','Ready','Offered','Converted','No']},
+        {k:'upsellNote',label:'Why / what changed',ph:'What makes them ready — or what is missing'}
+      ],'c2'));
+    }
+  });
+}
+
 function expJSON(){var blob=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});
   var a=el('a');a.href=URL.createObjectURL(blob);a.download='breedwise-os-'+new Date().toISOString().slice(0,10)+'.json';a.click();}
 function impJSON(file){var r=new FileReader();r.onload=function(){try{var d=JSON.parse(r.result);DB=Object.assign(seed(),d);save();build();alert('Imported successfully.');}catch(e){alert('Could not read that file.');}};r.readAsText(file);}
@@ -723,7 +1269,7 @@ function reveal(){var g=$('#gate');if(g)g.remove();$('#app').style.display='bloc
     if(online){var cur=currentSection();build(cur);setSync('synced');
       $('#savedAt').textContent=DB.updated?('Synced '+new Date(DB.updated).toLocaleString()):'Synced';
       if(!hadData)serverSave(); /* seed the shared doc on first run */
-      startPoll();
+      loadEod();startPoll();
     } else {setSync('local');}
   });
   $('#exp').addEventListener('click',expJSON);
