@@ -221,6 +221,78 @@
 .eodnum{display:inline-block;margin-left:8px;background:var(--gold-soft);border:1px solid var(--gold-line);
   color:var(--gold2);border-radius:20px;padding:2px 10px;font-size:11px;font-weight:600;letter-spacing:.03em}
 .eodrow .warn{margin-top:7px}
+
+/* ── master calendar ───────────────────────────────────────────── */
+.calhead{display:flex;align-items:center;gap:16px;margin:4px 0 14px}
+.calmonth{font-family:var(--display);font-size:26px;letter-spacing:.01em;color:var(--ink)}
+.calnav{display:flex;gap:7px;margin-left:auto}
+.calbtn{background:var(--card2);border:1px solid var(--line2);color:var(--mid);border-radius:9px;
+  width:34px;height:34px;font-size:17px;line-height:1;cursor:pointer;font-family:var(--body)}
+.calbtn.wide{width:auto;padding:0 15px;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.calbtn:hover{border-color:var(--gold-line);color:var(--gold2)}
+
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.caldow{background:var(--card2);padding:9px 10px;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);font-weight:700;text-align:center}
+.calcell{background:var(--card);min-height:108px;padding:6px 7px 8px;position:relative}
+.calcell.out{background:var(--card2)}
+.calcell.out .caldate{color:var(--faint)}
+.calcell.today{background:var(--gold-soft);box-shadow:inset 0 0 0 1px var(--gold-line)}
+.caltop{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.caldate{font-family:var(--display);font-size:15px;color:var(--mid);letter-spacing:.02em}
+.calcell.today .caldate{color:var(--gold2)}
+.calplus{margin-left:auto;background:transparent;border:0;color:var(--faint);font-size:15px;
+  line-height:1;cursor:pointer;padding:1px 4px;border-radius:6px;opacity:0;transition:opacity .15s}
+.calcell:hover .calplus{opacity:1}
+.calplus:hover{background:var(--card3);color:var(--gold2)}
+
+.chip{border-radius:6px;padding:3px 6px;margin-bottom:3px;font-size:11px;line-height:1.3;
+  cursor:default;border-left:2px solid var(--muted);background:var(--card3);overflow:hidden}
+.chip .cw{display:block;font-weight:600;color:var(--ink);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.chip .cs{display:block;color:var(--muted);font-size:10px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.chip.t-launch  {border-left-color:var(--gold);  background:var(--gold-soft)}
+.chip.t-webinar {border-left-color:#7aa7d9;      background:rgba(122,167,217,.12)}
+.chip.t-content {border-left-color:var(--green);  background:var(--green-s)}
+.chip.t-internal{border-left-color:var(--muted)}
+.chip.t-travel  {border-left-color:#b58ad0;      background:rgba(181,138,208,.12)}
+.chip.t-deadline{border-left-color:var(--red);    background:var(--red-s)}
+.chip.t-other   {border-left-color:var(--line2)}
+.chip.sess      {border-left-color:var(--green);  background:var(--green-s)}
+.chip.rhythm    {border-left-color:var(--line2);background:transparent;border-left-style:dashed}
+.chip.rhythm .cw{font-weight:400;color:var(--muted)}
+.chip[class*="t-"]{cursor:pointer}
+.chip[class*="t-"]:hover{filter:brightness(1.25)}
+.calmore{font-size:10.5px;color:var(--muted);padding-left:3px}
+
+.callegend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:12px 2px 24px;font-size:11.5px;color:var(--muted)}
+.callegend .k{display:inline-flex;align-items:center;gap:6px}
+.callegend .sw{width:11px;height:11px;border-radius:3px;border-left:3px solid var(--muted);
+  background:var(--card3);display:inline-block}
+.callegend .sw.t-launch{border-left-color:var(--gold);background:var(--gold-soft)}
+.callegend .sw.t-webinar{border-left-color:#7aa7d9;background:rgba(122,167,217,.12)}
+.callegend .sw.t-content{border-left-color:var(--green);background:var(--green-s)}
+.callegend .sw.t-internal{border-left-color:var(--muted)}
+.callegend .sw.t-deadline{border-left-color:var(--red);background:var(--red-s)}
+.callegend .sw.sess{border-left-color:var(--green);background:var(--green-s)}
+.callegend .sw.rhythm{border-left-style:dashed;border-left-color:var(--line2);background:transparent}
+
+tr.flash td{background:var(--gold-soft);transition:background .5s}
+
+@media(max-width:780px){
+  .calgrid{font-size:11px}
+  .calcell{min-height:76px;padding:4px 4px 6px}
+  .chip .cs{display:none}
+  .calplus{opacity:1}
+}
+.chip.hid{display:none}
+.calcell.open .chip.hid{display:block}
+.calmore{font-size:10.5px;color:var(--muted);padding:2px 3px;background:transparent;border:0;
+  cursor:pointer;font-family:var(--body);text-align:left;display:block}
+.calmore:hover{color:var(--gold2)}
+.calcell.open{z-index:2}
 </style>
 </head>
 <body>
@@ -1020,22 +1092,146 @@ function loadEod(){
    ══════════════════════════════════════════════════════════════════ */
 function renderCalendar(){
   var p=$('#p-calendar');if(!p)return;p.innerHTML='';
-  p.appendChild(el('p','intro','<b>One calendar for the company.</b> The weekly rhythm is what repeats; events are what is coming. Client and member sessions live on each record in B.O.S.S. and Academy, not here — one owner per fact.'));
+  p.appendChild(el('p','intro','<b>One calendar for the company.</b> The weekly rhythm repeats on every matching day; dated events sit where you put them; strategy sessions booked on a client or member record show up here automatically — you never type them twice.'));
   var C=DB.calendar=DB.calendar||{rhythm:[],events:[]};
   var today=ymd();
 
-  var soon=C.events.filter(function(e){return e.date&&e.date>=today;}).sort(function(a,b){return a.date<b.date?-1:1;});
+  /* ── what the grid draws: real events, the repeating rhythm, and
+        sessions that live on client/member records ──────────────── */
+  var DOW=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  function sessionEntries(){
+    var out=[];
+    [['boss','B.O.S.S.'],['academy','Academy']].forEach(function(src){
+      (DB[src[0]]||[]).forEach(function(c){
+        (c.sessions||[]).forEach(function(se){
+          if(!se.date||se.status==='Cancelled')return;
+          out.push({date:se.date,kind:'session',
+            what:(c.name||'Someone')+' · '+(se.expert||'session'),
+            sub:(se.topic||'')+(se.status&&se.status!=='Booked'?' ('+se.status+')':''),
+            who:src[1]});
+        });
+      });
+    });
+    return out;
+  }
+  function entriesFor(dateStr,dow){
+    var out=[];
+    C.events.forEach(function(e,i){ if(e.date===dateStr)
+      out.push({kind:'event',type:e.type||'Other',what:e.what||'(untitled)',sub:e.who||'',idx:i}); });
+    sessionEntries().forEach(function(se){ if(se.date===dateStr)out.push(se); });
+    C.rhythm.forEach(function(r){ if(r.day===DOW[dow])
+      out.push({kind:'rhythm',what:r.what||'(untitled)',sub:(r.time||'')+(r.who?' · '+r.who:'')}); });
+    return out;
+  }
+
+  /* ── month navigation (kept on the object so it survives a redraw) ── */
+  var now=new Date();
+  if(!C._y||!C._m){C._y=now.getFullYear();C._m=now.getMonth()+1;}
+  var Y=C._y,M=C._m;
+
+  var head=el('div','calhead');
+  var navb=el('div','calnav');
+  function stepTo(y,m){C._y=y;C._m=m;renderCalendar();}
+  var prev=el('button','calbtn','‹');prev.title='Previous month';
+  prev.addEventListener('click',function(){stepTo(M===1?Y-1:Y,M===1?12:M-1);});
+  var next=el('button','calbtn','›');next.title='Next month';
+  next.addEventListener('click',function(){stepTo(M===12?Y+1:Y,M===12?1:M+1);});
+  var tdy=el('button','calbtn wide','Today');
+  tdy.addEventListener('click',function(){stepTo(now.getFullYear(),now.getMonth()+1);});
+  navb.appendChild(prev);navb.appendChild(next);navb.appendChild(tdy);
+  head.appendChild(el('div','calmonth',
+    new Date(Y,M-1,1).toLocaleDateString(undefined,{month:'long',year:'numeric'})));
+  head.appendChild(navb);
+  p.appendChild(head);
+
+  /* ── the grid ─────────────────────────────────────────────────── */
+  var grid=el('div','calgrid');
+  ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(function(d){
+    grid.appendChild(el('div','caldow',d));});
+
+  var first=new Date(Y,M-1,1), start=first.getDay(),
+      dim=new Date(Y,M,0).getDate(), prevDim=new Date(Y,M-1,0).getDate();
+  var cells=Math.ceil((start+dim)/7)*7;
+  for(var i=0;i<cells;i++){
+    var dnum=i-start+1, out=false, y=Y, m=M, d=dnum;
+    if(dnum<1){out=true;d=prevDim+dnum;m=M-1;if(m<1){m=12;y=Y-1;}}
+    else if(dnum>dim){out=true;d=dnum-dim;m=M+1;if(m>12){m=1;y=Y+1;}}
+    var ds=y+'-'+('0'+m).slice(-2)+'-'+('0'+d).slice(-2);
+    var dow=new Date(y,m-1,d).getDay();
+    var cell=el('div','calcell'+(out?' out':'')+(ds===today?' today':''));
+    var top=el('div','caltop');
+    top.appendChild(el('span','caldate',String(d)));
+    (function(ds){
+      var plus=el('button','calplus','+');plus.title='Add an event on this day';
+      plus.addEventListener('click',function(ev){
+        ev.stopPropagation();
+        C.events.push({date:ds,what:'',type:'Internal',who:'',notes:''});
+        save();renderCalendar();
+        var rows=p.querySelectorAll('#calevents tbody tr');
+        var r=rows[rows.length-1];
+        if(r){r.scrollIntoView({block:'center'});var f=r.querySelector('input.f:nth-of-type(1)');
+              var ins=r.querySelectorAll('input.f');if(ins[1])ins[1].focus();}
+      });
+      top.appendChild(plus);
+    })(ds);
+    cell.appendChild(top);
+
+    var list=entriesFor(ds,dow);
+    var shown=list;
+    shown.forEach(function(e,ci){
+      var cls='chip '+(e.kind==='rhythm'?'rhythm':e.kind==='session'?'sess':('t-'+String(e.type||'Other').toLowerCase()));
+      var c=el('div',cls);
+      c.innerHTML='<span class="cw">'+esc(e.what)+'</span>'+(e.sub?'<span class="cs">'+esc(e.sub)+'</span>':'');
+      c.title=e.what+(e.sub?' — '+e.sub:'')+(e.kind==='rhythm'?' (weekly)':e.kind==='session'?' (from a client record)':'');
+      if(e.kind==='event')(function(idx){c.addEventListener('click',function(){
+        var rows=p.querySelectorAll('#calevents tbody tr');
+        if(rows[idx]){rows[idx].scrollIntoView({block:'center'});
+          rows[idx].classList.add('flash');setTimeout(function(){rows[idx].classList.remove('flash');},1400);}
+      });})(e.idx);
+      if(ci>=4)c.classList.add('hid');
+      cell.appendChild(c);
+    });
+    if(list.length>4){
+      var more=el('button','calmore','+'+(list.length-4)+' more');
+      (function(cell,more,n){
+        more.addEventListener('click',function(){
+          var open=cell.classList.toggle('open');
+          more.textContent=open?'Show less':'+'+n+' more';
+        });
+      })(cell,more,list.length-4);
+      cell.appendChild(more);
+    }
+    grid.appendChild(cell);
+  }
+  p.appendChild(grid);
+
+  var lg=el('div','callegend');
+  lg.innerHTML='<span class="k"><i class="sw t-launch"></i>Launch</span>'+
+   '<span class="k"><i class="sw t-webinar"></i>Webinar</span>'+
+   '<span class="k"><i class="sw t-content"></i>Content</span>'+
+   '<span class="k"><i class="sw t-internal"></i>Internal</span>'+
+   '<span class="k"><i class="sw t-deadline"></i>Deadline</span>'+
+   '<span class="k"><i class="sw sess"></i>Strategy session (from a client record)</span>'+
+   '<span class="k"><i class="sw rhythm"></i>Weekly rhythm</span>';
+  p.appendChild(lg);
+
+  /* ── the numbers ──────────────────────────────────────────────── */
+  var soon=C.events.filter(function(e){return e.date&&e.date>=today;})
+                   .sort(function(a,b){return a.date<b.date?-1:1;});
   var wk=soon.filter(function(e){return e.date<=ymd(new Date(Date.now()+6048e5));}).length;
+  var sess=sessionEntries().filter(function(e){return e.date>=today;}).length;
   p.appendChild(el('div','tiles c3',
     tile('Next up',soon.length?(soon[0].what||'untitled'):'nothing scheduled',
-      soon.length?prettyDate(soon[0].date):'add an event below','gold')+
-    tile('Next 7 days',String(wk),'events on the calendar')+
-    tile('Recurring blocks',String(C.rhythm.length),'the weekly rhythm')));
+      soon.length?prettyDate(soon[0].date):'add an event with the + on any day','gold')+
+    tile('Next 7 days',String(wk),'dated events')+
+    tile('Sessions ahead',String(sess),'booked on client and member records')));
 
+  /* ── manage ───────────────────────────────────────────────────── */
   p.appendChild(secH('Weekly rhythm'));
+  p.appendChild(el('p','intro','Anything here repeats on that weekday, every week, on the grid above.'));
   var c1=el('div');
   tableEditor(c1,C.rhythm,[
-    {k:'day',label:'Day',type:'select',opts:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],w:'130px'},
+    {k:'day',label:'Day',type:'select',opts:DOW,w:'130px'},
     {k:'time',label:'Time',w:'110px',ph:'9:00 AM CT'},
     {k:'what',label:'What'},
     {k:'who',label:'Who runs it',type:'select',opts:[''].concat(team()),w:'160px'}
@@ -1043,7 +1239,7 @@ function renderCalendar(){
   p.appendChild(c1);
 
   p.appendChild(secH('Dated events'));
-  var c2=el('div');
+  var c2=el('div');c2.id='calevents';
   tableEditor(c2,C.events,[
     {k:'date',label:'Date',w:'130px',ph:'YYYY-MM-DD'},
     {k:'what',label:'What'},
@@ -1126,6 +1322,10 @@ var BOSS_DELIVERABLES=['Kickoff call held','Assessment completed','Implementatio
   'Content system running','90-day review held'];
 var ACTIVATION_7=['Agreement signed','Payment cleared','Onboarding form returned','Kickoff booked',
   'Joined the community','First session attended','First action completed'];
+/* Academy's own list, so the four Day-7 flags in academy_tracking have
+   somewhere real to land instead of being approximated. */
+var ACTIVATION_ACADEMY=['Agreement signed','Payment cleared','Onboarding form returned',
+  'Assessment completed','Focus plan built','First session attended','First action completed'];
 
 function clientBody(bd,rec,opts){
   bd.appendChild(fieldGrid(rec,[
@@ -1140,15 +1340,15 @@ function clientBody(bd,rec,opts){
   ],'c3'));
   bd.appendChild(fieldGrid(rec,[
     {k:'terms',label:'Payment terms',ph:opts.termsPh},
-    {k:'payments',label:'Payments',type:'select',opts:['Current','Failed payment','Behind','Paid in full']},
-    {k:'agreement',label:'Agreement',type:'select',opts:['Not sent','Sent','Signed']}
+    {k:'payments',label:'Payments',type:'select',opts:['','Current','Failed payment','Behind','Paid in full']},
+    {k:'agreement',label:'Agreement',type:'select',opts:['','Not sent','Sent','Signed']}
   ],'c3'));
   bd.appendChild(fieldGrid(rec,[
     {k:'guarantee',label:'Guarantee',type:'select',opts:['N/A','On track','Behind','Met','Claimed']},
     {k:'guaranteeNote',label:'Guarantee terms & exposure',ph:'What we promised, by when, and what it costs if claimed'}
   ],'c2'));
 
-  checklist(bd,rec,'activation',ACTIVATION_7,opts.activationLabel);
+  checklist(bd,rec,'activation',opts.activation||ACTIVATION_7,opts.activationLabel);
   if(opts.deliverables)checklist(bd,rec,'deliverables',BOSS_DELIVERABLES,'Deliverables we owe');
 
   if(opts.attendance){
@@ -1214,6 +1414,149 @@ function renderBoss(){
   });
 }
 
+
+/* ══════════════════════════════════════════════════════════════════
+   BACKFILL — pull the Academy roster out of the members table
+   `members` is readable only by a signed-in teammate (RLS), so the page
+   asks the bw-os function to read it with the service role. Nothing is
+   invented here: a field the roster cannot answer is left blank rather
+   than filled with a plausible guess.
+   ══════════════════════════════════════════════════════════════════ */
+function pick(v){return (v===null||v===undefined||v==='')?'':String(v);}
+function mapRosterMember(m){
+  var t=m.track||{};
+  var r={
+    name:pick(m.name), email:pick(m.email), phone:'',
+    joined: pick(t.enrolled_at) || (m.updated_at?String(m.updated_at).slice(0,10):''),
+    owner:'',                       /* the roster does not record an owner */
+    status: (m.churned||m.payment==='Cancelled') ? 'Churned'
+          : t.status==='Graduated' ? 'Completed'
+          : t.status==='Paused'    ? 'Paused' : 'Active',
+    risk:   t.health_override==='Red'    ? 'At risk'
+          : t.health_override==='Yellow' ? 'Watch'
+          : m.red_flag                   ? 'At risk'
+          : (m.payment==='Failed'||m.payment==='At risk') ? 'At risk'
+          : (m.activated===false)        ? 'Watch' : 'OK',
+    payments: m.payment==='Good'      ? 'Current'
+            : m.payment==='Failed'    ? 'Failed payment'
+            : m.payment==='At risk'   ? 'Behind'
+            : m.payment==='Cancelled' ? 'Behind' : '',
+    terms:'', agreement:'',          /* neither is recorded in the roster */
+    guarantee:'', guaranteeNote:'',
+    upsell: t.status==='Accelerator' ? 'Converted' : 'Not yet',
+    upsellNote:'',
+    profile:'', assessment:'', pathway:'', notes:'',
+    activation:{}, attendance:[], sessions:[]
+  };
+
+  if(t.act_onboarding)   r.activation['Onboarding form returned']=true;
+  if(t.act_assessment)   r.activation['Assessment completed']=true;
+  if(t.act_focusplan)    r.activation['Focus plan built']=true;
+  if(t.act_firstaction)  r.activation['First action completed']=true;
+  if(m.payment==='Good') r.activation['Payment cleared']=true;
+  if(Number(m.calls)>0)  r.activation['First session attended']=true;
+
+  var prof=[];
+  if(t.next_litter)   prof.push('Next litter: '+t.next_litter);
+  if(t.litter_stage)  prof.push('Stage: '+t.litter_stage);
+  if(m.support_tier)  prof.push('Support tier: '+m.support_tier);
+  r.profile=prof.join('\n');
+
+  var as=[];
+  if(t.goal_120)        as.push('120-day goal: '+t.goal_120);
+  if(t.primary_focus)   as.push('Primary focus: '+t.primary_focus);
+  if(t.secondary_focus) as.push('Secondary focus: '+t.secondary_focus);
+  if(t.clarity!=null)   as.push('Clarity pulse: '+t.clarity+'/10');
+  if(m.nps!=null)       as.push('NPS: '+m.nps);
+  if(m.homework!=null)  as.push('Homework completion: '+m.homework+'%');
+  r.assessment=as.join('\n');
+
+  var pw=[];
+  if(t.first_action) pw.push('First action: '+t.first_action);
+  if(t.next_action)  pw.push('Next action: '+t.next_action);
+  if(t.last_contact) pw.push('Last contact: '+t.last_contact);
+  r.pathway=pw.join('\n');
+
+  var nt=[];
+  if(m.notes) nt.push(String(m.notes));
+  if(t.notes) nt.push(String(t.notes));
+  r.notes=nt.join('\n\n');
+
+  (m.attendance||[]).forEach(function(w){
+    if(!w.week_start)return;
+    if(Number(w.attended)>0)      r.attendance.push({date:w.week_start,call:'Weekly coaching',status:'Attended'});
+    if(Number(w.support_call)>0)  r.attendance.push({date:w.week_start,call:'Support call',status:'Attended'});
+    if(Number(w.womens_circle)>0) r.attendance.push({date:w.week_start,call:'Women’s Circle',status:'Attended'});
+  });
+  return r;
+}
+
+/* Live signals refresh on every pull; everything else only fills a blank,
+   so nothing anyone typed by hand is ever overwritten. */
+var ROSTER_REFRESH=['status','risk','payments'];
+function applyRoster(list){
+  DB.academy=DB.academy||[];
+  var added=0,updated=0,refreshed=0,filled=0;
+  list.forEach(function(src){
+    var inc=mapRosterMember(src);
+    var cur=null;
+    for(var i=0;i<DB.academy.length;i++){
+      var a=DB.academy[i];
+      if(inc.email&&a.email&&a.email.toLowerCase()===inc.email.toLowerCase()){cur=a;break;}
+      if(!inc.email&&a.name&&inc.name&&a.name.trim()===inc.name.trim()){cur=a;break;}
+    }
+    if(!cur){DB.academy.push(inc);added++;return;}
+    var touched=false;
+    ROSTER_REFRESH.forEach(function(k){
+      if(inc[k]&&cur[k]!==inc[k]){cur[k]=inc[k];refreshed++;touched=true;}
+    });
+    Object.keys(inc).forEach(function(k){
+      if(ROSTER_REFRESH.indexOf(k)>=0)return;
+      var v=inc[k];
+      if(v===''||v===null||v===undefined)return;
+      if(Array.isArray(v)){ if(!Array.isArray(cur[k])||!cur[k].length){ if(v.length){cur[k]=v;filled++;touched=true;} } return; }
+      if(typeof v==='object'){
+        cur[k]=cur[k]||{};
+        Object.keys(v).forEach(function(kk){ if(!cur[k][kk]){cur[k][kk]=v[kk];filled++;touched=true;} });
+        return;
+      }
+      if(!cur[k]){cur[k]=v;filled++;touched=true;}
+    });
+    if(touched)updated++;
+  });
+  return {added:added,updated:updated,refreshed:refreshed,filled:filled};
+}
+
+function pullRoster(btn,mountMsg){
+  btn.disabled=true;var was=btn.textContent;btn.textContent='Reading the roster…';
+  osDoc('roster','bw-os',{program:'Academy'},function(err,d){
+    btn.disabled=false;btn.textContent=was;
+    if(err||!d||!d.ok){
+      var why=(d&&d.error)||'could not reach the roster';
+      if(/unknown action/i.test(why))why='the bw-os function needs redeploying before the roster can be read';
+      mountMsg.className='warn danger';
+      mountMsg.innerHTML='<b>Nothing imported.</b> '+esc(why)+'.';
+      return;
+    }
+    var list=d.members||[];
+    if(!list.length){
+      mountMsg.className='warn';
+      mountMsg.innerHTML='<b>The roster came back empty.</b> No rows in <code>members</code> with program “Academy” — so there is nothing to back-fill from here.';
+      return;
+    }
+    var n=applyRoster(list);
+    save();renderAcademy();renderPulse();
+    var m=$('#rosterMsg');
+    if(m){
+      m.className='warn ok';
+      m.innerHTML='<b>Imported '+list.length+' from the member roster.</b> '+
+        n.added+' added, '+n.updated+' existing record'+(n.updated===1?'':'s')+' touched '+
+        '('+n.refreshed+' live signal'+(n.refreshed===1?'':'s')+' refreshed, '+n.filled+' blank field'+(n.filled===1?'':'s')+' filled). '+
+        'Payment terms, agreement status and owner are not in the roster — those are still yours to fill in.';
+    }
+  });
+}
+
 /* ══════════════════════════════════════════════════════════════════
    05 · ACADEMY MEMBERS
    ══════════════════════════════════════════════════════════════════ */
@@ -1221,6 +1564,19 @@ function renderAcademy(){
   var p=$('#p-academy');if(!p)return;p.innerHTML='';
   p.appendChild(el('p','intro','<b>Every member, and how fast they are moving.</b> Attendance and pathway progress are the early warning. By the time someone asks for a refund, the signal has usually been sitting here for weeks.'));
   DB.academy=DB.academy||[];
+
+  var bar=el('div','whobar');
+  bar.appendChild(el('span','lbl0','Member roster'));
+  var pull=el('button','calbtn wide','Pull from member roster');
+  bar.appendChild(pull);
+  bar.appendChild(el('span','muted','Reads the Academy roster out of the members table. Live signals (status, risk, payments) refresh; everything else only fills a blank, so nothing you typed is overwritten.'));
+  p.appendChild(bar);
+  var msg=el('div','hidden');msg.id='rosterMsg';p.appendChild(msg);
+  pull.addEventListener('click',function(){
+    msg.className='warn';msg.textContent='Reading the roster\u2026';
+    pullRoster(pull,msg);
+  });
+
   var A=DB.academy.filter(function(m){return (m.status||'Active')==='Active';}).length;
   var R=DB.academy.filter(function(m){return m.risk==='At risk'||m.risk==='Watch';}).length;
   var U=DB.academy.filter(function(m){return m.upsell==='Ready';}).length;
@@ -1244,7 +1600,8 @@ function renderAcademy(){
       ].filter(Boolean).map(esc).join(' · ');},
     body:function(bd,rec){
       clientBody(bd,rec,{termsPh:'e.g. $6,000 paid in full, or $291/mo',
-        activationLabel:'First 7 days (activation window)',deliverables:false,attendance:true});
+        activationLabel:'First 7 days (activation window)',activation:ACTIVATION_ACADEMY,
+        deliverables:false,attendance:true});
       bd.appendChild(el('div','subh','Ascension'));
       bd.appendChild(fieldGrid(rec,[
         {k:'upsell',label:'Upsell opportunity',type:'select',opts:['Not yet','Watching','Ready','Offered','Converted','No']},
