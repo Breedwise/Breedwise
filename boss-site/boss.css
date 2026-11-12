@@ -238,3 +238,78 @@ footer{border-top:1px solid var(--line);padding:clamp(44px,6vw,72px) 0 40px;posi
   .form .grid2{grid-template-columns:1fr}
   .fbottom{flex-direction:column}
 }
+
+/* ============================================================
+   B.O.S.S. offer page — additive components
+   ============================================================ */
+
+/* ---------- pillars ---------- */
+.pillar{border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,var(--bg2),#131009);padding:clamp(26px,4vw,46px);margin-top:20px;position:relative;overflow:hidden}
+.pillar::before{content:"";position:absolute;top:-30%;right:-10%;width:460px;height:320px;background:radial-gradient(closest-side,rgba(198,169,106,.12),transparent 70%);pointer-events:none}
+.pillar .ptag{position:relative;font-weight:700;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold)}
+.pillar h3.disp{position:relative;font-size:clamp(24px,3.2vw,38px);font-weight:500;margin-top:10px;max-width:24ch}
+.pillar .pintro{position:relative;color:var(--sub);margin-top:14px;max-width:64ch;font-size:15px}
+.pillar .inc{position:relative;display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:28px}
+.pinc{display:flex;gap:13px;align-items:flex-start}
+.pinc .ck{flex:0 0 auto;width:25px;height:25px;border-radius:7px;background:rgba(198,169,106,.14);border:1px solid var(--line2);display:grid;place-items:center;color:var(--gold);font-size:13px;margin-top:1px}
+.pinc h4{margin:0 0 4px;font-size:14.5px;font-weight:600}
+.pinc p{color:var(--sub);font-size:13px;line-height:1.5}
+.pillar .result{position:relative;margin-top:28px;padding-top:22px;border-top:1px solid var(--line);color:var(--ink);font-size:15.5px;line-height:1.5}
+.pillar .result b{color:var(--gold);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:11px;display:block;margin-bottom:7px}
+
+/* ---------- triad (built for / with / guided) ---------- */
+.triad{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
+.tcard{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:28px 24px}
+.tcard .lab{font-weight:700;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:inline-block;padding:6px 12px;border:1px solid var(--line2);border-radius:999px}
+.tcard h3{font-family:var(--disp);font-size:25px;margin:16px 0 8px;font-weight:600}
+.tcard p{color:var(--sub);font-size:14px;line-height:1.55}
+
+/* ---------- qualify (two column yes / no) ---------- */
+.quals{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:30px}
+.qbox{background:var(--bg2);border:1px solid var(--line);border-radius:18px;padding:28px}
+.qbox h3{font-family:var(--disp);font-size:24px;font-weight:600;margin:0 0 18px;display:flex;align-items:center;gap:10px}
+.qbox h3 .tg{font-family:var(--body);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+.qbox h3 .tg.g{color:var(--gold);border:1px solid var(--line2)}
+.qbox h3 .tg.r{color:#d99;border:1px solid rgba(160,80,70,.35)}
+.qlist{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:13px}
+.qlist li{display:flex;gap:12px;align-items:flex-start;color:var(--sub);font-size:14.5px;line-height:1.5}
+.qlist li .m{flex:0 0 auto;width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-size:12px;font-weight:700;margin-top:1px}
+.qlist li .m.y{background:rgba(198,169,106,.14);border:1px solid var(--line2);color:var(--gold)}
+.qlist li .m.n{background:rgba(160,80,70,.14);border:1px solid rgba(160,80,70,.3);color:#d99}
+
+/* ---------- portfolio gallery ---------- */
+.pfgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
+.pf{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:26px 24px;transition:transform .2s,border-color .2s}
+.pf:hover{border-color:var(--gold);transform:translateY(-2px)}
+.pf .nm{font-family:var(--disp);font-size:23px;font-weight:600;line-height:1.1}
+.pf .br{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:8px 0 12px}
+.pf .bd{color:var(--sub);font-size:13.5px;line-height:1.5}
+.pf .tagline{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- small note box ---------- */
+.notebox{background:var(--bg2);border:1px solid var(--line2);border-radius:16px;padding:24px 26px;margin:0 auto 10px;max-width:760px;text-align:center}
+.notebox h4{font-family:var(--disp);font-size:22px;font-weight:600;margin:0 0 10px}
+.notebox p{color:var(--sub);font-size:14px;max-width:62ch;margin:0 auto}
+.notebox p+p{margin-top:12px}
+
+/* ---------- science band ---------- */
+.science{background:linear-gradient(180deg,var(--bg2),#131009);border:1px solid var(--line);border-radius:20px;padding:clamp(28px,4vw,44px);text-align:center}
+.science .names{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.science .nm{background:#120f0a;border:1px solid var(--line2);border-radius:12px;padding:16px 22px;min-width:220px}
+.science .nm b{font-family:var(--disp);font-size:20px;font-weight:600;color:var(--ink);display:block}
+.science .nm span{font-size:12px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase}
+.science .fine{color:var(--muted);font-size:12.5px;line-height:1.6;max-width:72ch;margin:22px auto 0}
+
+/* ---------- compact testimonial row ---------- */
+.trow{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:30px}
+
+@media(max-width:900px){
+  .pillar .inc{grid-template-columns:1fr}
+  .triad{grid-template-columns:1fr}
+  .quals{grid-template-columns:1fr}
+  .pfgrid{grid-template-columns:1fr 1fr}
+  .trow{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+  .pfgrid{grid-template-columns:1fr}
+}
