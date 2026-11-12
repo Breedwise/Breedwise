@@ -43,7 +43,7 @@
         tabs.forEach(function(t){t.setAttribute('aria-selected','false');});
         tab.setAttribute('aria-selected','true');
         var f=tab.getAttribute('data-filter');
-        document.querySelectorAll('.qcard').forEach(function(c){
+        document.querySelectorAll('[data-cat]').forEach(function(c){
           var cat=c.getAttribute('data-cat')||'';
           c.classList.toggle('hide', f!=='all' && cat!==f);
         });

@@ -313,3 +313,26 @@ footer{border-top:1px solid var(--line);padding:clamp(44px,6vw,72px) 0 40px;posi
 @media(max-width:620px){
   .pfgrid{grid-template-columns:1fr}
 }
+
+/* ---------- testimonial wall (Content Launch–style) ---------- */
+.wall{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px;align-items:start}
+.wall .hide{display:none}
+.vcard{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#17150f;aspect-ratio:10/14;cursor:pointer;display:block}
+.vcard img.thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vcard .thumb.ph{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 0%,rgba(198,169,106,.16),transparent 60%),#17150f;display:grid;place-items:center}
+.vcard .thumb.ph b{color:var(--muted);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600}
+.vcard .play{position:absolute;top:44%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;border-radius:50%;background:var(--grad);display:grid;place-items:center;color:#1a1405;box-shadow:0 10px 26px rgba(0,0,0,.45);z-index:3;transition:transform .15s;border:0;cursor:pointer}
+.vcard:hover .play{transform:translate(-50%,-50%) scale(1.07)}
+.vcard .play svg{width:22px;height:22px;margin-left:3px}
+.vcard .dur{position:absolute;top:12px;left:12px;z-index:3;background:rgba(10,9,7,.82);color:var(--ink);font-size:11px;font-weight:600;padding:4px 9px;border-radius:999px}
+.vcard .plat{position:absolute;bottom:14px;right:13px;z-index:4;color:rgba(255,255,255,.9)}
+.vcard .plat svg{width:18px;height:18px;display:block}
+.vcard .cap{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:54px 16px 16px;background:linear-gradient(to top,rgba(7,6,4,.97) 30%,rgba(7,6,4,.55) 72%,transparent)}
+.vcard .cap blockquote{margin:0;color:#fff;font-size:14.5px;line-height:1.36;font-weight:500}
+.vcard .cap .who{margin-top:10px;font-size:11.5px;color:var(--gold);letter-spacing:.02em}
+.vcard .cap .who b{color:#fff;font-weight:600}
+/* review cards reuse .qcard inside the wall */
+.wall .qcard.hide,.vcard.hide{display:none}
+.wallnote{text-align:center;color:var(--muted);font-size:11.5px;margin:18px auto 0;max-width:80ch}
+@media(max-width:900px){.wall{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.wall{grid-template-columns:1fr}}
