@@ -361,24 +361,24 @@ function seed(){return {
  },
  roles:[
   {title:"CEO / Strategy",owner:"Austin",dept:"Leadership",purpose:"Set direction and own overall company performance.",resp:"Revenue · Strategy · Company performance · Final decisions",outcomes:"Company hits revenue and growth targets",kpis:"Total cash collected · New revenue booked · Cash runway",authority:"All strategic and financial decisions",reports:"—",deliver:"Weekly scorecard review · Monthly financial review",sops:""},
-  {title:"Operations / Member Success",owner:"Jenn",dept:"Operations",purpose:"Own client experience, delivery, and implementation operations.",resp:"Onboarding · Delivery · Implementation · Retention",outcomes:"Active clients on track and retained",kpis:"Onboarding completion · Active clients on track · Retention",authority:"Delivery and member-success operations",reports:"Austin",deliver:"Weekly client-health report",sops:""},
-  {title:"Marketing / Content",owner:"Yasamine",dept:"Marketing",purpose:"Produce content and campaigns that create qualified demand.",resp:"Content production · Campaigns · Qualified demand",outcomes:"Consistent qualified inbound leads",kpis:"Content published vs planned · MQLs · Cost per qualified lead",authority:"Content calendar and campaign execution",reports:"Austin",deliver:"Weekly content + lead report",sops:""},
+  {title:"Operations / Member Success",owner:"Jennifer",dept:"Operations",purpose:"Own client experience, delivery, and implementation operations.",resp:"Onboarding · Delivery · Implementation · Retention",outcomes:"Active clients on track and retained",kpis:"Onboarding completion · Active clients on track · Retention",authority:"Delivery and member-success operations",reports:"Austin",deliver:"Weekly client-health report",sops:""},
+  {title:"Marketing / Content",owner:"Yasmin",dept:"Marketing",purpose:"Produce content and campaigns that create qualified demand.",resp:"Content production · Campaigns · Qualified demand",outcomes:"Consistent qualified inbound leads",kpis:"Content published vs planned · MQLs · Cost per qualified lead",authority:"Content calendar and campaign execution",reports:"Austin",deliver:"Weekly content + lead report",sops:""},
   {title:"Sales",owner:"Regina",dept:"Sales",purpose:"Own pipeline, qualification, follow-up, and conversions.",resp:"Pipeline · Qualification · Follow-up · Conversions",outcomes:"Qualified calls converted to members and clients",kpis:"Calls held · Show rate · TPB / Academy / B.O.S.S. close rate · Cash collected",authority:"Pipeline management and follow-up cadence",reports:"Austin",deliver:"Weekly pipeline review",sops:""},
-  {title:"Scientific / Veterinary",owner:"Dr. Emmanuel",dept:"Education",purpose:"Ensure scientific accuracy and veterinary standards in education.",resp:"Scientific accuracy · Veterinary standards · Education quality",outcomes:"Curriculum is accurate, credible, and current",kpis:"Lessons reviewed/approved · Review turnaround · Content requiring correction",authority:"Scientific sign-off on educational content",reports:"Austin",deliver:"Review-queue status",sops:""},
-  {title:"Finance / Bookkeeping",owner:"Bookkeeper",dept:"Finance",purpose:"Maintain accurate books, reconciliation, and reporting.",resp:"Bookkeeping · Reconciliation · Reporting",outcomes:"Books accurate and closed monthly, on time",kpis:"Reconciliation completion · Reporting timeliness · Outstanding receivables",authority:"Day-to-day bookkeeping; Austin owns financial decisions",reports:"Austin",deliver:"Monthly close report",sops:""}
+  {title:"Scientific / Veterinary",owner:"Emmanuel",dept:"Education",purpose:"Ensure scientific accuracy and veterinary standards in education.",resp:"Scientific accuracy · Veterinary standards · Education quality",outcomes:"Curriculum is accurate, credible, and current",kpis:"Lessons reviewed/approved · Review turnaround · Content requiring correction",authority:"Scientific sign-off on educational content",reports:"Austin",deliver:"Review-queue status",sops:""},
+  {title:"Finance / Bookkeeping",owner:"",dept:"Finance",purpose:"Maintain accurate books, reconciliation, and reporting.",resp:"Bookkeeping · Reconciliation · Reporting",outcomes:"Books accurate and closed monthly, on time",kpis:"Reconciliation completion · Reporting timeliness · Outstanding receivables",authority:"Day-to-day bookkeeping; Austin owns financial decisions",reports:"Austin",deliver:"Monthly close report",sops:""}
  ],
  scorecard:[
   {m:"Total Cash Collected",def:"Actual money received (all offers)",owner:"Austin",src:"Stripe / Accounting",freq:"Weekly",t:"",a:"",s:"gray"},
   {m:"New Revenue Booked",def:"Value of new signed sales",owner:"Regina",src:"CRM",freq:"Weekly",t:"",a:"",s:"gray"},
   {m:"New TPB Members",def:"Entry-offer ($97/mo) sales",owner:"Regina",src:"Checkout / Skool",freq:"Weekly",t:"",a:"",s:"gray"},
   {m:"TPB Monthly Recurring Revenue",def:"Active recurring subscription revenue",owner:"Austin",src:"Stripe",freq:"Monthly",t:"",a:"",s:"gray"},
-  {m:"TPB Churn Rate",def:"% of members canceling",owner:"Jenn",src:"Skool / Stripe",freq:"Monthly",t:"",a:"",s:"gray"},
+  {m:"TPB Churn Rate",def:"% of members canceling",owner:"Jennifer",src:"Skool / Stripe",freq:"Monthly",t:"",a:"",s:"gray"},
   {m:"Qualified Sales Calls Held",def:"Qualified opportunities actually attended",owner:"Regina",src:"CRM / Calendar",freq:"Weekly",t:"",a:"",s:"gray"},
   {m:"Academy Sales",def:"New Academy enrollments",owner:"Regina",src:"CRM",freq:"Weekly",t:"",a:"",s:"gray"},
   {m:"B.O.S.S. Sales",def:"New B.O.S.S. clients",owner:"Regina",src:"CRM",freq:"Weekly",t:"",a:"",s:"gray"},
-  {m:"Marketing Qualified Leads",def:"Relevant prospects entering the funnel",owner:"Yasamine",src:"CRM / Forms",freq:"Weekly",t:"",a:"",s:"gray"},
+  {m:"Marketing Qualified Leads",def:"Relevant prospects entering the funnel",owner:"Yasmin",src:"CRM / Forms",freq:"Weekly",t:"",a:"",s:"gray"},
   {m:"Lead-to-Customer Conversion",def:"Funnel effectiveness (%)",owner:"Austin",src:"CRM",freq:"Monthly",t:"",a:"",s:"gray"},
-  {m:"Active Clients On Track",def:"Delivery performance",owner:"Jenn",src:"Project tracker",freq:"Weekly",t:"",a:"",s:"gray"},
+  {m:"Active Clients On Track",def:"Delivery performance",owner:"Jennifer",src:"Project tracker",freq:"Weekly",t:"",a:"",s:"gray"},
   {m:"Operating Cash / Runway",def:"Months of runway at current burn",owner:"Austin",src:"Accounting",freq:"Monthly",t:"",a:"",s:"gray"}
  ],
  depts:{
@@ -394,7 +394,7 @@ function seed(){return {
   {level:"Company Objective",goal:"",owner:"Austin",t:"",due:"",prog:"",s:"gray"}
  ],
  projects:[
-  {name:"B.O.S.S. Delivery System",dept:"Operations",owner:"Jenn",pri:"High",due:"",s:"yellow",mile:"Client onboarding finalized",block:"Waiting on approved scope",next:"Finalize onboarding checklist"}
+  {name:"B.O.S.S. Delivery System",dept:"Operations",owner:"Jennifer",pri:"High",due:"",s:"yellow",mile:"Client onboarding finalized",block:"Waiting on approved scope",next:"Finalize onboarding checklist"}
  ],
  sops:[
   {folder:"Marketing SOPs",name:"",owner:"",purpose:"",trigger:"",dod:"",updated:""},
@@ -412,8 +412,8 @@ function seed(){return {
   {meeting:"Leadership Scorecard",freq:"Weekly · 45–60 min",purpose:"Review numbers, blockers, decisions",owner:"Austin"},
   {meeting:"Department Check-ins",freq:"Weekly · 15–30 min",purpose:"Performance and next priorities",owner:"Dept owners"},
   {meeting:"Sales Pipeline Review",freq:"Weekly · 30 min",purpose:"Qualified opportunities, conversions, follow-ups",owner:"Regina"},
-  {meeting:"Delivery / Client Health",freq:"Weekly · 30 min",purpose:"Milestones, at-risk clients, capacity",owner:"Jenn"},
-  {meeting:"Financial Review",freq:"Monthly · 45–60 min",purpose:"Revenue, margin, cash, forecasts",owner:"Austin + Bookkeeper"},
+  {meeting:"Delivery / Client Health",freq:"Weekly · 30 min",purpose:"Milestones, at-risk clients, capacity",owner:"Jennifer"},
+  {meeting:"Financial Review",freq:"Monthly · 45–60 min",purpose:"Revenue, margin, cash, forecasts",owner:"Austin"},
   {meeting:"Quarterly Planning",freq:"Quarterly",purpose:"Results, goals, ownership, capacity",owner:"Austin"}
  ],
  finance:[
@@ -435,19 +435,19 @@ function seed(){return {
  ],
  people:[
   {name:"Austin",role:"CEO / Strategy",outcomes:"Revenue, direction, company performance",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"},
-  {name:"Jenn",role:"Operations / Member Success",outcomes:"Client experience, delivery, implementation",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"},
-  {name:"Yasamine",role:"Marketing / Content",outcomes:"Qualified demand and content production",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"},
-  {name:"Regina",role:"Sales",outcomes:"Pipeline, qualification, conversions",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"},
-  {name:"Dr. Emmanuel",role:"Scientific / Veterinary",outcomes:"Scientific accuracy and education quality",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"},
-  {name:"Bookkeeper",role:"Finance",outcomes:"Accurate books and timely reporting",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"}
+  {name:"Jennifer",role:"Director of Member Success",outcomes:"Client experience, delivery, implementation",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"},
+  {name:"Yasmin",role:"Marketing / Content",outcomes:"Qualified demand and content production",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"},
+  {name:"Regina",role:"Setter",outcomes:"Pipeline, qualification, booked calls",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"},
+  {name:"Emmanuel",role:"Scientific / Veterinary",outcomes:"Scientific accuracy and education quality",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"},
+  {name:"Daniel",role:"DM Setter",outcomes:"Outbound DM conversations and booked calls",kpis:"",deliver:"",quality:"",reliability:"",priorities:"",blockers:"",coaching:"",review:"",s:"gray"}
  ],
  calendar:{
   rhythm:[
    {day:"Monday",time:"",what:"Leadership scorecard \u2014 numbers, blockers, decisions",who:"Austin"},
    {day:"Monday",time:"",what:"Weekly commitments set for the week",who:"Austin"},
    {day:"Tuesday",time:"",what:"Sales pipeline review",who:"Regina"},
-   {day:"Wednesday",time:"",what:"Delivery / client health review",who:"Jenn"},
-   {day:"Thursday",time:"",what:"Content + lead review",who:"Yasamine"},
+   {day:"Wednesday",time:"",what:"Delivery / client health review",who:"Jennifer"},
+   {day:"Thursday",time:"",what:"Content + lead review",who:"Yasmin"},
    {day:"Friday",time:"",what:"Week closed out \u2014 commitments kept or missed",who:"Austin"}
   ],
   events:[]
@@ -832,7 +832,7 @@ function syncScorecard(){var b=$('#syncSc');b.textContent='Syncing…';
 /* ---- 04 Departments ---- */
 function renderDepts(){var p=$('#p-depts');p.innerHTML='';
   p.appendChild(el('p','intro','<b>Performance by function.</b> Each department owns its detailed metrics; the Company Scorecard pulls only the most important ones up. Status here rolls up into Department Health on the Command Center.'));
-  var defs=[['marketing','Marketing','Yasamine'],['sales','Sales','Regina / Sales Lead'],['ops','Operations & Member Success','Jenn'],['education','Education & Scientific Quality','Dr. Emmanuel + program owner'],['finance','Finance','Bookkeeper · Austin accountable']];
+  var defs=[['marketing','Marketing','Yasmin'],['sales','Sales','Regina / Daniel'],['ops','Operations & Member Success','Jennifer'],['education','Education & Scientific Quality','Emmanuel + program owner'],['finance','Finance','Austin accountable']];
   defs.forEach(function(d){
     p.appendChild(el('div','sec-h','<h3>'+esc(d[1])+'</h3><span class="ln"></span><span class="muted" style="font-size:12px">Owner: '+esc(d[2])+'</span>'));
     var box=el('div');p.appendChild(box);
@@ -1312,7 +1312,9 @@ function recordList(p,arr,cfg){
   var add=el('button','addbtn','+ '+cfg.addLabel);
   add.addEventListener('click',function(){
     arr.push(cfg.blank());save();draw();cfg.after&&cfg.after();
-    var last=wrap.querySelector('.rec:last-of-type');if(last){last.open=true;last.scrollIntoView({block:'center'});}
+    var last=wrap.querySelector('.rec:last-of-type');
+    if(last){last.open=true;last.scrollIntoView({block:'center'});
+      var f=last.querySelector('.bd input.f');if(f)f.focus();}
   });
   p.appendChild(add);
 }
@@ -1328,6 +1330,19 @@ var ACTIVATION_ACADEMY=['Agreement signed','Payment cleared','Onboarding form re
   'Assessment completed','Focus plan built','First session attended','First action completed'];
 
 function clientBody(bd,rec,opts){
+  /* The name had no input at all — it only ever rendered in the card
+     header, so a new record was stuck reading "Unnamed". It goes first,
+     full width, and retitles the card as you type. */
+  var gN=fieldGrid(rec,[{k:'name',label:'Name',ph:'Kennel or person'}]);
+  bd.appendChild(gN);
+  (function(){
+    var i=gN.querySelector('input.f');if(!i)return;
+    i.addEventListener('input',function(){
+      var card=bd.parentNode;if(!card)return;
+      var t=card.querySelector('.nm'); if(t)t.textContent=i.value||'Unnamed';
+      var a=card.querySelector('.av'); if(a)a.textContent=initials(i.value||'?');
+    });
+  })();
   bd.appendChild(fieldGrid(rec,[
     {k:'email',label:'Email',ph:'name@example.com'},
     {k:'phone',label:'Phone'},
