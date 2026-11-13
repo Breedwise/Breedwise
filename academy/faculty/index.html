@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Faculty — Breedwise Academy</title>
+<meta name="description" content="Board-certified veterinary specialists teach the clinical side of the Breedwise Academy certification — reproduction, genetics, whelping and neonatal care.">
+<meta property="og:title" content="Faculty — Breedwise Academy">
+<meta property="og:description" content="Meet the veterinary specialists and the Breedwise team behind the certification.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="../assets/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<a href="#main" class="visually-hidden">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="../">Breedwise<b>.</b> Academy</a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">≡</button>
+    <div class="nav-links" id="navlinks">
+      <a href="../curriculum/">Curriculum</a>
+      <a href="../faculty/">Faculty</a>
+      <a href="#team">Team</a>
+      <a class="btn btn-gold" data-apply href="#apply">Apply</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+<!-- HERO -->
+<section class="s-dark hero">
+  <div class="wrap">
+    <span class="eyebrow">The faculty</span>
+    <h1 style="max-width:20ch">The clinical half is taught by clinicians.</h1>
+    <p class="lead" style="margin-top:16px">The reproduction, genetics, whelping and neonatal modules aren't business advice in a lab coat — they're built and taught by board-certified veterinary specialists. Here's who you learn from.</p>
+  </div>
+</section>
+
+<!-- FACULTY CARDS -->
+<section class="s-ivory">
+  <div class="wrap" id="faculty-cards"></div>
+</section>
+
+<!-- TEAM -->
+<section class="s-dark" id="team">
+  <div class="wrap">
+    <span class="eyebrow">Business &amp; member support</span>
+    <h2 style="margin:12px 0 6px">The team that gets it implemented.</h2>
+    <p style="max-width:60ch">Clinical knowledge only pays off when it reaches your program. These are the people who teach the business side and keep your year moving.</p>
+    <div class="grid-3" style="margin-top:28px" id="team-cards"></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="s-band" id="apply">
+  <div class="wrap" style="text-align:center;max-width:740px">
+    <span class="eyebrow">Apply</span>
+    <h2 style="margin:12px 0 14px">Learn directly from the people who set the standard.</h2>
+    <p class="lead" style="margin:0 auto 24px">Apply for the next cohort and we'll cover fit and pricing together on a short strategy session.</p>
+    <div class="btn-row" style="justify-content:center">
+      <a class="btn btn-gold" data-apply href="#apply">Apply for the next cohort</a>
+      <a class="btn btn-ghost" href="../curriculum/">See the curriculum</a>
+    </div>
+    <p class="fineprint">Next cohort: <span data-bw="cohortDate" data-bw-html></span> · <span data-bw="seatsRemaining" data-bw-html></span></p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap foot-grid">
+    <div>
+      <div class="brand" style="font-size:18px">Breedwise<b>.</b> Academy</div>
+      <p style="margin-top:8px;max-width:38ch">Not more breeders. Better breeders.</p>
+    </div>
+    <div class="foot-links">
+      <a href="../curriculum/">Curriculum</a>
+      <a href="../faculty/">Faculty</a>
+      <a data-apply href="#apply">Apply</a>
+      <a href="mailto:support@breedwise.io">Contact</a>
+    </div>
+  </div>
+  <div class="wrap" style="margin-top:30px;font-size:13px;color:var(--dark-muted-2)">© <span data-year></span> Breedwise. All rights reserved.</div>
+</footer>
+
+<script src="../assets/content.js"></script>
+<script>
+(function(){
+  function ph(s){ return String(s==null?"":s).replace(/\[([^\]]+)\]/g,'<span class="ph">[$1]</span>'); }
+  function initials(name){ return String(name).replace(/^Dr\.?\s*/,'').split(/\s+/).map(function(w){return w[0];}).slice(0,2).join('').toUpperCase(); }
+  function esc(s){ return String(s==null?"":s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];}); }
+
+  // faculty big cards
+  var fc=document.getElementById('faculty-cards');
+  if(fc && window.BW && BW.faculty){
+    fc.innerHTML = BW.faculty.map(function(f,i){
+      var photo = f.headshot ? ' style="background-image:url('+esc(f.headshot)+')"' : '';
+      var photoTxt = f.headshot ? '' : initials(f.name);
+      var teaches = (f.teaches||[]).map(function(t){ return '<span class="chip">'+ph(t)+'</span>'; }).join('');
+      var vid = '<div class="vslot portrait" data-video="BW.faculty.'+i+'.intro_video" data-cap="'+esc(f.name)+'"></div>';
+      return '<article class="fac-big'+(i>0?'" style="margin-top:40px;padding-top:40px;border-top:1px solid var(--line-light)':'')+'">'
+        + '<div class="photo"'+photo+'>'+photoTxt+'</div>'
+        + '<div><div class="num" style="font-size:22px">'+esc(f.name)+'</div>'
+        + '<p style="font-weight:600;color:var(--gold-deep);margin:4px 0 2px;font-size:14px">'+ph(f.credentials)+'</p>'
+        + '<p style="font-size:14px;color:var(--light-body-2);margin-bottom:12px">'+ph(f.area)+'</p>'
+        + '<p>'+ph(f.bio)+'</p>'
+        + '<p style="font-weight:600;margin:16px 0 4px;color:var(--ink)">Teaches</p>'
+        + '<div class="chips">'+teaches+'</div>'
+        + '</div></article>';
+    }).join('');
+  }
+
+  // team cards
+  var tc=document.getElementById('team-cards');
+  if(tc && window.BW && BW.team){
+    tc.innerHTML = BW.team.map(function(m){
+      var photo = m.headshot ? ' style="background-image:url('+esc(m.headshot)+')"' : '';
+      var photoTxt = m.headshot ? '' : initials(m.name);
+      return '<div class="card" style="display:flex;gap:16px;align-items:center">'
+        + '<div class="avatar" style="width:54px;height:54px"'+photo+'>'+photoTxt+'</div>'
+        + '<div><div class="fn" style="font-weight:600;color:var(--ivory)">'+esc(m.name)+'</div>'
+        + '<div style="font-size:14px;color:var(--dark-muted-2)">'+ph(m.role)+'</div></div></div>';
+    }).join('');
+  }
+})();
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>
