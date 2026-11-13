@@ -38,7 +38,44 @@
 </div></section>
 
 <section class="sec" style="padding-top:clamp(50px,7vw,86px)"><div class="wrap">
-  <div id="pupgrid" class="pups"><div class="empty-note" style="grid-column:1/-1">Loading available puppies…</div></div>
+  <div id="pupgrid" class="pups">
+    <div class="pup rv show">
+      <div class="pic" data-photos="assets/pups/bessie-1.jpg|assets/pups/bessie-2.jpg|assets/pups/bessie-3.jpg|assets/pups/bessie-4.jpg|assets/pups/bessie-5.jpg|assets/pups/bessie-6.jpg|assets/pups/bessie-7.jpg">
+        <img src="assets/pups/bessie-1.jpg" alt="Bessie, blue merle tri French Bulldog puppy" loading="lazy">
+        <span class="st avail">Available</span><span class="gcount">7 photos</span>
+      </div>
+      <div class="b">
+        <h3>Bessie<span class="price">Inquire</span></h3>
+        <div class="tags"><span class="tag">Female</span><span class="tag">Blue Merle Tri</span></div>
+        <p class="desc">Out of Murphy &amp; Shiloh. Born Aug 11, 2026 · 5 lbs.</p>
+        <a class="btn primary" href="apply.html?pup=Bessie">Inquire About Bessie</a>
+      </div>
+    </div>
+    <div class="pup rv show">
+      <div class="pic" data-photos="assets/pups/oliver-1.jpg|assets/pups/oliver-2.jpg|assets/pups/oliver-3.jpg|assets/pups/oliver-4.jpg|assets/pups/oliver-5.jpg|assets/pups/oliver-6.jpg">
+        <img src="assets/pups/oliver-1.jpg" alt="Oliver, blue merle tri French Bulldog puppy" loading="lazy">
+        <span class="st avail">Available</span><span class="gcount">6 photos</span>
+      </div>
+      <div class="b">
+        <h3>Oliver<span class="price">Inquire</span></h3>
+        <div class="tags"><span class="tag">Male</span><span class="tag">Blue Merle Tri</span></div>
+        <p class="desc">Out of Murphy &amp; Shiloh. Born Aug 11, 2026 · 4 lbs.</p>
+        <a class="btn primary" href="apply.html?pup=Oliver">Inquire About Oliver</a>
+      </div>
+    </div>
+    <div class="pup rv show">
+      <div class="pic" data-photos="assets/pups/milo-1.jpg|assets/pups/milo-2.jpg|assets/pups/milo-3.jpg|assets/pups/milo-4.jpg|assets/pups/milo-5.jpg">
+        <img src="assets/pups/milo-1.jpg" alt="Milo, isabella and tan French Bulldog puppy" loading="lazy">
+        <span class="st avail">Available</span><span class="gcount">5 photos</span>
+      </div>
+      <div class="b">
+        <h3>Milo<span class="price">Inquire</span></h3>
+        <div class="tags"><span class="tag">Isabella &amp; Tan</span></div>
+        <p class="desc">Out of Murphy &amp; Shiloh. Born Aug 11, 2026 · 4 lbs.</p>
+        <a class="btn primary" href="apply.html?pup=Milo">Inquire About Milo</a>
+      </div>
+    </div>
+  </div>
   <div style="text-align:center;margin-top:30px;color:var(--mid);font-size:15px">Looking for a specific color, sex, or an upcoming litter? <a href="apply.html" style="color:var(--gold-dp);text-decoration:underline">Apply</a> or <a href="contact.html" style="color:var(--gold-dp);text-decoration:underline">message us</a> and we'll help you find your match.</div>
 </div></section>
 
@@ -101,10 +138,26 @@
   function fallback(){
     grid.innerHTML='<div class="empty-note" style="grid-column:1/-1">Our next litter is on the way. <a href="apply.html">Join the waitlist</a> or <a href="contact.html">message us</a> to be first to know when our Frenchies become available.</div>';
   }
-  var done=false, timer=setTimeout(function(){ if(!done){ done=true; fallback(); } },8000);
+  // Wire the lightbox for the statically-listed puppies above.
+  function wireStatic(){
+    grid.querySelectorAll('.pup .pic[data-photos]').forEach(function(pic){
+      var photos=(pic.getAttribute('data-photos')||'').split('|').filter(Boolean);
+      if(!photos.length) return;
+      pic.style.cursor='pointer';
+      pic.addEventListener('click',function(){ window.shfLightbox(photos,0); });
+    });
+  }
+  wireStatic();
+
+  // Until Austin provisions the Safe Haven kennel in Kennel OS, keep the static
+  // puppies listed above. Once the real kos_live_ key is in place, Kennel OS data
+  // takes over automatically (and only replaces the static list when it has puppies).
+  if(API.indexOf('REPLACE_WITH')>=0){ return; }
+
+  var done=false, timer=setTimeout(function(){ done=true; },8000);
   fetch(API,{headers:{'apikey':'public'}}).then(function(r){ return r.ok?r.json():Promise.reject(r); })
-    .then(function(d){ if(done)return; done=true; clearTimeout(timer); render((d&&d.puppies)||[]); })
-    .catch(function(){ if(done)return; done=true; clearTimeout(timer); fallback(); });
+    .then(function(d){ if(done)return; done=true; clearTimeout(timer); if(d&&d.puppies&&d.puppies.length){ render(d.puppies); } })
+    .catch(function(){ if(done)return; done=true; clearTimeout(timer); });
 })();
 </script>
 </body>
