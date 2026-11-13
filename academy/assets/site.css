@@ -9,7 +9,7 @@
 }
 *{box-sizing:border-box;margin:0}
 html{scroll-behavior:smooth}
-body{font-family:var(--sans);background:var(--ink);color:var(--ivory);-webkit-font-smoothing:antialiased;line-height:1.6;font-size:17px}
+body{font-family:var(--sans);background:var(--ink);color:var(--ivory);-webkit-font-smoothing:antialiased;line-height:1.64;font-size:18px}
 img{max-width:100%;display:block}
 a{color:var(--gold);text-decoration:none}
 a:hover{color:var(--gold-hover)}
@@ -22,7 +22,7 @@ p{color:var(--dark-muted)}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
 section{padding:96px 0}
 @media(max-width:640px){section{padding:64px 0}}
-.lead{font-size:clamp(17px,1.4vw,19px);max-width:62ch}
+.lead{font-size:clamp(18px,1.5vw,21px);line-height:1.6;max-width:62ch}
 
 /* sections: dark / band / ivory */
 .s-dark{background:var(--ink);color:var(--ivory)}
@@ -190,3 +190,35 @@ section{padding:96px 0}
 .form input:focus{outline:none;border-color:var(--gold)}
 .form .msg{font-size:13.5px;margin-top:8px;min-height:18px}
 .hp-field{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+/* refined empty video placeholders (feel intentional, not broken) */
+.s-ivory .vslot{background:#EDE6D7;border-color:var(--line-light);color:var(--light-body-2)}
+.s-ivory .play{border-color:var(--gold-deep)}
+.s-ivory .play::after{border-left-color:var(--gold-deep)}
+.s-ivory .vslot .vcap{color:var(--light-body-2)}
+
+/* ===== OFFER JOURNEY (120-day core -> membership -> certification) ===== */
+.journey{list-style:none;padding:0;margin:40px 0 0;display:grid;gap:26px;grid-template-columns:repeat(3,1fr)}
+@media(max-width:860px){.journey{grid-template-columns:1fr}}
+.phase{position:relative;background:#fff;border:1px solid var(--line-light);border-radius:16px;padding:34px 30px;display:flex;flex-direction:column;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.phase .pnum{font-family:var(--disp);font-weight:600;font-size:15px;letter-spacing:2px;color:var(--gold-deep);text-transform:uppercase;margin-bottom:6px}
+.phase .pname{font-family:var(--disp);font-size:clamp(22px,2.2vw,26px);color:var(--ink);line-height:1.1;margin-bottom:12px}
+.phlead{color:var(--light-body);margin-bottom:18px;font-size:16.5px}
+.plist{list-style:none;padding:0;margin:0 0 18px}
+.plist li{position:relative;padding:10px 0 10px 22px;font-size:16px;border-top:1px solid var(--line-light);color:var(--light-body)}
+.plist li:first-child{border-top:0}
+.plist li::before{content:"";position:absolute;left:2px;top:17px;width:7px;height:7px;border-radius:50%;background:var(--gold)}
+.plist b{color:var(--ink);font-weight:600}
+.pout{margin-top:auto;padding-top:16px;border-top:1px solid var(--line-light);font-family:var(--disp);font-size:17px;line-height:1.4;color:var(--ink)}
+.phase.is-core{border-top:3px solid var(--gold)}
+
+/* certification panel (dark) */
+.certbox{background:var(--ink-raised);border:1px solid var(--line-dark);border-radius:16px;padding:8px 26px}
+.certrow{display:flex;gap:16px;padding:20px 0;border-top:1px solid var(--line-dark);align-items:flex-start}
+.certrow:first-child{border-top:0}
+.certrow .ck{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--gold);margin-top:2px;position:relative}
+.certrow .ck::after{content:"";position:absolute;left:8px;top:4px;width:6px;height:12px;border:solid var(--gold);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.certrow .ck.muted{border-color:#6b6453}
+.certrow .ck.muted::after{border-color:#6b6453}
+.certrow b{color:var(--ivory);display:block;margin-bottom:4px;font-size:17px}
+.certrow p{color:var(--dark-muted);font-size:16px;margin:0}
