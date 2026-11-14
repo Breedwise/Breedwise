@@ -102,6 +102,36 @@
   </div>
 </section>
 
+<!-- MEMBER BAND: real breeders & their dogs -->
+<style>
+  .mbgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}
+  .mbcard{position:relative;margin:0;border-radius:16px;overflow:hidden;border:1px solid var(--line-light);box-shadow:0 14px 30px rgba(24,24,27,.10);aspect-ratio:4/5;background:#ececef}
+  .mbcard img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+  .mbcard:hover img{transform:scale(1.045)}
+  .mbcard figcaption{position:absolute;left:0;right:0;bottom:0;padding:38px 16px 14px;color:#fff;background:linear-gradient(to top,rgba(17,17,20,.88),rgba(17,17,20,.30) 55%,transparent);font-family:var(--sans)}
+  .mbcard figcaption b{display:block;font-family:var(--disp);font-weight:700;font-size:16px;line-height:1.15}
+  .mbcard figcaption span{display:block;font-size:12px;color:rgba(255,255,255,.84);margin-top:2px}
+  @media(max-width:860px){.mbgrid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:420px){.mbgrid{grid-template-columns:1fr 1fr;gap:12px}}
+</style>
+<section class="s-band">
+  <div class="wrap">
+    <span class="eyebrow">Real breeders. Real dogs.</span>
+    <h2 style="margin:10px 0 0;max-width:24ch">You'd be in good company.</h2>
+    <p style="margin:12px 0 0;max-width:64ch;color:var(--light-body-2)">Champion show homes, working-dog programs and lifelong breeders, these are Breedwise members building alongside you, and the dogs that prove it.</p>
+    <div class="mbgrid">
+      <figure class="mbcard"><img src="/academy/assets/people/leanna-motus.jpg" alt="Leanna Motus with her Pug" style="object-position:center 30%"><figcaption><b>Leanna Motus</b><span>Pugs · breeding since 1998</span></figcaption></figure>
+      <figure class="mbcard"><img src="/academy/assets/people/julie-starling.jpg" alt="Julie Starling with her Dachshund in the show ring" style="object-position:center 22%"><figcaption><b>Julie Starling</b><span>Dachshunds · championship ring</span></figcaption></figure>
+      <figure class="mbcard"><img src="/academy/assets/people/alex-spear.jpg" alt="Alex Spear with her German Shorthaired Pointer" style="object-position:center 24%"><figcaption><b>Alex Spear</b><span>German Shorthaired Pointers · group placements</span></figcaption></figure>
+      <figure class="mbcard"><img src="/academy/assets/people/alisha-freeman.jpg" alt="Alisha Freeman handling her Doberman" style="object-position:center 30%"><figcaption><b>Alisha Freeman</b><span>Dobermans · conformation ring</span></figcaption></figure>
+      <figure class="mbcard"><img src="/academy/assets/people/cathy-sjuve.jpg" alt="Cathy Sjuve with a puppy" style="object-position:center 26%"><figcaption><b>Cathy Sjuve</b><span>Dachshunds · Shoebox Doxies</span></figcaption></figure>
+      <figure class="mbcard"><img src="/academy/assets/people/jonathan-duke.jpg" alt="Jonathan Duke with his Boerboel" style="object-position:center 28%"><figcaption><b>Jonathan Duke</b><span>Boerboels</span></figcaption></figure>
+      <figure class="mbcard"><img src="/academy/assets/people/brittani-lusby.jpg" alt="Brittani Lusby training her Malinois" style="object-position:center 42%"><figcaption><b>Brittani Lusby</b><span>Working Malinois · OFA tested</span></figcaption></figure>
+      <figure class="mbcard"><img src="/academy/assets/people/ron-weller.jpg" alt="Ron Weller with his German Shepherd" style="object-position:center 28%"><figcaption><b>Ron Weller</b><span>German Shepherds · Misty Hills</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
 <!-- PROBLEM / STAKES -->
 <section class="s-dark">
   <div class="wrap">
@@ -139,6 +169,21 @@
     </div>
   </div>
 </section>
+
+<!-- WARMTH BAND -->
+<section class="warmband" aria-label="Why it matters">
+  <div class="warmimg"></div>
+  <div class="warmover">
+    <p>At the end of the genetics, the systems and the sales, this is the whole point: healthy dogs, raised right, in homes that will love them for a lifetime.</p>
+  </div>
+</section>
+<style>
+  .warmband{position:relative;min-height:400px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#111114}
+  .warmband .warmimg{position:absolute;inset:0;background:center 42%/cover url(/academy/assets/people/leanna-motus-pugs.jpg)}
+  .warmband .warmimg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(17,17,20,.78),rgba(17,17,20,.42) 55%,rgba(17,17,20,.72))}
+  .warmband .warmover{position:relative;max-width:640px;padding:48px 24px;text-align:center}
+  .warmband .warmover p{font-family:var(--disp);font-size:clamp(20px,2.6vw,30px);line-height:1.4;color:#fff;margin:0;text-shadow:0 2px 20px rgba(0,0,0,.5)}
+</style>
 
 <!-- DIFFERENTIATION -->
 <section class="s-ivory">
@@ -421,21 +466,6 @@
   </div>
 </section>
 
-<!-- WARMTH BAND -->
-<section class="warmband" aria-label="Why it matters">
-  <div class="warmimg"></div>
-  <div class="warmover">
-    <p>At the end of the genetics, the systems and the sales, this is the whole point: healthy dogs, raised right, in homes that will love them for a lifetime.</p>
-  </div>
-</section>
-<style>
-  .warmband{position:relative;min-height:400px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#111114}
-  .warmband .warmimg{position:absolute;inset:0;background:center 42%/cover url(/academy/assets/people/leanna-motus-pugs.jpg)}
-  .warmband .warmimg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(17,17,20,.78),rgba(17,17,20,.42) 55%,rgba(17,17,20,.72))}
-  .warmband .warmover{position:relative;max-width:640px;padding:48px 24px;text-align:center}
-  .warmband .warmover p{font-family:var(--disp);font-size:clamp(20px,2.6vw,30px);line-height:1.4;color:#fff;margin:0;text-shadow:0 2px 20px rgba(0,0,0,.5)}
-</style>
-
 <!-- VET-PROOF -->
 <section class="s-band">
   <div class="wrap">
@@ -486,36 +516,6 @@
       <div class="card quote"><p data-bw="quotes.5.quote" data-bw-html></p><div class="who"><span data-bw="quotes.5.name" data-bw-html></span> · <span data-bw="quotes.5.years" data-bw-html></span></div></div>
     </div>
     <p style="text-align:center;margin:28px auto 0;max-width:72ch;font-size:12.5px;color:var(--muted)">Stories shown are from real Breedwise members. Results are not typical and are not a guarantee of income or any specific outcome, the Academy is education and coaching.</p>
-  </div>
-</section>
-
-<!-- MEMBER BAND: real breeders & their dogs -->
-<style>
-  .mbgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}
-  .mbcard{position:relative;margin:0;border-radius:16px;overflow:hidden;border:1px solid var(--line-light);box-shadow:0 14px 30px rgba(24,24,27,.10);aspect-ratio:4/5;background:#ececef}
-  .mbcard img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
-  .mbcard:hover img{transform:scale(1.045)}
-  .mbcard figcaption{position:absolute;left:0;right:0;bottom:0;padding:38px 16px 14px;color:#fff;background:linear-gradient(to top,rgba(17,17,20,.88),rgba(17,17,20,.30) 55%,transparent);font-family:var(--sans)}
-  .mbcard figcaption b{display:block;font-family:var(--disp);font-weight:700;font-size:16px;line-height:1.15}
-  .mbcard figcaption span{display:block;font-size:12px;color:rgba(255,255,255,.84);margin-top:2px}
-  @media(max-width:860px){.mbgrid{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:420px){.mbgrid{grid-template-columns:1fr 1fr;gap:12px}}
-</style>
-<section class="s-band">
-  <div class="wrap">
-    <span class="eyebrow">Real breeders. Real dogs.</span>
-    <h2 style="margin:10px 0 0;max-width:24ch">You'd be in good company.</h2>
-    <p style="margin:12px 0 0;max-width:64ch;color:var(--light-body-2)">Champion show homes, working-dog programs and lifelong breeders, these are Breedwise members building alongside you, and the dogs that prove it.</p>
-    <div class="mbgrid">
-      <figure class="mbcard"><img src="/academy/assets/people/leanna-motus.jpg" alt="Leanna Motus with her Pug" style="object-position:center 30%"><figcaption><b>Leanna Motus</b><span>Pugs · breeding since 1998</span></figcaption></figure>
-      <figure class="mbcard"><img src="/academy/assets/people/julie-starling.jpg" alt="Julie Starling with her Dachshund in the show ring" style="object-position:center 22%"><figcaption><b>Julie Starling</b><span>Dachshunds · championship ring</span></figcaption></figure>
-      <figure class="mbcard"><img src="/academy/assets/people/alex-spear.jpg" alt="Alex Spear with her German Shorthaired Pointer" style="object-position:center 24%"><figcaption><b>Alex Spear</b><span>German Shorthaired Pointers · group placements</span></figcaption></figure>
-      <figure class="mbcard"><img src="/academy/assets/people/alisha-freeman.jpg" alt="Alisha Freeman handling her Doberman" style="object-position:center 30%"><figcaption><b>Alisha Freeman</b><span>Dobermans · conformation ring</span></figcaption></figure>
-      <figure class="mbcard"><img src="/academy/assets/people/cathy-sjuve.jpg" alt="Cathy Sjuve with a puppy" style="object-position:center 26%"><figcaption><b>Cathy Sjuve</b><span>Dachshunds · Shoebox Doxies</span></figcaption></figure>
-      <figure class="mbcard"><img src="/academy/assets/people/jonathan-duke.jpg" alt="Jonathan Duke with his Boerboel" style="object-position:center 28%"><figcaption><b>Jonathan Duke</b><span>Boerboels</span></figcaption></figure>
-      <figure class="mbcard"><img src="/academy/assets/people/brittani-lusby.jpg" alt="Brittani Lusby training her Malinois" style="object-position:center 42%"><figcaption><b>Brittani Lusby</b><span>Working Malinois · OFA tested</span></figcaption></figure>
-      <figure class="mbcard"><img src="/academy/assets/people/ron-weller.jpg" alt="Ron Weller with his German Shepherd" style="object-position:center 28%"><figcaption><b>Ron Weller</b><span>German Shepherds · Misty Hills</span></figcaption></figure>
-    </div>
   </div>
 </section>
 
