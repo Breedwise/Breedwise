@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parker Pet Clinic · Content Script Studio</title>
+<meta name="description" content="Private script studio for Dr. Taylor Parker, Parker Pet Clinic — Tampa, FL. Generate viral-ready pet health content scripts in seconds.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal:#0E9AA7; --teal-dp:#0B7A85; --teal-soft:#E4F4F5;
+    --coral:#FF7A59; --coral-dp:#F2613C;
+    --sand:#FBF7F0; --card:#ffffff; --ink:#1C2B33; --body:#45565F; --muted:#7C8A92;
+    --line:#E7E0D4; --line-teal:#CDE9EB;
+    --disp:'Fredoka',system-ui,sans-serif; --sans:'Nunito',system-ui,sans-serif;
+    --shadow:0 14px 40px rgba(28,43,51,.10);
+  }
+  *{box-sizing:border-box;margin:0}
+  body{font-family:var(--sans);background:var(--sand);color:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,.disp{font-family:var(--disp);color:var(--ink);line-height:1.15}
+  a{color:var(--teal-dp)}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+  /* gate */
+  #gate{position:fixed;inset:0;z-index:999;background:linear-gradient(160deg,#0E9AA7,#0B7A85 60%,#0a5c64);display:flex;align-items:center;justify-content:center;padding:24px}
+  .gate-card{width:100%;max-width:400px;background:#fff;border-radius:22px;padding:38px 32px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+  .logo{display:inline-flex;align-items:center;gap:10px;justify-content:center}
+  .logo .mark{width:44px;height:44px;border-radius:13px;background:linear-gradient(145deg,var(--teal),var(--teal-dp));display:grid;place-items:center;box-shadow:0 6px 16px rgba(14,154,167,.4)}
+  .logo .mark svg{width:26px;height:26px;fill:#fff}
+  .logo .nm{font-family:var(--disp);font-weight:700;font-size:20px;color:var(--ink);text-align:left;line-height:1.05}
+  .logo .nm small{display:block;font-family:var(--sans);font-weight:700;font-size:10.5px;letter-spacing:1.5px;color:var(--coral-dp);text-transform:uppercase}
+  .gate-title{font-family:var(--disp);font-size:20px;color:var(--ink);margin-top:22px}
+  .gate-sub{color:var(--muted);font-size:13.5px;margin-top:6px}
+  #pw{width:100%;margin-top:20px;padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;font-family:var(--sans);font-size:15px;text-align:center;letter-spacing:1px}
+  #pw:focus{outline:none;border-color:var(--teal)}
+  #unlock{width:100%;margin-top:12px;background:linear-gradient(145deg,var(--coral),var(--coral-dp));color:#fff;font-family:var(--disp);font-weight:600;font-size:15px;border:0;border-radius:12px;padding:14px;cursor:pointer;box-shadow:0 8px 20px rgba(255,122,89,.35)}
+  #unlock:hover{filter:brightness(1.05)}
+  #gate-err{color:#E23D3D;font-size:13px;margin-top:12px;min-height:16px}
+
+  /* header */
+  header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40}
+  .hd{display:flex;align-items:center;gap:14px;padding:14px 0}
+  .hd .meta{margin-left:auto;text-align:right;font-size:12.5px;color:var(--muted);line-height:1.3}
+  .hd .meta b{color:var(--teal-dp)}
+
+  .hero{padding:34px 0 10px}
+  .hero .eyebrow{display:inline-block;font-weight:800;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--coral-dp);background:#fff;border:1px solid var(--line);padding:6px 12px;border-radius:20px}
+  .hero h1{font-size:clamp(26px,4vw,38px);margin:14px 0 6px}
+  .hero p{max-width:60ch;font-size:16px}
+
+  .grid{display:grid;grid-template-columns:380px 1fr;gap:24px;padding:24px 0 70px;align-items:start}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
+  .panel h3{font-size:16px;margin-bottom:4px}
+  .panel .ph-sub{font-size:13px;color:var(--muted);margin-bottom:16px}
+  label{display:block;font-weight:700;font-size:13px;color:var(--ink);margin:14px 0 6px}
+  input[type=text],textarea,select{width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:11px;font-family:var(--sans);font-size:14.5px;color:var(--ink);background:#fff}
+  textarea{min-height:66px;resize:vertical}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--teal)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .chip{font-size:13px;font-weight:700;color:var(--teal-dp);background:var(--teal-soft);border:1.5px solid var(--line-teal);padding:8px 12px;border-radius:20px;cursor:pointer;transition:.12s}
+  .chip:hover{background:#d4eef0}
+  .chip.on{background:var(--teal);border-color:var(--teal);color:#fff}
+  .gen{width:100%;margin-top:20px;background:linear-gradient(145deg,var(--coral),var(--coral-dp));color:#fff;font-family:var(--disp);font-weight:600;font-size:16px;border:0;border-radius:13px;padding:15px;cursor:pointer;box-shadow:0 10px 24px rgba(255,122,89,.3)}
+  .gen:hover{filter:brightness(1.05)}
+  .mini{margin-top:10px;width:100%;background:#fff;color:var(--teal-dp);border:1.5px solid var(--line-teal);font-family:var(--sans);font-weight:800;font-size:13.5px;border-radius:11px;padding:11px;cursor:pointer}
+  .mini:hover{background:var(--teal-soft)}
+
+  /* output */
+  .out .empty{text-align:center;color:var(--muted);padding:60px 20px}
+  .out .empty .big{font-size:52px;line-height:1}
+  .sec{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:14px;background:#fff}
+  .sec .k{display:flex;align-items:center;gap:8px;font-family:var(--disp);font-weight:600;font-size:12.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--teal-dp);margin-bottom:10px}
+  .sec .k .dot{width:9px;height:9px;border-radius:50%;background:var(--coral)}
+  .hook{padding:12px 14px;border:1.5px dashed var(--line-teal);border-radius:11px;margin-bottom:9px;font-size:16px;font-weight:700;color:var(--ink);background:var(--teal-soft);cursor:pointer;position:relative}
+  .hook:hover{border-color:var(--teal)}
+  .hook.pick{border-style:solid;border-color:var(--teal);background:#d6eff1}
+  .hook small{position:absolute;right:10px;top:9px;font-size:10px;font-weight:800;color:var(--teal-dp);letter-spacing:1px;text-transform:uppercase}
+  .beat{display:flex;gap:11px;padding:9px 0;border-top:1px dashed var(--line)}
+  .beat:first-of-type{border-top:0}
+  .beat .n{flex:none;width:26px;height:26px;border-radius:8px;background:var(--teal-soft);color:var(--teal-dp);font-family:var(--disp);font-weight:700;display:grid;place-items:center;font-size:14px}
+  .beat p{font-size:15px;color:var(--ink);margin:0}
+  .beat p b{color:var(--teal-dp)}
+  .line{font-size:15px;color:var(--ink);margin:3px 0}
+  .osd{font-size:14px;color:var(--body);background:var(--sand);border-radius:9px;padding:9px 12px;margin:5px 0}
+  .osd b{color:var(--coral-dp)}
+  .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+  .tags span{font-size:12.5px;color:var(--teal-dp);background:var(--teal-soft);padding:5px 10px;border-radius:14px;font-weight:700}
+  .cap{font-size:14.5px;color:var(--ink);white-space:pre-wrap}
+  .copy{margin-left:auto;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--teal-dp);background:var(--teal-soft);border:1px solid var(--line-teal);border-radius:8px;padding:5px 10px;cursor:pointer}
+  .copy:hover{background:#d4eef0}
+  .copy.k{margin-left:auto}
+  .bar{display:flex;gap:10px;margin-bottom:14px}
+  .bar .copy{font-size:13px;padding:11px 16px;flex:1;text-align:center}
+  .foot{text-align:center;color:var(--muted);font-size:12px;padding:26px 0 40px}
+</style>
+</head>
+<body>
+
+<!-- GATE -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="logo">
+      <span class="mark"><svg viewBox="0 0 24 24"><path d="M12 13.5c-2.3 0-4.6 1.6-5.3 3.8-.4 1.3.6 2.5 1.9 2.5.9 0 1.6-.4 3.4-.4s2.5.4 3.4.4c1.3 0 2.3-1.2 1.9-2.5-.7-2.2-3-3.8-5.3-3.8zM6 9.2c-1.1 0-2 1.1-2 2.4S4.9 14 6 14s2-1.1 2-2.4S7.1 9.2 6 9.2zm12 0c-1.1 0-2 1.1-2 2.4s.9 2.4 2 2.4 2-1.1 2-2.4-.9-2.4-2-2.4zM9.2 8.4c1.1 0 2-1.2 2-2.7S10.3 3 9.2 3s-2 1.2-2 2.7.9 2.7 2 2.7zm5.6 0c1.1 0 2-1.2 2-2.7S15.9 3 14.8 3s-2 1.2-2 2.7.9 2.7 2 2.7z"/></svg></span>
+      <span class="nm">Parker Pet Clinic<small>Content Studio</small></span>
+    </div>
+    <div class="gate-title">Welcome back, Dr. Parker</div>
+    <div class="gate-sub">Enter your password to open the studio.</div>
+    <input id="pw" type="password" placeholder="Password" autocomplete="off" autofocus>
+    <button id="unlock">Open the Studio →</button>
+    <div id="gate-err"></div>
+  </div>
+</div>
+
+<header style="display:none" id="app">
+  <div class="wrap hd">
+    <div class="logo">
+      <span class="mark"><svg viewBox="0 0 24 24"><path d="M12 13.5c-2.3 0-4.6 1.6-5.3 3.8-.4 1.3.6 2.5 1.9 2.5.9 0 1.6-.4 3.4-.4s2.5.4 3.4.4c1.3 0 2.3-1.2 1.9-2.5-.7-2.2-3-3.8-5.3-3.8zM6 9.2c-1.1 0-2 1.1-2 2.4S4.9 14 6 14s2-1.1 2-2.4S7.1 9.2 6 9.2zm12 0c-1.1 0-2 1.1-2 2.4s.9 2.4 2 2.4 2-1.1 2-2.4-.9-2.4-2-2.4zM9.2 8.4c1.1 0 2-1.2 2-2.7S10.3 3 9.2 3s-2 1.2-2 2.7.9 2.7 2 2.7zm5.6 0c1.1 0 2-1.2 2-2.7S15.9 3 14.8 3s-2 1.2-2 2.7.9 2.7 2 2.7z"/></svg></span>
+      <span class="nm">Parker Pet Clinic<small>Content Studio</small></span>
+    </div>
+    <div class="meta">Dr. Taylor Parker · <b>Tampa, FL</b><br>Viral pet-health script studio</div>
+  </div>
+</header>
+
+<main id="main" style="display:none">
+  <div class="wrap hero">
+    <span class="eyebrow">Your private script studio</span>
+    <h1>Turn pet-health know-how into scroll-stopping content.</h1>
+    <p>Pick a topic and a goal, hit generate, and get a ready-to-film short-form script — hook, beats, on-screen text, caption and hashtags — built to go viral and bring Tampa pet parents through your door.</p>
+  </div>
+
+  <div class="wrap grid">
+    <!-- CONTROLS -->
+    <div class="panel">
+      <h3>Build a script</h3>
+      <div class="ph-sub">Fill this in, then generate.</div>
+
+      <label>What's the topic? <span style="color:var(--muted);font-weight:400">(a condition, question, or myth)</span></label>
+      <input id="topic" type="text" placeholder="e.g. dental disease in dogs, why cats hide pain, heartworm prevention">
+
+      <label>Who's it about?</label>
+      <div class="chips" id="species">
+        <span class="chip on" data-v="dog">🐶 Dogs</span>
+        <span class="chip" data-v="cat">🐱 Cats</span>
+        <span class="chip" data-v="pet">🐾 All pets</span>
+      </div>
+
+      <label>What's the goal?</label>
+      <div class="chips" id="goal">
+        <span class="chip on" data-v="educate">Educate</span>
+        <span class="chip" data-v="myth">Bust a myth</span>
+        <span class="chip" data-v="story">Pull heartstrings</span>
+        <span class="chip" data-v="trend">Jump on a trend</span>
+        <span class="chip" data-v="promote">Promote a service</span>
+      </div>
+
+      <label>Tone</label>
+      <div class="chips" id="tone">
+        <span class="chip on" data-v="warm">Warm &amp; reassuring</span>
+        <span class="chip" data-v="punchy">Fun &amp; punchy</span>
+        <span class="chip" data-v="authority">Straight authority</span>
+      </div>
+
+      <label>Service to mention <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+      <input id="service" type="text" placeholder="e.g. a dental cleaning, a wellness exam, a senior check-up">
+
+      <button class="gen" id="gen">✨ Generate my script</button>
+      <button class="mini" id="again" style="display:none">↻ New variations (same inputs)</button>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="panel out" id="out">
+      <div class="empty">
+        <div class="big">🎬</div>
+        <p style="margin-top:12px;font-weight:700;color:var(--ink)">Your script will appear here.</p>
+        <p style="font-size:13.5px">Fill in a topic on the left and hit generate.</p>
+      </div>
+    </div>
+  </div>
+  <div class="wrap foot">Parker Pet Clinic · Content Studio · Built for Dr. Taylor Parker, Tampa FL. Scripts are starting points — always keep medical claims accurate for your patients.</div>
+</main>
+
+<script>
+/* ---------- gate ---------- */
+var PASSWORD = "ParkerPets2026";
+var gate=document.getElementById('gate'), pw=document.getElementById('pw'), err=document.getElementById('gate-err');
+function open(){ gate.style.display='none'; document.getElementById('app').style.display='block'; document.getElementById('main').style.display='block'; }
+function tryUnlock(){ if(pw.value.trim()===PASSWORD){ try{localStorage.setItem('ppc_ok','1')}catch(e){} open(); } else { err.textContent='Hmm, that password isn’t right. Try again.'; pw.select(); } }
+document.getElementById('unlock').onclick=tryUnlock;
+pw.addEventListener('keydown',function(e){ if(e.key==='Enter') tryUnlock(); });
+try{ if(localStorage.getItem('ppc_ok')==='1') open(); }catch(e){}
+
+/* ---------- helpers ---------- */
+function pick(a,seed){ return a[(seed==null?Math.floor(Math.random()*a.length):seed%a.length)]; }
+function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;} return a; }
+function cap(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+
+/* ---------- content banks ---------- */
+var HOOKS = {
+  educate:[
+    "If your {pet} does THIS, it’s not being dramatic — it’s a warning sign.",
+    "Your {pet} can’t tell you it hurts. Here’s how to know with {topic}.",
+    "Stop scrolling if you own a {pet}. This about {topic} could save their life.",
+    "3 signs of {topic} most owners miss until it’s almost too late.",
+    "Vet secret: the #1 thing people get wrong about {topic}.",
+    "I’m a vet, and {topic} is the thing I wish every {pet} owner understood."
+  ],
+  myth:[
+    "No, that’s a myth. Here’s the truth about {topic} — from an actual vet.",
+    "That “{topic}” advice all over the internet? It’s wrong. Let me explain.",
+    "Everything you’ve been told about {topic} might be hurting your {pet}.",
+    "Your groomer/breeder/uncle is wrong about {topic}. A vet sets the record straight.",
+    "“My {pet} is fine though.” Famous last words about {topic}."
+  ],
+  story:[
+    "A {pet} came into my clinic this week and I can’t stop thinking about it. It’s about {topic}.",
+    "This almost cost a family their {pet} — all because of {topic}.",
+    "I had to have a hard conversation in the exam room today. Here’s what {topic} taught me.",
+    "The case that changed how I talk to every pet parent about {topic}.",
+    "She thought it was nothing. It was {topic}. Here’s what happened."
+  ],
+  trend:[
+    "POV: you’re a vet and you’ve seen {topic} five times before lunch.",
+    "Things I wish every {pet} owner knew about {topic} — part 1.",
+    "Rating the {topic} advice I see on this app. Vet edition.",
+    "Green flags your vet LOVES to see about {topic} 💚",
+    "Tell me you need to learn about {topic} without telling me…"
+  ],
+  promote:[
+    "Tampa pet parents — your {pet}’s {topic} is probably overdue. Here’s why it matters.",
+    "The one appointment that prevents most {topic} problems in a {pet}.",
+    "Why {service} is the best money you’ll spend on your {pet} this year.",
+    "If you live near Tampa and own a {pet}, do this about {topic} before it gets expensive."
+  ]
+};
+var BEATS = {
+  educate:[
+    "Name the problem fast: what {topic} actually is, in one plain sentence a pet parent gets.",
+    "Give the goods: the 2–3 signs or steps to watch for with {topic}. Be specific and visual.",
+    "The turn: what to do about it — and reassure them it’s very manageable when caught early."
+  ],
+  myth:[
+    "State the myth out loud, then say “here’s what’s actually true.”",
+    "Explain the real science of {topic} simply — why the myth is wrong and what it can cost.",
+    "Give them the correct move, and make them feel smart for now knowing it."
+  ],
+  story:[
+    "Set the scene: the {pet}, the owner, the moment you realized it was {topic}. Keep it human.",
+    "The tension: what was at stake, what almost went wrong.",
+    "The lesson: the one thing you want every viewer to take from it — then the hopeful ending."
+  ],
+  trend:[
+    "Deliver the hook payoff fast — the viewer should get the joke/insight in 3 seconds.",
+    "Rapid-fire 2–3 quick truths about {topic}. Punchy, one line each.",
+    "Land it with the one that makes them go “wait, I need to check this.”"
+  ],
+  promote:[
+    "Lead with the pet parent’s worry, not your service — “worried about {topic}? Same.”",
+    "Show the value: what {service} actually catches/prevents, in real terms.",
+    "Make the next step tiny and obvious — and local to Tampa."
+  ]
+};
+var TONE_LINE = {
+  warm:"Speak like a trusted vet talking to a worried friend — calm, caring, no scare tactics.",
+  punchy:"Fast, playful, a little cheeky. Short sentences. Big energy.",
+  authority:"Confident and clear. You’re the expert. No fluff, just the facts that matter."
+};
+var CTAS = [
+  "Worried about your {pet}? Book {service} at Parker Pet Clinic in Tampa — link in bio.",
+  "Not sure if your {pet} needs this? DM us or book an exam at Parker Pet Clinic, Tampa.",
+  "Follow for more real vet advice, and book your {pet} at Parker Pet Clinic in Tampa.",
+  "Tampa pet parents — book {service} at Parker Pet Clinic before it becomes an emergency."
+];
+var CAPTIONS = [
+  "Saving this so you remember it for your {pet}. 🐾 {topic} is more common than you think — and so preventable. Questions? Drop them below. — Dr. Taylor Parker, Parker Pet Clinic 🌴 Tampa",
+  "Your {pet} would tell you if they could. Until then, that’s my job. 💙 Here’s what every Tampa pet parent should know about {topic}.",
+  "The thing about {topic} no one warns you about. Save it, share it with a {pet} parent who needs it, and come see us at Parker Pet Clinic."
+];
+var TAGBANK = ["#TampaVet","#TampaPets","#PetHealth","#VetTok","#ParkerPetClinic","#PetParents","#DogsOfTampa","#CatsOfTampa","#VetAdvice","#PreventiveCare","#PetCareTips","#FurBabies"];
+var OSD = {
+  educate:["Big bold text on the hook line","Put the 3 signs as on-screen checklist","End card: “Parker Pet Clinic · Tampa”"],
+  myth:["“MYTH” stamp on screen, then “TRUTH”","Keep the correct fact on screen 2–3 sec","End card with your handle"],
+  story:["Soft captions, let your face carry it","Text the stakes on screen at the tension beat","End on a warm, hopeful frame"],
+  trend:["Match the trending audio","Quick-cut text for each truth","Snappy end card"],
+  promote:["Lead text = the worry, not the sell","Show the service in b-roll","Clear CTA card: book at Parker Pet Clinic"]
+};
+
+function fill(s,ctx){ return s.replace(/\{pet\}/g,ctx.pet).replace(/\{topic\}/g,ctx.topic).replace(/\{service\}/g,ctx.service); }
+
+var state={};
+function getInputs(){
+  var g=document.querySelector('#goal .on').dataset.v;
+  var sp=document.querySelector('#species .on').dataset.v;
+  var tn=document.querySelector('#tone .on').dataset.v;
+  var topic=(document.getElementById('topic').value||'').trim();
+  var service=(document.getElementById('service').value||'').trim();
+  var petWord = sp==='dog'?'dog':sp==='cat'?'cat':'pet';
+  return {goal:g, species:sp, tone:tn,
+    topic: topic || "this common pet-health issue",
+    service: service || "a wellness exam",
+    pet: petWord };
+}
+function render(){
+  var ctx=getInputs(); state.ctx=ctx;
+  var hooks=shuffle(HOOKS[ctx.goal]).slice(0,3).map(function(h){return fill(h,ctx);});
+  var beats=BEATS[ctx.goal].map(function(b){return fill(b,ctx);});
+  var cta=fill(pick(CTAS),ctx);
+  var caption=fill(pick(CAPTIONS),ctx);
+  var tags=shuffle(TAGBANK).slice(0,8).join(' ');
+  var osd=OSD[ctx.goal];
+  state.hookChoice=0;
+
+  var out=document.getElementById('out');
+  var html='';
+  html+='<div class="bar"><button class="copy" id="copyAll">⬇ Copy full script</button><button class="copy" id="save">💾 Save as file</button></div>';
+
+  html+='<div class="sec"><div class="k"><span class="dot"></span>Hook — tap your favorite</div>';
+  hooks.forEach(function(h,i){ html+='<div class="hook'+(i===0?' pick':'')+'" data-i="'+i+'"><small>Option '+(i+1)+'</small>'+h+'</div>'; });
+  html+='<div class="osd"><b>On-screen:</b> '+osd[0]+'</div></div>';
+
+  html+='<div class="sec"><div class="k"><span class="dot"></span>Script structure · '+TONE_LINE[ctx.tone]+'</div>';
+  beats.forEach(function(b,i){ html+='<div class="beat"><span class="n">'+(i+1)+'</span><p>'+b+'</p></div>'; });
+  html+='<div class="osd" style="margin-top:10px"><b>On-screen:</b> '+osd[1]+'</div></div>';
+
+  html+='<div class="sec"><div class="k"><span class="dot"></span>Call to action</div><div class="line">'+cta+'</div><div class="osd"><b>End card:</b> '+osd[2]+'</div></div>';
+
+  html+='<div class="sec"><div class="k"><span class="dot"></span>Caption <button class="copy k" id="copyCap">Copy</button></div><div class="cap" id="capText">'+caption+'</div></div>';
+
+  html+='<div class="sec"><div class="k"><span class="dot"></span>Hashtags <button class="copy k" id="copyTags">Copy</button></div><div class="tags">'+tags.split(' ').map(function(t){return '<span>'+t+'</span>';}).join('')+'</div></div>';
+
+  out.innerHTML=html;
+  document.getElementById('again').style.display='block';
+  state.full={hooks:hooks,beats:beats,cta:cta,caption:caption,tags:tags,osd:osd};
+
+  // hook pick
+  out.querySelectorAll('.hook').forEach(function(el){ el.onclick=function(){ out.querySelectorAll('.hook').forEach(function(h){h.classList.remove('pick')}); el.classList.add('pick'); state.hookChoice=+el.dataset.i; }; });
+  document.getElementById('copyAll').onclick=function(){ copy(fullText(), this); };
+  document.getElementById('save').onclick=saveFile;
+  document.getElementById('copyCap').onclick=function(){ copy(caption,this); };
+  document.getElementById('copyTags').onclick=function(){ copy(tags,this); };
+}
+function fullText(){
+  var f=state.full, c=state.ctx;
+  var t='PARKER PET CLINIC — SCRIPT\nTopic: '+c.topic+'  |  Goal: '+c.goal+'  |  '+c.pet+'\n\n';
+  t+='HOOK:\n'+f.hooks[state.hookChoice||0]+'\n\n';
+  t+='SCRIPT:\n';
+  f.beats.forEach(function(b,i){ t+=(i+1)+'. '+b+'\n'; });
+  t+='\nCTA:\n'+f.cta+'\n\nCAPTION:\n'+f.caption+'\n\nHASHTAGS:\n'+f.tags+'\n';
+  return t;
+}
+function copy(txt,btn){ (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){flash(btn)},function(){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}ta.remove();flash(btn);}); }
+function flash(btn){ if(!btn)return; var o=btn.textContent; btn.textContent='✓ Copied'; setTimeout(function(){btn.textContent=o;},1200); }
+function saveFile(){ var blob=new Blob([fullText()],{type:'text/plain'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='parker-script-'+(state.ctx.topic||'content').replace(/[^a-z0-9]+/gi,'-').toLowerCase().slice(0,30)+'.txt'; a.click(); }
+
+/* chips */
+document.querySelectorAll('.chips').forEach(function(group){
+  group.querySelectorAll('.chip').forEach(function(ch){ ch.onclick=function(){ group.querySelectorAll('.chip').forEach(function(x){x.classList.remove('on')}); ch.classList.add('on'); persist(); }; });
+});
+document.getElementById('gen').onclick=render;
+document.getElementById('again').onclick=render;
+
+/* autosave inputs (debounced + flush) */
+function persist(){ try{ localStorage.setItem('ppc_inputs', JSON.stringify({ topic:document.getElementById('topic').value, service:document.getElementById('service').value, species:document.querySelector('#species .on').dataset.v, goal:document.querySelector('#goal .on').dataset.v, tone:document.querySelector('#tone .on').dataset.v })); }catch(e){} }
+var pt; ['topic','service'].forEach(function(id){ document.getElementById(id).addEventListener('input',function(){clearTimeout(pt);pt=setTimeout(persist,400);}); });
+window.addEventListener('pagehide',persist); document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='hidden') persist(); });
+(function restore(){ try{ var s=JSON.parse(localStorage.getItem('ppc_inputs')||'{}'); if(s.topic)document.getElementById('topic').value=s.topic; if(s.service)document.getElementById('service').value=s.service; ['species','goal','tone'].forEach(function(grp){ if(s[grp]){ var g=document.getElementById(grp); g.querySelectorAll('.chip').forEach(function(x){x.classList.toggle('on',x.dataset.v===s[grp]);}); } }); }catch(e){} })();
+</script>
+</body>
+</html>
