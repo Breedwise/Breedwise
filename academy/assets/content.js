@@ -50,7 +50,7 @@ window.BW = {
       credentials: "DVM · Board-certified theriogenologist",
       strip: "DVM · Theriogenologist",
       bio: "Dr. Mahoney is a theriogenologist focused on reproductive health, artificial insemination and breeding management. He teaches breeders how to work with their own veterinarian as a true partner, from timing and collection to building the kind of vet relationship that sends clients back to you.",
-      teaches: ["Reproductive health", "Artificial insemination", "Breeding management", "Building your vet referral network"],
+      teaches: ["Reproductive health", "Artificial insemination", "Breeding management", "Building your vet relationship"],
       intro_video: "",
       headshot: "/academy/assets/dr-mahoney.jpg",
       track: "science"
@@ -106,8 +106,7 @@ window.BW = {
     { id: "genetics",  title: "The Power of Diversity",              pillar: "Genetics & program design", presenter: "Dr. Angela Hughes",     length: "Preview", video: "/academy/assets/video/sample-genetics.mp4", worksheet: "" },
     { id: "business",  title: "Puppy Mills vs Purpose-Driven Programs", pillar: "Breeding to the standard", presenter: "Dr. David Mahoney",      length: "Preview", video: "/academy/assets/video/sample-business.mp4", worksheet: "" },
     { id: "puppy-content", title: "Content Distribution", pillar: "Puppy content & marketing", presenter: "Austin Shanks", length: "Preview", video: "/academy/assets/video/sample-content-distribution.mp4", worksheet: "" },
-    { id: "social", title: "The Power of Your Online Presence", pillar: "Social media & content marketing", presenter: "Yasmin Omar", length: "Preview", video: "/academy/assets/video/sample-social.mp4", worksheet: "" },
-    { id: "vet", title: "The Value of a Veterinary Partnership", pillar: "Veterinary partnerships", presenter: "Breedwise Veterinary Team", length: "Preview", video: "/academy/assets/video/sample-vet.mp4", worksheet: "" }
+    { id: "social", title: "The Power of Your Online Presence", pillar: "Social media & content marketing", presenter: "Yasmin Omar", length: "Preview", video: "/academy/assets/video/sample-social.mp4", worksheet: "" }
   ],
 
   /* results callouts (word-for-word; breeds in [] are placeholders) */
