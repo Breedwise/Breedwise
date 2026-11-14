@@ -88,7 +88,8 @@
     <h1 style="margin:14px 0 0;max-width:none;line-height:1.08;font-size:clamp(26px,4.6vw,44px)">The Profitable Litter Blueprint</h1>
     <p class="lead" style="margin:16px auto 0;max-width:62ch">How to build a qualified puppy waitlist before the litter arrives, prepare for a healthier whelp, and turn your program into a more profitable business, without compromising your standards.</p>
     <p style="margin:14px 0 0;color:var(--light-body-2)">With <b style="color:var(--ink)">Austin Shanks</b> &amp; <b style="color:var(--ink)">Dr. Emmanuel Fontaine</b>, DVM, MSc, PhD, Dipl. ECAR</p>
-    <p style="margin:6px 0 0;color:var(--gold-deep);font-weight:700">Live online · We run it once a month</p>
+    <p style="margin:6px 0 0;color:var(--gold-deep);font-weight:700">Live online · The 4th Thursday of every month · 7:00 PM ET</p>
+    <p id="next-session" style="margin:5px 0 0;color:var(--light-body-2);font-size:14px"></p>
 
     <div class="card regcard">
       <form id="reg-form" novalidate>
@@ -223,7 +224,7 @@
 <script>
 (function(){
   var faqs=[
-    {q:"Is this live, or a recording?",a:"It's a live masterclass, held online once a month. Register and we'll send you the date of the next session."},
+    {q:"Is this live, or a recording?",a:"It's a live masterclass, held online on the 4th Thursday of every month at 7:00 PM ET. Register and we'll send you the next date, your access link and a reminder."},
     {q:"What if I can't attend live?",a:"Register anyway. If we're able to share a replay, registrants are first to get it, along with the scorecard."},
     {q:"Who is this for?",a:"Dedicated breeders who want to improve their dogs, find the right buyers, and build a program that lasts, whether you're preserving an established breed, improving your current program, or preparing for your first litter."},
     {q:"Is this just about making money?",a:"No. It's built on breeding to the standard first. The business side exists so the breeders doing it right can afford to keep going."},
@@ -232,6 +233,14 @@
   ];
   var el=document.getElementById('faq-list');
   if(el){ el.innerHTML=faqs.map(function(f){ return '<div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">'+f.q+'<span class="ic">+</span></button><div class="faq-a"><p>'+f.a+'</p></div></div>'; }).join(''); }
+})();
+(function(){
+  var el=document.getElementById('next-session'); if(!el) return;
+  function fourthThu(y,m){ var d=new Date(y,m,22); while(d.getDay()!==4){ d.setDate(d.getDate()+1);} return d; }
+  var now=new Date(); var d=fourthThu(now.getFullYear(), now.getMonth());
+  if(now.getDate()>d.getDate()){ var m=now.getMonth()+1, y=now.getFullYear(); if(m>11){m=0;y++;} d=fourthThu(y,m); }
+  var fmt=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  el.textContent='Next live session: '+fmt+' at 7:00 PM ET';
 })();
 (function(){
   var f=document.getElementById('reg-form'); if(!f) return;
