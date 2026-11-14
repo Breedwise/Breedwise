@@ -170,19 +170,27 @@
   </div>
 </section>
 
-<!-- WARMTH BAND -->
-<section class="warmband" aria-label="Why it matters">
-  <div class="warmimg"></div>
-  <div class="warmover">
-    <p>At the end of the genetics, the systems and the sales, this is the whole point: healthy dogs, raised right, in homes that will love them for a lifetime.</p>
+<!-- PUPPIES STRIP: what members produce -->
+<section class="pupstrip" aria-label="The puppies our members produce">
+  <div class="wrap" style="text-align:center">
+    <span class="eyebrow" style="color:var(--gold)">The puppies our members produce</span>
+    <h2 style="margin:12px auto 0;max-width:20ch;color:#fff">At the end of it all, this is the whole point.</h2>
+    <p style="margin:12px auto 0;max-width:60ch;color:rgba(245,242,234,.72)">Healthy, structurally sound puppies, raised right, going to homes that will love them for a lifetime, across every breed our members build.</p>
+    <div class="pupgrid">
+      <figure><div class="pic" style="background-image:url(/academy/assets/people/pup-corso.jpg);background-position:center 22%"></div><figcaption>Cane Corso</figcaption></figure>
+      <figure><div class="pic" style="background-image:url(/academy/assets/people/pup-bully.jpg);background-position:center 28%"></div><figcaption>American Bully</figcaption></figure>
+      <figure><div class="pic" style="background-image:url(/academy/assets/people/pup-springer.jpg);background-position:center 24%"></div><figcaption>Welsh Springer Spaniel</figcaption></figure>
+      <figure><div class="pic" style="background-image:url(/academy/assets/people/leanna-motus-pugs.jpg);background-position:center 45%"></div><figcaption>Pug</figcaption></figure>
+    </div>
   </div>
 </section>
 <style>
-  .warmband{position:relative;min-height:400px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#111114}
-  .warmband .warmimg{position:absolute;inset:0;background:center 42%/cover url(/academy/assets/people/leanna-motus-pugs.jpg)}
-  .warmband .warmimg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(17,17,20,.78),rgba(17,17,20,.42) 55%,rgba(17,17,20,.72))}
-  .warmband .warmover{position:relative;max-width:640px;padding:48px 24px;text-align:center}
-  .warmband .warmover p{font-family:var(--disp);font-size:clamp(20px,2.6vw,30px);line-height:1.4;color:#fff;margin:0;text-shadow:0 2px 20px rgba(0,0,0,.5)}
+  .pupstrip{background:#111114;padding:64px 0}
+  .pupgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:34px}
+  .pupgrid figure{margin:0}
+  .pupgrid .pic{aspect-ratio:1/1;border-radius:14px;background-size:cover;background-repeat:no-repeat;border:1px solid rgba(255,255,255,.1);box-shadow:0 24px 50px -28px rgba(0,0,0,.8)}
+  .pupgrid figcaption{margin-top:11px;font-size:12.5px;letter-spacing:.04em;color:rgba(245,242,234,.7);font-family:var(--sans)}
+  @media(max-width:720px){.pupgrid{grid-template-columns:1fr 1fr;gap:12px}}
 </style>
 
 <!-- DIFFERENTIATION -->
