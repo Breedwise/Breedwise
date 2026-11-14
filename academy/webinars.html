@@ -15,8 +15,8 @@
   .lmwrap{max-width:720px;margin:0 auto;text-align:center}
   .optin{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;align-items:flex-end;margin-top:26px}
   .optin .fld{display:flex;flex-direction:column;gap:6px;text-align:left}
-  .optin .fld span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:#cfcdc8;padding-left:2px}
-  .optin input{width:220px;max-width:46vw;padding:14px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.3);background:#fff;color:#18181b;font-size:15px;font-family:var(--sans);box-shadow:0 4px 14px rgba(0,0,0,.22)}
+  .optin .fld span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--light-body-2);padding-left:2px}
+  .optin input{width:220px;max-width:46vw;padding:14px 16px;border-radius:10px;border:1px solid var(--line-light);background:#fff;color:#18181b;font-size:15px;font-family:var(--sans);box-shadow:0 4px 14px rgba(0,0,0,.22)}
   .optin input::placeholder{color:#a3a3ab}
   .optin input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(206,187,130,.35)}
   .optin button{flex:none}
@@ -75,11 +75,12 @@
 <section class="s-dark hero">
   <div class="wrap lmwrap">
     <span class="eyebrow">Webinars</span>
-    <h1 style="margin:14px 0 0">Live trainings with the Breedwise faculty.</h1>
+    <h1 style="margin:14px 0 0;line-height:1.16">Live trainings with the Breedwise faculty.</h1>
     <p class="lead" style="margin-top:16px">Free webinars with our veterinary and business faculty, on the clinical and business decisions that make or break a program. Join live to ask questions, or catch the replay.</p>
     <form class="optin" id="lm-form" novalidate>
       <label class="fld"><span>First name</span><input type="text" name="name" placeholder="Jane" autocomplete="given-name"></label>
       <label class="fld"><span>Email</span><input type="email" name="email" placeholder="you@email.com" required autocomplete="email"></label>
+      <label class="fld"><span>Phone <em style="text-transform:none;letter-spacing:0;font-style:normal;color:var(--muted)">optional</em></span><input type="tel" name="phone" placeholder="(555) 555-5555" autocomplete="tel"></label>
       <button class="btn btn-gold" type="submit">Save my spot</button>
     </form>
     <p class="optmsg" id="lm-msg" role="status" hidden></p>
@@ -139,12 +140,12 @@
   function show(t,ok){ msg.hidden=false; msg.textContent=t; msg.style.color= ok===false?'#f0a3a0':'var(--gold)'; }
   f.addEventListener('submit',function(e){
     e.preventDefault();
-    var email=(f.email.value||'').trim(), name=(f.name.value||'').trim();
+    var email=(f.email.value||'').trim(), name=(f.name.value||'').trim(), phone=((f.phone&&f.phone.value)||'').trim();
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ show('Please enter a valid email address.',false); return; }
     var btn=f.querySelector('button'); btn.disabled=true; btn.textContent='Saving';
     fetch('https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/masterclass-optin',{
       method:'POST',headers:{'content-type':'application/json'},
-      body:JSON.stringify({name:name,email:email,source:SOURCE,page:(location&&location.href)||''})
+      body:JSON.stringify({name:name,email:email,phone:phone,source:SOURCE,page:(location&&location.href)||''})
     }).then(function(r){ if(!r.ok) throw 0; return r.json(); })
       .then(function(){ f.style.display='none'; show("You're registered. Check your email for the details."); })
       .catch(function(){ btn.disabled=false; btn.textContent='Save my spot'; show('Something went wrong. Please try again, or email support@breedwise.io.',false); });
