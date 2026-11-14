@@ -20,8 +20,8 @@ h3{font-size:clamp(19px,2vw,23px)}
 p{color:var(--dark-muted)}
 .eyebrow{font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
-section{padding:96px 0}
-@media(max-width:640px){section{padding:64px 0}}
+section{padding:60px 0}
+@media(max-width:640px){section{padding:44px 0}}
 .lead{font-size:clamp(18px,1.5vw,21px);line-height:1.6;max-width:62ch}
 
 /* sections: dark / band / ivory */
