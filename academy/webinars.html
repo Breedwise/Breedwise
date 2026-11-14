@@ -3,29 +3,38 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Webinars · Breedwise Academy</title>
-<meta name="description" content="Breedwise webinars: live trainings with our veterinary and business faculty, plus on-demand replays, for serious breeders building a premium program.">
-<meta property="og:title" content="Webinars · Breedwise Academy">
+<title>Live Masterclass · Breedwise Academy</title>
+<meta name="description" content="The Profitable Litter Blueprint, a free live masterclass held once a month with Austin Shanks and Dr. Emmanuel Fontaine: build a qualified waitlist, prepare for a healthier whelp, and run a profitable program without compromising your standards.">
+<meta property="og:title" content="Live Masterclass · Breedwise Academy">
 <meta property="og:image" content="/academy/assets/og-image.png">
 <link rel="icon" type="image/png" href="/academy/assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/academy/assets/site.css?v=29">
 <style>
-  .lmwrap{max-width:860px;margin:0 auto;text-align:center}
-  .optin{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;align-items:flex-end;margin-top:26px}
-  .optin .fld{display:flex;flex-direction:column;gap:6px;text-align:left}
-  .optin .fld span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--light-body-2);padding-left:2px}
-  .optin input{width:220px;max-width:46vw;padding:14px 16px;border-radius:10px;border:1px solid var(--line-light);background:#fff;color:#18181b;font-size:15px;font-family:var(--sans);box-shadow:0 4px 14px rgba(0,0,0,.22)}
-  .optin input::placeholder{color:#a3a3ab}
-  .optin input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(206,187,130,.35)}
-  .optin button{flex:none}
-  .optmsg{margin:16px auto 0;font-size:15px;color:var(--gold);max-width:48ch}
-  @media(max-width:520px){.optin{flex-direction:column;align-items:stretch}.optin .fld{width:100%}.optin input{width:100%;max-width:none}.optin button{width:100%}}
+  .regcard{max-width:520px;margin:28px auto 0;text-align:left}
+  .regcard .f{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+  .regcard label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--light-body-2);font-weight:700}
+  .regcard label em{font-style:normal;text-transform:none;letter-spacing:0;color:var(--muted);font-weight:400}
+  .regcard input,.regcard select{padding:13px 14px;border-radius:10px;border:1px solid var(--line-light);background:#fff;color:#18181b;font-size:15px;font-family:var(--sans);width:100%}
+  .regcard input:focus,.regcard select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(206,187,130,.3)}
+  .regcard button{width:100%;margin-top:4px}
+  .regmsg{margin-top:14px;font-size:14.5px;color:var(--gold-deep);text-align:center}
+  .learnlist{list-style:none;padding:0;margin:26px auto 0;max-width:760px;display:flex;flex-direction:column;gap:14px}
+  .learnlist li{position:relative;padding-left:34px;font-size:16px;line-height:1.5;color:var(--ink)}
+  .learnlist li::before{content:"";position:absolute;left:0;top:2px;width:20px;height:20px;border-radius:50%;background:rgba(206,187,130,.16);border:1px solid rgba(206,187,130,.5)}
+  .learnlist li::after{content:"";position:absolute;left:7px;top:7px;width:5px;height:10px;border-right:2px solid var(--gold-deep);border-bottom:2px solid var(--gold-deep);transform:rotate(42deg)}
+  .frame .fn{font-family:var(--disp);font-size:30px;color:var(--gold-deep);font-weight:700;line-height:1}
+  .frame h3{margin:10px 0 6px}
+  .host{display:flex;gap:18px;align-items:flex-start}
+  .host .pic{flex:none;width:76px;height:76px;border-radius:14px;background:#ececef center/cover;border:1px solid var(--line-light)}
+  .host b{font-family:var(--disp);font-size:18px;color:var(--ink);display:block}
+  .host .role{font-size:13px;color:var(--gold-deep);font-weight:600;margin:2px 0 8px}
+  .host p{font-size:14.5px;margin:0;color:var(--light-body-2)}
 </style>
 </head>
 <body>
-<a href="#main" class="visually-hidden">Skip to content</a>
+<a href="#register" class="visually-hidden">Skip to registration</a>
 <header class="site-header">
   <nav class="nav" aria-label="Primary">
     <a class="brand" href="/academy/"><img class="brand-logo" src="/academy/assets/logo.png" alt="BreedWise"></a>
@@ -67,49 +76,144 @@
         </div>
       </div>
     </div>
-    <a class="btn btn-gold navcta" href="/academy/#apply">Apply</a>
+    <a class="btn btn-gold navcta" href="#register">Reserve a seat</a>
   </nav>
 </header>
 
 <main id="main">
-<section class="s-dark hero">
-  <div class="wrap lmwrap">
-    <span class="eyebrow">Webinars</span>
-    <h1 style="margin:14px 0 0;line-height:1.16;max-width:none">Live trainings with the Breedwise faculty.</h1>
-    <p class="lead" style="margin-top:16px">Free webinars with our veterinary and business faculty, on the clinical and business decisions that make or break a program. Join live to ask questions, or catch the replay.</p>
-    <form class="optin" id="lm-form" novalidate>
-      <label class="fld"><span>First name</span><input type="text" name="name" placeholder="Jane" autocomplete="given-name"></label>
-      <label class="fld"><span>Email</span><input type="email" name="email" placeholder="you@email.com" required autocomplete="email"></label>
-      <label class="fld"><span>Phone <em style="text-transform:none;letter-spacing:0;font-style:normal;color:var(--muted)">optional</em></span><input type="tel" name="phone" placeholder="(555) 555-5555" autocomplete="tel"></label>
-      <button class="btn btn-gold" type="submit">Save my spot</button>
-    </form>
-    <p class="optmsg" id="lm-msg" role="status" hidden></p>
-    <p class="fineprint" style="margin-top:12px">Register once and we'll send you each new webinar and replay. Unsubscribe anytime.</p>
+<!-- HERO + REGISTRATION -->
+<section class="s-dark hero" id="register">
+  <div class="wrap" style="max-width:820px;margin:0 auto;text-align:center">
+    <span class="eyebrow">Free live masterclass · Held once a month</span>
+    <h1 style="margin:14px 0 0;max-width:none;line-height:1.08">The Profitable Litter Blueprint</h1>
+    <p class="lead" style="margin:16px auto 0;max-width:62ch">How to build a qualified puppy waitlist before the litter arrives, prepare for a healthier whelp, and turn your program into a more profitable business, without compromising your standards.</p>
+    <p style="margin:14px 0 0;color:var(--light-body-2)">With <b style="color:var(--ink)">Austin Shanks</b> &amp; <b style="color:var(--ink)">Dr. Emmanuel Fontaine</b>, DVM, MSc, PhD, Dipl. ECAR</p>
+    <p style="margin:6px 0 0;color:var(--gold-deep);font-weight:700">Live online · We run it once a month</p>
+
+    <div class="card regcard">
+      <form id="reg-form" novalidate>
+        <div class="f"><label>First name</label><input type="text" name="name" placeholder="Jane" autocomplete="given-name"></div>
+        <div class="f"><label>Email</label><input type="email" name="email" placeholder="you@email.com" required autocomplete="email"></div>
+        <div class="f"><label>Phone <em>(for your reminder)</em></label><input type="tel" name="phone" placeholder="(555) 555-5555" autocomplete="tel"></div>
+        <div class="f"><label>How long have you been breeding?</label><select name="breeding">
+          <option value="">Select one</option>
+          <option>Planning my first litter</option>
+          <option>Less than 1 year</option>
+          <option>1&#8211;3 years</option>
+          <option>3&#8211;5 years</option>
+          <option>5&#8211;10 years</option>
+          <option>10+ years</option>
+        </select></div>
+        <button class="btn btn-gold" type="submit">Reserve your seat &#8594;</button>
+      </form>
+      <p class="regmsg" id="reg-msg" role="status" hidden></p>
+    </div>
+    <p class="fineprint" style="margin-top:14px;max-width:52ch;margin-left:auto;margin-right:auto">Register once and we'll send you the date of the next live session, your access link, a reminder before we go live, and your scorecard. No spam. Unsubscribe anytime.</p>
+    <p style="margin-top:10px;font-size:13px;color:var(--gold-deep);font-weight:600">Plus: every registrant gets the Profitable Litter Readiness Scorecard.</p>
   </div>
 </section>
 
+<!-- PROBLEM / POSITIONING -->
+<section class="s-ivory">
+  <div class="wrap" style="max-width:760px;margin:0 auto;text-align:center">
+    <span class="eyebrow">Built for serious breeders</span>
+    <h2 style="margin:12px 0 0">You're committed to your breed. Is your business built to support it?</h2>
+    <p class="lead" style="margin-top:16px">You study pedigrees. You invest in health testing and veterinary care. You make thoughtful breeding decisions. But none of that automatically guarantees qualified buyers, a consistent waitlist, or a financially sustainable program.</p>
+    <p style="margin-top:14px;font-family:var(--disp);font-size:20px;color:var(--ink)">Great breeders deserve profitable businesses, without sacrificing their standards.</p>
+  </div>
+</section>
+
+<!-- WHAT YOU'LL LEARN -->
+<section class="s-band">
+  <div class="wrap" style="max-width:820px;margin:0 auto;text-align:center">
+    <span class="eyebrow">In this training</span>
+    <h2 style="margin:12px 0 0">What you'll walk away with.</h2>
+    <ul class="learnlist">
+      <li>How to build a qualified puppy waitlist before the litter arrives, so homes are ready when the puppies are.</li>
+      <li>Why followers and puppy inquiries don't automatically become committed buyers, and what actually does.</li>
+      <li>Three reproductive, whelping and neonatal risks to prepare for with your veterinary team before your next litter.</li>
+      <li>How to communicate your program's standards and value to the right families.</li>
+      <li>How to evaluate litter costs and real profitability, without cutting corners on your dogs.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- THE FRAMEWORK -->
 <section class="s-ivory">
   <div class="wrap">
-    <span class="eyebrow">Start now</span>
-    <h2 style="margin:10px 0 0">Watch while you wait for the next live session.</h2>
-    <div class="grid-2" style="margin-top:30px">
-      <div class="card">
-        <h3>The Healthy Litter Scorecard</h3>
-        <p>Score your program's health, whelping and neonatal setup, and get a personalized report on where to tighten up.</p>
-        <p style="margin-top:14px"><a class="btn btn-ghost" href="/academy/healthy-litter-scorecard.html">Get the scorecard &#8594;</a></p>
-      </div>
-      <div class="card">
-        <h3>Free Case Study</h3>
-        <p>How ethical breeders turned unsold puppies into sold-out, profitable litters, without lowering their standard.</p>
-        <p style="margin-top:14px"><a class="btn btn-ghost" href="/academy/free-case-study.html">Watch the case study &#8594;</a></p>
-      </div>
+    <div style="text-align:center;max-width:720px;margin:0 auto">
+      <span class="eyebrow">The framework</span>
+      <h2 style="margin:12px 0 0">The three systems behind a better litter business.</h2>
+      <p class="lead" style="margin-top:14px">Producing a litter responsibly and finding the right homes aren't separate challenges. They're the same business.</p>
     </div>
-    <div style="text-align:center;margin-top:30px">
-      <a class="btn btn-gold" href="/academy/curriculum/#samples">Watch free Academy lessons</a>
+    <div class="grid-3 frame" style="margin-top:34px">
+      <div class="card"><div class="fn">01</div><h3>Protect</h3><p>Reproductive preparation, whelping readiness and neonatal risk awareness, led by Dr. Emmanuel Fontaine.</p></div>
+      <div class="card"><div class="fn">02</div><h3>Attract</h3><p>Credibility, qualified buyers and a pre-litter waitlist built before the puppies ever arrive.</p></div>
+      <div class="card"><div class="fn">03</div><h3>Profit</h3><p>Litter economics, sustainable pricing and the business systems that keep what you earn.</p></div>
     </div>
   </div>
 </section>
+
+<!-- HOSTS -->
+<section class="s-band">
+  <div class="wrap" style="max-width:860px;margin:0 auto">
+    <div style="text-align:center">
+      <span class="eyebrow">Your hosts</span>
+      <h2 style="margin:12px 0 0">Expert-led, on both sides.</h2>
+    </div>
+    <div class="grid-2" style="margin-top:30px">
+      <div class="card host">
+        <div class="pic" style="background-image:url(/academy/assets/austin-shanks.jpg)"></div>
+        <div><b>Austin Shanks</b><div class="role">Founder, Breedwise</div><p>Helps breeders build a real, ethical business around their program: positioning, qualified buyer demand, pricing and systems.</p></div>
+      </div>
+      <div class="card host">
+        <div class="pic" style="background-image:url(/academy/assets/dr-fontaine.jpg)"></div>
+        <div><b>Dr. Emmanuel Fontaine</b><div class="role">DVM, MSc, PhD, Diplomate ECAR</div><p>Veterinary-informed guidance on reproductive preparation, whelping readiness and the critical early days of a litter.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="s-ivory">
+  <div class="wrap">
+    <div style="text-align:center;max-width:720px;margin:0 auto">
+      <span class="eyebrow">Real Breedwise breeders</span>
+      <h2 style="margin:12px 0 0">Breeders doing both: the dogs and the business.</h2>
+    </div>
+    <div class="grid-2" style="margin-top:30px">
+      <div class="card quote"><p>We've bred for over 7 years and knew we were undervaluing our program. Less than a month after joining, we sold a puppy for the highest price in our program's history.</p><div class="who">Trina &amp; Dion · Breeding 7+ years</div></div>
+      <div class="card quote"><p>I've bred for 7 years and never learned anything like this. I started OFA testing, I'm improving my breed, and my clients are paying me three times more than I've ever charged.</p><div class="who">Jasmin Garcia · Breeding 7 years</div></div>
+      <div class="card quote"><p>His first litter since joining sold out at three weeks old, and at the highest price he's ever charged across the board.</p><div class="who">Mike Page · Thoroughbred Bullies</div></div>
+      <div class="card quote"><p>There's nothing else out there like Breedwise.</p><div class="who">Judith · Contented Puppies</div></div>
+    </div>
+    <p style="text-align:center;margin:26px auto 0;max-width:72ch;font-size:12.5px;color:var(--muted)">Testimonials are from real Breedwise members. Results are not typical and are not a guarantee of your results.</p>
+  </div>
+</section>
+
+<!-- SCORECARD -->
+<section class="s-band">
+  <div class="wrap" style="max-width:720px;margin:0 auto;text-align:center">
+    <span class="eyebrow">For every registrant</span>
+    <h2 style="margin:12px 0 0">The Profitable Litter Readiness Scorecard.</h2>
+    <p class="lead" style="margin-top:14px">A brief assessment so you know exactly where your biggest gap is, across breeding readiness, buyer readiness and business readiness, and leave with useful guidance whether or not you take it further.</p>
+    <div class="btn-row" style="justify-content:center;margin-top:20px">
+      <a class="btn btn-gold" href="#register">Reserve your seat</a>
+      <a class="btn btn-ghost" href="/academy/healthy-litter-scorecard.html">See the scorecard</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="s-ivory">
+  <div class="wrap" style="max-width:820px;margin:0 auto">
+    <div style="text-align:center"><span class="eyebrow">Questions</span><h2 style="margin:12px 0 18px">Before you reserve your seat.</h2></div>
+    <div id="faq-list"></div>
+  </div>
+</section>
 </main>
+
+<a class="sticky-cta btn btn-gold" href="#register">Reserve your seat</a>
 
 <footer class="site-footer">
   <div class="wrap foot-grid">
@@ -127,28 +231,40 @@
       <a href="mailto:support@breedwise.io">Contact</a>
     </div>
   </div>
-  <div class="wrap" style="margin-top:30px;font-size:13px;color:var(--dark-muted-2)">&copy; <span data-year></span> Breedwise. All rights reserved.</div>
+  <div class="wrap" style="margin-top:22px;font-size:11px;color:var(--dark-muted-2);max-width:900px">Educational content only. Individual breeding, health and financial outcomes are not guaranteed. This masterclass does not provide individualized veterinary advice; always consult your own veterinarian about your animals.</div>
+  <div class="wrap" style="margin-top:16px;font-size:13px;color:var(--dark-muted-2)">&copy; <span data-year></span> Breedwise. All rights reserved.</div>
 </footer>
 
 <script src="/academy/assets/content.js?v=29"></script>
 <script src="/academy/assets/site.js?v=29"></script>
 <script>
 (function(){
-  var SOURCE="Academy, Webinar Registration", REDIRECT="";
-  var f=document.getElementById('lm-form'); if(!f) return;
-  var msg=document.getElementById('lm-msg');
-  function show(t,ok){ msg.hidden=false; msg.textContent=t; msg.style.color= ok===false?'#f0a3a0':'var(--gold)'; }
+  var faqs=[
+    {q:"Is this live, or a recording?",a:"It's a live masterclass, held online once a month. Register and we'll send you the date of the next session."},
+    {q:"What if I can't attend live?",a:"Register anyway. If we're able to share a replay, registrants are first to get it, along with the scorecard."},
+    {q:"Who is this for?",a:"Dedicated breeders who want to improve their dogs, find the right buyers, and build a program that lasts, whether you're preserving an established breed, improving your current program, or preparing for your first litter."},
+    {q:"Is this just about making money?",a:"No. It's built on breeding to the standard first. The business side exists so the breeders doing it right can afford to keep going."},
+    {q:"How much does it cost to attend?",a:"The masterclass is free. You'll just need to register to save your seat."},
+    {q:"Will you try to sell me something?",a:"We'll show you how Breedwise can help if it's a fit, with no pressure. The training stands on its own whether or not you take it further."}
+  ];
+  var el=document.getElementById('faq-list');
+  if(el){ el.innerHTML=faqs.map(function(f){ return '<details class="faq-item"><summary>'+f.q+'</summary><div class="faq-a">'+f.a+'</div></details>'; }).join(''); }
+})();
+(function(){
+  var f=document.getElementById('reg-form'); if(!f) return;
+  var msg=document.getElementById('reg-msg');
+  function show(t,ok){ msg.hidden=false; msg.textContent=t; msg.style.color= ok===false?'#b23b36':'var(--gold-deep)'; }
   f.addEventListener('submit',function(e){
     e.preventDefault();
-    var email=(f.email.value||'').trim(), name=(f.name.value||'').trim(), phone=((f.phone&&f.phone.value)||'').trim();
+    var email=(f.email.value||'').trim(), name=(f.name.value||'').trim(), phone=((f.phone&&f.phone.value)||'').trim(), breeding=((f.breeding&&f.breeding.value)||'').trim();
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ show('Please enter a valid email address.',false); return; }
-    var btn=f.querySelector('button'); btn.disabled=true; btn.textContent='Saving';
+    var btn=f.querySelector('button'); btn.disabled=true; btn.textContent='Reserving…';
     fetch('https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/masterclass-optin',{
       method:'POST',headers:{'content-type':'application/json'},
-      body:JSON.stringify({name:name,email:email,phone:phone,source:SOURCE,page:(location&&location.href)||''})
+      body:JSON.stringify({name:name,email:email,phone:phone,breeding:breeding,source:'Academy, Profitable Litter Blueprint, Monthly Masterclass Registration',page:(location&&location.href)||''})
     }).then(function(r){ if(!r.ok) throw 0; return r.json(); })
-      .then(function(){ f.style.display='none'; show("You're registered. Check your email for the details."); })
-      .catch(function(){ btn.disabled=false; btn.textContent='Save my spot'; show('Something went wrong. Please try again, or email support@breedwise.io.',false); });
+      .then(function(){ f.style.display='none'; show("You're registered. Check your email for the date of the next live session and your scorecard."); })
+      .catch(function(){ btn.disabled=false; btn.textContent='Reserve your seat →'; show('Something went wrong. Please try again, or email support@breedwise.io.',false); });
   });
 })();
 </script>
