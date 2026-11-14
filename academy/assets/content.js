@@ -104,7 +104,7 @@ window.BW = {
   samples: [
     { id: "whelping",  title: "The Two Clocks of a Difficult Birth", pillar: "Whelping & neonatal care", presenter: "Dr. Emmanuel Fontaine", length: "Preview", video: "/academy/assets/video/sample-whelping.mp4", worksheet: "" },
     { id: "genetics",  title: "The Power of Diversity",              pillar: "Genetics & program design", presenter: "Dr. Angela Hughes",     length: "Preview", video: "/academy/assets/video/sample-genetics.mp4", worksheet: "" },
-    { id: "business",  title: "Puppy Mills vs Purpose-Driven Programs", pillar: "Business & premium sales", presenter: "Austin Shanks",      length: "Preview", video: "/academy/assets/video/sample-business.mp4", worksheet: "" },
+    { id: "business",  title: "Puppy Mills vs Purpose-Driven Programs", pillar: "Breeding to the standard", presenter: "Dr. David Mahoney",      length: "Preview", video: "/academy/assets/video/sample-business.mp4", worksheet: "" },
     { id: "puppy-content", title: "Content Distribution", pillar: "Puppy content & marketing", presenter: "Austin Shanks", length: "Preview", video: "/academy/assets/video/sample-content-distribution.mp4", worksheet: "" }
   ],
 
@@ -112,7 +112,7 @@ window.BW = {
   results: [
     { metric: "$5,000 in 34 min", detail: "her highest price ever", name: "Lyanne Scott", breed: "Pomeranians", years: "" },
     { metric: "6 months out", detail: "OFA-tested and bred to the standard", name: "Regina", breed: "Shorty Frenchies", years: "" },
-    { metric: "200k+ followers", detail: "from nothing, plus a waitlist and health testing", name: "Shaylee & Sean", breed: "", years: "" }
+    { metric: "200k+ followers", detail: "from nothing to a waitlist, with health testing", name: "Shaylee & Sean", breed: "", years: "" }
   ],
 
   /* member video testimonials (home #results), 3 slots */
