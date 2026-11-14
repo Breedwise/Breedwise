@@ -152,9 +152,9 @@
     document.body.classList.add('anim');
     var els=[].slice.call(document.querySelectorAll('.card, .result, .fac-big, .phase, .guarantee, .ex, .statrow, .reelwall .vslot, .certbox, .journey li'));
     els.forEach(function(el){ el.classList.add('reveal'); });
-    var io2=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io2.unobserve(e.target); } }); },{threshold:.12, rootMargin:'0px 0px -40px 0px'});
+    var io2=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io2.unobserve(e.target); } }); },{threshold:.01, rootMargin:'0px 0px 14% 0px'});
     els.forEach(function(el){ io2.observe(el); });
-    setTimeout(function(){ els.forEach(function(el){ el.classList.add('in'); }); }, 3500); /* safety */
+    setTimeout(function(){ els.forEach(function(el){ el.classList.add('in'); }); }, 1600); /* safety */
   }
 })();
 

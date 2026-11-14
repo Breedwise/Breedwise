@@ -123,10 +123,10 @@ window.BW = {
     { video: "https://review.breedwise.io/videos/cathy-soldout.mp4", poster: "https://review.breedwise.io/videos/cathy-soldout.jpg", name: "Cathy · Dachshunds", headline: "Sold the whole litter at $4,000" },
     { video: "https://review.breedwise.io/videos/t3.mp4", poster: "https://review.breedwise.io/videos/t3.jpg", name: "Jake Ayers", headline: "" },
     { video: "https://review.breedwise.io/videos/t5.mp4", poster: "https://review.breedwise.io/videos/t5.jpg", name: "Lamont", headline: "" },
-    { video: "https://review.breedwise.io/videos/t6.mp4", poster: "https://review.breedwise.io/videos/t6.jpg", name: "Paul & Heather", headline: "" },
+    { video: "https://review.breedwise.io/videos/t6-v.mp4", poster: "https://review.breedwise.io/videos/t6-v.jpg", name: "Paul & Heather", headline: "" },
     { video: "https://review.breedwise.io/videos/t7.mp4", poster: "https://review.breedwise.io/videos/t7.jpg", name: "Shaylee Griffin", headline: "" },
     { video: "https://review.breedwise.io/videos/t8.mp4", poster: "https://review.breedwise.io/videos/t8.jpg", name: "Trina Francois", headline: "" },
-    { video: "https://review.breedwise.io/videos/t1.mp4", poster: "https://review.breedwise.io/videos/t1.jpg", name: "Michelle Cordova", headline: "" }
+    { video: "https://review.breedwise.io/videos/t1-v.mp4", poster: "https://review.breedwise.io/videos/t1-v.jpg", name: "Michelle Cordova", headline: "" }
   ],
 
   /* 4 quote cards, use the EXISTING testimonials word for word.
