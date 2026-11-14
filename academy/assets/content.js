@@ -88,7 +88,7 @@ window.BW = {
       bio: "Jennifer makes sure the training actually gets done. She keeps every member's program moving between calls, the onboarding, accountability and implementation support that turns what you learn into results in your own kennel.",
       teaches: ["Onboarding & fast starts", "Implementation support", "Accountability", "Keeping your program moving"],
       intro_video: "",
-      headshot: "",
+      headshot: "/academy/assets/jennifer.jpg",
       track: "business"
     }
   ],
@@ -96,7 +96,7 @@ window.BW = {
   /* team array retained for reference; the faculty page now renders everyone from faculty[] above */
   team: [
     { name: "Austin Shanks", role: "Founder", headshot: "" },
-    { name: "Jennifer Smith-Beaudoin", role: "Director of Member Success", headshot: "" },
+    { name: "Jennifer Smith-Beaudoin", role: "Director of Member Success", headshot: "/academy/assets/jennifer.jpg" },
     { name: "Yasmin Omar", role: "Head of Social Media Mastery", headshot: "/academy/assets/yasmin-omar.jpg" }
   ],
 
