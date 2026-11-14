@@ -3,25 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Resources &amp; Blog · Breedwise Academy</title>
-<meta name="description" content="The Breedwise blog, real, practical writing on breeding to a higher standard: health, genetics, whelping, sales, branding and social media for serious breeders.">
-<meta property="og:title" content="Resources & Blog · Breedwise Academy">
+<title>The Breedwise Newsletter · Breedwise Academy</title>
+<meta name="description" content="The Breedwise Newsletter: short, practical breeder tips a few times a week, on health, genetics, whelping, sales, branding and social media. Join free.">
+<meta property="og:title" content="The Breedwise Newsletter · Breedwise Academy">
 <meta property="og:image" content="/academy/assets/og-image.png">
 <link rel="icon" type="image/png" href="/academy/assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/academy/assets/site.css?v=28">
+<link rel="stylesheet" href="/academy/assets/site.css?v=29">
 <style>
-  .post{display:flex;flex-direction:column;height:100%}
-  .post .cat{font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold-deep)}
-  .post h3{margin:8px 0 6px;font-size:19px}
-  .post p{font-size:14.5px;margin:0}
-  .post .soon{margin-top:14px;font-size:12px;font-weight:700;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
-  .post .soon::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold)}
+  .lmwrap{max-width:760px;margin:0 auto;text-align:center}
+  .optin{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;align-items:flex-end;margin-top:26px}
+  .optin .fld{display:flex;flex-direction:column;gap:6px;text-align:left}
+  .optin .fld span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--light-body-2);font-weight:700}
+  .optin input{width:220px;max-width:46vw;padding:14px 16px;border-radius:10px;border:1px solid var(--line-light);background:#fff;color:#18181b;font-size:15px;font-family:var(--sans)}
+  .optin input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(206,187,130,.35)}
+  .optin button{flex:none}
+  .optmsg{margin:16px auto 0;font-size:15px;color:var(--gold-deep);text-align:center}
+  @media(max-width:520px){.optin{flex-direction:column;align-items:stretch}.optin .fld{width:100%}.optin input{width:100%;max-width:none}.optin button{width:100%}}
+  .nlget{list-style:none;padding:0;margin:26px auto 0;max-width:620px;text-align:left;display:flex;flex-direction:column;gap:12px}
+  .nlget li{position:relative;padding-left:30px;font-size:15.5px;line-height:1.5;color:var(--ink)}
+  .nlget li::before{content:"";position:absolute;left:0;top:2px;width:18px;height:18px;border-radius:50%;background:rgba(206,187,130,.16);border:1px solid rgba(206,187,130,.5)}
+  .nlget li::after{content:"";position:absolute;left:6px;top:7px;width:5px;height:9px;border-right:2px solid var(--gold-deep);border-bottom:2px solid var(--gold-deep);transform:rotate(42deg)}
+  .topic{font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold-deep)}
 </style>
 </head>
 <body>
-<a href="#main" class="visually-hidden">Skip to content</a>
+<a href="#join" class="visually-hidden">Skip to sign up</a>
 <header class="site-header">
   <nav class="nav" aria-label="Primary">
     <a class="brand" href="/academy/"><img class="brand-logo" src="/academy/assets/logo.png" alt="BreedWise"></a>
@@ -42,18 +50,12 @@
         <div class="menu">
           <span class="mlabel">The learning path</span>
           <a href="/academy/education.html#purposeful">Purposeful Breeding</a>
-          <a href="/academy/education.html#vet-relationships">Veterinary Relationships</a>
           <a href="/academy/education.html#genetics">Genetics</a>
           <a href="/academy/education.html#health-testing">Health Testing</a>
           <a href="/academy/education.html#reproduction">Reproduction</a>
           <a href="/academy/education.html#neonatal">Neonatal Care &amp; Whelping</a>
-          <a href="/academy/education.html#business-setup">Business Setup</a>
-          <a href="/academy/education.html#contracts">Contracts &amp; Agreements</a>
           <a href="/academy/education.html#sales">Sales</a>
-          <a href="/academy/education.html#branding">Branding</a>
           <a href="/academy/education.html#social">Social Media Marketing</a>
-          <a href="/academy/education.html#advertising">Advertising</a>
-          <a href="/academy/education.html#ai">AI Automations</a>
           <a href="/academy/education.html" style="color:var(--gold-deep)">See the full path &#8594;</a>
         </div>
       </div>
@@ -62,63 +64,79 @@
         <button class="navtop" type="button">Resources <i>&#9662;</i></button>
         <div class="menu">
           <span class="mlabel">Resources</span>
-          <a href="/academy/resources.html">Blog<small>Practical writing for serious breeders</small></a>
+          <a href="/academy/resources.html">Newsletter<small>Weekly breeder tips, straight to your inbox</small></a>
           <a href="/academy/webinars.html">Webinars<small>Live trainings &amp; replays</small></a>
           <a href="/academy/healthy-litter-scorecard.html">Healthy Litter Scorecard<small>Free, score your litter's setup</small></a>
           <a href="/academy/free-case-study.html">Free Case Study<small>How members sold out their litters</small></a>
         </div>
       </div>
     </div>
-    <a class="btn btn-gold navcta" data-apply href="#apply">Apply</a>
+    <a class="btn btn-gold navcta" href="#join">Join free</a>
   </nav>
 </header>
 
 <main id="main">
-<section class="s-dark hero" style="padding-bottom:30px">
-  <div class="wrap" style="max-width:760px">
-    <span class="eyebrow">Resources</span>
-    <h1 style="margin:14px 0 0;max-width:20ch">The Breedwise blog.</h1>
-    <p class="lead" style="margin-top:16px">Practical, no-fluff writing on breeding to a higher standard, health and genetics, whelping, sales, branding and social. Written with the same faculty who teach inside the Academy.</p>
+<section class="s-dark hero" id="join">
+  <div class="wrap lmwrap">
+    <span class="eyebrow">The Breedwise Newsletter</span>
+    <h1 style="margin:14px 0 0;max-width:none;line-height:1.1">Breeder tips worth opening.</h1>
+    <p class="lead" style="margin:16px auto 0;max-width:60ch">A few short emails a week with the practical things that actually move a program forward: health and genetics, whelping, sales, branding and the business of breeding. No fluff, unsubscribe anytime.</p>
+    <form class="optin" id="nl-form" novalidate>
+      <label class="fld"><span>First name</span><input type="text" name="name" placeholder="Jane" autocomplete="given-name"></label>
+      <label class="fld"><span>Email</span><input type="email" name="email" placeholder="you@email.com" required autocomplete="email"></label>
+      <button class="btn btn-gold" type="submit">Join the newsletter</button>
+    </form>
+    <p class="optmsg" id="nl-msg" role="status" hidden></p>
+    <p class="fineprint" style="margin-top:12px">Free. A few emails a week. Unsubscribe anytime.</p>
   </div>
 </section>
 
 <section class="s-ivory">
+  <div class="wrap" style="max-width:720px;margin:0 auto;text-align:center">
+    <span class="eyebrow">What lands in your inbox</span>
+    <h2 style="margin:10px 0 0">Small, useful, every week.</h2>
+    <ul class="nlget">
+      <li>One clinical tip from the vet side: health testing, whelping, neonatal care.</li>
+      <li>One business or sales idea you can use on your next litter.</li>
+      <li>A real breeder story, what worked, what didn't, and why.</li>
+      <li>The occasional invite to a live masterclass or free resource.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="s-band">
   <div class="wrap">
-    <span class="eyebrow">Latest &amp; upcoming</span>
-    <h2 style="margin:10px 0 0">What we're writing about.</h2>
-    <div class="grid-3" style="margin-top:30px">
-      <div class="card post"><span class="cat">Program</span><h3>What the best breeders do differently</h3><p>The handful of habits that separate a sought-after program from a good one.</p><span class="soon">Coming soon</span></div>
-      <div class="card post"><span class="cat">Health &amp; genetics</span><h3>Reading an OFA report without a vet degree</h3><p>What the results actually mean for your pairings, in plain English.</p><span class="soon">Coming soon</span></div>
-      <div class="card post"><span class="cat">Sales</span><h3>The 34-minute sale</h3><p>How members build a waitlist that buys fast, and what makes a buyer say yes.</p><span class="soon">Coming soon</span></div>
-      <div class="card post"><span class="cat">Clinical</span><h3>Whelping red flags you can't miss</h3><p>The warning signs in the whelping box, and when to call your vet.</p><span class="soon">Coming soon</span></div>
-      <div class="card post"><span class="cat">Business</span><h3>Pricing your puppies with a straight face</h3><p>How to set premium prices your standard earns, and buyers agree to.</p><span class="soon">Coming soon</span></div>
-      <div class="card post"><span class="cat">Social</span><h3>Reels that fill a waitlist</h3><p>The content and cadence that turn followers into the right families.</p><span class="soon">Coming soon</span></div>
+    <div style="text-align:center;max-width:700px;margin:0 auto">
+      <span class="eyebrow">What we write about</span>
+      <h2 style="margin:10px 0 0">The whole program, not just one piece.</h2>
     </div>
-    <div style="text-align:center;margin-top:34px">
-      <p style="color:var(--light-body-2)">New articles drop regularly. Want them first, plus the free course samples?</p>
-      <div class="btn-row" style="justify-content:center;margin-top:16px">
-        <a class="btn btn-gold" data-apply href="#apply">Apply to the Academy</a>
-        <a class="btn btn-ghost" href="/academy/education.html">See the curriculum</a>
-      </div>
+    <div class="grid-3" style="margin-top:30px">
+      <div class="card"><span class="topic">Health &amp; genetics</span><h3 style="margin:8px 0 6px">Breed to the standard</h3><p>Reading OFA and genetic panels, pairing for health, and the testing that lets you charge like it.</p></div>
+      <div class="card"><span class="topic">Clinical</span><h3 style="margin:8px 0 6px">Safer litters</h3><p>Whelping red flags, neonatal care, and when to call your vet, from the people who teach it.</p></div>
+      <div class="card"><span class="topic">Sales</span><h3 style="margin:8px 0 6px">A waitlist that buys</h3><p>Positioning, buyer screening and premium pricing, so the right families say yes fast.</p></div>
+      <div class="card"><span class="topic">Branding</span><h3 style="margin:8px 0 6px">Chosen before you speak</h3><p>A brand the right buyers trust and remember, built on your standard, not hype.</p></div>
+      <div class="card"><span class="topic">Social</span><h3 style="margin:8px 0 6px">Content that converts</h3><p>The reels and cadence that grow an audience of real buyers, not tire-kickers.</p></div>
+      <div class="card"><span class="topic">Business</span><h3 style="margin:8px 0 6px">A program that lasts</h3><p>Pricing, records and the systems that turn a good program into a sought-after one.</p></div>
+    </div>
+    <div style="text-align:center;margin-top:30px">
+      <a class="btn btn-gold" href="#join">Join the newsletter</a>
     </div>
   </div>
 </section>
 
-<!-- APPLY -->
-<section class="s-dark" id="apply">
-  <div class="wrap" style="text-align:center;max-width:860px">
-    <span class="eyebrow">Apply</span>
-    <h2 style="margin:12px 0 14px">Ready to breed to a higher standard?</h2>
-    <p class="lead" style="margin:0 auto 22px">Pick a time below and we'll cover fit and pricing together on a short strategy session.</p>
-    <div class="calwrap">
-      <iframe src="https://link.breedwise.io/widget/booking/BTBJCsLRxGKgKq8ZlHEC" style="width:100%;border:none;overflow:hidden;min-height:740px;border-radius:12px;background:#fff" scrolling="no" id="BTBJCsLRxGKgKq8ZlHEC_r" title="Book your strategy session"></iframe>
+<section class="s-ivory">
+  <div class="wrap" style="text-align:center;max-width:680px;margin:0 auto">
+    <h2 style="margin:0 0 10px">Ready for more than a weekly email?</h2>
+    <p style="color:var(--light-body-2)">When you want hands-on help building a premium program, book a short strategy session with our team.</p>
+    <div class="btn-row" style="justify-content:center;margin-top:18px">
+      <a class="btn btn-gold" href="/academy/#apply">Apply to the Academy</a>
+      <a class="btn btn-ghost" href="/academy/curriculum/#samples">Watch free lessons</a>
     </div>
-    <p class="fineprint">Applications are reviewed on a rolling basis.</p>
   </div>
 </section>
 </main>
 
-<a class="sticky-cta btn btn-gold" data-apply href="#apply">Apply to the Academy</a>
+<a class="sticky-cta btn btn-gold" href="#join">Join the newsletter</a>
 
 <footer class="site-footer">
   <div class="wrap foot-grid">
@@ -130,16 +148,35 @@
       <a href="/academy/workshops.html">Workshops</a>
       <a href="/academy/education.html">Education</a>
       <a href="/academy/faculty/">Faculty</a>
-      <a href="/academy/resources.html">Blog</a>
-      <a data-apply href="#apply">Apply</a>
+      <a href="/academy/resources.html">Newsletter</a>
+      <a href="/academy/webinars.html">Webinars</a>
+      <a href="/academy/#apply">Apply</a>
       <a href="mailto:support@breedwise.io">Contact</a>
     </div>
   </div>
   <div class="wrap" style="margin-top:30px;font-size:13px;color:var(--dark-muted-2)">&copy; <span data-year></span> Breedwise. All rights reserved.</div>
 </footer>
 
-<script src="/academy/assets/content.js?v=28"></script>
-<script src="/academy/assets/site.js?v=28"></script>
-<script src="https://link.breedwise.io/js/form_embed.js"></script>
+<script src="/academy/assets/content.js?v=29"></script>
+<script src="/academy/assets/site.js?v=29"></script>
+<script>
+(function(){
+  var f=document.getElementById('nl-form'); if(!f) return;
+  var msg=document.getElementById('nl-msg');
+  function show(t,ok){ msg.hidden=false; msg.textContent=t; msg.style.color= ok===false?'#b23b36':'var(--gold-deep)'; }
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var email=(f.email.value||'').trim(), name=(f.name.value||'').trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ show('Please enter a valid email address.',false); return; }
+    var btn=f.querySelector('button'); btn.disabled=true; btn.textContent='Joining…';
+    fetch('https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/masterclass-optin',{
+      method:'POST',headers:{'content-type':'application/json'},
+      body:JSON.stringify({name:name,email:email,source:'Academy, Newsletter Signup',page:(location&&location.href)||''})
+    }).then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      .then(function(){ f.style.display='none'; show("You're in. Watch your inbox, your first email is on the way."); })
+      .catch(function(){ btn.disabled=false; btn.textContent='Join the newsletter'; show('Something went wrong. Please try again, or email support@breedwise.io.',false); });
+  });
+})();
+</script>
 </body>
 </html>
