@@ -5,6 +5,9 @@
 
 /*
 
+# --- Breedwise Academy (full subsite) ---
+!/academy/
+
 # --- Published site files (root) ---
 !index.html
 !onboarding.html
