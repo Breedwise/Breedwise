@@ -396,3 +396,8 @@ body{background:#fff;color:var(--light-body)}
 /* testimonial reel name labels */
 .reeltile{margin:0}
 .reeltile figcaption{text-align:center;margin-top:9px;font-size:13.5px;font-weight:600;color:var(--ink)}
+
+/* centered section headers (sec-center) */
+.sec-center > .wrap > .eyebrow{display:block;text-align:center}
+.sec-center > .wrap > h2{text-align:center;margin-left:auto !important;margin-right:auto !important}
+.sec-center > .wrap > .lead,.sec-center > .wrap > p.lead{text-align:center;margin-left:auto !important;margin-right:auto !important;max-width:72ch}
