@@ -9,7 +9,7 @@
    ────────────────────────────────────────────────────────────── */
 window.BW = {
   /* operational */
-  applyUrl: "#apply",   // every "Apply" / "Book" button scrolls to the embedded calendar
+  applyUrl: "/academy/#apply",   // every "Apply" / "Book" button → the homepage booking section (works from any page)
   weeklyHours: "About 5 hours a week",
   acceptsNewer: "Established breeders, and serious breeders with a plan to start within the next 6 months",
 
