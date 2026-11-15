@@ -173,7 +173,7 @@ window.BW = {
   /* meta / OG */
   meta: {
     home:   { title: "Breedwise Academy, The veterinary-backed standard for serious breeders", desc: "A 12-month, veterinary-backed certification for established breeders: a waitlist of the right families, vets who refer to you, and profit that follows from doing it right." },
-    curr:   { title: "Curriculum, Breedwise Academy", desc: "48 modules, 192 lessons, 4 quarters, 52 weekly coaching calls. Everything a serious breeding program runs on, in one structured year, with free course samples." },
+    curr:   { title: "Curriculum, Breedwise Academy", desc: "48 modules, 192 lessons, 4 quarters, live daily coaching calls. Everything a serious breeding program runs on, in one structured year, with free course samples." },
     faculty:{ title: "Faculty, Breedwise Academy", desc: "Board-certified veterinary specialists teach the clinical side of the Breedwise Academy certification, reproduction, genetics, whelping and neonatal care." }
   }
 };
