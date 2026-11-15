@@ -12,7 +12,6 @@ window.BW = {
   applyUrl: "#apply",   // every "Apply" / "Book" button scrolls to the embedded calendar
   weeklyHours: "About 5 hours a week",
   acceptsNewer: "Established breeders, and serious breeders with a plan to start within the next 6 months",
-  guaranteeTerms: "Complete the 120-Day Core, show up for coaching, and implement what we build together. If you've done the work and your program isn't measurably better, we refund your tuition. The milestones are set up front, so you always know exactly where you stand.",
 
   /* program facts (from the brief) */
   stats: { modules: 48, lessons: 192, quarters: 4, calls: 52 },
