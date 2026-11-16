@@ -94,6 +94,10 @@
 !/contented-puppies/
 !/contented-puppies/**
 
+# --- Client site: Stamyna Boerboels (B.O.S.S) ---
+!/stamyna/
+!/stamyna/**
+
 # --- TPB Week 3: Next Litter Readiness interactive tool ---
 !/litter-readiness.html
 
