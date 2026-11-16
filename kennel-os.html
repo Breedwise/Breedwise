@@ -802,8 +802,8 @@ function fieldHTML(f,v){
     var arr=Array.isArray(v)?v:(v?[].concat(v):[]);
     out='<div class="gal" id="gal_'+f.k+'"></div>'+
       '<input type="hidden" id="f_'+f.k+'" value="'+esc(JSON.stringify(arr))+'">'+
-      '<input type="file" accept="image/*" multiple id="galf_'+f.k+'" style="display:none">'+
-      '<div style="color:var(--mut,#8c99ad);font-size:12px;margin-top:6px">Add up to 5 photos &mdash; you can pick several at once. The first photo is the main one shown on your website. Changes go live when you save.</div>';
+      '<input type="file" accept="image/*" id="galf_'+f.k+'" style="display:none">'+
+      '<div style="color:var(--mut,#8c99ad);font-size:12px;margin-top:6px">Add up to 5 photos. The first photo is the main one shown on your website. Changes go live when you save.</div>';
   }else if(f.t==='bool'){
     out='<select id="'+id+'"><option value="false"'+(!v?' selected':'')+'>No</option>'+
         '<option value="true"'+(v?' selected':'')+'>Yes</option></select>';
@@ -857,20 +857,12 @@ function wireGallery(f){
     wrap.querySelectorAll('[data-main]').forEach(function(b){b.onclick=function(){var i=+b.getAttribute('data-main'),x=arr.splice(i,1)[0];arr.unshift(x);sync();render();};});
   }
   inp.onchange=async function(){
-    var files=this.files?[].slice.call(this.files):[];
+    var file=this.files&&this.files[0];if(!file){return;}
+    if(arr.length>=MAX){toast('Up to '+MAX+' photos');this.value='';return;}
+    var add=el('galadd_'+f.k);if(add){add.disabled=true;add.textContent='…';}
+    try{var url=await uploadMedia(file,'photos');arr.push(url);sync();render();}
+    catch(e){toast(e.message||'Upload failed');}
     this.value='';
-    if(!files.length)return;
-    var room=MAX-arr.length;
-    if(room<=0){toast('Up to '+MAX+' photos');return;}
-    var pick=files.slice(0,room);
-    if(files.length>room)toast('Added '+room+' of '+files.length+' — max '+MAX+' photos');
-    var add=el('galadd_'+f.k);if(add)add.disabled=true;
-    for(var i=0;i<pick.length;i++){
-      if(add)add.textContent='Uploading '+(i+1)+'/'+pick.length+'…';
-      try{var url=await uploadMedia(pick[i],'photos');arr.push(url);sync();}
-      catch(e){toast(e.message||'Upload failed');}
-    }
-    render();
   };
   render();
 }
@@ -1929,13 +1921,61 @@ async function adminView(){
 
   var kr=await sb.from('kennels').select('*').order('created_at',{ascending:false});
   var ks=kr.data||[];
+
+  /* A kennel that was provisioned but whose owner never signed up looks
+     identical to a live one in this list. kennel_invites.accepted_at is
+     the only honest signal, so show it rather than let someone sit stuck
+     for a week with nobody noticing. */
+  var ivr=await sb.from('kennel_invites').select('kennel_id,email,role,accepted_at');
+  var INV={};
+  (ivr.data||[]).forEach(function(i){
+    if(i.role!=='owner')return;
+    var cur=INV[i.kennel_id];
+    if(!cur||(!cur.accepted_at&&i.accepted_at))INV[i.kennel_id]=i;
+  });
+  function inviteState(x){
+    var iv=INV[x.id];
+    if(!iv)return {cls:'',txt:'no invite'};
+    if(iv.accepted_at)return {cls:'good',txt:'signed up'};
+    return {cls:'warn',txt:'awaiting signup'};
+  }
+
   el('kList').innerHTML='<div class="card"><div class="card-h"><h3>All kennels</h3><span class="mini">'+ks.length+'</span></div>'+
     (ks.length?'<div class="rows">'+ks.map(function(x){
+      var st=inviteState(x);
       return '<button class="row" data-open-k="'+x.id+'">'+
         (x.logo_url?'<span class="av"><img src="'+esc(x.logo_url)+'" alt=""></span>':'<span class="av" style="color:'+esc(x.accent||'#2f9bff')+'">'+esc(markText(x))+'</span>')+
         '<span class="body"><span class="t">'+esc(x.name)+'</span><span class="s">'+esc(x.slug)+' · '+esc(x.owner_email||'no owner')+'</span></span>'+
-        '<span class="r">'+pill(x.status)+'<small>'+esc(x.plan)+'</small></span></button>';}).join('')+'</div>'
+        '<span class="r"><span class="pill '+st.cls+'">'+esc(st.txt)+'</span>'+pill(x.status)+
+        '<span class="mini" data-copy-k="'+x.id+'" title="Copy the welcome message for this owner">copy welcome</span>'+
+        '</span></button>';}).join('')+'</div>'
     :'<div class="empty"><b>No kennels yet</b>Provision the first one above.</div>')+'</div>';
+
+  /* The message an owner actually needs: where to go, which email to use,
+     and the one thing worth doing first. Nothing is promised here that the
+     OS does not already do. */
+  function welcomeText(x){
+    var url=location.origin+location.pathname;
+    return 'Your kennel OS is ready \u2014 '+(x.name||'')+'.\n\n'+
+      '1. Go to '+url+'\n'+
+      '2. Choose "Sign up" and use this exact email: '+(x.owner_email||'')+'\n'+
+      '3. Pick any password. You are in straight away \u2014 there is no confirmation email to wait for.\n\n'+
+      'First thing worth doing: Settings \u2192 upload your logo. The whole system re-brands to your colours.\n\n'+
+      'There is a short starter checklist waiting on your dashboard.';
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-copy-k]'),function(b){
+    b.onclick=function(ev){
+      ev.stopPropagation();ev.preventDefault();
+      var id=b.getAttribute('data-copy-k'),x=null;
+      for(var i=0;i<ks.length;i++)if(ks[i].id===id)x=ks[i];
+      if(!x)return;
+      var t=welcomeText(x);
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(t).then(function(){toast('Welcome message copied');},function(){prompt('Copy this:',t);});
+      }else{prompt('Copy this:',t);}
+    };
+  });
+
   Array.prototype.forEach.call(document.querySelectorAll('[data-open-k]'),function(b){
     b.onclick=function(){lsSet('kos_kennel',b.getAttribute('data-open-k'));location.hash='#/';location.reload();};});
 }
