@@ -13,7 +13,7 @@ body{font-family:var(--sans);background:var(--ink);color:var(--ivory);-webkit-fo
 img{max-width:100%;display:block}
 a{color:var(--gold);text-decoration:none}
 a:hover{color:var(--gold-hover)}
-h1,h2,h3{font-family:var(--disp);font-weight:700;line-height:1.08;letter-spacing:-.02em}
+h1,h2,h3{font-family:var(--disp);font-weight:700;line-height:1.08;letter-spacing:-.02em;text-wrap:balance}
 h1{font-size:clamp(34px,5.4vw,58px)}
 h2{font-size:clamp(28px,3.6vw,44px);line-height:1.1}
 h3{font-size:clamp(19px,2vw,23px)}
@@ -22,6 +22,11 @@ p{color:var(--dark-muted)}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
 section{padding:60px 0}
 @media(max-width:640px){section{padding:44px 0}}
+/* mobile headline sizing: keep section headers to <=2 clean lines on phones */
+@media(max-width:640px){
+  h2{font-size:23px;line-height:1.13}
+  .heroexperts .hero-center h1{font-size:23px;line-height:1.18}
+}
 .lead{font-size:clamp(18px,1.5vw,21px);line-height:1.6;max-width:62ch}
 
 /* sections: dark / band / ivory */
