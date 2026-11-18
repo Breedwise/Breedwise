@@ -67,6 +67,25 @@
   .logo-slot{width:88px;height:88px;border-radius:50%;margin:0 auto 22px}
   .hero-slot{width:min(380px,86%);height:184px;border-radius:13px;margin:24px auto 0}
   .parent-photo{width:100%;height:148px;border-radius:10px;margin-bottom:12px}
+  /* optional photos on more slides: slim pill when empty, sized image when filled */
+  .imgslot.opt{margin:18px auto 0;border-radius:11px}
+  .imgslot.opt:not(.has){display:inline-flex;height:30px;min-width:150px;width:auto;padding:0 16px;font-size:9.5px;opacity:.82}
+  .imgslot.opt:not(.has):hover{opacity:1}
+  .opt.sz-med.has{width:calc(440px*var(--s,1));max-width:94%;height:calc(188px*var(--s,1))}
+  .opt.sz-strip.has{width:calc(600px*var(--s,1));max-width:96%;height:calc(116px*var(--s,1))}
+  .tc .imgslot.av{width:100%;margin:0 0 9px;border-radius:9px}
+  .tc .imgslot.av:not(.has){height:28px;font-size:9px;opacity:.82}
+  .tc .imgslot.av.has{height:calc(86px*var(--s,1))}
+  /* existing fixed slots become scalable too */
+  .logo-slot.has{width:calc(88px*var(--s,1));height:calc(88px*var(--s,1))}
+  .hero-slot.has{width:calc(min(380px,86%)*var(--s,1));height:calc(184px*var(--s,1))}
+  .parent-photo.has{height:calc(148px*var(--s,1))}
+  /* per-photo size controls (hover) */
+  .imgslot .szctl{position:absolute;top:6px;left:6px;z-index:2;display:none;gap:5px}
+  .imgslot.has:hover .szctl{display:flex}
+  .imgslot .szctl button{background:rgba(0,0,0,.6);color:#fff;border:0;border-radius:50%;width:22px;height:22px;font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+  .imgslot .szctl button:hover{background:rgba(0,0,0,.82)}
+  body.clean .imgslot:not(.has){display:none!important}
   .fields{display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;margin:22px auto 0;max-width:620px;text-align:left}
   @media(max-width:600px){.fields{grid-template-columns:1fr}}
   .fr{border-bottom:1px solid var(--line);padding-bottom:9px}
@@ -134,7 +153,7 @@
   body.notes-on .hint{display:none}
   @media print{
     @page{size:landscape;margin:0}
-    .top,.nav,.hint,.notes,.zone,.prog,.themepanel,.imgslot .rm{display:none!important}
+    .top,.nav,.hint,.notes,.zone,.prog,.themepanel,.imgslot .rm,.imgslot .szctl{display:none!important}
     body{overflow:visible;height:auto;-webkit-print-color-adjust:exact;print-color-adjust:exact}
     .stage{position:static}
     .slide{position:static!important;opacity:1!important;transform:none!important;display:flex!important;min-height:100vh;page-break-after:always;break-after:page}
@@ -149,6 +168,7 @@
   <div class="top"><span class="brand"><b>BreedWise</b> · Buyer Presentation Template</span>
     <span class="topR">
       <button class="tbtn" id="themeBtn" title="Change colors">Theme</button>
+      <button class="tbtn on" id="slotBtn" title="Show or hide the empty + Add photo boxes">Photo boxes</button>
       <button class="tbtn" id="exBtn" title="Show a worked example">Show example</button>
       <button class="tbtn" id="ntog" title="What to put on this slide (N)">Guide</button>
       <button class="tbtn" id="resetBtn" title="Clear everything you added">Reset</button>
@@ -168,7 +188,7 @@
   <div class="zone l" id="zl"></div><div class="zone r" id="zr"></div>
   <div class="stage" id="stage"></div>
   <div class="notes" id="notes"><div class="nl">What goes on this slide</div><div class="nt" id="ntext"></div></div>
-  <div class="hint">Click gold text to type · click a photo box to upload · Theme for colors · ← → to move · N for guide</div>
+  <div class="hint">Click gold text to type · click a photo box to upload · hover a photo for − + to resize · ← → to move · N for guide</div>
   <div class="nav"><button class="nbtn" id="prev">‹</button><div class="dots" id="dots"></div><div class="count"><b id="cur">1</b> / <span id="tot">12</span></div><button class="nbtn" id="next">›</button></div>
 
 <script>
@@ -220,7 +240,8 @@ Without proof, pillar words are just claims. The proof line is what makes them b
  {html:'<span class="tag">03 · Recommendation</span>'
    +'<h1 class="serif">Based on what you told us,<br>here\'s our recommendation</h1>'
    +'<div class="reco">'+F('Ranger','[ Sire ]')+' <span class="gold">&times;</span> '+F('Willow','[ Dam ]')+'</div>'
-   +'<p class="sub">We believe this breeding is a strong fit based on your preferences for '+F('temperament','[ _ ]')+', '+F('size','[ _ ]')+', and '+F('timing','[ _ ]')+'.</p>',
+   +'<p class="sub">We believe this breeding is a strong fit based on your preferences for '+F('temperament','[ _ ]')+', '+F('size','[ _ ]')+', and '+F('timing','[ _ ]')+'.</p>'
+   +'<div class="imgslot opt sz-med" data-img="reco" data-label="Add a photo"><span class="add">+ Add a photo</span></div>',
   note:`SLIDE 4 — YOUR RECOMMENDED BREEDING (this is MATCH)
 You act as the professional and recommend, instead of asking the buyer to figure out which litter they want.
 Fill in: the pairing, and the 2 to 3 preferences from slide 2 that it matches.`},
@@ -244,7 +265,8 @@ Add only what you can substantiate.`},
    +'<div class="cardm"><div class="ct">How we protect health</div><ul><li>'+F('Full OFA panel on both parents','[ health testing / panels ]')+'</li><li>'+F('Vet-attended whelping, daily weights','[ whelping &amp; neonatal care ]')+'</li><li>'+F('Vaccines, deworming, vet exam before go-home','[ vet checks, vaccines, records ]')+'</li></ul></div>'
    +'<div class="cardm"><div class="ct">Our promise to you</div><ul><li>'+F('2-year genetic health guarantee','[ health guarantee: what it covers ]')+'</li><li>If something goes wrong: '+F('replacement or refund per contract','[ what we do ]')+'</li><li>Support for life: '+F('a breeder you can call, any time','[ how ]')+'</li></ul></div>'
    +'</div>'
-   +'<p class="sub">The honest answer to the question every buyer is quietly asking: what happens if something goes wrong?</p>',
+   +'<p class="sub">The honest answer to the question every buyer is quietly asking: what happens if something goes wrong?</p>'
+   +'<div class="imgslot opt sz-strip" data-img="care" data-label="Add a photo"><span class="add">+ Add a photo</span></div>',
   note:`SLIDE 6 — HEALTH & OUR PROMISE
 The risk-reduction beat. A premium buyer's loudest unspoken fear is "what if something goes wrong?" Answer it on its own slide.
 Fill in: your real testing, your guarantee terms, and exactly what happens if there is a problem.`},
@@ -253,9 +275,9 @@ Fill in: your real testing, your guarantee terms, and exactly what happens if th
  {html:'<span class="tag">06 · Proof · families</span>'
    +'<h1>Families <span class="gold">like yours</span></h1>'
    +'<div class="three">'
-   +'<div class="tc"><div class="quo">&ldquo;</div><p>'+F('Our pup settled in within a day and is wonderful with our toddler.','[ Testimonial: what changed for them ]')+'</p><div class="who">'+F('The Harpers, Ohio','[ Family, location ]')+'</div></div>'
-   +'<div class="tc"><div class="quo">&ldquo;</div><p>'+F('The health testing and support made the price easy to understand.','[ Testimonial ]')+'</p><div class="who">'+F('Maria G.','[ Family ]')+'</div></div>'
-   +'<div class="tc"><div class="quo">&ldquo;</div><p>'+F('Best breeder experience we have had, start to finish.','[ Testimonial ]')+'</p><div class="who">'+F('The Delgados','[ Family ]')+'</div></div>'
+   +'<div class="tc"><div class="imgslot av" data-img="fam1" data-label="Photo"><span class="add">+ Photo</span></div><div class="quo">&ldquo;</div><p>'+F('Our pup settled in within a day and is wonderful with our toddler.','[ Testimonial: what changed for them ]')+'</p><div class="who">'+F('The Harpers, Ohio','[ Family, location ]')+'</div></div>'
+   +'<div class="tc"><div class="imgslot av" data-img="fam2" data-label="Photo"><span class="add">+ Photo</span></div><div class="quo">&ldquo;</div><p>'+F('The health testing and support made the price easy to understand.','[ Testimonial ]')+'</p><div class="who">'+F('Maria G.','[ Family ]')+'</div></div>'
+   +'<div class="tc"><div class="imgslot av" data-img="fam3" data-label="Photo"><span class="add">+ Photo</span></div><div class="quo">&ldquo;</div><p>'+F('Best breeder experience we have had, start to finish.','[ Testimonial ]')+'</p><div class="who">'+F('The Delgados','[ Family ]')+'</div></div>'
    +'</div>'
    +'<p class="sub">'+F('120+','[ # ]')+' families placed · '+F('40+','[ # ]')+' five-star reviews</p>',
   note:`SLIDE 7 — FAMILIES LIKE YOURS (social proof)
@@ -266,7 +288,8 @@ Fill in: 2 to 3 real testimonials and your real numbers.`},
  {html:'<span class="tag">07 · Matching · the puppy</span>'
    +'<h1>Finding the right puppy<br><span class="gold">within the litter</span></h1>'
    +'<div class="flow"><div class="st"><b>Temperament</b></div><i>&rarr;</i><div class="st"><b>Lifestyle</b></div><i>&rarr;</i><div class="st"><b>Purpose</b></div><i>&rarr;</i><div class="st"><b>Preferences</b></div></div>'
-   +'<p class="sub">We\'ll consider your look and color preferences while matching the puppy that best fits what you\'re looking for.</p>',
+   +'<p class="sub">We\'ll consider your look and color preferences while matching the puppy that best fits what you\'re looking for.</p>'
+   +'<div class="imgslot opt sz-med" data-img="litter" data-label="Add a photo"><span class="add">+ Add a photo</span></div>',
   note:`SLIDE 8 — MATCHING: the PUPPY
 This is the puppy, not the home (slide 2 was the home). Match on temperament, lifestyle and purpose first; color and look are preferences.`},
 
@@ -274,7 +297,8 @@ This is the puppy, not the home (slide 2 was the home). Match on temperament, li
  {html:'<span class="tag">08 · Timeline</span>'
    +'<h1>What happens <span class="gold">from here</span></h1>'
    +'<div class="flow"><div class="st"><b>Breeding</b><span class="dt">'+F('Mar 3','[ date ]')+'</span></div><i>&rarr;</i><div class="st"><b>Confirmation</b><span class="dt">'+F('Mar 28','[ date ]')+'</span></div><i>&rarr;</i><div class="st"><b>Birth</b><span class="dt">'+F('May 5','[ date ]')+'</span></div><i>&rarr;</i><div class="st"><b>Development</b><span class="dt">'+F('8 weeks','[ weeks ]')+'</span></div><i>&rarr;</i><div class="st"><b>Selection</b><span class="dt">'+F('Jun 20','[ date ]')+'</span></div><i>&rarr;</i><div class="st"><b>Go-home</b><span class="dt">'+F('week 8','[ week ]')+'</span></div></div>'
-   +'<p class="sub">So you always know what comes next.</p>',
+   +'<p class="sub">So you always know what comes next.</p>'
+   +'<div class="imgslot opt sz-strip" data-img="journey" data-label="Add a photo"><span class="add">+ Add a photo</span></div>',
   note:`SLIDE 9 — WHAT HAPPENS FROM HERE
 Turn your timeline into a visual journey with dates. Answers the biggest unspoken question, "what happens after I give you money?"`},
 
@@ -304,6 +328,7 @@ Price and what's included sit together, so the number lands in context. Keep it 
  /* 12 */
  {html:'<span class="tag">11 · Decision</span>'
    +'<h1>Which next step is <span class="gold">right for you</span>?</h1>'
+   +'<div class="imgslot opt sz-strip" data-img="closing" data-label="Add a photo"><span class="add">+ Add a photo</span></div>'
    +'<div class="decide2">'
    +'<div class="do hot"><div class="k">Ready to move forward</div><div class="t">Reserve your placement</div><div class="amt">'+F('$1,000','[ amount ]')+'</div></div>'
    +'<div class="do"><div class="k">Not ready yet</div><div class="t">Join the waitlist</div><div class="amt">'+F('$250','[ amount ]')+' <small>credited</small></div></div>'
@@ -315,11 +340,12 @@ Offer the two clear paths, then ask: "Does this feel like the right fit for you 
 No pressure, just clarity. A legitimate no is a good outcome.`}
 ];
 
-var i=0,exOn=false,saved={},images={},theme={accent:'#c9a86a',bg:'#100d0a'},saveT,curImgKey=null;
+var i=0,exOn=false,saved={},images={},sizes={},theme={accent:'#c9a86a',bg:'#100d0a'},saveT,curImgKey=null;
 var stage=document.getElementById('stage'),dots=document.getElementById('dots');
 document.getElementById('tot').textContent=SLIDES.length;
 try{saved=JSON.parse(localStorage.getItem('bw-bpt-deck')||'{}')||{};}catch(e){saved={};}
 try{images=JSON.parse(localStorage.getItem('bw-bpt-img')||'{}')||{};}catch(e){images={};}
+try{sizes=JSON.parse(localStorage.getItem('bw-bpt-size')||'{}')||{};}catch(e){sizes={};}
 try{var t=JSON.parse(localStorage.getItem('bw-bpt-theme')||'null'); if(t&&t.accent)theme=t;}catch(e){}
 
 /* ---- color helpers ---- */
@@ -348,10 +374,11 @@ var PRESETS=[['#c9a86a','#100d0a'],['#d4af37','#0a0a0a'],['#b9975b','#f6f1e8'],[
 
 /* ---- images ---- */
 function persistImg(){try{localStorage.setItem('bw-bpt-img',JSON.stringify(images));}catch(e){alert('That image was too large to save. Try a smaller photo.');}}
+function persistSize(){try{localStorage.setItem('bw-bpt-size',JSON.stringify(sizes));}catch(e){}}
 function renderImg(key){
   var slot=document.querySelector('.imgslot[data-img="'+key+'"]'); if(!slot)return;
-  if(images[key]){slot.classList.add('has'); slot.innerHTML='<img src="'+images[key]+'" alt=""><button class="rm" data-rm="'+key+'">&times;</button>';}
-  else{slot.classList.remove('has'); slot.innerHTML='<span class="add">+ '+(slot.getAttribute('data-label')||'photo')+'</span>';}
+  if(images[key]){slot.classList.add('has'); slot.style.setProperty('--s',sizes[key]||1); slot.innerHTML='<img src="'+images[key]+'" alt=""><div class="szctl"><button type="button" data-sz="-" data-k="'+key+'" title="Smaller">−</button><button type="button" data-sz="+" data-k="'+key+'" title="Larger">+</button></div><button class="rm" data-rm="'+key+'">&times;</button>';}
+  else{slot.classList.remove('has'); slot.style.removeProperty('--s'); slot.innerHTML='<span class="add">+ '+(slot.getAttribute('data-label')||'photo')+'</span>';}
 }
 function renderAllImg(){Array.prototype.forEach.call(document.querySelectorAll('.imgslot'),function(s){renderImg(s.getAttribute('data-img'));});}
 function compress(file,cb){
@@ -411,8 +438,10 @@ function setExample(on){
 
 /* clicks: image slots + remove (delegated) */
 document.addEventListener('click',function(e){
+  var sz=e.target.closest&&e.target.closest('[data-sz]');
+  if(sz){e.stopPropagation(); var sk=sz.getAttribute('data-k'); var cur=(sizes[sk]||1)+(sz.getAttribute('data-sz')==='+'?0.15:-0.15); cur=Math.max(0.55,Math.min(1.9,Math.round(cur*100)/100)); sizes[sk]=cur; var ss=document.querySelector('.imgslot[data-img="'+sk+'"]'); if(ss)ss.style.setProperty('--s',cur); persistSize(); return;}
   var rm=e.target.closest&&e.target.closest('.rm');
-  if(rm){e.stopPropagation(); var k=rm.getAttribute('data-rm'); delete images[k]; renderImg(k); persistImg(); return;}
+  if(rm){e.stopPropagation(); var k=rm.getAttribute('data-rm'); delete images[k]; delete sizes[k]; renderImg(k); persistImg(); persistSize(); return;}
   var slot=e.target.closest&&e.target.closest('.imgslot');
   if(slot){curImgKey=slot.getAttribute('data-img'); document.getElementById('imgInput').click();}
 });
@@ -425,13 +454,14 @@ document.getElementById('ntog').onclick=function(){document.body.classList.toggl
 document.getElementById('exBtn').onclick=function(){setExample(!exOn);};
 document.getElementById('pdfBtn').onclick=function(){window.print();};
 document.getElementById('themeBtn').onclick=function(){var p=document.getElementById('themePanel');p.classList.toggle('on');this.classList.toggle('on');};
+document.getElementById('slotBtn').onclick=function(){var on=this.classList.toggle('on');document.body.classList.toggle('clean',!on);};
 document.getElementById('cAccent').addEventListener('input',function(){applyTheme(this.value,theme.bg);});
 document.getElementById('cBg').addEventListener('input',function(){applyTheme(theme.accent,this.value);});
 document.getElementById('presets').innerHTML=PRESETS.map(function(p){return '<div class="sw" data-a="'+p[0]+'" data-b="'+p[1]+'" style="background:'+p[1]+'"><i style="background:'+p[0]+'"></i></div>';}).join('');
 Array.prototype.forEach.call(document.querySelectorAll('.sw'),function(s){s.addEventListener('click',function(){applyTheme(s.getAttribute('data-a'),s.getAttribute('data-b'));});});
 document.getElementById('resetBtn').onclick=function(){
   if(!confirm('Clear everything you have added (text, photos, colors)? This cannot be undone.'))return;
-  saved={};images={}; try{localStorage.removeItem('bw-bpt-deck');localStorage.removeItem('bw-bpt-img');localStorage.removeItem('bw-bpt-theme');}catch(e){}
+  saved={};images={};sizes={}; try{localStorage.removeItem('bw-bpt-deck');localStorage.removeItem('bw-bpt-img');localStorage.removeItem('bw-bpt-size');localStorage.removeItem('bw-bpt-theme');}catch(e){}
   Array.prototype.forEach.call(document.querySelectorAll('.f'),function(el){el.classList.remove('filled','ex'); el.textContent=el.getAttribute('data-def');});
   renderAllImg(); applyTheme('#c9a86a','#100d0a'); exOn=false; document.getElementById('exBtn').classList.remove('on'); document.getElementById('exBtn').textContent='Show example';
 };
