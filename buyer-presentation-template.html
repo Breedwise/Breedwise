@@ -67,24 +67,24 @@
   .logo-slot{width:88px;height:88px;border-radius:50%;margin:0 auto 22px}
   .hero-slot{width:min(380px,86%);height:184px;border-radius:13px;margin:24px auto 0}
   .parent-photo{width:100%;height:148px;border-radius:10px;margin-bottom:12px}
-  /* optional photos on more slides: slim pill when empty, sized image when filled */
+  /* optional photos on more slides: slim pill when empty, framed image when filled */
   .imgslot.opt{margin:18px auto 0;border-radius:11px}
   .imgslot.opt:not(.has){display:inline-flex;height:30px;min-width:150px;width:auto;padding:0 16px;font-size:9.5px;opacity:.82}
   .imgslot.opt:not(.has):hover{opacity:1}
-  .opt.sz-med.has{width:calc(440px*var(--s,1));max-width:94%;height:calc(188px*var(--s,1))}
-  .opt.sz-strip.has{width:calc(600px*var(--s,1));max-width:96%;height:calc(116px*var(--s,1))}
+  .opt.sz-med.has{width:440px;max-width:94%;height:188px}
+  .opt.sz-strip.has{width:600px;max-width:96%;height:120px}
   .tc .imgslot.av{width:100%;margin:0 0 9px;border-radius:9px}
   .tc .imgslot.av:not(.has){height:28px;font-size:9px;opacity:.82}
-  .tc .imgslot.av.has{height:calc(86px*var(--s,1))}
-  /* existing fixed slots become scalable too */
-  .logo-slot.has{width:calc(88px*var(--s,1));height:calc(88px*var(--s,1))}
-  .hero-slot.has{width:calc(min(380px,86%)*var(--s,1));height:calc(184px*var(--s,1))}
-  .parent-photo.has{height:calc(148px*var(--s,1))}
-  /* per-photo size controls (hover) */
-  .imgslot .szctl{position:absolute;top:6px;left:6px;z-index:2;display:none;gap:5px}
+  .tc .imgslot.av.has{height:88px}
+  /* crop / reframe: pan with object-position, zoom with scale, Fit shows the whole photo */
+  .imgslot.has img{object-position:var(--ox,50%) var(--oy,50%);transform:scale(var(--z,1));transform-origin:var(--ox,50%) var(--oy,50%);cursor:grab}
+  .imgslot.has.fitc img{object-fit:contain;transform:none;cursor:default;background:#0b0906}
+  .imgslot.has.grabbing img{cursor:grabbing}
+  /* per-photo reframe controls (hover) */
+  .imgslot .szctl{position:absolute;top:6px;left:6px;z-index:3;display:none;gap:5px;align-items:center}
   .imgslot.has:hover .szctl{display:flex}
-  .imgslot .szctl button{background:rgba(0,0,0,.6);color:#fff;border:0;border-radius:50%;width:22px;height:22px;font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
-  .imgslot .szctl button:hover{background:rgba(0,0,0,.82)}
+  .imgslot .szctl button{background:rgba(0,0,0,.62);color:#fff;border:0;border-radius:13px;min-width:24px;height:24px;font-size:13px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0 7px;font-family:var(--sans);letter-spacing:.02em}
+  .imgslot .szctl button:hover{background:rgba(0,0,0,.85)}
   body.clean .imgslot:not(.has){display:none!important}
   .fields{display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;margin:22px auto 0;max-width:620px;text-align:left}
   @media(max-width:600px){.fields{grid-template-columns:1fr}}
@@ -188,7 +188,7 @@
   <div class="zone l" id="zl"></div><div class="zone r" id="zr"></div>
   <div class="stage" id="stage"></div>
   <div class="notes" id="notes"><div class="nl">What goes on this slide</div><div class="nt" id="ntext"></div></div>
-  <div class="hint">Click gold text to type · click a photo box to upload · hover a photo for − + to resize · ← → to move · N for guide</div>
+  <div class="hint">Click gold text to type · click a photo box to upload · drag a photo to reframe · Fit / + − to crop · ← → to move</div>
   <div class="nav"><button class="nbtn" id="prev">‹</button><div class="dots" id="dots"></div><div class="count"><b id="cur">1</b> / <span id="tot">12</span></div><button class="nbtn" id="next">›</button></div>
 
 <script>
@@ -340,12 +340,12 @@ Offer the two clear paths, then ask: "Does this feel like the right fit for you 
 No pressure, just clarity. A legitimate no is a good outcome.`}
 ];
 
-var i=0,exOn=false,saved={},images={},sizes={},theme={accent:'#c9a86a',bg:'#100d0a'},saveT,curImgKey=null;
+var i=0,exOn=false,saved={},images={},crop={},theme={accent:'#c9a86a',bg:'#100d0a'},saveT,curImgKey=null;
 var stage=document.getElementById('stage'),dots=document.getElementById('dots');
 document.getElementById('tot').textContent=SLIDES.length;
 try{saved=JSON.parse(localStorage.getItem('bw-bpt-deck')||'{}')||{};}catch(e){saved={};}
 try{images=JSON.parse(localStorage.getItem('bw-bpt-img')||'{}')||{};}catch(e){images={};}
-try{sizes=JSON.parse(localStorage.getItem('bw-bpt-size')||'{}')||{};}catch(e){sizes={};}
+try{crop=JSON.parse(localStorage.getItem('bw-bpt-crop')||'{}')||{};}catch(e){crop={};}
 try{var t=JSON.parse(localStorage.getItem('bw-bpt-theme')||'null'); if(t&&t.accent)theme=t;}catch(e){}
 
 /* ---- color helpers ---- */
@@ -374,11 +374,19 @@ var PRESETS=[['#c9a86a','#100d0a'],['#d4af37','#0a0a0a'],['#b9975b','#f6f1e8'],[
 
 /* ---- images ---- */
 function persistImg(){try{localStorage.setItem('bw-bpt-img',JSON.stringify(images));}catch(e){alert('That image was too large to save. Try a smaller photo.');}}
-function persistSize(){try{localStorage.setItem('bw-bpt-size',JSON.stringify(sizes));}catch(e){}}
+function persistCrop(){try{localStorage.setItem('bw-bpt-crop',JSON.stringify(crop));}catch(e){}}
+function applyCrop(slot,key){
+  var c=crop[key]||{};
+  slot.style.setProperty('--ox',(c.ox!=null?c.ox:50)+'%');
+  slot.style.setProperty('--oy',(c.oy!=null?c.oy:50)+'%');
+  slot.style.setProperty('--z',(c.z!=null?c.z:1));
+  slot.classList.toggle('fitc',c.fit==='contain');
+  var fb=slot.querySelector('[data-crop="fit"]'); if(fb)fb.textContent=(c.fit==='contain')?'Fill':'Fit';
+}
 function renderImg(key){
   var slot=document.querySelector('.imgslot[data-img="'+key+'"]'); if(!slot)return;
-  if(images[key]){slot.classList.add('has'); slot.style.setProperty('--s',sizes[key]||1); slot.innerHTML='<img src="'+images[key]+'" alt=""><div class="szctl"><button type="button" data-sz="-" data-k="'+key+'" title="Smaller">−</button><button type="button" data-sz="+" data-k="'+key+'" title="Larger">+</button></div><button class="rm" data-rm="'+key+'">&times;</button>';}
-  else{slot.classList.remove('has'); slot.style.removeProperty('--s'); slot.innerHTML='<span class="add">+ '+(slot.getAttribute('data-label')||'photo')+'</span>';}
+  if(images[key]){slot.classList.add('has'); slot.innerHTML='<img src="'+images[key]+'" alt="" draggable="false"><div class="szctl"><button type="button" data-crop="fit" data-k="'+key+'" title="Show the whole photo, or fill the frame">Fit</button><button type="button" data-crop="out" data-k="'+key+'" title="Zoom out">−</button><button type="button" data-crop="in" data-k="'+key+'" title="Zoom in">+</button></div><button class="rm" data-rm="'+key+'">&times;</button>'; applyCrop(slot,key);}
+  else{slot.classList.remove('has','fitc'); slot.style.removeProperty('--ox'); slot.style.removeProperty('--oy'); slot.style.removeProperty('--z'); slot.innerHTML='<span class="add">+ '+(slot.getAttribute('data-label')||'photo')+'</span>';}
 }
 function renderAllImg(){Array.prototype.forEach.call(document.querySelectorAll('.imgslot'),function(s){renderImg(s.getAttribute('data-img'));});}
 function compress(file,cb){
@@ -438,13 +446,26 @@ function setExample(on){
 
 /* clicks: image slots + remove (delegated) */
 document.addEventListener('click',function(e){
-  var sz=e.target.closest&&e.target.closest('[data-sz]');
-  if(sz){e.stopPropagation(); var sk=sz.getAttribute('data-k'); var cur=(sizes[sk]||1)+(sz.getAttribute('data-sz')==='+'?0.15:-0.15); cur=Math.max(0.55,Math.min(1.9,Math.round(cur*100)/100)); sizes[sk]=cur; var ss=document.querySelector('.imgslot[data-img="'+sk+'"]'); if(ss)ss.style.setProperty('--s',cur); persistSize(); return;}
+  var cb=e.target.closest&&e.target.closest('[data-crop]');
+  if(cb){e.stopPropagation(); var ck=cb.getAttribute('data-k'),act=cb.getAttribute('data-crop'),c=crop[ck]||{ox:50,oy:50,z:1,fit:'cover'};
+    if(act==='in'){c.fit='cover'; c.z=Math.min(2.6,Math.round(((c.z||1)+0.2)*100)/100);}
+    else if(act==='out'){c.fit='cover'; c.z=Math.max(1,Math.round(((c.z||1)-0.2)*100)/100);}
+    else if(act==='fit'){c.fit=(c.fit==='contain')?'cover':'contain';}
+    crop[ck]=c; var cs=document.querySelector('.imgslot[data-img="'+ck+'"]'); if(cs)applyCrop(cs,ck); persistCrop(); return;}
   var rm=e.target.closest&&e.target.closest('.rm');
-  if(rm){e.stopPropagation(); var k=rm.getAttribute('data-rm'); delete images[k]; delete sizes[k]; renderImg(k); persistImg(); persistSize(); return;}
+  if(rm){e.stopPropagation(); var k=rm.getAttribute('data-rm'); delete images[k]; delete crop[k]; renderImg(k); persistImg(); persistCrop(); return;}
+  if(dragMoved){dragMoved=false; return;}
   var slot=e.target.closest&&e.target.closest('.imgslot');
   if(slot){curImgKey=slot.getAttribute('data-img'); document.getElementById('imgInput').click();}
 });
+/* drag a filled photo to reframe (pan) */
+var dragK=null,dragStart=null,dragBox=null,dragOrig=null,dragMoved=false;
+function dragBegin(x,y,slot){ if(!slot||!slot.classList.contains('has')||slot.classList.contains('fitc'))return false; dragK=slot.getAttribute('data-img'); dragBox=slot.getBoundingClientRect(); var c=crop[dragK]||{}; dragOrig={ox:c.ox!=null?c.ox:50,oy:c.oy!=null?c.oy:50}; dragStart={x:x,y:y}; dragMoved=false; slot.classList.add('grabbing'); return true; }
+function dragTo(x,y){ if(dragK==null)return; var dx=x-dragStart.x,dy=y-dragStart.y; if(Math.abs(dx)+Math.abs(dy)>3)dragMoved=true; var kx=140/Math.max(60,dragBox.width),ky=140/Math.max(60,dragBox.height),c=crop[dragK]||{}; c.ox=Math.max(0,Math.min(100,Math.round(dragOrig.ox-dx*kx))); c.oy=Math.max(0,Math.min(100,Math.round(dragOrig.oy-dy*ky))); if(c.z==null)c.z=1; if(!c.fit)c.fit='cover'; crop[dragK]=c; var cs=document.querySelector('.imgslot[data-img="'+dragK+'"]'); if(cs)applyCrop(cs,dragK); }
+function dragEnd(){ if(dragK==null)return; var cs=document.querySelector('.imgslot[data-img="'+dragK+'"]'); if(cs)cs.classList.remove('grabbing'); persistCrop(); dragK=null; }
+document.addEventListener('mousedown',function(e){ var img=e.target.closest&&e.target.closest('.imgslot.has img'); if(img&&dragBegin(e.clientX,e.clientY,img.closest('.imgslot')))e.preventDefault(); });
+document.addEventListener('mousemove',function(e){ if(dragK!=null)dragTo(e.clientX,e.clientY); });
+document.addEventListener('mouseup',dragEnd);
 
 document.getElementById('next').onclick=function(){go(i+1);};
 document.getElementById('prev').onclick=function(){go(i-1);};
@@ -461,7 +482,7 @@ document.getElementById('presets').innerHTML=PRESETS.map(function(p){return '<di
 Array.prototype.forEach.call(document.querySelectorAll('.sw'),function(s){s.addEventListener('click',function(){applyTheme(s.getAttribute('data-a'),s.getAttribute('data-b'));});});
 document.getElementById('resetBtn').onclick=function(){
   if(!confirm('Clear everything you have added (text, photos, colors)? This cannot be undone.'))return;
-  saved={};images={};sizes={}; try{localStorage.removeItem('bw-bpt-deck');localStorage.removeItem('bw-bpt-img');localStorage.removeItem('bw-bpt-size');localStorage.removeItem('bw-bpt-theme');}catch(e){}
+  saved={};images={};crop={}; try{localStorage.removeItem('bw-bpt-deck');localStorage.removeItem('bw-bpt-img');localStorage.removeItem('bw-bpt-crop');localStorage.removeItem('bw-bpt-theme');}catch(e){}
   Array.prototype.forEach.call(document.querySelectorAll('.f'),function(el){el.classList.remove('filled','ex'); el.textContent=el.getAttribute('data-def');});
   renderAllImg(); applyTheme('#c9a86a','#100d0a'); exOn=false; document.getElementById('exBtn').classList.remove('on'); document.getElementById('exBtn').textContent='Show example';
 };
@@ -472,9 +493,10 @@ document.addEventListener('keydown',function(e){
   else if(e.key==='Home'){go(0);}else if(e.key==='End'){go(SLIDES.length-1);}
   else if(e.key==='n'||e.key==='N'){document.body.classList.toggle('notes-on');}
 });
-var tx=0;
-document.addEventListener('touchstart',function(e){tx=e.changedTouches[0].clientX;},{passive:true});
-document.addEventListener('touchend',function(e){if(document.activeElement&&document.activeElement.isContentEditable)return;var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>60){dx<0?go(i+1):go(i-1);}},{passive:true});
+var tx=0,touchImg=false;
+document.addEventListener('touchstart',function(e){var t=e.changedTouches[0];tx=t.clientX;var img=e.target.closest&&e.target.closest('.imgslot.has img');touchImg=!!(img&&dragBegin(t.clientX,t.clientY,img.closest('.imgslot')));},{passive:true});
+document.addEventListener('touchmove',function(e){if(touchImg){var t=e.changedTouches[0];dragTo(t.clientX,t.clientY);}},{passive:true});
+document.addEventListener('touchend',function(e){if(touchImg){touchImg=false;dragEnd();return;}if(document.activeElement&&document.activeElement.isContentEditable)return;var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>60){dx<0?go(i+1):go(i-1);}},{passive:true});
 render();
 applyTheme(theme.accent,theme.bg);
 </script>
