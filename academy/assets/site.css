@@ -22,11 +22,6 @@ p{color:var(--dark-muted)}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
 section{padding:60px 0}
 @media(max-width:640px){section{padding:44px 0}}
-/* mobile headline sizing: keep section headers to <=2 clean lines on phones */
-@media(max-width:640px){
-  h2{font-size:23px;line-height:1.13}
-  .heroexperts .hero-center h1{font-size:23px;line-height:1.18}
-}
 .lead{font-size:clamp(18px,1.5vw,21px);line-height:1.6;max-width:62ch}
 
 /* sections: dark / band / ivory */
@@ -406,3 +401,10 @@ body{background:#fff;color:var(--light-body)}
 .sec-center > .wrap > .eyebrow{display:block;text-align:center}
 .sec-center > .wrap > h2{text-align:center;margin-left:auto !important;margin-right:auto !important}
 .sec-center > .wrap > .lead,.sec-center > .wrap > p.lead{text-align:center;margin-left:auto !important;margin-right:auto !important;max-width:72ch}
+
+/* mobile headline sizing: keep section headers + hero to <=2 clean lines on phones.
+   Placed at end of file so it wins the source-order tie against the base hero rule. */
+@media(max-width:640px){
+  h2{font-size:23px;line-height:1.13}
+  .heroexperts .hero-center h1{font-size:23px;line-height:1.18}
+}
