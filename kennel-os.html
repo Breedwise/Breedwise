@@ -525,7 +525,7 @@ var NAV=[
  {g:'Relationships',items:[['contacts','users','CRM & Contacts'],['leads','target','Leads & Sales','leads_open']]},
  {g:'Kennel',items:[['dogs','dog','Dogs'],['breedings','heart','Breedings'],
    ['litters','paw','Litters'],['puppies','paw','Puppies'],['health','check','Health & Vaccines'],
-   ['breeding-tools','spark','Breeding Tools']]},
+   ['breeding-tools','spark','Breeding Tools'],['program','chart','Breeding Program']]},
  {g:'Business',items:[['money','dollar','Finances'],['documents','file','Documents']]},
  {g:'Intelligence',items:[['reports','chart','Reports'],['settings','cog','Settings']]}
 ];
@@ -1047,6 +1047,22 @@ async function dashView(){
     .concat(dueNow.map(function(t){return {t:t.title,s:(days(t.due_date)<0?'Overdue · ':'Due today · ')+(t.assigned_to||'Task'),ini:'✓',go:'tasks',id:t.id};}))
     .concat(evToday.map(function(e){return {t:e.title,s:'Today · '+(e.kind||'event'),ini:'📅',go:'calendar',id:e.id};}))
     .concat(overdueLeads.map(function(l){return {t:'Follow up: '+l.name,s:(l.next_action||'Next action')+' · '+fshort(l.next_action_at),ini:'◎',go:'leads',id:l.id};}));
+
+  /* The quiet blind spot: an attempt bred months ago that nobody ever
+     closed out. It is invisible everywhere else, and every one of them
+     is a hole in the conception rate. Surface it where they land. */
+  if(REPRO){
+    try{
+      var stale=await sel('kos_breedings','id,dam_id,bred_on,outcome')
+        .or('outcome.is.null,outcome.eq.pending')
+        .not('bred_on','is',null).order('bred_on',{ascending:true}).limit(10);
+      (stale.data||[]).forEach(function(b){
+        if(days(b.bred_on)>-SETTLE_DAYS)return;
+        todayItems.push({t:(dogName(b.dam_id)||'A dam')+' \u2014 outcome never recorded',
+          s:'Bred '+fshort(b.bred_on)+' \u00b7 did she take?',ini:'?',go:'breedings',id:b.id});
+      });
+    }catch(e){}
+  }
 
   el('dToday').innerHTML='<div class="card"><div class="card-h"><h3>Today</h3>'+
     '<button data-go="tasks">All tasks</button></div>'+
@@ -1980,11 +1996,150 @@ async function adminView(){
     b.onclick=function(){lsSet('kos_kennel',b.getAttribute('data-open-k'));location.hash='#/';location.reload();};});
 }
 
+/* ─── breeding program ───────────────────────────────────────────
+   The view the whole attempt ledger exists for. Two rules it does not
+   break: every rate is shown with the denominator it came from, and
+   nothing is ranked on a sample too small to mean anything. Quietly
+   lying with a percentage is the failure mode of every dashboard in
+   this category, and a breeder culling a stud on three attempts is a
+   real cost. */
+var MIN_N=5;
+
+function pctOf(num,den){return den?Math.round(num/den*100)+'%':'\u2014';}
+function rateCell(num,den){
+  if(!den)return '\u2014';
+  return num+' of '+den+(den>=MIN_N?' \u00b7 '+pctOf(num,den):'');
+}
+function breakdown(title,rows,keyName,note){
+  if(!rows||!rows.length)return '';
+  var thin=rows.some(function(x){return Number(x.n)<MIN_N;});
+  var max=Math.max.apply(null,rows.map(function(x){return Number(x.n)||0;}).concat([1]));
+  return '<div class="card"><div class="card-h"><h3>'+esc(title)+'</h3>'+
+    '<span class="mini">'+rows.length+'</span></div><div class="funnel">'+
+    rows.map(function(x){
+      var n=Number(x.n)||0,c=Number(x.conceived||0);
+      return '<div class="fstep"><span class="fl">'+esc(String(x[keyName]||'\u2014'))+'</span>'+
+        '<span class="fb"><i style="width:'+Math.round(n/max*100)+'%"></i></span>'+
+        '<span class="fn">'+esc(rateCell(c,n))+'</span></div>';}).join('')+
+    '</div>'+
+    (thin?'<div class="ld-s" style="padding:0 14px 12px">Percentages are hidden below '+MIN_N+
+      ' attempts \u2014 the counts are real, the rate would not be.</div>':'')+
+    (note?'<div class="ld-s" style="padding:0 14px 12px">'+esc(note)+'</div>':'')+'</div>';
+}
+
+async function programView(){
+  var v=el('view');
+  var head='<div class="view-head"><h2>Breeding Program</h2>'+
+    '<p>Every attempt, not just the ones that worked.</p></div>';
+  v.innerHTML=head+'<div class="loading">Reading the ledger\u2026</div>';
+
+  if(!REPRO)await probeRepro();
+  if(!REPRO){
+    v.innerHTML=head+'<div class="empty"><b>Not switched on for this database yet</b>'+
+      'The reproductive columns have not been added. Run <code>kennel-os-repro.sql</code> '+
+      'in the SQL editor, then reload this page.</div>';
+    return;
+  }
+
+  var r=await sb.rpc('kos_repro_stats',{p_kennel:K()});
+  if(r.error){
+    v.innerHTML=head+'<div class="empty"><b>Could not read the ledger</b>'+esc(r.error.message)+'</div>';
+    return;
+  }
+  var d=r.data||{};
+  var settled=Number(d.attempts_settled||0),
+      conceived=Number(d.conceived||0),
+      pending=Number(d.attempts_pending||0),
+      tracked=Number(d.pups_tracked||0),
+      s7=Number(d.survived_7d||0),
+      litRec=Number(d.litters_recorded||0),
+      litUnrec=Number(d.litters_unrecorded||0);
+
+  if(!Number(d.attempts||0)){
+    v.innerHTML=head+'<div class="empty"><b>No attempts recorded yet</b>'+
+      'Record a breeding, then set its outcome when you know \u2014 whelped, did not conceive, '+
+      'resorbed. The misses are what make the rest of this page mean anything.</div>';
+    return;
+  }
+
+  var h=head+'<div class="stats">'+
+    stat('Conception rate',settled>=MIN_N?pctOf(conceived,settled):(conceived+' of '+settled),
+         settled>=MIN_N?conceived+' of '+settled+' settled':'too few to rate yet','')+
+    stat('Whelped',String(d.whelped||0),(d.lost_pregnancy||0)+' lost after conceiving','')+
+    stat('Avg born alive',d.avg_born_alive!=null?String(d.avg_born_alive):'\u2014',
+         litRec+' litter'+(litRec===1?'':'s')+' recorded','')+
+    stat('Survived 7 days',tracked?pctOf(s7,tracked):'\u2014',
+         tracked?s7+' of '+tracked+' tracked':'no pup records','')+
+  '</div>';
+
+  /* What is missing matters more than what is here. An unsettled attempt
+     is a hole in the denominator; an unrecorded litter is a hole in the
+     survival figures. Say so rather than quietly averaging around it. */
+  var gaps=[];
+  if(pending)gaps.push('<button class="row" data-go="breedings"><span class="av">?</span>'+
+    '<span class="body"><span class="t">'+pending+' attempt'+(pending===1?'':'s')+' with no outcome</span>'+
+    '<span class="s">Not counted either way until you close them out</span></span>'+
+    '<span class="r">'+ic('chev',16)+'</span></button>');
+  if(litUnrec)gaps.push('<button class="row" data-go="litters"><span class="av">!</span>'+
+    '<span class="body"><span class="t">'+litUnrec+' litter'+(litUnrec===1?'':'s')+
+    ' without a born-alive count</span>'+
+    '<span class="s">Excluded from litter size and stillbirth \u2014 not assumed healthy</span></span>'+
+    '<span class="r">'+ic('chev',16)+'</span></button>');
+  if(gaps.length)h+='<div class="card"><div class="card-h"><h3>Gaps in the record</h3></div>'+
+    '<div class="rows">'+gaps.join('')+'</div></div>';
+
+  h+=breakdown('By sire',d.by_sire,'sire','Conceived per attempt. A stud fee is only cheap if he settles bitches.');
+  h+=breakdown('By dam',d.by_dam,'dam','Watch for a dam whose rate falls away over consecutive seasons.');
+  h+=breakdown('By method',d.by_method,'method','Natural, AI, surgical, TCI \u2014 on your own bitches, not the textbook.');
+
+  var born=Number(d.born_alive_total||0),still=Number(d.stillborn_total||0);
+  if(litRec)h+='<div class="card"><div class="card-h"><h3>At birth</h3>'+
+    '<span class="mini">'+litRec+' litters</span></div><div class="funnel">'+
+    '<div class="fstep"><span class="fl">Born alive</span><span class="fb"><i style="width:'+
+      Math.round(born/Math.max(1,born+still)*100)+'%"></i></span><span class="fn">'+born+'</span></div>'+
+    '<div class="fstep"><span class="fl">Stillborn</span><span class="fb"><i style="width:'+
+      Math.round(still/Math.max(1,born+still)*100)+'%"></i></span><span class="fn">'+still+
+      (born+still?' \u00b7 '+pctOf(still,born+still):'')+'</span></div>'+
+    '</div><div class="ld-s" style="padding:0 14px 12px">Stillbirth points at whelping or the '+
+    'condition of the dam. A pup lost later points at milk, warmth or infection \u2014 which is '+
+    'why these are counted apart.</div></div>';
+
+  var causes=d.by_cause||[];
+  if(causes.length)h+='<div class="card"><div class="card-h"><h3>Losses after birth</h3>'+
+    '<span class="mini">'+Number(d.pups_lost||0)+'</span></div><div class="rows">'+
+    causes.map(function(c){
+      return '<div class="row" style="cursor:default"><span class="av">\u00b7</span>'+
+        '<span class="body"><span class="t">'+esc(String(c.cause).replace(/_/g,' '))+'</span>'+
+        '<span class="s">'+(c.avg_age_days!=null?'average day '+c.avg_age_days:'age not recorded')+
+        '</span></span><span class="r">'+c.n+'</span></div>';}).join('')+
+    '</div><div class="ld-s" style="padding:0 14px 12px">Age at death is the diagnosis. Day one '+
+    'reads differently from day five.</div></div>';
+
+  /* Skipped cycles are counts, not rates \u2014 there is no numerator
+     here, so breakdown() would print a meaningless "0 of 3". */
+  var skips=(d.skipped_heats||[]).filter(function(x){return Number(x.n)>0;});
+  if(skips.length){
+    var smax=Math.max.apply(null,skips.map(function(x){return Number(x.n)||0;}).concat([1]));
+    h+='<div class="card"><div class="card-h"><h3>Cycles not bred</h3>'+
+      '<span class="mini">'+skips.reduce(function(a,x){return a+Number(x.n||0);},0)+'</span></div>'+
+      '<div class="funnel">'+skips.map(function(x){
+        return '<div class="fstep"><span class="fl">'+esc(String(x.reason).replace(/_/g,' '))+'</span>'+
+          '<span class="fb"><i style="width:'+Math.round(Number(x.n)/smax*100)+'%"></i></span>'+
+          '<span class="fn">'+Number(x.n)+'</span></div>';}).join('')+'</div>'+
+      '<div class="ld-s" style="padding:0 14px 12px">A season skipped is a year of production. '+
+      'Worth knowing why it went.</div></div>';
+  }
+
+  /* No click wiring here on purpose: a delegated [data-go] handler
+     already lives on the document, and binding again fires go() twice. */
+  v.innerHTML=h;
+}
+
 /* ─── render dispatcher ────────────────────────────────────────── */
 var TITLES={'':'Dashboard',calendar:'Calendar',tasks:'Tasks',contacts:'CRM & Contacts',leads:'Leads & Sales',
   dogs:'Dogs',breedings:'Breedings',litters:'Litters',puppies:'Puppies',health:'Health & Vaccines',
   money:'Finances',documents:'Documents',reports:'Reports',settings:'Settings',
-  'breeding-tools':'Breeding Tools',admin:'White-label Admin'};
+  'breeding-tools':'Breeding Tools',program:'Breeding Program',admin:'White-label Admin'};
 
 async function render(){
   if(!S.kennel){
@@ -2007,6 +2162,7 @@ async function render(){
     if(r.view==='breedings'&&r.id)return await breedingView(r.id);
     if(r.view==='breeding-tools')return await breedingToolsView();
     if(r.view==='reports')return await reportsView();
+    if(r.view==='program')return await programView();
     if(r.view==='settings')return await settingsView();
     if(r.view==='admin')return S.isAdmin?await adminView():go('');
     if(RES[r.view])return await listView(r.view);
@@ -2033,7 +2189,90 @@ async function refreshCaches(){
   S.dash=(got[4].data&&typeof got[4].data==='object')?got[4].data:{};
   var n=Number(S.dash.tasks_due||0);
   el('alertN').style.display=n?'grid':'none';el('alertN').textContent=n>9?'9+':String(n);
+  await probeRepro();
   renderNav();
+}
+
+/* ─── reproductive performance ───────────────────────────────────
+   The attempt ledger. Every other breeder tool records litters, which
+   are successes, so the misses leave no trace and there is never a
+   denominator. Here the attempt is the unit and a litter is one of its
+   outcomes.
+
+   The columns arrive with kennel-os-repro.sql. Until that migration is
+   applied the fields stay hidden rather than appearing and then failing
+   on save, which is the one thing worse than not having them. Probed
+   once per session. */
+var REPRO=false, REPRO_WIRED=false;
+
+var OUTCOMES=['pending','whelped','not_pregnant','resorbed','aborted','cancelled','dam_lost'];
+var OUT_LABEL={pending:'Awaiting outcome',whelped:'Whelped',not_pregnant:'Did not conceive',
+  resorbed:'Resorbed',aborted:'Aborted',cancelled:'Cancelled',dam_lost:'Dam lost'};
+var CONFIRM_BY=['ultrasound','palpation','xray','relaxin','none'];
+var DEATH_CAUSES=['fading','crushed','congenital','infection','hypothermia','dam_rejected','euthanised','unknown','other'];
+var SKIP_REASONS=['too_young','resting','health','no_stud','timing_missed','owner_choice','retiring','other'];
+
+/* An attempt older than this with no outcome is almost certainly a miss
+   nobody wrote down. 70 days is a fortnight past a normal gestation. */
+var SETTLE_DAYS=70;
+
+async function probeRepro(){
+  try{ var r=await sb.from('kos_breedings').select('outcome').limit(1); REPRO=!r.error; }
+  catch(e){ REPRO=false; }
+  if(REPRO&&!REPRO_WIRED)wireRepro();
+  return REPRO;
+}
+
+function insertAfter(arr,key,items){
+  for(var i=0;i<arr.length;i++)if(arr[i].k===key){
+    Array.prototype.splice.apply(arr,[i+1,0].concat(items));return;}
+  Array.prototype.push.apply(arr,items);
+}
+
+function wireRepro(){
+  REPRO_WIRED=true;
+
+  insertAfter(RES.breedings.fields,'status',[
+    {k:'outcome',l:'Outcome',t:'sel',opts:OUTCOMES,h:1},
+    {k:'outcome_on',l:'Outcome date',t:'date',h:1},
+    {k:'outcome_reason',l:'What happened',t:'text',ph:'A short reason \u2014 this is the data'},
+    {k:'confirm_method',l:'Confirmed by',t:'sel',opts:CONFIRM_BY,h:1},
+    {k:'confirm_on',l:'Confirmed on',t:'date',h:1},
+    {k:'confirm_count',l:'Count seen',t:'num',h:1}
+  ]);
+
+  /* Born alive sits above born total deliberately: it is the number that
+     means something. Stillborn is counted here on the litter and never
+     as a puppy record, or the two layers double-count. */
+  insertAfter(RES.litters.fields,'status',[
+    {k:'born_alive',l:'Born alive',t:'num',h:1},
+    {k:'stillborn',l:'Stillborn',t:'num',h:1}
+  ]);
+
+  insertAfter(RES.puppies.fields,'status',[
+    {k:'died_on',l:'Died on',t:'date',h:1},
+    {k:'death_cause',l:'Cause',t:'sel',opts:DEATH_CAUSES,h:1},
+    {k:'death_note',l:'Note',t:'text'}
+  ]);
+
+  /* Rows now say what happened, not just what stage it reached. */
+  RES.breedings.row=function(b){
+    var d=dogName(b.dam_id)||'Dam TBD',si=dogName(b.sire_id)||b.sire_external||'Stud TBD';
+    var n=days(b.due_date), oc=b.outcome||'pending';
+    var sub=[b.method,b.bred_on?'bred '+fshort(b.bred_on):''].filter(Boolean).join(' \u00b7 ');
+    var rsub='';
+    if(oc==='pending'&&b.bred_on&&days(b.bred_on)<=-SETTLE_DAYS)rsub='outcome not recorded';
+    else if(oc!=='pending'&&oc!=='whelped')rsub=OUT_LABEL[oc]||oc;
+    else if(n!=null&&n>=0&&b.status!=='whelped')rsub='due in '+n+'d';
+    return {ini:'\u2665',t:d+' \u00d7 '+si,s:sub,
+      right:b.due_date?fshort(b.due_date):'',rsub:rsub,status:b.status};};
+
+  RES.litters.row=function(l){
+    var pups=(l.born_alive!=null)?(l.born_alive+' alive'+(l.stillborn?' \u00b7 '+l.stillborn+' stillborn':''))
+                                 :((l.born_total||0)+' pups');
+    return {ini:'\ud83d\udc3e',t:l.name||('Litter \u00b7 '+fshort(l.whelp_date)),
+      s:[dogName(l.dam_id),dogName(l.sire_id)].filter(Boolean).join(' \u00d7 ')||'Pairing TBD',
+      right:l.whelp_date?fshort(l.whelp_date):'',rsub:pups,status:l.status};};
 }
 
 /* ─── quick add ────────────────────────────────────────────────── */
