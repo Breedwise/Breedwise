@@ -1059,7 +1059,7 @@ async function dashView(){
       (stale.data||[]).forEach(function(b){
         if(days(b.bred_on)>-SETTLE_DAYS)return;
         todayItems.push({t:(dogName(b.dam_id)||'A dam')+' \u2014 outcome never recorded',
-          s:'Bred '+fshort(b.bred_on)+' \u00b7 did she take?',ini:'?',go:'breedings',id:b.id});
+          s:'Bred '+fshort(b.bred_on)+' \u00b7 did she take?',ini:'?',go:'program',id:''});
       });
     }catch(e){}
   }
@@ -1092,6 +1092,9 @@ async function dashView(){
   Array.prototype.forEach.call(v.querySelectorAll('[data-open]'),function(b){
     b.onclick=async function(){
       var p=b.getAttribute('data-open').split('|'),key=p[0];
+      /* Some attention rows point at a view rather than a record (the
+         outcome queue, for one). RES[key] would be undefined there. */
+      if(!RES[key]||!p[1])return go(key);
       var r=await sb.from(RES[key].table).select('*').eq('id',p[1]).single();
       if(r.data)openForm(key,r.data);};});
 }
@@ -1996,6 +1999,77 @@ async function adminView(){
     b.onclick=function(){lsSet('kos_kennel',b.getAttribute('data-open-k'));location.hash='#/';location.reload();};});
 }
 
+/* ─── recording an outcome ───────────────────────────────────────
+   A ledger nobody fills in is worse than no ledger, because it looks
+   like data. So closing out an attempt is two taps from a list, never
+   a trip through a fifteen-field form.
+
+   The quick path deliberately does NOT stamp outcome_on. Defaulting it
+   to today would invent a date for something that happened in March,
+   and a wrong date is worse than a missing one. Nothing in the stats
+   depends on it \u2014 they key off bred_on \u2014 so a blank is free. */
+var OUTCOME_PICK=[
+  ['whelped',     'She whelped',          'Puppies arrived'],
+  ['not_pregnant','She did not conceive', 'No pregnancy this cycle'],
+  ['resorbed',    'Resorbed',             'Conceived, then lost early'],
+  ['aborted',     'Aborted',              'Lost later in term'],
+  ['dam_lost',    'Dam lost',             ''],
+  ['cancelled',   'Cancelled',            'The cycle was called off']
+];
+var MISS_REASONS=['Timing missed','Stud issue','Dam issue','Infection','Age','Unknown'];
+
+function outcomeSheet(b,onDone){
+  var dam=dogName(b.dam_id)||'This dam';
+  var sire=dogName(b.sire_id)||b.sire_external||'';
+  var who=dam+(sire?' \u00d7 '+sire:'');
+  var when=b.bred_on?('Bred '+fshort(b.bred_on)):'No breeding date recorded';
+
+  function step1(){
+    openSheet('<h3>'+esc(who)+'</h3><div class="sub">'+esc(when)+' \u00b7 what happened?</div>'+
+      '<div class="rows">'+OUTCOME_PICK.map(function(o){
+        return '<button class="row" data-oc="'+o[0]+'">'+
+          '<span class="body"><span class="t">'+esc(o[1])+'</span>'+
+          (o[2]?'<span class="s">'+esc(o[2])+'</span>':'')+'</span>'+
+          '<span class="r">'+ic('chev',16)+'</span></button>';}).join('')+'</div>');
+    Array.prototype.forEach.call(el('sheet').querySelectorAll('[data-oc]'),function(x){
+      x.onclick=function(){
+        var oc=x.getAttribute('data-oc');
+        if(oc==='not_pregnant'||oc==='resorbed'||oc==='aborted')return step2(oc);
+        save(oc,'');
+      };});
+  }
+
+  /* For a miss the reason IS the data. Offered, never demanded \u2014 one
+     more tap, and Skip is right there for when they genuinely don't know. */
+  function step2(oc){
+    openSheet('<h3>Any idea why?</h3><div class="sub">'+esc(who)+' \u00b7 optional, but this is the part '+
+      'that pays off in a year</div><div class="chips">'+
+      MISS_REASONS.map(function(r){
+        return '<button class="chip" data-rs="'+esc(r)+'">'+esc(r)+'</button>';}).join('')+'</div>'+
+      '<div class="sheet-actions"><button class="btn ghost" id="rsSkip">Skip</button></div>');
+    el('rsSkip').onclick=function(){save(oc,'');};
+    Array.prototype.forEach.call(el('sheet').querySelectorAll('[data-rs]'),function(x){
+      x.onclick=function(){save(oc,x.getAttribute('data-rs'));};});
+  }
+
+  async function save(oc,reason){
+    closeSheet();
+    try{
+      var row={outcome:oc};
+      if(reason)row.outcome_reason=reason;
+      /* Keep the old status column honest alongside the new one. */
+      if(oc==='whelped')row.status='whelped';
+      else if(oc==='cancelled')row.status='cancelled';
+      else if(oc!=='pending')row.status='missed';
+      await upd('kos_breedings',b.id,row);
+      toast('Recorded \u2014 '+(OUT_LABEL[oc]||oc));
+      if(onDone)onDone();
+    }catch(e){ toast('Could not save: '+(e.message||e)); }
+  }
+
+  step1();
+}
+
 /* ─── breeding program ───────────────────────────────────────────
    The view the whole attempt ledger exists for. Two rules it does not
    break: every rate is shown with the denominator it came from, and
@@ -2059,27 +2133,57 @@ async function programView(){
      was entered without a date falls out of every figure above, which
      is precisely the silent exclusion this page exists to stop. Counted
      here rather than in SQL so it needs no second migration. */
-  var undated=0;
+  /* The work queue. Stats are the reward; this is the part that has to
+     be effortless, so it sits above them and every row is two taps.
+     A 'planned' pairing with no date has not happened yet and is not
+     chased here \u2014 only attempts that plainly took place. */
+  var pend=[],undated=0;
   try{
-    var u=await sel('kos_breedings','id')
-      .is('bred_on',null).in('status',['bred','confirmed','whelped','missed']).limit(200);
-    undated=(u.data||[]).length;
+    var u=await sel('kos_breedings','id,dam_id,sire_id,sire_external,bred_on,status,outcome')
+      .or('outcome.is.null,outcome.eq.pending')
+      .order('bred_on',{ascending:true,nullsFirst:false}).limit(60);
+    pend=(u.data||[]).filter(function(b){
+      return b.bred_on||['bred','confirmed','whelped','missed'].indexOf(b.status)>=0;});
+    undated=pend.filter(function(b){return !b.bred_on;}).length;
   }catch(e){}
+
+  var queue=pend.length?('<div class="card"><div class="card-h"><h3>Needs an outcome</h3>'+
+    '<span class="mini">'+pend.length+'</span></div><div class="rows">'+
+    pend.slice(0,12).map(function(b,i){
+      var dam=dogName(b.dam_id)||'Dam',si=dogName(b.sire_id)||b.sire_external||'';
+      var od=b.bred_on?days(b.bred_on):null;
+      return '<button class="row" data-oq="'+i+'"><span class="av">?</span>'+
+        '<span class="body"><span class="t">'+esc(dam+(si?' \u00d7 '+si:''))+'</span>'+
+        '<span class="s">'+(b.bred_on?('Bred '+fshort(b.bred_on)+
+          (od!=null&&od<=-SETTLE_DAYS?' \u00b7 long overdue':'')):'No breeding date')+
+        '</span></span><span class="r">'+ic('chev',16)+'</span></button>';}).join('')+'</div>'+
+    '<div class="ld-s" style="padding:0 14px 12px">Two taps each. Until these are closed out they '+
+    'count neither way \u2014 every figure below is missing them.</div></div>'):'';
+
+  function bindQueue(){
+    Array.prototype.forEach.call(v.querySelectorAll('[data-oq]'),function(btn){
+      btn.onclick=function(){
+        var b=pend[Number(btn.getAttribute('data-oq'))];
+        if(b)outcomeSheet(b,function(){programView();});
+      };});
+  }
+
   var undatedRow=undated?('<button class="row" data-go="breedings"><span class="av">\u2014</span>'+
     '<span class="body"><span class="t">'+undated+' attempt'+(undated===1?'':'s')+' with no breeding date</span>'+
     '<span class="s">Left out of every figure here until a date is set</span></span>'+
     '<span class="r">'+ic('chev',16)+'</span></button>'):'';
 
   if(!Number(d.attempts||0)){
-    v.innerHTML=head+'<div class="empty"><b>No attempts recorded yet</b>'+
+    v.innerHTML=head+queue+'<div class="empty"><b>No settled attempts yet</b>'+
       'Record a breeding, then set its outcome when you know \u2014 whelped, did not conceive, '+
       'resorbed. The misses are what make the rest of this page mean anything.</div>'+
       (undated?'<div class="card"><div class="card-h"><h3>Gaps in the record</h3></div>'+
         '<div class="rows">'+undatedRow+'</div></div>':'');
+    bindQueue();
     return;
   }
 
-  var h=head+'<div class="stats">'+
+  var h=head+queue+'<div class="stats">'+
     stat('Conception rate',settled>=MIN_N?pctOf(conceived,settled):(conceived+' of '+settled),
          settled>=MIN_N?conceived+' of '+settled+' settled':'too few to rate yet','')+
     stat('Whelped',String(d.whelped||0),(d.lost_pregnancy||0)+' lost after conceiving','')+
@@ -2148,9 +2252,11 @@ async function programView(){
       'Worth knowing why it went.</div></div>';
   }
 
-  /* No click wiring here on purpose: a delegated [data-go] handler
-     already lives on the document, and binding again fires go() twice. */
+  /* [data-go] needs no wiring \u2014 a delegated handler already lives on
+     the document and binding again fires go() twice. The queue rows are
+     ours, so those do get bound. */
   v.innerHTML=h;
+  bindQueue();
 }
 
 /* ─── render dispatcher ────────────────────────────────────────── */
