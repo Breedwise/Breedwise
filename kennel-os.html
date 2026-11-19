@@ -1562,6 +1562,21 @@ async function settingsView(){
     '<div class="ld-s" style="margin-top:8px">First row must be column headers. Columns we can\u2019t match are kept in each record\u2019s notes.</div>'+
   '</div>':'')+
 
+  '<div class="card"><div class="card-h"><h3>Your data</h3><span class="mini">yours to take</span></div>'+
+    '<p style="color:var(--mid);font-size:14px;margin-bottom:12px">Every record in this kennel, whenever you want it \u2014 '+
+    'CSV that opens in Excel, Numbers or Google Sheets, plus a complete JSON copy. '+
+    'No request, no waiting, nothing held back.</p>'+
+    '<button class="btn block" id="expAll">Download everything (.zip)</button>'+
+    '<div class="sectitle">Or one record type at a time</div>'+
+    '<div class="rows">'+EXPORT_TABLES.map(function(t){
+      return '<div class="row"><span class="body"><span class="t">'+esc(t[2])+'</span></span>'+
+             '<span class="r"><button class="btn ghost" style="padding:7px 13px" data-exp="'+
+             esc(t[0])+'|'+esc(t[1])+'|'+esc(t[2])+'">CSV</button></span></div>';
+    }).join('')+'</div>'+
+    '<div class="ld-s" style="margin-top:10px">Photos and uploaded files are stored as files rather than rows \u2014 '+
+    'their paths come out in the export, the files themselves do not.</div>'+
+  '</div>'+
+
   (['owner','manager'].indexOf(S.role)>=0||S.isAdmin?
   '<div class="card"><div class="card-h"><h3>Website API</h3><span class="mini">for your own site</span></div>'+
     '<p style="color:var(--mid);font-size:14px;margin-bottom:12px">Create a key, paste the snippet into your website, '+
@@ -1615,6 +1630,11 @@ async function settingsView(){
       toast('Saved');
     }catch(e){toast(e.message||'Save failed');}
     this.disabled=false;};
+
+  if(el('expAll'))el('expAll').onclick=function(){exportEverything(this);};
+  Array.prototype.forEach.call(v.querySelectorAll('[data-exp]'),function(b){
+    b.onclick=function(){var p=b.getAttribute('data-exp').split('|');exportOne(p[0],p[1],p[2],b);};
+  });
 
   if(el('soBtn'))el('soBtn').onclick=async function(){await sb.auth.signOut();location.reload();};
   if(el('switchK'))el('switchK').onclick=function(){
@@ -1791,6 +1811,260 @@ async function handleLogo(file){
    a file), we match the columns by name, and anything we can't place
    is kept in that record's notes rather than dropped.
    ══════════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════════
+   EXPORT — your data belongs to you.
+
+   A kennel's records are the work of years, and a product that holds
+   them hostage is not worth trusting. Everything in here comes back
+   out in one click, in formats that outlive this app: CSV that opens
+   in Excel, Numbers or Sheets, plus a complete JSON copy for an exact
+   restore.
+
+   The .zip is built here in the browser, with no library and no
+   server round-trip, so the export keeps working even if a CDN is
+   blocked, the network is flaky, or this company disappears.
+   ══════════════════════════════════════════════════════════════════ */
+
+var EXPORT_TABLES=[
+  ['kos_dogs','dogs','Dogs'],
+  ['kos_breedings','breedings','Breedings'],
+  ['kos_litters','litters','Litters'],
+  ['kos_puppies','puppies','Puppies'],
+  ['kos_weights','weights','Puppy weights'],
+  ['kos_health_events','health','Health & vaccines'],
+  ['kos_progesterone','progesterone','Progesterone'],
+  ['kos_contacts','contacts','CRM contacts'],
+  ['kos_leads','leads','Leads'],
+  ['kos_tasks','tasks','Tasks'],
+  ['kos_transactions','transactions','Transactions'],
+  ['kos_events','events','Calendar'],
+  ['kos_documents','documents','Documents'],
+  ['kos_heats','heats','Heat cycles']           /* added later; skipped if absent */
+];
+
+/* Every row, not the first page of them. A kennel with 4000 puppy
+   weights must not get 1000 of them and no warning. */
+async function exportFetchAll(table){
+  var out=[],from=0,step=1000;
+  for(;;){
+    var r=await sb.from(table).select('*').eq('kennel_id',K())
+            .order('created_at',{ascending:true}).range(from,from+step-1);
+    if(r.error){
+      /* A table this install never created is not an error worth
+         failing the whole export over. */
+      if(/does not exist|schema cache/i.test(r.error.message||''))return null;
+      throw r.error;
+    }
+    var rows=r.data||[];
+    out=out.concat(rows);
+    if(rows.length<step)break;
+    from+=step;
+  }
+  return out;
+}
+
+function csvCell(v){
+  if(v===null||v===undefined)return '';
+  if(typeof v==='object')v=JSON.stringify(v);
+  v=String(v);
+  /* A leading =, +, - or @ is read as a formula by Excel and Sheets.
+     Prefixing a quote keeps an exported cell as the text it was. */
+  if(/^[=+\-@]/.test(v))v="'"+v;
+  return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;
+}
+function toCSV(rows){
+  if(!rows||!rows.length)return '';
+  var cols=[];
+  rows.forEach(function(r){Object.keys(r).forEach(function(k){if(cols.indexOf(k)<0)cols.push(k);});});
+  var lines=[cols.join(',')];
+  rows.forEach(function(r){lines.push(cols.map(function(c){return csvCell(r[c]);}).join(','));});
+  /* CRLF + BOM: what Excel expects, on Windows too. */
+  return '﻿'+lines.join('\r\n')+'\r\n';
+}
+
+function dlBlob(blob,name){
+  var u=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=u;a.download=name;document.body.appendChild(a);a.click();
+  setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(u);},800);
+}
+function exportStamp(){
+  var d=new Date(),p=function(n){return String(n).padStart(2,'0');};
+  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());
+}
+function exportSlug(){
+  return String((S.kennel&&(S.kennel.slug||S.kennel.name))||'kennel')
+    .toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'kennel';
+}
+
+/* ── a minimal ZIP writer (store, no compression) ──────────────────
+   Small enough to read, and it removes a dependency from the one
+   feature that must never be unavailable. */
+var CRC_T=null;
+function crc32(buf){
+  if(!CRC_T){CRC_T=new Int32Array(256);
+    for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);CRC_T[n]=c;}}
+  var c=-1;
+  for(var i=0;i<buf.length;i++)c=(c>>>8)^CRC_T[(c^buf[i])&0xFF];
+  return (c^-1)>>>0;
+}
+function dosTime(d){return ((d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()/2))&0xFFFF;}
+function dosDate(d){return (((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate())&0xFFFF;}
+function zipStore(files){
+  var enc=new TextEncoder(),now=new Date(),t=dosTime(now),dt=dosDate(now);
+  var parts=[],central=[],offset=0;
+  files.forEach(function(f){
+    var name=enc.encode(f.name),data=(typeof f.data==='string')?enc.encode(f.data):f.data;
+    var crc=crc32(data);
+    var lh=new Uint8Array(30+name.length),lv=new DataView(lh.buffer);
+    lv.setUint32(0,0x04034b50,true);lv.setUint16(4,20,true);
+    lv.setUint16(6,0x0800,true);           /* UTF-8 file names */
+    lv.setUint16(8,0,true);                /* stored            */
+    lv.setUint16(10,t,true);lv.setUint16(12,dt,true);
+    lv.setUint32(14,crc,true);lv.setUint32(18,data.length,true);lv.setUint32(22,data.length,true);
+    lv.setUint16(26,name.length,true);lv.setUint16(28,0,true);
+    lh.set(name,30);
+    parts.push(lh,data);
+
+    var ch=new Uint8Array(46+name.length),cv=new DataView(ch.buffer);
+    cv.setUint32(0,0x02014b50,true);cv.setUint16(4,20,true);cv.setUint16(6,20,true);
+    cv.setUint16(8,0x0800,true);cv.setUint16(10,0,true);
+    cv.setUint16(12,t,true);cv.setUint16(14,dt,true);
+    cv.setUint32(16,crc,true);cv.setUint32(20,data.length,true);cv.setUint32(24,data.length,true);
+    cv.setUint16(28,name.length,true);
+    cv.setUint32(42,offset,true);
+    ch.set(name,46);
+    central.push(ch);
+    offset+=lh.length+data.length;
+  });
+  var cdSize=central.reduce(function(a,b){return a+b.length;},0);
+  var end=new Uint8Array(22),ev=new DataView(end.buffer);
+  ev.setUint32(0,0x06054b50,true);
+  ev.setUint16(8,files.length,true);ev.setUint16(10,files.length,true);
+  ev.setUint32(12,cdSize,true);ev.setUint32(16,offset,true);
+  return new Blob(parts.concat(central,[end]),{type:'application/zip'});
+}
+
+/* Photos and uploaded files live in storage, not in a table, so the
+   CSVs alone would quietly leave them out. This lists every one with a
+   working link, so an export is a complete account of what exists. */
+async function exportMediaManifest(){
+  var found=[];
+  try{
+    var top=await sb.storage.from('kennel-media').list(K(),{limit:1000});
+    if(top.error)return null;
+    var entries=top.data||[];
+    entries.filter(function(e){return e.id;}).forEach(function(e){found.push(['',e]);});
+    var folders=entries.filter(function(e){return !e.id;}).map(function(e){return e.name;});
+    for(var i=0;i<folders.length;i++){
+      var from=0;
+      for(;;){
+        var r=await sb.storage.from('kennel-media')
+                .list(K()+'/'+folders[i],{limit:1000,offset:from});
+        if(r.error)break;
+        var batch=r.data||[];
+        batch.filter(function(e){return e.id;}).forEach(function(e){found.push([folders[i],e]);});
+        if(batch.length<1000)break;
+        from+=1000;
+      }
+    }
+  }catch(e){return null;}
+  return found.map(function(pair){
+    var folder=pair[0],e=pair[1],
+        path=K()+'/'+(folder?folder+'/':'')+e.name;
+    return {folder:folder||'(root)',file:e.name,
+            size_bytes:(e.metadata&&e.metadata.size)||'',
+            uploaded:e.created_at||'',
+            url:sb.storage.from('kennel-media').getPublicUrl(path).data.publicUrl};
+  });
+}
+
+function exportReadme(counts,missing){
+  var k=S.kennel||{};
+  var lines=[
+    (k.name||'Kennel')+' — data export',
+    'Taken '+new Date().toString(),
+    '',
+    'This is everything this kennel holds in the Kennel OS. It is yours.',
+    '',
+    'WHAT IS IN HERE',
+    '  *.csv   One file per record type. Opens in Excel, Numbers or',
+    '          Google Sheets. Text, no formulas, nothing proprietary.',
+    '  backup.json',
+    '          The same records exactly as stored, for an exact restore',
+    '          or for moving into another system.',
+    '',
+    'ROWS'
+  ];
+  Object.keys(counts).forEach(function(n){
+    lines.push('  '+n+new Array(Math.max(2,26-n.length)).join(' ')+counts[n]);
+  });
+  if(missing.length){
+    lines.push('','NOT IN THIS EXPORT');
+    missing.forEach(function(m){lines.push('  '+m+' — not set up on this account');});
+  }
+  lines.push('',
+    'PHOTOS AND UPLOADED FILES',
+    '  These are stored as files rather than rows, so they are not inside',
+    '  this zip. files.csv lists every one of them with a direct link, so',
+    '  nothing is hidden and each file is one click away.',
+    '');
+  return lines.join('\n');
+}
+
+async function exportEverything(btn){
+  var label=btn.textContent;
+  btn.disabled=true;
+  try{
+    var files=[],counts={},missing=[],all={},done=0;
+    for(var i=0;i<EXPORT_TABLES.length;i++){
+      var t=EXPORT_TABLES[i];
+      btn.textContent='Collecting '+t[2].toLowerCase()+'… ('+(++done)+'/'+EXPORT_TABLES.length+')';
+      var rows=await exportFetchAll(t[0]);
+      if(rows===null){missing.push(t[2]);continue;}
+      all[t[1]]=rows;
+      counts[t[2]]=rows.length;
+      files.push({name:t[1]+'.csv',data:rows.length?toCSV(rows):'(no rows)\r\n'});
+    }
+    btn.textContent='Listing photos and files\u2026';
+    var media=await exportMediaManifest();
+    if(media){
+      all.files=media;
+      counts['Photos & files']=media.length;
+      files.push({name:'files.csv',data:media.length?toCSV(media):'(no files)\r\n'});
+    } else { missing.push('Photos & files (could not be listed)'); }
+
+    if(S.kennel)files.push({name:'kennel.csv',data:toCSV([S.kennel])});
+    all.kennel=S.kennel||null;
+    all.exported_at=new Date().toISOString();
+    files.push({name:'backup.json',data:JSON.stringify(all,null,2)});
+    files.unshift({name:'README.txt',data:exportReadme(counts,missing)});
+
+    btn.textContent='Packaging…';
+    dlBlob(zipStore(files),exportSlug()+'-export-'+exportStamp()+'.zip');
+    var total=Object.keys(counts).reduce(function(a,n){return a+counts[n];},0);
+    toast(total.toLocaleString()+' records downloaded');
+  }catch(e){
+    toast((e&&e.message)||'Export failed');
+  }
+  btn.disabled=false;btn.textContent=label;
+}
+
+async function exportOne(table,slug,title,btn){
+  var label=btn.textContent;
+  btn.disabled=true;btn.textContent='…';
+  try{
+    var rows=await exportFetchAll(table);
+    if(rows===null){toast(title+' is not set up on this account');}
+    else if(!rows.length){toast('No '+title.toLowerCase()+' to export yet');}
+    else{
+      dlBlob(new Blob([toCSV(rows)],{type:'text/csv;charset=utf-8'}),
+             exportSlug()+'-'+slug+'-'+exportStamp()+'.csv');
+      toast(rows.length.toLocaleString()+' '+title.toLowerCase()+' downloaded');
+    }
+  }catch(e){toast((e&&e.message)||'Export failed');}
+  btn.disabled=false;btn.textContent=label;
+}
+
 var IMPORTABLE=[['contacts','CRM contacts'],['leads','Leads'],['dogs','Dogs'],
                 ['tasks','Tasks'],['money','Transactions']];
 var ALIAS={
