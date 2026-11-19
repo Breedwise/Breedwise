@@ -31,6 +31,9 @@
   #gate input{width:100%;padding:14px 16px;background:var(--card);border:1px solid var(--line2);border-radius:10px;color:var(--ink);font-size:15px;text-align:center;letter-spacing:.05em;font-family:var(--body)}
   #gate button{width:100%;margin-top:11px;padding:14px;background:var(--gold);border:0;border-radius:10px;color:#120d04;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;font-family:var(--body)}
   #gate .err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:10px}
+  #gate input+input{margin-top:11px}
+  #gate .alt button{background:none;color:var(--muted);text-transform:none;letter-spacing:0;
+    font-size:12.5px;width:auto;padding:6px;margin-top:16px;text-decoration:underline;cursor:pointer}
   #app{display:none}
 
   /* layout */
@@ -294,15 +297,22 @@ tr.flash td{background:var(--gold-soft);transition:background .5s}
 .calmore:hover{color:var(--gold2)}
 .calcell.open{z-index:2}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
 </head>
 <body>
   <div id="gate"><div class="box">
     <div class="mk">B</div>
     <h1>BreedWise OS</h1>
     <div class="sub">Internal Operating System</div>
-    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
-    <button id="unlock">Enter →</button>
+    <input id="em" type="email" placeholder="Work email" autocomplete="username">
+    <input id="pw" type="password" placeholder="Password" autocomplete="current-password">
+    <button id="signin">Sign in →</button>
     <div class="err" id="gerr"></div>
+    <div class="alt"><button type="button" id="useCode">Use the old access code</button></div>
+    <div id="codeBox" style="display:none">
+      <input id="code" type="password" placeholder="Access code" autocomplete="off">
+      <button id="unlock">Enter →</button>
+    </div>
   </div></div>
 
   <div id="app">
@@ -334,6 +344,25 @@ tr.flash td{background:var(--gold-soft);transition:background .5s}
 var LS='bw-os-v1';
 var FEED='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/bw-dashboard', FSECRET='YrKJx6hWQ-buaiTVuN3VcqMS';
 var FN_OS='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/bw-os', OS_SECRET='bw_os_5TmQ9xZ', AK='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+var SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+var SB=(window.supabase&&window.supabase.createClient)?window.supabase.createClient(SB_URL,AK,{auth:{persistSession:true}}):null;
+var SESSION=null, WHO_EMAIL='';
+
+/* Every call to the store goes through these two. While a teammate is
+   signed in we send their session and NOT the shared secret, so the
+   access log records a person rather than "legacy secret" — and so the
+   real path is the one being exercised before we switch the old one off.
+   The secret literal is still in this file; it stops being accepted at
+   the final step, and comes out then. */
+function osHeaders(){
+  var h={'Content-Type':'application/json','apikey':AK};
+  if(SESSION&&SESSION.access_token)h['Authorization']='Bearer '+SESSION.access_token;
+  return h;
+}
+function osBody(o){
+  if(!(SESSION&&SESSION.access_token))o.secret=OS_SECRET;
+  return JSON.stringify(o);
+}
 var myRev=0, lastEdit=0, srvT, pollT, serverOnline=false;
 function $(s,r){return (r||document).querySelector(s);}
 function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
@@ -496,7 +525,7 @@ function mergeFrom(serverData){
   return clashes;
 }
 function serverSave(){
-  fetch(FN_OS,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({action:'set',secret:OS_SECRET,data:DB,rev:myRev})})
+  fetch(FN_OS,{method:'POST',headers:osHeaders(),body:osBody({action:'set',data:DB,rev:myRev})})
     .then(function(r){return r.json().then(function(d){return {status:r.status,d:d};},function(){return {status:r.status,d:null};});})
     .then(function(res){
       serverOnline=true;
@@ -523,7 +552,7 @@ function serverSave(){
 }
 function sectionName(k){for(var i=0;i<SECTIONS.length;i++)if(SECTIONS[i].id===k)return SECTIONS[i].name;return k;}
 function serverLoad(cb){
-  fetch(FN_OS,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({action:'get',secret:OS_SECRET})})
+  fetch(FN_OS,{method:'POST',headers:osHeaders(),body:osBody({action:'get'})})
     .then(function(r){return r.ok?r.json():Promise.reject(r);})
     .then(function(resp){serverOnline=true;
       if(resp&&resp.data){DB=Object.assign(seed(),resp.data);myRev=resp.rev||0;try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}}
@@ -535,7 +564,7 @@ function startPoll(){clearInterval(pollT);pollT=setInterval(function(){
   if(!serverOnline)return;
   var editing=document.activeElement&&document.activeElement.classList&&document.activeElement.classList.contains('f');
   if(editing||Date.now()-lastEdit<9000)return;
-  fetch(FN_OS,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({action:'get',secret:OS_SECRET})})
+  fetch(FN_OS,{method:'POST',headers:osHeaders(),body:osBody({action:'get'})})
     .then(function(r){return r.json();}).then(function(resp){
       if(resp&&resp.rev&&resp.rev>myRev&&resp.data){
         DB=Object.assign(seed(),resp.data);myRev=resp.rev;snapBase();try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}
@@ -950,9 +979,9 @@ function whoBar(mount,after){
 
 /* ---------- multi-document calls against the shared store ---------- */
 function osDoc(action,doc,extra,cb){
-  var body={action:action,secret:OS_SECRET,doc:doc};
+  var body={action:action,doc:doc};
   for(var k in (extra||{}))body[k]=extra[k];
-  fetch(FN_OS,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify(body)})
+  fetch(FN_OS,{method:'POST',headers:osHeaders(),body:osBody(body)})
     .then(function(r){return r.json().then(function(d){return d;},function(){return {error:'bad response'};});})
     .then(function(d){cb&&cb(null,d);})
     .catch(function(e){cb&&cb(e);});
@@ -1647,10 +1676,41 @@ function reveal(){var g=$('#gate');if(g)g.remove();$('#app').style.display='bloc
   $('#imp').addEventListener('click',function(){$('#impf').click();});
   $('#impf').addEventListener('change',function(e){if(e.target.files[0])impJSON(e.target.files[0]);});
 }
-function tryUnlock(){var v=($('#pw').value||'').trim().toUpperCase();sha(v).then(function(h){if(h===OK){try{sessionStorage.setItem('bwos','1');}catch(e){}reveal();}else{$('#gerr').textContent='Incorrect code.';$('#pw').select();}});}
+/* Signing in is the real gate: the server checks the session against
+   bw_team, so who you are is decided on the server and not by a string
+   typed into a public page. The access code stays as a fallback ONLY
+   until every teammate has an account \u2014 at that point it goes, and so
+   does the OS_SECRET literal above it. */
+function trySignIn(){
+  var em=($('#em').value||'').trim(), pw=$('#pw').value||'';
+  if(!em||!pw){$('#gerr').textContent='Email and password required.';return;}
+  if(!SB){$('#gerr').textContent='Sign-in unavailable here \u2014 use the access code.';return;}
+  $('#gerr').textContent='Signing in\u2026';
+  SB.auth.signInWithPassword({email:em,password:pw}).then(function(r){
+    if(r.error){$('#gerr').textContent=r.error.message;return;}
+    SESSION=(r.data&&r.data.session)||null;
+    WHO_EMAIL=(r.data&&r.data.user&&r.data.user.email)||'';
+    reveal();
+  },function(e){$('#gerr').textContent=String((e&&e.message)||e);});
+}
+function tryUnlock(){var v=($('#code').value||'').trim().toUpperCase();sha(v).then(function(h){if(h===OK){try{sessionStorage.setItem('bwos','1');}catch(e){}reveal();}else{$('#gerr').textContent='Incorrect code.';$('#code').select();}});}
+$('#signin').addEventListener('click',trySignIn);
+$('#useCode').addEventListener('click',function(){$('#codeBox').style.display='block';this.style.display='none';$('#code').focus();});
 $('#unlock').addEventListener('click',tryUnlock);
-$('#pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
-try{if(sessionStorage.getItem('bwos')==='1')reveal();else $('#pw').focus();}catch(e){$('#pw').focus();}
+['em','pw'].forEach(function(id){$('#'+id).addEventListener('keydown',function(e){if(e.key==='Enter')trySignIn();});});
+$('#code').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+
+/* Resume a real session first; only then fall back to the old flag. */
+(function(){
+  function legacy(){try{if(sessionStorage.getItem('bwos')==='1')return reveal();}catch(e){}
+    var f=$('#em');if(f)f.focus();}
+  if(!SB)return legacy();
+  SB.auth.getSession().then(function(r){
+    var ses=r&&r.data&&r.data.session;
+    if(ses){SESSION=ses;WHO_EMAIL=(ses.user&&ses.user.email)||'';return reveal();}
+    legacy();
+  },legacy);
+})();
 })();
 </script>
   <script>/* bw-autosave-hardening */(function(){function _bwF(){['flush','flushDraft','saveState','persist','autosave','saveLocal','saveDraft','save'].forEach(function(n){try{if(typeof window[n]==='function')window[n]();}catch(e){}});}window.addEventListener('pagehide',_bwF);window.addEventListener('beforeunload',_bwF);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')_bwF();});})();</script>
