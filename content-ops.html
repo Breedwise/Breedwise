@@ -86,12 +86,26 @@
   footer.bf{text-align:center;color:#59657390;font-size:11px;margin-top:36px}
   @media print{nav.top{display:none}#app{display:block!important}#gate{display:none!important}.pane{display:block!important}}
 </style>
+<style>
+  /* Phase D: the gate now takes a real account. The access code stays as a
+     fallback only until everyone who needs this page has one. */
+  #gate input+input{margin-top:11px}
+  #gate #pw{margin-top:12px}
+  #gate .altcode{margin-top:13px}
+  #gate .altcode button{width:auto;background:none;border:0;padding:4px;margin:0;color:inherit;opacity:.62;font-size:12.5px;font-weight:400;letter-spacing:0;text-transform:none;text-decoration:underline;cursor:pointer}
+  #gate .altcode button:hover{opacity:1}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
 </head>
 <body>
   <div id="gate"><div class="box">
     <div class="logo mark" style="margin-bottom:18px"><span class="mk"><span>B</span></span><span class="wm">BREED<b>WISE</b></span></div>
-    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
-    <button id="unlock">Open my role card →</button>
+    <input id="em" type="email" placeholder="Work email" autocomplete="username">
+    <input id="pwx" type="password" placeholder="Password" autocomplete="current-password">
+    <button id="signin">Sign in →</button>
+    <div class="altcode"><button type="button" id="useCode">Use the access code instead</button></div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off" style="display:none">
+    <button id="unlock" style="display:none">Open my role card →</button>
     <div class="err" id="gate-err"></div>
     <div class="hint">Content Operations · Yasmin</div>
   </div></div>
@@ -253,6 +267,27 @@ function stCls(s){return 'st-'+s.toLowerCase().replace(/[^a-z]/g,'').slice(0,8).
 /* ---- state + cross-device sync (mirrors the bw-os shared store) ---- */
 var LS='bw_yasmin';
 var FN_CO='https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/content-ops', CO_SECRET='co_sync_8Yk3', AK='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+
+/* ---- Phase D: real sign-in ----------------------------------------
+   Who you are is decided on the server: the function checks the session
+   against bw_team. The shared code below still works, so nobody is locked
+   out mid-cutover, but every call made while signed in travels on the
+   session and is logged against a person. The CO_SECRET literal in this file
+   stops being accepted at the final step, and comes out then. ------- */
+var SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
+var AK_PUB='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+var SB=(window.supabase&&window.supabase.createClient)?window.supabase.createClient(SB_URL,AK_PUB,{auth:{persistSession:true}}):null;
+var SESSION=null, WHO_EMAIL='';
+function aHeaders(){
+  var h={'Content-Type':'application/json','apikey':AK_PUB};
+  if(SESSION&&SESSION.access_token)h['Authorization']='Bearer '+SESSION.access_token;
+  return h;
+}
+function aBody(o){
+  if(!(SESSION&&SESSION.access_token))o.secret=CO_SECRET;
+  return JSON.stringify(o);
+}
+
 var myRev=0, lastEdit=0, srvT, pollT, serverOnline=false;
 function seedState(){return {ideas:[],film:[],links:[],metrics:[],checks:{}};}
 var S=seedState();
@@ -265,13 +300,13 @@ function save(){S.updated=Date.now();lastEdit=Date.now();setSync('saving');
   try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}
   clearTimeout(srvT);srvT=setTimeout(serverSave,700);}
 function serverSave(){
-  fetch(FN_CO,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({action:'set',secret:CO_SECRET,data:S,rev:myRev})})
+  fetch(FN_CO,{method:'POST',headers:aHeaders(),body:aBody({action:'set',data:S,rev:myRev})})
     .then(function(r){return r.ok?r.json():Promise.reject(r);})
     .then(function(resp){myRev=resp.rev||myRev;serverOnline=true;setSync('synced');})
     .catch(function(){serverOnline=false;setSync('local');});}
 function contentCount(o){o=o||{};return (o.links&&o.links.length||0)+(o.ideas&&o.ideas.length||0)+(o.film&&o.film.length||0);}
 function serverGet(cb){
-  fetch(FN_CO,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({action:'get',secret:CO_SECRET})})
+  fetch(FN_CO,{method:'POST',headers:aHeaders(),body:aBody({action:'get'})})
     .then(function(r){return r.ok?r.json():Promise.reject(r);})
     .then(function(resp){serverOnline=true;cb&&cb(resp||null);})
     .catch(function(){serverOnline=false;cb&&cb(null);});}
@@ -298,7 +333,7 @@ function startPoll(){clearInterval(pollT);pollT=setInterval(function(){
   if(!serverOnline)return;
   var ae=document.activeElement, editing=ae&&(ae.tagName==='INPUT'||ae.tagName==='TEXTAREA'||ae.tagName==='SELECT');
   if(editing||Date.now()-lastEdit<9000)return;
-  fetch(FN_CO,{method:'POST',headers:{'Content-Type':'application/json','apikey':AK},body:JSON.stringify({action:'get',secret:CO_SECRET})})
+  fetch(FN_CO,{method:'POST',headers:aHeaders(),body:aBody({action:'get'})})
     .then(function(r){return r.json();}).then(function(resp){
       if(resp&&resp.rev&&resp.rev>myRev&&resp.data){S=Object.assign(seedState(),resp.data);myRev=resp.rev;try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}renderAll();showTab(currentTab());}
     }).catch(function(){});
@@ -394,9 +429,41 @@ function renderAll(){renderToday();renderIdeas();renderFilm();renderLinks();rend
     serverGet(function(resp){ reconcile(resp); startPoll(); });
   }
   function tryUnlock(){var v=(el('pw').value||'').trim();Promise.all([h(v),h(v.toUpperCase())]).then(function(a){if(OK.indexOf(a[0])>=0||OK.indexOf(a[1])>=0){try{sessionStorage.setItem('y_ok','1');}catch(e){}reveal();}else{el('gate-err').textContent='Incorrect code.';el('pw').select();}});}
+  /* ---- Phase D: sign-in handlers ---- */
+  function G(id){return document.getElementById(id);}
+  function GERR(m){var e=G('gate-err');if(e)e.textContent=m;}
+  function trySignIn(){
+    var em=((G('em')||{}).value||'').trim(), pw=(G('pwx')||{}).value||'';
+    if(!em||!pw){GERR('Email and password required.');return;}
+    if(!SB){GERR('Sign-in unavailable here \u2014 use the access code.');return;}
+    GERR('Signing in\u2026');
+    SB.auth.signInWithPassword({email:em,password:pw}).then(function(r){
+      if(r.error){GERR(r.error.message);return;}
+      SESSION=(r.data&&r.data.session)||null;
+      WHO_EMAIL=(r.data&&r.data.user&&r.data.user.email)||'';
+      reveal();
+    },function(e){GERR(String((e&&e.message)||e));});
+  }
+  G('signin').addEventListener('click',trySignIn);
+  G('useCode').addEventListener('click',function(){
+    G('pw').style.display='block';G('unlock').style.display='block';
+    this.parentNode.style.display='none';G('pw').focus();
+  });
+  ['em','pwx'].forEach(function(id){G(id).addEventListener('keydown',function(e){if(e.key==='Enter')trySignIn();});});
+
   el('unlock').addEventListener('click',tryUnlock);
   el('pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
-  try{if(sessionStorage.getItem('y_ok')==='1'){reveal();}else{el('pw').focus();}}catch(e){el('pw').focus();}
+  /* Resume a real session first; only then fall back to the old flag. */
+  (function(){
+    function legacy(){try{if(sessionStorage.getItem('y_ok')==='1')return reveal();}catch(e){}
+      var f=G('em');if(f)f.focus();}
+    if(!SB)return legacy();
+    SB.auth.getSession().then(function(r){
+      var s=(r&&r.data&&r.data.session)||null;
+      if(s){SESSION=s;WHO_EMAIL=(s.user&&s.user.email)||'';return reveal();}
+      legacy();
+    },legacy);
+  })();
 })();
 </script>
   <script>/* bw-autosave-hardening */(function(){function _bwF(){['flush','flushDraft','saveState','persist','autosave','saveLocal','saveDraft','save'].forEach(function(n){try{if(typeof window[n]==='function')window[n]();}catch(e){}});}window.addEventListener('pagehide',_bwF);window.addEventListener('beforeunload',_bwF);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')_bwF();});})();</script>

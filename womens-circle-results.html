@@ -56,14 +56,28 @@
   .bigempty{text-align:center;color:var(--muted);padding:70px 20px;font-size:15px}
   @media print{#gate{display:none!important}#app{display:block!important}body{background:#fff}.tbtn{display:none}}
 </style>
+<style>
+  /* Phase D: the gate now takes a real account. The access code stays as a
+     fallback only until everyone who needs this page has one. */
+  #gate input+input{margin-top:11px}
+  #gate #pw{margin-top:12px}
+  #gate .altcode{margin-top:13px}
+  #gate .altcode button{width:auto;background:none;border:0;padding:4px;margin:0;color:inherit;opacity:.62;font-size:12.5px;font-weight:400;letter-spacing:0;text-transform:none;text-decoration:underline;cursor:pointer}
+  #gate .altcode button:hover{opacity:1}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
 </head>
 <body>
   <div id="gate"><div class="box">
     <div class="seal"><span>W</span></div>
     <h1>Women's Circle</h1>
     <div class="sub">Survey Results</div>
-    <input id="pw" type="password" placeholder="Access code" autocomplete="off">
-    <button id="unlock">View results →</button>
+    <input id="em" type="email" placeholder="Work email" autocomplete="username">
+    <input id="pwx" type="password" placeholder="Password" autocomplete="current-password">
+    <button id="signin">Sign in →</button>
+    <div class="altcode"><button type="button" id="useCode">Use the access code instead</button></div>
+    <input id="pw" type="password" placeholder="Access code" autocomplete="off" style="display:none">
+    <button id="unlock" style="display:none">View results →</button>
     <div class="err" id="gerr"></div>
   </div></div>
 
@@ -87,6 +101,26 @@
 var SB_URL='https://xhjdowbnqcsvhtcccuqx.supabase.co';
 var FN=SB_URL+'/functions/v1/womens-circle';
 var SECRET='wc_adm_7Qx2';
+
+/* ---- Phase D: real sign-in ----------------------------------------
+   Who you are is decided on the server: the function checks the session
+   against bw_team. The shared code below still works, so nobody is locked
+   out mid-cutover, but every call made while signed in travels on the
+   session and is logged against a person. The SECRET literal in this file
+   stops being accepted at the final step, and comes out then. ------- */
+var AK_PUB='sb_publishable_2QU-ROYUu4a7bmYGdcFP5Q_qR5cF8B2';
+var SB=(window.supabase&&window.supabase.createClient)?window.supabase.createClient(SB_URL,AK_PUB,{auth:{persistSession:true}}):null;
+var SESSION=null, WHO_EMAIL='';
+function aHeaders(){
+  var h={'Content-Type':'application/json','apikey':AK_PUB};
+  if(SESSION&&SESSION.access_token)h['Authorization']='Bearer '+SESSION.access_token;
+  return h;
+}
+function aBody(o){
+  if(!(SESSION&&SESSION.access_token))o.secret=SECRET;
+  return JSON.stringify(o);
+}
+
 var OK='d55dede16f20c0917113c20f99c13b625f1c9162a26eea487426e5729ba9ad21'; /* CIRCLE2026 */
 function $(s,r){return (r||document).querySelector(s);}
 function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
@@ -150,7 +184,7 @@ function render(data){
 async function load(){
   $('#body').innerHTML='<div class="bigempty">Loading…</div>';
   try{
-    var r=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'results',secret:SECRET})});
+    var r=await fetch(FN,{method:'POST',headers:aHeaders(),body:aBody({action:'results'})});
     var d=await r.json();
     if(!d||!d.ok){$('#body').innerHTML='<div class="bigempty">Could not load ('+esc((d&&d.error)||'unknown')+').<br>If this is the first run, deploy the womens-circle function first.</div>';return;}
     render(d);
@@ -162,9 +196,41 @@ $('#refresh').addEventListener('click',load);
 function sha(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,'0');}).join('');});}
 function reveal(){var g=$('#gate');if(g)g.remove();$('#app').style.display='block';load();}
 function tryUnlock(){var v=($('#pw').value||'').trim().toUpperCase();sha(v).then(function(h){if(h===OK){try{sessionStorage.setItem('wc_ok','1');}catch(e){}reveal();}else{$('#gerr').textContent='Incorrect code.';$('#pw').select();}});}
+/* ---- Phase D: sign-in handlers ---- */
+function G(id){return document.getElementById(id);}
+function GERR(m){var e=G('gerr');if(e)e.textContent=m;}
+function trySignIn(){
+  var em=((G('em')||{}).value||'').trim(), pw=(G('pwx')||{}).value||'';
+  if(!em||!pw){GERR('Email and password required.');return;}
+  if(!SB){GERR('Sign-in unavailable here \u2014 use the access code.');return;}
+  GERR('Signing in\u2026');
+  SB.auth.signInWithPassword({email:em,password:pw}).then(function(r){
+    if(r.error){GERR(r.error.message);return;}
+    SESSION=(r.data&&r.data.session)||null;
+    WHO_EMAIL=(r.data&&r.data.user&&r.data.user.email)||'';
+    reveal();
+  },function(e){GERR(String((e&&e.message)||e));});
+}
+G('signin').addEventListener('click',trySignIn);
+G('useCode').addEventListener('click',function(){
+  G('pw').style.display='block';G('unlock').style.display='block';
+  this.parentNode.style.display='none';G('pw').focus();
+});
+['em','pwx'].forEach(function(id){G(id).addEventListener('keydown',function(e){if(e.key==='Enter')trySignIn();});});
+
 $('#unlock').addEventListener('click',tryUnlock);
 $('#pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
-try{if(sessionStorage.getItem('wc_ok')==='1')reveal();else $('#pw').focus();}catch(e){$('#pw').focus();}
+/* Resume a real session first; only then fall back to the old flag. */
+(function(){
+  function legacy(){try{if(sessionStorage.getItem('wc_ok')==='1')return reveal();}catch(e){}
+    var f=G('em');if(f)f.focus();}
+  if(!SB)return legacy();
+  SB.auth.getSession().then(function(r){
+    var s=(r&&r.data&&r.data.session)||null;
+    if(s){SESSION=s;WHO_EMAIL=(s.user&&s.user.email)||'';return reveal();}
+    legacy();
+  },legacy);
+})();
 </script>
 </body>
 </html>

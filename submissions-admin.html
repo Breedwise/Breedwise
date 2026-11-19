@@ -773,7 +773,14 @@ async function getAssetLinks(btn){
   if(!paths.length)return;
   btn.disabled=true;btn.textContent='Getting links…';
   try{
-    const r=await fetch(ASSET_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'links',secret:ASSET_SECRET,paths})});
+    // Phase D: this page already signs people in, so the session is the real
+    // credential and the server decides from it. ASSET_SECRET rides along as a
+    // fallback for anyone signed in who is not yet on bw_team; it comes out at
+    // the final step, when the function stops accepting it.
+    const {data:{session}}=await sb.auth.getSession();
+    const h={'Content-Type':'application/json','apikey':SB_KEY};
+    if(session&&session.access_token)h['Authorization']='Bearer '+session.access_token;
+    const r=await fetch(ASSET_FN,{method:'POST',headers:h,body:JSON.stringify({action:'links',secret:ASSET_SECRET,paths})});
     const d=await r.json();
     if(!d||!d.ok)throw new Error((d&&d.error)||'Failed');
     $('#dlOut').innerHTML=(d.links||[]).map(l=>l.url?`<div style="padding:4px 0"><a href="${esc(l.url)}" target="_blank" rel="noopener" style="color:var(--gold)">${esc(l.path.split('/').pop())}</a></div>`:`<div style="color:var(--muted)">${esc(l.path.split('/').pop())} — unavailable</div>`).join('');
