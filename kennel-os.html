@@ -2055,10 +2055,27 @@ async function programView(){
       litRec=Number(d.litters_recorded||0),
       litUnrec=Number(d.litters_unrecorded||0);
 
+  /* The ledger keys off bred_on. A breeding that plainly happened but
+     was entered without a date falls out of every figure above, which
+     is precisely the silent exclusion this page exists to stop. Counted
+     here rather than in SQL so it needs no second migration. */
+  var undated=0;
+  try{
+    var u=await sel('kos_breedings','id')
+      .is('bred_on',null).in('status',['bred','confirmed','whelped','missed']).limit(200);
+    undated=(u.data||[]).length;
+  }catch(e){}
+  var undatedRow=undated?('<button class="row" data-go="breedings"><span class="av">\u2014</span>'+
+    '<span class="body"><span class="t">'+undated+' attempt'+(undated===1?'':'s')+' with no breeding date</span>'+
+    '<span class="s">Left out of every figure here until a date is set</span></span>'+
+    '<span class="r">'+ic('chev',16)+'</span></button>'):'';
+
   if(!Number(d.attempts||0)){
     v.innerHTML=head+'<div class="empty"><b>No attempts recorded yet</b>'+
       'Record a breeding, then set its outcome when you know \u2014 whelped, did not conceive, '+
-      'resorbed. The misses are what make the rest of this page mean anything.</div>';
+      'resorbed. The misses are what make the rest of this page mean anything.</div>'+
+      (undated?'<div class="card"><div class="card-h"><h3>Gaps in the record</h3></div>'+
+        '<div class="rows">'+undatedRow+'</div></div>':'');
     return;
   }
 
@@ -2085,6 +2102,7 @@ async function programView(){
     ' without a born-alive count</span>'+
     '<span class="s">Excluded from litter size and stillbirth \u2014 not assumed healthy</span></span>'+
     '<span class="r">'+ic('chev',16)+'</span></button>');
+  if(undatedRow)gaps.push(undatedRow);
   if(gaps.length)h+='<div class="card"><div class="card-h"><h3>Gaps in the record</h3></div>'+
     '<div class="rows">'+gaps.join('')+'</div></div>';
 
