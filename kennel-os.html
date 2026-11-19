@@ -2137,15 +2137,40 @@ async function programView(){
      be effortless, so it sits above them and every row is two taps.
      A 'planned' pairing with no date has not happened yet and is not
      chased here \u2014 only attempts that plainly took place. */
-  var pend=[],undated=0;
+  /* Fetch everything and bucket it here rather than filtering in the
+     query. A breeding with no bred_on falls out of the stats AND out of
+     the queue, and the first version of this page then showed a blank
+     screen with no explanation \u2014 which is the exact silence this
+     whole feature exists to prevent. Now it says so. */
+  var all=[],pend=[],planned=[],undated=0;
+  var HAPPENED=['bred','confirmed','whelped','missed'];
   try{
     var u=await sel('kos_breedings','id,dam_id,sire_id,sire_external,bred_on,status,outcome')
-      .or('outcome.is.null,outcome.eq.pending')
-      .order('bred_on',{ascending:true,nullsFirst:false}).limit(60);
-    pend=(u.data||[]).filter(function(b){
-      return b.bred_on||['bred','confirmed','whelped','missed'].indexOf(b.status)>=0;});
+      .order('bred_on',{ascending:true,nullsFirst:false}).limit(200);
+    all=u.data||[];
+    var open=all.filter(function(b){return !b.outcome||b.outcome==='pending';});
+    pend=open.filter(function(b){return b.bred_on||HAPPENED.indexOf(b.status)>=0;});
+    planned=open.filter(function(b){return !b.bred_on&&HAPPENED.indexOf(b.status)<0;});
     undated=pend.filter(function(b){return !b.bred_on;}).length;
   }catch(e){}
+
+  function pairName(b){
+    var dam=dogName(b.dam_id)||'Dam',si=dogName(b.sire_id)||b.sire_external||'';
+    return dam+(si?' \u00d7 '+si:'');
+  }
+
+  /* Planned pairings are not chased for an outcome \u2014 they have not
+     happened \u2014 but they are shown, because otherwise a breeder adds
+     one and wonders why nothing appeared. */
+  var plannedCard=planned.length?('<div class="card"><div class="card-h"><h3>Planned, not yet bred</h3>'+
+    '<span class="mini">'+planned.length+'</span></div><div class="rows">'+
+    planned.slice(0,12).map(function(b,i){
+      return '<button class="row" data-pq="'+i+'"><span class="av">\u00b7</span>'+
+        '<span class="body"><span class="t">'+esc(pairName(b))+'</span>'+
+        '<span class="s">No <b>Bred on</b> date yet</span></span>'+
+        '<span class="r">'+ic('chev',16)+'</span></button>';}).join('')+'</div>'+
+    '<div class="ld-s" style="padding:0 14px 12px">Every figure on this page keys off the '+
+    '<b>Bred on</b> date. Add one and the pairing joins the ledger.</div></div>'):'';
 
   var queue=pend.length?('<div class="card"><div class="card-h"><h3>Needs an outcome</h3>'+
     '<span class="mini">'+pend.length+'</span></div><div class="rows">'+
@@ -2166,6 +2191,11 @@ async function programView(){
         var b=pend[Number(btn.getAttribute('data-oq'))];
         if(b)outcomeSheet(b,function(){programView();});
       };});
+    Array.prototype.forEach.call(v.querySelectorAll('[data-pq]'),function(btn){
+      btn.onclick=function(){
+        var b=planned[Number(btn.getAttribute('data-pq'))];
+        if(b)go('breedings',b.id);
+      };});
   }
 
   var undatedRow=undated?('<button class="row" data-go="breedings"><span class="av">\u2014</span>'+
@@ -2174,16 +2204,29 @@ async function programView(){
     '<span class="r">'+ic('chev',16)+'</span></button>'):'';
 
   if(!Number(d.attempts||0)){
-    v.innerHTML=head+queue+'<div class="empty"><b>No settled attempts yet</b>'+
-      'Record a breeding, then set its outcome when you know \u2014 whelped, did not conceive, '+
-      'resorbed. The misses are what make the rest of this page mean anything.</div>'+
+    /* Say which of the three empty states this actually is. "Nothing
+       here" without a reason is what sent Austin round in circles. */
+    var why;
+    if(!all.length)
+      why='<div class="empty"><b>No breedings recorded yet</b>'+
+        'Add one on the Breedings screen \u2014 a dam and a <b>Bred on</b> date is enough to start. '+
+        'Then set its outcome when you know.</div>';
+    else if(pend.length)
+      why='<div class="empty"><b>Nothing settled yet</b>'+
+        'Close out one of the attempts above and these figures fill in.</div>';
+    else
+      why='<div class="empty"><b>Nothing to measure yet</b>'+
+        'You have '+all.length+' breeding'+(all.length===1?'':'s')+' on file, but '+
+        (all.length===1?'it has':'none has')+' a <b>Bred on</b> date \u2014 and every figure here '+
+        'keys off that date.</div>';
+    v.innerHTML=head+queue+plannedCard+why+
       (undated?'<div class="card"><div class="card-h"><h3>Gaps in the record</h3></div>'+
         '<div class="rows">'+undatedRow+'</div></div>':'');
     bindQueue();
     return;
   }
 
-  var h=head+queue+'<div class="stats">'+
+  var h=head+queue+plannedCard+'<div class="stats">'+
     stat('Conception rate',settled>=MIN_N?pctOf(conceived,settled):(conceived+' of '+settled),
          settled>=MIN_N?conceived+' of '+settled+' settled':'too few to rate yet','')+
     stat('Whelped',String(d.whelped||0),(d.lost_pregnancy||0)+' lost after conceiving','')+
