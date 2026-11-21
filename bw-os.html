@@ -216,6 +216,34 @@
   border-radius:9px;padding:8px 14px;font-family:var(--body);font-size:12px;cursor:pointer}
 .recdel:hover{border-color:var(--red);color:var(--red)}
 .chkcnt{font-size:11.5px;margin-top:7px}
+.recfoot{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:22px}
+.recfoot .recdel{margin-top:0}
+.recfoot .muted{font-size:11.5px}
+.recarch{background:transparent;border:1px solid var(--line2);color:var(--muted);
+  border-radius:9px;padding:8px 14px;font-family:var(--body);font-size:12px;cursor:pointer}
+.recarch:hover{border-color:var(--gold);color:var(--gold2)}
+.archbox{margin-top:18px;border:1px solid var(--line);border-radius:12px;background:var(--bg2);overflow:hidden}
+.archbox>summary{cursor:pointer;list-style:none;padding:12px 16px;font-size:12px;color:var(--muted);
+  letter-spacing:.05em;text-transform:uppercase}
+.archbox>summary::-webkit-details-marker{display:none}
+.archbox>summary::after{content:'\25be';float:right;color:var(--faint)}
+.archrow{display:flex;align-items:center;gap:12px;padding:11px 16px;border-top:1px solid var(--line);flex-wrap:wrap}
+.archrow .anm{font-size:13.5px;color:var(--mid);min-width:0}
+.archrow .amt{font-size:11.5px;color:var(--faint)}
+.archrow .sp{margin-left:auto;display:flex;gap:8px}
+.archrow button{background:transparent;border:1px solid var(--line2);color:var(--muted);
+  border-radius:8px;padding:6px 11px;font-family:var(--body);font-size:11.5px;cursor:pointer}
+.archrow .ar:hover{border-color:var(--gold);color:var(--gold2)}
+.archrow .ax:hover{border-color:var(--red);color:var(--red)}
+.ascbox{margin-top:18px;border:1px solid var(--gold-line);background:var(--gold-soft);
+  border-radius:12px;padding:16px 18px}
+.ascbox p{margin:0 0 13px;font-size:13px;color:var(--mid);line-height:1.6}
+.ascbox .opt{display:flex;align-items:flex-start;gap:9px;font-size:12.5px;color:var(--muted);
+  margin:0 0 14px;cursor:pointer;line-height:1.5}
+.ascbox .opt input{accent-color:var(--gold);width:15px;height:15px;cursor:pointer;flex:0 0 auto;margin-top:1px}
+.ascbtn{background:var(--gold);border:0;color:#191407;border-radius:9px;padding:10px 16px;
+  font-family:var(--body);font-size:12.5px;font-weight:600;cursor:pointer}
+.ascbtn:hover{background:var(--gold2)}
 
 /* ── end-of-day entries ────────────────────────────────────────── */
 .eodrow{border-top:1px solid var(--line);padding:13px 0;font-size:14px;font-weight:300;line-height:1.55}
@@ -1000,7 +1028,7 @@ var EOD=[],EOD_LOADED=false;
    who is quiet, who is behind on money, who has not filed today. */
 function renderPulse(){
   var m=$('#pulse');if(!m)return;
-  var boss=DB.boss||[],acad=DB.academy||[];
+  var boss=notArch(DB.boss),acad=notArch(DB.academy);
   var bossA=boss.filter(function(c){return (c.status||'Active')==='Active';}).length;
   var atRisk=boss.concat(acad).filter(function(c){return c.risk==='At risk'||c.risk==='Watch';}).length;
   var money=boss.concat(acad).filter(function(c){return c.payments==='Failed payment'||c.payments==='Behind';}).length;
@@ -1130,7 +1158,7 @@ function renderCalendar(){
   function sessionEntries(){
     var out=[];
     [['boss','B.O.S.S.'],['academy','Academy']].forEach(function(src){
-      (DB[src[0]]||[]).forEach(function(c){
+      notArch(DB[src[0]]).forEach(function(c){
         (c.sessions||[]).forEach(function(se){
           if(!se.date||se.status==='Cancelled')return;
           out.push({date:se.date,kind:'session',
@@ -1310,12 +1338,27 @@ function checklist(mount,rec,key,items,title){
   });
   count();mount.appendChild(cnt);
 }
+/* A record is never silently destroyed. Archiving keeps everything and
+   is reversible; removing is the only thing that deletes, and it says so.
+   Archived records drop out of every count — see notArch(). */
+function notArch(arr){return (arr||[]).filter(function(r){return !r.archived;});}
+
 function recordList(p,arr,cfg){
   var wrap=el('div','recs');
+  function wipe(rec){
+    if(!confirm('Permanently remove '+(rec.name||'this record')+'?\n\n'+
+      'This deletes the record and everything on it — attendance, sessions, notes, checklists. '+
+      'It cannot be undone.\n\nTo keep the history instead, cancel and use Archive.'))return;
+    var i=arr.indexOf(rec);if(i>-1)arr.splice(i,1);save();draw();cfg.after&&cfg.after();
+  }
   function draw(){
     wrap.innerHTML='';
-    if(!arr.length)wrap.appendChild(el('p','muted','Nobody here yet — add the first record below.'));
-    arr.forEach(function(rec){
+    var open=arr.filter(function(r){return !r.archived;});
+    var gone=arr.filter(function(r){return r.archived;});
+    if(!open.length)wrap.appendChild(el('p','muted',gone.length
+      ? 'Nobody active here — every record is archived.'
+      : 'Nobody here yet — add the first record below.'));
+    open.forEach(function(rec){
       var d=el('details','rec');
       var sm=el('summary');
       sm.appendChild(el('span','av',esc(initials(rec.name||'?'))));
@@ -1326,21 +1369,52 @@ function recordList(p,arr,cfg){
       d.appendChild(sm);
       var bd=el('div','bd');
       cfg.body(bd,rec);
-      var del=el('button','recdel','Remove this record');
-      del.addEventListener('click',function(){
-        if(!confirm('Remove '+(rec.name||'this record')+'? This cannot be undone.'))return;
-        var i=arr.indexOf(rec);if(i>-1)arr.splice(i,1);save();draw();cfg.after&&cfg.after();
+      var foot=el('div','recfoot');
+      var arc=el('button','recarch','Archive');
+      arc.addEventListener('click',function(){
+        rec.archived=true;rec.archivedAt=ymd();save();draw();cfg.after&&cfg.after();
       });
-      bd.appendChild(del);
+      var del=el('button','recdel','Remove permanently');
+      del.addEventListener('click',function(){wipe(rec);});
+      foot.appendChild(arc);foot.appendChild(del);
+      foot.appendChild(el('span','muted','Archiving is reversible and keeps the history. Removing is not.'));
+      bd.appendChild(foot);
       d.appendChild(bd);wrap.appendChild(d);
     });
+    if(gone.length){
+      var ab=el('details','archbox');
+      var as=el('summary');
+      as.textContent='Archived — '+gone.length+' '+(gone.length===1?'record':'records');
+      ab.appendChild(as);
+      gone.forEach(function(rec){
+        var row=el('div','archrow');
+        var nm=el('div','anm',esc(rec.name||'Unnamed'));
+        var bits=[];
+        if(rec.status&&rec.status!=='Active')bits.push(rec.status);
+        if(rec.archivedAt)bits.push('archived '+rec.archivedAt);
+        if(bits.length)nm.appendChild(el('span','amt',' · '+esc(bits.join(' · '))));
+        row.appendChild(nm);
+        var sp=el('div','sp');
+        var rb=el('button','ar','Restore');
+        rb.addEventListener('click',function(){
+          delete rec.archived;delete rec.archivedAt;save();draw();cfg.after&&cfg.after();
+        });
+        var xb=el('button','ax','Remove');
+        xb.addEventListener('click',function(){wipe(rec);});
+        sp.appendChild(rb);sp.appendChild(xb);row.appendChild(sp);
+        ab.appendChild(row);
+      });
+      wrap.appendChild(ab);
+    }
   }
   draw();
   p.appendChild(wrap);
   var add=el('button','addbtn','+ '+cfg.addLabel);
   add.addEventListener('click',function(){
     arr.push(cfg.blank());save();draw();cfg.after&&cfg.after();
-    var last=wrap.querySelector('.rec:last-of-type');
+    /* not :last-of-type — the archived block is a <details> sibling too */
+    var all=wrap.querySelectorAll('details.rec');
+    var last=all[all.length-1];
     if(last){last.open=true;last.scrollIntoView({block:'center'});
       var f=last.querySelector('.bd input.f');if(f)f.focus();}
   });
@@ -1431,10 +1505,13 @@ function renderBoss(){
   var p=$('#p-boss');if(!p)return;p.innerHTML='';
   p.appendChild(el('p','intro','<b>Ten at a time, by design.</b> Every B.O.S.S. client, what we owe them, and whether the guarantee is on track. If a client has gone quiet for two weeks, that is the signal — not the refund request that arrives a month later.'));
   DB.boss=DB.boss||[];
-  var A=DB.boss.filter(function(c){return (c.status||'Active')==='Active';}).length;
-  var R=DB.boss.filter(function(c){return c.risk==='At risk'||c.risk==='Watch';}).length;
-  var G=DB.boss.filter(function(c){return c.guarantee==='Behind'||c.guarantee==='Claimed';}).length;
-  var F=DB.boss.filter(function(c){return c.payments==='Failed payment'||c.payments==='Behind';}).length;
+  /* Archived clients are kept but stop counting — capacity is the whole
+     point of this section, so a shelved record must not eat a seat. */
+  var LIVE=notArch(DB.boss);
+  var A=LIVE.filter(function(c){return (c.status||'Active')==='Active';}).length;
+  var R=LIVE.filter(function(c){return c.risk==='At risk'||c.risk==='Watch';}).length;
+  var G=LIVE.filter(function(c){return c.guarantee==='Behind'||c.guarantee==='Claimed';}).length;
+  var F=LIVE.filter(function(c){return c.payments==='Failed payment'||c.payments==='Behind';}).length;
   p.appendChild(el('div','tiles',
     tile('Active clients',A+' / 10','delivery capacity',A>10?'':'gold')+
     tile('At risk or watch',String(R),'quiet, behind, or struggling')+
@@ -1449,6 +1526,7 @@ function renderBoss(){
       terms:'',payments:'Current',agreement:'Not sent',guarantee:'On track',guaranteeNote:'',
       profile:'',assessment:'',pathway:'',notes:'',activation:{},deliverables:{},sessions:[]};},
     meta:function(r){return [r.status||'Active',r.owner?'owner '+r.owner:'',r.joined?'joined '+r.joined:'',
+      r.fromAcademy?'↑ from Academy':'',
       (r.risk&&r.risk!=='OK')?'⚠ '+r.risk:'',
       (r.payments&&r.payments!=='Current'&&r.payments!=='Paid in full')?'⚠ '+r.payments:''
       ].filter(Boolean).map(esc).join(' · ');},
@@ -1601,6 +1679,71 @@ function pullRoster(btn,mountMsg){
 }
 
 /* ══════════════════════════════════════════════════════════════════
+   ACADEMY → B.O.S.S.
+   Moving someone up starts a NEW engagement, so only the context we
+   already paid to learn carries over: who they are, their assessment,
+   the pathway. Money and promises do not — terms, payments, agreement,
+   guarantee and every checklist start empty, because a B.O.S.S. deal is
+   its own deal and must not quietly inherit the Academy one.
+   ══════════════════════════════════════════════════════════════════ */
+function bossFromAcademy(rec){
+  var prov='Moved up from Academy on '+ymd()+(rec.joined?' · Academy member since '+rec.joined:'')+'.';
+  return {
+    name:rec.name||'', email:rec.email||'', phone:rec.phone||'',
+    joined:ymd(), owner:rec.owner||'',
+    status:'Active', risk:rec.risk||'OK',
+    terms:'', payments:'Current', agreement:'Not sent',
+    guarantee:'On track', guaranteeNote:'',
+    profile:rec.profile||'', assessment:rec.assessment||'', pathway:rec.pathway||'',
+    notes:[prov,rec.notes||''].filter(Boolean).join('\n\n'),
+    activation:{}, deliverables:{}, sessions:[],
+    fromAcademy:ymd()
+  };
+}
+function ascensionBox(bd,rec){
+  var w=el('div','ascbox');
+  if(rec.bossLinked){
+    w.appendChild(el('p',null,'<b>Already moved up.</b> A B.O.S.S. client record was created for '+
+      esc(rec.name||'this member')+' on '+esc(rec.bossLinked)+'. This Academy record is kept as history — '+
+      'the live engagement is edited on B.O.S.S. Clients.'));
+    var gb=el('button','recarch','Open B.O.S.S. Clients');
+    gb.addEventListener('click',function(){go('boss');});
+    w.appendChild(gb);
+    bd.appendChild(w);return;
+  }
+  w.appendChild(el('p',null,'<b>Make this member a B.O.S.S. client.</b> Creates a new B.O.S.S. record carrying '+
+    'their name, contact, owner, profile, assessment and pathway. Terms, payments, agreement, guarantee and '+
+    'every checklist start empty — the B.O.S.S. engagement is a new deal, not a continuation of this one.'));
+  var lab=el('label','opt');
+  var cb=el('input');cb.type='checkbox';cb.checked=true;
+  lab.appendChild(cb);
+  lab.appendChild(el('span',null,'Archive the Academy record afterwards — keeps the history, stops counting them as an active member'));
+  w.appendChild(lab);
+  var b=el('button','ascbtn','Make them a B.O.S.S. client');
+  b.addEventListener('click',function(){
+    if(!(rec.name||'').trim()){alert('Give this member a name first — the B.O.S.S. record is built from it.');return;}
+    DB.boss=DB.boss||[];
+    var activeNow=notArch(DB.boss).filter(function(c){return (c.status||'Active')==='Active';}).length;
+    var msg='Create a B.O.S.S. client record for '+(rec.name||'this member')+'?';
+    msg+=cb.checked
+      ? '\n\nThe Academy record will be archived — kept, but out of the active roster.'
+      : '\n\nThe Academy record stays active too, so they will count in both places.';
+    if(activeNow>=10){
+      msg='B.O.S.S. is already at '+activeNow+' active clients and the cap is 10.\n\n'+msg+
+          '\n\nThis one puts delivery over capacity.';
+    }
+    if(!confirm(msg))return;
+    DB.boss.push(bossFromAcademy(rec));
+    rec.upsell='Converted';
+    rec.bossLinked=ymd();
+    if(cb.checked){rec.archived=true;rec.archivedAt=ymd();}
+    save();renderBoss();renderAcademy();renderPulse();go('boss');
+  });
+  w.appendChild(b);
+  bd.appendChild(w);
+}
+
+/* ══════════════════════════════════════════════════════════════════
    05 · ACADEMY MEMBERS
    ══════════════════════════════════════════════════════════════════ */
 function renderAcademy(){
@@ -1620,10 +1763,14 @@ function renderAcademy(){
     pullRoster(pull,msg);
   });
 
-  var A=DB.academy.filter(function(m){return (m.status||'Active')==='Active';}).length;
-  var R=DB.academy.filter(function(m){return m.risk==='At risk'||m.risk==='Watch';}).length;
-  var U=DB.academy.filter(function(m){return m.upsell==='Ready';}).length;
-  var F=DB.academy.filter(function(m){return m.payments==='Failed payment'||m.payments==='Behind';}).length;
+  /* Archived members are kept, but they stop counting — an archived
+     record in the "active members" tile is exactly the kind of quiet
+     wrong number this section exists to prevent. */
+  var LIVE=notArch(DB.academy);
+  var A=LIVE.filter(function(m){return (m.status||'Active')==='Active';}).length;
+  var R=LIVE.filter(function(m){return m.risk==='At risk'||m.risk==='Watch';}).length;
+  var U=LIVE.filter(function(m){return m.upsell==='Ready';}).length;
+  var F=LIVE.filter(function(m){return m.payments==='Failed payment'||m.payments==='Behind';}).length;
   p.appendChild(el('div','tiles',
     tile('Active members',String(A),'currently enrolled','gold')+
     tile('At risk or watch',String(R),'absent or stalled')+
@@ -1637,6 +1784,7 @@ function renderAcademy(){
       terms:'',payments:'Current',agreement:'Not sent',guarantee:'On track',guaranteeNote:'',
       upsell:'Not yet',profile:'',assessment:'',pathway:'',notes:'',activation:{},attendance:[],sessions:[]};},
     meta:function(r){return [r.status||'Active',r.owner?'owner '+r.owner:'',r.joined?'joined '+r.joined:'',
+      r.bossLinked?'→ B.O.S.S.':'',
       r.upsell==='Ready'?'★ upsell ready':'',
       (r.risk&&r.risk!=='OK')?'⚠ '+r.risk:'',
       (r.payments&&r.payments!=='Current'&&r.payments!=='Paid in full')?'⚠ '+r.payments:''
@@ -1650,6 +1798,7 @@ function renderAcademy(){
         {k:'upsell',label:'Upsell opportunity',type:'select',opts:['Not yet','Watching','Ready','Offered','Converted','No']},
         {k:'upsellNote',label:'Why / what changed',ph:'What makes them ready — or what is missing'}
       ],'c2'));
+      ascensionBox(bd,rec);
     }
   });
 }
