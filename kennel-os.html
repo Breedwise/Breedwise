@@ -121,6 +121,67 @@ main{padding:18px 15px calc(112px + var(--safe-b));max-width:1080px;margin:0 aut
 .search input{width:100%;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px 11px 38px;font-size:14.5px}
 .search svg{position:absolute;left:12px;top:11px;width:17px;height:17px;color:var(--muted)}
 .search input:focus{outline:none;border-color:var(--accent-line)}
+/* calendar: a real month. Chips on anything wide enough to read them,
+   dots on a phone, where a 7-column grid leaves ~48px a day — tapping a
+   day drives the agenda underneath instead. */
+.kcalhead{display:flex;align-items:center;gap:14px;margin:2px 0 12px}
+.kcalmonth{font-size:19px;font-weight:700;letter-spacing:-.01em}
+.kcalnav{display:flex;gap:6px;margin-left:auto}
+.kcalbtn{width:34px;height:34px;border-radius:10px;background:var(--card2);
+  border:1px solid var(--line);color:var(--mid);font-size:17px;line-height:1}
+.kcalbtn.wide{width:auto;padding:0 13px;font-size:12px;font-weight:700;letter-spacing:.04em}
+.kcalbtn:active{background:var(--card)}
+.kcalgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.kdow{background:var(--card2);padding:7px 4px;font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);text-align:center;font-weight:700}
+.kcell{background:var(--card);min-height:92px;padding:5px 5px 6px;position:relative;
+  display:flex;flex-direction:column;align-items:stretch;text-align:left;gap:3px}
+.kcell.out{background:var(--bg2)}
+.kcell.out .kdate{color:var(--muted);opacity:.5}
+.kcell.today{box-shadow:inset 0 0 0 1px var(--accent-line);background:var(--accent-soft)}
+.kcell.sel{box-shadow:inset 0 0 0 2px var(--accent)}
+.kdate{font-size:13px;font-weight:700;color:var(--mid)}
+.kcell.today .kdate{color:var(--accent2)}
+.kplus{position:absolute;top:3px;right:4px;width:19px;height:19px;border-radius:6px;
+  color:var(--muted);font-size:14px;line-height:18px;text-align:center;opacity:0;transition:opacity .12s}
+.kcell:hover .kplus{opacity:1}
+.kplus:hover{background:var(--card2);color:var(--accent2)}
+.kchips{display:flex;flex-direction:column;gap:2px;min-width:0}
+.kchip{font-size:10.5px;line-height:1.3;padding:2px 5px;border-radius:5px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  background:var(--card2);color:var(--ink);border-left:3px solid var(--muted)}
+.kchip.auto{border-left-style:dashed}
+.kchip.done{opacity:.5;text-decoration:line-through}
+.kmore{font-size:10px;color:var(--muted);padding-left:4px}
+.kdots{display:none;gap:3px;flex-wrap:wrap}
+.kdot{width:5px;height:5px;border-radius:50%;background:var(--muted);display:inline-block}
+.k-heat{border-left-color:#e86fb0;background:#e86fb0}
+.k-breeding{border-left-color:#a78bfa;background:#a78bfa}
+.k-whelp{border-left-color:var(--good);background:var(--good)}
+.k-vet{border-left-color:var(--warn);background:var(--warn)}
+.k-pickup{border-left-color:var(--accent);background:var(--accent)}
+.k-general{border-left-color:var(--muted);background:var(--muted)}
+.kchip.k-heat,.kchip.k-breeding,.kchip.k-whelp,.kchip.k-vet,.kchip.k-pickup,.kchip.k-general{
+  background:var(--card2)}
+.row .av.k-heat,.row .av.k-breeding,.row .av.k-whelp,.row .av.k-vet,
+.row .av.k-pickup,.row .av.k-general{width:10px;min-width:10px;height:10px;border-radius:50%;
+  border:0;align-self:center;font-size:0;margin-left:3px}
+.kleg{display:flex;flex-wrap:wrap;gap:10px 15px;margin:11px 2px 0;font-size:11.5px;color:var(--muted)}
+.kleg .k{display:flex;align-items:center;gap:5px}
+.kleg .sw{width:9px;height:9px;border-radius:3px;display:inline-block;background:var(--muted)}
+.kleg .sw.auto{background:transparent;border-left:3px dashed var(--mid);border-radius:0;width:7px}
+.kaday{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  font-weight:700;padding:12px 16px 5px}
+.ktoday{color:var(--accent2);letter-spacing:0;text-transform:none}
+@media(max-width:640px){
+  .kcell{min-height:58px;padding:4px 3px 5px}
+  .kchips{display:none}
+  .kdots{display:flex}
+  .kplus{display:none}
+  .kdate{font-size:12px}
+  .kcalmonth{font-size:17px}
+}
 .chips{display:flex;gap:7px;overflow-x:auto;max-width:100%;padding-bottom:11px;-webkit-overflow-scrolling:touch}
 .chips::-webkit-scrollbar{display:none}
 .chip{white-space:nowrap;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:20px;
@@ -1011,6 +1072,200 @@ function rowHTML(key,rec,r){
     '<span class="body"><span class="t">'+esc(r.t||'—')+'</span><span class="s">'+esc(r.s||'')+'</span></span>'+
     right+'</button>';
 }
+/* ─── calendar ──────────────────────────────────────────────────────
+   The list this replaced answered "what events exist". A breeder needs
+   "what is happening", which is a different question and wants a month.
+
+   It also only ever drew rows somebody had typed into kos_events, while
+   the dates that actually fill a kennel's month — due dates, whelps,
+   go-home days, vaccines, heats — already live on the breeding, litter,
+   puppy and health records. Those are pulled in read-only and marked as
+   drawn-from-your-records, so the calendar is one place to look and
+   nothing is ever typed twice. Each source is queried defensively: a
+   table that is not installed on this project contributes nothing
+   rather than breaking the view. */
+var CAL={y:0,m:0,sel:''};
+var CAL_KINDS=['heat','breeding','whelp','vet','pickup','general'];
+function calDay(y,m,d){return y+'-'+('0'+m).slice(-2)+'-'+('0'+d).slice(-2);}
+function calISO(dt){return calDay(dt.getFullYear(),dt.getMonth()+1,dt.getDate());}
+
+function calGridRange(y,m){
+  var lead=new Date(y,m-1,1).getDay(), dim=new Date(y,m,0).getDate();
+  var cells=Math.ceil((lead+dim)/7)*7;
+  return {lead:lead,dim:dim,cells:cells,
+    from:calISO(new Date(y,m-1,1-lead)),
+    to:calISO(new Date(y,m-1,1-lead+cells-1))};
+}
+
+async function calFetch(from,to){
+  var out=[];
+  function add(date,kind,title,sub,nav,rec,done){
+    if(!date)return; date=String(date).slice(0,10);
+    if(date<from||date>to)return;
+    out.push({date:date,kind:kind,title:title,sub:sub||'',
+              nav:nav||null,rec:rec||null,done:!!done});
+  }
+  async function q(p){try{var r=await p;return r.error?[]:(r.data||[]);}catch(e){return [];}}
+  var dog={};(S.cache.dogs||[]).forEach(function(d){dog[d.id]=d.call_name||d.name;});
+
+  /* the only ones you type */
+  (await q(sel('kos_events').gte('starts_on',from).lte('starts_on',to))).forEach(function(e){
+    add(e.starts_on,CAL_KINDS.indexOf(e.kind)>=0?e.kind:'general',
+        e.title||'(untitled)',e.starts_at?String(e.starts_at).slice(0,5):'',null,e);
+  });
+
+  /* expected whelps */
+  (await q(sel('kos_breedings','id,dam_id,due_date,status').gte('due_date',from).lte('due_date',to)))
+    .forEach(function(b){
+      if(b.status==='cancelled'||b.status==='missed')return;
+      add(b.due_date,'whelp','Due · '+(dog[b.dam_id]||'litter'),'expected whelp',{v:'breedings',id:b.id});
+    });
+
+  /* litters are few — filter in add() rather than two more round trips */
+  (await q(sel('kos_litters','id,name,whelp_date,go_home_date'))).forEach(function(l){
+    add(l.whelp_date,'whelp',(l.name||'Litter')+' whelped','',{v:'litters',id:l.id});
+    add(l.go_home_date,'pickup',(l.name||'Litter')+' go-home day','',{v:'litters',id:l.id});
+  });
+
+  /* a litter of eight leaving on one day is one line, not eight */
+  var byDay={};
+  (await q(sel('kos_puppies','id,name,go_home_date,status').gte('go_home_date',from).lte('go_home_date',to)))
+    .forEach(function(p){
+      if(p.status==='deceased')return;
+      var d=String(p.go_home_date).slice(0,10);(byDay[d]=byDay[d]||[]).push(p);
+    });
+  Object.keys(byDay).forEach(function(d){
+    var g=byDay[d],nm=g.map(function(p){return p.name;}).filter(Boolean);
+    add(d,'pickup',g.length>1?g.length+' puppies go home':((nm[0]||'Puppy')+' goes home'),
+        g.length>1?nm.join(', '):'',{v:'puppies',id:g.length===1?g[0].id:null});
+  });
+
+  /* due if outstanding, on the day it happened if it is done */
+  (await q(sel('kos_health_events','id,name,kind,due_on,given_on,litter_id')
+    .or('and(due_on.gte.'+from+',due_on.lte.'+to+'),and(given_on.gte.'+from+',given_on.lte.'+to+')')))
+    .forEach(function(h){
+      var nav=h.litter_id?{v:'litters',id:h.litter_id}:{v:'health'};
+      if(h.given_on)add(h.given_on,'vet',h.name||h.kind||'Health item','done',nav,null,true);
+      else add(h.due_on,'vet',h.name||h.kind||'Health item',h.kind||'',nav);
+    });
+
+  (await q(sel('kos_heats','id,dog_id,started_on').gte('started_on',from).lte('started_on',to)))
+    .forEach(function(h){ add(h.started_on,'heat',(dog[h.dog_id]||'Dog')+' in heat','',{v:'dogs'}); });
+
+  return out.sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;});
+}
+
+async function calendarView(){
+  var v=el('view'),now=new Date();
+  if(!CAL.y){CAL.y=now.getFullYear();CAL.m=now.getMonth()+1;}
+  var Y=CAL.y,M=CAL.m,G=calGridRange(Y,M),td=today();
+
+  v.innerHTML='<div class="view-head"><h2>Calendar</h2><p>Heats, whelps, vet visits, pickups</p></div>'+
+    '<div class="loading">Loading…</div>';
+  var all=await calFetch(G.from,G.to);
+
+  var term=(S.search.calendar||'').toLowerCase(),fil=S.filter.calendar||'';
+  function keep(e){
+    if(fil&&e.kind!==fil)return false;
+    if(!term)return true;
+    return (e.title+' '+e.sub+' '+e.kind).toLowerCase().indexOf(term)>=0;
+  }
+  var shown=all.filter(keep),byDate={};
+  shown.forEach(function(e){(byDate[e.date]=byDate[e.date]||[]).push(e);});
+
+  var chips='<div class="chips"><button class="chip'+(fil?'':' on')+'" data-f="">All '+all.length+'</button>'+
+    CAL_KINDS.map(function(k){
+      var n=all.filter(function(e){return e.kind===k;}).length;
+      return '<button class="chip'+(fil===k?' on':'')+'" data-f="'+k+'">'+esc(k)+(n?' '+n:'')+'</button>';
+    }).join('')+'</div>';
+
+  var cells='';
+  for(var i=0;i<G.cells;i++){
+    var dn=i-G.lead+1,dt=new Date(Y,M-1,dn),ds=calISO(dt),out=(dn<1||dn>G.dim);
+    var list=byDate[ds]||[];
+    cells+='<button class="kcell'+(out?' out':'')+(ds===td?' today':'')+
+      (CAL.sel===ds?' sel':'')+'" data-d="'+ds+'">'+
+      '<span class="kdate">'+dt.getDate()+'</span>'+
+      (canWrite()?'<span class="kplus" data-add="'+ds+'">+</span>':'')+
+      '<span class="kchips">'+list.slice(0,3).map(function(e){
+        return '<span class="kchip k-'+e.kind+(e.done?' done':'')+(e.nav?' auto':'')+'">'+esc(e.title)+'</span>';
+      }).join('')+(list.length>3?'<span class="kmore">+'+(list.length-3)+'</span>':'')+'</span>'+
+      '<span class="kdots">'+list.slice(0,4).map(function(e){
+        return '<i class="kdot k-'+e.kind+'"></i>';}).join('')+'</span>'+
+      '</button>';
+  }
+
+  var agendaDays=Object.keys(byDate).sort();
+  if(CAL.sel)agendaDays=agendaDays.filter(function(d){return d===CAL.sel;});
+  var agenda=agendaDays.length?agendaDays.map(function(d){
+    return (CAL.sel?'':'<div class="kaday">'+esc(fdate(d))+
+             (d===td?' <span class="ktoday">today</span>':'')+'</div>')+
+      '<div class="rows">'+byDate[d].map(function(e,ix){
+        return '<button class="row" data-e="'+d+'|'+ix+'">'+
+          '<span class="av k-'+e.kind+'"></span>'+
+          '<span class="body"><span class="t">'+esc(e.title)+'</span>'+
+          '<span class="s">'+esc([e.kind,e.sub].filter(Boolean).join(' · '))+
+          (e.nav?' · from your records':'')+'</span></span></button>';
+      }).join('')+'</div>';
+  }).join(''):'<div class="empty" style="padding:22px 0"><b>Nothing '+
+      (CAL.sel?'on this day':'this month')+'</b>'+
+      (canWrite()?'Tap + on a day, or use Add.':'')+'</div>';
+
+  v.innerHTML='<div class="view-head"><h2>Calendar</h2><p>Heats, whelps, vet visits, pickups</p></div>'+
+    '<div class="toolbar"><div class="search">'+ic('search')+
+      '<input id="sInput" placeholder="Search calendar…" value="'+esc(S.search.calendar||'')+'"></div>'+
+      (canWrite()?'<button class="btn" id="addBtn">'+ic('plus',18)+'Add</button>':'')+'</div>'+
+    chips+
+    '<div class="kcalhead"><div class="kcalmonth">'+
+      new Date(Y,M-1,1).toLocaleDateString(undefined,{month:'long',year:'numeric'})+'</div>'+
+      '<div class="kcalnav"><button class="kcalbtn" id="cPrev">‹</button>'+
+      '<button class="kcalbtn" id="cNext">›</button>'+
+      '<button class="kcalbtn wide" id="cToday">Today</button></div></div>'+
+    '<div class="kcalgrid">'+['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(function(d){
+      return '<div class="kdow">'+d+'</div>';}).join('')+cells+'</div>'+
+    '<div class="kleg">'+CAL_KINDS.map(function(k){
+      return '<span class="k"><i class="sw k-'+k+'"></i>'+esc(k)+'</span>';}).join('')+
+      '<span class="k"><i class="sw auto"></i>drawn from your records</span></div>'+
+    '<div class="card" style="margin-top:14px"><div class="card-h"><h3>'+
+      (CAL.sel?esc(fdate(CAL.sel)):'This month')+'</h3>'+
+      (CAL.sel?'<button class="mini" id="cAll">show the month</button>':
+        '<span class="mini">'+shown.length+' entr'+(shown.length===1?'y':'ies')+'</span>')+
+      '</div>'+agenda+'</div>';
+
+  function step(y,m){CAL.y=y;CAL.m=m;CAL.sel='';calendarView();}
+  el('cPrev').onclick=function(){step(M===1?Y-1:Y,M===1?12:M-1);};
+  el('cNext').onclick=function(){step(M===12?Y+1:Y,M===12?1:M+1);};
+  el('cToday').onclick=function(){step(now.getFullYear(),now.getMonth()+1);};
+  if(el('cAll'))el('cAll').onclick=function(){CAL.sel='';calendarView();};
+  if(el('addBtn'))el('addBtn').onclick=function(){
+    openForm('calendar',null,{preset:{starts_on:CAL.sel||td}});};
+
+  var si=el('sInput');
+  if(si)si.oninput=function(){var p=si.selectionStart;S.search.calendar=si.value;
+    calendarView().then(function(){var n=el('sInput');if(n){n.focus();n.setSelectionRange(p,p);}});};
+
+  Array.prototype.forEach.call(v.querySelectorAll('[data-f]'),function(b){
+    b.onclick=function(){S.filter.calendar=b.getAttribute('data-f');calendarView();};});
+
+  Array.prototype.forEach.call(v.querySelectorAll('[data-add]'),function(b){
+    b.onclick=function(ev){ev.stopPropagation();
+      openForm('calendar',null,{preset:{starts_on:b.getAttribute('data-add')}});};});
+
+  Array.prototype.forEach.call(v.querySelectorAll('[data-d]'),function(b){
+    b.onclick=function(){var d=b.getAttribute('data-d');
+      CAL.sel=(CAL.sel===d?'':d);calendarView();};});
+
+  /* a typed event opens for editing; a drawn one goes to the record it
+     came from, because that is the only place it can honestly be changed */
+  Array.prototype.forEach.call(v.querySelectorAll('[data-e]'),function(b){
+    b.onclick=function(){
+      var p=b.getAttribute('data-e').split('|'),e=(byDate[p[0]]||[])[Number(p[1])];
+      if(!e)return;
+      if(e.rec)return openForm('calendar',e.rec);
+      if(e.nav)return go(e.nav.v,e.nav.id||null);
+    };});
+}
+
 async function listView(key,cached){
   var R=RES[key],v=el('view'),all;
   if(cached&&S.rows[key]){
@@ -2701,6 +2956,7 @@ async function render(){
     if(r.view==='program')return await programView();
     if(r.view==='settings')return await settingsView();
     if(r.view==='admin')return S.isAdmin?await adminView():go('');
+    if(r.view==='calendar')return await calendarView();
     if(RES[r.view])return await listView(r.view);
     go('');
   }catch(e){
