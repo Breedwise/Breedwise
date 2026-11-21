@@ -347,6 +347,42 @@ function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
 function toast(msg,ms){var t=el('toast');t.textContent=msg;t.classList.add('on');
   clearTimeout(t._x);t._x=setTimeout(function(){t.classList.remove('on');},ms||2100);}
 
+/* ─── claiming an invite ───────────────────────────────────────────
+   An email address is not proof of anything here: signup is open and
+   confirmations are auto-stamped, so anyone could register a breeder's
+   published address. The invite token is the real credential — it only
+   ever existed in that person's inbox. It arrives in the URL, has to
+   survive the sign-up round trip, and is wiped the moment it is spent
+   or refused. The address still has to match, so a forwarded link is
+   useless to anyone else. */
+var INVITE=(function(){
+  try{
+    var t=new URLSearchParams(location.search).get('invite');
+    if(t){lsSet('kos_invite',t);
+      history.replaceState(null,'',location.pathname+location.hash);}
+    return t||lsGet('kos_invite')||'';
+  }catch(e){return '';}
+})();
+function dropInvite(){INVITE='';try{localStorage.removeItem('kos_invite');}catch(e){}}
+async function claimInvite(){
+  if(!INVITE)return;
+  var r=await sb.rpc('kos_claim_invite',{p_token:INVITE});
+  /* Function missing = the security migration has not been run yet. Keep
+     the token parked rather than burning it against a server that cannot
+     honour it. */
+  if(r.error)return;
+  var d=r.data||{};
+  dropInvite();
+  if(d.ok)return toast('You now have access to this kennel');
+  if(d.reason==='wrong_account')
+    return toast('That invite is for '+(d.invited_email||'a different address')+
+                 ' — sign out and create your login with that one.',9000);
+  if(d.reason==='expired')
+    return toast('That invite link has expired — ask for a new one.',7000);
+  if(d.reason==='unknown')
+    return toast('That invite link is not valid.',6000);
+}
+
 /* ─── invites ──────────────────────────────────────────────────────
    Recording an invite was only ever half the job. kennel_invites is a
    permission row; kos_claim_invites turns it into a membership on the
@@ -1787,7 +1823,9 @@ async function settingsView(){
   drawKeys();
 
   var tm=await sb.from('kennel_members').select('*').eq('kennel_id',k.id);
-  var iv=await sb.from('kennel_invites').select('*').eq('kennel_id',k.id).is('accepted_at',null);
+  var iv=await sb.from('kennel_invites')
+    .select('id,kennel_id,email,role,accepted_at,created_at')
+    .eq('kennel_id',k.id).is('accepted_at',null);
   var rowsHTML=(tm.data||[]).map(function(m){
     return '<div class="row"><span class="av">'+esc(initials(m.email||'?'))+'</span><span class="body">'+
       '<span class="t">'+esc(m.email||'member')+'</span><span class="s">Member</span></span><span class="r">'+pill(m.role)+'</span></div>';}).join('')+
@@ -2883,6 +2921,8 @@ el('loginBtn').onclick=async function(){
   var em=el('email').value.trim(),pw=el('password').value;
   if(RECOVERY){ if(!pw||pw.length<8){el('loginErr').textContent='Use at least 8 characters.';return;} }
   else if(!em||!pw){el('loginErr').textContent='Email and password required';return;}
+  else if(signupMode&&pw.length<8){
+    el('loginErr').textContent='Use at least 8 characters.';return;}
   this.disabled=true;el('loginErr').textContent='';
   if(RECOVERY){
     var up=await sb.auth.updateUser({password:pw});
@@ -2919,7 +2959,7 @@ async function boot(){
   el('login').style.display='none';el('app').style.display='block';
   document.body.classList.remove('anon');
 
-  try{await sb.rpc('kos_claim_invites');}catch(e){}
+  try{await claimInvite();}catch(e){}
   var adm=await sb.rpc('kos_is_admin');S.isAdmin=!!(adm&&adm.data);
 
   var mem=await sb.from('kennel_members').select('kennel_id,role').eq('user_id',S.user.id);
