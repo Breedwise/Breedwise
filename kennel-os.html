@@ -344,8 +344,48 @@ function initials(s){return String(s||'?').trim().split(/\s+/).slice(0,2).map(fu
 /* storage can throw (private mode, embedded contexts) — never let it break boot */
 function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
 function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
-function toast(msg){var t=el('toast');t.textContent=msg;t.classList.add('on');
-  clearTimeout(t._x);t._x=setTimeout(function(){t.classList.remove('on');},2100);}
+function toast(msg,ms){var t=el('toast');t.textContent=msg;t.classList.add('on');
+  clearTimeout(t._x);t._x=setTimeout(function(){t.classList.remove('on');},ms||2100);}
+
+/* ─── invites ──────────────────────────────────────────────────────
+   Recording an invite was only ever half the job. kennel_invites is a
+   permission row; kos_claim_invites turns it into a membership on the
+   person's first sign-in — but nothing ever told the person to go and
+   sign in, so "Invite created" was true and useless. This posts to the
+   edge function, which records the invite AS THE CALLER (same owner /
+   manager rule as the RPC) and emails them the link. It reports whether
+   the email actually left, so a dead sender can never look like a send. */
+async function kosInvite(kennelId,email,role){
+  var ses=await sb.auth.getSession();
+  var tok=ses.data&&ses.data.session?ses.data.session.access_token:'';
+  if(!tok)return {error:'Your session has expired — sign in again.'};
+  try{
+    var r=await fetch(SUPABASE_URL+'/functions/v1/kennel-os-api?op=invite',{
+      method:'POST',
+      headers:{'content-type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+tok},
+      body:JSON.stringify({kennel_id:kennelId,email:email,role:role})});
+    var d={};try{d=await r.json();}catch(e){}
+    if(!r.ok)return await inviteFallback(kennelId,email,role,
+      d.error||('the invite service answered '+r.status));
+    return d;
+  }catch(e){return await inviteFallback(kennelId,email,role,
+    'could not reach the invite service ('+String(e&&e.message||e)+')');}
+}
+/* If the function is unreachable — not deployed yet, cold, offline — the
+   access still has to be granted, or inviting would break outright. Fall
+   back to the RPC the page used before, and say plainly that the person
+   has access but was not told. Half a job is fine as long as it says so. */
+async function inviteFallback(kennelId,email,role,why){
+  var r=await sb.rpc('kos_invite_member',{p_kennel:kennelId,p_email:email,p_role:role});
+  if(r.error)return {error:r.error.message};
+  return {ok:true,invited:true,invite_id:r.data,fallback:true,
+          mail:{sent:false,error:why}};
+}
+function inviteToast(d,email){
+  if(d.mail&&d.mail.sent)return toast((d.already_member?'Link re-sent to ':'Invite emailed to ')+email);
+  toast('Access saved, but the email did not send: '+((d.mail&&d.mail.error)||'no mail sender configured')+
+        ' — use "copy welcome" and send it yourself.',7000);
+}
 
 /* ─── icons ────────────────────────────────────────────────────── */
 var P={
@@ -1753,15 +1793,27 @@ async function settingsView(){
       '<span class="t">'+esc(m.email||'member')+'</span><span class="s">Member</span></span><span class="r">'+pill(m.role)+'</span></div>';}).join('')+
     (iv.data||[]).map(function(i){
     return '<div class="row"><span class="av">✉</span><span class="body"><span class="t">'+esc(i.email)+
-      '</span><span class="s">Invited · awaiting first sign-in</span></span><span class="r">'+pill(i.role)+'</span></div>';}).join('');
+      '</span><span class="s">Invited · awaiting first sign-in</span></span><span class="r">'+
+      '<span class="mini" data-resend="'+esc(i.email)+'" data-resend-role="'+esc(i.role||'staff')+'" '+
+      'title="Send this person the sign-in email again">resend</span>'+pill(i.role)+'</span></div>';}).join('');
   if(el('teamRows'))el('teamRows').innerHTML=rowsHTML||'<div class="empty" style="padding:16px 0">Just you so far.</div>';
+  Array.prototype.forEach.call(document.querySelectorAll('[data-resend]'),function(btn){
+    btn.onclick=async function(){
+      var em=btn.getAttribute('data-resend');
+      btn.textContent='sending…';
+      var d=await kosInvite(k.id,em,btn.getAttribute('data-resend-role'));
+      btn.textContent='resend';
+      if(d.error)return toast(d.error,6000);
+      inviteToast(d,em);
+    };
+  });
   if(el('invBtn'))el('invBtn').onclick=async function(){
     var em=el('invEmail').value.trim();if(!em)return toast('Enter an email');
-    this.disabled=true;
-    var r=await sb.rpc('kos_invite_member',{p_kennel:k.id,p_email:em,p_role:el('invRole').value});
-    this.disabled=false;
-    if(r.error)return toast(r.error.message);
-    el('invEmail').value='';toast('Invite created');settingsView();};
+    this.disabled=true;this.textContent='Sending…';
+    var d=await kosInvite(k.id,em,el('invRole').value);
+    this.disabled=false;this.textContent='Send invite';
+    if(d.error)return toast(d.error,6000);
+    el('invEmail').value='';inviteToast(d,em);settingsView();};
 }
 
 async function saveKennel(patch){
@@ -2207,9 +2259,14 @@ async function adminView(){
     this.disabled=true;el('pErr').textContent='';
     var r=await sb.rpc('kos_provision_kennel',{p_name:name,p_slug:slug,p_owner_email:em,
       p_short_name:el('pShort').value.trim(),p_breed:el('pBreed').value.trim()});
+    if(r.error){this.disabled=false;el('pErr').textContent=r.error.message;return;}
+    /* The kennel exists either way — the email is the part that can fail,
+       and the owner never hears about it unless this says so. */
+    var d=await kosInvite(r.data,em,'owner');
     this.disabled=false;
-    if(r.error){el('pErr').textContent=r.error.message;return;}
-    toast('Kennel provisioned');adminView();
+    if(d.error)toast('Kennel created, but the welcome email failed: '+d.error,7000);
+    else inviteToast(d,em);
+    adminView();
   };
 
   var kr=await sb.from('kennels').select('*').order('created_at',{ascending:false});
