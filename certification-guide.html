@@ -156,7 +156,6 @@ label.ck input:checked + span{color:var(--ink)}
     <input id="g-name" type="text" autocomplete="name" placeholder="First and last name">
     <label for="g-email">Email</label>
     <input id="g-email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com">
-    <input id="g-company" class="hp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
     <button id="gate-go" type="button">Open my guide</button>
     <div id="gate-err"></div>
     <div class="gate-note">Use the same email on your phone or laptop to pick up right where you left off.</div>
@@ -393,7 +392,6 @@ function startWith(name,email){
 }
 
 document.getElementById("gate-go").addEventListener("click",function(){
-  if(document.getElementById("g-company").value)return; // honeypot
   var name=document.getElementById("g-name").value.trim();
   var email=document.getElementById("g-email").value.trim().toLowerCase();
   var err=document.getElementById("gate-err");
