@@ -77,6 +77,43 @@
   @media(max-width:1000px){.g3,.g4{grid-template-columns:1fr 1fr}}
   @media(max-width:720px){.shell{grid-template-columns:1fr}aside{position:static;height:auto}.g2,.g3,.g4{grid-template-columns:1fr}.wrap{padding:22px 18px 70px}.topbar{padding:12px 18px}}
   .lbl{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  /* sales scorecard — 13 columns will not fit anything, so it scrolls
+     sideways with the owner and measurable columns pinned */
+  .sctwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+  .sctab{border-collapse:separate;border-spacing:0;width:100%;font-size:12.5px;min-width:900px}
+  .sctab th,.sctab td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+  .sctab thead th{position:sticky;top:0;background:var(--card2);z-index:2;
+    font-weight:600;color:var(--muted);font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+  .sctab .scl{display:block;color:var(--mid);letter-spacing:.08em}
+  .sctab .scs{display:block;font-size:9.5px;color:var(--faint);letter-spacing:0;text-transform:none}
+  .sctab .sco,.sctab .scm,.sctab .scg{position:sticky;background:var(--card);z-index:1}
+  .sctab .sco,.sctab .scm{text-align:left}
+  .sctab .sco{left:0;width:112px;vertical-align:top;padding-top:11px;border-right:1px solid var(--line)}
+  .sctab .scm{left:112px;width:168px;color:var(--mid);border-right:1px solid var(--line)}
+  .sctab thead .sco,.sctab thead .scm,.sctab thead .scg{background:var(--card2);z-index:3}
+  .sctab .scrole{display:block;font-size:9.5px;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+  .sctab .scg{left:280px;width:92px;color:var(--gold2);font-variant-numeric:tabular-nums;
+    border-right:1px solid var(--line2)}
+  .sctab .scg small{color:var(--faint);font-size:9.5px;margin-left:1px}
+  .sctab tbody td{font-variant-numeric:tabular-nums}
+  .sctab .scgoal{color:var(--faint);font-size:10px;margin-left:2px}
+  .sc-good{background:var(--green-s);color:var(--green)}
+  .sc-warn{background:var(--amber-s);color:var(--amber)}
+  .sc-bad{background:var(--red-s);color:var(--red)}
+  .sc-part{background:var(--card3);color:var(--mid)}
+  .sclegend{display:flex;flex-wrap:wrap;gap:9px 16px;padding:9px 11px;font-size:11px;color:var(--faint);
+    border-top:1px solid var(--line)}
+  .sclegend .k{display:flex;align-items:center;gap:5px}
+  .sclegend .sw{width:11px;height:11px;border-radius:3px;display:inline-block}
+  /* target grid */
+  .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:9px;margin-bottom:16px}
+  .tcell label{display:block;font-size:10.5px;color:var(--muted);margin-bottom:3px}
+  .tcell input{width:100%}
+  /* the numbers inside the EOD form */
+  .eodnums{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px;margin:4px 0 12px}
+  .eodnums label{display:block;font-size:10.5px;color:var(--muted);margin-bottom:3px}
+  .eodnums input{width:100%}
+  .eodrole{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:10px 0 2px}
   .khead{font-family:var(--display);font-size:13px;letter-spacing:.06em;color:var(--gold);margin-bottom:12px;text-transform:uppercase}
 
   /* editable fields */
@@ -674,21 +711,22 @@ var SECTIONS=[
  /* Daily — touched every day */
  {id:'command',  g:'Daily',     n:'01', name:'Command Center',       q:'Company health at a glance'},
  {id:'eod',      g:'Daily',     n:'02', name:'EOD Reports',          q:'What moved today?'},
- {id:'calendar', g:'Daily',     n:'03', name:'Master Calendar',      q:'Our rhythm and what is coming'},
+ {id:'sales',    g:'Daily',     n:'03', name:'Sales Scorecard',      q:'Week over week, month over month'},
+ {id:'calendar', g:'Daily',     n:'04', name:'Master Calendar',      q:'Our rhythm and what is coming'},
  /* Clients & Members */
- {id:'boss',     g:'Clients',   n:'04', name:'B.O.S.S Clients',      q:'Delivery, activation and guarantee'},
- {id:'academy',  g:'Clients',   n:'05', name:'Academy Members',      q:'Pathway, attendance and upsell'},
+ {id:'boss',     g:'Clients',   n:'05', name:'B.O.S.S Clients',      q:'Delivery, activation and guarantee'},
+ {id:'academy',  g:'Clients',   n:'06', name:'Academy Members',      q:'Pathway, attendance and upsell'},
  /* Company — numbers and plan */
- {id:'scorecard',g:'Company',   n:'06', name:'Company Scorecard',    q:'Are we hitting our numbers?'},
- {id:'goals',    g:'Company',   n:'07', name:'Goals & Priorities',   q:'What matters this quarter?'},
- {id:'projects', g:'Company',   n:'08', name:'Projects & Tasks',     q:'What needs to happen next?'},
- {id:'depts',    g:'Company',   n:'09', name:'Department Dashboards',q:'Performance by function'},
- {id:'finance',  g:'Company',   n:'10', name:'Finance & Performance',q:'The financial picture'},
+ {id:'scorecard',g:'Company',   n:'07', name:'Company Scorecard',    q:'Are we hitting our numbers?'},
+ {id:'goals',    g:'Company',   n:'08', name:'Goals & Priorities',   q:'What matters this quarter?'},
+ {id:'projects', g:'Company',   n:'09', name:'Projects & Tasks',     q:'What needs to happen next?'},
+ {id:'depts',    g:'Company',   n:'10', name:'Department Dashboards',q:'Performance by function'},
+ {id:'finance',  g:'Company',   n:'11', name:'Finance & Performance',q:'The financial picture'},
  /* Reference — read more than written */
- {id:'roles',    g:'Reference', n:'11', name:'Roles & Accountability',q:'Who owns what?'},
- {id:'people',   g:'Reference', n:'12', name:'People & Performance', q:'How each person is doing'},
- {id:'meetings', g:'Reference', n:'13', name:'Meetings & Reporting', q:'Our operating rhythm'},
- {id:'sops',     g:'Reference', n:'14', name:'SOPs & Resources',     q:'How we do the work'}
+ {id:'roles',    g:'Reference', n:'12', name:'Roles & Accountability',q:'Who owns what?'},
+ {id:'people',   g:'Reference', n:'13', name:'People & Performance', q:'How each person is doing'},
+ {id:'meetings', g:'Reference', n:'14', name:'Meetings & Reporting', q:'Our operating rhythm'},
+ {id:'sops',     g:'Reference', n:'15', name:'SOPs & Resources',     q:'How we do the work'}
 ];
 
 function build(keep){
@@ -702,7 +740,7 @@ function build(keep){
   var w=$('#wrap');w.innerHTML='';
   SECTIONS.forEach(function(s){var p=el('div','panel');p.id='p-'+s.id;w.appendChild(p);});
   renderCommand();renderRoles();renderScorecard();renderDepts();renderGoals();renderProjects();renderSops();renderMeetings();renderFinance();renderPeople();
-  renderEod();renderCalendar();renderBoss();renderAcademy();
+  renderEod();renderSales();renderCalendar();renderBoss();renderAcademy();
   go(keep||'command');
 }
 function go(id){
@@ -1048,7 +1086,7 @@ function renderPulse(){
 
 function renderEod(){
   var p=$('#p-eod');if(!p)return;p.innerHTML='';
-  p.appendChild(el('p','intro','<b>Four lines, every day.</b> Not paperwork — it is so tomorrow starts with yesterday’s blockers visible instead of forgotten, and so the weekly scorecard has something real behind it.'));
+  p.appendChild(el('p','intro','<b>Four lines, every day</b> — plus your numbers, if you own any. Not paperwork: it is so tomorrow starts with yesterday’s blockers visible instead of forgotten, and so the <b>Sales Scorecard</b> has something real behind it rather than a sentence nobody can add up.'));
   whoBar(p,renderEod);
 
   var today=ymd();
@@ -1071,11 +1109,31 @@ function renderEod(){
   var card=el('div','card');
   var draft={moved:(mine&&mine.moved)||'',number:(mine&&mine.number)||'',
              blocker:(mine&&mine.blocker)||'',tomorrow:(mine&&mine.tomorrow)||''};
+
+  /* If this person owns sales numbers, ask for them by name instead of as
+     prose. Same question the free-text "your number" asked — but a week of
+     these can be added up, and a week of sentences cannot. */
+  var role=salesRoleOf(who()),nums={};
+  if(role){
+    if(mine&&mine.m)for(var nk in mine.m)nums[nk]=mine.m[nk];
+    card.appendChild(el('div','eodrole',SALES_ROLES[role].label+' · today’s numbers'));
+    var ng=el('div','eodnums');
+    SALES_ROLES[role].inputs.forEach(function(f){
+      var w=el('div');w.appendChild(el('label',null,f.l));
+      var inp=el('input','f');inp.type='number';inp.min='0';inp.step='any';
+      inp.value=(nums[f.k]==null?'':nums[f.k]);
+      inp.addEventListener('input',function(){
+        if(inp.value==='')delete nums[f.k];else nums[f.k]=Number(inp.value);});
+      w.appendChild(inp);ng.appendChild(w);
+    });
+    card.appendChild(ng);
+  }
+
   [['moved','What moved today?','The thing that actually progressed'],
    ['number','Your number','Calls, sets, closes, lessons shipped — whatever you own'],
    ['blocker','What is in the way?','Leave blank if nothing'],
    ['tomorrow','Tomorrow’s one thing','The single most important thing']
-  ].forEach(function(f){
+  ].filter(function(f){return !(role&&f[0]==='number');}).forEach(function(f){
     var w=el('div','fw');w.appendChild(el('label',null,f[1]));
     var t=el('textarea','f');t.rows=1;t.placeholder=f[2];t.value=draft[f[0]];
     t.addEventListener('input',function(){draft[f[0]]=t.value;autoGrow(t);});
@@ -1087,7 +1145,7 @@ function renderEod(){
     if(!draft.moved.trim()){toast('Say what moved — even if it is "nothing, here is why"');return;}
     btn.disabled=true;btn.textContent='Filing…';
     osDoc('append',eodDoc(),{entry:{id:myId,who:who(),date:today,moved:draft.moved,
-      number:draft.number,blocker:draft.blocker,tomorrow:draft.tomorrow}},function(err,d){
+      number:draft.number,blocker:draft.blocker,tomorrow:draft.tomorrow,m:nums}},function(err,d){
       btn.disabled=false;
       if(err||!d||!d.ok){
         btn.textContent=mine?'Update my report':'File my report';
@@ -1124,7 +1182,14 @@ function eodRollup(p,today){
     c.appendChild(el('div','lbl',prettyDate(d)));
     days[d].sort(function(a,b){return String(a.who).localeCompare(String(b.who));}).forEach(function(r){
       var box=el('div','eodrow');
-      box.appendChild(el('div','eodwho',esc(r.who)+(r.number?' <span class="eodnum">'+esc(r.number)+'</span>':'')));
+      var tag=r.number?esc(r.number):'';
+      if(r.m&&salesRoleOf(r.who)){
+        var rc=SALES_ROLES[salesRoleOf(r.who)],bits=[];
+        rc.inputs.forEach(function(f){if(r.m[f.k]!=null&&r.m[f.k]!=='')
+          bits.push(esc(f.l.toLowerCase())+' '+esc(String(r.m[f.k])));});
+        if(bits.length)tag=bits.join(' · ');
+      }
+      box.appendChild(el('div','eodwho',esc(r.who)+(tag?' <span class="eodnum">'+tag+'</span>':'')));
       if(r.moved)   box.appendChild(el('div',null,esc(r.moved)));
       if(r.blocker) box.appendChild(el('div','warn danger','<b>Blocked:</b> '+esc(r.blocker)));
       if(r.tomorrow)box.appendChild(el('div','muted','Tomorrow: '+esc(r.tomorrow)));
@@ -1137,7 +1202,273 @@ function eodRollup(p,today){
 function loadEod(){
   osDoc('get',eodDoc(),{},function(err,d){
     if(!err&&d&&d.ok&&Array.isArray(d.data))EOD=d.data;
-    EOD_LOADED=true;renderEod();renderPulse();
+    EOD_LOADED=true;renderEod();renderPulse();renderSales();
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   03 · SALES SCORECARD
+   The EOD report already asks for "your number" — as free text, which
+   reads fine and rolls up into nothing. These are the same numbers,
+   typed into named boxes, so a week can be added up.
+
+   Modelled on the Master Sales Tracker: three roles, the daily inputs
+   each one owns, and a 13-week L10 view with the goal beside the
+   actual. Weekly goal = daily target × work days, so a short week is
+   judged on a short week.
+
+   Rates are computed from the summed numerator and denominator over
+   the period, never by averaging daily percentages — 1-of-1 on Monday
+   and 0-of-40 on Tuesday is 2%, not 50%.
+
+   Deliberately NOT here: Show Rate. Bookings are the setter's number
+   and holds are the next person's, so it spans two people's records
+   and would be a different thing depending on who you asked. It lives
+   in the tracker's Lead Pipeline, which is the only place that can
+   honestly follow one lead from DM to cash.
+   ══════════════════════════════════════════════════════════════════ */
+var SALES_ROLES={
+  dm:{label:'DM Setter',
+    inputs:[{k:'dms',l:'New DMs sent',t:100},
+            {k:'fups',l:'Follow-ups sent',t:50},
+            {k:'replies',l:'Replies'},
+            {k:'convos',l:'Conversations',t:15},
+            {k:'booked',l:'Setter calls booked',t:3}],
+    rates:[{k:'c2b',l:'Convo → book %',n:'booked',d:'convos',t:.20}]},
+  phone:{label:'Phone Setter',
+    inputs:[{k:'dials',l:'Outbound dials',t:100},
+            {k:'pickups',l:'Pickups',t:25},
+            {k:'convos',l:'Conversations',t:15},
+            {k:'held',l:'Setter calls held'},
+            {k:'qualified',l:'Qualified'},
+            {k:'booked',l:'Closer calls booked',t:3}],
+    rates:[{k:'pick',l:'Pickup %',n:'pickups',d:'dials',t:.25},
+           {k:'qual',l:'Qualified lead rate',n:'qualified',d:'held',t:.80}]},
+  closer:{label:'Closer',
+    inputs:[{k:'sched',l:'Calls scheduled'},
+            {k:'held',l:'Calls held',t:3},
+            {k:'closes',l:'Closes',t:1},
+            {k:'cash',l:'Cash collected',t:1500,money:1},
+            {k:'contract',l:'Contract value sold',money:1}],
+    rates:[{k:'cr',l:'Close rate',n:'closes',d:'held',t:.40},
+           {k:'acpc',l:'Avg cash per close',n:'cash',d:'closes',money:1}]}
+};
+
+function salesCfg(){
+  if(!DB.sales)DB.sales={roster:[{name:'Daniel',role:'dm'},{name:'Regina',role:'phone'},
+                                 {name:'Austin',role:'closer'}],targets:{},weekends:false};
+  if(!Array.isArray(DB.sales.roster))DB.sales.roster=[];
+  if(!DB.sales.targets||typeof DB.sales.targets!=='object')DB.sales.targets={};
+  return DB.sales;
+}
+function salesRoleOf(name){
+  var r=null;salesCfg().roster.forEach(function(x){if(x&&x.name===name&&SALES_ROLES[x.role])r=x.role;});
+  return r;
+}
+function salesTarget(role,k,def){
+  var v=salesCfg().targets[role+'.'+k];
+  if(v===''||v==null)return def;
+  v=Number(v);return isNaN(v)?def:v;
+}
+
+/* ── dates ───────────────────────────────────────────────────────── */
+function weekStart(ds){                       /* Monday of that week */
+  var d=new Date(ds+'T12:00:00');d.setDate(d.getDate()-((d.getDay()+6)%7));return ymd(d);
+}
+function addDays(ds,n){var d=new Date(ds+'T12:00:00');d.setDate(d.getDate()+n);return ymd(d);}
+function monthStart(ds){return String(ds).slice(0,7)+'-01';}
+function monthEnd(ym){var p=ym.split('-');return ymd(new Date(+p[0],+p[1],0));}
+function workDays(from,to){
+  var wk=!!salesCfg().weekends,n=0,d=from,guard=0;
+  while(d<=to&&guard++<400){var w=new Date(d+'T12:00:00').getDay();
+    if(wk||(w>=1&&w<=5))n++;d=addDays(d,1);}
+  return n;
+}
+
+/* ── the numbers ─────────────────────────────────────────────────── */
+var EODM={},EODM_WANT=0,EODM_GOT=0;
+function monthsBack(n){
+  var out=[],d=new Date();
+  for(var i=0;i<n;i++){out.push(ymd(d).slice(0,7));d.setDate(1);d.setMonth(d.getMonth()-1);}
+  return out;
+}
+/* The current month is already live in EOD; only older months are fetched,
+   and each one only once. */
+function salesEntries(months){
+  var cur=ymd().slice(0,7),out=[];
+  months.forEach(function(m){
+    if(m===cur)out=out.concat(EOD||[]);
+    else if(EODM[m])out=out.concat(EODM[m]);
+  });
+  return out;
+}
+function loadSalesMonths(months,cb){
+  var cur=ymd().slice(0,7),need=months.filter(function(m){return m!==cur&&!EODM[m];});
+  if(!need.length){cb();return;}
+  var left=need.length;
+  need.forEach(function(m){
+    osDoc('get','eod/'+m,{},function(err,d){
+      EODM[m]=(!err&&d&&d.ok&&Array.isArray(d.data))?d.data:[];
+      if(!--left)cb();
+    });
+  });
+}
+function salesSum(entries,who,from,to){
+  var s={};
+  entries.forEach(function(e){
+    if(!e||e.who!==who||!e.date||e.date<from||e.date>to)return;
+    var m=e.m||{};
+    for(var k in m){var v=Number(m[k]);if(!isNaN(v))s[k]=(s[k]||0)+v;}
+  });
+  return s;
+}
+function fmtVal(v,money,rate){
+  if(v==null||v==='')return '—';
+  if(rate)return Math.round(v*1000)/10+'%';
+  if(money)return '$'+Math.round(v).toLocaleString();
+  return String(Math.round(v*10)/10);
+}
+function cellClass(actual,goal,partial){
+  if(goal==null||!goal)return '';
+  if(actual==null)return '';
+  if(partial)return 'sc-part';
+  var r=actual/goal;
+  return r>=1?'sc-good':r>=.8?'sc-warn':'sc-bad';
+}
+
+/* ── the view ────────────────────────────────────────────────────── */
+function renderSales(){
+  var p=$('#p-sales');if(!p)return;p.innerHTML='';
+  p.appendChild(el('p','intro','<b>The same numbers your team already files at end of day, added up.</b> '+
+    'Weekly goal is the daily target times the work days in that week, so a short week is judged as a short week. '+
+    'Percentages are worked out from the totals, not by averaging each day — one-for-one on Monday and nought-for-forty on Tuesday is 2%, not 50%.'));
+
+  var cfg=salesCfg(),roster=cfg.roster.filter(function(r){return r&&r.name&&SALES_ROLES[r.role];});
+  if(!roster.length){
+    p.appendChild(el('div','warn','No one is assigned a sales role yet — add them under <b>Who files what</b> below, '+
+      'and their end-of-day report will start asking for these numbers.'));
+    salesSetup(p);return;
+  }
+
+  var months=monthsBack(13);
+  if(!EODM_GOT){
+    p.appendChild(el('p','muted','Loading the last few months of reports…'));
+    salesSetup(p);
+    if(!EODM_WANT){EODM_WANT=1;loadSalesMonths(months,function(){EODM_GOT=1;renderSales();});}
+    return;
+  }
+  var ent=salesEntries(months),today=ymd(),thisWk=weekStart(today);
+
+  /* ── 13 weeks, most recent first ── */
+  var wks=[];for(var i=0;i<13;i++)wks.push(addDays(thisWk,-7*i));
+  p.appendChild(secH('Week over week · last 13 weeks',
+    '<span class="muted" style="font-size:12px">Mon–Sun · most recent on the left</span>'));
+  p.appendChild(salesTable(ent,roster,wks.map(function(w){
+    return {from:w,to:addDays(w,6),label:w===thisWk?'This wk':(w===addDays(thisWk,-7)?'Last wk':'-'+(wks.indexOf(w))+' wks'),
+            sub:prettyShort(w),partial:w===thisWk,days:workDays(w,minDate(addDays(w,6),today))};
+  })));
+
+  /* ── 6 months ── */
+  var mos=[];for(i=0;i<6;i++){var d=new Date();d.setDate(1);d.setMonth(d.getMonth()-i);mos.push(ymd(d).slice(0,7));}
+  p.appendChild(secH('Month over month · last 6 months'));
+  p.appendChild(salesTable(ent,roster,mos.map(function(m){
+    var from=m+'-01',to=monthEnd(m),cur=m===today.slice(0,7);
+    return {from:from,to:to,label:new Date(from+'T12:00:00').toLocaleDateString(undefined,{month:'short'}),
+            sub:m.slice(0,4),partial:cur,days:workDays(from,cur?today:to)};
+  })));
+
+  salesSetup(p);
+}
+function minDate(a,b){return a<b?a:b;}
+function prettyShort(ds){try{return new Date(ds+'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'});}catch(e){return ds;}}
+
+/* One table, whatever the periods are — weeks or months, same shape. */
+function salesTable(ent,roster,periods){
+  var wrap=el('div','sctwrap'),t=el('table','sctab');
+  var head='<thead><tr><th class="sco">Owner</th><th class="scm">Measurable</th><th class="scg">Goal</th>'+
+    periods.map(function(p){return '<th><span class="scl">'+esc(p.label)+'</span><span class="scs">'+esc(p.sub)+'</span></th>';}).join('')+
+    '</tr></thead>';
+  var body='';
+  roster.forEach(function(r){
+    var role=SALES_ROLES[r.role],sums=periods.map(function(p){return salesSum(ent,r.name,p.from,p.to);});
+    var rows=[];
+    role.inputs.forEach(function(f){
+      rows.push({l:f.l,money:f.money,daily:salesTarget(r.role,f.k,f.t),
+        vals:sums.map(function(s){return s[f.k]==null?null:s[f.k];})});
+    });
+    role.rates.forEach(function(f){
+      rows.push({l:f.l,rate:!f.money,money:f.money,flat:true,
+        goal:f.t==null?null:salesTarget(r.role,f.k,f.t),
+        vals:sums.map(function(s){
+          var d=s[f.d];if(!d)return null;return (s[f.n]||0)/d;})});
+    });
+    rows.forEach(function(row,ix){
+      body+='<tr>'+(ix===0?'<td class="sco" rowspan="'+rows.length+'"><b>'+esc(r.name)+'</b><span class="scrole">'+esc(role.label)+'</span></td>':'')+
+        '<td class="scm">'+esc(row.l)+'</td>';
+      /* a count goal scales with the days worked; a rate goal does not */
+      body+='<td class="scg">'+(row.flat
+        ? (row.goal==null?'—':fmtVal(row.goal,row.money,row.rate))
+        : (row.daily==null?'—':fmtVal(row.daily,row.money)+'<small>/day</small>'))+'</td>';
+      row.vals.forEach(function(v,i){
+        var goal=row.flat?row.goal:(row.daily==null?null:row.daily*periods[i].days);
+        body+='<td class="'+cellClass(v,goal,periods[i].partial)+'">'+
+          fmtVal(v,row.money,row.rate)+
+          (goal!=null&&goal&&!row.flat?'<span class="scgoal">/'+fmtVal(goal,row.money)+'</span>':'')+'</td>';
+      });
+      body+='</tr>';
+    });
+  });
+  t.innerHTML=head+'<tbody>'+body+'</tbody>';
+  wrap.appendChild(t);
+  var lg=el('div','sclegend','<span class="k"><i class="sw sc-good"></i>goal hit</span>'+
+    '<span class="k"><i class="sw sc-warn"></i>within 80%</span>'+
+    '<span class="k"><i class="sw sc-bad"></i>behind</span>'+
+    '<span class="k"><i class="sw sc-part"></i>still in progress</span>'+
+    '<span class="k">— means nobody filed a number</span>');
+  wrap.appendChild(lg);
+  return wrap;
+}
+
+/* Roster and targets — the tracker's Settings sheet, kept editable
+   here so nobody has to open a spreadsheet to move a goal. */
+function salesSetup(p){
+  var cfg=salesCfg();
+  p.appendChild(secH('Who files what'));
+  var box=el('div');p.appendChild(box);
+  tableEditor(box,cfg.roster,[
+    {k:'name',label:'Person',type:'select',opts:team(),w:'45%'},
+    {k:'role',label:'Sales role',type:'select',opts:['','dm','phone','closer'],w:'55%'}
+  ],{name:'',role:''},'Add a rep',function(){EODM_GOT=EODM_GOT;renderSales();renderEod();});
+  p.appendChild(el('p','muted','Roles are <b>dm</b> (DM setter), <b>phone</b> (phone setter) and <b>closer</b>. '+
+    'Giving someone a role adds their numbers to the end-of-day form — nobody else’s form changes.'));
+
+  p.appendChild(secH('Daily targets'));
+  var wk=el('div','note');
+  var cb=el('input');cb.type='checkbox';cb.checked=!!cfg.weekends;
+  cb.addEventListener('change',function(){cfg.weekends=cb.checked;save();renderSales();});
+  var lab=el('label',null,' Team works weekends — targets count 7 days a week instead of 5');
+  lab.insertBefore(cb,lab.firstChild);wk.appendChild(lab);p.appendChild(wk);
+
+  Object.keys(SALES_ROLES).forEach(function(rk){
+    var role=SALES_ROLES[rk];
+    if(!cfg.roster.some(function(r){return r&&r.role===rk;}))return;
+    p.appendChild(el('div','lbl',role.label));
+    var g=el('div','tgrid');
+    role.inputs.concat(role.rates).forEach(function(f){
+      if(f.t==null)return;
+      var isRate=role.rates.indexOf(f)>-1&&!f.money;
+      var w=el('div','tcell');
+      w.appendChild(el('label',null,f.l+(isRate?' (%)':'/day')));
+      var inp=el('input','f');inp.type='number';inp.step=isRate?'1':'any';
+      var cur=salesTarget(rk,f.k,f.t);
+      inp.value=isRate?Math.round(cur*100):cur;
+      inp.addEventListener('change',function(){
+        var v=inp.value===''?'':(isRate?Number(inp.value)/100:Number(inp.value));
+        cfg.targets[rk+'.'+f.k]=v;save();renderSales();
+      });
+      w.appendChild(inp);g.appendChild(w);
+    });
+    p.appendChild(g);
   });
 }
 
