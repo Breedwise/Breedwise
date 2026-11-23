@@ -142,3 +142,6 @@
 !/abr/*.jpg
 !/blessed-beyond-dobermans/
 !/blessed-beyond-dobermans/**
+
+# --- Certification study guide (member progress tracker) ---
+!/certification-guide.html

@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Breedwise Certification Study Guide</title>
+<meta name="description" content="Your progress tracker for the Breedwise certification. Work through all 117 videos across Modules 1 to 30, answer the review prompts, and mark each module ready. Saves to your account automatically.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0a; --panel:#141419; --panel2:#1a1a20; --line:rgba(245,242,234,.10);
+  --ink:#f5f2ea; --mid:rgba(245,242,234,.72); --muted:rgba(245,242,234,.46);
+  --gold:#cdae72; --gold2:#e2cb86; --gold-soft:rgba(205,174,114,.12); --gold-line:rgba(205,174,114,.30);
+  --grad:linear-gradient(135deg,#e2cb86,#c3a35c);
+  --green:#6dbf90; --green-soft:rgba(109,191,144,.14); --green-line:rgba(109,191,144,.38);
+  --amber:#e0b062; --amber-soft:rgba(224,176,98,.14); --amber-line:rgba(224,176,98,.38);
+  --blue:#7fb8e6; --blue-soft:rgba(127,184,230,.12);
+  --disp:'Anton',Impact,sans-serif; --body:'Poppins',-apple-system,BlinkMacSystemFont,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(120% 50% at 50% -6%,rgba(205,174,114,.08),transparent 60%)}
+img{max-width:100%}
+[hidden]{display:none!important}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));padding-bottom:40px}
+h1,h2,h3{font-family:var(--disp);font-weight:400;letter-spacing:.01em;text-transform:uppercase;line-height:1.04;margin:0}
+p{margin:0}
+a{color:var(--gold2)}
+button{font-family:var(--body)}
+
+/* ───────── GATE ───────── */
+#gate{position:fixed;inset:0;z-index:9999;background:#0a0a0a;display:flex;align-items:center;justify-content:center;padding:24px;
+  background-image:radial-gradient(120% 60% at 50% -10%,rgba(205,174,114,.10),transparent 60%)}
+.gate-card{width:100%;max-width:430px;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:36px 32px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.gate-brand{font-family:var(--disp);font-size:24px;letter-spacing:2px;text-align:center}.gate-brand b{color:var(--gold)}
+.gate-title{font-family:var(--disp);font-size:22px;color:var(--gold2);margin-top:18px;text-transform:uppercase;line-height:1.1}
+.gate-sub{color:var(--mid);font-size:14px;margin-top:10px;line-height:1.55}
+.gate-card label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:18px 0 6px}
+.gate-card input{width:100%;background:#0d0d0d;border:1px solid var(--line);border-radius:10px;color:var(--ink);font-family:var(--body);font-size:16px;padding:13px 14px;outline:none}
+.gate-card input:focus{border-color:var(--gold-line);box-shadow:0 0 0 3px var(--gold-soft)}
+#gate-go{width:100%;margin-top:22px;background:var(--grad);color:#1a1206;font-weight:700;font-size:15px;letter-spacing:.04em;text-transform:uppercase;border:0;border-radius:10px;padding:15px;cursor:pointer}
+#gate-err{color:#ff6a5d;font-size:13px;margin-top:12px;min-height:16px}
+.gate-note{color:var(--muted);font-size:12px;margin-top:16px;line-height:1.5;text-align:center}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+
+/* ───────── HEADER ───────── */
+header{padding-top:calc(env(safe-area-inset-top,0px) + 34px);padding-bottom:6px}
+.brand{font-family:var(--disp);font-size:21px;letter-spacing:3px}.brand b{color:var(--gold)}
+.eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-top:20px}
+header h1{font-size:clamp(32px,7.6vw,52px);margin-top:10px}
+header h1 .u{color:var(--gold)}
+.tagline{color:var(--mid);font-weight:300;font-size:15px;margin-top:12px;max-width:64ch}
+.tagline b{color:var(--ink);font-weight:600}
+
+/* identity + save line */
+.idbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:20px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:11px 15px;font-size:13px}
+.idbar .who{color:var(--mid)}.idbar .who b{color:var(--ink)}
+.idbar .sv{margin-left:auto;font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.idbar .sv.ok{color:var(--green);background:var(--green-soft);border-color:var(--green-line)}
+.idbar .sv.saving{color:var(--amber);background:var(--amber-soft);border-color:var(--amber-line)}
+.idbar .sv.warn{color:var(--amber);background:var(--amber-soft);border-color:var(--amber-line)}
+.idbar .lk{background:none;border:0;color:var(--gold2);font-size:12.5px;font-weight:600;cursor:pointer;text-decoration:underline;padding:0}
+
+/* sticky progress rail */
+.railwrap{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;margin:14px 0 6px;background:rgba(10,10,10,.82);backdrop-filter:blur(10px)}
+.rail{display:flex;gap:14px;align-items:center;flex-wrap:wrap;background:var(--panel);border:1px solid var(--gold-line);border-radius:14px;padding:13px 16px}
+.rail .pct{font-family:var(--disp);font-size:30px;color:var(--gold);line-height:1;flex:0 0 auto}
+.rail .mid{flex:1;min-width:150px}
+.rail .mid .lbl{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:6px}
+.rail .bar{height:8px;background:var(--panel2);border-radius:8px;overflow:hidden}
+.rail .bar i{display:block;height:100%;background:var(--grad);width:0;transition:width .35s ease}
+.rail .meta{font-size:12px;color:var(--muted);margin-top:6px}
+.rail .meta b{color:var(--gold2)}
+
+/* how to use */
+.steps{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:22px 0 8px}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px}
+.step .n{font-family:var(--disp);color:var(--gold);font-size:15px;letter-spacing:.08em}
+.step h4{font-size:14px;font-family:var(--body);font-weight:700;text-transform:none;color:var(--ink);margin:7px 0 5px}
+.step p{color:var(--mid);font-size:13px}
+.note-legal{background:var(--panel2);border-left:3px solid var(--gold);border-radius:0 11px 11px 0;padding:14px 17px;margin:16px 0;font-size:13px;color:var(--mid);line-height:1.6}
+.note-legal b{color:var(--gold2)}
+
+/* quarter */
+.qhead{margin:34px 0 4px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.qhead .qn{font-family:var(--disp);font-size:13px;color:var(--gold);letter-spacing:.14em}
+.qhead h2{font-size:clamp(21px,4.4vw,27px)}
+.qhead .qmeta{font-size:12px;color:var(--muted);margin-left:auto}
+.qsub{color:var(--mid);font-size:13.5px;font-weight:300;margin:2px 0 14px;max-width:72ch}
+
+/* module card */
+.mod{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:11px;overflow:hidden;transition:border-color .2s}
+.mod.done{border-color:var(--green-line)}
+.mod.ready{border-color:var(--gold-line)}
+.mhead{display:flex;align-items:center;gap:13px;padding:15px 17px;cursor:pointer;user-select:none}
+.mhead .mn{font-family:var(--disp);color:var(--gold);font-size:16px;flex:0 0 auto;width:30px}
+.mhead .mt{flex:1;min-width:0}
+.mhead .mt .tt{font-weight:700;font-size:14.5px;color:var(--ink);line-height:1.3}
+.mhead .mt .vc{font-size:11.5px;color:var(--muted);margin-top:3px}
+.mhead .mbar{width:66px;height:6px;background:var(--panel2);border-radius:6px;overflow:hidden;flex:0 0 auto}
+.mhead .mbar i{display:block;height:100%;background:var(--grad);width:0;transition:width .3s}
+.mhead .pill{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 9px;border-radius:20px;flex:0 0 auto;white-space:nowrap;border:1px solid var(--line);color:var(--muted);background:var(--panel2)}
+.mhead .pill.started{color:var(--amber);background:var(--amber-soft);border-color:var(--amber-line)}
+.mhead .pill.ready{color:var(--green);background:var(--green-soft);border-color:var(--green-line)}
+.mhead .chev{color:var(--muted);flex:0 0 auto;transition:transform .2s;font-size:13px}
+.mod.open .chev{transform:rotate(90deg)}
+.mbody{display:none;padding:0 17px 17px;border-top:1px solid rgba(245,242,234,.06)}
+.mod.open .mbody{display:block}
+.sec-h{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:15px 0 6px}
+label.ck{display:flex;align-items:flex-start;gap:12px;padding:9px 0;cursor:pointer;font-size:14px;color:var(--mid);border-top:1px solid rgba(245,242,234,.05)}
+label.ck:first-of-type{border-top:0}
+label.ck input{position:relative;appearance:none;-webkit-appearance:none;flex:0 0 auto;width:20px;height:20px;margin:0;border:1px solid var(--line);border-radius:6px;background:#0d0d0d;cursor:pointer;transition:.15s}
+label.ck input:checked{background:var(--grad);border-color:transparent}
+label.ck input:checked::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#1a1206;font-size:13px;font-weight:800}
+label.ck input:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
+label.ck span{line-height:1.35;padding-top:1px}
+label.ck input:checked + span{color:var(--ink)}
+.prompts{background:var(--panel2);border-radius:11px;padding:13px 15px;margin-top:13px}
+.prompts .ph{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:8px}
+.prompts ul{margin:0;padding-left:18px;color:var(--mid);font-size:13.5px}
+.prompts li{margin:6px 0;line-height:1.5}
+.statusrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:15px;padding-top:14px;border-top:1px solid rgba(245,242,234,.06)}
+.statusrow .sl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.seg{display:flex;gap:7px;flex-wrap:wrap}
+.seg button{font-size:12px;font-weight:600;color:var(--mid);background:#0d0d0d;border:1px solid var(--line);border-radius:8px;padding:8px 13px;cursor:pointer;transition:.15s}
+.seg button[data-v="started"].on{background:var(--amber-soft);border-color:var(--amber-line);color:var(--amber)}
+.seg button[data-v="ready"].on{background:var(--green-soft);border-color:var(--green-line);color:var(--green)}
+
+/* final */
+.final{background:linear-gradient(180deg,var(--panel),#101015);border:1px solid var(--gold-line);border-radius:16px;padding:22px 20px;margin:16px 0 10px}
+.standard{display:flex;align-items:center;gap:12px;background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:12px;padding:14px 16px;margin:28px 0 6px}
+.standard .big{font-family:var(--disp);font-size:34px;color:var(--gold);line-height:1;flex:0 0 auto}
+.standard p{font-size:13.5px;color:var(--mid)}.standard b{color:var(--ink)}
+.outro{text-align:center;color:var(--muted);font-size:13px;padding:30px 0 10px}
+.outro .mark{font-family:var(--disp);font-size:15px;color:var(--gold2);letter-spacing:.1em}
+.footrow{display:flex;justify-content:center;gap:18px;margin-top:18px;flex-wrap:wrap}
+.footrow button{background:none;border:1px solid var(--line);color:var(--muted);font-size:12px;border-radius:9px;padding:9px 14px;cursor:pointer}
+.footrow button:hover{color:var(--ink);border-color:var(--gold-line)}
+@media(max-width:560px){.steps{grid-template-columns:1fr}.rail .pct{font-size:26px}.mhead{gap:10px;padding:14px}.mhead .mbar{display:none}}
+</style>
+</head>
+<body>
+
+<!-- CLAIM GATE -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="gate-brand">BREED<b>&middot;</b>WISE</div>
+    <div class="gate-title">Your Certification<br>Study Guide</div>
+    <div class="gate-sub">Enter your name and email to open your guide. Your progress saves automatically and comes back whenever you return, on any device. No password needed.</div>
+    <label for="g-name">Your name</label>
+    <input id="g-name" type="text" autocomplete="name" placeholder="First and last name">
+    <label for="g-email">Email</label>
+    <input id="g-email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com">
+    <input id="g-company" class="hp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <button id="gate-go" type="button">Open my guide</button>
+    <div id="gate-err"></div>
+    <div class="gate-note">Use the same email on your phone or laptop to pick up right where you left off.</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="wrap" id="app" hidden>
+  <header>
+    <div class="brand">BREED<b>&middot;</b>WISE</div>
+    <div class="eyebrow">Academy &middot; Certification Study Guide</div>
+    <h1>The Road to <span class="u">Certified</span></h1>
+    <p class="tagline"><b>Not more breeders. Better breeders.</b> The certification assessment draws directly from Modules 1&ndash;30 of the Breedwise Academy classroom: 30 modules, 117 videos, three quarters. Score 80% or higher on the module knowledge checks to pass.</p>
+
+    <div class="idbar">
+      <span class="who">Progress saved for <b id="id-name">you</b></span>
+      <button class="lk" id="switch" type="button">Not you?</button>
+      <span class="sv" id="savestate">Saved</span>
+    </div>
+  </header>
+
+  <div class="railwrap">
+    <div class="rail">
+      <div class="pct" id="pct">0%</div>
+      <div class="mid">
+        <div class="lbl">Videos completed</div>
+        <div class="bar"><i id="railbar"></i></div>
+        <div class="meta"><b id="vdone">0</b> of 117 videos &middot; <b id="mready">0</b> of 30 modules ready for assessment</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step"><div class="n">01</div><h4>Watch in order</h4><p>Each module builds on the one before it. Tick off every video as you finish it.</p></div>
+    <div class="step"><div class="n">02</div><h4>Answer the prompts</h4><p>Say each review prompt out loud or in writing. Can&rsquo;t explain it without rewatching? It goes on your rewatch list.</p></div>
+    <div class="step"><div class="n">03</div><h4>Log your progress</h4><p>Set each module&rsquo;s status as you go. Everything saves to your account the moment you tap it.</p></div>
+    <div class="step"><div class="n">04</div><h4>Run the final checklist</h4><p>Work the checklist at the bottom the week before your assessment. Every box ticked means you&rsquo;re ready.</p></div>
+  </div>
+
+  <div class="note-legal">The review prompts come from each video&rsquo;s title. They tell you what to be ready to explain, but <b>the videos themselves are the source of truth.</b> Mark a module &ldquo;Ready&rdquo; only once you can answer every one of its prompts without rewatching.</div>
+
+  <div id="content"></div>
+
+  <div class="qhead"><span class="qn">Final Step</span><h2>Assessment Checklist</h2></div>
+  <p class="qsub">Work through this list the week before your assessment. If you can tick every item, you&rsquo;re ready.</p>
+  <div class="final" id="finalcard"></div>
+
+  <div class="standard">
+    <div class="big">80%</div>
+    <p>Remember the <b>80% standard</b> on the knowledge checks. Spend your last study sessions on your weakest quarter rather than rewatching what you already know.</p>
+  </div>
+
+  <div class="outro">
+    Better breeders are built one module at a time. Good luck.<br><br>
+    <span class="mark">BREEDWISE ACADEMY</span>
+    <div class="footrow">
+      <button id="switch2" type="button">Switch to a different email</button>
+      <button id="reset" type="button">Reset my progress</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var ENDPOINT="https://xhjdowbnqcsvhtcccuqx.supabase.co/functions/v1/cert-progress";
+
+var QUARTERS=[
+ {qn:"Quarter 1",title:"Foundations",range:"Modules 1–12",sub:"Builds the breeder before the breeding. 45 videos on identity, ethics, breed purpose, veterinary partnerships, business setup, brand and kennel design.",
+  modules:[
+   {t:"The Legacy Begins",v:["The Future of the Breeding Industry","The Journey Ahead: 4 Quarters to One Bloodline","Everything You Need To Succeed Is Right Here","Defining Your “Why”"],p:["Where is the breeding industry headed, and where does your program fit in it?","What are the four quarters of the journey, and what does each one build toward?","What is your “why”? State it in one sentence."]},
+   {t:"The Identity Shift",v:["The Breeder’s Code: The 4 Core Responsibilities","The Upside of the Industry","What This Journey Really Demands","Defining Your Vision"],p:["Name the 4 core responsibilities in the Breeder’s Code.","What does this journey demand of you, and what is the upside of the industry?"]},
+   {t:"Inside the World of Breeding",v:["The Reputation Problem: Why Breeders Get a Bad Rap","Myth vs Math: Shelter Statistics Demystified","Puppy Mills vs Purpose-Driven Programs","Guardians of the Future: Why This Work Matters"],p:["Why do breeders get a bad reputation, and how would you answer a critic?","What do shelter statistics actually show, compared with the common myths?","What separates a puppy mill from a purpose-driven program?"]},
+   {t:"The Purpose of Your Breed",v:["Know Your Why – The History & Purpose of Your Breed","Fit for Life — Temperament & Lifestyle Matching","Genetic Risk Awareness in Your Breed","Choosing a Breed That Honors Your Mission"],p:["What was your breed originally developed to do?","How do you match a puppy’s temperament to a buyer’s lifestyle?","What genetic risks are most common in your breed?"]},
+   {t:"Your Breeding Philosophy & Goals",v:["Defining Your Success","Your Program’s North Star: Setting Goals","Quality Over Quantity: Your Production Philosophy","Building Your Breeder’s Mission Statement"],p:["How do you define success for your program, beyond revenue?","What does “quality over quantity” mean for your production plan?","Recite your breeder’s mission statement."]},
+   {t:"Your Veterinary Team",v:["The Value of a Veterinary Partnership","Identifying and Screening Potential Partners","Defining Core Values and Non-Negotiables","Scaling Your Breeding Team","Emergency Preparedness and Protocols"],p:["How do you find and screen a veterinary partner?","What are your non-negotiables in a vet relationship?","What is your emergency protocol, and who do you call first?"]},
+   {t:"Business Foundations",v:["Business 101: The Importance of an LLC","Plan for Profit: Using an LLC to Your Advantage","The Right Investments: Necessary vs Unnecessary"],p:["Why should a breeding program operate as an LLC?","How can an LLC support profitability?","Which investments are necessary, and which are unnecessary?"]},
+   {t:"Introduction to Social Media",v:["The Power of Your Online Presence","Each Platform Has a Job","Proof Beats Promotion","Growth is About Recognition"],p:["What job does each social platform do for a breeder?","What does “proof beats promotion” mean in practice?"]},
+   {t:"Introduction to Branding",v:["Branding 101 – The Foundation of Your Legacy","Crafting Your Breeder Story Runtime","Developing Your Brand Persona","The Authority – Content & Credibility"],p:["Tell your breeder story in under 60 seconds.","What is your brand persona?","How does content build authority and credibility?"]},
+   {t:"Foundation Stock Selection & Breeder Vetting",v:["Foundation Stock Selection","The Genetics of Behavior"],p:["What do you look for when you select foundation stock, and how do you vet the breeder you buy from?","How do genetics shape a dog’s behavior?"]},
+   {t:"Designing Your Kennel",v:["Engineered Biosecurity","Engineering For Survival","The Architecture of Confidence","Canine Kennel Biosecurity & Disease Prevention"],p:["What does a biosecure kennel layout look like?","How can kennel design build confidence in your dogs?","What are your disease-prevention protocols?"]},
+   {t:"The Bigger Picture: The Bloodline Mindset",v:["Q1 Wins: What You’ve Built & Why It Matters","The Breeder Readiness Assessment","Q2 Preview: What’s Coming & How to Prepare"],p:["What did you build in Quarter 1, and why does it matter?","How did you score on the Breeder Readiness Assessment, and where are your gaps?"]}
+  ]},
+ {qn:"Quarter 2",title:"Fertility, Breeding & Pregnancy",range:"Modules 13–24",sub:"The reproductive core of the certification. 48 videos from nutrition and ovulation timing through breeding, AI, pregnancy and setting up the whelping room.",
+  modules:[
+   {t:"Fuel Fertility: Nutrition for Breeding",v:["Reading the Body – Condition Scoring & Monitoring","Feed for Fertility – Energy, Nutrients & Supplement","The Hygiene Factor – Feeding Safety & Sanitation","Building your Breeding Nutrition Plan"],p:["How do you body condition score a breeding dog?","Which nutrients and supplements support fertility?","What goes into your breeding nutrition plan?"]},
+   {t:"When to Breed for Maximum Fertility",v:["The Reproductive Career – Age, Maturity & Longevity","Understanding & Tracking Estrus Cycles","Frequency & Recovery – The Truth About Back-to-Back","Retirement Timing — Knowing When to Stop"],p:["At what age and maturity should a dog start breeding?","How do you track an estrus cycle?","What is the truth about back-to-back breeding, and when should a dog retire?"]},
+   {t:"The Ovulation Code: Finding the Perfect Moment",v:["Inside Ovulation — The Physiology of Fertility","Gold Standard Testing — PG Testing & Vaginal Smears","Reading the Numbers — More Than Just a Test Result","The Ovulation Framework — How to Time Like a Pro"],p:["What happens in the body during ovulation?","How do progesterone testing and vaginal smears work together?","Walk through the ovulation timing framework step by step."]},
+   {t:"The Power of Diversity",v:["The Power of Diversity","Measuring Diversity","Testing in Practice","Making Smart Pairing Decisions"],p:["Why does genetic diversity matter, and how is it measured?","How do you use diversity test results to choose a pairing?"]},
+   {t:"Breeders Checklist: Select Dogs That Qualify",v:["Health Clearances & Screening Protocols","The Foundations of Breeding Soundness","Physical & Behavioral Traits That Matter","How to Conduct a Pre-Breeding Exam"],p:["Which health clearances does a dog need before breeding?","What makes a dog breeding sound?","What happens during a pre-breeding exam?"]},
+   {t:"The Natural Breeding Playbook",v:["Inside the Breeding Process – What Really Happens","Clean & Ready – Prepare Both Partners for Success","Setting the Scene – The Ideal Breeding Environment","When Things Go Wrong – Troubleshoot Challenges"],p:["What happens during a natural breeding?","How do you prepare both dogs and set up the environment?","What are the common problems, and how do you troubleshoot them?"]},
+   {t:"Artificial Insemination: When & How To Use It",v:["Why AI Matters – Expanding the Genetic Horizon","Methods That Matter – Fresh, Chilled, and Frozen","The Art of Placement – Vaginal vs Intrauterine AI","Precision Timing – Maximizing AI Success"],p:["When does AI make sense over natural breeding?","Compare fresh, chilled and frozen semen.","Compare vaginal and intrauterine placement, and explain how timing changes with each method."]},
+   {t:"Understanding Fertility KPIs",v:["Defining Fertility KPIs","Causes of Infertility in Males and Females","Diagnostic Workup and Lab Tests","Building a Corrective Action Plan"],p:["Which fertility KPIs should a program track?","What are the common causes of infertility in males and in females?","What does a diagnostic workup involve, and how do you build a corrective plan from it?"]},
+   {t:"Managing Pregnancy Like a Pro",v:["The Science of Gestation – Timing and Triggers","Detection Matters – Confirming Pregnancy","Ultrasound Insights – Seeing Beyond the Heartbeat","Monitor Gestation – Checklists to Clinical Sense"],p:["What is the gestation timeline, and what are its key triggers?","How and when is pregnancy confirmed?","What can an ultrasound show besides a heartbeat?"]},
+   {t:"Feeding for Healthy Development",v:["The Two-Inflection Truth","Morning Sickness in the Pregnant Female","The Supplement Shelf, Walk Through","What You Feed Now Becomes the Milk Later"],p:["What are the two inflection points in feeding a pregnant female?","How do you manage morning sickness?","How does feeding during pregnancy affect milk later?"]},
+   {t:"Pitfalls: How to Detect & Prevent Them",v:["Pregnancy Toxemia & Energy Imbalance","Luteal Failure & Hormonal Support","Pyometra & Uterine Health","Pregnancy Arrest & Abortions"],p:["For each of the four pitfalls, what are the warning signs and how is it prevented?","Which of these pitfalls is an emergency that needs a vet right away?"]},
+   {t:"The Whelping Room: Designing for Success",v:["The Whelping Box Blueprint","Essential Equipment Checklist","Setting the Stage for Calm Whelping","Spot-Cleaning & Microbiome Balance"],p:["What makes a good whelping box?","What belongs on the essential equipment checklist?","How do you keep the whelping area clean without upsetting its microbiome?"]}
+  ]},
+ {qn:"Quarter 3",title:"Whelping & Puppy Development",range:"Modules 25–30",sub:"The assessment covers the first six modules of Quarter 3. 24 videos from pre-whelping prep through labor, neonatal care, weaning and pediatric growth.",
+  modules:[
+   {t:"The Pre-Whelping Foundations",v:["The Two Numbers","The Kit Audit","The Baseline","The Dystocia KPI"],p:["What are “the two numbers,” and why do they matter before whelping?","What goes into a whelping kit audit?","Which baseline do you record, and what is the dystocia KPI?"]},
+   {t:"Reading the Signs: Understanding Normal Labor",v:["The Three Movements of Normal Labor","Timing That Tells the Truth","The Art of Quiet Observation","Feeding the Engine Through Labor"],p:["Describe the three movements of normal labor.","Which timings tell you labor is on track?","How do you observe and support the female without interfering?"]},
+   {t:"When Birth Gets Complicated",v:["The Two Clocks of a Difficult Birth","The Three Handoffs to the Vet","The Two Gates of the Planned Section","The Five Squares Decision Map"],p:["What are the two clocks of a difficult birth?","When do you hand off to the vet? Name all three handoffs.","What are the two gates for a planned C-section, and how do you use the Five Squares Decision Map?"]},
+   {t:"First Breath: Neonatal Resuscitation & Monitor",v:["The Sixty-Second Read","Climbing the Resuscitation Ladder","Three Gates, Warmth Before Food","Read the Weight Line Daily"],p:["What do you check in the first sixty seconds after a puppy is born?","What are the steps of the resuscitation ladder?","Why does warmth come before food, and what does a puppy’s daily weight line tell you?"]},
+   {t:"Feeding from First Milk to Weaning",v:["The Colostrum Window You Cannot Reopen","Never Feed a Cold Puppy","Let the Puppies Lead the Weaning","Reading Weaning Diarrhea by the Numbers"],p:["Why is the colostrum window critical, and how long does it last?","Why must a cold puppy never be fed?","How do puppies lead weaning, and how do you read weaning diarrhea?"]},
+   {t:"Beyond Weaning, the Pediatric Blueprint",v:["The Window, the Most Leveraged Months","The Curve, Read the Slope Not the Snapshot","The Pace, Cap the Speed Not the Size","The Partnership, From Monitoring to Mentorship"],p:["Why are the months after weaning the most leveraged?","What does “read the slope, not the snapshot” mean for growth tracking?","What does “cap the speed, not the size” mean, and how do you hand monitoring over to the puppy’s new family?"]}
+  ]}
+];
+var FINAL=[
+ "All 117 videos across Modules 1–30 are ticked off.",
+ "Every module in the progress tracker is set to “Ready for assessment.”",
+ "You can answer every review prompt without rewatching a video.",
+ "You’ve rewatched every video on your rewatch list.",
+ "You can explain the ovulation timing framework from Module 15 from start to finish.",
+ "You can list the warning signs for each pregnancy pitfall in Module 23.",
+ "You can explain when labor needs a vet: the two clocks and three handoffs in Module 27.",
+ "You can walk through neonatal resuscitation and the warmth-before-food rule from Module 28."
+];
+
+var IDKEY="bw-cert-ident";
+var ident=null; try{ident=JSON.parse(localStorage.getItem(IDKEY)||"null");}catch(e){}
+var state={v:{},status:{},fin:{},open:{}};
+var built=false, saveTimer=null;
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+function normalize(d){d=d||{};return {v:d.v||{},status:d.status||{},fin:d.fin||{},open:d.open||{}};}
+function cacheKey(){return "bw-cert-cache-"+((ident&&ident.email)||"anon");}
+function loadCache(){try{var s=localStorage.getItem(cacheKey());if(s)return JSON.parse(s);}catch(e){}return null;}
+function writeCache(){try{localStorage.setItem(cacheKey(),JSON.stringify(state));}catch(e){}}
+function writeIdent(){try{localStorage.setItem(IDKEY,JSON.stringify(ident));}catch(e){}}
+function setStatus(txt,cls){var el=document.getElementById("savestate");if(el){el.textContent=txt;el.className="sv "+(cls||"");}}
+
+/* ---- build the static module DOM once ---- */
+function build(){
+  if(built)return; built=true;
+  var content=document.getElementById("content");
+  var gi=0;
+  QUARTERS.forEach(function(q){
+    var qh=document.createElement("div");qh.className="qhead";
+    qh.innerHTML='<span class="qn">'+esc(q.qn)+'</span><h2>'+esc(q.title)+'</h2><span class="qmeta">'+esc(q.range)+'</span>';
+    content.appendChild(qh);
+    var qs=document.createElement("p");qs.className="qsub";qs.textContent=q.sub;content.appendChild(qs);
+    q.modules.forEach(function(m){
+      gi++;var id=gi;var num=(id<10?"0":"")+id;
+      var vids=m.v.map(function(v,i){return '<label class="ck"><input type="checkbox" data-m="'+id+'" data-i="'+i+'"><span>'+esc(v)+'</span></label>';}).join("");
+      var prompts=m.p.map(function(p){return '<li>'+esc(p)+'</li>';}).join("");
+      var card=document.createElement("div");card.className="mod";card.dataset.id=id;
+      card.innerHTML='<div class="mhead"><div class="mn">'+num+'</div>'+
+        '<div class="mt"><div class="tt">'+esc(m.t)+'</div><div class="vc"><span class="vcn">0</span>/'+m.v.length+' videos</div></div>'+
+        '<div class="mbar"><i></i></div><div class="pill">Not started</div><div class="chev">&#9656;</div></div>'+
+        '<div class="mbody"><div class="sec-h">Watch &amp; check off</div>'+vids+
+        '<div class="prompts"><div class="ph">&#9670; Be ready to explain</div><ul>'+prompts+'</ul></div>'+
+        '<div class="statusrow"><span class="sl">Module status</span><div class="seg">'+
+        '<button type="button" data-status="started" data-m="'+id+'">In progress</button>'+
+        '<button type="button" data-status="ready" data-m="'+id+'">Ready for assessment</button></div></div></div>';
+      content.appendChild(card);
+    });
+  });
+  var fc=document.getElementById("finalcard");
+  fc.innerHTML=FINAL.map(function(f,i){return '<label class="ck"><input type="checkbox" data-fin="'+i+'"><span>'+esc(f)+'</span></label>';}).join("");
+}
+
+function modVideoCount(id){var c=state.v[id]||{};var n=0;for(var k in c){if(c[k])n++;}return n;}
+function refresh(){
+  var done=0,ready=0;
+  var cards=document.querySelectorAll(".mod");
+  cards.forEach(function(card){
+    var id=card.dataset.id;var tot=card.querySelectorAll("input[data-m]").length;
+    var c=modVideoCount(id);done+=c;
+    card.querySelector(".vcn").textContent=c;
+    card.querySelector(".mbar i").style.width=(tot?c/tot*100:0)+"%";
+    var st=state.status[id]||"";var pill=card.querySelector(".pill");
+    card.classList.remove("done","ready");
+    card.querySelectorAll(".seg button").forEach(function(b){b.classList.toggle("on",b.dataset.status===st);});
+    if(st==="ready"){pill.textContent="Ready";pill.className="pill ready";ready++;card.classList.add("ready");}
+    else if(st==="started"||c>0){pill.textContent="In progress";pill.className="pill started";}
+    else{pill.textContent="Not started";pill.className="pill";}
+    if(c===tot&&tot>0)card.classList.add("done");
+    card.classList.toggle("open",!!state.open[id]);
+  });
+  document.getElementById("vdone").textContent=done;
+  document.getElementById("mready").textContent=ready;
+  var pc=Math.round(done/117*100);
+  document.getElementById("pct").textContent=pc+"%";
+  document.getElementById("railbar").style.width=pc+"%";
+  document.querySelectorAll("input[data-m]").forEach(function(cb){cb.checked=!!(state.v[cb.dataset.m]&&state.v[cb.dataset.m][cb.dataset.i]);});
+  document.querySelectorAll("input[data-fin]").forEach(function(cb){cb.checked=!!state.fin[cb.dataset.fin];});
+}
+
+/* ---- server sync ---- */
+function serverLoad(){
+  if(!ident)return;
+  fetch(ENDPOINT,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({action:"load",email:ident.email})})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d&&d.ok&&d.found&&d.data){state=normalize(d.data);writeCache();refresh();}
+      setStatus("Saved","ok");
+    })
+    .catch(function(){setStatus("Offline · saved on this device","warn");});
+}
+function queueSave(){
+  writeCache();
+  setStatus("Saving…","saving");
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(doSave,700);
+}
+function doSave(){
+  if(!ident)return;
+  fetch(ENDPOINT,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({action:"save",email:ident.email,name:ident.name,data:state})})
+    .then(function(r){return r.json();})
+    .then(function(d){setStatus(d&&d.ok?"Saved":"Saved on this device",d&&d.ok?"ok":"warn");})
+    .catch(function(){setStatus("Offline · saved on this device","warn");});
+}
+
+/* ---- identity / gate ---- */
+function showApp(){
+  document.getElementById("gate").hidden=true;
+  document.getElementById("app").hidden=false;
+  document.getElementById("id-name").textContent=(ident&&ident.name)||"you";
+}
+function showGate(prefill){
+  document.getElementById("app").hidden=true;
+  document.getElementById("gate").hidden=false;
+  if(prefill&&ident){document.getElementById("g-name").value=ident.name||"";document.getElementById("g-email").value=ident.email||"";}
+  document.getElementById("g-name").focus();
+}
+function startWith(name,email){
+  ident={name:name,email:email};
+  writeIdent();
+  build();
+  state=normalize(loadCache());
+  showApp();
+  refresh();
+  setStatus("Loading…","saving");
+  serverLoad();
+}
+
+document.getElementById("gate-go").addEventListener("click",function(){
+  if(document.getElementById("g-company").value)return; // honeypot
+  var name=document.getElementById("g-name").value.trim();
+  var email=document.getElementById("g-email").value.trim().toLowerCase();
+  var err=document.getElementById("gate-err");
+  if(name.length<2){err.textContent="Please enter your name.";return;}
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){err.textContent="Please enter a valid email.";return;}
+  err.textContent="";
+  startWith(name,email);
+});
+document.getElementById("g-email").addEventListener("keydown",function(e){if(e.key==="Enter")document.getElementById("gate-go").click();});
+
+function switchMember(){showGate(true);}
+document.getElementById("switch").addEventListener("click",switchMember);
+document.getElementById("switch2").addEventListener("click",switchMember);
+
+document.getElementById("reset").addEventListener("click",function(){
+  var b=this;
+  if(b.dataset.armed!=="1"){b.dataset.armed="1";b.textContent="Tap again to erase your progress";setTimeout(function(){b.dataset.armed="0";b.textContent="Reset my progress";},3500);return;}
+  b.dataset.armed="0";b.textContent="Reset my progress";
+  state={v:{},status:{},fin:{},open:{}};writeCache();refresh();
+  if(ident){fetch(ENDPOINT,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({action:"reset",email:ident.email})}).then(function(r){return r.json();}).then(function(){setStatus("Saved","ok");}).catch(function(){});}
+});
+
+/* ---- interactions ---- */
+document.addEventListener("change",function(e){
+  var t=e.target;
+  if(t.matches&&t.matches("input[data-m]")){var m=t.dataset.m,i=t.dataset.i;state.v[m]=state.v[m]||{};state.v[m][i]=t.checked;refresh();queueSave();}
+  else if(t.matches&&t.matches("input[data-fin]")){state.fin[t.dataset.fin]=t.checked;queueSave();}
+});
+document.addEventListener("click",function(e){
+  var head=e.target.closest&&e.target.closest(".mhead");
+  if(head){var id=head.parentElement.dataset.id;state.open[id]=!state.open[id];head.parentElement.classList.toggle("open",!!state.open[id]);writeCache();return;}
+  var sb=e.target.closest&&e.target.closest(".seg button");
+  if(sb){var mm=sb.dataset.m,v=sb.dataset.status;state.status[mm]=(state.status[mm]===v)?"":v;refresh();queueSave();return;}
+});
+
+/* ---- boot ---- */
+if(ident&&ident.email){build();state=normalize(loadCache());showApp();refresh();setStatus("Loading…","saving");serverLoad();}
+else{showGate(false);}
+</script>
+</body>
+</html>
