@@ -77,23 +77,29 @@
   @media(max-width:1000px){.g3,.g4{grid-template-columns:1fr 1fr}}
   @media(max-width:720px){.shell{grid-template-columns:1fr}aside{position:static;height:auto}.g2,.g3,.g4{grid-template-columns:1fr}.wrap{padding:22px 18px 70px}.topbar{padding:12px 18px}}
   .lbl{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-  /* sales scorecard — 13 columns will not fit anything, so it scrolls
-     sideways with the owner and measurable columns pinned */
+  /* sales scorecard — the first three columns are pinned while the
+     periods scroll. The offsets only line up if the widths are real, so
+     the table is laid out fixed with an explicit colgroup; left:280px
+     against a column the browser decided to make 230px wide is what put
+     the Goal column on top of This week. */
   .sctwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
-  .sctab{border-collapse:separate;border-spacing:0;width:100%;font-size:12.5px;min-width:900px}
-  .sctab th,.sctab td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+  .sctab{border-collapse:separate;border-spacing:0;width:100%;font-size:12px;table-layout:fixed}
+  .sctab th,.sctab td{padding:6px 9px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis}
   .sctab thead th{position:sticky;top:0;background:var(--card2);z-index:2;
     font-weight:600;color:var(--muted);font-size:10px;letter-spacing:.1em;text-transform:uppercase}
   .sctab .scl{display:block;color:var(--mid);letter-spacing:.08em}
   .sctab .scs{display:block;font-size:9.5px;color:var(--faint);letter-spacing:0;text-transform:none}
   .sctab .sco,.sctab .scm,.sctab .scg{position:sticky;background:var(--card);z-index:1}
   .sctab .sco,.sctab .scm{text-align:left}
-  .sctab .sco{left:0;width:112px;vertical-align:top;padding-top:11px;border-right:1px solid var(--line)}
-  .sctab .scm{left:112px;width:168px;color:var(--mid);border-right:1px solid var(--line)}
+  .sctab .sco{left:0;vertical-align:top;padding-top:11px;border-right:1px solid var(--line)}
+  .sctab .scm{left:116px;color:var(--mid);border-right:1px solid var(--line)}
   .sctab thead .sco,.sctab thead .scm,.sctab thead .scg{background:var(--card2);z-index:3}
   .sctab .scrole{display:block;font-size:9.5px;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
-  .sctab .scg{left:280px;width:92px;color:var(--gold2);font-variant-numeric:tabular-nums;
+  .sctab .scg{left:296px;color:var(--gold2);font-variant-numeric:tabular-nums;
     border-right:1px solid var(--line2)}
+  .sctab tr.own td{border-top:1px solid var(--line2)}
+  .sctab .scnil{color:var(--faint)}
   .sctab .scg small{color:var(--faint);font-size:9.5px;margin-left:1px}
   .sctab tbody td{font-variant-numeric:tabular-nums}
   .sctab .scgoal{color:var(--faint);font-size:10px;margin-left:2px}
@@ -103,6 +109,10 @@
   .sc-part{background:var(--card3);color:var(--mid)}
   .sclegend{display:flex;flex-wrap:wrap;gap:9px 16px;padding:9px 11px;font-size:11px;color:var(--faint);
     border-top:1px solid var(--line)}
+  .scrange{display:flex;gap:7px;align-items:center;margin:0 0 10px}
+  .scrange button{background:var(--card2);border:1px solid var(--line2);color:var(--muted);font-family:var(--body);
+    font-size:11.5px;padding:5px 11px;border-radius:20px;cursor:pointer}
+  .scrange button.on{background:var(--gold-soft);border-color:var(--gold-line);color:var(--gold2)}
   .sclegend .k{display:flex;align-items:center;gap:5px}
   .sclegend .sw{width:11px;height:11px;border-radius:3px;display:inline-block}
   /* target grid */
@@ -429,6 +439,11 @@ function osBody(o){
   return JSON.stringify(o);
 }
 var myRev=0, lastEdit=0, srvT, pollT, serverOnline=false;
+/* Set when the server refuses this sign-in (401). Being signed in as
+   someone the server does not accept used to look exactly like being
+   offline: a small "local" badge, stale data, and a save that never
+   lands. It has to say so out loud. */
+var REJECT='';
 function $(s,r){return (r||document).querySelector(s);}
 function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
@@ -615,14 +630,44 @@ function serverSave(){
     .catch(function(){serverOnline=false;setSync('local');
       $('#savedAt').textContent='Saved locally '+new Date().toLocaleString();});
 }
+/* A rejected session is a dead end without this: the session is
+   remembered, so every reload signs back in and fails again, and there is
+   no sign-out anywhere in the OS. The way out is the access code. */
+function authWarn(){
+  var m=document.querySelector('main'),w=$('#wrap');if(!m||!w)return;
+  var old=$('#authwarn');if(old)old.remove();
+  if(!REJECT)return;
+  var b=el('div','warn danger');b.id='authwarn';
+  b.style.cssText='margin:18px 30px 0';
+  b.innerHTML='<b>The server will not accept this sign-in, so nothing you type here is being saved for the team.</b><br>'+
+    esc(REJECT)+'<br>';
+  var btn=el('button','addbtn','Sign out and use the access code');
+  btn.style.cssText='margin-top:10px;width:auto;padding:9px 16px';
+  btn.addEventListener('click',function(){
+    btn.disabled=true;btn.textContent='Signing out\u2026';
+    try{sessionStorage.removeItem('bwos');}catch(e){}
+    function done(){location.reload();}
+    if(SB&&SB.auth&&SB.auth.signOut)SB.auth.signOut().then(done,done);else done();
+  });
+  b.appendChild(btn);
+  m.insertBefore(b,w);
+}
 function sectionName(k){for(var i=0;i<SECTIONS.length;i++)if(SECTIONS[i].id===k)return SECTIONS[i].name;return k;}
 function serverLoad(cb){
+  REJECT='';
   fetch(FN_OS,{method:'POST',headers:osHeaders(),body:osBody({action:'get'})})
-    .then(function(r){return r.ok?r.json():Promise.reject(r);})
+    .then(function(r){
+      if(r.ok)return r.json();
+      /* Keep the reason. A 401 is not "the network is down". */
+      return r.json().then(function(d){return Promise.reject({status:r.status,d:d});},
+                           function(){return Promise.reject({status:r.status});});
+    })
     .then(function(resp){serverOnline=true;
       if(resp&&resp.data){DB=Object.assign(seed(),resp.data);myRev=resp.rev||0;try{localStorage.setItem(LS,JSON.stringify(DB));}catch(e){}}
       snapBase();cb&&cb(true,!!(resp&&resp.data));})
-    .catch(function(){serverOnline=false;cb&&cb(false,false);});
+    .catch(function(e){serverOnline=false;
+      if(e&&e.status===401)REJECT=(e.d&&e.d.error)||'the server did not accept this sign-in';
+      cb&&cb(false,false);});
 }
 function currentSection(){var a=document.querySelector('#nav a.on');return a?a.dataset.id:'command';}
 function startPoll(){clearInterval(pollT);pollT=setInterval(function(){
@@ -752,6 +797,11 @@ function go(id){
   $('#sct').textContent=s.name;$('#sctq').textContent='· '+s.q;
   /* textareas can't measure height while hidden; resize them now that the panel is visible */
   var pan=$('#p-'+id);if(pan){pan.querySelectorAll('textarea.f').forEach(function(t){autoGrow(t);});}
+  /* The scorecard reads several months of reports. It asks for them the
+     first time someone actually opens it, not on every page load — and
+     `go` is the only place that knows a section has been opened, because
+     switching sections shows a panel rather than re-rendering it. */
+  if(id==='sales'&&!EODM_GOT)renderSales();
   window.scrollTo(0,0);
 }
 
@@ -1088,6 +1138,8 @@ function renderEod(){
   var p=$('#p-eod');if(!p)return;p.innerHTML='';
   p.appendChild(el('p','intro','<b>Four lines, every day</b> — plus your numbers, if you own any. Not paperwork: it is so tomorrow starts with yesterday’s blockers visible instead of forgotten, and so the <b>Sales Scorecard</b> has something real behind it rather than a sentence nobody can add up.'));
   whoBar(p,renderEod);
+  if(REJECT)p.appendChild(el('div','warn danger','<b>A report filed now will not reach the team.</b> '+
+    esc(REJECT)+' Use <b>Sign out and use the access code</b> at the top of the page, then file it again.'));
 
   var today=ymd();
 
@@ -1163,7 +1215,9 @@ function renderEod(){
 /* The last seven days, grouped by day then by person — plus the one
    line that makes the whole thing work: who has not filed yet. */
 function eodRollup(p,today){
-  if(!EOD_LOADED){p.appendChild(el('p','muted','Loading this month’s reports…'));return;}
+  if(!EOD_LOADED){p.appendChild(el('p',REJECT?'warn danger':'muted',REJECT
+    ? '<b>This month’s reports cannot be read.</b> '+esc(REJECT)
+    : 'Loading this month’s reports…'));return;}
 
   /* who has not filed today */
   var filed={};EOD.forEach(function(x){if(x&&x.date===today)filed[x.who]=1;});
@@ -1337,6 +1391,10 @@ function cellClass(actual,goal,partial){
 }
 
 /* ── the view ────────────────────────────────────────────────────── */
+/* Six weeks fits on a screen; thirteen is the quarter, and has to scroll.
+   Six is the default because a wall of columns nobody can read at a
+   glance is the same as no scorecard at all. */
+var WKS=6;
 function renderSales(){
   var p=$('#p-sales');if(!p)return;p.innerHTML='';
   p.appendChild(el('p','intro','<b>The same numbers your team already files at end of day, added up.</b> '+
@@ -1350,8 +1408,12 @@ function renderSales(){
     salesSetup(p);return;
   }
 
-  var months=monthsBack(13);
+  /* Seven months covers both tables — the quarter of weeks and the six
+     months. Fetched only when this section is the one being looked at,
+     so opening the OS is not a dozen requests for data nobody asked for. */
+  var months=monthsBack(7);
   if(!EODM_GOT){
+    if(currentSection()!=='sales'){salesSetup(p);return;}
     p.appendChild(el('p','muted','Loading the last few months of reports…'));
     salesSetup(p);
     if(!EODM_WANT){EODM_WANT=1;loadSalesMonths(months,function(){EODM_GOT=1;renderSales();});}
@@ -1359,13 +1421,37 @@ function renderSales(){
   }
   var ent=salesEntries(months),today=ymd(),thisWk=weekStart(today);
 
-  /* ── 13 weeks, most recent first ── */
-  var wks=[];for(var i=0;i<13;i++)wks.push(addDays(thisWk,-7*i));
-  p.appendChild(secH('Week over week · last 13 weeks',
+  /* Nothing filed yet by anyone who owns numbers. Eighteen rows of dashes
+     across thirteen columns says exactly as much as one sentence does. */
+  var names={};roster.forEach(function(r){names[r.name]=1;});
+  var any=false;
+  ent.forEach(function(e){
+    if(any||!e||!names[e.who]||!e.m)return;
+    for(var k in e.m){var v=Number(e.m[k]);if(!isNaN(v)&&v!==0){any=true;return;}}
+  });
+  if(!any){
+    p.appendChild(secH('Week over week'));
+    p.appendChild(el('div','card','<p class="muted" style="margin:0">No numbers yet. '+
+      'The table fills itself in as '+roster.map(function(r){return esc(r.name);}).join(', ')+
+      ' file their end-of-day reports — each one now asks for the numbers below instead of a sentence. '+
+      'The first week shows up here the day after the first report.</p>'));
+    salesSetup(p);return;
+  }
+
+  /* ── weeks, most recent first ── */
+  var wks=[];for(var i=0;i<WKS;i++)wks.push(addDays(thisWk,-7*i));
+  p.appendChild(secH('Week over week · last '+WKS+' weeks',
     '<span class="muted" style="font-size:12px">Mon–Sun · most recent on the left</span>'));
-  p.appendChild(salesTable(ent,roster,wks.map(function(w){
-    return {from:w,to:addDays(w,6),label:w===thisWk?'This wk':(w===addDays(thisWk,-7)?'Last wk':'-'+(wks.indexOf(w))+' wks'),
-            sub:prettyShort(w),partial:w===thisWk,days:workDays(w,minDate(addDays(w,6),today))};
+  var rng=el('div','scrange');
+  [[6,'6 weeks'],[13,'13 weeks · the quarter']].forEach(function(o){
+    var b=el('button',WKS===o[0]?'on':null,o[1]);
+    b.addEventListener('click',function(){WKS=o[0];renderSales();});
+    rng.appendChild(b);
+  });
+  p.appendChild(rng);
+  p.appendChild(salesTable(ent,roster,wks.map(function(w,ix){
+    return {from:w,to:addDays(w,6),label:ix===0?'This wk':(ix===1?'Last wk':'-'+ix+' wks'),
+            sub:prettyShort(w),partial:ix===0,days:workDays(w,minDate(addDays(w,6),today))};
   })));
 
   /* ── 6 months ── */
@@ -1385,6 +1471,12 @@ function prettyShort(ds){try{return new Date(ds+'T12:00:00').toLocaleDateString(
 /* One table, whatever the periods are — weeks or months, same shape. */
 function salesTable(ent,roster,periods){
   var wrap=el('div','sctwrap'),t=el('table','sctab');
+  /* Fixed layout + a colgroup: the pinned columns are only in the right
+     place if their widths are the ones the sticky offsets assume. */
+  var colw=periods.length>8?66:84;
+  t.style.minWidth=(116+180+92+colw*periods.length)+'px';
+  var cols='<colgroup><col style="width:116px"><col style="width:180px"><col style="width:92px">'+
+    periods.map(function(){return '<col style="width:'+colw+'px">';}).join('')+'</colgroup>';
   var head='<thead><tr><th class="sco">Owner</th><th class="scm">Measurable</th><th class="scg">Goal</th>'+
     periods.map(function(p){return '<th><span class="scl">'+esc(p.label)+'</span><span class="scs">'+esc(p.sub)+'</span></th>';}).join('')+
     '</tr></thead>';
@@ -1403,28 +1495,33 @@ function salesTable(ent,roster,periods){
           var d=s[f.d];if(!d)return null;return (s[f.n]||0)/d;})});
     });
     rows.forEach(function(row,ix){
-      body+='<tr>'+(ix===0?'<td class="sco" rowspan="'+rows.length+'"><b>'+esc(r.name)+'</b><span class="scrole">'+esc(role.label)+'</span></td>':'')+
+      body+='<tr'+(ix===0?' class="own"':'')+'>'+(ix===0?'<td class="sco" rowspan="'+rows.length+'"><b>'+esc(r.name)+'</b><span class="scrole">'+esc(role.label)+'</span></td>':'')+
         '<td class="scm">'+esc(row.l)+'</td>';
       /* a count goal scales with the days worked; a rate goal does not */
       body+='<td class="scg">'+(row.flat
         ? (row.goal==null?'—':fmtVal(row.goal,row.money,row.rate))
         : (row.daily==null?'—':fmtVal(row.daily,row.money)+'<small>/day</small>'))+'</td>';
       row.vals.forEach(function(v,i){
+        /* The goal is already in its own column; repeating "/500" in every
+           cell of every row was most of the ink on the page and none of
+           the meaning. The colour says whether it was hit. */
         var goal=row.flat?row.goal:(row.daily==null?null:row.daily*periods[i].days);
-        body+='<td class="'+cellClass(v,goal,periods[i].partial)+'">'+
-          fmtVal(v,row.money,row.rate)+
-          (goal!=null&&goal&&!row.flat?'<span class="scgoal">/'+fmtVal(goal,row.money)+'</span>':'')+'</td>';
+        var cls=cellClass(v,goal,periods[i].partial)||(v==null?'scnil':'');
+        body+='<td class="'+cls+'"'+(goal!=null&&goal&&!row.flat
+          ? ' title="goal '+esc(fmtVal(goal,row.money))+' this period"':'')+'>'+
+          fmtVal(v,row.money,row.rate)+'</td>';
       });
       body+='</tr>';
     });
   });
-  t.innerHTML=head+'<tbody>'+body+'</tbody>';
+  t.innerHTML=cols+head+'<tbody>'+body+'</tbody>';
   wrap.appendChild(t);
   var lg=el('div','sclegend','<span class="k"><i class="sw sc-good"></i>goal hit</span>'+
     '<span class="k"><i class="sw sc-warn"></i>within 80%</span>'+
     '<span class="k"><i class="sw sc-bad"></i>behind</span>'+
     '<span class="k"><i class="sw sc-part"></i>still in progress</span>'+
-    '<span class="k">— means nobody filed a number</span>');
+    '<span class="k">— means nobody filed a number</span>'+
+    '<span class="k">hover a cell for that period’s goal</span>');
   wrap.appendChild(lg);
   return wrap;
 }
@@ -2151,6 +2248,7 @@ function reveal(){var g=$('#gate');if(g)g.remove();$('#app').style.display='bloc
       if(!hadData)serverSave(); /* seed the shared doc on first run */
       loadEod();startPoll();
     } else {setSync('local');}
+    authWarn();
   });
   $('#exp').addEventListener('click',expJSON);
   $('#imp').addEventListener('click',function(){$('#impf').click();});
